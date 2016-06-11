@@ -26,7 +26,7 @@ public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockS
         super(Material.rock);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
+//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setStepSound(soundTypeMetal);
     }
@@ -35,7 +35,7 @@ public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockS
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "machineframe");
+        this.blockIcon = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
     }*/
 
     @SideOnly(Side.CLIENT)

@@ -76,10 +76,9 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
         this.setUnlocalizedName(assetName);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, BlockSolar.BASIC_METADATA));
         par3List.add(new ItemStack(par1, 1, BlockSolar.ADVANCED_METADATA));

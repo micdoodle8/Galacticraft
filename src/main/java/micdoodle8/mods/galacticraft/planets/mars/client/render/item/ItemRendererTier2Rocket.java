@@ -16,12 +16,12 @@
 //
 //public class ItemRendererTier2Rocket extends ItemRendererTier1Rocket
 //{
-//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/cargoRocket.png");
+//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/cargoRocket.png");
 //    private IModelCustom cargoRocketModel;
 //
 //    public ItemRendererTier2Rocket(IModelCustom cargoRocketModel)
 //    {
-//        super(new EntityTier2Rocket(FMLClientHandler.instance().getClient().theWorld), new ModelTier2Rocket(), new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/rocketT2.png"));
+//        super(new EntityTier2Rocket(FMLClientHandler.instance().getClient().theWorld), new ModelTier2Rocket(), new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/rocketT2.png"));
 //        this.cargoRocketModel = cargoRocketModel;
 //    }
 //

@@ -71,7 +71,7 @@ public class ItemThermalPadding extends Item implements IItemThermal
 
         for (String name : ItemThermalPadding.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + name);
+            this.icons[i++] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + name);
         }
     }
 

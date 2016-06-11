@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -74,4 +75,6 @@ public class CommonProxyCore
     }
 
     public void postRegisterBlock(Block block) { }
+
+    public void postRegisterItem(Item item) { }
 }

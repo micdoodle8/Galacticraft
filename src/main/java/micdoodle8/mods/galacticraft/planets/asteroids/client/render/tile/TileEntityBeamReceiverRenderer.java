@@ -18,12 +18,12 @@
 //@SideOnly(Side.CLIENT)
 //public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer
 //{
-//    public static final ResourceLocation receiverTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/beamReceiver.png");
+//    public static final ResourceLocation receiverTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/beamReceiver.png");
 //    public static IModelCustom receiverModel;
 //
 //    public TileEntityBeamReceiverRenderer()
 //    {
-//        TileEntityBeamReceiverRenderer.receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/receiver.obj"));
+//        TileEntityBeamReceiverRenderer.receiverModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/receiver.obj"));
 //    }
 //
 //    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f1, int f2)

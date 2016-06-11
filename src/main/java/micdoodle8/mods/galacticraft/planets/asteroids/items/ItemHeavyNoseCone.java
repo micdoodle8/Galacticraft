@@ -47,8 +47,8 @@ public class ItemHeavyNoseCone extends Item
     public void registerIcons(IIconRegister iconRegister)
     {
         this.icons = new IIcon[2];
-        this.icons[0] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone");
-        this.icons[1] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone.0");
+        this.icons[0] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "heavyNoseCone");
+        this.icons[1] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "heavyNoseCone.0");
     }
 
     @Override

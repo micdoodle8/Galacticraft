@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerAstroMinerDock;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class GuiAstroMinerDock extends GuiContainerGC
 {
-    private static final ResourceLocation dockGui = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/guiAstroMinerDock.png");
+    private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/guiAstroMinerDock.png");
 
     private TileEntityMinerBase tile;
 

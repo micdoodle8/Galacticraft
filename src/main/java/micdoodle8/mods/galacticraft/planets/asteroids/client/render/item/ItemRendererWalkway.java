@@ -15,14 +15,14 @@
 //
 //public class ItemRendererWalkway implements IItemRenderer
 //{
-//    private static final ResourceLocation textureMain = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/blocks/walkway.png");
+//    private static final ResourceLocation textureMain = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/blocks/walkway.png");
 //    private static final ResourceLocation textureWire = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/aluminumWire.png");
 //    private static final ResourceLocation texturePipe = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/pipe_oxygen_white.png");
 //    public static IModelCustom modelWalkway;
 //
 //    public ItemRendererWalkway()
 //    {
-//        modelWalkway = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/walkway.obj"));
+//        modelWalkway = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/walkway.obj"));
 //    }
 //
 //    private void renderWalkway(ItemRenderType type, RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)

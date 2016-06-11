@@ -1,0 +1,327 @@
+# Galacticraft Mars Language File = CZECH REPUBLIC CZECH
+
+# GENERAL ITEMS
+item.rawDesh.name=Nezpracovaný frikcní kov
+item.deshStick.name=Tycka z frikcního kovu
+item.ingotDesh.name=Ingot frikcního kovu
+item.spaceshipTier2.t2Rocket.name=Raketa typ 2
+item.reinforcedPlateT2.name=Plech pro težký provoz
+item.tier2.desc=Typ 2
+item.slimelingCargo.name=Batoh pro slizouna
+item.key.T2.name=Klíc typ 2
+item.compressedDesh.name=Válcovaný frikcní kov
+item.spaceshipTier2.cargoRocket.name=Nákladní raketa
+item.fluidManip.name=Kapalinový manipulator
+item.bucketSludge.name=Kyblík infikovaného bláta
+fluid.bacterialsludge=Infikované bláto
+item.itemTier3Rocket.t3Rocket.name=Raketa typ 3
+item.itemAstroMiner.name=Těžební souprava
+item.heavyNoseCone.name=Vylepšená špička rakety
+item.compressedTitanium.name=Válcovaný titan
+item.ingotTitanium.name=Titanový ingot
+item.shardTitanium.name=Titanový úlomek
+item.shardIron.name=Železný úlomek
+item.rocketFinsT2.name=Vylepšené křidélko
+item.engineT2.name=Vylepšený raketový motor
+item.reinforcedPlateT3.name=Zesílený plech
+item.grapple.name=Hák
+item.thermalHelm.name=Tepelně izolovaná helma
+item.thermalChestplate.name=Tepelně izolovaný hrudní chránič
+item.thermalLeggings.name=Tepelně izolované kalhoty
+item.thermalBoots.name=Tepelně izolované boty
+item.titanium_helmet.name=Titanová helma
+item.titanium_chestplate.name=Titanový hrudní chránič
+item.titanium_leggings.name=Titanové kalhoty
+item.titanium_boots.name=Titanové boty
+item.atmosphericValve.name=Atmosferický uzávěr
+item.thermalCloth.name=Tepelně izolační tkanina
+item.beamCore.name=Paprskové jádro
+item.orionDrive.name=Iontový motor
+item.methaneCanisterPartial.name=Lahev na metan
+item.methaneCanister.name=Plná lahev metanu
+item.canister.gas.name=Plyn
+item.canister.LOX.partial.name=Lahev na kapalný kyslík
+item.canister.LOX.full.name=Plná lahev kapalného kyslíku
+item.canister.LOX.name=LOX
+item.canister.liquidNitrogen.partial.name=Lahev na kapalný dusík
+item.canister.liquidNitrogen.full.name=Plná lahev kapalného dusíku
+item.canister.liquidNitrogen.name=Kapalina
+item.canister.liquidArgon.partial.name=Lahev na kapalný argon
+item.canister.liquidArgon.full.name=Plná lahev kapalného argonu
+item.canister.liquidArgon.name=LAR#short name for Liquid Argon contents level
+item.emptyGasCanister.name=Prázdná tlaková lahev
+item.tier3.desc=Typ 3
+item.titanium_pickaxe.name=Titanový krumpáč
+item.titanium_axe.name=Titanová sekera
+item.titanium_hoe.name=Titanová motyka
+item.titanium_shovel.name=Titanová lopata
+item.titanium_sword.name=Titanový meč
+tile.asteroidsBlock.asteroid0.name=Asteroidový kámen
+tile.asteroidsBlock.asteroid1.name=Asteroidový kámen
+tile.asteroidsBlock.asteroid2.name=Asteroidový kámen
+tile.asteroidsBlock.oreIron.name=Železná ruda
+tile.asteroidsBlock.oreIlmenite.name=Ilmenitová ruda
+tile.asteroidsBlock.oreAluminum.name=Hliníková ruda
+
+# TOOLS
+item.deshPick.name=Krumpác z frikcního kovu
+item.deshPickSlime.name=Lepivý krumpác z frikcního kovu
+item.deshAxe.name=Sekera z frikcního kovu
+item.deshHoe.name=Motyka z frikcního kovu
+item.deshSpade.name=Lopata z frikcního kovu
+item.deshSword.name=Mec z frikcního kovu
+
+# ARMOR
+item.deshHelmet.name=Helma z frikcního kovu
+item.deshChestplate.name=Hrudní chránic z frikcního kovu
+item.deshLeggings.name=Kalhoty z frikcního kovu
+item.deshBoots.name=Boty z frikcního kovu
+
+# FLUID
+fluid.methane=Plynný metan
+fluid.oxygen=Plynný kyslík
+fluid.nitrogen=Plynný dusík
+fluid.hydrogen=Plynný vodík
+fluid.carbondioxide=Plynný oxid uhličitý
+fluid.helium=Plynné helium
+fluid.argon=Plynný argon
+fluid.atmosphericgases=Atmosferické plyny
+fluid.liquidmethane=Kapalný metan
+fluid.liquidoxygen=Kapalný kyslík
+fluid.liquidnitrogen=Kapalný dusík
+fluid.liquidargon=Kapalný Argon
+fluid.fuel=Palivo
+
+# BLOCKS
+tile.mars.deshmars.name=Ruda frikcního kovu
+tile.mars.coppermars.name=Medená ruda
+tile.mars.tinmars.name=Cínová ruda
+tile.mars.ironmars.name=Železná ruda
+tile.mars.marscobblestone.name=Dlažební kámen
+tile.mars.marsstone.name=Kámen
+tile.mars.marsdirt.name=Podpovrchový kámen
+tile.mars.marsgrass.name=Povrchový kámen
+tile.mars.marsdeco.name=Blok z frikcního kovu
+tile.mars.marsdungeon.name=Zed dungeonu
+tile.treasureT2.name=Pokladnice typ 2
+tile.slimelingEgg.redEgg.name=Cervené vejce slizouna
+tile.slimelingEgg.blueEgg.name=Modré vejce slizouna
+tile.slimelingEgg.yellowEgg.name=Žluté vejce slizouna
+tile.marsMachine.0.name=Terraformer
+tile.marsMachine.1.name=Stázová komora
+tile.marsMachine.2.name=Odpalovac
+tile.marsMachine.4.name=Zkapalnovac
+tile.marsMachine.5.name=Syntetizér metanu
+tile.marsMachine.6.name=Vodní electrolyzér
+tile.hydrogenPipe.name=Vodíková trubka
+tile.sludge.name=Infikované bláto
+tile.creeperEgg.name=Vejce creepra
+tile.cavernVines.name=Jeskyní réva
+tile.asteroidsBlock.asteroids1.name=Kámen z asteroidu
+tile.beamReflector.name=Směrovač paprsku
+tile.beamReceiver.name=Zdroj paprsku
+tile.telepadShort.name=Telepad krátkého dosahu
+tile.walkway.name=Lávka
+tile.walkwayWire.name=Lávka
+tile.walkwayOxygenPipe.name=Lávka
+tile.treasureT3.name=Pokladnice typ 3
+tile.denseIce.name=Zhuštěný led
+tile.minerBase.name=Základna pro těžební soupravu
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Schody z dlažebního kamene
+tile.wallGC.mars.name=Stěna z dlažebního kamene
+tile.slabGCHalf.marsSlab.name=Podlaha z dlažebního kamene
+tile.marsDungeonBricksStairs.name=Zděné schody (dungeon)
+tile.wallGC.marsBricks.name=Zděná stěna (dungeon)
+tile.slabGCHalf.marsBricksSlab.name=Zděná podlaha (dungeon)
+
+# GUI
+gui.choosePlanet.desc.mars=Obyvatelný#Žádný kyslík#Gravitace: 38%
+item.deshPickSlime.description.name=Muže sbírat vejce slizouna
+gui.message.noEnergy.name=Nedostatek energie
+gui.message.noWater.name=Nedostatek vody
+gui.message.noBonemeal.name=Nedostatek kostní drene
+gui.message.noSeeds.name=Nedostatek obylí
+gui.message.noSaplings.name=Nedostatek rostlin
+gui.message.bubbleExp.name=Bublina se zvetšuje
+gui.message.noValidBlocks.name=Špatné bloky v bubline
+gui.message.terraforming.name=Terraformuje
+gui.message.enableTrees.name=Povolit stromy
+gui.message.enableGrass.name=Povolit trávu
+gui.message.trees.name=Stromy
+gui.message.grass.name=Tráva
+gui.message.invalidFreq.name=Neplatná frekvence
+gui.message.frequency.name=Frekvence
+gui.message.destFrequency.name=Cílová frekvence
+gui.message.removePad.name=Odstranit
+gui.message.launchWhen.name=Odstartovat když
+gui.message.cargoUnloaded.name=Náklad vyložen
+gui.message.cargoFull.name=Plne naloženo
+gui.message.fullyFueled.name=Plná nádrž
+gui.message.instant.name=Okamžite
+gui.message.tenSec.name=10 sekund
+gui.message.thirtySec.name=30 sekund
+gui.message.oneMin.name=1 minuta
+gui.message.redstoneSig.name=Signál
+gui.message.notSet.name=Nenastaveno
+gui.message.notEnough.name=Nedostatek
+gui.message.success.name=Úspech
+gui.message.zeroWater.name=Chybí voda!
+planet.asteroids=Asteroidy
+gui.telepad.desc.0=Toto je unikátní adresa$tohoto transportéru
+gui.telepad.desc.1=Cílová adresa$Tam budou objekty odeslány.
+container.shortRangeTelepad.name=Transportér krátkého dosahu
+container.entryPod.name=Přistávací modul
+gc.configgui.dimensionIDAsteroids=Číslo dimenze asteroidů
+gc.configgui.idEntitySmallAsteroid=Číslo malého asteroidu
+gc.configgui.idEntityGrappleHook=Číslo háku
+gc.configgui.idEntityTier3Rocket=Číslo rakety typu 3
+gc.configgui.idEntityEntryPod=Číslo přistávacího modulu (ast.)
+gc.configgui.idSchematicRocketT3=Číslo schématu rakety typu 3
+gc.configgui.disableGalacticraftHelium=Vypnout registraci plynného Helia
+gc.configgui.astroMinersMax=Maximální počet těžebních souprav na hráče
+gui.message.address.name=Adresa
+gui.message.destAddress.name=Cílová adresa
+gui.message.invalidAddress.name=Neplatná adresa
+gui.message.invalidTargetAddress.name=Neplatná cílová adresa
+gui.message.receivingActive.name=Na příjmu
+gui.message.telepadTooFar.name=Cíl je příliž daleko! (Max %d)
+gui.message.telepadWrongDim.name=Cíl není ve stejné oblasti!
+gui.message.telepadNotFound.name=Transportér nenalezen!
+gui.message.sendingActive.name=Vysílá!
+gui.message.range.name=Dosah: %dm
+gui.message.notEnoughEnergy.name=Nedostatek energie!
+gui.message.targetNoEnergy.name=Cíl nemá dostatek energie!
+gui.message.grapple.fail=Pro použití háku je potřeba také lano!
+gui.message.astroMiner.fail=Tato základna již obsahuje těžební soupravu!
+gui.message.astroMiner1.fail=Přistávací port je obsazen hráčem: 
+gui.message.astroMiner1A.fail=Cesta těžební soupravy je blokována:
+gui.message.astroMiner2.fail=Již jsi postavil příliž mnoho těžebních souprav!
+gui.message.astroMiner3.fail=Základna těžební soupravy byla zničena.
+gui.message.astroMiner4.fail=Těžební soupravě došla energie, nemůže se tedy dostat zpět na základnu.
+gui.message.astroMiner5.fail=Cesta těžební soupravy se zdá být blokována.
+gui.message.astroMiner6.fail=Těžební souprava dokončila těžbu v oblasti. Nyní vyčkává další rozkazy.
+gui.message.astroMiner7.fail=Na vesmírné stanici není nic, co by mohla těžební souprava těžit!
+gui.message.astroMiner8.fail=K základně byla přiřazena další těžební souprava. Původní se nyní zastavý.
+gui.button.recall.name=Přivolat
+gui.miner.outOfRange=Mimo dosah
+gui.miner.offline=Vypnuto
+gui.miner.stuck=Uvízla na:
+gui.miner.docked=Připojena
+gui.miner.travelling=Cestuje
+gui.miner.mining=Těží
+gui.miner.returning=Vrací se
+gui.miner.docking=Připojuje se
+gui.miner.mined=Vytěženo
+tile.treasureT3.description=Pokladnice typu 3 zatím nejsou využity.
+tile.walkway.description=Lávky jsou využity pro dekorace, slouží pro spojování bloků při zachování vzhledu.
+tile.walkwayAluminumWire.description=Lávky s hliníkovým vodičem umožňují vedení vodiče pod lávkou a zároveň zachovávají rovný povrch.
+tile.walkwayOxygenPipe.description=Lávky s kyslíkovou trubkou umožňují vedení trubky pod lávkou a zároveň zachovávají rovný povrch.
+tile.beamReflector.description=Směrovače paprsku slouží ke směrování paprsků za zdroje do cíle. Po kliknutí pravým tlačítkem lze vybírat cíle.
+tile.beamReceiver.description=Zdroje paprsku jsou připojeny ke strojům jako přívody nebo vývody pro přenos energie pomocí paprsku.
+tile.telepadShort.description=Transportéry krátkého dosahu slouží k přepravě hráčů a dalších živých bytostí na krátké vzdálenosti (250 m) po spárování s dalším transportérem.
+tile.minerBase.description=Základna těžební soupravy slouží jako dokovací port pro těžební stanici. Postavte jej jako krychly o straně 2 m.
+schematic.astroMiner.name=Těžební souprava
+schematic.ionDrive.name=Iontový motor
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Unikátní frekvence$tohoto odpalovace
+gui.launchController.desc.1=Frekvence pro vypuštení rakety na
+gui.launchController.desc.2=Má býd odstranen$po odpálení rakety
+gui.launchController.desc.3=Po splnení kritérií$bude vypuštena raketa
+gui.launchController.desc.4=Skrýt cílové frekvence$ostatních hráčů
+gui.terraformer.desc.0=Nadrž na vodu
+
+gui.gasTank.desc.0=Plynová nádrž
+gui.gasTankCompressed.desc.0=Zásobárna stlačeného plynu
+gui.liquidTank.desc.0=Nádrž na kapaliny
+gui.status.nogas.name=Žádný plyn
+gui.status.liquefying.name=Zkapalnuje
+gui.status.processing.name=Syntetizuje
+gui.status.needsCarbon.name=Potrebuje uhlík
+gui.status.tankfull.name=Lahev plná
+gui.status.tanksfull.name=Lahve plné
+gui.message.lowEnergy.name=Málo energie
+gui.button.liquefy.name=Proces
+gui.button.liquefyStop.name=Stop
+gui.gasInput.desc.0=Zkuste sem vložit$lahev s plynem
+gui.gasInput.desc.1=(poprípadne,$atmosferický ventil)
+gui.hydrogenInput.desc.0=Toto vyžaduje lahev vodíku
+gui.hydrogenInput.desc.1=nebo atmosferický ventil
+gui.liquidOutput.desc.2=nádoba se zkapalneným plynem
+gui.methaneOutput.desc.2=nádoba na metan
+gui.message.withAtmosphere0.name=na planete s velkým obsahem metanu
+gui.message.withAtmosphere1.name=v atmosfére
+item.carbonFragments.name=Drcený uhlík
+gui.carbonSlot.desc.0=Patří sem drcený uhlík
+gui.waterBucketSlot.desc=Vložte sem kbelíky vody
+
+gui.cargorocket.status.waiting.0=Cekám na odpalovací
+gui.cargorocket.status.waiting.1=sekvenci.
+gui.cargorocket.status.launched.0=Již
+gui.cargorocket.status.launched.1=odpáleno.
+
+gas.carbondioxide.name=Oxid uhlicitý
+gas.oxygen.name=Kyslík
+gas.nitrogen.name=Dusík
+
+gui.desc.reinforcedPlateT2.name=Typ 2
+dimension.Mars.name=Mars
+planet.mars=Mars
+
+tile.treasureT2.description=Pokladnice typu 2 jsou k nalezení v dungeonech na Marsu. Lze je odemknout po zabití bosse.
+tile.cavernVines.description=Jeskyní réva je nebezpecný živý organismus, který omotá hráce a táhne ho nahoru.
+tile.slimelingEgg.description=Vejce slizouna, pokud jsou rozbita hrácovou rukou, tak se z nich vylíhne brzy mazlícek.
+tile.cryoChamber.description=Kryogenická komora dovolí hráci spát pres den, uzdravovat se ze zranení, ale vyžaduje cas pro znovu nabití.
+tile.launchController.description=Odpalovace se využívají pro úpravu chování startu, tím, že umožnují nastavení kritérií pro odpálení a cíl, tak se nabízí možnost využití pro automatické starty.
+tile.terraformer.description=Terraformery umožnují premenit cásti cizích planet na prostredí podobné zemi. Vytvárí trávu, stromy a vodu pokud dostane správné suroviny.
+tile.creeperEgg.description=Vejce creepera je k nalezení v dungeonech na Marsu, vylíhne se z nej predátor pripravený explodovat.
+tile.gasLiquefier.description=Zkapalnené plyny, budto z atmosféry nebo tlakových lahví. Kapalný metan je dobré raketové palivo!
+tile.methaneSynthesizer.description=Se zdrojem vodíku a uhlíku vyrábí Metan pro další zpracování ve zkapalnovaci.
+tile.electrolyzer.description=Vyrábí z vody kyslík a vodík (používá se v syntetizéru metanu).
+tile.hydrogenPipe.description=Vodíková trubka dopravuje vodík mezi stroji.
+
+gui.slimeling.chat.wrongPlayer=Tohle není muj slizoun!
+gui.cryogenic.chat.cantUse=Nemohu to použít dalších %d vterin.
+gui.slimeling.name=Jméno
+gui.slimeling.owner=Vlastník
+gui.slimeling.kills=Zabil
+gui.slimeling.scale=Merítko
+gui.slimeling.button.sit=Sedni!
+gui.slimeling.button.follow=Následuj me!
+gui.slimeling.sitting=Sedí
+gui.slimeling.following=Sleduje
+gui.slimeling.damage=Poškození
+gui.slimeling.food=Oblíbené jídlo
+
+# SCHEMATICS
+schematic.rocketT3.name=Raketa typ 3
+schematic.cargoRocket.name=Automatická nákladní raketa
+
+# ENTITIES
+entity.Sludgeling.name=Bahenní vcela
+entity.Slimeling.name=Slizoun
+entity.CreeperBoss.name=Vyvinutý creeper - Boss
+entity.SpaceshipT2.name=Raketa typ 2
+entity.CargoRocket.name=Nákladní raketa
+entity.LandingBalloons.name=Přistávací balóny
+entity.SmallAsteroidGC.name=Malý asteroid
+entity.GrappleHookGC.name=Hák
+entity.Tier3RocketGC.name=Raketa typ 3
+entity.EntryPodAsteroids.name=Přistávací modul
+entity.AstroMiner.name=Těžební souprava
+
+# CONTAINERS
+container.launchcontroller.name=Odpalovací zarízení
+container.tileTerraformer.name=Terraformer
+container.marsLander.name=Přistávací balóny
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Císlo dimenze Marsu
+gc.configgui.idSchematicRocketT2=Císlo schématu rakety typu 2
+gc.configgui.idSchematicCargoRocket=Císlo schématu nákladní rakety
+gc.configgui.launchControllerChunkLoad=Nacítání oblasti odpalovace
+gc.configgui.launchControllerAllDims=Odpalovace ve všech dimenzích
+
+gc.configgui.planets.title=Nastavení planet Galacticraftu

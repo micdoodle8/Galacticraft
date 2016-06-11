@@ -43,7 +43,6 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         this.ySize = 139;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

@@ -16,12 +16,12 @@
 //@SideOnly(Side.CLIENT)
 //public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer
 //{
-//    public static final ResourceLocation reflectorTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/beamReflector.png");
+//    public static final ResourceLocation reflectorTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/beamReflector.png");
 //    public static IModelCustom reflectorModel;
 //
 //    public TileEntityBeamReflectorRenderer()
 //    {
-//        TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/reflector.obj"));
+//        TileEntityBeamReflectorRenderer.reflectorModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/reflector.obj"));
 //    }
 //
 //    @Override

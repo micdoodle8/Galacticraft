@@ -16,13 +16,13 @@
 //@SideOnly(Side.CLIENT)
 //public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRenderer
 //{
-//    public static final ResourceLocation telepadTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/teleporter.png");
-//    public static final ResourceLocation telepadTexture0 = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/teleporter0.png");
+//    public static final ResourceLocation telepadTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter.png");
+//    public static final ResourceLocation telepadTexture0 = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter0.png");
 //    public static IModelCustom telepadModel;
 //
 //    public TileEntityShortRangeTelepadRenderer()
 //    {
-//        TileEntityShortRangeTelepadRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/teleporter.obj"));
+//        TileEntityShortRangeTelepadRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/teleporter.obj"));
 //    }
 //
 //    public void renderModelAt(TileEntityShortRangeTelepad tileEntity, double d, double d1, double d2, float f)

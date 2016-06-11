@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicCargoRocket;
 import net.minecraft.client.gui.GuiButton;
@@ -14,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicCargoRocket extends GuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
+    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
 
     private int pageIndex;
 

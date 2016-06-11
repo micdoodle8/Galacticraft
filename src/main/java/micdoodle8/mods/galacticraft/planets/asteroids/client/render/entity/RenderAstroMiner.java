@@ -50,16 +50,16 @@
 //
 //    static
 //    {
-//		modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMiner.obj"));
-//		modellaser1 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserFront.obj"));
-//		modellaser2 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserBottom.obj"));
-//		modellaser3 = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLaserCenter.obj"));
-//		modellasergl = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerLeftGuard.obj"));
-//		modellasergr = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/astroMinerRightGuard.obj"));
-//	    modelTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner.png");
-//	    modelTextureFX = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMinerFX.png");
-//	    modelTextureOff = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
-//	    scanTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/misc/gradient.png");
+//		modelObj = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/astroMiner.obj"));
+//		modellaser1 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/astroMinerLaserFront.obj"));
+//		modellaser2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/astroMinerLaserBottom.obj"));
+//		modellaser3 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/astroMinerLaserCenter.obj"));
+//		modellasergl = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/astroMinerLeftGuard.obj"));
+//		modellasergr = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/astroMinerRightGuard.obj"));
+//	    modelTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/astroMiner.png");
+//	    modelTextureFX = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/astroMinerFX.png");
+//	    modelTextureOff = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/astroMiner_off.png");
+//	    scanTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/gradient.png");
 //    }
 //
 //    public RenderAstroMiner()

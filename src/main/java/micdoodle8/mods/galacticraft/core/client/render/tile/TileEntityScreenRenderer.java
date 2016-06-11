@@ -2,6 +2,8 @@
 //
 //import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
 //import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
+//import net.minecraftforge.client.model.IModel;
+//import net.minecraftforge.client.model.ModelLoaderRegistry;
 //import net.minecraftforge.fml.client.FMLClientHandler;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,22 +16,38 @@
 //import net.minecraft.util.ResourceLocation;
 //import org.lwjgl.opengl.GL11;
 //
+//import java.io.IOException;
 //import java.nio.FloatBuffer;
 //
 //@SideOnly(Side.CLIENT)
 //public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
 //{
 //    public static final ResourceLocation blockTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/screenSide.png");
-//    public static final IModelCustom screenModel0 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screenWhole.obj"));
-//    public static final IModelCustom screenModel1 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen3Quarters.obj"));
-//    public static final IModelCustom screenModel2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen2Quarters.obj"));
-//    public static final IModelCustom screenModel3 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen1Quarters.obj"));
-//    public static final IModelCustom screenModel4 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen0Quarters.obj"));
+//    public static final IModel screenModel0 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screenWhole.obj"));
+//    public static final IModel screenModel1 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen3Quarters.obj"));
+//    public static final IModel screenModel2 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen2Quarters.obj"));
+//    public static final IModel screenModel3 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen1Quarters.obj"));
+//    public static final IModel screenModel4 = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screen0Quarters.obj"));
 //    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 //    private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 //
 //    private float yPlane = 0.91F;
 //    float frame = 0.098F;
+//
+//    public TileEntityScreenRenderer()
+//    {
+//        try
+//        {
+//            screenModel0 = ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/screenWhole.obj"));
+//        }
+//        catch (IOException e)
+//        {
+//            screenModel0 = ModelLoaderRegistry.getMissingModel();
+//            e.printStackTrace();
+//        }
+//
+//        screenModel0.bake()
+//    }
 //
 //    @Override
 //    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)

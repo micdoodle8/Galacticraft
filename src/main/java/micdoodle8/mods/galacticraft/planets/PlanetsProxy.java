@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -81,5 +82,9 @@ public class PlanetsProxy implements IGuiHandler
         }
 
         return null;
+    }
+
+    public void postRegisterItem(Item item)
+    {
     }
 }

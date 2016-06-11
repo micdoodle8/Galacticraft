@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -60,31 +61,29 @@ public class TileEntityScreen extends TileEntityAdvanced
         if (this.connectedRight) connectedFlags += 1;
 		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.imageType, connectedFlags } ), this.worldObj.provider.getDimensionId());
 	}
-	
-	@Override
-	public void invalidate()
-	{
-		int meta = this.getBlockMetadata() & 7;
-		super.invalidate();
-		this.breakScreen(meta);
-	}
 
     private EnumFacing getFacing()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockScreen.FACING));
+        return this.getFacing(this.worldObj.getBlockState(getPos()));
+    }
+
+    private EnumFacing getFacing(IBlockState state)
+    {
+        return state.getValue(BlockScreen.FACING);
     }
 
 	/**
 	 * Call when a screen (which maybe part of a multiscreen) is either
 	 * broken or rotated.
 	 * 
-	 * @param meta  The meta of the screen prior to breaking or rotation
+	 * @param state  The state of the screen prior to breaking or rotation
 	 */
-	public void breakScreen(int meta)
+	public void breakScreen(IBlockState state)
 	{
 		BlockVec3 vec = new BlockVec3(this);
+        int meta = state.getBlock().getMetaFromState(state);
 		TileEntity tile;
-        EnumFacing facingRight = getFacing().rotateY();
+        EnumFacing facingRight = getFacing(state).rotateY();
 
 		int left = this.connectionsLeft;
 		int right = this.connectionsRight;

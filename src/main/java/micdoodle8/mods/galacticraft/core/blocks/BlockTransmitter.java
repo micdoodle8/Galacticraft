@@ -11,8 +11,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -24,8 +24,15 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 
-public abstract class BlockTransmitter extends BlockContainer
+public abstract class BlockTransmitter extends Block
 {
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final PropertyBool NORTH = PropertyBool.create("north");
+    public static final PropertyBool EAST = PropertyBool.create("east");
+    public static final PropertyBool SOUTH = PropertyBool.create("south");
+    public static final PropertyBool WEST = PropertyBool.create("west");
+
     public Vector3 minVector = new Vector3(0.3, 0.3, 0.3);
     public Vector3 maxVector = new Vector3(0.7, 0.7, 0.7);
 
@@ -43,6 +50,8 @@ public abstract class BlockTransmitter extends BlockContainer
 
         this.setBlockBoundsBasedOnState(worldIn, pos);
         GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, new Object[] { pos.getX(), pos.getY(), pos.getZ() }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
+
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
 
         if (tile instanceof INetworkConnection)
         {
@@ -137,9 +146,8 @@ public abstract class BlockTransmitter extends BlockContainer
 
     public abstract NetworkType getNetworkType();
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
         this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RenderSludgeling extends RenderLiving
 {
-    private static final ResourceLocation sludgelingTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/sludgeling.png");
+    private static final ResourceLocation sludgelingTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/sludgeling.png");
 
     public RenderSludgeling()
     {

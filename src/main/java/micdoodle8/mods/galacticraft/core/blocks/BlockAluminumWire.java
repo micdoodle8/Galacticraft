@@ -1,14 +1,19 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +21,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -116,12 +124,6 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }*/
 
     @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-
-    @Override
     public int damageDropped(IBlockState state)
     {
         return getMetaFromState(state);
@@ -146,10 +148,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     	return tile;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
@@ -186,7 +187,40 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, WIRE_TYPE);
+        return new BlockState(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+    }
+
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+        if (tileEntity instanceof ITransmitter)
+        {
+            TileEntity[] connectable = new TileEntity[6];
+            switch (this.getNetworkType())
+            {
+                case OXYGEN:
+                    connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                    break;
+                case HYDROGEN:
+                    connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
+                    break;
+                case POWER:
+                    connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+                    break;
+                default:
+                    break;
+            }
+
+            return state.withProperty(DOWN, Boolean.valueOf(connectable[EnumFacing.DOWN.ordinal()] != null))
+                    .withProperty(UP, Boolean.valueOf(connectable[EnumFacing.UP.ordinal()] != null))
+                    .withProperty(NORTH, Boolean.valueOf(connectable[EnumFacing.NORTH.ordinal()] != null))
+                    .withProperty(EAST, Boolean.valueOf(connectable[EnumFacing.EAST.ordinal()] != null))
+                    .withProperty(SOUTH, Boolean.valueOf(connectable[EnumFacing.SOUTH.ordinal()] != null))
+                    .withProperty(WEST, Boolean.valueOf(connectable[EnumFacing.WEST.ordinal()] != null));
+        }
+
+        return state;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -109,7 +110,7 @@ public class AsteroidsItems
 
     private static void registerItem(Item item)
     {
-        GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
-        
+        GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+        GalacticraftPlanets.proxy.postRegisterItem(item);
     }
 }

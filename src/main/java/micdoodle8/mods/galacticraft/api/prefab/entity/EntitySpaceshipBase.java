@@ -194,7 +194,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return false;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
     {

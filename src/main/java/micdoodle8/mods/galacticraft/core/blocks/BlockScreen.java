@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -26,11 +27,16 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     private IIcon iconSide;*/
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyBool LEFT = PropertyBool.create("left");
+    public static final PropertyBool RIGHT = PropertyBool.create("right");
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
 	
 	//Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
 	protected BlockScreen(String assetName)
     {
         super(Material.circuits);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeGlass);
         //this.setBlockTextureName("glass");
@@ -41,6 +47,13 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing direction)
     {
     	return direction.ordinal() != getMetaFromState(world.getBlockState(pos));
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        ((TileEntityScreen) worldIn.getTileEntity(pos)).breakScreen(state);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -83,27 +96,8 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = 0;
-
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 4;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 5;
-            break;
-        }
-
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
@@ -140,7 +134,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
         {
-        	((TileEntityScreen) tile).breakScreen(facing);
+        	((TileEntityScreen) tile).breakScreen(getStateFromMeta(facing));
         }
 
         return true;
@@ -230,19 +224,29 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         return super.collisionRayTrace(worldIn, pos, start, end);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return (state.getValue(FACING)).getHorizontalIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockState(this, FACING, LEFT, RIGHT, UP, DOWN);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntityScreen screen = (TileEntityScreen) worldIn.getTileEntity(pos);
+        return state.withProperty(LEFT, screen.connectedLeft).withProperty(RIGHT, screen.connectedRight).withProperty(UP, screen.connectedUp).withProperty(DOWN, screen.connectedDown);
     }
 }

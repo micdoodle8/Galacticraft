@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,10 +29,10 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiWaterElectrolyzer extends GuiContainerGC
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
-    private static final ResourceLocation terraformerGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/terraformer.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
+    private static final ResourceLocation terraformerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/terraformer.png");
 
-    private static final ResourceLocation gasTextures = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
 
     private final TileEntityElectrolyzer tileEntity;
 

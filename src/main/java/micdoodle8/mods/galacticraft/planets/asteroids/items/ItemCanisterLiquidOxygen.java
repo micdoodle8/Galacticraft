@@ -20,7 +20,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     {
         super(assetName);
         this.setAllowedFluid("liquidoxygen");
-        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     /*@Override

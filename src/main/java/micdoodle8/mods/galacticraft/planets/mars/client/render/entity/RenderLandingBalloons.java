@@ -16,7 +16,7 @@
 //@SideOnly(Side.CLIENT)
 //public class RenderLandingBalloons extends Render
 //{
-//    private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/landingBalloon.png");
+//    private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/landingBalloon.png");
 //
 //    protected IModelCustom landerModel;
 //    protected ModelBalloonParachute parachuteModel = new ModelBalloonParachute();
@@ -25,7 +25,7 @@
 //    {
 //        super(FMLClientHandler.instance().getClient().getRenderManager());
 //        this.shadowSize = 1.2F;
-//        this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(MarsModule.ASSET_PREFIX, "models/landingBalloon.obj"));
+//        this.landerModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/landingBalloon.obj"));
 //    }
 //
 //    protected ResourceLocation func_110779_a(EntityLandingBalloons par1EntityArrow)

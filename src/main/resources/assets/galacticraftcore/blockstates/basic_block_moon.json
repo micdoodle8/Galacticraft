@@ -14,7 +14,6 @@
         "basictypemoon=moon_turf_6": { "model": "galacticraftcore:moon_turf_0_model" },
         "basictypemoon=moon_turf_7": { "model": "galacticraftcore:moon_turf_0_model" },
         "basictypemoon=moon_turf_8": { "model": "galacticraftcore:moon_turf_0_model" },
-        "basictypemoon=moon_dungeon_brick": { "model": "galacticraftcore:moon_dungeon_brick_model" },
-        "basictypemoon=moon_boss_spawner": { "model": "galacticraftcore:moon_boss_spawner_model" }
+        "basictypemoon=moon_dungeon_brick": { "model": "galacticraftcore:moon_dungeon_brick_model" }
     }
 }

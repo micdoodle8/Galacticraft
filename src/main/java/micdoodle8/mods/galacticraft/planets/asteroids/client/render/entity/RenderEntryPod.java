@@ -12,7 +12,7 @@
 //
 //public class RenderEntryPod extends Render
 //{
-//    public static final ResourceLocation textureEntryPod = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/spacePod.png");
+//    public static final ResourceLocation textureEntryPod = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/spacePod.png");
 //    public static IModelCustom modelEntryPod;
 //
 //    public RenderEntryPod(IModelCustom model)

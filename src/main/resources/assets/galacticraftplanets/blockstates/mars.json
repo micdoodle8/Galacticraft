@@ -1,0 +1,14 @@
+{
+    "variants": {
+        "basictypemars=ore_copper_mars": { "model": "galacticraftplanets:ore_copper_mars_model" },
+        "basictypemars=ore_tin_mars": { "model": "galacticraftplanets:ore_tin_mars_model" },
+        "basictypemars=ore_desh_mars": { "model": "galacticraftplanets:ore_desh_mars_model" },
+        "basictypemars=ore_iron_mars": { "model": "galacticraftplanets:ore_iron_mars_model" },
+        "basictypemars=cobblestone": { "model": "galacticraftplanets:cobblestone_model" },
+        "basictypemars=mars_surface": { "model": "galacticraftplanets:mars_surface_model" },
+        "basictypemars=mars_middle": { "model": "galacticraftplanets:mars_middle_model" },
+        "basictypemars=dungeon_brick": { "model": "galacticraftplanets:dungeon_brick_model" },
+        "basictypemars=desh_block": { "model": "galacticraftplanets:desh_block_model" },
+        "basictypemars=mars_stone": { "model": "galacticraftplanets:mars_stone_model" }
+    }
+}

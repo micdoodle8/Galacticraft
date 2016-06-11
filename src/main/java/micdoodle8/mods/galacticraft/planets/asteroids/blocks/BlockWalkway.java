@@ -35,7 +35,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         super(Material.iron);
         this.setHardness(1.0F);
-//        this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + "walkway");
+//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "walkway");
         this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeMetal);
         this.isBlockContainer = true;
@@ -55,12 +55,6 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
     }
 
     @Override

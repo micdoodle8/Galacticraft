@@ -1,0 +1,62 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "galacticraftcore:screen_side"
+  },
+  "variants": {
+    "normal": [{}],
+	"down": {
+		"true": {
+		},
+		"false": {
+			"submodel": {
+				"downbar": { "model": "galacticraftcore:screen_side_down" }
+			}
+		}
+	},
+	"facing": {
+		"north": {
+			"x": 90
+		},
+		"south": {
+			"x": 270
+		},
+		"east": {
+			"y": 90,
+			"x": 90
+		},
+		"west": {
+			"y": 270,
+			"x": 90
+		}
+	},
+	"left": {
+		"true": {
+		},
+		"false": {
+			"submodel": {
+				"leftbar": { "model": "galacticraftcore:screen_side_left" }
+			}
+		}
+	},
+	"right": {
+		"true": {
+		},
+		"false": {
+			"submodel": {
+				"rightbar": { "model": "galacticraftcore:screen_side_right" }
+			}
+		}
+	},
+	"up": {
+		"true": {
+		},
+		"false": {
+			"submodel": {
+				"upbar": { "model": "galacticraftcore:screen_side_up" }
+			}
+		}
+	},
+    "inventory": [{}]
+  }
+}

@@ -1,0 +1,47 @@
+{
+"__comment": "Designed by - with BDcraft Cubik PRO 0.93 Beta - http://bdcraft.net",
+"textures": {
+    "aluminum_wire": "galacticraftcore:blocks/aluminum_wire"
+},
+"elements": [ 
+{
+    "__comment": "Middle",
+    "from": [ 6.5, 6.5, 6.5 ],
+    "to": [ 9.5, 9.5, 9.5 ],
+    "faces": {
+        "down":  { "uv": [ 11.6875, 7.5625, 14.375, 10.25 ], "texture": "#aluminum_wire" },
+        "up":    { "uv": [ 11.6875, 7.5625, 14.375, 10.25 ], "texture": "#aluminum_wire" },
+        "north": { "uv": [ 11.6875, 7.6875, 14.3125, 10.25 ], "texture": "#aluminum_wire" },
+        "south": { "uv": [ 11.6875, 7.6875, 14.3125, 10.25 ], "texture": "#aluminum_wire" },
+        "west":  { "uv": [ 11.6875, 7.6875, 14.3125, 10.3125 ], "texture": "#aluminum_wire" },
+        "east":  { "uv": [ 11.6875, 7.6875, 14.3125, 10.3125 ], "texture": "#aluminum_wire" }
+    }
+},
+{
+    "__comment": "North",
+    "from": [ 6.5, 6.4375, 0 ],
+    "to": [ 9.5, 9.4375, 6.5 ],
+    "faces": {
+        "down":  { "uv": [ 0.25, 0.25, 3, 6.0625 ], "texture": "#aluminum_wire" },
+        "up":    { "uv": [ 0.25, 0.25, 3, 6.0625 ], "texture": "#aluminum_wire" },
+        "north": { "uv": [ 11.625, 7.5625, 14.4375, 10.3125 ], "texture": "#aluminum_wire" },
+        "south": { "uv": [ 11.625, 7.5625, 14.4375, 10.3125 ], "texture": "#aluminum_wire" },
+        "west":  { "uv": [ 0.25, 0.25, 3.0625, 6.1875 ], "rotation": 90, "texture": "#aluminum_wire" },
+        "east":  { "uv": [ 0.25, 0.25, 3.0625, 6.1875 ], "rotation": 90, "texture": "#aluminum_wire" }
+    }
+},
+{
+    "__comment": "South",
+    "from": [ 6.5, 6.5, 9.5 ],
+    "to": [ 9.5, 9.5, 16 ],
+    "faces": {
+        "down":  { "uv": [ 0.25, 0.25, 3, 6.0625 ], "texture": "#aluminum_wire" },
+        "up":    { "uv": [ 0.25, 0.25, 3, 6.0625 ], "texture": "#aluminum_wire" },
+        "north": { "uv": [ 11.625, 7.5625, 14.4375, 10.3125 ], "texture": "#aluminum_wire" },
+        "south": { "uv": [ 11.625, 7.5625, 14.4375, 10.3125 ], "texture": "#aluminum_wire" },
+        "west":  { "uv": [ 0.25, 0.25, 3.0625, 6.1875 ], "rotation": 90, "texture": "#aluminum_wire" },
+        "east":  { "uv": [ 0.25, 0.25, 3.0625, 6.1875 ], "rotation": 90, "texture": "#aluminum_wire" }
+    }
+}
+]
+}

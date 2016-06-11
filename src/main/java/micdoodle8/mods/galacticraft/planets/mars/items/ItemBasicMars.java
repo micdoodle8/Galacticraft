@@ -24,6 +24,7 @@ public class ItemBasicMars extends Item
         super();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName("itemBasicMars");
     }
 
     @SideOnly(Side.CLIENT)

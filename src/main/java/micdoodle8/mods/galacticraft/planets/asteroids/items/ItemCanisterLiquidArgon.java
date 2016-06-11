@@ -17,7 +17,7 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
     {
         super(assetName);
         this.setAllowedFluid("liquidargon");
-        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     /*@Override

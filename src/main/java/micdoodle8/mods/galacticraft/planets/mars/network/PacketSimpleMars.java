@@ -81,7 +81,7 @@ public class PacketSimpleMars implements IPacket
     {
         if (packetType.getDecodeClasses().length != data.size())
         {
-            GCLog.info("Simple Packet found data length different than packet type");
+            GCLog.info("Mars Simple Packet found data length different than packet type: " + packetType.name());
         }
 
         this.type = packetType;

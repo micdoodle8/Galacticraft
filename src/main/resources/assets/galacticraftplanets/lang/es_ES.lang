@@ -1,0 +1,332 @@
+# Galacticraft Mars Language File = SPAIN SPANISH. (Collaborators: Jaski)
+
+# OBJETOS GENERALES
+item.rawDesh.name=Desh en bruto
+item.deshStick.name=Palo de desh
+item.ingotDesh.name=Lingote de desh
+item.spaceshipTier2.t2Rocket.name=Cohete nivel 2
+item.reinforcedPlateT2.name=Placa de alta resistencia
+item.tier2.desc=Nivel 2
+item.slimelingCargo.name=Bolso de slimeling
+item.key.T2.name=Llave de mazmorra nivel 2
+item.compressedDesh.name=Desh comprimido
+item.spaceshipTier2.cargoRocket.name=Cohete de carga
+item.fluidManip.name=Manipulador de fluidos
+item.bucketSludge.name=Cubo de lodo bacteriano
+fluid.bacterialsludge=Lodo bacteriano
+item.itemTier3Rocket.t3Rocket.name=Cohete nivel 3
+item.itemAstroMiner.name=AstroMinador
+item.heavyNoseCone.name=Ojiva grande
+item.compressedTitanium.name=Titanio comprimido
+item.ingotTitanium.name=Lingote de titanio
+item.shardTitanium.name=Fragmento de titanio
+item.shardIron.name=Fragmento de hierro
+item.rocketFinsT2.name=Aleta de cohete grande
+item.engineT2.name=Motor de cohete grande
+item.reinforcedPlateT3.name=Placa de alta resistencia
+item.grapple.name=Gancho
+item.atmosphericValve.name=Válvula atmosférica
+item.thermalCloth.name=Tela térmica
+item.beamCore.name=Núcleo del haz
+item.orionDrive.name=Propulsor menaiónico
+item.tier3.desc=Nivel 3
+
+# HERRAMIENTAS
+item.deshPick.name=Pico de desh
+item.deshPickSlime.name=Pico de desh pegajoso
+item.deshAxe.name=Hacha de desh
+item.deshHoe.name=Azada de desh
+item.deshSpade.name=Pala de desh
+item.deshSword.name=Espada de desh
+item.titanium_pickaxe.name=Pico de titanio
+item.titanium_axe.name=Hacha de titanio
+item.titanium_hoe.name=Azada de titanio
+item.titanium_shovel.name=Pala de titanio
+item.titanium_sword.name=Espada de titanio
+
+# ARMADURA
+item.deshHelmet.name=Casco de desh
+item.deshChestplate.name=Peto de desh
+item.deshLeggings.name=Grebas de desh
+item.deshBoots.name=Botas de desh
+item.thermalHelm.name=Gorro térmico
+item.thermalChestplate.name=Suéter térmico
+item.thermalLeggings.name=Leggings térmicos
+item.thermalBoots.name=Calcetines térmicos
+item.titanium_helmet.name=Casco de titanio
+item.titanium_chestplate.name=Peto de titanio
+item.titanium_leggings.name=Grebas de titanio
+item.titanium_boots.name=Botas de titanio
+
+# ENVASES Y ETC
+item.methaneCanisterPartial.name=Bote de metano
+item.methaneCanister.name=Bote de metano lleno
+item.canister.gas.name=Gas                  #nombre corto para el nivel de gas
+item.canister.LOX.partial.name=Bote de oxígeno líquido
+item.canister.LOX.full.name=Bote de oxígeno líquido lleno
+item.canister.LOX.name=LOX                  #nombre corto para el nivel de oxígeno líquido
+item.canister.liquidNitrogen.partial.name=Bote de nitrógeno líquido
+item.canister.liquidNitrogen.full.name=Bote de nitrógeno líquido lleno
+item.canister.liquidNitrogen.name=LIN    #nombre corto para el nivel de nitrógeno líquido
+item.canister.liquidArgon.partial.name=Bote de argón líquido
+item.canister.liquidArgon.full.name=Bote de Argón Líquido Lleno
+item.canister.liquidArgon.name=LAR       #nombre corto para el nivel de argón líquido
+item.emptyGasCanister.name=Bote de gas vacío
+
+# BLOQUES
+tile.mars.deshmars.name=Mena de desh
+tile.mars.coppermars.name=Mena de cobre
+tile.mars.tinmars.name=Mena de estaño
+tile.mars.ironmars.name=Mena de hierro
+tile.mars.marscobblestone.name=Roca marciana
+tile.mars.marsstone.name=Piedra marciana
+tile.mars.marsdirt.name=Roca marciana subterránea
+tile.mars.marsgrass.name=Roca marciana superficial
+tile.mars.marsdeco.name=Bloque de desh
+tile.mars.marsdungeon.name=Pared de mazmorra marciana
+tile.treasureT2.name=Cofre del tesoro nivel 2
+tile.slimelingEgg.redEgg.name=Huevo de slimeling rojo
+tile.slimelingEgg.blueEgg.name=Huevo de slimeling azul
+tile.slimelingEgg.yellowEgg.name=Huevo de slimeling amarillo
+tile.marsMachine.0.name=Terraformador
+tile.marsMachine.1.name=Cámara criogénica
+tile.marsMachine.2.name=Controlador de lanzamiento
+tile.marsMachine.4.name=Condensador de gas
+tile.marsMachine.5.name=Sintetizador de metano
+tile.marsMachine.6.name=Electrolizador de agua
+tile.hydrogenPipe.name=Tubería de hidrógeno
+tile.sludge.name=Lodo bacteriano
+tile.creeperEgg.name=Huevo de creeper
+tile.cavernVines.name=Lianas cavernosas
+tile.asteroidsBlock.asteroid0.name=Roca de asteroide
+tile.asteroidsBlock.asteroid1.name=Roca de asteroide
+tile.asteroidsBlock.asteroid2.name=Roca de asteroide
+tile.asteroidsBlock.oreIron.name=Mena de hierro
+tile.asteroidsBlock.oreIlmenite.name=Mena de ilmenita
+tile.asteroidsBlock.oreAluminum.name=Mena de aluminio
+tile.beamReflector.name=Reflector láser
+tile.beamReceiver.name=Receptor láser
+tile.telepadShort.name=Teletransportador de corto alcance
+tile.walkway.name=Pasarela
+tile.walkwayWire.name=Pasarela
+tile.walkwayOxygenPipe.name=Pasarela
+tile.treasureT3.name=Cofre del tesoro nivel 3
+tile.denseIce.name=Hielo denso
+tile.minerBase.name=Base del AstroMinador
+
+# FLUIDOS Y GASES
+fluid.methane=Metano
+fluid.oxygen=Oxígeno
+fluid.nitrogen=Nítrogeno
+fluid.hydrogen=Hidrógeno
+fluid.carbondioxide=Dióxido de carbono
+fluid.helium=Helio
+fluid.argon=Argón
+fluid.atmosphericgases=Gases atmosféricos
+fluid.liquidmethane=Metano líquido
+fluid.liquidoxygen=Oxígeno líquido
+fluid.liquidnitrogen=Nítrogeno líquido
+fluid.liquidargon=Argón líquido
+fluid.fuel=Combustible
+
+# BLOQUES DECORATIVOS
+tile.marsCobblestoneStairs.name=Escaleras de roca marciana
+tile.wallGC.mars.name=Muro de roca marciana
+tile.slabGCHalf.marsSlab.name=Losa de roca marciana
+tile.marsDungeonBricksStairs.name=Escaleras de mazmorra marciana
+tile.wallGC.marsBricks.name=Muro de mazmorra marciana
+tile.slabGCHalf.marsBricksSlab.name=Losa de mazmorra marciana
+
+# GUI
+gui.choosePlanet.desc.mars=Habitable#Sin oxígeno#Gravedad: 38%
+item.deshPickSlime.description.name=Puedes recoger huevos de slimeling
+gui.message.noEnergy.name=¡Sin energía!
+gui.message.noWater.name=Agua insuficiente
+gui.message.noBonemeal.name=Polvo de hueso insuficiente
+gui.message.noSeeds.name=Semillas insuficientes
+gui.message.noSaplings.name=Brotes insuficientes
+gui.message.bubbleExp.name=Burbuja expandiéndose
+gui.message.noValidBlocks.name=Bloques no válidos en la burbuja
+gui.message.terraforming.name=Terraformando
+gui.message.enableTrees.name=Habilitar árboles
+gui.message.enableGrass.name=Habilitar hierba
+gui.message.trees.name=Árboles
+gui.message.grass.name=Hierba
+gui.message.invalidFreq.name=Frecuencia inválida
+gui.message.frequency.name=Frecuencia
+gui.message.destFrequency.name=Frecuencia de destino
+gui.message.removePad.name=Quitar plataforma
+gui.message.launchWhen.name=Lanzar cuando
+gui.message.cargoUnloaded.name=Carga vacía
+gui.message.cargoFull.name=Carga llena
+gui.message.fullyFueled.name=Lleno de combustible
+gui.message.instant.name=Instantáneamente
+gui.message.tenSec.name=10 segundos
+gui.message.thirtySec.name=30 segundos
+gui.message.oneMin.name=1 minuto
+gui.message.redstoneSig.name=Señal de redstone
+gui.message.notSet.name=No establecido
+gui.message.notEnough.name=Insuficiente
+gui.message.success.name=Éxito
+gui.message.zeroWater.name=¡No hay agua!
+
+	# El símbolo del dólar ($) separará el texto en una nueva línea
+gui.launchController.desc.0=Ésta es la única frecuencia del$controlador de lanzamiento
+gui.launchController.desc.1=Frecuencia donde lanzar el cohete
+gui.launchController.desc.2=Cuando la plataforma de lanzamiento debe$ser eliminada o lanzada
+gui.launchController.desc.3=Cuando esto se cumpla,$se lanzará el cohete
+gui.launchController.desc.4=Oculta el destino de la frecuencia$desde otros jugadores
+gui.terraformer.desc.0=Tanque de aqua
+
+gui.gasTank.desc.0=Depósito de gas
+gui.gasTankCompressed.desc.0=Depósito de gas (comprimido)
+gui.liquidTank.desc.0=Tanque de líquido
+gui.status.nogas.name=Sin gas
+gui.status.liquefying.name=Licuando
+gui.status.processing.name=Sintetizando
+gui.status.needsCarbon.name=Necesita carbón
+gui.status.tankfull.name=Tanque lleno
+gui.status.tanksfull.name=Tanques llenos
+gui.message.lowEnergy.name=Energía baja
+gui.button.liquefy.name=Procesar
+gui.button.liquefyStop.name=Parar
+gui.gasInput.desc.0=Trata de colocar un$bote de metano aquí
+gui.gasInput.desc.1=(Como alternativa,$una válvula atmosférica)
+gui.hydrogenInput.desc.0=Esto consume un bote de hidrógeno
+gui.hydrogenInput.desc.1=o una válvula atmosférica
+gui.liquidOutput.desc.2=bote de gas licuado
+gui.methaneOutput.desc.2=bote de metano
+gui.message.withAtmosphere0.name=en un planeta lleno de
+gui.message.withAtmosphere1.name=en la atmósfera
+item.carbonFragments.name=Carbón fragmentado
+gui.carbonSlot.desc.0=Ahi puede ir el carbón fragmentado
+gui.waterBucketSlot.desc=Emplaza cubos de agua aquí
+
+gui.cargorocket.status.waiting.0=Esperando por
+gui.cargorocket.status.waiting.1=Ignición
+gui.cargorocket.status.launched.0=Preparado
+gui.cargorocket.status.launched.1=Despegado
+
+gas.carbondioxide.name=Dióxido de carbono
+gas.oxygen.name=Oxígeno
+gas.nitrogen.name=Nitrógeno
+
+gui.desc.reinforcedPlateT2.name=Nivel 2
+dimension.Mars.name=Marte
+planet.mars=Marte
+
+tile.treasureT2.description=La llaves del tesoro nivel 2 se generarán en la mazmorras de Marte. Serán desbloqueadas después de matar al jefe final.
+tile.cavernVines.description=Las lianas cavernosas son peligrosas para los seres vivos, enredandoles y arrastándoles hacia arriba.
+tile.slimelingEgg.description=Los huevos de slimeling, una vez agrietados por las manos del jugador, eclosionarán en una mascota.
+tile.cryoChamber.description=Las cámaras criogénicas permiten al jugador dormir durante el día, curando un pequeña porción de vida, teniendo luego que esperar para reutilizarlas.
+tile.launchController.description=El controlador de lanzamiento personaliza el lanzamiento, tanto el destino, como las condiciones para un lanzamiento automático.
+tile.terraformer.description=Los terraformadores añaden hierba, árboles y agua en planetas distantes, cuando se le da los materiales correctos.
+tile.creeperEgg.description=Los huevos de creeper harán spawn en las mazmorras de Marte, spawneando un astuto depredador después de una explosión.
+tile.gasLiquefier.description=Licua los gases, ya sean de la atmósfera o de los botes. ¡El metano líquido hace un buen combustible!
+tile.methaneSynthesizer.description=Con una fuente de hidrógeno y de carbono fabrica metano para un posterior procesamiento en el condesador de gas.
+tile.electrolyzer.description=Transforma agua en hidrógeno (muy útil para el sintetizador de metano) y oxígeno.
+tile.hydrogenPipe.description=La tubería de hidrógeno puede transportar hidrógeno desde el almacén interno de gas de una máquina a otra.
+
+gui.slimeling.chat.wrongPlayer=¡Este es mi slimeling!
+gui.cryogenic.chat.cantUse=No puedo usar esto durante otros %d segundos
+gui.slimeling.name=Nombre
+gui.slimeling.owner=Dueño
+gui.slimeling.kills=Asesinatos
+gui.slimeling.scale=Escala
+gui.slimeling.button.sit=Sentar
+gui.slimeling.button.follow=Seguir
+gui.slimeling.sitting=Sentándose
+gui.slimeling.following=Siguiendo
+gui.slimeling.damage=Daño de ataque
+gui.slimeling.food=Comida preferida
+planet.asteroids=Asteroides
+
+	# El signo del dólar ($) cortará el texto en una nueva línea
+	# No eliminar %s o %d, ya que estos son reemplazados dentro del juego
+gui.telepad.desc.0=Esta es la única dirección$del teletransportador
+gui.telepad.desc.1=Dirección de otro teletransportador.$Las entidades se enviarán allí.
+gui.message.address.name=Dirección
+gui.message.destAddress.name=Dirección de destino
+gui.message.invalidAddress.name=Dirección única inválida
+gui.message.invalidTargetAddress.name=Dirección de destino inválida
+gui.message.receivingActive.name=Recepción activa
+gui.message.telepadTooFar.name=¡Objetivo muy lejos! (Máximo %d)
+gui.message.telepadWrongDim.name=Destino en otra dimensión
+gui.message.telepadNotFound.name=Teletransportador no encontrado
+gui.message.sendingActive.name=Envío activo
+gui.message.range.name=Alcance: %dm
+gui.message.notEnoughEnergy.name=Energía insuficiente
+gui.message.targetNoEnergy.name=El objetivo no tiene suficiente energía
+gui.message.grapple.fail=¡Necesitaré algo de cuerda si quiero lanzar ese gancho de amarre!
+gui.message.astroMiner.fail=¡Esta base ya cuenta con un AstroMinador!
+gui.message.astroMiner1.fail=El area de embarque está bloqueada por:
+gui.message.astroMiner1A.fail=La ruta del AstroMinador está bloqueada por:
+gui.message.astroMiner2.fail=¡Eso sería demasiado para un AstroMinador!
+gui.message.astroMiner3.fail=¡La base del AstroMinador ha sido eliminada!
+gui.message.astroMiner4.fail=¡El Astro Minador ha agotado su energía y no puede volver a la base!
+gui.message.astroMiner5.fail=La ruta del AstroMinador de esta base parece estar bloqueada
+gui.message.astroMiner6.fail=¡El AstroMinador ha finalizado de minar el area, y ahora se detendrá!
+gui.message.astroMiner7.fail=¡No hay nada que minar en una estación espacial para un AstroMinador!
+gui.message.astroMiner8.fail=Un segundo AstroMinador fue detectado en la misma base, el primero se detendrá
+gui.button.recall.name=LLamar
+gui.miner.outOfRange=Fuera de rango
+gui.miner.offline=Fuera de línea
+gui.miner.stuck=Parado en:
+gui.miner.docked=Embarcado
+gui.miner.travelling=Viajando
+gui.miner.mining=Minando
+gui.miner.returning=Volviendo
+gui.miner.docking=Embarcando
+gui.miner.mined=Minado
+
+tile.treasureT3.description=Los cofres del tesoro nivel 3 están actualmente sin utilizar.
+tile.walkway.description=Las pasarelas se usan para finalidades decorativas, usado para unir bloques y andar sobre ellos manteniendo la tématica espacial.
+tile.walkwayAluminumWire.description=Las Pasarelas con cable de aluminio se usan para tener un cable funcional por debajo de una superficie sólida por la que andar.
+tile.walkwayOxygenPipe.description=Las pasarelas con tubos de oxígeno se usan para tener un tubo funcional por debajo de una superficie sólida por la que andar.
+tile.beamReflector.description=Los refletores se usan para redirigir rayos de energía del emisor al receptor. Se puede hacer click derecho para pasar a través de objetivos.
+tile.beamReceiver.description=Los receptores se conectan en la entrada o salida de energía de una máquina, para transferir energía por medio del rayo.
+tile.telepadShort.description=Los teletransportadores se usan para enviar a jugadores y otras criaturas a cortas distancias (250 bloques) cuando está conectado a otro teletransportador.
+tile.minerBase.description=La base AstroMinador es el punto de anclado para un AstroMinador.  Es grande... intenta crear un cubo 2 x 2 x 2 para ello.
+
+# ESQUEMAS
+schematic.rocketT3.name=Cohete nivel 3
+schematic.cargoRocket.name=Cohete de carga automático
+schematic.astroMiner.name=AstroMinador
+schematic.ionDrive.name=Propulsor menaiónico
+
+# ESQUEMAS
+entity.Sludgeling.name=Gusano de lodo
+entity.Slimeling.name=Slimeling
+entity.CreeperBoss.name=Jefe creeper evolucionado
+entity.SpaceshipT2.name=Cohete nivel 2
+entity.CargoRocket.name=Cohete de carga
+entity.LandingBalloons.name=Globos de aterrizaje
+entity.SmallAsteroidGC.name=Asteroide pequeño
+entity.GrappleHookGC.name=Gancho
+entity.Tier3RocketGC.name=Cohete nivel 3
+entity.EntryPodAsteroids.name=Cápsula de entrada
+entity.AstroMiner.name=AstroMinador
+
+# ENVASES
+container.launchcontroller.name=Controlador de lanzamiento
+container.tileTerraformer.name=Terraformador
+container.marsLander.name=Globos de aterrizaje
+container.shortRangeTelepad.name=Teletransportador de corto alcance
+container.entryPod.name=Cápsula de entrada
+
+# CONFIGURACION DE GUI
+gc.configgui.dimensionIDMars=ID de dimensión Marte
+gc.configgui.idSchematicRocketT2=ID de esquema de cohete nivel 2
+gc.configgui.idSchematicCargoRocket=ID de esquema de cohete de carga
+gc.configgui.launchControllerChunkLoad=Lanzar controlador de carga de chunks
+gc.configgui.launchControllerAllDims=Lanzar controlador de todas las dimensiones
+gc.configgui.dimensionIDAsteroids=ID de dimensión asteroides
+gc.configgui.idEntitySmallAsteroid=ID de entidad asteroide pequeño
+gc.configgui.idEntityGrappleHook=ID de entidad gancho
+gc.configgui.idEntityTier3Rocket=ID de entidad cohete nivel 3
+gc.configgui.idEntityEntryPod=ID de entidad cápsula de entrada
+gc.configgui.idSchematicRocketT3=ID de cinemática cohete nivel 3
+gc.configgui.disableGalacticraftHelium=Desactivar registro de gas helio
+gc.configgui.astroMinersMax=Número máximo de AstoMinadores por jugador
+
+gc.configgui.planets.title=Configuración de Galacticraft Planets

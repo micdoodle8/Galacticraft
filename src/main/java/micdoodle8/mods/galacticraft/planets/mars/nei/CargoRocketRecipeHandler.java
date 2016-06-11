@@ -17,7 +17,7 @@
 //
 //public class CargoRocketRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
+//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
 //
 //    public String getRecipeId()
 //    {

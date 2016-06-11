@@ -32,7 +32,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 {
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeAsteroids", EnumBlockBasic.class);
 
-    private enum EnumBlockBasic implements IStringSerializable
+    public enum EnumBlockBasic implements IStringSerializable
     {
         ASTEROID_0(0, "asteroid_rock_0"),
         ASTEROID_1(1, "asteroid_rock_1"),
@@ -78,12 +78,12 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcons = new IIcon[6];
-        this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid0");
-        this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid1");
-        this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid2");
-        this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreAluminum");
-        this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIlmenite");
-        this.blockIcons[5] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIron");
+        this.blockIcons[0] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid0");
+        this.blockIcons[1] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid1");
+        this.blockIcons[2] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid2");
+        this.blockIcons[3] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreAluminum");
+        this.blockIcons[4] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreIlmenite");
+        this.blockIcons[5] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreIron");
         this.blockIcon = this.blockIcons[0];
     }*/
 

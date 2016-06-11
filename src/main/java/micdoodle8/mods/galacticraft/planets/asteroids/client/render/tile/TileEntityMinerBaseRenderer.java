@@ -19,12 +19,12 @@
 //@SideOnly(Side.CLIENT)
 //public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer
 //{
-//    public static final ResourceLocation telepadTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/minerbase.png");
+//    public static final ResourceLocation telepadTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/minerbase.png");
 //    public static IModelCustom telepadModel;
 //
 //    public TileEntityMinerBaseRenderer()
 //    {
-//        TileEntityMinerBaseRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/minerbase.obj"));
+//        TileEntityMinerBaseRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/minerbase.obj"));
 //    }
 //
 //    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float p_180535_8_, int p_180535_9_)

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "vinetype=vine_0": { "model": "galacticraftplanets:vine_0_model" },
+        "vinetype=vine_1": { "model": "galacticraftplanets:vine_1_model" },
+        "vinetype=vine_2": { "model": "galacticraftplanets:vine_2_model" }
+    }
+}

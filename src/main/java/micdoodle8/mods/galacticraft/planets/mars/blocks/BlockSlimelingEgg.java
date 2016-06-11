@@ -61,6 +61,12 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
         return false;
     }
 
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.down()).getBlock() == MarsBlocks.marsBlock && worldIn.getBlockState(pos.down()).getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE;
+    }
+
 //    @Override
 //    public boolean canBlockStay(World par1World, int par2, int par3, int par4)
 //    {

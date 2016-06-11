@@ -1,0 +1,17 @@
+{
+"__comment": "Designed by Micdoodle8 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "from": [ 1, 15, 15 ],
+    "to": [ 15, 16, 16 ],
+    "faces": {
+        "down":  { "uv": [ 15, 16, 1, 15 ], "texture": "#texture" },
+        "up":    { "uv": [ 1, 15, 15, 16 ], "texture": "#texture" },
+        "north": { "uv": [ 1, 0, 15, 1 ], "texture": "#texture" },
+        "south": { "uv": [ 1, 0, 15, 1 ], "texture": "#texture" },
+        "west":  { "uv": [ 15, 0, 16, 1 ], "texture": "#texture" },
+        "east":  { "uv": [ 0, 0, 1, 1 ], "texture": "#texture" }
+    }
+}
+]
+}

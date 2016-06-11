@@ -229,13 +229,9 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                     {
                                         if (var51 > -0.7D)
                                         {
-                                            int coords = (var42 * 16 + var45) * 256 + var50;
-                                            int coordsAbove = (var42 * 16 + var45) * 256 + var50 + 1;
-                                            int coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1;
-
-                                            Block block = primer.getBlockState(coords).getBlock();
-                                            Block blockAbove = primer.getBlockState(coordsAbove).getBlock();
-                                            Block blockBelow = primer.getBlockState(coordsBelow).getBlock();
+                                            Block block = primer.getBlockState(var42, var50, var45).getBlock();
+                                            Block blockAbove = primer.getBlockState(var42, var50 + 1, var45).getBlock();
+                                            Block blockBelow = primer.getBlockState(var42, var50 - 1, var45).getBlock();
 
                                             if (Blocks.air == block)
                                             {
@@ -243,18 +239,18 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                                 {
                                                     int modifier = 0;
 
-                                                    while (Blocks.air == blockBelow && var50 - 1 + modifier > 0)
+                                                    while (Blocks.air == block && var50 + modifier > 0)
                                                     {
-                                                        primer.setBlockState(coordsBelow, MarsBlocks.vine.getStateFromMeta(Math.abs(modifier) % 3));
+                                                        primer.setBlockState(var42, var50 + modifier, var45, MarsBlocks.vine.getStateFromMeta(Math.abs(modifier) % 3));
 //                                                        arrayOfIDs[coordsBelow] = MarsBlocks.vine;
 //                                                        arrayOfMeta[coordsBelow] = (byte) (Math.abs(modifier) % 3);
                                                         modifier--;
-                                                        coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1 + modifier;
+                                                        block = primer.getBlockState(var42, var50 + modifier, var45).getBlock();
                                                     }
                                                 }
                                                 else if (blockBelow == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
                                                 {
-                                                    primer.setBlockState(coords, MarsBlocks.blockSludge.getStateFromMeta(0));
+                                                    primer.setBlockState(var42, var50, var45, MarsBlocks.blockSludge.getStateFromMeta(0));
 //                                                    arrayOfIDs[coords] = MarsBlocks.blockSludge;
 //                                                    arrayOfMeta[coords] = 0;
                                                 }

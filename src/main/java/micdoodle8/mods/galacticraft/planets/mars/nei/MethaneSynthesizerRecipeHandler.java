@@ -29,8 +29,8 @@
 //
 //public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
-//    private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+//    private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
+//    private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
 //    int ticksPassed;
 //    int extra = 0;
 //
@@ -249,7 +249,7 @@
 //    @Override
 //    public String getGuiTexture()
 //    {
-//        return MarsModule.ASSET_PREFIX + "/textures/gui/methaneSynthesizer.png";
+//        return GalacticraftPlanets.ASSET_PREFIX + "/textures/gui/methaneSynthesizer.png";
 //    }
 //
 //    @Override

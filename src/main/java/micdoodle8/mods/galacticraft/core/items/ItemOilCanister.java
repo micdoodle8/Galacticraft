@@ -80,8 +80,8 @@ public class ItemOilCanister extends ItemCanisterGeneric
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        par3List.add(new ItemStack(par1, 1, 1));
         par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
+        par3List.add(new ItemStack(par1, 1, 1));
     }
 
     @Override

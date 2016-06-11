@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockBasicAsteroids;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -33,43 +34,7 @@ public class ItemBlockAsteroids extends ItemBlock
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        String name = "";
-
-        switch (itemstack.getItemDamage())
-        {
-        case 0:
-        {
-            name = "asteroid0";
-            break;
-        }
-        case 1:
-        {
-            name = "asteroid1";
-            break;
-        }
-        case 2:
-        {
-            name = "asteroid2";
-            break;
-        }
-        case 3:
-        {
-            name = "oreAluminum";
-            break;
-        }
-        case 4:
-        {
-            name = "oreIlmenite";
-            break;
-        }
-        case 5:
-        {
-            name = "oreIron";
-            break;
-        }
-        default:
-            name = "null";
-        }
+        String name = BlockBasicAsteroids.EnumBlockBasic.values()[itemstack.getItemDamage()].getName();
 
         return this.getBlock().getUnlocalizedName() + "." + name;
     }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
@@ -17,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderCreeperBoss extends RenderLiving
 {
-    private static final ResourceLocation creeperTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/creeper.png");
+    private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/creeper.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
     private final ModelBase creeperModel = new ModelCreeperBoss(2.0F);
 

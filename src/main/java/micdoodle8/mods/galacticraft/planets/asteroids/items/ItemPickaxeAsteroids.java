@@ -16,7 +16,7 @@ public class ItemPickaxeAsteroids extends ItemPickaxe
     {
         super(AsteroidsItems.TOOL_TITANIUM);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     @Override

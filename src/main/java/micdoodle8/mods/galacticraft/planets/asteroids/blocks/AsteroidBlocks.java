@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeT
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -50,22 +51,27 @@ public class AsteroidBlocks
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
     }
 
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    {
+        GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+    }
+
     public static void registerBlocks()
     {
-        GameRegistry.registerBlock(AsteroidBlocks.treasureChestTier2, ItemBlockDesc.class, AsteroidBlocks.treasureChestTier2.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockDesc.class, AsteroidBlocks.treasureChestTier3.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class, AsteroidBlocks.blockBasic.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.blockWalkway, ItemBlockWalkway.class, AsteroidBlocks.blockWalkway.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayWire, ItemBlockWalkway.class, AsteroidBlocks.blockWalkwayWire.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.blockWalkwayOxygenPipe, ItemBlockWalkway.class, AsteroidBlocks.blockWalkwayOxygenPipe.getUnlocalizedName());
-//		GameRegistry.registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class, AsteroidBlocks.machineFrame.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.beamReflector, ItemBlockDesc.class, AsteroidBlocks.beamReflector.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.beamReceiver, ItemBlockDesc.class, AsteroidBlocks.beamReceiver.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class, AsteroidBlocks.shortRangeTelepad.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class, AsteroidBlocks.fakeTelepad.getUnlocalizedName());
-        GameRegistry.registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class, AsteroidBlocks.blockDenseIce.getUnlocalizedName());
-       	GameRegistry.registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class, AsteroidBlocks.blockMinerBase.getUnlocalizedName());
-       	GameRegistry.registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class, AsteroidBlocks.minerBaseFull.getUnlocalizedName());
+        registerBlock(AsteroidBlocks.treasureChestTier2, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class);
+        registerBlock(AsteroidBlocks.blockWalkway, ItemBlockWalkway.class);
+        registerBlock(AsteroidBlocks.blockWalkwayWire, ItemBlockWalkway.class);
+        registerBlock(AsteroidBlocks.blockWalkwayOxygenPipe, ItemBlockWalkway.class);
+//		registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class);
+        registerBlock(AsteroidBlocks.beamReflector, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.beamReceiver, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class);
+        registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class);
+        registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class);
+       	registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class);
+       	registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class);
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)

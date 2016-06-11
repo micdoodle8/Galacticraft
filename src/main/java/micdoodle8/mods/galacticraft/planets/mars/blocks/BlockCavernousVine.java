@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -33,6 +35,39 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
 {
 //    @SideOnly(Side.CLIENT)
 //    private IIcon[] vineIcons;
+    public static final PropertyEnum VINE_TYPE = PropertyEnum.create("vineType", EnumVineType.class);
+
+    public enum EnumVineType implements IStringSerializable
+    {
+        VINE_0(0, "vine_0"),
+        VINE_1(1, "vine_1"),
+        VINE_2(2, "vine_2");
+
+        private final int meta;
+        private final String name;
+
+        private EnumVineType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumVineType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+    }
 
     public BlockCavernousVine(String assetName)
     {
@@ -266,5 +301,30 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(VINE_TYPE, EnumVineType.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumVineType)state.getValue(VINE_TYPE)).getMeta();
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, VINE_TYPE);
     }
 }

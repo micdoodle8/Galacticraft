@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.gui;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerSchematicAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -17,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicAstroMiner extends GuiContainer implements ISchematicResultPage
 {
-    public static final ResourceLocation schematicTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/schematic_astro_miner.png");
+    public static final ResourceLocation schematicTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_astro_miner.png");
 
     private int pageIndex;
 

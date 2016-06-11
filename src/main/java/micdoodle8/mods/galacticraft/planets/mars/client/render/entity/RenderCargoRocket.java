@@ -15,7 +15,7 @@
 //@SideOnly(Side.CLIENT)
 //public class RenderCargoRocket extends Render
 //{
-//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/cargoRocket.png");
+//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/cargoRocket.png");
 //
 //    protected IModelCustom rocketModel;
 //

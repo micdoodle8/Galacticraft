@@ -1,0 +1,327 @@
+# Galacticraft Mars Language File = UNITED STATES ENGLISH
+
+# GENERAL ITEMS
+item.rawDesh.name=Unrefined Desh
+item.deshStick.name=Desh Stick
+item.ingotDesh.name=Desh Ingot
+item.spaceshipTier2.t2Rocket.name=Tier 2 Rocket
+item.reinforcedPlateT2.name=Heavy-Duty Plate
+item.tier2.desc=Tier 2
+item.slimelingCargo.name=Slimeling Inventory Bag
+item.key.T2.name=Tier 2 Dungeon Key
+item.compressedDesh.name=Compressed Desh
+item.spaceshipTier2.cargoRocket.name=Cargo Rocket
+item.fluidManip.name=Fluid Manipulator
+item.bucketSludge.name=Bacterial Sludge Bucket
+fluid.bacterialsludge=Bacterial Sludge
+item.itemTier3Rocket.t3Rocket.name=Tier 3 Rocket
+item.itemAstroMiner.name=Astro Miner
+item.heavyNoseCone.name=Heavy Nose Cone
+item.compressedTitanium.name=Compressed Titanium
+item.ingotTitanium.name=Titanium Ingot
+item.shardTitanium.name=Titanium Shard
+item.shardIron.name=Iron Shard
+item.rocketFinsT2.name=Heavy Rocket Fins
+item.engineT2.name=Heavy Rocket Engine
+item.reinforcedPlateT3.name=Heavy-Duty Plate
+item.grapple.name=Grapple
+item.atmosphericValve.name=Atmospheric Valve
+item.thermalCloth.name=Thermal Cloth
+item.beamCore.name=Beam Core
+item.orionDrive.name=Orion Drive
+item.tier3.desc=Tier 3
+
+# TOOLS
+item.deshPick.name=Desh Pickaxe
+item.deshPickSlime.name=Sticky Desh Pickaxe
+item.deshAxe.name=Desh Axe
+item.deshHoe.name=Desh Hoe
+item.deshSpade.name=Desh Shovel
+item.deshSword.name=Desh Sword
+item.titanium_pickaxe.name=Titanium Pickaxe
+item.titanium_axe.name=Titanium Axe
+item.titanium_hoe.name=Titanium Hoe
+item.titanium_shovel.name=Titanium Shovel
+item.titanium_sword.name=Titanium Sword
+
+# ARMOR
+item.deshHelmet.name=Desh Helmet
+item.deshChestplate.name=Desh Chestplate
+item.deshLeggings.name=Desh Leggings
+item.deshBoots.name=Desh Boots
+item.thermalHelm.name=Thermal Padding Helm
+item.thermalChestplate.name=Thermal Padding Chestpiece
+item.thermalLeggings.name=Thermal Padding Leggings
+item.thermalBoots.name=Thermal Padding Boots
+item.titanium_helmet.name=Titanium Helmet
+item.titanium_chestplate.name=Titanium Chestplate
+item.titanium_leggings.name=Titanium Leggings
+item.titanium_boots.name=Titanium Boots
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Methane Gas Canister
+item.methaneCanister.name=Filled Methane Gas Canister
+item.canister.gas.name=Gas                  #short name for Methane Gas contents level
+item.canister.LOX.partial.name=Canister of Liquid Oxygen
+item.canister.LOX.full.name=Filled Canister of Liquid Oxygen
+item.canister.LOX.name=LOX                  #short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.full.name=Filled Canister of Liquid Nitrogen
+item.canister.liquidNitrogen.name=Liquid    #short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Canister of Liquid Argon
+item.canister.liquidArgon.full.name=Filled Canister of Liquid Argon
+item.canister.liquidArgon.name=Liquid       #short name for Liquid Argon contents level
+item.emptyGasCanister.name=Empty Gas Canister
+
+# BLOCKS
+tile.mars.deshmars.name=Desh Ore
+tile.mars.coppermars.name=Copper Ore
+tile.mars.tinmars.name=Tin Ore
+tile.mars.ironmars.name=Iron Ore
+tile.mars.marscobblestone.name=Mars Cobblestone
+tile.mars.marsstone.name=Mars Stone
+tile.mars.marsdirt.name=Mars Sub-Surface Rock
+tile.mars.marsgrass.name=Mars Surface Rock
+tile.mars.marsdeco.name=Block of Desh
+tile.mars.marsdungeon.name=Mars Dungeon Brick
+tile.treasureT2.name=Tier 2 Treasure Chest
+tile.slimelingEgg.redEgg.name=Red Slimeling Egg
+tile.slimelingEgg.blueEgg.name=Blue Slimeling Egg
+tile.slimelingEgg.yellowEgg.name=Yellow Slimeling Egg
+tile.marsMachine.0.name=Terraformer
+tile.marsMachine.1.name=Cryogenic Chamber
+tile.marsMachine.2.name=Launch Controller
+tile.marsMachine.4.name=Gas Liquefier
+tile.marsMachine.5.name=Methane Synthesizer
+tile.marsMachine.6.name=Water Electrolyzer
+tile.hydrogenPipe.name=Hydrogen Pipe
+tile.sludge.name=Bacterial Sludge
+tile.creeperEgg.name=Creeper Egg
+tile.cavernVines.name=Cavernous Vines
+tile.asteroidsBlock.asteroid0.name=Asteroid Rock
+tile.asteroidsBlock.asteroid1.name=Asteroid Rock
+tile.asteroidsBlock.asteroid2.name=Asteroid Rock
+tile.asteroidsBlock.oreIron.name=Iron Ore
+tile.asteroidsBlock.oreIlmenite.name=Ilmenite Ore
+tile.asteroidsBlock.oreAluminum.name=Aluminum Ore
+tile.beamReflector.name=Energy Beam Reflector
+tile.beamReceiver.name=Energy Beam Receiver
+tile.telepadShort.name=Short Range Telepad
+tile.walkway.name=Walkway
+tile.walkwayWire.name=Walkway
+tile.walkwayOxygenPipe.name=Walkway
+tile.treasureT3.name=Tier 3 Treasure Chest
+tile.denseIce.name=Dense Ice
+tile.minerBase.name=Astro Miner Base
+
+# FLUIDS AND GASES
+fluid.methane=Methane Gas
+fluid.oxygen=Oxygen Gas
+fluid.nitrogen=Nitrogen Gas
+fluid.hydrogen=Hydrogen Gas
+fluid.carbondioxide=CO2 Gas
+fluid.helium=Helium Gas
+fluid.argon=Argon Gas
+fluid.atmosphericgases=Atmospheric Gases
+fluid.liquidmethane=Liquid Methane
+fluid.liquidoxygen=Liquid Oxygen
+fluid.liquidnitrogen=Liquid Nitrogen
+fluid.liquidargon=Liquid Argon
+fluid.fuel=Fuel
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs
+tile.wallGC.mars.name=Mars Cobblestone Wall
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab
+
+# GUI
+gui.choosePlanet.desc.mars=Habitable#No Oxygen#Gravity: 38%
+item.deshPickSlime.description.name=Can harvest Creeper eggs
+gui.message.noEnergy.name=No Energy!
+gui.message.noWater.name=Not Enough Water
+gui.message.noBonemeal.name=Not Enough Bonemeal
+gui.message.noSeeds.name=Not Enough Seeds
+gui.message.noSaplings.name=Not Enough Saplings
+gui.message.bubbleExp.name=Bubble Expanding
+gui.message.noValidBlocks.name=No Valid Blocks in Bubble
+gui.message.terraforming.name=Terraforming
+gui.message.enableTrees.name=Enable Trees
+gui.message.enableGrass.name=Enable Grass
+gui.message.trees.name=Trees
+gui.message.grass.name=Grass
+gui.message.invalidFreq.name=Invalid Frequency
+gui.message.frequency.name=Frequency
+gui.message.destFrequency.name=Target
+gui.message.removePad.name=Remove Pad
+gui.message.launchWhen.name=Launch When
+gui.message.cargoUnloaded.name=Cargo is Unloaded
+gui.message.cargoFull.name=Cargo is Full
+gui.message.fullyFueled.name=Fully Fueled
+gui.message.instant.name=Instantly
+gui.message.tenSec.name=10 Seconds
+gui.message.thirtySec.name=30 Seconds
+gui.message.oneMin.name=1 Minute
+gui.message.redstoneSig.name=Redstone Signal
+gui.message.notSet.name=Not Set
+gui.message.notEnough.name=Not Enough
+gui.message.success.name=Success
+gui.message.zeroWater.name=No water!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=This is the Launch Controller's$unique frequency
+gui.launchController.desc.1=Frequency to launch rockets towards
+gui.launchController.desc.2=Whether the launch pad should$be removed on launch
+gui.launchController.desc.3=When this criteria is met,$rocket will launch
+gui.launchController.desc.4=Hide destination frequency$from other players
+gui.terraformer.desc.0=Water Tank
+
+gui.gasTank.desc.0=Gas Storage
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed)
+gui.liquidTank.desc.0=Liquid Tank
+gui.status.nogas.name=No gas
+gui.status.liquefying.name=Liquefying
+gui.status.processing.name=Synthesizing
+gui.status.needsCarbon.name=Needs carbon
+gui.status.tankfull.name=Tank full
+gui.status.tanksfull.name=Tanks full
+gui.message.lowEnergy.name=Low energy
+gui.button.liquefy.name=Process
+gui.button.liquefyStop.name=Stop
+gui.gasInput.desc.0=Try placing a Methane$Gas Canister here
+gui.gasInput.desc.1=(Perhaps alternatively,$an Atmospheric Valve)
+gui.hydrogenInput.desc.0=This takes a hydrogen tank
+gui.hydrogenInput.desc.1=or an Atmospheric Valve
+gui.liquidOutput.desc.2=liquefied gas tank
+gui.methaneOutput.desc.2=methane tank
+gui.message.withAtmosphere0.name=on a planet with plenty of
+gui.message.withAtmosphere1.name=in the atmosphere
+item.carbonFragments.name=Fragmented Carbon
+gui.carbonSlot.desc.0=Fragmented Carbon can go here
+gui.waterBucketSlot.desc=Place water buckets here
+
+gui.cargorocket.status.waiting.0=Waiting for
+gui.cargorocket.status.waiting.1=ignition
+gui.cargorocket.status.launched.0=Already
+gui.cargorocket.status.launched.1=Launched
+
+gas.carbondioxide.name=Carbon Dioxide
+gas.oxygen.name=Oxygen
+gas.nitrogen.name=Nitrogen
+
+gui.desc.reinforcedPlateT2.name=Tier 2
+dimension.Mars.name=Mars
+planet.mars=Mars
+
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss.
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards.
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet.
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown.
+tile.launchController.description=Launch Controllers are used to customize launch behavior, including launch criteria and destination launch pad for auto launches.
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials.
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding.
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel!
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier.
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen.
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another.
+
+gui.slimeling.chat.wrongPlayer=This isn't my Slimeling!
+gui.cryogenic.chat.cantUse=I can't use this for another %d seconds
+gui.slimeling.name=Name
+gui.slimeling.owner=Owner
+gui.slimeling.kills=Kills
+gui.slimeling.scale=Scale
+gui.slimeling.button.sit=Sit
+gui.slimeling.button.follow=Follow
+gui.slimeling.sitting=Sitting
+gui.slimeling.following=Following
+gui.slimeling.damage=Attack Damage
+gui.slimeling.food=Favorite food
+planet.asteroids=Asteroids
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=This is the Telepad's$unique address
+gui.telepad.desc.1=Address of another Telepad.$Entities will be sent there.
+gui.message.address.name=Address
+gui.message.destAddress.name=Target Address
+gui.message.invalidAddress.name=Invalid Unique Address
+gui.message.invalidTargetAddress.name=Invalid Target Address
+gui.message.receivingActive.name=Receiving Active
+gui.message.telepadTooFar.name=Target too far! (Max %d)
+gui.message.telepadWrongDim.name=Target is in wrong dimension!
+gui.message.telepadNotFound.name=Telepad Not Found!
+gui.message.sendingActive.name=Sending Active
+gui.message.range.name=Range: %dm
+gui.message.notEnoughEnergy.name=Not Enough Energy!
+gui.message.targetNoEnergy.name=Target doesn't have enough Energy!
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook!
+gui.message.astroMiner.fail=This base already has an Astro Miner!
+gui.message.astroMiner1.fail=The docking area is blocked by:
+gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by:
+gui.message.astroMiner2.fail=That would be one Astro Miner too many!
+gui.message.astroMiner3.fail=The Astro Miner's base was removed!
+gui.message.astroMiner4.fail=The Astro Miner is low on energy and cannot get back to base!
+gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked!
+gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop!
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station!
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze.
+gui.button.recall.name=Recall
+gui.miner.outOfRange=Out of range
+gui.miner.offline=Offline
+gui.miner.stuck=Stuck at:
+gui.miner.docked=Docked
+gui.miner.travelling=Traveling
+gui.miner.mining=Mining
+gui.miner.returning=Returning
+gui.miner.docking=Docking
+gui.miner.mined=Mined
+
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused.
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully walkable surface.
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully walkable surface.
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets.
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams.
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads.
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these.
+
+# SCHEMATICS
+schematic.rocketT3.name=Tier 3 Rocket
+schematic.cargoRocket.name=Automatic Cargo Rocket
+schematic.astroMiner.name=Astro Miner
+
+# ENTITIES
+entity.Sludgeling.name=Sludgeling
+entity.Slimeling.name=Slimeling
+entity.CreeperBoss.name=Evolved Creeper Boss
+entity.SpaceshipT2.name=Tier 2 Rocket
+entity.CargoRocket.name=Cargo Rocket
+entity.LandingBalloons.name=Landing Balloons
+entity.SmallAsteroidGC.name=Small Asteroid
+entity.GrappleHookGC.name=Grapple Hook
+entity.Tier3RocketGC.name=Tier 3 Rocket
+entity.EntryPodAsteroids.name=Entry Pod
+entity.AstroMiner.name=Astro Miner
+
+# CONTAINERS
+container.launchcontroller.name=Launch Controller
+container.tileTerraformer.name=Terraformer
+container.marsLander.name=Landing Balloons
+container.shortRangeTelepad.name=Short Range Telepad
+container.entryPod.name=Entry Pod
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Mars Dimension ID
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
+
+gc.configgui.planets.title=Galacticraft Planets Config

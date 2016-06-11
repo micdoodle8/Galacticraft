@@ -1,0 +1,343 @@
+# Galacticraft Mars Language File = CROATIAN
+
+# GENERAL ITEMS
+item.rawDesh.name=Nerefinirani Desh
+item.deshStick.name=Štapić od Desha
+item.ingotDesh.name=Desh Poluga
+item.spaceshipTier2.t2Rocket.name=Raketa Ranga 2
+item.reinforcedPlateT2.name=Snažna Ploča Ranga 2
+item.tier2.desc=Rang 2
+item.slimelingCargo.name=Slimelingova Inventory Torba
+item.key.T2.name=Tamnički Ključ Ranga 2
+item.compressedDesh.name=Prerađeni Desh
+item.spaceshipTier2.cargoRocket.name=Raketa s Teretom
+item.fluidManip.name=Manipulator Tekučinom
+item.bucketSludge.name=Bakterijska Sluz
+fluid.bacterialsludge=Bakterijska Sluz
+item.itemTier3Rocket.t3Rocket.name=Raketa Ranga 3
+item.itemAstroMiner.name=Astro Rudar
+item.heavyNoseCone.name=Snažni Nos Rakete
+item.compressedTitanium.name=Prerađeni Titanium
+item.ingotTitanium.name=Poluga Titanuma
+item.shardTitanium.name=Krhotina Titaniuma
+item.shardIron.name=Krhotina Željeza
+item.rocketFinsT2.name=Snažni Rep Rakete
+item.engineT2.name=Snažni Motor Rakete
+item.reinforcedPlateT3.name=Snažna Ploča Ranga 3
+item.grapple.name=Kuka
+item.atmosphericValve.name=Atmosferski Ventil
+item.thermalCloth.name=Termalna Odječa
+item.beamCore.name=Jezgra
+item.orionDrive.name=Orion Disk
+item.tier3.desc=Rang 3
+
+# TOOLS
+item.deshPick.name=Desh Kramp
+item.deshPickSlime.name=Ljeplivi Desh Kramp
+item.deshAxe.name=Desh Sjekira
+item.deshHoe.name=Desh Motika
+item.deshSpade.name=Desh Lopata
+item.deshSword.name=Desh Mac
+item.titanium_pickaxe.name=Titanium Kramp
+item.titanium_axe.name=Titanium Sjekira
+item.titanium_hoe.name=Titanium Motika
+item.titanium_shovel.name=Titanium Lopata
+item.titanium_sword.name=Titanium Mač
+
+# ARMOR
+item.deshHelmet.name=Desh Šljem
+item.deshChestplate.name=Desh Prsni Oklop
+item.deshLeggings.name=Desh Gamaše
+item.deshBoots.name=Desh Čizme
+item.thermalHelm0.name=Termalni Šljem
+item.thermalChestplate0.name=Termalni Prsni Oklop
+item.thermalLeggings0.name=Termalne Gamaše
+item.thermalBoots0.name=Termalne Čizme
+item.thermalHelm.name=Termalni Šljem
+item.thermalChestplate.name=Termali Prsni Oklop
+item.thermalLeggings.name=Termalne Gamaše
+item.thermalBoots.name=Termalne Čizme
+item.titanium_helmet.name=Titanium Šljem
+item.titanium_chestplate.name=Titanium Prsni Oklop 
+item.titanium_leggings.name=Titanium Gamaše
+item.titanium_boots.name=Titanium Čizme
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Karnister Metana
+item.methaneCanister.name=Pun Karnister Metana
+item.canister.gas.name=Plin  
+                
+#short name for Methane Gas contents level
+item.canister.LOX.partial.name=Karnister Tekučeg Kisika
+item.canister.LOX.full.name=Pun Karnister Tekučeg Kisika
+item.canister.LOX.name=TK
+              
+#short name for Liquid Oxygen contents level
+item.canister.liquidNitrogen.partial.name=Karnister Tekučeg Nitrogena
+item.canister.liquidNitrogen.full.name=Pun Karnister Tekučeg Nitrogena
+item.canister.liquidNitrogen.name=Nitrogen  
+  
+#short name for Liquid Nitrogen contents level
+item.canister.liquidArgon.partial.name=Karnister Tekučeg Argona
+item.canister.liquidArgon.full.name=Pun Karnister Tekučeg Argona
+item.canister.liquidArgon.name=Argon   
+    
+#short name for Liquid Argon contents level
+item.emptyGasCanister.name=Prazni Karnister
+
+# FLUIDS AND GASES
+fluid.methane=Metan 
+fluid.oxygen=Zrak 
+fluid.nitrogen=Nitrogen 
+fluid.hydrogen=Hidrogen 
+fluid.carbondioxide=CO2 
+fluid.helium=Helij
+fluid.argon=Argon
+fluid.atmosphericgases=Atmosferni Plinovi
+fluid.liquidmethane=Tekuči Methan
+fluid.liquidoxygen=Tekuči Zrak
+fluid.liquidnitrogen=Tekuči Nitrogen
+fluid.liquidargon=Tekuči Argon
+fluid.fuel=Gorivo
+
+# BLOCKS
+tile.mars.deshmars.name=Desh Ruda
+tile.mars.coppermars.name=Ruda Bakra
+tile.mars.tinmars.name=Limena Ruda
+tile.mars.ironmars.name=Željezna Ruda
+tile.mars.marscobblestone.name=Prerađeni Kamen
+tile.mars.marsstone.name=Marsovski Kamen
+tile.mars.marsdirt.name=Marsovska Trava
+tile.mars.marsgrass.name=Marsovska Površina
+tile.mars.marsdeco.name=Blok od Desha
+tile.mars.marsdungeon.name=Zid od Tamnice
+tile.treasureT2.name=Tier 2 Škrinja sa Blagom
+tile.slimelingEgg.redEgg.name=Crveno Slimeling Jaje
+tile.slimelingEgg.blueEgg.name=Plavo Slimeling Jaje
+tile.slimelingEgg.yellowEgg.name=Žuto Slimeling Jaje
+tile.marsMachine.0.name=Teraformer
+tile.marsMachine.1.name=Komora Za Spavanje
+tile.marsMachine.2.name=Kontrola Leta
+tile.marsMachine.4.name=Plinski Liqufier
+tile.marsMachine.5.name=Metan Sintisajzer
+tile.marsMachine.6.name=Vodeni Elektrizer
+tile.hydrogenPipe.name=Hidrogenska Cijev
+tile.sludge.name=Bakterijska Sluz
+tile.creeperEgg.name=Jaje Kripera
+tile.cavernVines.name=Kavernozni Vine
+tile.asteroidsBlock.asteroid0.name=Asteroidski Kamen
+tile.asteroidsBlock.asteroid1.name=Asteroidski Kamen
+tile.asteroidsBlock.asteroid2.name=Asteroidski Kamen
+tile.asteroidsBlock.oreIron.name=Ruda Željeza
+tile.asteroidsBlock.oreIlmenite.name= Ruda Ilmenita
+tile.asteroidsBlock.oreAluminum.name=Ruda Aluminija
+tile.beamReflector.name=Energetski Zračni Reflektor
+tile.beamReceiver.name=Energetski Zračni Odašiljac
+tile.telepadShort.name=Teleporter s Malom Daljinom
+tile.walkway.name=Staza
+tile.walkwayWire.name=Staza s Cijevima za Strujom
+tile.walkwayOxygenPipe.name=Staza s Cijevima za Zrakom
+tile.treasureT3.name=Rang 3 Škrinje s Blagom
+tile.denseIce.name=Gusti Led
+tile.minerBase.name=Astro Rudarska Baza
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Marsovske Kamene Stube
+tile.wallGC.mars.name=Marskovski Kameni Zid
+tile.slabGCHalf.marsSlab.name=Marsovska Kamena Ploča
+tile.marsDungeonBricksStairs.name=Marskovse Ciglene Stube
+tile.wallGC.marsBricks.name=Marskovki Cigleni Zid
+tile.slabGCHalf.marsBricksSlab.name=Marskovska Ciglena Ploča
+
+# GUI
+gui.choosePlanet.desc.mars=Pogodno za Život#Nema Zraka#Gravitacija: 38%
+item.deshPickSlime.description.name=Može Uzeti Slimeling Jaja
+gui.message.noEnergy.name=Nema Energije
+gui.message.noWater.name=Nema Dovoljno Vode
+gui.message.noBonemeal.name=Nema Dovoljno Smrskanih Kosti
+gui.message.noSeeds.name=Nema Dovoljno Sjemenki
+gui.message.noSaplings.name=Nema Dovoljno Sjemenki Drveta
+gui.message.bubbleExp.name=Balon se Raširuje
+gui.message.noValidBlocks.name=Nema pravih blokova u Balonu
+gui.message.terraforming.name=Teraformiram
+gui.message.enableTrees.name=Dozvoli Drva
+gui.message.enableGrass.name=Dozvoli Travu
+gui.message.trees.name=Drva
+gui.message.grass.name=Trava
+gui.message.invalidFreq.name=Nepoznata Frekvencija
+gui.message.frequency.name=Frekvencija
+gui.message.destFrequency.name=Odredišna Frekvencija
+gui.message.removePad.name=Obriši Pad
+gui.message.launchWhen.name=Lansiraj Kada
+gui.message.cargoUnloaded.name=Teret Izvađen
+gui.message.cargoFull.name=Teret Utovaren
+gui.message.fullyFueled.name=Pun Goriva
+gui.message.instant.name=Odmah
+gui.message.tenSec.name=10 Sekundi
+gui.message.thirtySec.name=30 Sekundi
+gui.message.oneMin.name=1 Minuta
+gui.message.redstoneSig.name=Signal Crvenog Kamena
+gui.message.notSet.name=Nije Postavljeno
+gui.message.notEnough.name=Nema Dovoljno
+gui.message.success.name=Uspješno
+gui.message.zeroWater.name=Nema Vode!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Ovo je Glavna Kontrolna Frekvencija$Frekvencija
+gui.launchController.desc.1=Frekvencija lansirati raketu prema
+gui.launchController.desc.2=Ukloniti Lansirnu Rampu$Ukloniti Lansirnu Rampu
+gui.launchController.desc.3=Kada su te kriterije ispunjene,$raketa će se lansirati
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
+gui.terraformer.desc.0=Vodeni Tank
+
+gui.gasTank.desc.0=Gas Skladište
+gui.gasTankCompressed.desc.0=Skladište plina (komprimiranog)
+gui.liquidTank.desc.0=Vodeni Tank
+gui.status.nogas.name=Nema Gasa
+gui.status.liquefying.name=Punim
+gui.status.processing.name=Sintiziram
+gui.status.needsCarbon.name=Treba Carbona
+gui.status.tankfull.name=Tank Pun
+gui.status.tanksfull.name=Tankovi Puni
+gui.message.lowEnergy.name=Malo Energije
+gui.button.liquefy.name=Processiram
+gui.button.liquefyStop.name=Stani
+gui.gasInput.desc.0=Probaj Postaviti Methan$Gas Karnister tamo
+gui.gasInput.desc.1=(Možda Altrenativno,$jedan Atmosferni Ventil)
+gui.hydrogenInput.desc.0=To Uzima Hydrogen Tank
+gui.hydrogenInput.desc.1=ili jedan Atmosferni Ventil
+gui.liquidOutput.desc.2=Vodeni Gas Tank
+gui.methaneOutput.desc.2=Methane Tank
+gui.message.withAtmosphere0.name=Na Planetu s Puno
+gui.message.withAtmosphere1.name=u Atmosferi
+item.carbonFragments.name=Fragmirani Carbon
+gui.carbonSlot.desc.0=Fragmentirani Ugljik može ići ovdje
+gui.waterBucketSlot.desc=Stavi vodu ovdje
+
+gui.cargorocket.status.waiting.0=Čekam
+gui.cargorocket.status.waiting.1=paljenje
+gui.cargorocket.status.launched.0=Več
+gui.cargorocket.status.launched.1=lansirano
+
+gas.carbondioxide.name=Dioksid Carboon
+gas.oxygen.name=Zrak
+gas.nitrogen.name=Nitrogen
+
+gui.desc.reinforcedPlateT2.name=Rang 2
+dimension.Mars.name=Mars
+planet.mars=Mars
+
+tile.treasureT2.description=Rang 2 Tamnički Ključ se može pronači u tamnicama na Marsu, ali prvo moraš pobijediti šefa.
+tile.cavernVines.description=Kavernozirane Lijane su opasne za živa biča, mogu te ubiti.
+tile.slimelingEgg.description=Slimeling Jaja, nakon što su strgane s rukama nekoliko puta onda če stvoriti ljubimca.
+tile.cryoChamber.description=Kriogenska Kapsula će omogućiti igraču da spava tijekom dana, liječeći malu količinu zdravlja, ali ima čekanje.
+tile.launchController.description=Kontroleri Lansiranja se koriste za prilagodbu ponašanja pri pokretanju, uključujući kriterije za lansiranje i odredište za pokretanje na automatsku raketsku rampu.
+tile.terraformer.description=Teraformeri se koriste da dodaju malo zelenila na planet kao što je trava, voda i drveče.
+tile.creeperEgg.description=Kriperska jaja će se stvarati u Marsovskim tamnicama, stvarajuči predatora koji eksplodira.
+tile.gasLiquefier.description=Ukapljeni plinovi, bilo od atmosfere ili iz spremnika. Ukapljeni metan čini dobro raketno gorivo!
+tile.methaneSynthesizer.description=S izvorom vodika i izvora ugljika, to proizvodi metan za daljnju obradu u ukapljenom plinu.
+tile.electrolyzer.description=Pretvara vodu u vodik (korisno za metan sintisajzer) i kisik.
+tile.hydrogenPipe.description=Cijev za hidrogen če prenesti gorivo iz jedne mašine u drugu.
+
+gui.slimeling.chat.wrongPlayer=Ovo nije moj Sludeling!
+gui.cryogenic.chat.cantUse=Nemogu koristiti ovo jos %d sekundi
+gui.slimeling.name=Ime 
+gui.slimeling.owner=Vlasnik 
+gui.slimeling.kills=Ubojstva 
+gui.slimeling.scale=Veličina
+gui.slimeling.button.sit=Sjedi
+gui.slimeling.button.follow=Prati 
+gui.slimeling.sitting=Sjedi
+gui.slimeling.following=Prati 
+gui.slimeling.damage=Oštečenje 
+gui.slimeling.food=Najdraža Hrana 
+planet.asteroids=Asteroidi
+
+# Dollar sign ($) will split text onto a new line
+# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Ovo je teleporterova$Adresa
+gui.telepad.desc.1=Adresiraj na drugi teleporter.$Bića će biti poslana ondje.
+gui.message.address.name=Adresa
+gui.message.destAddress.name=Meta Adrese
+gui.message.invalidAddress.name=Netočna Adresa
+gui.message.invalidTargetAddress.name=Netočna Meta Adrese
+gui.message.receivingActive.name=Čekam Aktiviranje
+gui.message.telepadTooFar.name=Meta je previše daleko! (Max %d)
+gui.message.telepadWrongDim.name=Meta je u krivoj dimenziji!
+gui.message.telepadNotFound.name=Teleporter nije pronađen!
+gui.message.sendingActive.name=Šaljem aktivaciju
+gui.message.range.name=Daleko: %dm
+gui.message.notEnoughEnergy.name=Nema Dovoljno Energije!
+gui.message.targetNoEnergy.name=Meta nema Energije!
+gui.message.grapple.fail=Trebam niti da mogu baciti!
+gui.message.astroMiner.fail=Ova baza već ima Astro Rudara!
+gui.message.astroMiner1.fail=Mjesto za parkiranje je zauzeto:
+gui.message.astroMiner1A.fail=Astro Rudareva ruta je blokirana:
+gui.message.astroMiner2.fail=To bi bio jedan Astro Rudar previše!
+gui.message.astroMiner3.fail=Astro Rudareva baza je obrisana!
+gui.message.astroMiner4.fail=Astro Rudar nema više energije i nemože se vratiti u bazu!
+gui.message.astroMiner5.fail=Astro Rudareva ruta do baze je blokirana!
+gui.message.astroMiner6.fail=Astro Rudar je gotov sa kopanjem, i sada će stati!
+gui.message.astroMiner7.fail=Nema ničega da Astro Rudar kopa u svemirskoj stanici!
+gui.message.astroMiner8.fail=Drugi Astro Rudar detektiran je u bazi, prvi če se sada zalediti.
+gui.button.recall.name=Opoziv
+gui.miner.outOfRange=Izvan dometa
+gui.miner.offline=Ugašen
+gui.miner.stuck=Zapeo:
+gui.miner.docked=Parkiran
+gui.miner.travelling=Putuj
+gui.miner.mining=Kopa
+gui.miner.returning=Dolazi
+gui.miner.docking=Parkira
+gui.miner.mined=Iskopano
+tile.treasureT3.description=Rang 3 Škrinja s blagom se mogu pronači u asteroidskoj dimenziji u tamnicama.
+tile.walkway.description=Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.
+tile.walkwayAluminumWire.description=Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.
+tile.walkwayOxygenPipe.description=Staze s cijevima za kisik se koriste za pokretanje kisika ispod potpuno čvrste prohodne površine.
+tile.beamReflector.description=Reflektori se koriste za preusmjeravanje energije zrake od izvora do odredišta. Može se kliknuti na njega da ode na drugi cilj.
+tile.beamReceiver.description=Prijemnici su povezani s ulazom stroja, za prijenos energije pomoću zrake.
+tile.telepadShort.description=Teleporter s malom daljinom se koristi za prijenos igrača i bića na male daljine (250 blokova) kada je povezan s drugim teleporterom.
+tile.minerBase.description=Astro Rudareva baza je mjesto gdje če se on parkirati.  Veliko je ...probaj 2 x 2 x 2 blokove s njima.
+
+# SCHEMATICS
+schematic.rocketT3.name=Raketa Ranga 3
+schematic.cargoRocket.name=Automatska Teret Raketa
+schematic.astroMiner.name=Astro Rudar
+schematic.ionDrive.name=Ion Disk
+
+# ENTITIES
+entity.Sludgeling.name=Sludgeling
+entity.Slimeling.name=Slimeling
+entity.CreeperBoss.name=Evoulirani Šef Kripera
+entity.SpaceshipT2.name=Raketa Ranga 2
+entity.CargoRocket.name=Teretna Raketa
+entity.LandingBalloons.name=Baloni za sletanje
+entity.SmallAsteroidGC.name=Mali Asteroid
+entity.GrappleHookGC.name=Kuka
+entity.Tier3RocketGC.name=Rang 3 Raketa
+entity.EntryPodAsteroids.name=Kapsula za ulaz
+entity.AstroMiner.name=Astro Rudar
+
+# CONTAINERS
+container.launchcontroller.name=Kontroler Lansiranja
+container.tileTerraformer.name=Teraformer
+container.marsLander.name=Baloni sa slijetanje
+container.shortRangeTelepad.name=Teleporter s Malom Daljinom
+container.entryPod.name=Ulazna Kapsula
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Mars Dimension ID
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
+
+gc.configgui.planets.title=Galacticraft Planeti Opcije

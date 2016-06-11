@@ -1,0 +1,332 @@
+# Galacticraft Mars Language File = MAGYAR
+
+# GENERAL ITEMS
+item.rawDesh.name=Deshpor
+item.deshStick.name=Deshbot
+item.ingotDesh.name=Deshrúd
+item.spaceshipTier2.t2Rocket.name=2-Es Szintu Rakéta
+item.reinforcedPlateT2.name=Nehéz Borítólemez
+item.tier2.desc=2-Es Szintu
+item.slimelingCargo.name=Nyálkahernyó Eszköztár-Hátizsák
+item.key.T2.name=2-Es Szintu Dungeon-Kulcs
+item.compressedDesh.name=Préselt Desh
+item.spaceshipTier2.cargoRocket.name=Távvezérlésu Teherrakéta
+item.fluidManip.name=Folyadék-Átalakító
+item.bucketSludge.name=Bacterial Sludge Bucket ##NEEDS TRANSLATE##
+fluid.bacterialsludge=Bacterial Sludge ##NEEDS TRANSLATE##
+item.itemTier3Rocket.t3Rocket.name=3-As Szintű Rakéta
+item.itemAstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+item.heavyNoseCone.name=Nehéz Orrkúp
+item.compressedTitanium.name=Préselt Titánium
+item.ingotTitanium.name=Titániumrúd
+item.shardTitanium.name=Titániumszilánk
+item.shardIron.name=Vasszilánk
+item.rocketFinsT2.name=Nehéz Légterelő Szárny
+item.engineT2.name=Nehéz Rakétamotor
+item.reinforcedPlateT3.name=Nehéz Borítólemez
+item.grapple.name=Fogó
+item.atmosphericValve.name=Légköri Szelep
+item.thermalCloth.name=Hővégő Anyag
+item.beamCore.name=Sugárgerjesztő
+item.orionDrive.name=Orion Drive ##NEEDS TRANSLATE##
+item.tier3.desc=3-As Szintű
+
+# TOOLS
+item.deshPick.name=Desh Csákány
+item.deshPickSlime.name=Sticky Desh Pickaxe ##NEEDS TRANSLATE##
+item.deshAxe.name=Desh Balta
+item.deshHoe.name=Desh Kapa
+item.deshSpade.name=Desh Ásó
+item.deshSword.name=Desh Kard
+item.titanium_pickaxe.name=Titánium Csákány
+item.titanium_axe.name=Titánium Balta
+item.titanium_hoe.name=Titánium Kapa
+item.titanium_shovel.name=Titánium Ásó
+item.titanium_sword.name=Titánium Kard
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Metán-Kanna
+item.methaneCanister.name=Teletöltött Metán-Kanna
+item.canister.gas.name=Gáz                  #Metángáz Töltöttségi-Szintje Röviden
+item.canister.LOX.partial.name=Folyékony Oxigén-Kanna
+item.canister.LOX.full.name=Teletöltött Folyékony Oxigén-Kanna
+item.canister.LOX.name=FOT                  #Folyékony Oxigén Töltöttségi Szintje Röviden
+item.canister.liquidNitrogen.partial.name=Nem Teljesen Teletöltött Folyékony Nitrogén-Kanna
+item.canister.liquidNitrogen.full.name=Teletöltött Folyékony Nitrogén-Kanna
+item.canister.liquidNitrogen.name=Folyadék    #Folyékony Nitrogén Töltöttségi Szintje Röviden
+item.canister.liquidArgon.partial.name=Nem Teljesen Teletöltött Folyékony Argon-Kanna
+item.canister.liquidArgon.full.name=Teletöltött Folyékony Argon-Kanna
+item.canister.liquidArgon.name=Folyadék       #Folyékony Argon Töltöttségi Szintje Röviden
+item.emptyGasCanister.name=Üres Gáz-Kanna
+
+# FLUIDS AND GASES
+fluid.methane=Metángáz
+fluid.oxygen=Oxigéngáz
+fluid.nitrogen=Nitrogéngáz
+fluid.hydrogen=Hidrogéngáz
+fluid.carbondioxide=Széndioxid-Gáz
+fluid.helium=Héliumgáz
+fluid.argon=Argongáz
+fluid.atmosphericgases=Légköri Gázok
+fluid.liquidmethane=Folyékony Metán
+fluid.liquidoxygen=Folyékony Oxigén
+fluid.liquidnitrogen=Folyékony Nitrogén
+fluid.liquidargon=Folyékony Argon
+fluid.fuel=Üzemanyag
+
+# ARMOR
+item.deshHelmet.name=Desh Sisak
+item.deshChestplate.name=Desh Mellvért
+item.deshLeggings.name=Desh Lábszárvédo
+item.deshBoots.name=Desh Bakancs
+item.thermalHelm.name=Hővédő Sisak-Bélés
+item.thermalChestplate.name=Hővédő Mellvért-Bélés
+item.thermalLeggings.name=Hővédő Lábszárvégő-Bélés
+item.thermalBoots.name=Hővédő Bakancs-Bélés
+item.titanium_helmet.name=Titánium Sisak
+item.titanium_chestplate.name=Titánium Mellvért
+item.titanium_leggings.name=Titánium Lábszárvédő
+item.titanium_boots.name=Titánium Bakancs
+
+# BLOCKS
+tile.mars.deshmars.name=Marsi Deshérc
+tile.mars.coppermars.name=Marsi Rézérc
+tile.mars.tinmars.name=Marsi Ónérc
+tile.mars.ironmars.name=Marsi Vasérc
+tile.mars.marscobblestone.name=Marsi Zúzottko
+tile.mars.marsstone.name=Marsi ko
+tile.mars.marsdirt.name=Marsi Felszín-Allatti Kozet
+tile.mars.marsgrass.name=Marsi Felszíni-Kozet
+tile.mars.marsdeco.name=Deshtömb
+tile.mars.marsdungeon.name=Marsi Dungeon-Fal
+tile.treasureT2.name=2-Es Szintu Kincsesláda
+tile.slimelingEgg.redEgg.name=Vörös Nyálkahernyó-Tojás
+tile.slimelingEgg.blueEgg.name=Kék Nyálkahernyó-Tojás
+tile.slimelingEgg.yellowEgg.name=Sárga Nyálkahernyó-Tojás
+tile.marsMachine.0.name=Növényülteto
+tile.marsMachine.1.name=Hibernációs Kamra
+tile.marsMachine.2.name=Távvezérlo
+tile.marsMachine.4.name=Gázfolyósító
+tile.marsMachine.5.name=Metánfejleszto
+tile.marsMachine.6.name=Víz-Elektrolizáló
+tile.hydrogenPipe.name=Hydrogen Pipe ##NEEDS TRANSLATE##
+tile.sludge.name=Bakteriális Iszap
+tile.creeperEgg.name=Creepertojás
+tile.cavernVines.name=Mérgezo Inda
+tile.asteroidsBlock.asteroid0.name=Aszteroida-Szikla
+tile.asteroidsBlock.asteroid1.name=Aszteroida-Szikla
+tile.asteroidsBlock.asteroid2.name=Aszteroida-Szikla
+tile.asteroidsBlock.oreIron.name=Aszteroidai-Vasérc
+tile.asteroidsBlock.oreIlmenite.name=Aszteroidai-Ilmenitérc
+tile.asteroidsBlock.oreAluminum.name=Aszteroidai Alumíniumérc
+tile.beamReflector.name=Lézersugár-Kibocsájtó
+tile.beamReceiver.name=Lézersugár-Vevő
+tile.telepadShort.name=Rövidtávú Teleporter
+tile.walkway.name=Üvegpadló
+tile.walkwayWire.name=Vezetékes Üvegpadlő
+tile.walkwayOxygenPipe.name=Légcsöves Üvegpadló
+tile.treasureT3.name=3-As Szintű Kincsesláda
+tile.denseIce.name=Tömör Jég
+tile.minerBase.name=Astro Miner Base ##NEEDS TRANSLATE##
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Mars Cobblestone Stairs ##NEEDS TRANSLATE##
+tile.wallGC.mars.name=Mars Cobblestone Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsSlab.name=Mars Cobblestone Slab ##NEEDS TRANSLATE##
+tile.marsDungeonBricksStairs.name=Mars Dungeon Brick Stairs ##NEEDS TRANSLATE##
+tile.wallGC.marsBricks.name=Mars Dungeon Brick Wall ##NEEDS TRANSLATE##
+tile.slabGCHalf.marsBricksSlab.name=Mars Dungeon Brick Slab ##NEEDS TRANSLATE##
+
+# GUI
+gui.choosePlanet.desc.mars=Lakható#Nincs Lélegezheto légkör#Gravitáció: 38%
+item.deshPickSlime.description.name=Be lehet vele takarítani a Nyálkahernyó-Tojásokat
+gui.message.noEnergy.name=Nincs Energia
+gui.message.noWater.name=Nincs Elég Víz
+gui.message.noBonemeal.name=Nincs Elég Csontliszt
+gui.message.noSeeds.name=Nincsen Elég Vetomag
+gui.message.noSaplings.name=Nincs Elég Facsemete
+gui.message.bubbleExp.name=A Buborék Terjszkedik...
+gui.message.noValidBlocks.name=Nincsenek Érvényes Blockok A Buborékban
+gui.message.terraforming.name=Növényültetés Folyamatban
+gui.message.enableTrees.name=Fák Bekapcsolása
+gui.message.enableGrass.name=Fu Bekapcsolása
+gui.message.trees.name=Fák
+gui.message.grass.name=Fu
+gui.message.invalidFreq.name=Érvénytelen Saját Frekvencia
+gui.message.frequency.name=Frekvencia
+gui.message.destFrequency.name=Célpont Frekvenciája
+gui.message.removePad.name=Kilövoállás Elszállítása
+gui.message.launchWhen.name=Kilövés indítása:
+gui.message.cargoUnloaded.name=Ha A Teher Ki Van Rakodva
+gui.message.cargoFull.name=Ha A Teher Be Van Rakodva
+gui.message.fullyFueled.name=Ha Teljesen Fel Van Töltve Üzemanyaggal
+gui.message.instant.name=Azonnal
+gui.message.tenSec.name=10 Másodperc Késleltetéssel
+gui.message.thirtySec.name=30 Másodperc Késleltetéssel
+gui.message.oneMin.name=1 Másodperc Késleltetéssel
+gui.message.redstoneSig.name=Vörösko-Jelre
+gui.message.notSet.name=Nincs Beállítva
+gui.message.notEnough.name=Nem Elég
+gui.message.success.name=Sikeres
+gui.message.zeroWater.name=No water! ##NEEDS TRANSLATE##
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Ez A Távvezérlo Saját $ Frekvenziája
+gui.launchController.desc.1=A Célpontnak A Frekvenciája, $ Ahova A Rakéta Küldve Lesz.
+gui.launchController.desc.2=Magával Vigye-e A Rakéta $ A Kilövoállást
+gui.launchController.desc.3=Amikor Ez Teljesül, $ A Kilövés Megkezdodik
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
+gui.terraformer.desc.0=Víztartály
+
+gui.gasTank.desc.0=Gázraktár
+gui.gasTankCompressed.desc.0=Gas Storage (Compressed) ##NEEDS TRANSLATE##
+gui.liquidTank.desc.0=Folyadéktartály
+gui.status.nogas.name=Nincs Elég Gáz
+gui.status.liquefying.name=Folyósítás Folyamatban
+gui.status.processing.name=Metánfejlesztés Folyamatban
+gui.status.needsCarbon.name=Szénpor Szügséges
+gui.status.tankfull.name=A Tartály Megtelt
+gui.status.tanksfull.name=A Tartályok Megteltek
+gui.message.lowEnergy.name=Nincs Elég Energia
+gui.button.liquefy.name=Folyósítás Indítása
+gui.button.liquefyStop.name=Folyósítás Leállítása
+gui.gasInput.desc.0=Ide Tegyen Egy $ Töltött Metán-Kannát, $ Vagy Egy Légköri Szelepet
+gui.gasInput.desc.1=(Egy Bolygón Ahol Sok $ Metángáz $ -Van A Légkörben) 
+gui.hydrogenInput.desc.0=Ide Tegyen Egy
+gui.hydrogenInput.desc.1=Töltött Hidrogén-Kannát, $ Vagy Egy Légköri Szelepet
+gui.liquidOutput.desc.2=Folyósított Gáz-Tartály
+gui.methaneOutput.desc.2=Metán-Tartály
+gui.message.withAtmosphere0.name=Egy Bolygón Ahol Sok 
+gui.message.withAtmosphere1.name=-Van A Légkörben
+item.carbonFragments.name=Szénpor
+gui.carbonSlot.desc.0=Fragmented Carbon can go here ##NEEDS TRANSLATE##
+gui.waterBucketSlot.desc=Place water buckets here ##NEEDS TRANSLATE##
+
+gui.cargorocket.status.waiting.0=Waiting for ##NEEDS TRANSLATE##
+gui.cargorocket.status.waiting.1=ignition ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.0=Already ##NEEDS TRANSLATE##
+gui.cargorocket.status.launched.1=Launched ##NEEDS TRANSLATE##
+
+gas.carbondioxide.name=Szén-Dioxid
+gas.oxygen.name=Oxigén
+gas.nitrogen.name=Nitrogén
+
+gui.desc.reinforcedPlateT2.name=2-Es Szintu
+dimension.Mars.name=Mars
+planet.mars=Mars
+
+tile.treasureT2.description=Tier 2 Treasure Chests will generate in Mars Dungeons. They are unlockable after defeating the final boss. ##NEEDS TRANSLATE##
+tile.cavernVines.description=Cavernous Vines are dangerous to living creatures, entangling them and dragging them upwards. ##NEEDS TRANSLATE##
+tile.slimelingEgg.description=Slimeling Eggs, once cracked with a player's bare hands, will soon hatch into a pet. ##NEEDS TRANSLATE##
+tile.cryoChamber.description=Cryogenic Chambers will allow a player to sleep during the day, healing a small amount of health, but has a cooldown. ##NEEDS TRANSLATE##
+tile.launchController.description=Launch Controllers are used to customize launch behavior, including launch criteria and destination launch pad for auto launches. ##NEEDS TRANSLATE##
+tile.terraformer.description=Terraformers are used to add some greenery to distant planets, adding grass, trees and water when given the correct materials. ##NEEDS TRANSLATE##
+tile.creeperEgg.description=Creeper Eggs will spawn in Mars dungeons, spawning a sneaky predator upon exploding. ##NEEDS TRANSLATE##
+tile.gasLiquefier.description=Liquefies gases, either from the atmosphere or from canisters. Liquefied methane makes a good rocket fuel! ##NEEDS TRANSLATE##
+tile.methaneSynthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier. ##NEEDS TRANSLATE##
+tile.electrolyzer.description=Transforms water into hydrogen (useful for the Methane Synthesizer) and oxygen. ##NEEDS TRANSLATE##
+tile.hydrogenPipe.description=Hydrogen Pipe will transfer hydrogen from one machine's internal gas tank to another. ##NEEDS TRANSLATE##
+
+gui.slimeling.chat.wrongPlayer=This isn't my Slimeling! ##NEEDS TRANSLATE##
+gui.cryogenic.chat.cantUse=I can't use this for another %d seconds ##NEEDS TRANSLATE##
+gui.slimeling.name=Name ##NEEDS TRANSLATE##
+gui.slimeling.owner=Owner ##NEEDS TRANSLATE##
+gui.slimeling.kills=Kills ##NEEDS TRANSLATE##
+gui.slimeling.scale=Scale ##NEEDS TRANSLATE##
+gui.slimeling.button.sit=Sit ##NEEDS TRANSLATE##
+gui.slimeling.button.follow=Follow ##NEEDS TRANSLATE##
+gui.slimeling.sitting=Sitting ##NEEDS TRANSLATE##
+gui.slimeling.following=Following ##NEEDS TRANSLATE##
+gui.slimeling.damage=Attack Damage ##NEEDS TRANSLATE##
+gui.slimeling.food=Favorite food ##NEEDS TRANSLATE##
+
+planet.asteroids=Aszteroidák
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Ez A Telepoerer $ Saját Frekvenciája
+gui.telepad.desc.1=A Célpont Teleporter $ Frekvenciája.
+gui.message.address.name=Saját Frekvencia
+gui.message.destAddress.name=Célpont Frekvenciája
+gui.message.invalidAddress.name=Érvénytelen Saját Frekvencia
+gui.message.invalidTargetAddress.name=Érvénytelen A Célpont Frekvenciája
+gui.message.receivingActive.name=Fogadás Elérhető
+gui.message.telepadTooFar.name=Célpont Túl Messze Van (Hatósugár: %d)
+gui.message.telepadWrongDim.name=A Célpont Érvénytelen Dimenzióban Van
+gui.message.telepadNotFound.name=Teleporter Nem Találva
+gui.message.sendingActive.name=Küldés Elérhető
+gui.message.range.name=Hatósugár: %dm
+gui.message.notEnoughEnergy.name=Nincs Elég Energia
+gui.message.targetNoEnergy.name=A Célpontnak Nincs Elég Energiája
+gui.message.grapple.fail=I'll need some string if I want to throw that Grapple hook! ##NEEDS TRANSLATE##
+gui.message.astroMiner.fail=This base already has an Astro Miner! ##NEEDS TRANSLATE##
+gui.message.astroMiner1.fail=The docking area is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner1A.fail=The Astro Miner's route is blocked by: ##NEEDS TRANSLATE##
+gui.message.astroMiner2.fail=That would be one Astro Miner too many! ##NEEDS TRANSLATE##
+gui.message.astroMiner3.fail=The Astro Miner's base was removed! ##NEEDS TRANSLATE##
+gui.message.astroMiner4.fail=The Astro Miner ran out of energy and cannot get back to base! ##NEEDS TRANSLATE##
+gui.message.astroMiner5.fail=The Astro Miner's route into its base seems to be blocked! ##NEEDS TRANSLATE##
+gui.message.astroMiner6.fail=The Astro Miner has finished mining the area, and will now stop! ##NEEDS TRANSLATE##
+gui.message.astroMiner7.fail=There's nothing for an Astro Miner to mine on a space station! ##NEEDS TRANSLATE##
+gui.message.astroMiner8.fail=A second Astro Miner was detected at the same base, the first will now freeze. ##NEEDS TRANSLATE##
+gui.button.recall.name=Recall ##NEEDS TRANSLATE##
+gui.miner.outOfRange=Out of range ##NEEDS TRANSLATE##
+gui.miner.offline=Offline ##NEEDS TRANSLATE##
+gui.miner.stuck=Stuck at: ##NEEDS TRANSLATE##
+gui.miner.docked=Docked ##NEEDS TRANSLATE##
+gui.miner.travelling=Travelling ##NEEDS TRANSLATE##
+gui.miner.mining=Mining ##NEEDS TRANSLATE##
+gui.miner.returning=Returning ##NEEDS TRANSLATE##
+gui.miner.docking=Docking ##NEEDS TRANSLATE##
+gui.miner.mined=Mined ##NEEDS TRANSLATE##
+tile.treasureT3.description=Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##
+tile.walkway.description=Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##
+tile.walkwayAluminumWire.description=Aluminum Wire Walkways are used for running wire underneath a fully walkable surface. ##NEEDS TRANSLATE##
+tile.walkwayOxygenPipe.description=Oxygen Pipe Walkways are used for running pipes underneath a fully walkable surface. ##NEEDS TRANSLATE##
+tile.beamReflector.description=Beam Reflectors are used to redirect energy beams from source to destination. Can be right-clicked to cycle through targets. ##NEEDS TRANSLATE##
+tile.beamReceiver.description=Beam Receivers are connected to energy machine input and output, to transfer energy using beams. ##NEEDS TRANSLATE##
+tile.telepadShort.description=Short Range Telepads are used to transfer players and other living creatures short distances (250 Blocks) when linked to other telepads. ##NEEDS TRANSLATE##
+tile.minerBase.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these. ##NEEDS TRANSLATE##
+
+# SCHEMATICS
+schematic.rocketT3.name=3-As Szintu Rakéta
+schematic.cargoRocket.name=Távvezérlésu Teherrakéta
+schematic.astroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+schematic.ionDrive.name=Ion Drive ##NEEDS TRANSLATE##
+
+# ENTITIES
+entity.Sludgeling.name=Iszaphernyó
+entity.Slimeling.name=Nyálkahernyó
+entity.CreeperBoss.name=Vejlett Creeper-Fogonosz
+entity.SpaceshipT2.name=2-Es Szintu Rakéta
+entity.CargoRocket.name=Távvezérlésu Teherrakéta
+entity.LandingBalloons.name=Landing Balloons ##NEEDS TRANSLATE##
+entity.SmallAsteroidGC.name=Kis Aszteroida
+entity.GrappleHookGC.name=Fodó Szigonyja
+entity.Tier3RocketGC.name=3-As Szintű Rakéta
+entity.EntryPodAsteroids.name=Entry Pod ##NEEDS TRANSLATE##
+entity.AstroMiner.name=Astro Miner ##NEEDS TRANSLATE##
+
+# CONTAINERS
+container.launchcontroller.name=Távvezérlo
+container.tileTerraformer.name=Növényülteto
+container.marsLander.name=Landing Balloons ##NEEDS TRANSLATE##
+container.shortRangeTelepad.name=Rövidtávú Teleporter
+container.entryPod.name=Érkezőkapszula
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=Mars Dimension ID
+gc.configgui.idSchematicRocketT2=Tier 2 Rocket Schematic ID
+gc.configgui.idSchematicCargoRocket=Cargo Rocket Schematic ID
+gc.configgui.launchControllerChunkLoad=Launch Controller Chunkloading
+gc.configgui.launchControllerAllDims=Launch Controller All Dimensions
+gc.configgui.dimensionIDAsteroids=Asteroids Dimension ID
+gc.configgui.idEntitySmallAsteroid=Small Asteroid Entity ID
+gc.configgui.idEntityGrappleHook=Grapple Hook Entity ID
+gc.configgui.idEntityTier3Rocket=Tier 3 Rocket Entity ID
+gc.configgui.idEntityEntryPod=Entry Pod Entity ID
+gc.configgui.idSchematicRocketT3=Tier 3 Rocket Schematic ID
+gc.configgui.disableGalacticraftHelium=Disable Helium gas registration
+gc.configgui.astroMinersMax=Maximum number of Astro Miners per player
+
+gc.configgui.planets.title=Galacticraft Planets Config

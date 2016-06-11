@@ -236,10 +236,9 @@ public class BlockBasic extends Block implements IDetectableResource
         return this.blockHardness;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tabs, List list)
+    public void getSubBlocks(Item itemIn, CreativeTabs tabs, List<ItemStack> list)
     {
         for (int var4 = 3; var4 < 13; ++var4)
         {

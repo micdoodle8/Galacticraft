@@ -63,8 +63,7 @@ ext.coreFiles = ['micdoodle8/mods/galacticraft/api/**',
 					
 // Keep a list of planets addon files/directories for easy jar packing
 ext.planetsFiles = ['micdoodle8/mods/galacticraft/planets/**',
-					'assets/galacticraftmars/**',
-					'assets/galacticraftasteroids/**']
+					'assets/galacticraftplanets/**']
 					
 // Keep a list of coremod files/directories for easy jar packing
 ext.micdoodleCoreFiles = ['**/micdoodlecore_at.cfg',
@@ -94,7 +93,7 @@ task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
 }
 
 task movePlanetsMcmodInfo(type: Copy, dependsOn: "reobf") {
-	from 'src/main/resources/assets/galacticraftmars/mcmod.info'
+	from 'src/main/resources/assets/galacticraftplanets/mcmod.info'
 	into 'temporary'
 }
 

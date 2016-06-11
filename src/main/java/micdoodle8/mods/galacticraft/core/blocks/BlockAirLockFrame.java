@@ -73,10 +73,9 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
         this.setUnlocalizedName(assetName);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
         par3List.add(new ItemStack(par1, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));

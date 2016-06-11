@@ -45,9 +45,8 @@ public class ItemKey extends Item implements IKeyItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < ItemKey.keyTypes.length; i++)
         {

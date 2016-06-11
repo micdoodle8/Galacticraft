@@ -219,7 +219,6 @@ public class GalacticraftCore
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         handler = new GCPlayerHandler();
         MinecraftForge.EVENT_BUS.register(handler);
-        FMLCommonHandler.instance().bus().register(handler);
         GalacticraftCore.proxy.preInit(event);
         
         ConnectionPacket.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(ConnectionPacket.CHANNEL);
@@ -273,7 +272,7 @@ public class GalacticraftCore
         GalacticraftCore.satelliteSpaceStation.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/spaceStation.png"));
 
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
-        FMLCommonHandler.instance().bus().register(new ConnectionEvents());
+        MinecraftForge.EVENT_BUS.register(new ConnectionEvents());
 
         SchematicRegistry.registerSchematicRecipe(new SchematicRocketT1());
         SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
@@ -509,7 +508,7 @@ public class GalacticraftCore
         CompatibilityManager.checkForCompatibleMods();
         RecipeManagerGC.loadRecipes();
         NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
-        FMLCommonHandler.instance().bus().register(new TickHandlerServer());
+        MinecraftForge.EVENT_BUS.register(new TickHandlerServer());
         GalaxyRegistry.refreshGalaxies();
         
     	GalacticraftRegistry.registerScreen(new GameScreenText());  //Screen API demo

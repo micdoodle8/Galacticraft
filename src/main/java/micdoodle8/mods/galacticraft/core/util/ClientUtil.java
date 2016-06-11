@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -16,6 +20,26 @@ import net.minecraft.client.gui.ScaledResolution;
 @SideOnly(Side.CLIENT)
 public class ClientUtil
 {
+    public static void registerBlockJson(String texturePrefix, Block block)
+    {
+        registerBlockJson(texturePrefix, block, 0, block.getUnlocalizedName().substring(5));
+    }
+
+    public static void registerBlockJson(String texturePrefix, Block block, int meta, String name)
+    {
+        FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
+    }
+
+    public static void registerItemJson(String texturePrefix, Item item)
+    {
+        registerItemJson(texturePrefix, item, 0, item.getUnlocalizedName().substring(5));
+    }
+
+    public static void registerItemJson(String texturePrefix, Item item, int meta, String name)
+    {
+        FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
+    }
+
     public static ScaledResolution getScaledRes(Minecraft minecraft, int width, int height)
     {
         return new ScaledResolution(minecraft);

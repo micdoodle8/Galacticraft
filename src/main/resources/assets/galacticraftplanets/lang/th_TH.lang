@@ -1,0 +1,328 @@
+# Galacticraft Mars Language File = THAILAND
+
+# GENERAL ITEMS
+item.rawDesh.name=เดรชหยาบ
+item.deshStick.name=แท่งเดรช
+item.ingotDesh.name=ก้อนเดรช
+item.spaceshipTier2.t2Rocket.name=จรวด เทียร์ 2
+item.reinforcedPlateT2.name=แผ่นโลหะทนทาน
+item.tier2.desc=เทียร์ 2
+item.slimelingCargo.name=กระเป๋าเก็บของสไลม์ลิ่ง
+item.key.T2.name=กุญแจดันเจี้ยน เทียร์ 2
+item.compressedDesh.name=แผ่นเดรช
+item.spaceshipTier2.cargoRocket.name=จรวดขนส่ง
+item.fluidManip.name=ตัวจัดการของเหลว
+item.bucketSludge.name=ถังตะกอนแบคทีเรีย
+fluid.bacterialsludge=ตะกอนแบคทีเรีย
+item.itemTier3Rocket.t3Rocket.name=จรวด เทียร์ 3
+item.itemAstroMiner.name=แอสโทรไมน์เนอร์
+item.heavyNoseCone.name=กรวยจรวดแบบทนทาน
+item.compressedTitanium.name=แผ่นไทเทเนียม
+item.ingotTitanium.name=แท่งไทเทเนียม
+item.shardTitanium.name=สะเก็ดไทเทเนียม
+item.shardIron.name=สะเก็ดเหล็ก
+item.rocketFinsT2.name=ปีกจรวดแบบทนทาน
+item.engineT2.name=เครื่องยนต์จรวดแบบทนทาน
+item.reinforcedPlateT3.name=แผ่นโลหะแบบทนทาน
+item.grapple.name=ตะขอ
+item.atmosphericValve.name=วาล์วเก็บก๊าซ
+item.thermalCloth.name=ผ้ากันความร้อน
+item.beamCore.name=แกนลำแสง
+item.orionDrive.name=เครื่องยนต์ตรวจสอบแร่
+item.tier3.desc=เทียร์ 3
+
+# TOOLS
+item.deshPick.name=อีเต้อเดรช
+item.deshPickSlime.name=อีเต้อเดรชเหนียว
+item.deshAxe.name=ขวานเดรช
+item.deshHoe.name=จอบเดรช
+item.deshSpade.name=พลั่วเดรช
+item.deshSword.name=ดาบเดรช
+item.titanium_pickaxe.name=อีเต้อไทเทเนียม
+item.titanium_axe.name=ขวานไทเทเนียม
+item.titanium_hoe.name=จอบไทเทเนียม
+item.titanium_shovel.name=พลั่วไทเทเนียม
+item.titanium_sword.name=ดาบไทเทเนียม
+
+# ARMOR
+item.deshHelmet.name=หมวกเดรช
+item.deshChestplate.name=เสื้อเกราะเดรช
+item.deshLeggings.name=กางเกงเดรช
+item.deshBoots.name=รองเท้าเดรช
+item.thermalHelm.name=หมวกกันความร้อน
+item.thermalChestplate.name=เสื้อเกราะกันความร้อน
+item.thermalLeggings.name=กางเกงกันความร้อน
+item.thermalBoots.name=รองเท้ากันความร้อน
+item.titanium_helmet.name=หมวกไทเทเนียม
+item.titanium_chestplate.name=เสื้อเกราะไทเทเนียม
+item.titanium_leggings.name=กางเกงไทเทเนียม
+item.titanium_boots.name=รองเท้าไทเทเนียม
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=กระป๋องมีเทน
+item.methaneCanister.name=กระป๋องที่เต็มไปด้วยมีเทน
+item.canister.gas.name=ก๊าซ
+item.canister.LOX.partial.name=กระป๋องออกซิเจนเหลว
+item.canister.LOX.full.name=กระป๋องที่เต็มไปด้วยออกซิเจนเหลว
+item.canister.LOX.name=ออกซิเจนเหลว
+item.canister.liquidNitrogen.partial.name=กระป๋องไนโตรเจนเหลว
+item.canister.liquidNitrogen.full.name=กระป๋องที่เต็มไปด้วยไนโตรเจนเหลว
+item.canister.liquidNitrogen.name=ไนโตรเจนเหลว
+item.canister.liquidArgon.partial.name=กระป๋องอาร์กอนเหลว
+item.canister.liquidArgon.full.name=กระป๋องที่เต็มไปด้วยอาร์กอนเหลว
+item.canister.liquidArgon.name=อาร์กอนเหลว
+item.emptyGasCanister.name=กระป๋องก๊าซเปล่า
+
+# FLUIDS AND GASES
+fluid.methane=ก๊าซมีเทน
+fluid.oxygen=ก๊าซออกซิเจน
+fluid.nitrogen=ก๊าซไนโตรเจน
+fluid.hydrogen=ก๊าซไฮโดรเจน
+fluid.carbondioxide=ก๊าซคาร์บอนไดออกไซด์
+fluid.helium=ก๊าซฮีเลียม
+fluid.argon=ก๊าซอาร์กอน
+fluid.atmosphericgases=ก๊าซชั้นบรรยากาศ
+fluid.liquidmethane=มีเทนเหลว
+fluid.liquidoxygen=ออกซิเจนเหลว
+fluid.liquidnitrogen=ไนโตรเจนเหลว
+fluid.liquidargon=อาร์กอนเหลว
+fluid.fuel=เชื้อเพลิง
+
+# BLOCKS
+tile.mars.deshmars.name=แร่เดรช
+tile.mars.coppermars.name=แร่ทองแดง
+tile.mars.tinmars.name=แร่ดีบุก
+tile.mars.ironmars.name=แร่เหล็ก
+tile.mars.marscobblestone.name=หินหยาบดาวอังคาร
+tile.mars.marsstone.name=หินดาวอังคาร
+tile.mars.marsdirt.name=หินดาวอังคารชั้นล่าง
+tile.mars.marsgrass.name=หินดาวอังคารชั้นบน
+tile.mars.marsdeco.name=บล็อกเดรช
+tile.mars.marsdungeon.name=อิฐดันเจี้ยนดาวอังคาร
+tile.treasureT2.name=กล่องสมบัติ เทียร์ 2
+tile.slimelingEgg.redEgg.name=ไข่สไลม์ลิ่งสีแดง
+tile.slimelingEgg.blueEgg.name=ไข่สไลม์ลิ่งสีน้ำเงิน
+tile.slimelingEgg.yellowEgg.name=ไข่สไลม์ลิ่งสีเหลือง
+tile.marsMachine.0.name=เทอราฟอร์มเมอร์
+tile.marsMachine.1.name=ตู้ไคโยเจนนิค
+tile.marsMachine.2.name=เครื่องควบคุมการปล่อยจรวด
+tile.marsMachine.4.name=เครื่องเปลี่ยนสถานะก๊าซ
+tile.marsMachine.5.name=เครื่องสังเคราะห์มีเทน
+tile.marsMachine.6.name=เครื่องเปลี่ยนน้ำเป็นก๊าซ
+tile.hydrogenPipe.name=ท่อไฮโดรเจน
+tile.sludge.name=ตะกอนแบคทีเรีย
+tile.creeperEgg.name=ไข่คริปเปอร์
+tile.cavernVines.name=เถาวัลย์ถ้ำ
+tile.asteroidsBlock.asteroid0.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid1.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.asteroid2.name=หินดาวเคราะห์น้อย
+tile.asteroidsBlock.oreIron.name=แร่เหล็ก
+tile.asteroidsBlock.oreIlmenite.name=แร่อิลเมไนท์
+tile.asteroidsBlock.oreAluminum.name=แร่อลูมิเนียม
+tile.beamReflector.name=เครื่องสะท้อนลำแสง
+tile.beamReceiver.name=เครื่องรับลำแสง
+tile.telepadShort.name=เครื่องเทเลพอร์ตระยะใกล้
+tile.walkway.name=ทางเดิน
+tile.walkwayWire.name=ทางเดิน
+tile.walkwayOxygenPipe.name=ทางเดิน
+tile.treasureT3.name=กล่องสมบัติ เทียร์ 3
+tile.denseIce.name=ก้อนน้ำแข็งหนาทึบ
+tile.minerBase.name=ฐานแอสโทรไมน์เนอร์
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=บันไดหินหยาบดาวอังคาร
+tile.wallGC.mars.name=กำแพงหินหยาบดาวอังคาร
+tile.slabGCHalf.marsSlab.name=แผ่นหินหยาบดาวอังคาร
+tile.marsDungeonBricksStairs.name=บันไดอิฐดันเจี้ยนดาวอังคาร
+tile.wallGC.marsBricks.name=กำแพงอิฐดันเจี้ยนดาวอังคาร
+tile.slabGCHalf.marsBricksSlab.name=แผ่นอิฐดันเจี้ยนดาวอังคาร
+
+# GUI
+gui.choosePlanet.desc.mars=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 38%
+item.deshPickSlime.description.name=สามารถขุดไข่คริปเปอร์ได้
+gui.message.noEnergy.name=พลังงานไฟฟ้าไม่พอ
+gui.message.noWater.name=น้ำไม่พอ
+gui.message.noBonemeal.name=ผงกระดูกไม่พอ
+gui.message.noSeeds.name=เมล็ดไม่พอ
+gui.message.noSaplings.name=ต้นกล้าไม่พอ
+gui.message.bubbleExp.name=ขยายฟองอากาศ
+gui.message.noValidBlocks.name=ไม่มีบล็อกที่ตรงกันในฟองอากาศ
+gui.message.terraforming.name=กำลังสร้างธรรมชาติ
+gui.message.enableTrees.name=เปิดใช้งานต้นไม้
+gui.message.enableGrass.name=เปิดใช้งานหญ้า
+gui.message.trees.name=ต้นไม้
+gui.message.grass.name=หญ้า
+gui.message.invalidFreq.name=ความถี่ไม่ถูกต้อง
+gui.message.frequency.name=ความถี่
+gui.message.destFrequency.name=เป้าหมายความถี่
+gui.message.removePad.name=ลบฐานปล่อยจรวด
+gui.message.launchWhen.name=ปล่อยเมื่อ
+gui.message.cargoUnloaded.name=จรวดขนส่งถ่ายสินค้า
+gui.message.cargoFull.name=จรวดขนส่งเต็ม
+gui.message.fullyFueled.name=เชื้อเพลิงเต็ม
+gui.message.instant.name=โดยตรง
+gui.message.tenSec.name=10 วินาที
+gui.message.thirtySec.name=30 วินาที
+gui.message.oneMin.name=1 นาที
+gui.message.redstoneSig.name=สัญญาณเรดสโตน
+gui.message.notSet.name=ไมได้ตั้งไว้
+gui.message.notEnough.name=ไม่พอ
+gui.message.success.name=เสร็จสิ้น
+gui.message.zeroWater.name=ไม่มีน้ำ!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=นี่คือเครื่องควบคุมการปล่อยจรวด$ความถี่เฉพาะ
+gui.launchController.desc.1=ความถี่ที่ใกล้จะปล่อยจรวด
+gui.launchController.desc.2=ถ้าจรวดถูกปล่อย ฐานปล่อย$จรวดจะถูกลบออก
+gui.launchController.desc.3=เมื่อตัวเลือกตรงกับที่ตั้งไว้$จรวดจะถูกปล่อย
+gui.launchController.desc.4=ซ่อนเป้าหมายความถี่$จากผู้เล่นคนอื่นๆ
+gui.terraformer.desc.0=ถังเก็บน้ำ
+
+gui.gasTank.desc.0=ก๊าซที่เก็บไว้
+gui.gasTankCompressed.desc.0=ก๊าซที่บีบอัดไว้
+gui.liquidTank.desc.0=ถังของเหลว
+gui.status.nogas.name=ไม่มีก๊าซ
+gui.status.liquefying.name=ทำให้เป็นของเหลว
+gui.status.processing.name=กำลังสังเคราะห์
+gui.status.needsCarbon.name=ต้องการคาร์บอน
+gui.status.tankfull.name=ถังเก็บเต็ม
+gui.status.tanksfull.name=ถังเก็บเต็ม
+gui.message.lowEnergy.name=พลังงานต่ำ
+gui.button.liquefy.name=เริ่มทำงาน
+gui.button.liquefyStop.name=หยุดทำงาน
+gui.gasInput.desc.0=วางกระป๋องที่บรรจุมีเทนหรือ
+gui.gasInput.desc.1=วาล์วเก็บก๊าซตรงนี้
+gui.hydrogenInput.desc.0=วางถังไฮโดรเจน
+gui.hydrogenInput.desc.1=หรือวาล์วเก็บก๊าซ
+gui.liquidOutput.desc.2=ถังก๊าซเหลว
+gui.methaneOutput.desc.2=ถังมีเทน
+gui.message.withAtmosphere0.name=ถ้าบนดาวเคราะห์เต็มไปด้วย
+gui.message.withAtmosphere1.name=ในชั้นบรรยากาศ
+item.carbonFragments.name=สะเก็ดคาร์บอน
+gui.carbonSlot.desc.0=ใส่สะเก็ดคาร์บอนตรงนี้
+gui.waterBucketSlot.desc=วางถังน้ำตรงนี้
+
+gui.cargorocket.status.waiting.0=รอการ
+gui.cargorocket.status.waiting.1=จุดระเบิด
+gui.cargorocket.status.launched.0=จรวดถูก
+gui.cargorocket.status.launched.1=ปล่อยแล้ว
+
+gas.carbondioxide.name=คาร์บอนไดออกไซด์
+gas.oxygen.name=ออกซิเจน
+gas.nitrogen.name=ไนโตรเจน
+
+gui.desc.reinforcedPlateT2.name=เทียร์ 2
+dimension.Mars.name=ดาวอังคาร
+planet.mars=ดาวอังคาร
+
+tile.treasureT2.description=พบได้ในดันเจี้ยนดาวอังคาร กล่องสามารถปลดล็อคได้เมื่อสู้กับบอสชนะ
+tile.cavernVines.description=สิ่งนี้อันตรายสำหรับสิ่งมีชีวิต มันจะเกี่ยวพันและดึงขึ้นสู่ข้างบน
+tile.slimelingEgg.description=ทุบหนึ่งครั้งโดยการใช้มือของผู้เล่น จะทำให้ออกมาเป็นสัตว์เลี้ยงของเรา
+tile.cryoChamber.description=ผู้เล่นสามารถนอนได้ระหว่างวันโดยใช้ สิ่งนี้ เพิ่มเลือดได้จำนวนเล็กน้อย แต่มีการจำกัดการใช้งาน
+tile.launchController.description=ใช้สำหรับการปล่อยจรวดในรูปแบบต่างๆ รวมถึงการปล่อยจรวดไปยังจุดหมาย สำหรับการปล่อยจรวดอัตโนมัติ
+tile.terraformer.description=ใช้สำหรับเพิ่มพื้นที่สีเขียวในดาวเคราะห์ ที่ห่างไกล เพิ่มหญ้า ต้นไม้ น้ำ เมื่อใส่วัสดุที่ถูกต้อง
+tile.creeperEgg.description=พบได้ในดันเจี้ยนดาวอังคาร และเมื่อไข่ถูกแรงระเบิดจะสปอนคริปเปอร์อวกาศออกมา
+tile.gasLiquefier.description=ใช้เก็บก๊าซจากชั้นบรรยากาศหรือจาก กระป๋องของเหลว ส่วนมีเทนเหลวสามารถกลั่นและใช้เป็น เชื้อเพลิงจรวดได้เมื่อเสร็จสิ้นการกลั่น
+tile.methaneSynthesizer.description=ใช้ผลิตมีเทนสำหรับใช้ใน เครื่องเปลี่ยนสถานะก๊าซ
+tile.electrolyzer.description=ใช้เปลี่ยนน้ำให้เป็นไฮโดรเจนกับออกซิเจน และจะมีประโยชน์กับเครื่องสังเคราะห์มีเทน
+tile.hydrogenPipe.description=ใช้ส่งไฮโดรเจนไปยังเครื่องมืออื่นๆ ที่ใช้งานไฮโดรเจน
+
+gui.slimeling.chat.wrongPlayer=นี่ไม่ใช่สไลม์ลิ่งของฉัน!
+gui.cryogenic.chat.cantUse=ฉันไม่สามารถใช้ตู้นี้ได้เป็นเวลา %d วินาที
+gui.slimeling.name=ชื่อ
+gui.slimeling.owner=เจ้าของ
+gui.slimeling.kills=ฆ่าได้
+gui.slimeling.scale=ขนาด
+gui.slimeling.button.sit=นั่ง
+gui.slimeling.button.follow=ตามเจ้าของ
+gui.slimeling.sitting=นั่ง
+gui.slimeling.following=ตามเจ้าของ
+gui.slimeling.damage=แรงโจมตี
+gui.slimeling.food=อาหารที่ชอบ
+
+planet.asteroids=ดาวเคราะห์น้อย
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=นี่คือที่อยู่ของเครื่องเทเลพอร์ต
+gui.telepad.desc.1=ที่อยู่ของเครื่องเทเลพอร์ตอื่นๆ$สิ่งมีชีวิตจะถูกส่งไปยังเป้าหมาย
+gui.message.address.name=ที่อยู่
+gui.message.destAddress.name=เป้าหมายของที่อยู่
+gui.message.invalidAddress.name=ที่อยู่ผิดพลาด
+gui.message.invalidTargetAddress.name=ที่อยู่ของเป้าหมายผิดพลาด
+gui.message.receivingActive.name=รับข้อมูลการทำงาน
+gui.message.telepadTooFar.name=เป้าหมายไกลเกินไป! (สูงสุด %d)
+gui.message.telepadWrongDim.name=เป้าหมายผิดมิติ!
+gui.message.telepadNotFound.name=ไม่เจอเครื่องเทเลพอร์ต!
+gui.message.sendingActive.name=กำลังส่งการทำงาน
+gui.message.range.name=ระยะ: %d บล็อก
+gui.message.notEnoughEnergy.name=พลังงานไม่พอ!
+gui.message.targetNoEnergy.name=เป้าหมายพลังงานไม่พอ!
+gui.message.grapple.fail=ฉันต้องการเส้นเชือกจำนวนเล็กน้อย ถ้าต้องการที่จะโยนตะขอออกไป!
+gui.message.astroMiner.fail=ฐานนี้มีแอสโทรไมน์เนอร์แล้ว!
+gui.message.astroMiner1.fail=พื้นที่โรงจอดถูกปิดกั้นโดย:
+gui.message.astroMiner1A.fail=เส้นทางของแอสโทรไมน์เนอร์ถูกบล็อกโดย:
+gui.message.astroMiner2.fail=มีแอสโทรไมน์เนอร์มากเกินไป!
+gui.message.astroMiner3.fail=ฐานแอสโทรไมน์เนอร์ถูกลบออกไป!
+gui.message.astroMiner4.fail=แอสโทรไมน์เนอร์พลังงานหมดและไม่สามารถกลับไปยังฐานได้!
+gui.message.astroMiner5.fail=เส้นทางของแอสโทรไมน์เนอร์ที่ไปยังฐาน ดูเหมือนว่าจะถูกปิดกั้น!
+gui.message.astroMiner6.fail=แอสโทรไมน์เนอร์ทำเหมืองเสร็จเรียบร้อย และจะหยุดทำงาน!
+gui.message.astroMiner7.fail=แอสโทรไมน์เนอร์ไม่สามารถทำงานได้บนสถานีอวกาศ!
+gui.message.astroMiner8.fail=แอสโทรไมน์เนอร์คันที่สองถูกตรวจพบในฐานแรก, แอสโทรไมน์เนอร์คันแรกจะหยุดทำงาน
+gui.button.recall.name=เรียกกลับ
+gui.miner.outOfRange=ออกจากระยะที่กำหนด
+gui.miner.offline=ออฟไลน์
+gui.miner.stuck=ติดอยู่ที่:
+gui.miner.docked=จอดแล้ว
+gui.miner.travelling=กำลังเดินทาง
+gui.miner.mining=กำลังขุด
+gui.miner.returning=กำลังกลับ
+gui.miner.docking=กำลังจอด
+gui.miner.mined=ขุดแล้ว
+
+tile.treasureT3.description=ยังไม่ใช้ตอนนี้
+tile.walkway.description=ใช้สำหรับการตกแต่งที่คล้ายกับสภาพภายใน ยานอวกาศ
+tile.walkwayAluminumWire.description=ใช้สำหรับเป็นทางเดินและใช้เชื่อมต่อ กับแหล่งเก็บพลังงานได้ ด้วยสายไฟอลูมิเนียมที่อยู่ข้างใต้
+tile.walkwayOxygenPipe.description=ใช้สำหรับเป็นทางเดินและใช้เชื่อมต่อ กับแหล่งเก็บออกซิเจนได้ ด้วยท่อออกซิเจนที่อยู่ข้างใต้
+tile.beamReflector.description=ใช้สำหรับเปลี่ยนทิศทางของพลังงานลำแสง จากเป้าหมายไปยังทิศทางอื่นๆ คลิ๊กขวาเพื่อเปลี่ยนทิศทางการสะท้อนแสง ไปยังเป้าหมายอื่นๆ
+tile.beamReceiver.description=ใช้เชื่อมต่อไปยังเครื่องมือต่างๆ ทั้งส่งเข้าและส่งออก พลังงานจะถูกส่งโดยใช้พลังงานลำแสง
+tile.telepadShort.description=ใช้สำหรับเทเลพอร์ทผู้เล่นหรือสิ่งมีชีวิต อื่นๆ ในระยะ 256 บล็อก และต้องเชื่อมต่อกับเครื่องเทเลพอร์ตอื่นๆ ด้วย
+tile.minerBase.description=ใช้สำหรับเป็นฐานจอดของแอสโทรไมน์เนอร์ วางฐานเป็น 2x2x2 เพื่อทำให้ฐานสมบูรณ์
+
+# SCHEMATICS
+schematic.rocketT3.name=จรวด เทียร์ 3
+schematic.cargoRocket.name=จรวดขนส่งอัตโนมัติ
+schematic.astroMiner.name=แอสโทรไมน์เนอร์
+
+# ENTITIES
+entity.Sludgeling.name=หนอนแบคทีเรีย
+entity.Slimeling.name=สไลม์ลิ่ง
+entity.CreeperBoss.name=บอสคริปเปอร์อวกาศ
+entity.SpaceshipT2.name=จรวด เทียร์ 2
+entity.CargoRocket.name=จรวดขนส่ง
+entity.LandingBalloons.name=ยานลงจอดบอลลูน
+entity.SmallAsteroidGC.name=ดาวเคราะห์น้อยขนาดเล็ก
+entity.GrappleHookGC.name=ตะขอ
+entity.Tier3RocketGC.name=จรวด เทียร์ 3
+entity.EntryPodAsteroids.name=ยานลงจอด
+entity.AstroMiner.name=แอสโทรไมน์เนอร์
+
+# CONTAINERS
+container.launchcontroller.name=เครื่องควบคุมการปล่อยจรวด
+container.tileTerraformer.name=เทอราฟอร์มเมอร์
+container.marsLander.name=ยานลงจอดบอลลูน
+container.shortRangeTelepad.name=เครื่องเทเลพอร์ตระยะใกล้
+container.entryPod.name=ยานลงจอด
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=ID มิติดาวอังคาร
+gc.configgui.idSchematicRocketT2=ID แผนผังจรวด เทียร์ 2
+gc.configgui.idSchematicCargoRocket=ID แผนผังจรวดขนส่ง
+gc.configgui.launchControllerChunkLoad=เปิดใช้งานเครื่องควบคุมการปล่อยจรวดให้โหลด Chunk
+gc.configgui.launchControllerAllDims=เปิดใช้งานเครื่องควบคุมการปล่อยจรวดให้โหลดทุกมิติ
+gc.configgui.dimensionIDAsteroids=ID มิติดาวเคราะห์น้อย
+gc.configgui.idSchematicRocketT3=ID แผนผังจรวด เทียร์ 3
+gc.configgui.disableGalacticraftHelium=ปิดใช้งานก๊าซฮีเลียมบนดาวเคราะห์
+gc.configgui.astroMinersMax=ค่าสูงสุดของแอสโทรไมน์เนอร์ต่อผู้เล่น
+
+gc.configgui.planets.title=การตั้งค่ากาแลคติคคราฟ - ดาวเคราะห์

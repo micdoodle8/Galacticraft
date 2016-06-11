@@ -100,7 +100,7 @@ public class RoomBossMars extends DungeonRoom
 
         if (tile == null || !(tile instanceof TileEntityDungeonSpawnerMars))
         {
-            TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawnerMars(EntityCreeperBoss.class);
+            TileEntityDungeonSpawner spawner = new TileEntityDungeonSpawnerMars();
             spawner.setRoom(new Vector3(this.posX, this.posY, this.posZ), new Vector3(this.sizeX, this.sizeY, this.sizeZ));
             this.worldObj.setTileEntity(this.spawnerCoords, spawner);
         }

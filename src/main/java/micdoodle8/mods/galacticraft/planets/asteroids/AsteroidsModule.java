@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
@@ -62,9 +63,6 @@ public class AsteroidsModule implements IPlanetsModule
 {
     public static Planet planetAsteroids;
 
-    public static final String ASSET_PREFIX = "galacticraftasteroids";
-    public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
-
     public static AsteroidsPlayerHandler playerHandler;
     public static Fluid fluidMethaneGas;
     public static Fluid fluidOxygenGas;
@@ -81,7 +79,7 @@ public class AsteroidsModule implements IPlanetsModule
         Fluid returnFluid = FluidRegistry.getFluid(fluidName);
     	if (returnFluid == null)
         {
-            ResourceLocation texture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX + ":fluids/" + fluidTexture);
+            ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":fluids/" + fluidTexture);
     		FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
     		returnFluid = FluidRegistry.getFluid(fluidName);
         }
@@ -93,11 +91,9 @@ public class AsteroidsModule implements IPlanetsModule
     {
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
-        FMLCommonHandler.instance().bus().register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
         MinecraftForge.EVENT_BUS.register(eventHandler);
-        FMLCommonHandler.instance().bus().register(eventHandler);
-        RecipeSorter.register("galacticraftmars:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+        RecipeSorter.register("galacticraftplanets:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
         registerFluid("methane", 1, 11, 295, true, "MethaneGas");
         registerFluid("atmosphericgases", 1, 13, 295, true, "AtmosphericGases");
@@ -145,7 +141,6 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
 
         AsteroidsTickHandlerServer eventHandler = new AsteroidsTickHandlerServer();
-        FMLCommonHandler.instance().bus().register(eventHandler);
         MinecraftForge.EVENT_BUS.register(eventHandler);
 
         this.registerEntities();

@@ -49,7 +49,7 @@ public class ItemBasicAsteroids extends Item
 
         for (String name : ItemBasicAsteroids.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + name);
+            this.icons[i++] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + name);
         }
     }
 

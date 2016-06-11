@@ -111,10 +111,9 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         this.setUnlocalizedName(assetName);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata()));
         par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ALUMINUM_WIRE_HEAVY.getMetadata()));

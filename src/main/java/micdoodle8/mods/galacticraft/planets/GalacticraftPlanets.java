@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -42,13 +43,16 @@ public class GalacticraftPlanets
     public static final String MODULE_KEY_MARS = "MarsModule";
     public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
 
+    public static final String ASSET_PREFIX = "galacticraftplanets";
+    public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
+
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxyClient", serverSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxy")
     public static PlanetsProxy proxy;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
         
         //Initialise configs, converting mars.conf + asteroids.conf to planets.conf if necessary
         File oldMarsConf = new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf");
@@ -84,21 +88,6 @@ public class GalacticraftPlanets
     public void serverStarting(FMLServerStartingEvent event)
     {
         GalacticraftPlanets.proxy.serverStarting(event);
-    }
-
-    public static int getBlockRenderID(Block block)
-    {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
-        {
-            int id = module.getBlockRenderID(block);
-
-            if (id > 1)
-            {
-                return id;
-            }
-        }
-
-        return 1;
     }
 
     public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)

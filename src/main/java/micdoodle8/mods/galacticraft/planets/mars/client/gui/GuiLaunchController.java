@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -43,7 +44,7 @@ import java.util.Random;
 
 public class GuiLaunchController extends GuiContainerGC implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
-    private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/launchController.png");
+    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launchController.png");
 
     private TileEntityLaunchController launchController;
 

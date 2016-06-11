@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderSlimeling extends RenderLiving
 {
-    private static final ResourceLocation landerTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/model/slimeling/green.png");
+    private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/slimeling/green.png");
 
     public RenderSlimeling()
     {

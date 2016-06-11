@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftcore:blocks/machine",
+        "down": "galacticraftcore:blocks/machine",
+        "up": "galacticraftcore:blocks/machine",
+        "north": "galacticraftplanets:blocks/cryoDummy",
+        "east": "galacticraftcore:blocks/machine_input",
+        "south": "galacticraftplanets:blocks/cryoDummy",
+        "west": "galacticraftcore:blocks/machine"
+    }
+}

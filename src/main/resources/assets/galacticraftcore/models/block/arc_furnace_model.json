@@ -1,12 +1,12 @@
 {
     "parent": "block/cube",
     "textures": {
-        "particle": "galacticraftasteroids:blocks/machine",
-        "down": "galacticraftasteroids:blocks/machine",
-        "up": "galacticraftasteroids:blocks/machine",
-        "north": "galacticraftasteroids:blocks/electricFurnace",
-        "east": "galacticraftasteroids:blocks/machine_input",
-        "south": "galacticraftasteroids:blocks/machine_side",
-        "west": "galacticraftasteroids:blocks/machine_side"
+        "particle": "galacticraftplanets:blocks/machine",
+        "down": "galacticraftplanets:blocks/machine",
+        "up": "galacticraftplanets:blocks/machine",
+        "north": "galacticraftplanets:blocks/electricFurnace",
+        "east": "galacticraftplanets:blocks/machine_input",
+        "south": "galacticraftplanets:blocks/machine_side",
+        "west": "galacticraftplanets:blocks/machine_side"
     }
 }

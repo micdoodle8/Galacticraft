@@ -17,7 +17,7 @@
 //
 //public class ItemRendererGrappleHook implements IItemRenderer
 //{
-//    public static final ResourceLocation grappleTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/grapple.png");
+//    public static final ResourceLocation grappleTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/grapple.png");
 //
 //    public static IModelCustom modelGrapple;
 //

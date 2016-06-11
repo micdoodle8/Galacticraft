@@ -24,7 +24,7 @@
 //
 //    protected static RenderItem drawItems = new RenderItem();
 //
-//    protected ResourceLocation texture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/tier3rocket.png");
+//    protected ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/tier3rocket.png");
 //
 //    public ItemRendererTier3Rocket(IModelCustom model)
 //    {

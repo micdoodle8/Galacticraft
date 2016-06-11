@@ -33,7 +33,7 @@ public class BlockIceAsteroids extends BlockBreakable
         this.slipperiness = 0.98F;
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.tabBlock);
-//        this.setBlockTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
         this.setHardness(0.5F);
         this.setUnlocalizedName(assetName);
         this.setStepSound(soundTypeGlass);

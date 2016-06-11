@@ -24,10 +24,15 @@ import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemBasic;
+import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
+import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
@@ -55,6 +60,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -152,6 +158,8 @@ public class ClientProxyCore extends CommonProxyCore
 
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
+
+    private List<Item> itemsToRegisterJson = Lists.newArrayList();
     
     public static void reset()
     {
@@ -164,6 +172,8 @@ public class ClientProxyCore extends CommonProxyCore
     public void preInit(FMLPreInitializationEvent event)
     {
         ClientProxyCore.scaleup.put(ClientProxyCore.numbers, 0, 16);
+
+        OBJLoader.instance.addDomain(GalacticraftCore.ASSET_PREFIX);
 
 //        ClientProxyCore.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
 //        ClientProxyCore.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
@@ -178,6 +188,36 @@ public class ClientProxyCore extends CommonProxyCore
     public void init(FMLInitializationEvent event)
     {
         ClientProxyCore.registerBlockRenderers();
+
+        for (Item toReg : itemsToRegisterJson)
+        {
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, toReg);
+        }
+
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 0, "canister_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 1, "canister_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 0, "tier1engine");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 1, "tier1booster");
+
+        for (int i = 0; i < ItemParaChute.names.length; ++i)
+        {
+            String toReg = ItemParaChute.names[i];
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, i, "parachute_" + toReg);
+        }
+
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic_buggy");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocketT2");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.key, 0, "key");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 0, "wheel");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 1, "seat");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 2, "storage");
+        for (int i = 0; i < ItemBasic.names.length; ++i)
+        {
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, i, ItemBasic.names[i]);
+        }
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoricIronIngot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressedMeteoricIron");
+
         Class[][] commonTypes =
                 {
                         { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
@@ -243,6 +283,66 @@ public class ClientProxyCore extends CommonProxyCore
                 "galacticraftcore:moon_stone",
                 "galacticraftcore:moon_turf_0",
                 "galacticraftcore:moon_dungeon_brick");
+        addVariants("canister", "galacticraftcore:canister_tin",
+                "galacticraftcore:canister_copper");
+        addVariants("engine", "galacticraftcore:tier1engine",
+                "galacticraftcore:tier1booster");
+        addVariants("parachute", "galacticraftcore:parachute_plain",
+                "galacticraftcore:parachute_black",
+                "galacticraftcore:parachute_blue",
+                "galacticraftcore:parachute_lime",
+                "galacticraftcore:parachute_brown",
+                "galacticraftcore:parachute_darkblue",
+                "galacticraftcore:parachute_darkgray",
+                "galacticraftcore:parachute_darkgreen",
+                "galacticraftcore:parachute_gray",
+                "galacticraftcore:parachute_magenta",
+                "galacticraftcore:parachute_orange",
+                "galacticraftcore:parachute_pink",
+                "galacticraftcore:parachute_purple",
+                "galacticraftcore:parachute_red",
+                "galacticraftcore:parachute_teal",
+                "galacticraftcore:parachute_yellow");
+        addVariants("oilCanisterPartial", "galacticraftcore:oilCanisterPartial_0",
+                "galacticraftcore:oilCanisterPartial_1",
+                "galacticraftcore:oilCanisterPartial_2",
+                "galacticraftcore:oilCanisterPartial_3",
+                "galacticraftcore:oilCanisterPartial_4",
+                "galacticraftcore:oilCanisterPartial_5",
+                "galacticraftcore:oilCanisterPartial_6");
+        addVariants("schematic", "galacticraftcore:schematic_buggy",
+                "galacticraftcore:schematic_rocketT2");
+        addVariants("key",
+                "galacticraftcore:key");
+        addVariants("buggymat",
+                "galacticraftcore:wheel",
+                "galacticraftcore:seat",
+                "galacticraftcore:storage");
+        addVariants("basicItem",
+                "galacticraftcore:solar_module_0",
+                "galacticraftcore:solar_module_1",
+                "galacticraftcore:rawSilicon",
+                "galacticraftcore:ingotCopper",
+                "galacticraftcore:ingotTin",
+                "galacticraftcore:ingotAluminum",
+                "galacticraftcore:compressedCopper",
+                "galacticraftcore:compressedTin",
+                "galacticraftcore:compressedAluminum",
+                "galacticraftcore:compressedSteel",
+                "galacticraftcore:compressedBronze",
+                "galacticraftcore:compressedIron",
+                "galacticraftcore:waferSolar",
+                "galacticraftcore:waferBasic",
+                "galacticraftcore:waferAdvanced",
+                "galacticraftcore:dehydratedApple",
+                "galacticraftcore:dehydratedCarrot",
+                "galacticraftcore:dehydratedMelon",
+                "galacticraftcore:dehydratedPotato",
+                "galacticraftcore:frequencyModule",
+                "galacticraftcore:ambientThermalController");
+        addVariants("meteoricIronIngot",
+                "galacticraftcore:meteoricIronIngot",
+                "galacticraftcore:compressedMeteoricIron");
 
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
@@ -260,7 +360,16 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public void postRegisterBlock(Block block)
     {
-        ModelLoader.setCustomStateMapper(block, GalacticraftStateMapper.INSTANCE);
+        // ModelLoader.setCustomStateMapper(block, GalacticraftStateMapper.INSTANCE);
+    }
+
+    @Override
+    public void postRegisterItem(Item item)
+    {
+        if (!item.getHasSubtypes())
+        {
+            itemsToRegisterJson.add(item);
+        }
     }
 
     public static void registerEntityRenderers()
@@ -309,97 +418,86 @@ public class ClientProxyCore extends CommonProxyCore
     public static void registerHandlers()
     {
         TickHandlerClient tickHandlerClient = new TickHandlerClient();
-        FMLCommonHandler.instance().bus().register(tickHandlerClient);
         MinecraftForge.EVENT_BUS.register(tickHandlerClient);
-        FMLCommonHandler.instance().bus().register(new KeyHandlerClient());
+        MinecraftForge.EVENT_BUS.register(new KeyHandlerClient());
         ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
         MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
     }
 
-    private static void registerBlockJson(Block block)
-    {
-        registerBlockJson(block, 0, block.getUnlocalizedName().substring(5));
-    }
-
-    private static void registerBlockJson(Block block, int meta, String name)
-    {
-        mc.getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + name, "inventory"));
-    }
-
     public static void registerBlockRenderers()
     {
-        registerBlockJson(GCBlocks.crudeOil);
-        registerBlockJson(GCBlocks.fuel);
-        registerBlockJson(GCBlocks.breatheableAir);
-        registerBlockJson(GCBlocks.brightAir);
-        registerBlockJson(GCBlocks.brightBreatheableAir);
-        registerBlockJson(GCBlocks.brightLamp);
-        registerBlockJson(GCBlocks.treasureChestTier1);
-        registerBlockJson(GCBlocks.landingPad, 0, "landing_pad");
-        registerBlockJson(GCBlocks.landingPad, 1, "buggy_pad");
-        registerBlockJson(GCBlocks.unlitTorch);
-        registerBlockJson(GCBlocks.unlitTorchLit);
-        registerBlockJson(GCBlocks.oxygenDistributor);
-        registerBlockJson(GCBlocks.oxygenPipe);
-        registerBlockJson(GCBlocks.oxygenCollector);
-        registerBlockJson(GCBlocks.oxygenCompressor, 0, "oxygen_compressor");
-        registerBlockJson(GCBlocks.oxygenCompressor, 4, "oxygen_decompressor");
-        registerBlockJson(GCBlocks.oxygenSealer);
-        registerBlockJson(GCBlocks.oxygenDetector);
-        registerBlockJson(GCBlocks.nasaWorkbench);
-        registerBlockJson(GCBlocks.fallenMeteor);
-        registerBlockJson(GCBlocks.basicBlock, 3, "deco_block_0");
-        registerBlockJson(GCBlocks.basicBlock, 4, "deco_block_1");
-        registerBlockJson(GCBlocks.basicBlock, 5, "ore_copper_gc");
-        registerBlockJson(GCBlocks.basicBlock, 6, "ore_tin_gc");
-        registerBlockJson(GCBlocks.basicBlock, 7, "ore_aluminum_gc");
-        registerBlockJson(GCBlocks.basicBlock, 8, "ore_silicon");
-        registerBlockJson(GCBlocks.basicBlock, 9, "block_copper_gc");
-        registerBlockJson(GCBlocks.basicBlock, 10, "block_tin_gc");
-        registerBlockJson(GCBlocks.basicBlock, 11, "block_aluminum_gc");
-        registerBlockJson(GCBlocks.basicBlock, 12, "block_meteoric_iron_gc");
-        registerBlockJson(GCBlocks.airLockFrame, 0, "air_lock_frame");
-        registerBlockJson(GCBlocks.airLockFrame, 1, "air_lock_controller");
-        registerBlockJson(GCBlocks.airLockSeal);
-        registerBlockJson(GCBlocks.refinery);
-        registerBlockJson(GCBlocks.fuelLoader);
-        registerBlockJson(GCBlocks.landingPadFull, 0, "landing_pad_full");
-        registerBlockJson(GCBlocks.landingPadFull, 1, "buggy_pad_full");
-        registerBlockJson(GCBlocks.spaceStationBase);
-        registerBlockJson(GCBlocks.fakeBlock);
-        registerBlockJson(GCBlocks.sealableBlock, 1, "enclosed_oxygen_pipe");
-        registerBlockJson(GCBlocks.sealableBlock, 14, "enclosed_aluminum_wire");
-        registerBlockJson(GCBlocks.sealableBlock, 15, "enclosed_heavy_aluminum_wire");
-        registerBlockJson(GCBlocks.cargoLoader, 0, "cargo_loader");
-        registerBlockJson(GCBlocks.cargoLoader, 4, "cargo_unloader");
-        registerBlockJson(GCBlocks.parachest);
-        registerBlockJson(GCBlocks.solarPanel, 0, "basic_solar");
-        registerBlockJson(GCBlocks.solarPanel, 4, "advanced_solar");
-        registerBlockJson(GCBlocks.machineBase, 0, "coal_generator");
-        registerBlockJson(GCBlocks.machineBase, 12, "ingot_compressor");
-        registerBlockJson(GCBlocks.machineBase2, 0, "electric_ingot_compressor");
-        registerBlockJson(GCBlocks.machineBase2, 4, "circuit_fabricator");
-        registerBlockJson(GCBlocks.machineBase2, 8, "oxygen_storage_module");
-        registerBlockJson(GCBlocks.machineTiered, 0, "energy_storage");
-        registerBlockJson(GCBlocks.machineTiered, 4, "electric_furnace");
-        registerBlockJson(GCBlocks.machineTiered, 8, "cluster_storage");
-        registerBlockJson(GCBlocks.machineTiered, 12, "arc_furnace");
-        registerBlockJson(GCBlocks.aluminumWire, 0, "aluminum_wire");
-        registerBlockJson(GCBlocks.aluminumWire, 1, "aluminum_wire");
-        registerBlockJson(GCBlocks.glowstoneTorch);
-        registerBlockJson(GCBlocks.blockMoon, 0, "ore_copper_moon");
-        registerBlockJson(GCBlocks.blockMoon, 1, "ore_tin_moon");
-        registerBlockJson(GCBlocks.blockMoon, 2, "ore_cheese_moon");
-        registerBlockJson(GCBlocks.blockMoon, 3, "moon_dirt_moon");
-        registerBlockJson(GCBlocks.blockMoon, 4, "moon_stone");
-        registerBlockJson(GCBlocks.blockMoon, 5, "moon_turf_0");
-        registerBlockJson(GCBlocks.blockMoon, 14, "moon_dungeon_brick");
-        registerBlockJson(GCBlocks.cheeseBlock);
-        registerBlockJson(GCBlocks.spinThruster);
-        registerBlockJson(GCBlocks.screen);
-        registerBlockJson(GCBlocks.telemetry);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.crudeOil);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fuel);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.breatheableAir);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightAir);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightBreatheableAir);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightLamp);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.treasureChestTier1);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPad, 0, "landing_pad");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPad, 1, "buggy_pad");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorch);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenDistributor);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenPipe);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCollector);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCompressor, 0, "oxygen_compressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCompressor, 4, "oxygen_decompressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenSealer);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenDetector);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.nasaWorkbench);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fallenMeteor);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 3, "deco_block_0");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 4, "deco_block_1");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 5, "ore_copper_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 6, "ore_tin_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 7, "ore_aluminum_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 8, "ore_silicon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 9, "block_copper_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 10, "block_tin_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 11, "block_aluminum_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 12, "block_meteoric_iron_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockSeal);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.refinery);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fuelLoader);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPadFull, 1, "buggy_pad_full");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.spaceStationBase);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fakeBlock);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.sealableBlock, 1, "enclosed_oxygen_pipe");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.sealableBlock, 14, "enclosed_aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.sealableBlock, 15, "enclosed_heavy_aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.cargoLoader, 0, "cargo_loader");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.cargoLoader, 4, "cargo_unloader");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.parachest);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.solarPanel, 0, "basic_solar");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.solarPanel, 4, "advanced_solar");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase, 0, "coal_generator");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase, 12, "ingot_compressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase2, 0, "electric_ingot_compressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase2, 4, "circuit_fabricator");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase2, 8, "oxygen_storage_module");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 0, "energy_storage");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 4, "electric_furnace");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 8, "cluster_storage");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 12, "arc_furnace");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 0, "aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 2, "ore_cheese_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 3, "moon_dirt_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 4, "moon_stone");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 5, "moon_turf_0");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 14, "moon_dungeon_brick");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.cheeseBlock);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.spinThruster);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.screen);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.telemetry);
     }
 
     public static void registerTileEntityRenderers()

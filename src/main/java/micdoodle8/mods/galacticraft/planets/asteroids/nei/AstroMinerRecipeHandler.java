@@ -133,7 +133,7 @@
 //    @Override
 //    public String getGuiTexture()
 //    {
-//        return AsteroidsModule.TEXTURE_PREFIX + "textures/gui/schematic_astro_miner.png";
+//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_astro_miner.png";
 //    }
 //
 //    @Override

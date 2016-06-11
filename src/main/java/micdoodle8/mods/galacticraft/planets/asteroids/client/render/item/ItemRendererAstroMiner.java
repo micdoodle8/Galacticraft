@@ -22,7 +22,7 @@
 //    protected IModelCustom modellasergl;
 //    protected IModelCustom modellasergr;
 //    protected static RenderItem drawItems = new RenderItem();
-//    protected ResourceLocation texture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/model/astroMiner_off.png");
+//    protected ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/astroMiner_off.png");
 //
 //    public ItemRendererAstroMiner()
 //    {

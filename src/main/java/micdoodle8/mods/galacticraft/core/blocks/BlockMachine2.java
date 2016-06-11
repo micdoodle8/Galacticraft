@@ -112,7 +112,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
     public int getRenderType()
     {
 //        return GalacticraftCore.proxy.getBlockRender(this);
-        return -1;
+        return 3;
     }
 
     @Override
@@ -406,9 +406,8 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         return new ItemStack(this, 1, BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(this.getElectricCompressor());
         par3List.add(this.getCircuitFabricator());
@@ -466,6 +465,7 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
@@ -473,11 +473,13 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType)state.getValue(TYPE)).getMeta() * 4;
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);

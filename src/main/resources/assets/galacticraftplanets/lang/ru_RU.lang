@@ -1,0 +1,328 @@
+﻿# Galacticraft Mars Language File = RUSSIA RUSSIAN
+
+# GENERAL ITEMS
+item.rawDesh.name=Необработанная деш
+item.deshStick.name=Палка из деш
+item.ingotDesh.name=Слиток деш
+item.spaceshipTier2.t2Rocket.name=Ракета 2-го уровня
+item.reinforcedPlateT2.name=Сверхпрочное покрытие
+item.tier2.desc=2-ой уровень
+item.slimelingCargo.name=Сумка слаймлинга
+item.key.T2.name=Ключ от подземелья 2-го уровня
+item.compressedDesh.name=Сжатая деш
+item.spaceshipTier2.cargoRocket.name=Грузовая ракета
+item.fluidManip.name=Манипулятор жидкости
+item.bucketSludge.name=Ведро бактериального осадка
+fluid.bacterialsludge=Бактериальный осадок
+item.itemTier3Rocket.t3Rocket.name=Ракета 3-го уровня
+item.itemAstroMiner.name=Астрономический шахтёр
+item.heavyNoseCone.name=Прочный головной обтекатель
+item.compressedTitanium.name=Сжатый титан
+item.ingotTitanium.name=Титановый слиток
+item.shardTitanium.name=Титановый осколок
+item.shardIron.name=Железный осколок
+item.rocketFinsT2.name=Прочный ракетный стабилизатор
+item.engineT2.name=Прочный ракетный двигатель
+item.reinforcedPlateT3.name=Сверхпрочное покрытие
+item.grapple.name=Крюк
+item.atmosphericValve.name=Атмосферный клапан
+item.thermalCloth.name=Теплоустойчивая ткань
+item.beamCore.name=Лучевое ядро
+item.orionDrive.name=Привод Ориона
+item.tier3.desc=3-ий уровень
+
+# TOOLS
+item.deshPick.name=Кирка из деш
+item.deshPickSlime.name=Липкая кирка из деш
+item.deshAxe.name=Топор из деш
+item.deshHoe.name=Мотыга из деш
+item.deshSpade.name=Лопата из деш
+item.deshSword.name=Меч из деш
+item.titanium_pickaxe.name=Титановая кирка
+item.titanium_axe.name=Титановый топор
+item.titanium_hoe.name=Титановая мотыга
+item.titanium_shovel.name=Титановая лопата
+item.titanium_sword.name=Титановый меч
+
+# ARMOR
+item.deshHelmet.name=Шлем из деш
+item.deshChestplate.name=Кираса из деш
+item.deshLeggings.name=Поножи из деш
+item.deshBoots.name=Ботинки из деш
+item.thermalHelm.name=Теплоустойчивый шлем
+item.thermalChestplate.name=Теплоустойчивая кираса
+item.thermalLeggings.name=Теплоустойчивые поножи
+item.thermalBoots.name=Теплоустойчивые ботинки
+item.titanium_helmet.name=Титановый шлем
+item.titanium_chestplate.name=Титановая кираса
+item.titanium_leggings.name=Титановые поножи
+item.titanium_boots.name=Титановые ботинки
+
+# CANISTERS ETC
+item.methaneCanisterPartial.name=Канистра для метана
+item.methaneCanister.name=Канистра метана
+item.canister.gas.name=Газ
+item.canister.LOX.partial.name=Канистра жидкого кислорода
+item.canister.LOX.full.name=Заполненная канистра жидкого кислорода
+item.canister.LOX.name=ЖК
+item.canister.liquidNitrogen.partial.name=Канистра жидкого азота
+item.canister.liquidNitrogen.full.name=Заполненная канистра жидкого азота
+item.canister.liquidNitrogen.name=Жидкость
+item.canister.liquidArgon.partial.name=Канистра жидкого аргона
+item.canister.liquidArgon.full.name=Заполненная канистра жидкого аргона
+item.canister.liquidArgon.name=Жидкость
+item.emptyGasCanister.name=Пустая канистра для газа
+
+# FLUIDS AND GASES
+fluid.methane=Метан
+fluid.oxygen=Кислород
+fluid.nitrogen=Азот
+fluid.hydrogen=Водород
+fluid.carbondioxide=Углекислый газ
+fluid.helium=Гелий
+fluid.argon=Аргон
+fluid.atmosphericgases=Атмосферные газы
+fluid.liquidmethane=Жидкий метан
+fluid.liquidoxygen=Жидкий кислород
+fluid.liquidnitrogen=Жидкий азот
+fluid.liquidargon=Жидкий аргон
+fluid.fuel=Топливо
+
+# BLOCKS
+tile.mars.deshmars.name=Руда деш
+tile.mars.coppermars.name=Медная руда
+tile.mars.tinmars.name=Оловянная руда
+tile.mars.ironmars.name=Железная руда
+tile.mars.marscobblestone.name=Марсианский булыжник
+tile.mars.marsstone.name=Марсианский камень
+tile.mars.marsdirt.name=Марсианский подповерхностный камень
+tile.mars.marsgrass.name=Марсианский поверхностный камень
+tile.mars.marsdeco.name=Блок деш
+tile.mars.marsdungeon.name=Кирпич марсианской сокровищницы
+tile.treasureT2.name=Сундук с сокровищами 2-го уровня
+tile.slimelingEgg.redEgg.name=Красное яйцо слаймлинга
+tile.slimelingEgg.blueEgg.name=Синее яйцо слаймлинга
+tile.slimelingEgg.yellowEgg.name=Жёлтое яйцо слаймлинга
+tile.marsMachine.0.name=Терраформер
+tile.marsMachine.1.name=Криогенная камера
+tile.marsMachine.2.name=Контроллер запуска
+tile.marsMachine.4.name=Сжижитель газа
+tile.marsMachine.5.name=Синтезатор метана
+tile.marsMachine.6.name=Электролизёр воды
+tile.hydrogenPipe.name=Труба для водорода
+tile.sludge.name=Бактериальный осадок
+tile.creeperEgg.name=Яйцо крипера
+tile.cavernVines.name=Пещерные лианы
+tile.asteroidsBlock.asteroid0.name=Астероидный камень
+tile.asteroidsBlock.asteroid1.name=Астероидный камень
+tile.asteroidsBlock.asteroid2.name=Астероидный камень
+tile.asteroidsBlock.oreIron.name=Железная руда
+tile.asteroidsBlock.oreIlmenite.name=Ильменитовая руда
+tile.asteroidsBlock.oreAluminum.name=Алюминиевая руда
+tile.beamReflector.name=Лучевой отражатель энергии
+tile.beamReceiver.name=Лучевой приёмник энергии
+tile.telepadShort.name=Короткодистанционный телепорт
+tile.walkway.name=Дорожка
+tile.walkwayWire.name=Дорожка
+tile.walkwayOxygenPipe.name=Дорожка
+tile.treasureT3.name=Сундук с сокровищами 3-го уровня
+tile.denseIce.name=Плотный лёд
+tile.minerBase.name=Основание астрономического шахтёра
+
+# DECOBLOCKS
+tile.marsCobblestoneStairs.name=Ступеньки из марсианского булыжника
+tile.wallGC.mars.name=Стена из марсианского булыжника
+tile.slabGCHalf.marsSlab.name=Плита из марсианского булыжника
+tile.marsDungeonBricksStairs.name=Ступеньки из кирпича марсианской сокровищницы
+tile.wallGC.marsBricks.name=Стена из кирпича марсианской сокровищницы
+tile.slabGCHalf.marsBricksSlab.name=Плита из кирпича марсианской сокровищницы
+
+# GUI
+gui.choosePlanet.desc.mars=Обитаем#Кислород отсутствует#Гравитация: 38%
+item.deshPickSlime.description.name=Может собирать слизь с яиц слаймлинга
+gui.message.noEnergy.name=Недостаточно энергии
+gui.message.noWater.name=Недостаточно воды
+gui.message.noBonemeal.name=Недостаточно костной муки
+gui.message.noSeeds.name=Недостаточно семян
+gui.message.noSaplings.name=Недостаточно саженцев
+gui.message.bubbleExp.name=Расширение пузыря
+gui.message.noValidBlocks.name=Нет доступных блоков в пузыре
+gui.message.terraforming.name=Терраформирование
+gui.message.enableTrees.name=Включить деревья
+gui.message.enableGrass.name=Включить траву
+gui.message.trees.name=Деревья
+gui.message.grass.name=Трава
+gui.message.invalidFreq.name=неверная частота
+gui.message.frequency.name=Частота
+gui.message.destFrequency.name=Частота назначения
+gui.message.removePad.name=Убрать платформу
+gui.message.launchWhen.name=Запустить, когда:
+gui.message.cargoUnloaded.name=груз разгружен
+gui.message.cargoFull.name=груз загружен
+gui.message.fullyFueled.name=полностью заправлен
+gui.message.instant.name=немедленно
+gui.message.tenSec.name=10 секунд
+gui.message.thirtySec.name=30 секунд
+gui.message.oneMin.name=1 минута
+gui.message.redstoneSig.name=сигнал красного камня
+gui.message.notSet.name=не указано
+gui.message.notEnough.name=Недостаточно
+gui.message.success.name=Успех
+gui.message.zeroWater.name=Нет воды!
+
+	# Dollar sign ($) will split text onto a new line
+gui.launchController.desc.0=Это уникальная частота$контроллера запуска
+gui.launchController.desc.1=Частота для запуска ракет по направлению
+gui.launchController.desc.2=Взлётная площадка должна быть$удалена при запуске
+gui.launchController.desc.3=Когда это условие выполняется,$ракета запускается
+gui.launchController.desc.4=Hide destination frequency$from other players ##NEEDS TRANSLATE##
+gui.terraformer.desc.0=Водный резервуар
+
+gui.gasTank.desc.0=Хранилище газа
+gui.gasTankCompressed.desc.0=Хранилище газа (Сжатого)
+gui.liquidTank.desc.0=Жидкостный резервуар
+gui.status.nogas.name=Нет газа
+gui.status.liquefying.name=Сжижение
+gui.status.processing.name=Синтезация
+gui.status.needsCarbon.name=Нужен уголь
+gui.status.tankfull.name=Резервуар полон
+gui.status.tanksfull.name=Резервуары полны
+gui.message.lowEnergy.name=Мало энергии
+gui.button.liquefy.name=Запуск
+gui.button.liquefyStop.name=Стоп
+gui.gasInput.desc.0=Попробуйте поместить сюда$канистру с метаном
+gui.gasInput.desc.1=(Или в качестве альтернативы,$атмосферный клапан)
+gui.hydrogenInput.desc.0=Сюда помещается резервуар с водородом
+gui.hydrogenInput.desc.1=или атмосферный клапан
+gui.liquidOutput.desc.2=резервуар сжиженного газа
+gui.methaneOutput.desc.2=резервуар метана
+gui.message.withAtmosphere0.name=на планете с большим количеством
+gui.message.withAtmosphere1.name=в атмосфере
+item.carbonFragments.name=Раздробленный уголь
+gui.carbonSlot.desc.0=Раздробленный уголь ложится сюда
+gui.waterBucketSlot.desc=Положите вёдра с водой сюда
+
+gui.cargorocket.status.waiting.0=Ожидание
+gui.cargorocket.status.waiting.1=зажигания
+gui.cargorocket.status.launched.0=Уже
+gui.cargorocket.status.launched.1=запущена
+
+gas.carbondioxide.name=Углекислый газ
+gas.oxygen.name=Кислород
+gas.nitrogen.name=Азот
+
+gui.desc.reinforcedPlateT2.name=2-ой уровень
+dimension.Mars.name=Марс
+planet.mars=Марс
+
+tile.treasureT2.description=Сундуки с сокровищами 2-го уровня генерируются в сокровищницах Марса. Их можно открыть после победы над финальным боссом.
+tile.cavernVines.description=Пещерные лианы опасны для живых существ, тем что они опутывают их и тащут их вверх.
+tile.slimelingEgg.description=Яйца слаймлингов, если разбить их голыми руками, то скоро из них вылупится питомец.
+tile.cryoChamber.description=Криогенные камеры позволят игроку спать днём, восстанавливая тем самым небольшое количество здоровья, но на это уйдёт время.
+tile.launchController.description=Контроллеры запуска используются для настройки поведения запуска, включая условие запуска и назначение площадки запуска, для автоматических запусков.
+tile.terraformer.description=Терраформеры используются для добавления зелени дальним планетам: добавляют траву, деревья и воду, если имеются нужные материалы.
+tile.creeperEgg.description=Яйца крипера появляются в сокровищницах Марса, из них вылупляется скрытный хищник при взрыве.
+tile.gasLiquefier.description=Разжижает газы из атмосферы или из канистры. Сжиженный метан подходит для хорошего ракетного топлива!
+tile.methaneSynthesizer.description=При наличии источника водорода и источника углерода, он производит метан для дальнейшей обработки в сжижители газа.
+tile.electrolyzer.description=Преобразует воду в водород (Нужен для синтезатора метана) и кислород.
+tile.hydrogenPipe.description=Труба для водорода будет передавать водород из внутреннего резервуара одного механизма к другому.
+
+gui.slimeling.chat.wrongPlayer=Это не мой слаймлинг!
+gui.cryogenic.chat.cantUse=Я не могу использовать это в течение %d секунд(-ы)
+gui.slimeling.name=Имя
+gui.slimeling.owner=Владелец
+gui.slimeling.kills=Убийств
+gui.slimeling.scale=Размер
+gui.slimeling.button.sit=Сиди
+gui.slimeling.button.follow=Следуй
+gui.slimeling.sitting=Сидит
+gui.slimeling.following=Следует
+gui.slimeling.damage=Урон
+gui.slimeling.food=Любимая еда
+
+planet.asteroids=Астероиды
+
+	# Dollar sign ($) will split text onto a new line
+	# Do not remove %s or %d, since that will be replaced in-game
+gui.telepad.desc.0=Это уникальный адрес$телепорта
+gui.telepad.desc.1=Адрес другого телепорта.$Сущности будут отправляться туда.
+gui.message.address.name=Адрес
+gui.message.destAddress.name=Целевой адрес
+gui.message.invalidAddress.name=Неверный уникальный адрес
+gui.message.invalidTargetAddress.name=Неверный целевой адрес
+gui.message.receivingActive.name=Приём начат
+gui.message.telepadTooFar.name=Цель слишком далеко! (Макс.: %d)
+gui.message.telepadWrongDim.name=Цель в другом измерении!
+gui.message.telepadNotFound.name=Телепорт не найден!
+gui.message.sendingActive.name=Отправка начата
+gui.message.range.name=Дальность: %dm
+gui.message.notEnoughEnergy.name=Недостаточно энергии!
+gui.message.targetNoEnergy.name=У цели не хватает энергии!
+gui.message.grapple.fail=Мне нужно немного ниток, если я хочу кинуть этот крюк!
+gui.message.astroMiner.fail=У этой базы уже есть астрошахтёр!
+gui.message.astroMiner1.fail=Область стыковки заблокирована: 
+gui.message.astroMiner1A.fail=Путь астрошахтёра преграждён: 
+gui.message.astroMiner2.fail=Достигнут лимит астрошахтёров!
+gui.message.astroMiner3.fail=Основание астрошахтёра было демонтировано!
+gui.message.astroMiner4.fail=У астрошахтёра кончилась энергия и он не может вернуться на базу!
+gui.message.astroMiner5.fail=Путь астрошахтёра до базы, кажется, преграждён!
+gui.message.astroMiner6.fail=Астрошахтёр закончил добычу и остановился!
+gui.message.astroMiner7.fail=Астрошахтёру нечего добывать на космической станции!
+gui.message.astroMiner8.fail=Второй астрошахтёр был обнаружен на одной и той же базе, первый остановится.
+gui.button.recall.name=Отозвать
+gui.miner.outOfRange=Вне зоны действия
+gui.miner.offline=Вне сети
+gui.miner.stuck=Застрял на: 
+gui.miner.docked=Состыкован с
+gui.miner.travelling=Перемещение
+gui.miner.mining=Добыча
+gui.miner.returning=Возвращение
+gui.miner.docking=Состыковка
+gui.miner.mined=Добыто
+
+tile.treasureT3.description=Сундуки с сокровищами 3-го уровня сейчас бесполезны.
+tile.walkway.description=Дорожки используются в декоративных целях, для соединения блоков, чтобы сохранить тему космоса.
+tile.walkwayAluminumWire.description=Дорожки для алюминиевых проводов используются для прокладывания проводов под полностью твёрдой поверхностью.
+tile.walkwayOxygenPipe.description=Дорожки для кислородных труб используются для прокладывания труб под полностью твёрдой поверхностью.
+tile.beamReflector.description=Лучевые отражатели используются для перенаправления энергетических лучей от источника к месту назначения. ПКМ по отражателю, чтобы менять цели.
+tile.beamReceiver.description=Лучевые приёмники присоединяются к входу и выходу энергии механизма, чтобы передавать энергию, используя лучи.
+tile.telepadShort.description=Короткодистанционные телепорты используются для перемещения игроков и других живых существ на короткие дистанции, (250 блоков) если они присоединены к другим телепортам.
+tile.minerBase.description=Основание астрономического шахтёра - это точка стыковки для астрономического шахтёра. Он большой... попробуйте сделать куб 2 x 2 x 2 из блоков основания.
+
+# SCHEMATICS
+schematic.rocketT3.name=Ракета 3-го уровня
+schematic.cargoRocket.name=Автоматическая грузовая ракета
+schematic.astroMiner.name=Астрономический шахтёр
+
+# ENTITIES
+entity.Sludgeling.name=Сладжлинг
+entity.Slimeling.name=Слаймлинг
+entity.CreeperBoss.name=Эволюционировавший крипер-босс
+entity.SpaceshipT2.name=Ракета 2-го уровня
+entity.CargoRocket.name=Грузовая ракета
+entity.LandingBalloons.name=Посадочные шары
+entity.SmallAsteroidGC.name=Малый астероид
+entity.GrappleHookGC.name=Абордажный крюк
+entity.Tier3RocketGC.name=Ракета 3-го уровня
+entity.EntryPodAsteroids.name=Посадочный модуль
+entity.AstroMiner.name=Астрономический шахтёр
+
+# CONTAINERS
+container.launchcontroller.name=Контроллер запуска
+container.tileTerraformer.name=Терраформер
+container.marsLander.name=Посадочные шары
+container.shortRangeTelepad.name=Короткодистанционный телепорт
+container.entryPod.name=Посадочный модуль
+
+# CONFIG GUI
+gc.configgui.dimensionIDMars=ID измерения: Марс
+gc.configgui.idSchematicRocketT2=ID схемы: Ракета 2-го уровня
+gc.configgui.idSchematicCargoRocket=ID схемы: Грузовая ракета
+gc.configgui.launchControllerChunkLoad=Загрузка чанков контроллером запуска
+gc.configgui.launchControllerAllDims=Загрузка всех измерений контроллером запуска
+gc.configgui.dimensionIDAsteroids=ID измерения: Астероиды
+gc.configgui.idSchematicRocketT3=ID схемы: Ракета 3-го уровня
+gc.configgui.disableGalacticraftHelium=Отключение регистрации гелия
+gc.configgui.astroMinersMax=Макс. кол-во астрошахтёров на игрока
+
+gc.configgui.planets.title=Конфигурация планет Galacticraft

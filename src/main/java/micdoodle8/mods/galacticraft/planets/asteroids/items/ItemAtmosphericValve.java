@@ -17,7 +17,7 @@ public class ItemAtmosphericValve extends Item
         this.setMaxDamage(0);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(64);
-        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     @SideOnly(Side.CLIENT)

@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -66,17 +67,22 @@ public class MarsBlocks
 //        setHarvestLevel(MarsBlocks.marsBricksStairs, "pickaxe", 3);
     }
 
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    {
+        GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+    }
+
     public static void registerBlocks()
     {
-        GameRegistry.registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class, MarsBlocks.marsBlock.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.vine, ItemBlockDesc.class, MarsBlocks.vine.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class, MarsBlocks.creeperEgg.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
-//        GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
-//        GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class, MarsBlocks.hydrogenPipe.getUnlocalizedName());
+        registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class);
+        registerBlock(MarsBlocks.vine, ItemBlockDesc.class);
+        registerBlock(MarsBlocks.rock, ItemBlockEgg.class);
+        registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class);
+        registerBlock(MarsBlocks.machine, ItemBlockMachine.class);
+        registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
+//        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
+//        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
+        registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class);
     }
     
     public static void oreDictRegistration()

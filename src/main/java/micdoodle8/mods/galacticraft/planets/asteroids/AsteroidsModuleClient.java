@@ -1,5 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -9,6 +16,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -49,23 +57,38 @@ import java.util.List;
 
 public class AsteroidsModuleClient implements IPlanetsModuleClient
 {
-    private static int walkwayRenderID;
-    private static int treasureChestID;
-
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
+        addVariants("asteroidsBlock",
+                "galacticraftplanets:asteroid_rock_0",
+                "galacticraftplanets:asteroid_rock_1",
+                "galacticraftplanets:asteroid_rock_2",
+                "galacticraftplanets:ore_aluminum_asteroids",
+                "galacticraftplanets:ore_ilmenite_asteroids",
+                "galacticraftplanets:ore_iron_asteroids");
+        addVariants("thermalPadding",
+                "galacticraftplanets:thermalHelm",
+                "galacticraftplanets:thermalChestplate",
+                "galacticraftplanets:thermalLeggings",
+                "galacticraftplanets:thermalBoots");
+        addVariants("itemBasicAsteroids",
+                "galacticraftplanets:reinforcedPlateT3",
+                "galacticraftplanets:engineT2",
+                "galacticraftplanets:rocketFinsT2",
+                "galacticraftplanets:shardIron",
+                "galacticraftplanets:shardTitanium",
+                "galacticraftplanets:ingotTitanium",
+                "galacticraftplanets:compressedTitanium",
+                "galacticraftplanets:thermalCloth",
+                "galacticraftplanets:beamCore");
     }
 
     @Override
     public void init(FMLInitializationEvent event)
     {
-//        AsteroidsModuleClient.walkwayRenderID = RenderingRegistry.getNextAvailableRenderId();
-//        RenderingRegistry.registerBlockHandler(new BlockRendererWalkway(AsteroidsModuleClient.walkwayRenderID));
-//        AsteroidsModuleClient.treasureChestID = RenderingRegistry.getNextAvailableRenderId();
-//        RenderingRegistry.registerBlockHandler(new BlockRendererTier3TreasureChest(AsteroidsModuleClient.treasureChestID));
+        AsteroidsModuleClient.registerBlockRenderers();
         AsteroidsEventHandlerClient clientEventHandler = new AsteroidsEventHandlerClient();
-        FMLCommonHandler.instance().bus().register(clientEventHandler);
         MinecraftForge.EVENT_BUS.register(clientEventHandler);
         FluidTexturesGC.init();
     }
@@ -75,12 +98,12 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     {
         RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, new RenderSmallAsteroid());
         RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
-//          IModelCustom podModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/pod.obj"));
+//          IModelCustom podModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/pod.obj"));
 //          RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, new RenderEntryPod(podModel));
-//          IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/tier3rocket.obj"));
-//          RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, AsteroidsModule.ASSET_PREFIX, "tier3rocket"));
+//          IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/tier3rocket.obj"));
+//          RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, GalacticraftPlanets.ASSET_PREFIX, "tier3rocket"));
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, new RenderAstroMiner());
-//          IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "models/grapple.obj"));
+//          IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/grapple.obj"));
 //        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.grapple, new ItemRendererGrappleHook(grappleModel));
 //        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReceiver), new ItemRendererBeamReceiver());
 //        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReflector), new ItemRendererBeamReflector());
@@ -100,6 +123,35 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 
         if (Loader.isModLoaded("craftguide"))
         	CraftGuideIntegration.register();
+    }
+
+    public static void registerBlockRenderers()
+    {
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockBasic, 0, "asteroid_rock_0");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockBasic, 1, "asteroid_rock_1");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockBasic, 2, "asteroid_rock_2");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockBasic, 3, "ore_aluminum_asteroids");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockBasic, 4, "ore_ilmenite_asteroids");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockBasic, 5, "ore_iron_asteroids");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 0, "thermalHelm");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 1, "thermalChestplate");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 2, "thermalLeggings");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 3, "thermalBoots");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 0, "reinforcedPlateT3");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 1, "engineT2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 2, "rocketFinsT2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 3, "shardIron");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 4, "shardTitanium");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 5, "shardTitanium");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 6, "compressedTitanium");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 7, "thermalCloth");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 8, "beamCore");
+    }
+
+    private void addVariants(String name, String... variants)
+    {
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
+        ModelBakery.addVariantName(itemBlockVariants, variants);
     }
 
     @Override
@@ -130,22 +182,6 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         }
 
         return null;
-    }
-
-    @Override
-    public int getBlockRenderID(Block block)
-    {
-        if (block == AsteroidBlocks.blockWalkway || block == AsteroidBlocks.blockWalkwayWire || block == AsteroidBlocks.blockWalkwayOxygenPipe)
-        {
-            return AsteroidsModuleClient.walkwayRenderID;
-        }
-
-        if (block == AsteroidBlocks.treasureChestTier3)
-        {
-            return AsteroidsModuleClient.treasureChestID;
-        }
-
-        return 0;
     }
 
     @Override

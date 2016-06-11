@@ -1,8 +1,8 @@
 {
     "parent":"galacticraftcore:block/cluster_storage_model",
     "textures": {
-        "north": "galacticraftasteroids:blocks/energyStorageModule_15",
-        "south": "galacticraftasteroids:blocks/energyStorageModule_15"
+        "north": "galacticraftplanets:blocks/energyStorageModule_15",
+        "south": "galacticraftplanets:blocks/energyStorageModule_15"
     },
     "display": {
         "thirdperson": {

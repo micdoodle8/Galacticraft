@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets;
 
+import com.google.common.collect.Lists;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -7,8 +10,12 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 
+import java.util.List;
+
 public class PlanetsProxyClient extends PlanetsProxy
 {
+    private List<Item> itemsToRegisterJson = Lists.newArrayList();
+
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -27,6 +34,11 @@ public class PlanetsProxyClient extends PlanetsProxy
     public void init(FMLInitializationEvent event)
     {
         super.init(event);
+
+        for (Item toReg : itemsToRegisterJson)
+        {
+            ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, toReg);
+        }
 
         for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
         {
@@ -49,5 +61,14 @@ public class PlanetsProxyClient extends PlanetsProxy
     public void serverStarting(FMLServerStartingEvent event)
     {
         super.serverStarting(event);
+    }
+
+    @Override
+    public void postRegisterItem(Item item)
+    {
+        if (!item.getHasSubtypes())
+        {
+            itemsToRegisterJson.add(item);
+        }
     }
 }

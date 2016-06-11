@@ -41,8 +41,7 @@ public class BlockSlabGC extends BlockSlab
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List list)
+	public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> list)
 	{
 		int max = 0;
 

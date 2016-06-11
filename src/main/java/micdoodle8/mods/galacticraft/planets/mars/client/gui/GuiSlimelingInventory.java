@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
@@ -26,7 +27,7 @@ import java.io.IOException;
 
 public class GuiSlimelingInventory extends GuiContainer
 {
-    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel2.png");
+    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimelingPanel2.png");
     private final EntitySlimeling slimeling;
 
 //    public static RenderItem drawItems = new RenderItem();

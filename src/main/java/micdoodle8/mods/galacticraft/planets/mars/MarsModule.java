@@ -59,9 +59,6 @@ import java.util.List;
 
 public class MarsModule implements IPlanetsModule
 {
-    public static final String ASSET_PREFIX = "galacticraftmars";
-    public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
-
     public static Fluid sludge;
     public static Fluid sludgeGC;
     public static Material sludgeMaterial = new MaterialLiquid(MapColor.foliageColor);
@@ -75,8 +72,8 @@ public class MarsModule implements IPlanetsModule
 
         if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
-            ResourceLocation stillIcon = new ResourceLocation(MarsModule.TEXTURE_PREFIX + "sludge_still");
-            ResourceLocation flowingIcon = new ResourceLocation(MarsModule.TEXTURE_PREFIX + "sludge_flow");
+            ResourceLocation stillIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge_still");
+            ResourceLocation flowingIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge_flow");
             sludgeGC = new Fluid("bacterialsludge", stillIcon, flowingIcon).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(sludgeGC);
         }
@@ -136,7 +133,7 @@ public class MarsModule implements IPlanetsModule
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
         GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
-        GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
+        GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 2));
@@ -236,7 +233,7 @@ public class MarsModule implements IPlanetsModule
     {
     	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftMars." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftPlanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
 		}
     	EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }

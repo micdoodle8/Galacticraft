@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -16,7 +17,7 @@ public class GuiSlimelingFeed extends GuiScreen
 {
     private final int xSize;
     private final int ySize;
-    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel1.png");
+    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimelingPanel1.png");
     private final EntitySlimeling slimeling;
 
 //    public static RenderItem drawItems = new RenderItem();

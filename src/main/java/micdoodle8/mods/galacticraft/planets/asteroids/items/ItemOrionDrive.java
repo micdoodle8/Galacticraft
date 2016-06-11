@@ -19,7 +19,7 @@ public class ItemOrionDrive extends Item
         super();
         this.setMaxDamage(0);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     @Override
