@@ -641,7 +641,7 @@ planet.neptune=海王星
 moon.moon=月球
 solarsystem.sol=太阳系
 star.sol=太阳系
-satellite.spaceStation.overworld=主世界空间站
+satellite.spaceStation.overworld=地球空间站
 
 # COMMANDS
 commands.dimensionteleport=%s被传送到%s附近.

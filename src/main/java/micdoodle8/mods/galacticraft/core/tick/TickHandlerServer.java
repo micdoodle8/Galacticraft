@@ -496,7 +496,10 @@ public class TickHandlerServer
 
                             if (e.posY <= dimension.getYCoordToTeleportToPlanet())
                             {
-                                final Integer dim = WorldUtil.getProviderForNameServer(dimension.getPlanetToOrbit()).dimensionId;
+                                int dim = 0;
+                            	try {
+                                	dim = WorldUtil.getProviderForNameServer(dimension.getPlanetToOrbit()).dimensionId;
+                            	} catch (Exception ex) {} 
 
                                 WorldUtil.transferEntityToDimension(e, dim, world, false, null);
                             }

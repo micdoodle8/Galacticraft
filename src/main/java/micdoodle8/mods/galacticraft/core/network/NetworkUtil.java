@@ -6,9 +6,9 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.VersionUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
@@ -473,7 +473,7 @@ public class NetworkUtil
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            buffer.writeInt(fluidTank.getFluid() == null ? -1 : WorldUtil.getFluidID(fluidTank.getFluid()));
+            buffer.writeInt(fluidTank.getFluid() == null ? -1 : FluidUtil.getFluidID(fluidTank.getFluid()));
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }
@@ -546,7 +546,7 @@ public class NetworkUtil
             FluidStack fluidA = a2.getFluid();
             FluidStack fluidB = b2.getFluid();
             return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
-                    fuzzyEquals(fluidA != null ? WorldUtil.getFluidID(fluidA) : -1, fluidB != null ? WorldUtil.getFluidID(fluidB) : -1) &&
+                    fuzzyEquals(fluidA != null ? FluidUtil.getFluidID(fluidA) : -1, fluidB != null ? FluidUtil.getFluidID(fluidB) : -1) &&
                     fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
         }
         else

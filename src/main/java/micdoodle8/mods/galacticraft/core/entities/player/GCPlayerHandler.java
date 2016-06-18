@@ -1097,7 +1097,7 @@ public class GCPlayerHandler
 
         if (tick >= 25)
         {
-            if (!GCPlayer.openedSpaceRaceManager)
+            if (ConfigManagerCore.enableSpaceRaceManagerPopup && !GCPlayer.openedSpaceRaceManager)
             {
                 SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
 

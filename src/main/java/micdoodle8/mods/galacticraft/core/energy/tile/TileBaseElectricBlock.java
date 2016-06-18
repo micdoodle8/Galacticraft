@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.entity.player.EntityPlayer;
@@ -97,7 +98,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
                 this.discharge(this.getBatteryInSlot());
             }
 
-            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) == 0))
+            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.xCoord, this.yCoord, this.zCoord)))
             {
                 this.hasEnoughEnergyToRun = true;
                 if (this.shouldUseEnergy())
@@ -232,7 +233,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
         }
 
-        if (this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) > 0)
+        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
         }

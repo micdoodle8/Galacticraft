@@ -229,6 +229,14 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
                 par1World.setBlock(x, y, z, Blocks.air);
             }
         }
+
+        if (!par1World.isRemote)
+        {
+            if (par1World.provider instanceof WorldProviderOrbit)
+            {
+                ((WorldProviderOrbit) par1World.provider).checkSS(new BlockVec3(x, y, z), true);
+            }
+        }
     }
 
     /**

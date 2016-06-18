@@ -82,7 +82,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraftforge.fluids.FluidStack;
 
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 
@@ -99,11 +98,6 @@ public class WorldUtil
     private static IWorldGenerator generatorAE2meteors = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
-
-    private static boolean oldFluidIDMethod = true;
-    private static Class<?> fluidStackClass = null;
-    private static Method getFluidMethod = null;
-    private static Field fluidIdField = null;
 	
     public static double getGravityForEntity(Entity entity)
     {
@@ -400,7 +394,7 @@ public class WorldUtil
     public static void initialiseDimensionNames()
     {
     	WorldProvider provider = WorldUtil.getProviderForDimensionServer(0);
-    	WorldUtil.dimNames.put(0, new String(provider.getDimensionName()));
+    	WorldUtil.dimNames.put(ConfigManagerCore.idDimensionOverworld, new String(provider.getDimensionName()));
     }
     
     /**
@@ -418,12 +412,12 @@ public class WorldUtil
 
         if (!ConfigManagerCore.disableRocketsToOverworld)
         {
-            temp.add(0);
+            temp.add(ConfigManagerCore.idDimensionOverworld);
         }
 
         for (Integer element : WorldUtil.registeredPlanets)
         {
-        	if (element == 0) continue;
+        	if (element == ConfigManagerCore.idDimensionOverworld) continue;
         	WorldProvider provider = WorldUtil.getProviderForDimensionServer(element);
 
             if (provider != null)
@@ -598,13 +592,18 @@ public class WorldUtil
             else
             //It's a planet or moon
             {
-            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
-            	if (celestialBody != null && provider != null)
+            	if (celestialBody == GalacticraftCore.planetOverworld)
+        			map.put(celestialBody.getName(), id);
+            	else
             	{
-            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
-            		{
-            			map.put(celestialBody.getName(), provider.dimensionId);
-            		}
+	            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
+	            	if (celestialBody != null && provider != null)
+	            	{
+	            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
+	            		{
+	            			map.put(celestialBody.getName(), provider.dimensionId);
+	            		}
+	            	}
             	}
             }
         }
@@ -853,51 +852,6 @@ public class WorldUtil
         }
     }
 
-    public static int getFluidID(FluidStack stack)
-    {
-        try
-        {
-            if (oldFluidIDMethod)
-            {
-                try
-                {
-                    if (getFluidMethod == null)
-                    {
-                        if (fluidStackClass == null)
-                        {
-                            fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
-                        }
-                        getFluidMethod = fluidStackClass.getDeclaredMethod("getFluidID");
-                    }
-                    return (Integer) getFluidMethod.invoke(stack);
-                }
-                catch (NoSuchMethodException error)
-                {
-                    oldFluidIDMethod = false;
-                    getFluidID(stack);
-                }
-            }
-            else
-            {
-                if (fluidIdField == null)
-                {
-                    if (fluidStackClass == null)
-                    {
-                        fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
-                    }
-                    fluidIdField = fluidStackClass.getDeclaredField("fluidID");
-                }
-                return fluidIdField.getInt(stack);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return -1;
-    }
-    
     /**
      * This doesn't check if player is using the correct rocket, this is just a
      * total list of all space dimensions.  It does not load the dimensions.
@@ -906,7 +860,7 @@ public class WorldUtil
     {
         final ArrayList<Integer> temp = new ArrayList<Integer>();
 
-        temp.add(0);
+        temp.add(ConfigManagerCore.idDimensionOverworld);
 
         for (final Integer i : WorldUtil.registeredPlanets)
         {
@@ -1795,8 +1749,13 @@ public class WorldUtil
 	{
 		if (wp instanceof IGalacticraftWorldProvider)
 		{
-			return ((IGalacticraftWorldProvider)wp).getCelestialBody().getUnlocalizedName();
+			CelestialBody cb = ((IGalacticraftWorldProvider)wp).getCelestialBody();
+			if (cb != null && !(cb instanceof Satellite))
+				return cb.getUnlocalizedName();
 		}
+		
+		if (wp.dimensionId == ConfigManagerCore.idDimensionOverworld)
+			return "Overworld";
 
 		return wp.getDimensionName();
 	}
