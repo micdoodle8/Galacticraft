@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
@@ -16,6 +19,10 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidUtil
 {
+    private static boolean oldFluidIDMethod = true;
+    private static Class<?> fluidStackClass = null;
+    private static Method getFluidMethod = null;
+    private static Field fluidIdField = null;
 
 	/**
 	 * This looks for any type of filled or partly filled container of "fuel"
@@ -348,5 +355,50 @@ public class FluidUtil
             
             return container;
         }
+	}
+
+	public static int getFluidID(FluidStack stack)
+	{
+	    try
+	    {
+	        if (oldFluidIDMethod)
+	        {
+	            try
+	            {
+	                if (getFluidMethod == null)
+	                {
+	                    if (fluidStackClass == null)
+	                    {
+	                        fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
+	                    }
+	                    getFluidMethod = fluidStackClass.getDeclaredMethod("getFluidID");
+	                }
+	                return (Integer) getFluidMethod.invoke(stack);
+	            }
+	            catch (NoSuchMethodException error)
+	            {
+	                oldFluidIDMethod = false;
+	                getFluidID(stack);
+	            }
+	        }
+	        else
+	        {
+	            if (fluidIdField == null)
+	            {
+	                if (fluidStackClass == null)
+	                {
+	                    fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
+	                }
+	                fluidIdField = fluidStackClass.getDeclaredField("fluidID");
+	            }
+	            return fluidIdField.getInt(stack);
+	        }
+	    }
+	    catch (Exception e)
+	    {
+	        e.printStackTrace();
+	    }
+	
+	    return -1;
 	}
 }

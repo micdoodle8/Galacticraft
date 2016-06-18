@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerGasLiquefier;
@@ -128,7 +129,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         {
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
         }
-        else if (this.tileEntity.getWorldObj().getBlockPowerInput(this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord) > 0)
+        else if (RedstoneUtil.isBlockReceivingRedstone(this.tileEntity.getWorldObj(), this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord))
         {
         	displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
         }

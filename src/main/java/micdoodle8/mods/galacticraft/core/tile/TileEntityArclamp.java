@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -51,7 +52,7 @@ public class TileEntityArclamp extends TileEntity
         	this.updateClientFlag = false;
         }
 
-        if (this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) > 0)
+        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
         {
         	if (this.isActive)
         	{
@@ -389,6 +390,6 @@ public class TileEntityArclamp extends TileEntity
 
 	public boolean getEnabled()
 	{
-		return this.worldObj.getBlockPowerInput(this.xCoord, this.yCoord, this.zCoord) == 0;
+		return !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 }

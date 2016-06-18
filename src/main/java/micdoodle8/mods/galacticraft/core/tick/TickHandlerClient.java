@@ -380,7 +380,7 @@ public class TickHandlerClient
                 }
             }
 
-            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null)
+            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
             {
                 player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
                 TickHandlerClient.spaceRaceGuiScheduled = false;
