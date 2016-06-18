@@ -97,19 +97,19 @@ public class AsteroidsModule implements IPlanetsModule
         FMLCommonHandler.instance().bus().register(eventHandler);
         RecipeSorter.register("galacticraftmars:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
-        AsteroidsModule.fluidMethaneGas = registerFluid("methane", 1, 11, 0, true);
-        AsteroidsModule.fluidAtmosphericGases = registerFluid("atmosphericgases", 1, 13, 0, true);
+        AsteroidsModule.fluidMethaneGas = registerFluid("methane", 1, 11, 295, true);
+        AsteroidsModule.fluidAtmosphericGases = registerFluid("atmosphericgases", 1, 13, 295, true);
         AsteroidsModule.fluidLiquidMethane = registerFluid("liquidmethane", 450, 120, 109, false);
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
         AsteroidsModule.fluidLiquidOxygen = registerFluid("liquidoxygen", 1141, 140, 90, false);
-        AsteroidsModule.fluidOxygenGas = registerFluid("oxygen", 1, 13, 0, true);
+        AsteroidsModule.fluidOxygenGas = registerFluid("oxygen", 1, 13, 295, true);
         AsteroidsModule.fluidLiquidNitrogen = registerFluid("liquidnitrogen", 808, 130, 90, false);
-        AsteroidsModule.fluidNitrogenGas = registerFluid("nitrogen", 1, 12, 0, true);
-        registerFluid("carbondioxide", 2, 20, 0, true);
-        registerFluid("hydrogen", 1, 1, 0, true);
-        registerFluid("argon", 1, 4, 0, true);
+        AsteroidsModule.fluidNitrogenGas = registerFluid("nitrogen", 1, 12, 295, true);
+        registerFluid("carbondioxide", 2, 20, 295, true);
+        registerFluid("hydrogen", 1, 1, 295, true);
+        registerFluid("argon", 1, 4, 295, true);
         AsteroidsModule.fluidLiquidArgon = registerFluid("liquidargon", 900, 100, 87, false);
-        registerFluid("helium", 1, 1, 0, true);
+        registerFluid("helium", 1, 1, 295, true);
 
         //AsteroidsModule.fluidCO2Gas = FluidRegistry.getFluid("carbondioxide");
 
