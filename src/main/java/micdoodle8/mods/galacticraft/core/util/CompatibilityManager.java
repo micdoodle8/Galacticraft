@@ -17,6 +17,7 @@ public class CompatibilityManager
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     public static Class<?> classBCBlockGenericPipe = null;
+    public static Class<?> classGTOre = null;
     public static Method methodBCBlockPipe_getPipe = null;
 
     public static void checkForCompatibleMods()
@@ -24,6 +25,14 @@ public class CompatibilityManager
         if (Loader.isModLoaded("GregTech_Addon"))
         {
             CompatibilityManager.modGTLoaded = true;
+            try {
+            	Class<?> clazz = Class.forName("gregtech.common.blocks.GT_Block_Ores");
+            	if (clazz != null)
+            	{
+            		classGTOre = clazz;
+            	}
+            }
+            catch (Exception e) { e.printStackTrace(); }
         }
 
         if (Loader.isModLoaded("ThermalExpansion"))
