@@ -2,8 +2,11 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.model.loader.AdvancedModelLoader;
+import micdoodle8.mods.galacticraft.core.client.model.loader.IModelCustom;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -100,8 +103,8 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
 //          IModelCustom podModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/pod.obj"));
 //          RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, new RenderEntryPod(podModel));
-//          IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/tier3rocket.obj"));
-//          RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, GalacticraftPlanets.ASSET_PREFIX, "tier3rocket"));
+          IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/tier3rocket.obj"));
+          RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, GalacticraftPlanets.ASSET_PREFIX, "tier3rocket"));
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, new RenderAstroMiner());
 //          IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/grapple.obj"));
 //        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.grapple, new ItemRendererGrappleHook(grappleModel));

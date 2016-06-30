@@ -400,7 +400,7 @@ public class GalacticraftCore
             GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
             ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
             GCBlocks.crudeOil.setUnlocalizedName("crudeOilStill");
-            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName());
+            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName().substring(5));
             fluidOil.setBlock(GCBlocks.crudeOil);
         }
         else
@@ -438,7 +438,7 @@ public class GalacticraftCore
             GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
             ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
             GCBlocks.fuel.setUnlocalizedName("fuel");
-            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName());
+            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName().substring(5));
             fluidFuel.setBlock(GCBlocks.fuel);
         }
         else

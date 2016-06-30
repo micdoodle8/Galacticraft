@@ -26,7 +26,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     /*private IIcon iconFront;
     private IIcon iconSide;*/
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
     public static final PropertyBool LEFT = PropertyBool.create("left");
     public static final PropertyBool RIGHT = PropertyBool.create("right");
     public static final PropertyBool UP = PropertyBool.create("up");
@@ -97,7 +97,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getIndex();
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
@@ -208,16 +208,16 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         	this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
         	break;
         case 2:
-        	this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);        	
-        	break;
+            this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
+            break;
         case 3:
-        	this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);        	
+            this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
         	break;
         case 4:
-        	this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);        	
-        	break;
+            this.setBlockBounds(boundsFront, 0F, 0F,  1.0F, 1.0F, 1.0F);
+            break;
         case 5:
-        	this.setBlockBounds(boundsFront, 0F, 0F,  1.0F, 1.0F, 1.0F);        	
+            this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
         	break;
         }
 
@@ -227,14 +227,14 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
+        EnumFacing enumfacing = EnumFacing.getFront(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex();
+        return (state.getValue(FACING)).getIndex();
     }
 
     @Override
@@ -247,6 +247,9 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TileEntityScreen screen = (TileEntityScreen) worldIn.getTileEntity(pos);
-        return state.withProperty(LEFT, screen.connectedLeft).withProperty(RIGHT, screen.connectedRight).withProperty(UP, screen.connectedUp).withProperty(DOWN, screen.connectedDown);
+        return state.withProperty(LEFT, screen.connectedLeft)
+                .withProperty(RIGHT, screen.connectedRight)
+                .withProperty(UP, screen.connectedUp)
+                .withProperty(DOWN, screen.connectedDown);
     }
 }

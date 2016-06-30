@@ -195,5 +195,15 @@ public class DrawGameScreen extends IScreenManager
 			return driver.getWorld().provider;
 		
 		return null;
-	}    
+	}
+
+    public float getScaleZ()
+    {
+        return scaleZ;
+    }
+
+    public float getScaleX()
+    {
+        return scaleX;
+    }
 }

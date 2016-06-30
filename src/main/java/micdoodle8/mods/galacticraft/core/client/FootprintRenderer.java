@@ -67,7 +67,7 @@ public class FootprintRenderer
                     GL11.glTranslatef(f11, f12, f13);
 
                     int brightness = (int) (100 + ageScale * 155);
-                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
+//                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
                     GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
                     double footprintScale = 0.5F;
                     worldRenderer.pos(0 + Math.sin((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f9).endVertex();

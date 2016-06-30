@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -502,7 +503,10 @@ public class TickHandlerClient
                     	if (vehicle.getSoundUpdater() == null)
                         {
                         	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
-							FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
+                            if (noise != null)
+                            {
+                                FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
+                            }
                         }
                     }
                 }
@@ -537,7 +541,11 @@ public class TickHandlerClient
             	screenConnectionsUpdateList.clear();
             	for (TileEntityScreen te : updateListCopy)
             	{
-            		if (te.refreshOnUpdate) te.refreshConnections(true);            		
+                    if (te.getWorld().getBlockState(te.getPos()).getBlock() == GCBlocks.screen)
+                    {
+                        if (te.refreshOnUpdate) te.refreshConnections(true);
+                        te.getWorld().markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+                    }
             	}
             }
         }

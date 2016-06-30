@@ -35,20 +35,28 @@ import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.ModelRotation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
@@ -58,7 +66,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelFluid;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -77,6 +89,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -160,7 +174,15 @@ public class ClientProxyCore extends CommonProxyCore
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
 
     private List<Item> itemsToRegisterJson = Lists.newArrayList();
-    
+
+    private static ModelResourceLocation fuelLocation = new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel", "fuel");
+
+    @SubscribeEvent
+    public void onTextureStitchedPre(TextureStitchEvent.Pre event)
+    {
+        RenderTier3Rocket.RocketTexture.instance.register(event.map);
+    }
+
     public static void reset()
     {
         ClientProxyCore.playerItemData.clear();
@@ -344,6 +366,23 @@ public class ClientProxyCore extends CommonProxyCore
                 "galacticraftcore:meteoricIronIngot",
                 "galacticraftcore:compressedMeteoricIron");
 
+        Item fuel = Item.getItemFromBlock(GCBlocks.fuel);
+        ModelBakery.registerItemVariants(fuel);
+        ModelLoader.setCustomMeshDefinition(fuel, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return fuelLocation;
+            }
+        });
+        ModelLoader.setCustomStateMapper(GCBlocks.fuel, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return fuelLocation;
+            }
+        });
+
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
         
@@ -429,7 +468,6 @@ public class ClientProxyCore extends CommonProxyCore
     public static void registerBlockRenderers()
     {
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.crudeOil);
-        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fuel);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.breatheableAir);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightAir);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightBreatheableAir);
@@ -511,7 +549,7 @@ public class ClientProxyCore extends CommonProxyCore
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());

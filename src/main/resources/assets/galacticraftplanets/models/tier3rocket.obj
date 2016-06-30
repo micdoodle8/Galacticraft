@@ -1,6 +1,8 @@
 # Blender v2.69 (sub 0) OBJ File: 'dev-rocket2.blend'
 # www.blender.org
+mtllib tier3rocket.mtl
 o NoseCone
+usemtl tier3rocket
 v 0.409399 3.988554 -1.013297
 v 1.005998 3.988554 -0.427021
 v 1.013297 3.988554 0.409399
