@@ -96,3 +96,4 @@ sonic5223:capeBlue
 mads4444:capeRainbow
 urix123:capePurple
 Monkeypants_271:capeLime
+Nomad043:capeLightGray
