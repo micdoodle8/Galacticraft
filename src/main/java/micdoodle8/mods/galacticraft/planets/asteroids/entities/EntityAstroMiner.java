@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -1153,6 +1154,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		}
 		if (b instanceof BlockLiquid) return false;
 		if (b instanceof IFluidBlock) return false;
+		
+		boolean gtFlag = false;
 		if (b != GCBlocks.fallenMeteor)
 		{
 			if (b instanceof IPlantable && b!=Blocks.tallgrass && b!=Blocks.deadbush && b!=Blocks.double_plant && b!=Blocks.waterlily && !(b instanceof BlockFlower))
@@ -1161,13 +1164,26 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 				blockingBlock.meta = b.getMetaFromState(state);
 				return true;
 			}
-			int meta = b.getMetaFromState(state);
-			if (b.hasTileEntity(state) || b.getBlockHardness(this.worldObj, pos) < 0)
+            int meta = b.getMetaFromState(state);
+			if (b.getBlockHardness(this.worldObj, pos) < 0)
 			{
 				blockingBlock.block = b;
 				blockingBlock.meta = meta;
 				return true;
 			}
+			if (b.hasTileEntity(state))
+			{
+				if (CompatibilityManager.isGTLoaded() && gregTechCheck(b))
+				{
+					gtFlag = true;				
+				}
+				else
+				{
+					blockingBlock.block = b;
+					blockingBlock.meta = meta;
+					return true;
+				}
+			}				
 		}
 		
 		if (this.tryBlockLimit == 0) return false;
@@ -1175,24 +1191,43 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (result < 0) return true;
 
 		this.tryBlockLimit--;
-		
-		ItemStack drops = getPickBlock(this.worldObj, pos, b);
+
+		ItemStack drops = gtFlag ? getGTDrops(this.worldObj, pos, b) : getPickBlock(this.worldObj, pos, b);
 		if (drops != null && !this.addToInventory(drops))
 		{
 			//drop itemstack if AstroMiner can't hold it
-            float f = 0.7F;
-            double d0 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            double d1 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            EntityItem entityitem = new EntityItem(this.worldObj, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, drops);
-            entityitem.setDefaultPickupDelay();
-            this.worldObj.spawnEntityInWorld(entityitem);
-            this.inventoryDrops++;
+			dropStack(pos, drops);
 		}
 		
 		this.worldObj.setBlockState(pos, Blocks.air.getDefaultState(), 3);
 		return false;
 	}
+
+    private void dropStack(BlockPos pos, ItemStack drops)
+    {
+        float f = 0.7F;
+        double d0 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d1 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        EntityItem entityitem = new EntityItem(this.worldObj, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, drops);
+        entityitem.setDefaultPickupDelay();
+        this.worldObj.spawnEntityInWorld(entityitem);
+        this.inventoryDrops++;
+    }
+
+    private boolean gregTechCheck(Block b)
+    {
+        Class clazz = CompatibilityManager.classGTOre;
+        return clazz != null && clazz.isInstance(b);
+    }
+
+    private ItemStack getGTDrops(World w, BlockPos pos, Block b)
+    {
+        List<ItemStack> array = b.getDrops(w, pos, b.getDefaultState(), 1);
+        if (array != null && array.size() > 0)
+            return array.get(0);
+        return null;
+    }
 
 	private boolean tryBlockClient(BlockPos pos)
 	{

@@ -52,6 +52,7 @@ import net.minecraft.world.chunk.Chunk;
 public class MapUtil
 {
     public static AtomicBoolean calculatingMap = new AtomicBoolean();
+    public static AtomicBoolean resetClientFlag = new AtomicBoolean();
     public static boolean doneOverworldTexture = false;
 	public static ArrayList<BlockVec3> biomeColours = new ArrayList<BlockVec3>(40);
     public static final float[] parabolicField = new float[25];
@@ -63,6 +64,7 @@ public class MapUtil
     public static final int SIZE_STD2 = SIZE_STD * 2;
     private static LinkedList<MapGen> queuedMaps = new LinkedList();
     public static LinkedList<String> clientRequests = new LinkedList();
+ 
     
 	static
 	{
@@ -91,6 +93,13 @@ public class MapUtil
     @SideOnly(Side.CLIENT)
 	public static void resetClient()
 	{
+    	resetClientFlag.set(true);
+    	//Can be called from a network thread
+	}
+    
+    @SideOnly(Side.CLIENT)
+    public static void resetClientBody()
+    {
 		ClientProxyCore.overworldTextureRequestSent = false;
 		ClientProxyCore.overworldTexturesValid = false;
 		clientRequests.clear();

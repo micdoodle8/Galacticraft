@@ -325,11 +325,8 @@ public class TickHandlerClient
                         }
             		}
             	}
-            }
 
-            if (TickHandlerClient.tickCount % 20 == 0)
-            {
-                if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
+            	if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
                 {
                     ClientProxyCore.valueableBlocks.clear();
 
@@ -378,6 +375,9 @@ public class TickHandlerClient
                     	ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0,1,0));
                     }
                 }
+            	
+            	if (MapUtil.resetClientFlag.getAndSet(false))
+            		MapUtil.resetClientBody();
             }
 
             if (minecraft.currentScreen instanceof GuiMainMenu)
