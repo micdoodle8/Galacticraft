@@ -13,11 +13,13 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -88,7 +90,7 @@ public abstract class BlockTransmitter extends Block
         if (tileEntity instanceof ITransmitter)
         {
             TileEntity[] connectable = new TileEntity[6];
-            switch (this.getNetworkType())
+            switch (this.getNetworkType(worldIn.getBlockState(pos)))
             {
             case OXYGEN:
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
@@ -144,7 +146,7 @@ public abstract class BlockTransmitter extends Block
         }
     }
 
-    public abstract NetworkType getNetworkType();
+    public abstract NetworkType getNetworkType(IBlockState state);
 
     @Override
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
@@ -156,7 +158,7 @@ public abstract class BlockTransmitter extends Block
         if (tileEntity instanceof ITransmitter)
         {
             TileEntity[] connectable;
-            switch (this.getNetworkType())
+            switch (this.getNetworkType(state))
             {
             case OXYGEN:
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
@@ -209,5 +211,38 @@ public abstract class BlockTransmitter extends Block
         }
 
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+
+        if (tileEntity instanceof ITransmitter)
+        {
+            TileEntity[] connectable = new TileEntity[6];
+            switch (this.getNetworkType(state))
+            {
+                case OXYGEN:
+                    connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                    break;
+                case HYDROGEN:
+                    connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
+                    break;
+                case POWER:
+                    connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+                    break;
+                default:
+                    break;
+            }
+
+            return state.withProperty(DOWN, Boolean.valueOf(connectable[EnumFacing.DOWN.ordinal()] != null))
+                    .withProperty(UP, Boolean.valueOf(connectable[EnumFacing.UP.ordinal()] != null))
+                    .withProperty(NORTH, Boolean.valueOf(connectable[EnumFacing.NORTH.ordinal()] != null))
+                    .withProperty(EAST, Boolean.valueOf(connectable[EnumFacing.EAST.ordinal()] != null))
+                    .withProperty(SOUTH, Boolean.valueOf(connectable[EnumFacing.SOUTH.ordinal()] != null))
+                    .withProperty(WEST, Boolean.valueOf(connectable[EnumFacing.WEST.ordinal()] != null));
+        }
+
+        return state;
     }
 }

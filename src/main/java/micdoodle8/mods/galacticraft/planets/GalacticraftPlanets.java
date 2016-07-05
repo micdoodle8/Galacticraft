@@ -69,6 +69,7 @@ public class GalacticraftPlanets
         GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
         GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
         GalacticraftPlanets.proxy.preInit(event);
+        GalacticraftPlanets.proxy.registerVariants();
     }
 
     @EventHandler

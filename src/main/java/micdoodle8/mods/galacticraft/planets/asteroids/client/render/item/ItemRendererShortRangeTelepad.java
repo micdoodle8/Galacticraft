@@ -19,43 +19,43 @@
 //
 //        GL11.glColor3f(1.0F, 1.0F, 1.0F);
 //
-//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture);
+//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.minerBaseTexture);
 //
 //        if (type == ItemRenderType.INVENTORY)
 //        {
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Base");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Top");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("Base");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("Top");
 //
 //            FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture0);
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxNegz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxNegz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxNegz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopMidxNegz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopPosxNegz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopNegxNegz");
 //
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxMidz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxMidz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxMidz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopMidxMidz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopPosxMidz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopNegxMidz");
 //
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxPosz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxPosz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxPosz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopMidxPosz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopPosxPosz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopNegxPosz");
 //        }
 //        else
 //        {
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Base");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Top");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("Base");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("Top");
 //
 //            FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture0);
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxNegz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxNegz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxNegz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopMidxNegz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopPosxNegz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopNegxNegz");
 //
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxMidz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxMidz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxMidz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopMidxMidz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopPosxMidz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopNegxMidz");
 //
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxPosz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxPosz");
-//            TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxPosz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopMidxPosz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopPosxPosz");
+//            TileEntityShortRangeTelepadRenderer.minerBaseModel.renderPart("TopNegxPosz");
 //        }
 //
 //        GL11.glEnable(GL11.GL_BLEND);

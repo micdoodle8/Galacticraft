@@ -9,17 +9,21 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,12 +32,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
     //private IIcon[] pipeIcons = new IIcon[16];
+    public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
     public BlockOxygenPipe(String assetName)
     {
         super(Material.glass);
         this.setHardness(0.3F);
         this.setStepSound(Block.soundTypeGlass);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -42,14 +48,15 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         final TileEntityOxygenPipe tile = (TileEntityOxygenPipe) worldIn.getTileEntity(pos);
+        int pipeColor = state.getValue(COLOR).getDyeDamage();
 
-        if (tile != null && tile.getColor() != 15)
+        if (tile != null && pipeColor != 15)
         {
             final float f = 0.7F;
             final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
             final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.dye, 1, tile.getColor()));
+            final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.dye, 1, pipeColor));
             entityitem.setDefaultPickupDelay();
             worldIn.spawnEntityInWorld(entityitem);
         }
@@ -102,9 +109,11 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
                 {
                     final int dyeColor = playerIn.inventory.getCurrentItem().getItemDamage();
 
-                    final byte colorBefore = tileEntity.getColor();
+                    final byte colorBefore = tileEntity.getColor(state);
 
-                    tileEntity.setColor((byte) dyeColor);
+                    worldIn.setBlockState(pos, state.withProperty(COLOR, EnumDyeColor.byDyeDamage(dyeColor)));
+
+                    tileEntity.onColorUpdate();
 
                     if (colorBefore != (byte) dyeColor && !playerIn.capabilities.isCreativeMode && --playerIn.inventory.getCurrentItem().stackSize == 0)
                     {
@@ -143,13 +152,6 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         }
 
         return false;
-
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
     }
 
 //    @Override
@@ -204,7 +206,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     }
 
     @Override
-    public NetworkType getNetworkType()
+    public NetworkType getNetworkType(IBlockState state)
     {
         return NetworkType.OXYGEN;
     }
@@ -215,9 +217,33 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
     }
 
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+    }
+
     @Override
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(COLOR, EnumDyeColor.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(COLOR)).getMetadata();
     }
 }

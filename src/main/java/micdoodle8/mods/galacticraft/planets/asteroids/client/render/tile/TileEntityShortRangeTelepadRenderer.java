@@ -16,7 +16,7 @@
 //@SideOnly(Side.CLIENT)
 //public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRenderer
 //{
-//    public static final ResourceLocation telepadTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter.png");
+//    public static final ResourceLocation minerBaseTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter.png");
 //    public static final ResourceLocation telepadTexture0 = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter0.png");
 //    public static IModelCustom telepadModel;
 //
@@ -28,7 +28,7 @@
 //    public void renderModelAt(TileEntityShortRangeTelepad tileEntity, double d, double d1, double d2, float f)
 //    {
 //        // Texture file
-//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture);
+//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.minerBaseTexture);
 //
 //        GL11.glPushMatrix();
 //

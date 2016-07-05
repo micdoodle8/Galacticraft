@@ -16,8 +16,6 @@ import net.minecraftforge.oredict.OreDictionary;
 public class AsteroidBlocks
 {
     public static Block blockWalkway;
-    public static Block blockWalkwayWire;
-    public static Block blockWalkwayOxygenPipe;
     public static Block blockBasic;
     //	public static Block machineFrame;
     public static Block beamReflector;
@@ -35,8 +33,6 @@ public class AsteroidBlocks
         AsteroidBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasureT2");
         AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
         AsteroidBlocks.blockWalkway = new BlockWalkway("walkway");
-        AsteroidBlocks.blockWalkwayWire = new BlockWalkway("walkwayWire");
-        AsteroidBlocks.blockWalkwayOxygenPipe = new BlockWalkway("walkwayOxygenPipe");
         AsteroidBlocks.blockBasic = new BlockBasicAsteroids("asteroidsBlock");
 //		AsteroidBlocks.machineFrame = new BlockMachineFrame("machineFrameOld");
         AsteroidBlocks.beamReflector = new BlockBeamReflector("beamReflector");
@@ -62,8 +58,6 @@ public class AsteroidBlocks
         registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class);
         registerBlock(AsteroidBlocks.blockWalkway, ItemBlockWalkway.class);
-        registerBlock(AsteroidBlocks.blockWalkwayWire, ItemBlockWalkway.class);
-        registerBlock(AsteroidBlocks.blockWalkwayOxygenPipe, ItemBlockWalkway.class);
 //		registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class);
         registerBlock(AsteroidBlocks.beamReflector, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.beamReceiver, ItemBlockDesc.class);

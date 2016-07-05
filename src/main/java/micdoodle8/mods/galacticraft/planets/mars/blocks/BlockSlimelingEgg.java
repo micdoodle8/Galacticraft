@@ -9,6 +9,10 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -21,7 +25,9 @@ import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,12 +39,41 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 {
 //    private IIcon[] icons;
     public static String[] names = { "redEgg", "blueEgg", "yellowEgg" };
+    public static final PropertyEnum EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
+    public static final PropertyBool BROKEN = PropertyBool.create("broken");
+
+    private enum EnumEggColor implements IStringSerializable
+    {
+        RED(0, "red"),
+        BLUE(1, "blue"),
+        YELLOW(2, "yellow");
+
+        private final int meta;
+        private final String name;
+
+        private EnumEggColor(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     public BlockSlimelingEgg(String assetName)
     {
         super(Material.rock);
-        this.setBlockBounds(0.17F, 0.0F, 0.11F, 0.83F, 0.70F, 0.89F);
+        this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.625F, 0.75F);
         this.setUnlocalizedName(assetName);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
     }
 
     /*@Override
@@ -92,10 +127,13 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerName = player.getName();
             }
 
+            world.markBlockRangeForRenderUpdate(pos, pos);
+
             return true;
         }
         else
         {
+            world.markBlockRangeForRenderUpdate(pos, pos);
             return false;
         }
     }
@@ -185,14 +223,13 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 //        return 1;
 //    }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
         for (int var4 = 0; var4 < BlockSlimelingEgg.names.length; ++var4)
         {
-            par3List.add(new ItemStack(par1, 1, var4));
+            list.add(new ItemStack(itemIn, 1, var4));
         }
     }
 
@@ -233,5 +270,23 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(EGG_COLOR, EnumEggColor.values()[meta % 3]).withProperty(BROKEN, meta - 3 >= 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumEggColor)state.getValue(EGG_COLOR)).getMeta() + (state.getValue(BROKEN) ? 3 : 0);
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, EGG_COLOR, BROKEN);
     }
 }

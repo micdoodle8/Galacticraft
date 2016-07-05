@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -157,7 +158,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public NetworkType getNetworkType()
+    public NetworkType getNetworkType(IBlockState state)
     {
         return NetworkType.POWER;
     }
@@ -188,39 +189,6 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     protected BlockState createBlockState()
     {
         return new BlockState(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
-    }
-
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-
-        if (tileEntity instanceof ITransmitter)
-        {
-            TileEntity[] connectable = new TileEntity[6];
-            switch (this.getNetworkType())
-            {
-                case OXYGEN:
-                    connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
-                    break;
-                case HYDROGEN:
-                    connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
-                    break;
-                case POWER:
-                    connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
-                    break;
-                default:
-                    break;
-            }
-
-            return state.withProperty(DOWN, Boolean.valueOf(connectable[EnumFacing.DOWN.ordinal()] != null))
-                    .withProperty(UP, Boolean.valueOf(connectable[EnumFacing.UP.ordinal()] != null))
-                    .withProperty(NORTH, Boolean.valueOf(connectable[EnumFacing.NORTH.ordinal()] != null))
-                    .withProperty(EAST, Boolean.valueOf(connectable[EnumFacing.EAST.ordinal()] != null))
-                    .withProperty(SOUTH, Boolean.valueOf(connectable[EnumFacing.SOUTH.ordinal()] != null))
-                    .withProperty(WEST, Boolean.valueOf(connectable[EnumFacing.WEST.ordinal()] != null));
-        }
-
-        return state;
     }
 
     @Override

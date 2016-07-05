@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
-import micdoodle8.mods.galacticraft.core.client.GalacticraftStateMapper;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
@@ -26,7 +25,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
-import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
@@ -46,12 +44,9 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.ModelRotation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -66,11 +61,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelFluid;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,7 +72,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -89,8 +80,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -173,9 +163,10 @@ public class ClientProxyCore extends CommonProxyCore
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
 
-    private List<Item> itemsToRegisterJson = Lists.newArrayList();
+    private static List<Item> itemsToRegisterJson = Lists.newArrayList();
 
-    private static ModelResourceLocation fuelLocation = new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel", "fuel");
+    private static ModelResourceLocation fuelLocation = new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel", "fluid");
+    private static ModelResourceLocation oilLocation = new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil", "fluid");
 
     @SubscribeEvent
     public void onTextureStitchedPre(TextureStitchEvent.Pre event)
@@ -189,185 +180,13 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.overworldTextureRequestSent = false;
         ClientProxyCore.flagRequestsSent.clear();
     }
-    
-    @Override
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        ClientProxyCore.scaleup.put(ClientProxyCore.numbers, 0, 16);
-
-        OBJLoader.instance.addDomain(GalacticraftCore.ASSET_PREFIX);
-
-//        ClientProxyCore.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
-//        ClientProxyCore.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
-
-        if (Loader.isModLoaded("PlayerAPI"))
-        {
-//            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
-        }
-    }
 
     @Override
-    public void init(FMLInitializationEvent event)
+    public void registerVariants()
     {
-        ClientProxyCore.registerBlockRenderers();
-
-        for (Item toReg : itemsToRegisterJson)
-        {
-            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, toReg);
-        }
-
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 0, "canister_tin");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 1, "canister_copper");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 0, "tier1engine");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 1, "tier1booster");
-
-        for (int i = 0; i < ItemParaChute.names.length; ++i)
-        {
-            String toReg = ItemParaChute.names[i];
-            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, i, "parachute_" + toReg);
-        }
-
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic_buggy");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocketT2");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.key, 0, "key");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 0, "wheel");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 1, "seat");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 2, "storage");
-        for (int i = 0; i < ItemBasic.names.length; ++i)
-        {
-            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, i, ItemBasic.names[i]);
-        }
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoricIronIngot");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressedMeteoricIron");
-
-        Class[][] commonTypes =
-                {
-                        { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
-                };
-        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
-        ClientProxyCore.registerHandlers();
-        ClientProxyCore.registerTileEntityRenderers();
-        ClientProxyCore.registerBlockHandlers();
-        ClientProxyCore.setupCapes();
-    }
-
-    private void addVariants(String name, String... variants)
-    {
-        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, name);
-        ModelBakery.addVariantName(itemBlockVariants, variants);
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        ClientProxyCore.registerInventoryTabs();
-        ClientProxyCore.registerEntityRenderers();
-        ClientProxyCore.registerItemRenderers();
-
-        addVariants("air_lock_frame", "galacticraftcore:air_lock_frame",
-                "galacticraftcore:air_lock_controller");
-        addVariants("basic_block_core", "galacticraftcore:deco_block_0",
-                "galacticraftcore:deco_block_1",
-                "galacticraftcore:ore_copper_gc",
-                "galacticraftcore:ore_tin_gc",
-                "galacticraftcore:ore_aluminum_gc",
-                "galacticraftcore:ore_silicon",
-                "galacticraftcore:block_copper_gc",
-                "galacticraftcore:block_tin_gc",
-                "galacticraftcore:block_aluminum_gc",
-                "galacticraftcore:block_meteoric_iron_gc");
-        addVariants("air_lock_frame", "galacticraftcore:air_lock_frame",
-                "galacticraftcore:air_lock_controller");
-        addVariants("landing_pad", "galacticraftcore:landing_pad",
-                "galacticraftcore:buggy_pad");
-        addVariants("oxygen_compressor", "galacticraftcore:oxygen_compressor",
-                "galacticraftcore:oxygen_decompressor");
-        addVariants("cargo", "galacticraftcore:cargo_loader",
-                "galacticraftcore:cargo_unloader");
-        addVariants("enclosed", "galacticraftcore:enclosed_oxygen_pipe",
-                "galacticraftcore:enclosed_aluminum_wire",
-                "galacticraftcore:enclosed_heavy_aluminum_wire");
-        addVariants("solar", "galacticraftcore:advanced_solar",
-                "galacticraftcore:basic_solar");
-        addVariants("machine", "galacticraftcore:coal_generator",
-                "galacticraftcore:ingot_compressor");
-        addVariants("machine2", "galacticraftcore:circuit_fabricator",
-                "galacticraftcore:oxygen_storage_module",
-                "galacticraftcore:electric_ingot_compressor");
-        addVariants("machine_tiered", "galacticraftcore:energy_storage",
-                "galacticraftcore:electric_furnace",
-                "galacticraftcore:cluster_storage",
-                "galacticraftcore:arc_furnace");
-        addVariants("basic_block_moon", "galacticraftcore:ore_copper_moon",
-                "galacticraftcore:ore_tin_moon",
-                "galacticraftcore:ore_cheese_moon",
-                "galacticraftcore:moon_dirt_moon",
-                "galacticraftcore:moon_stone",
-                "galacticraftcore:moon_turf_0",
-                "galacticraftcore:moon_dungeon_brick");
-        addVariants("canister", "galacticraftcore:canister_tin",
-                "galacticraftcore:canister_copper");
-        addVariants("engine", "galacticraftcore:tier1engine",
-                "galacticraftcore:tier1booster");
-        addVariants("parachute", "galacticraftcore:parachute_plain",
-                "galacticraftcore:parachute_black",
-                "galacticraftcore:parachute_blue",
-                "galacticraftcore:parachute_lime",
-                "galacticraftcore:parachute_brown",
-                "galacticraftcore:parachute_darkblue",
-                "galacticraftcore:parachute_darkgray",
-                "galacticraftcore:parachute_darkgreen",
-                "galacticraftcore:parachute_gray",
-                "galacticraftcore:parachute_magenta",
-                "galacticraftcore:parachute_orange",
-                "galacticraftcore:parachute_pink",
-                "galacticraftcore:parachute_purple",
-                "galacticraftcore:parachute_red",
-                "galacticraftcore:parachute_teal",
-                "galacticraftcore:parachute_yellow");
-        addVariants("oilCanisterPartial", "galacticraftcore:oilCanisterPartial_0",
-                "galacticraftcore:oilCanisterPartial_1",
-                "galacticraftcore:oilCanisterPartial_2",
-                "galacticraftcore:oilCanisterPartial_3",
-                "galacticraftcore:oilCanisterPartial_4",
-                "galacticraftcore:oilCanisterPartial_5",
-                "galacticraftcore:oilCanisterPartial_6");
-        addVariants("schematic", "galacticraftcore:schematic_buggy",
-                "galacticraftcore:schematic_rocketT2");
-        addVariants("key",
-                "galacticraftcore:key");
-        addVariants("buggymat",
-                "galacticraftcore:wheel",
-                "galacticraftcore:seat",
-                "galacticraftcore:storage");
-        addVariants("basicItem",
-                "galacticraftcore:solar_module_0",
-                "galacticraftcore:solar_module_1",
-                "galacticraftcore:rawSilicon",
-                "galacticraftcore:ingotCopper",
-                "galacticraftcore:ingotTin",
-                "galacticraftcore:ingotAluminum",
-                "galacticraftcore:compressedCopper",
-                "galacticraftcore:compressedTin",
-                "galacticraftcore:compressedAluminum",
-                "galacticraftcore:compressedSteel",
-                "galacticraftcore:compressedBronze",
-                "galacticraftcore:compressedIron",
-                "galacticraftcore:waferSolar",
-                "galacticraftcore:waferBasic",
-                "galacticraftcore:waferAdvanced",
-                "galacticraftcore:dehydratedApple",
-                "galacticraftcore:dehydratedCarrot",
-                "galacticraftcore:dehydratedMelon",
-                "galacticraftcore:dehydratedPotato",
-                "galacticraftcore:frequencyModule",
-                "galacticraftcore:ambientThermalController");
-        addVariants("meteoricIronIngot",
-                "galacticraftcore:meteoricIronIngot",
-                "galacticraftcore:compressedMeteoricIron");
-
         Item fuel = Item.getItemFromBlock(GCBlocks.fuel);
         ModelBakery.registerItemVariants(fuel);
+        ModelBakery.addVariantName(fuel, "galacticraftcore:fuel");
         ModelLoader.setCustomMeshDefinition(fuel, new ItemMeshDefinition()
         {
             public ModelResourceLocation getModelLocation(ItemStack stack)
@@ -382,6 +201,58 @@ public class ClientProxyCore extends CommonProxyCore
                 return fuelLocation;
             }
         });
+        Item oil = Item.getItemFromBlock(GCBlocks.crudeOil);
+        ModelBakery.registerItemVariants(oil);
+        ModelBakery.addVariantName(oil, "galacticraftcore:oil");
+        ModelLoader.setCustomMeshDefinition(oil, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return oilLocation;
+            }
+        });
+        ModelLoader.setCustomStateMapper(GCBlocks.crudeOil, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return oilLocation;
+            }
+        });
+    }
+    
+    @Override
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        ClientProxyCore.scaleup.put(ClientProxyCore.numbers, 0, 16);
+
+        OBJLoader.instance.addDomain(GalacticraftCore.ASSET_PREFIX);
+
+        if (Loader.isModLoaded("PlayerAPI"))
+        {
+//            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
+        }
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event)
+    {
+        Class[][] commonTypes =
+                {
+                        { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
+                };
+        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
+        ClientProxyCore.registerHandlers();
+        ClientProxyCore.registerTileEntityRenderers();
+        ClientProxyCore.setupCapes();
+        ClientProxyCore.registerInventoryJsons();
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        ClientProxyCore.registerInventoryTabs();
+        ClientProxyCore.registerEntityRenderers();
+        ClientProxyCore.addVariants();
 
 //        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
@@ -407,7 +278,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         if (!item.getHasSubtypes())
         {
-            itemsToRegisterJson.add(item);
+            ClientProxyCore.itemsToRegisterJson.add(item);
         }
     }
 
@@ -420,14 +291,14 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, new RenderEvolvedSkeleton());
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, new RenderEvolvedSkeletonBoss());
         RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, new RenderMeteor());
-//            RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
-//            RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
         RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
         RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
 
         if (Loader.isModLoaded("RenderPlayerAPI"))
         {
@@ -441,20 +312,7 @@ public class ClientProxyCore extends CommonProxyCore
         }
     }
 
-    public static void registerItemRenderers()
-    {
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.unlitTorch), new ItemRendererUnlitTorch());
-//        MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(ClientProxyCore.mc.theWorld), new ModelRocketTier1(), new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
-//        MinecraftForgeClient.registerItemRenderer(GCItems.buggy, new ItemRendererBuggy());
-//        MinecraftForgeClient.registerItemRenderer(GCItems.flag, new ItemRendererFlag());
-//        MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/treasure.png")));
-//        MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.spinThruster), new ItemRendererThruster());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.brightLamp), new ItemRendererArclamp());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.screen), new ItemRendererScreen());
-    }
-
-    public static void registerHandlers()
+    private static void registerHandlers()
     {
         TickHandlerClient tickHandlerClient = new TickHandlerClient();
         MinecraftForge.EVENT_BUS.register(tickHandlerClient);
@@ -465,9 +323,82 @@ public class ClientProxyCore extends CommonProxyCore
         MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
     }
 
-    public static void registerBlockRenderers()
+    private static void registerTileEntityRenderers()
     {
-        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.crudeOil);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
+    }
+
+    private static void registerInventoryJsons()
+    {
+        for (Item toReg : ClientProxyCore.itemsToRegisterJson)
+        {
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, toReg);
+        }
+
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 0, "canister_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 1, "canister_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 0, "tier1engine");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 1, "tier1booster");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 0, "parachute_plain");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 1, "parachute_black");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 2, "parachute_blue");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 3, "parachute_lime");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 4, "parachute_brown");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 5, "parachute_darkblue");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 6, "parachute_darkgray");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 7, "parachute_darkgreen");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 8, "parachute_gray");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 9, "parachute_magenta");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 10, "parachute_orange");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 11, "parachute_pink");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 12, "parachute_purple");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 13, "parachute_red");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 14, "parachute_teal");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 15, "parachute_yellow");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic_buggy");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocketT2");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.key, 0, "key");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 0, "wheel");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 1, "seat");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 2, "storage");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 0, "solar_module_0");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 1, "solar_module_1");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 2, "rawSilicon");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 3, "ingotCopper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 4, "ingotTin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 5, "ingotAluminum");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 6, "compressedCopper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 7, "compressedTin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 8, "compressedAluminum");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 9, "compressedSteel");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 10, "compressedBronze");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 11, "compressedIron");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 12, "waferSolar");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 13, "waferBasic");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 14, "waferAdvanced");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 15, "dehydratedApple");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 16, "dehydratedCarrot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 17, "dehydratedMelon");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydratedPotato");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequencyModule");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambientThermalController");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoricIronIngot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressedMeteoricIron");
+
+        // Blocks
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.breatheableAir);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightAir);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightBreatheableAir);
@@ -523,7 +454,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 8, "cluster_storage");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 12, "arc_furnace");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 0, "aluminum_wire");
-        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire_heavy");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");
@@ -538,44 +469,41 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.telemetry);
     }
 
-    public static void registerTileEntityRenderers()
+    private static void addVariants()
     {
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
-            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
+        addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
+        addCoreVariant("basic_block_core", "deco_block_0", "deco_block_1", "ore_copper_gc", "ore_tin_gc", "ore_aluminum_gc", "ore_silicon", "block_copper_gc", "block_tin_gc", "block_aluminum_gc", "block_meteoric_iron_gc");
+        addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
+        addCoreVariant("landing_pad", "landing_pad", "buggy_pad");
+        addCoreVariant("oxygen_compressor", "oxygen_compressor", "oxygen_decompressor");
+        addCoreVariant("cargo", "cargo_loader", "cargo_unloader");
+        addCoreVariant("enclosed", "enclosed_oxygen_pipe", "enclosed_aluminum_wire", "enclosed_heavy_aluminum_wire");
+        addCoreVariant("solar", "advanced_solar", "basic_solar");
+        addCoreVariant("machine", "coal_generator", "ingot_compressor");
+        addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor");
+        addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
+        addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "moon_stone", "moon_turf_0", "moon_dungeon_brick");
+        addCoreVariant("canister", "canister_tin", "canister_copper");
+        addCoreVariant("engine", "tier1engine", "tier1booster");
+        addCoreVariant("parachute", "parachute_plain", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
+        addCoreVariant("oilCanisterPartial", "oilCanisterPartial_0", "oilCanisterPartial_1", "oilCanisterPartial_2", "oilCanisterPartial_3", "oilCanisterPartial_4", "oilCanisterPartial_5", "oilCanisterPartial_6");
+        addCoreVariant("schematic", "schematic_buggy", "schematic_rocketT2");
+        addCoreVariant("key", "key");
+        addCoreVariant("buggymat", "wheel", "seat", "storage");
+        addCoreVariant("basicItem", "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule", "ambientThermalController");
+        addCoreVariant("meteoricIronIngot", "meteoricIronIngot", "compressedMeteoricIron");
+        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
     }
 
-    public static void registerBlockHandlers()
+    private static void addCoreVariant(String name, String... variants)
     {
-//        ClientProxyCore.renderIdTreasureChest = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdTorchUnlit = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdBreathableAir = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdOxygenPipe = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdMeteor = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdCraftingTable = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdLandingPad = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdMachine = RenderingRegistry.getNextAvailableRenderId();
-//        ClientProxyCore.renderIdParachest = RenderingRegistry.getNextAvailableRenderId();
-//        RenderingRegistry.registerBlockHandler(new BlockRendererTreasureChest(ClientProxyCore.renderIdTreasureChest));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererParachest(ClientProxyCore.renderIdParachest));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererUnlitTorch(ClientProxyCore.renderIdTorchUnlit));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererBreathableAir(ClientProxyCore.renderIdBreathableAir));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererOxygenPipe(ClientProxyCore.renderIdOxygenPipe));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererMeteor(ClientProxyCore.renderIdMeteor));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererNasaWorkbench(ClientProxyCore.renderIdCraftingTable));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererLandingPad(ClientProxyCore.renderIdLandingPad));
-//        RenderingRegistry.registerBlockHandler(new BlockRendererMachine(ClientProxyCore.renderIdMachine));
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, name);
+        String[] variants0 = new String[variants.length];
+        for (int i = 0; i < variants.length; ++i)
+        {
+            variants0[i] = GalacticraftCore.TEXTURE_PREFIX + variants[i];
+        }
+        ModelBakery.addVariantName(itemBlockVariants, variants0);
     }
 
     public static void setupCapes()

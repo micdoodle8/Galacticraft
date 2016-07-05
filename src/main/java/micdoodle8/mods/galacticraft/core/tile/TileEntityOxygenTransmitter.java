@@ -68,7 +68,7 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     @Override
     public void onNetworkChanged()
     {
-
+        this.worldObj.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
     }
 
     protected void resetNetwork()

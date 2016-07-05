@@ -22,16 +22,22 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.*;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -50,6 +56,8 @@ import java.util.List;
 
 public class MarsModuleClient implements IPlanetsModuleClient
 {
+    private static ModelResourceLocation sludgeLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge", "fluid");
+
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -81,6 +89,35 @@ public class MarsModuleClient implements IPlanetsModuleClient
                 "galacticraftplanets:schematic_rocketT3",
                 "galacticraftplanets:schematic_rocket_cargo",
                 "galacticraftplanets:schematic_astroMiner");
+        addVariants("slimelingEgg",
+                "galacticraftplanets:slimelingEggRed",
+                "galacticraftplanets:slimelingEggBlue",
+                "galacticraftplanets:slimelingEggYellow");
+        addVariants("marsMachine",
+                "galacticraftplanets:terraformer",
+                "galacticraftplanets:launch_controller");
+    }
+
+    @Override
+    public void registerVariants()
+    {
+        Item sludge = Item.getItemFromBlock(MarsBlocks.blockSludge);
+        ModelBakery.registerItemVariants(sludge);
+        ModelBakery.addVariantName(sludge, "galacticraftplanets:sludge");
+        ModelLoader.setCustomMeshDefinition(sludge, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return sludgeLocation;
+            }
+        });
+        ModelLoader.setCustomStateMapper(MarsBlocks.blockSludge, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return sludgeLocation;
+            }
+        });
     }
 
     @Override
@@ -148,6 +185,13 @@ public class MarsModuleClient implements IPlanetsModuleClient
         {
             ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.vine, vineType.getMeta(), vineType.getName());
         }
+
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 0, "slimelingEggRed");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 1, "slimelingEggBlue");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 2, "slimelingEggYellow");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.creeperEgg);
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 0, "terraformer");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 8, "launch_controller");
     }
 
     private void addVariants(String name, String... variants)

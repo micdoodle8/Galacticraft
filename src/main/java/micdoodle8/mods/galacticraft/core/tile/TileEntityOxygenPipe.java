@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
@@ -14,12 +18,8 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable, IPacketReceiver
+public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable
 {
-    @NetworkedField(targetSide = Side.CLIENT)
-    public byte pipeColor = 15;
-    private byte lastPipeColor = -1;
-
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
@@ -29,7 +29,9 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
         {
             if (adjacentTile instanceof IColorable)
             {
-                return this.getColor() == ((IColorable) adjacentTile).getColor();
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                IBlockState adjacentTileState = adjacentTile.getWorld().getBlockState(adjacentTile.getPos());
+                return this.getColor(state) == ((IColorable) adjacentTile).getColor(adjacentTileState);
             }
 
             return true;
@@ -49,12 +51,6 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     public void update()
     {
         super.update();
-
-        if (this.ticks % 60 == 0 && this.lastPipeColor != this.getColor() && !this.worldObj.isRemote)
-        {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
-            this.lastPipeColor = this.getColor();
-        }
     }
 
     @Override
@@ -88,10 +84,8 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public void setColor(byte col)
+    public void onColorUpdate()
     {
-        this.pipeColor = col;
-
         if (this.worldObj != null)
         {
             if (this.worldObj.isRemote)
@@ -107,9 +101,13 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     }
 
     @Override
-    public byte getColor()
+    public byte getColor(IBlockState state)
     {
-        return this.pipeColor;
+        if (state.getBlock() == GCBlocks.oxygenPipe)
+        {
+            return (byte) state.getValue(BlockOxygenPipe.COLOR).getDyeDamage();
+        }
+        return 15;
     }
 
     @Override
@@ -128,26 +126,10 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     {
         super.readFromNBT(par1NBTTagCompound);
 
-        this.setColor(par1NBTTagCompound.getByte("pipeColor"));
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeToNBT(par1NBTTagCompound);
-
-        par1NBTTagCompound.setByte("pipeColor", this.getColor());
-    }
-
-    @Override
-    public void decodePacketdata(ByteBuf buffer)
-    {
-        byte colorBefore = this.pipeColor;
-        super.decodePacketdata(buffer);
-
-        if (this.pipeColor != colorBefore && this.worldObj instanceof WorldClient)
+        if (par1NBTTagCompound.hasKey("pipeColor"))
         {
-            this.worldObj.notifyLightSet(this.getPos());
+            // Backwards compatibility
+            this.worldObj.setBlockState(getPos(), this.worldObj.getBlockState(getPos()).withProperty(BlockOxygenPipe.COLOR, EnumDyeColor.byDyeDamage(par1NBTTagCompound.getByte("pipeColor"))));
         }
     }
 }

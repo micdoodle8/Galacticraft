@@ -23,6 +23,11 @@ public class CommonProxyCore
     {
     }
 
+    public void registerVariants()
+    {
+
+    }
+
     public void init(FMLInitializationEvent event)
     {
     }

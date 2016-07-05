@@ -26,18 +26,6 @@ import java.util.Random;
 
 public class BlockMulti extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
-    //private IIcon[] fakeIcons;
-
-    //Meta values:
-    //  0 : Solar panel strut and variable angle parts
-    //  1 : Space station base
-    //  2 : Rocket fueling pad
-    //  3 : NASA workbench
-    //  4 : Solar panel fixed horizontal panel parts (in basic panel)
-    //  5 : Cryogenic chamber
-    //  6 : Buggy fueling pad
-    //  7 unused
-
     public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
 
     public enum EnumBlockMultiType implements IStringSerializable
@@ -48,7 +36,8 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         NASA_WORKBENCH(3, "nasa_workbench"),
         SOLAR_PANEL_1(4, "solar_panel"),
         CRYO_CHAMBER(5, "cryo_chamber"),
-        BUGGY_FUEL_PAD(6, "buggy_pad");
+        BUGGY_FUEL_PAD(6, "buggy_pad"),
+        MINER_BASE(7, "miner_base");
 
         private final int meta;
         private final String name;

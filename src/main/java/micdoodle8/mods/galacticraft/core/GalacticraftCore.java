@@ -238,6 +238,8 @@ public class GalacticraftCore
         GCBlocks.initBlocks();
         GCItems.initItems();
 
+        proxy.registerVariants();
+
         //Allow canisters to be filled from other mods' tanks containing fuel / oil fluids
         FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
@@ -383,9 +385,9 @@ public class GalacticraftCore
         // Oil:
         if (!FluidRegistry.isFluidRegistered(oilID))
         {
-            ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil_flow");
-            ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil_still");
-            Fluid gcFluidOil = new Fluid(oilID, flowingOil, stillOil).setDensity(800).setViscosity(1500);
+            ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/oil_flow");
+            ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/oil_still");
+            Fluid gcFluidOil = new Fluid(oilID, stillOil, flowingOil).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(gcFluidOil);
         }
         else
@@ -421,9 +423,9 @@ public class GalacticraftCore
         // Fuel:
         if (!FluidRegistry.isFluidRegistered(fuelID))
         {
-            ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel_flow");
-            ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel_still");
-            Fluid gcFluidFuel = new Fluid(fuelID, flowingFuel, stillFuel).setDensity(400).setViscosity(900);
+            ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fuel_flow");
+            ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fuel_still");
+            Fluid gcFluidFuel = new Fluid(fuelID, stillFuel, flowingFuel).setDensity(400).setViscosity(900);
             FluidRegistry.registerFluid(gcFluidFuel);
         }
         else

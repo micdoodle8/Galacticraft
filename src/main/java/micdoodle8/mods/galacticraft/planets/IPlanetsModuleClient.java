@@ -15,6 +15,8 @@ public interface IPlanetsModuleClient
 {
     public void preInit(FMLPreInitializationEvent event);
 
+    public void registerVariants();
+
     public void init(FMLInitializationEvent event);
 
     public void postInit(FMLPostInitializationEvent event);

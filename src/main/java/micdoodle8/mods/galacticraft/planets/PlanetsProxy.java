@@ -20,6 +20,11 @@ public class PlanetsProxy implements IGuiHandler
         }
     }
 
+    public void registerVariants()
+    {
+
+    }
+
     public void init(FMLInitializationEvent event)
     {
         for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())

@@ -104,7 +104,7 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public NetworkType getNetworkType()
+    public NetworkType getNetworkType(IBlockState state)
     {
         return NetworkType.HYDROGEN;
     }

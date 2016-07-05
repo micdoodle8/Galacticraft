@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -40,7 +42,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	private ItemStack[] containingItems = new ItemStack[HOLDSIZE + 1];
     private int[] slotArray;
     public boolean isMaster = false;
-	public EnumFacing facing;
+	public EnumFacing facing = EnumFacing.DOWN;
     private BlockPos mainBlockPosition;
     private LinkedList<BlockVec3> targetPoints = new LinkedList();
     private WeakReference<TileEntityMinerBase> masterTile = null;
@@ -440,6 +442,24 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 	@Override
     public void onCreate(World world, BlockPos placedPosition)
 	{
+        this.mainBlockPosition = placedPosition;
+        this.markDirty();
+
+        for (int x = 0; x < 2; x++)
+        {
+            for (int y = 0; y < 2; y++)
+            {
+                for (int z = 0; z < 2; z++)
+                {
+                    final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + y, placedPosition.getZ() + z);
+
+                    if (!vecToAdd.equals(placedPosition))
+                    {
+                        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 7);
+                    }
+                }
+            }
+        }
 	}
 
 	@Override
@@ -515,6 +535,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     		z = this.mainBlockPosition.getZ();
     	}
     	int link = (this.linkedMinerID != null) ? 1:0;
+        System.err.println(x + " " + y + " " + z + " " + this.mainBlockPosition);
     	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing, x, y, z, link} ), this.worldObj.provider.getDimensionId());
     }
     
