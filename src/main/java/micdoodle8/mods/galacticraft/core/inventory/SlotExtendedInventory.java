@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.api.item.IItemPressurized;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
@@ -58,6 +59,12 @@ public class SlotExtendedInventory extends Slot
         {
             return ((IItemThermal) stack.getItem()).isValidForSlot(stack, slotIndex);
         }
+
+        if (stack.getItem() instanceof IItemPressurized)
+        {
+            return ((IItemPressurized) stack.getItem()).isValidForSlot(stack, slotIndex);
+        }
+
 
         return false;
     }

@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
-public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenReceiver 
+public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenReceiver
 {
     private final int tankCapacity = 2000;
 
@@ -47,6 +47,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public int processTicks = -10;
     private ItemStack[] containingItems = new ItemStack[4];
     private int airProducts = -1;
+    // how much air units is produced per updateEntity.
+    private int airUnitsProducedPerTick = -1;
 
     @NetworkedField(targetSide = Side.CLIENT)
     public int gasTankType = -1;
@@ -98,6 +100,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             this.airProducts = this.getAirProducts();
         }
 
+        if (this.airUnitsProducedPerTick == -1)
+        {
+            this.airUnitsProducedPerTick = this.getNrAirUnitsProduced();
+        }
         if (!this.worldObj.isRemote)
         {
             FluidStack currentgas = this.gasTank.getFluid();
@@ -130,7 +136,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                         Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
-                            FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
+                            FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, this.airUnitsProducedPerTick);
                             this.gasTank.fill(gcAtmosphere, true);
                             this.gasTankType = TankGases.AIR.index;
                         }
@@ -142,7 +148,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 	int amount = ItemCanisterGeneric.EMPTY - inputCanister.getItemDamage();
                 	if (amount > 0)
                 	{
-	                	Item canisterType = inputCanister.getItem(); 
+	                	Item canisterType = inputCanister.getItem();
 	                	FluidStack canisterGas = null;
 	                    int factor = 1;
 	                	if (this.gasTankType <= 0 && canisterType == AsteroidsItems.methaneCanister)
@@ -162,7 +168,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	                        canisterGas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, amount * 2);
 	                        factor = 2;
 	                    }
-	
+
 	                    if (canisterGas != null)
 		                {
 		                	int used = this.gasTank.fill(canisterGas, true) / factor;
@@ -354,6 +360,21 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
+    /**
+     * Returns the amount of "air" gas units produced in the current atmosphere
+     * @return
+     */
+    public int getNrAirUnitsProduced()
+    {
+        float pressure = 1.0F;
+        WorldProvider WP = this.worldObj.provider;
+        if (WP instanceof WorldProviderSpace)
+        {
+             pressure = ((WorldProviderSpace)WP).getCelestialBody().getAtmosphericPressure();
+        }
+        // clamp the value between 1 and 16
+        return Math.max(MathHelper.ceiling_float_int(4.0F*pressure), 16);
+    }
     public int getAirProducts()
     {
         WorldProvider WP = this.worldObj.provider;
@@ -509,7 +530,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         {
             return new int [] { 0, 1, 2, 3};
         }
-    	
+
     	if (side > 1)
         {
             return new int [] { 1, 2, 3};
@@ -530,9 +551,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             case 1:
             	return FluidUtil.isMethaneContainerAny(itemstack);
             case 2:
-                return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank.getFluid());               
+                return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank.getFluid());
             case 3:
-                return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank2.getFluid());               
+                return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank2.getFluid());
             default:
                 return false;
             }
@@ -734,7 +755,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	    	int used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doReceive) / conversion);
 			return used;
     	}
-    	
+
     	return 0;
 	}
 
@@ -755,7 +776,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	{
 		return 0;
 	}
-	
+
     @Override
     public boolean canConnect(ForgeDirection direction, NetworkType type)
     {

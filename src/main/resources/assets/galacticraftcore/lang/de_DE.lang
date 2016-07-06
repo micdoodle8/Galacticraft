@@ -232,6 +232,7 @@ death.attack.spaceshipExplosionB=%1$s starb bei einem Raketenunglück!
 death.attack.spaceshipCrash=Die Rakete von %1$s hat sich selbst in den Boden gerammt. Ups.
 death.attack.oxygenSuffocation=%1$s ist der Sauerstoff ausgegangen!
 death.attack.thermal=%1$s hat vergessen, dass Temperaturen nicht überall gleich sind.
+death.attack.pressure=%1$s konnte dem Druck nicht standhalten.
 
 # GALAXIES
 galaxy.blockyway.name=The Blocky Way

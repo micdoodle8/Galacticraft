@@ -23,7 +23,7 @@ public class OverlayOxygenTanks extends Overlay
     /**
      * Render the GUI that displays oxygen level in tanks
      */
-    public static void renderOxygenTankIndicator(int heatLevel, int oxygenInTank1, int oxygenInTank2, boolean right, boolean top, boolean invalid)
+    public static void renderOxygenTankIndicator(int pressureLevel, int heatLevel, int oxygenInTank1, int oxygenInTank2, boolean right, boolean top, boolean invalid)
     {
         final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlayOxygenTanks.minecraft, OverlayOxygenTanks.minecraft.displayWidth, OverlayOxygenTanks.minecraft.displayHeight);
         final int i = scaledresolution.getScaledWidth();
@@ -77,6 +77,7 @@ public class OverlayOxygenTanks extends Overlay
         bottomY = topY + 46.5;
 
         float texMod = 0.00390625F;
+        // empty thermal indicator
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(minLeftX, bottomY, zLevel, 66 * texMod, 47 * texMod);
         tessellator.addVertexWithUV(minLeftX + 9, bottomY, zLevel, (66 + 9) * texMod, 47 * texMod);
@@ -87,7 +88,7 @@ public class OverlayOxygenTanks extends Overlay
         int heatLevelScaled = Math.min(Math.max(heatLevel, 1), 45);
         int heatLeveLScaledMax = Math.min(heatLevelScaled + 2, 45);
         int heatLevelScaledMin = Math.max(heatLeveLScaledMax - 2, 0);
-
+        // thermal arrow
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(minLeftX + 1, bottomY - heatLevelScaledMin, zLevel, 76 * texMod, (48 + 45 - heatLevelScaled) * texMod);
         tessellator.addVertexWithUV(minLeftX + 8, bottomY - heatLevelScaledMin, zLevel, (76 + 7) * texMod, (48 + 45 - heatLevelScaled) * texMod);
@@ -106,12 +107,25 @@ public class OverlayOxygenTanks extends Overlay
             tessellator.draw();
             GL11.glColor3f(1, 1, 1);
         }
+        
+        // pressure gauge?
+        tessellator.startDrawingQuads();
+        // BL
+        tessellator.addVertexWithUV(maxRightX-47+8, bottomY+10, zLevel, 85 * texMod, 57 * texMod);
+        // BR
+        tessellator.addVertexWithUV(maxRightX+8, bottomY+10, zLevel, 132 * texMod, 57 * texMod);
+        // TR
+        tessellator.addVertexWithUV(maxRightX+8, bottomY+1, zLevel, 132 * texMod, 48 * texMod);
+        // TL
+        tessellator.addVertexWithUV(maxRightX-47+8, bottomY+1, zLevel, 85 * texMod, 48 * texMod);
+        tessellator.draw();
 
         minLeftX += 10;
         maxLeftX += 10;
         minRightX += 10;
         maxRightX += 10;
 
+        // the tanks
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(minRightX, bottomY, zLevel, 85 * texMod, 47 * texMod);
         tessellator.addVertexWithUV(maxRightX, bottomY, zLevel, (85 + 19) * texMod, 47 * texMod);
