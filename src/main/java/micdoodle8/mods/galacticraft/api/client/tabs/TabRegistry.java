@@ -1,4 +1,4 @@
-package tconstruct.client.tabs;
+package micdoodle8.mods.galacticraft.api.client.tabs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class TabRegistry
 			guiLeft += getPotionOffset();
 
 			TabRegistry.updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
-//			TabRegistry.addTabsToList(event.gui.buttonList);
+			TabRegistry.addTabsToList(event.gui.buttonList);
 		}
 	}
 

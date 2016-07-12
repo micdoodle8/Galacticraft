@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -43,6 +44,12 @@ public class BlockTier3TreasureChest extends BlockContainer implements ITileEnti
         this.setCreativeTab(CreativeTabs.tabDecorations);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
     }
 
     public boolean isOpaqueCube()

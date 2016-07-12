@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
@@ -34,6 +35,9 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     //private IIcon[] pipeIcons = new IIcon[16];
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
+    public Vector3 minVector = new Vector3(0.35, 0.35, 0.35);
+    public Vector3 maxVector = new Vector3(0.65, 0.65, 0.65);
+
     public BlockOxygenPipe(String assetName)
     {
         super(Material.glass);
@@ -42,6 +46,18 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public Vector3 getMinVector(IBlockState state)
+    {
+        return minVector;
+    }
+
+    @Override
+    public Vector3 getMaxVector(IBlockState state)
+    {
+        return maxVector;
     }
 
     @Override

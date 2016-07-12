@@ -54,7 +54,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         {
             this.updateOrientation();
         }
-        else if (this.targetVec.equals(BlockVec3.INVALID_VECTOR))
+        else if (this.targetVec.getX() == -1 && this.targetVec.getY() == -1 && this.targetVec.getZ() == -1)
         {
             this.initiateReflector();
         }
@@ -296,7 +296,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     @Override
     public ILaserNode getTarget()
     {
-        if (!this.targetVec.equals(BlockVec3.INVALID_VECTOR))
+        if (this.targetVec.getX() != -1 || this.targetVec.getY() != -1 || this.targetVec.getZ() != -1)
         {
             TileEntity tileAtTarget = this.worldObj.getTileEntity(this.targetVec);
 

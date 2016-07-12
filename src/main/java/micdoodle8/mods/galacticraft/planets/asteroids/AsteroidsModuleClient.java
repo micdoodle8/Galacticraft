@@ -1,21 +1,44 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.loader.AdvancedModelLoader;
 import micdoodle8.mods.galacticraft.core.client.model.loader.IModelCustom;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityMinerBaseRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityShortRangeTelepadRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.BlockPos;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -44,6 +67,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.util.List;
 
@@ -56,11 +81,118 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         addPlanetVariants("thermalPadding", "thermalHelm", "thermalChestplate", "thermalLeggings", "thermalBoots");
         addPlanetVariants("itemBasicAsteroids", "reinforcedPlateT3", "engineT2", "rocketFinsT2", "shardIron", "shardTitanium", "ingotTitanium", "compressedTitanium", "thermalCloth", "beamCore");
         addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
     public void registerVariants()
     {
+        Item receiver = Item.getItemFromBlock(AsteroidBlocks.beamReceiver);
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beamReceiver", "inventory");
+        ModelLoader.setCustomModelResourceLocation(receiver, 0, modelResourceLocation);
+
+        Item reflector = Item.getItemFromBlock(AsteroidBlocks.beamReflector);
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beamReflector", "inventory");
+        ModelLoader.setCustomModelResourceLocation(reflector, 0, modelResourceLocation);
+
+        Item teleporter = Item.getItemFromBlock(AsteroidBlocks.shortRangeTelepad);
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:telepadShort", "inventory");
+        ModelLoader.setCustomModelResourceLocation(teleporter, 0, modelResourceLocation);
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onModelBakeEvent(ModelBakeEvent event)
+    {
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beamReceiver", "inventory");
+        Object object = event.modelRegistry.getObject(modelResourceLocation);
+        if (object instanceof IBakedModel)
+        {
+            IBakedModel newModel;
+
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "receiver.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Main", "Receiver", "Ring"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F))), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            event.modelRegistry.putObject(modelResourceLocation, newModel);
+        }
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beamReflector", "inventory");
+        object = event.modelRegistry.getObject(modelResourceLocation);
+        if (object instanceof IBakedModel)
+        {
+            IBakedModel newModel;
+
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "reflector.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F))), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            event.modelRegistry.putObject(modelResourceLocation, newModel);
+        }
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:telepadShort", "inventory");
+        object = event.modelRegistry.getObject(modelResourceLocation);
+        if (object instanceof IBakedModel)
+        {
+            IBakedModel newModel;
+
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "telepadShort.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Top", "Bottom", "Connector"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.2F, 0.2F, 0.2F))), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            event.modelRegistry.putObject(modelResourceLocation, newModel);
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void loadTextures(TextureStitchEvent.Pre evt)
+    {
+        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/minerbase"));
+        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/beamReflector"));
+        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/beamReceiver"));
+        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/telepadShort"));
+        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/telepadShort0"));
     }
 
     @Override
@@ -94,10 +226,10 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 //        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.blockWalkway), new ItemRendererWalkway());
 //        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.blockWalkwayOxygenPipe), new ItemRendererWalkway());
 //        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.blockWalkwayWire), new ItemRendererWalkway());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMinerBase.class, new TileEntityMinerBaseRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestAsteroids.class, new TileEntityTreasureChestRenderer());
 
         if (Loader.isModLoaded("craftguide"))
@@ -117,6 +249,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockWalkway, 2, "walkway_pipe");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockDenseIce);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockMinerBase);
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.minerBaseFull);
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 0, "thermalHelm");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 1, "thermalChestplate");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 2, "thermalLeggings");

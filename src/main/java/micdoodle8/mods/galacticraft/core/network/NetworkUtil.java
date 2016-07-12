@@ -4,6 +4,7 @@ import com.google.common.math.DoubleMath;
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import net.minecraft.block.BlockPortal;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -183,6 +184,10 @@ public class NetworkUtil
                 buffer.writeInt(pos.getY());
                 buffer.writeInt(pos.getZ());
             }
+            else if (dataValue instanceof EnumDyeColor)
+            {
+                buffer.writeInt(((EnumDyeColor) dataValue).getDyeDamage());
+            }
             else
             {
                 if (dataValue == null)
@@ -321,6 +326,10 @@ public class NetworkUtil
             {
                 objList.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
             }
+            else if (clazz.equals(EnumDyeColor.class))
+            {
+                objList.add(EnumDyeColor.byDyeDamage(buffer.readInt()));
+            }
         }
 
         return objList;
@@ -407,6 +416,10 @@ public class NetworkUtil
         else if (dataValue.equals(BlockPos.class))
         {
             return new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+        }
+        else if (dataValue.equals(EnumDyeColor.class))
+        {
+            return EnumDyeColor.byDyeDamage(buffer.readInt());
         }
         else
         {

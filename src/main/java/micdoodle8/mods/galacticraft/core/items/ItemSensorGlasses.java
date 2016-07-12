@@ -17,7 +17,7 @@ public class ItemSensorGlasses extends ItemArmor
 {
     public ItemSensorGlasses(String assetName)
     {
-        super(GCItems.ARMOR_SENSOR_GLASSES, GalacticraftCore.proxy.getSensorArmorRenderIndex(), 0);
+        super(GCItems.ARMOR_SENSOR_GLASSES, 0, 0);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }

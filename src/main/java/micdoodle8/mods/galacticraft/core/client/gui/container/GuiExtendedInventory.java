@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
+import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
@@ -36,7 +39,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 75, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
+        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
     }
 
     @SuppressWarnings("unchecked")
@@ -52,8 +55,8 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
 
-        //TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
-        //TabRegistry.addTabsToList(this.buttonList); TODO
+        TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
+        TabRegistry.addTabsToList(this.buttonList);
 
         this.buttonList.add(new GuiButton(0, this.guiLeft + 10, this.guiTop + 71, 7, 7, ""));
         this.buttonList.add(new GuiButton(1, this.guiLeft + 51, this.guiTop + 71, 7, 7, ""));
@@ -95,7 +98,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 			for (int k = 0; k < this.buttonList.size(); ++k)
 	        {
 	        	GuiButton b = (GuiButton) this.buttonList.get(k);
-	        	//if (!(b instanceof AbstractTab)) b.xPosition += diff; TODO
+	        	if (!(b instanceof AbstractTab)) b.xPosition += diff;
 	        }
 		}
         super.drawScreen(par1, par2, par3);

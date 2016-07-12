@@ -11,6 +11,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -33,6 +36,8 @@ import java.util.List;
 
 public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
 {
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+
     public BlockBeamReceiver(String assetName)
     {
         super(Material.iron);
@@ -257,5 +262,24 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getFront(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(FACING)).getIndex();
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] { FACING });
     }
 }

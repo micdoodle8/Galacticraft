@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamOutput;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
@@ -42,6 +43,7 @@ public class NetworkRenderer
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
+        RenderHelper.disableStandardItemLighting();
 
         for (TileEntityBeamOutput tileEntity : nodes)
         {
@@ -68,13 +70,13 @@ public class NetworkRenderer
             GL11.glRotatef(-tileEntity.pitch, 1, 0, 0);
             GL11.glRotatef(tileEntity.ticks * 10, 0, 0, 1);
 
-            GL11.glColor4f(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F);
-            tess.getWorldRenderer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
+//            GL11.glColor4f(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F);
+            tess.getWorldRenderer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
             for (EnumFacing dir : EnumFacing.values())
             {
-                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, dir.getFrontOffsetZ() / 40.0F).endVertex();
-                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, directionLength + dir.getFrontOffsetZ() / 40.0F).endVertex();
+                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, dir.getFrontOffsetZ() / 40.0F).color(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F).endVertex();
+                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, directionLength + dir.getFrontOffsetZ() / 40.0F).color(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F).endVertex();
             }
 
             tess.draw();
@@ -84,6 +86,7 @@ public class NetworkRenderer
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_CULL_FACE);
+        RenderHelper.enableStandardItemLighting();
 
         GL11.glColor4f(1, 1, 1, 1);
     }

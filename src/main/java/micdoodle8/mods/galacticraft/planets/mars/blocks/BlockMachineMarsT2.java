@@ -13,6 +13,9 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityElectrolyzer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,10 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,6 +36,40 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     public static final int GAS_LIQUEFIER = 0;
     public static final int METHANE_SYNTHESIZER = 4;
     public static final int ELECTROLYZER = 8;
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineType.class);
+
+    public enum EnumMachineType implements IStringSerializable
+    {
+        GAS_LIQUEFIER(0, "gas_liquefier"),
+        METHANE_SYNTHESIZER(1, "methane_synthesizer"),
+        ELECTROLYZER(2, "electrolyzer");
+
+        private final int meta;
+        private final String name;
+
+        private EnumMachineType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumMachineType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     /*private IIcon iconMachineSide;
     private IIcon iconInput;
@@ -156,23 +190,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         int metadata = state.getBlock().getMetaFromState(state);
 
         int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
     }
@@ -325,5 +343,25 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumMachineType type = EnumMachineType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
     }
 }

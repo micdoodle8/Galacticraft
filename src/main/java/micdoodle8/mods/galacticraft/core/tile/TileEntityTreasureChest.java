@@ -2,6 +2,13 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Iterator;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.item.IKeyable;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,37 +22,31 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityTreasureChest extends TileEntityLockable implements ITickable, IInventory
+public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, IPacketReceiver
 {
     private ItemStack[] chestContents = new ItemStack[27];
     public boolean adjacentChestChecked;
-    public TileEntityTreasureChest adjacentChestZNeg;
-    public TileEntityTreasureChest adjacentChestXPos;
-    public TileEntityTreasureChest adjacentChestXNeg;
-    public TileEntityTreasureChest adjacentChestZPos;
     public float lidAngle;
     public float prevLidAngle;
     public int numPlayersUsing;
     private int ticksSinceSync;
-    private int cachedChestType;
-    private String customName;
+
+    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    public boolean locked = true;
+    public int tier = 1;
 
     public TileEntityTreasureChest()
     {
-        this.cachedChestType = -1;
+        this(1);
     }
 
-    @SideOnly(Side.CLIENT)
-    public TileEntityTreasureChest(int chestType)
+    public TileEntityTreasureChest(int tier)
     {
-        this.cachedChestType = chestType;
+        this.tier = tier;
     }
 
     /**
@@ -138,7 +139,7 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
      */
     public String getName()
     {
-        return this.hasCustomName() ? this.customName : "container.chest";
+        return GCCoreUtil.translate("container.treasurechest.name");
     }
 
     /**
@@ -146,24 +147,20 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
      */
     public boolean hasCustomName()
     {
-        return this.customName != null && this.customName.length() > 0;
+        return false;
     }
 
     public void setCustomName(String name)
     {
-        this.customName = name;
     }
 
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
+        this.locked = compound.getBoolean("isLocked");
+        this.tier = compound.getInteger("tier");
         NBTTagList nbttaglist = compound.getTagList("Items", 10);
         this.chestContents = new ItemStack[this.getSizeInventory()];
-
-        if (compound.hasKey("CustomName", 8))
-        {
-            this.customName = compound.getString("CustomName");
-        }
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -180,6 +177,8 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
     public void writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
+        compound.setBoolean("isLocked", this.locked);
+        compound.setInteger("tier", this.tier);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.chestContents.length; ++i)
@@ -194,11 +193,6 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
         }
 
         compound.setTag("Items", nbttaglist);
-
-        if (this.hasCustomName())
-        {
-            compound.setString("CustomName", this.customName);
-        }
     }
 
     /**
@@ -224,99 +218,11 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
         this.adjacentChestChecked = false;
     }
 
-    private void func_174910_a(TileEntityTreasureChest p_174910_1_, EnumFacing p_174910_2_)
-    {
-        if (p_174910_1_.isInvalid())
-        {
-            this.adjacentChestChecked = false;
-        }
-        else if (this.adjacentChestChecked)
-        {
-            switch (TileEntityTreasureChest.SwitchEnumFacing.field_177366_a[p_174910_2_.ordinal()])
-            {
-                case 1:
-                    if (this.adjacentChestZNeg != p_174910_1_)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-
-                    break;
-                case 2:
-                    if (this.adjacentChestZPos != p_174910_1_)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-
-                    break;
-                case 3:
-                    if (this.adjacentChestXPos != p_174910_1_)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-
-                    break;
-                case 4:
-                    if (this.adjacentChestXNeg != p_174910_1_)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-            }
-        }
-    }
-
-    /**
-     * Performs the check for adjacent chests to determine if this chest is double or not.
-     */
-    public void checkForAdjacentChests()
-    {
-        if (!this.adjacentChestChecked)
-        {
-            this.adjacentChestChecked = true;
-            this.adjacentChestXNeg = this.func_174911_a(EnumFacing.WEST);
-            this.adjacentChestXPos = this.func_174911_a(EnumFacing.EAST);
-            this.adjacentChestZNeg = this.func_174911_a(EnumFacing.NORTH);
-            this.adjacentChestZPos = this.func_174911_a(EnumFacing.SOUTH);
-        }
-    }
-
-    protected TileEntityTreasureChest func_174911_a(EnumFacing p_174911_1_)
-    {
-        BlockPos blockpos = this.pos.offset(p_174911_1_);
-
-        if (this.func_174912_b(blockpos))
-        {
-            TileEntity tileentity = this.worldObj.getTileEntity(blockpos);
-
-            if (tileentity instanceof TileEntityTreasureChest)
-            {
-                TileEntityTreasureChest tileentitychest = (TileEntityTreasureChest)tileentity;
-                tileentitychest.func_174910_a(this, p_174911_1_.getOpposite());
-                return tileentitychest;
-            }
-        }
-
-        return null;
-    }
-
-    private boolean func_174912_b(BlockPos p_174912_1_)
-    {
-        if (this.worldObj == null)
-        {
-            return false;
-        }
-        else
-        {
-            Block block = this.worldObj.getBlockState(p_174912_1_).getBlock();
-            return block instanceof BlockChest && ((BlockChest)block).chestType == this.getChestType();
-        }
-    }
-
     /**
      * Updates the JList with a new model.
      */
     public void update()
     {
-        this.checkForAdjacentChests();
         int i = this.pos.getX();
         int j = this.pos.getY();
         int k = this.pos.getZ();
@@ -350,20 +256,10 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
         f = 0.1F;
         double d2;
 
-        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F)
         {
             double d1 = (double)i + 0.5D;
             d2 = (double)k + 0.5D;
-
-            if (this.adjacentChestZPos != null)
-            {
-                d2 += 0.5D;
-            }
-
-            if (this.adjacentChestXPos != null)
-            {
-                d1 += 0.5D;
-            }
 
             this.worldObj.playSoundEffect(d1, (double)j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
@@ -388,20 +284,10 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
 
             float f2 = 0.5F;
 
-            if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+            if (this.lidAngle < f2 && f1 >= f2)
             {
                 d2 = (double)i + 0.5D;
                 double d0 = (double)k + 0.5D;
-
-                if (this.adjacentChestZPos != null)
-                {
-                    d0 += 0.5D;
-                }
-
-                if (this.adjacentChestXPos != null)
-                {
-                    d2 += 0.5D;
-                }
 
                 this.worldObj.playSoundEffect(d2, (double)j + 0.5D, d0, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
@@ -468,22 +354,6 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
     {
         super.invalidate();
         this.updateContainingBlockInfo();
-        this.checkForAdjacentChests();
-    }
-
-    public int getChestType()
-    {
-        if (this.cachedChestType == -1)
-        {
-            if (this.worldObj == null || !(this.getBlockType() instanceof BlockChest))
-            {
-                return 0;
-            }
-
-            this.cachedChestType = ((BlockChest)this.getBlockType()).chestType;
-        }
-
-        return this.cachedChestType;
     }
 
     public String getGuiID()
@@ -516,48 +386,80 @@ public class TileEntityTreasureChest extends TileEntityLockable implements ITick
         }
     }
 
-    static final class SwitchEnumFacing
+    @Override
+    public IChatComponent getDisplayName()
     {
-        static final int[] field_177366_a = new int[EnumFacing.values().length];
-        private static final String __OBFID = "CL_00002041";
+        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+    }
 
-        static
+    @Override
+    public double getPacketRange()
+    {
+        return 20.0D;
+    }
+
+    @Override
+    public int getPacketCooldown()
+    {
+        return 3;
+    }
+
+    @Override
+    public boolean isNetworkedTile()
+    {
+        return true;
+    }
+
+    @Override
+    public int getTierOfKeyRequired()
+    {
+        return this.tier;
+    }
+
+    @Override
+    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face)
+    {
+        if (this.locked)
         {
-            try
-            {
-                field_177366_a[EnumFacing.NORTH.ordinal()] = 1;
-            }
-            catch (NoSuchFieldError var4)
-            {
-                ;
-            }
+            this.locked = false;
 
-            try
+            if (this.worldObj.isRemote)
             {
-                field_177366_a[EnumFacing.SOUTH.ordinal()] = 2;
+                // player.playSound("galacticraft.player.unlockchest", 1.0F,
+                // 1.0F);
             }
-            catch (NoSuchFieldError var3)
+            else
             {
-                ;
-            }
+                if (!player.capabilities.isCreativeMode && --player.inventory.getCurrentItem().stackSize == 0)
+                {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                }
 
-            try
-            {
-                field_177366_a[EnumFacing.EAST.ordinal()] = 3;
-            }
-            catch (NoSuchFieldError var2)
-            {
-                ;
-            }
-
-            try
-            {
-                field_177366_a[EnumFacing.WEST.ordinal()] = 4;
-            }
-            catch (NoSuchFieldError var1)
-            {
-                ;
+                return true;
             }
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face)
+    {
+        if (this.locked)
+        {
+            if (player.worldObj.isRemote)
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, new Object[] { this.getTierOfKeyRequired() }));
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean canBreak()
+    {
+        return false;
     }
 }

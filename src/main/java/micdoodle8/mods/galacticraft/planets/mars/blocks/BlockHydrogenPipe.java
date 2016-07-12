@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
@@ -12,12 +13,15 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +30,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 //    private IIcon pipeIcon;
+    public Vector3 minVector = new Vector3(0.35, 0.35, 0.35);
+    public Vector3 maxVector = new Vector3(0.65, 0.65, 0.65);
 
     public BlockHydrogenPipe(String assetName)
     {
@@ -33,6 +39,18 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
         this.setHardness(0.3F);
         this.setStepSound(Block.soundTypeGlass);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public Vector3 getMinVector(IBlockState state)
+    {
+        return minVector;
+    }
+
+    @Override
+    public Vector3 getMaxVector(IBlockState state)
+    {
+        return maxVector;
     }
 
     @Override
@@ -119,5 +137,29 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
     }
 }

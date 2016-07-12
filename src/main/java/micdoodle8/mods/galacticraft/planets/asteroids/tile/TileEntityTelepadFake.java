@@ -20,15 +20,22 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @NetworkedField(targetSide = Side.CLIENT)
     public BlockPos mainBlockPosition;
     private WeakReference<TileEntityShortRangeTelepad> mainTelepad = null;
+    private boolean canConnect = false;
 
     public void setMainBlock(BlockPos mainBlock)
     {
-        this.mainBlockPosition = mainBlock;
+        this.setMainBlockInternal(mainBlock);
 
         if (!this.worldObj.isRemote)
         {
             this.worldObj.markBlockForUpdate(this.getPos());
         }
+    }
+
+    private void setMainBlockInternal(BlockPos mainBlock)
+    {
+        this.mainBlockPosition = mainBlock;
+        this.updateConnectable();
     }
 
     public void onBlockRemoval()
@@ -109,7 +116,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     {
         super.readFromNBT(nbt);
         NBTTagCompound tagCompound = nbt.getCompoundTag("mainBlockPosition");
-        this.mainBlockPosition = new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z"));
+        this.setMainBlockInternal(new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z")));
     }
 
     @Override
@@ -179,7 +186,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        if (this.getBlockMetadata() != 0)
+        if (!this.canConnect)
         {
             return null;
         }
@@ -191,5 +198,24 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     public ItemStack getBatteryInSlot()
     {
         return null;
+    }
+
+    private void updateConnectable()
+    {
+        if (this.mainBlockPosition != null)
+        {
+            if (this.getPos().getX() == mainBlockPosition.getX() && this.getPos().getZ() == mainBlockPosition.getZ())
+            {
+                if (this.getPos().getY() > mainBlockPosition.getY())
+                {
+                    // If the block has the same x- and y- coordinates, but is above the base block, this is the
+                    //      connectable tile
+                    this.canConnect = true;
+                    return;
+                }
+            }
+        }
+
+        this.canConnect = false;
     }
 }

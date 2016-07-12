@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -10,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+
+import static net.minecraft.item.EnumDyeColor.*;
 
 public class ItemParaChute extends Item
 {
@@ -137,45 +140,91 @@ public class ItemParaChute extends Item
     // return 0;
     // }
 
-    public static int getParachuteDamageValueFromDye(int meta)
+    public static EnumDyeColor getDyeEnumFromParachuteDamage(int damage)
     {
-        switch (meta)
+        switch (damage)
         {
-        case 0:
-            return 1;
-        case 1:
-            return 13;
-        case 2:
-            return 7;
-        case 3:
-            return 4;
-        case 4:
-            return 5;
-        case 5:
-            return 12;
-        case 6:
-            return 14;
-        case 7:
-            return 8;
-        case 8:
-            return 6;
-        case 9:
-            return 11;
-        case 10:
-            return 3;
-        case 11:
-            return 15;
-        case 12:
-            return 2;
-        case 13:
-            return 9;
-        case 14:
-            return 10;
-        case 15:
-            return 0;
+            case 1:
+                return BLACK;
+            case 13:
+                return RED;
+            case 7:
+                return GREEN;
+            case 4:
+                return BROWN;
+            case 5:
+                return BLUE;
+            case 12:
+                return PURPLE;
+            case 14:
+                return CYAN;
+            case 8:
+                return SILVER;
+            case 6:
+                return GRAY;
+            case 11:
+                return PINK;
+            case 3:
+                return LIME;
+            case 15:
+                return YELLOW;
+            case 2:
+                return LIGHT_BLUE;
+            case 9:
+                return MAGENTA;
+            case 10:
+                return ORANGE;
+            case 0:
+                return WHITE;
+        }
+
+        return WHITE;
+    }
+
+    public static int getParachuteDamageValueFromDyeEnum(EnumDyeColor color)
+    {
+        switch (color)
+        {
+            case BLACK:
+                return 1;
+            case RED:
+                return 13;
+            case GREEN:
+                return 7;
+            case BROWN:
+                return 4;
+            case BLUE:
+                return 5;
+            case PURPLE:
+                return 12;
+            case CYAN:
+                return 14;
+            case SILVER:
+                return 8;
+            case GRAY:
+                return 6;
+            case PINK:
+                return 11;
+            case LIME:
+                return 3;
+            case YELLOW:
+                return 15;
+            case LIGHT_BLUE:
+                return 2;
+            case MAGENTA:
+                return 9;
+            case ORANGE:
+                return 10;
+            case WHITE:
+                return 0;
         }
 
         return -1;
+    }
+
+    public static int getParachuteDamageValueFromDye(int meta)
+    {
+        return getParachuteDamageValueFromDyeEnum(EnumDyeColor.byDyeDamage(meta));
     }
 
     @Override

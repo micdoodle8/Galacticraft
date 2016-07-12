@@ -41,16 +41,6 @@ public class CommonProxyCore
         return 3;
     }
 
-    public int getTitaniumArmorRenderIndex()
-    {
-        return 0;
-    }
-
-    public int getSensorArmorRenderIndex()
-    {
-        return 0;
-    }
-
     public World getClientWorld()
     {
         return null;

@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.proxy;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
+import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -15,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
@@ -96,22 +99,9 @@ import java.util.*;
 
 public class ClientProxyCore extends CommonProxyCore
 {
-    private static int renderIdTreasureChest;
-    private static int renderIdParachest;
-    private static int renderIdTorchUnlit;
-    private static int renderIdBreathableAir;
-    private static int renderIdOxygenPipe;
-    private static int renderIdMeteor;
-    private static int renderIdCraftingTable;
-    private static int renderIdLandingPad;
-    private static int renderIdMachine;
-
     public static FootprintRenderer footprintRenderer = new FootprintRenderer();
 
     public static List<String> flagRequestsSent = new ArrayList<String>();
-
-    private static int renderIndexHeavyArmor;
-    private static int renderIndexSensorGlasses;
 
     public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
     public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
@@ -254,7 +244,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.registerEntityRenderers();
         ClientProxyCore.addVariants();
 
-//        MinecraftForge.EVENT_BUS.register(new TabRegistry());
+        MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
         
 //        if (Loader.isModLoaded("craftguide"))
@@ -326,7 +316,7 @@ public class ClientProxyCore extends CommonProxyCore
     private static void registerTileEntityRenderers()
     {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
@@ -630,12 +620,12 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerInventoryTabs()
     {
-//        if (!Loader.isModLoaded("TConstruct") && TabRegistry.getTabList().size() < 1)
-//        {
-//            TabRegistry.registerTab(new InventoryTabVanilla());
-//        }
-//
-//        TabRegistry.registerTab(new InventoryTabGalacticraft());
+        if (TabRegistry.getTabList().size() == 0)
+        {
+            TabRegistry.registerTab(new InventoryTabVanilla());
+        }
+
+        TabRegistry.registerTab(new InventoryTabGalacticraft());
     }
 
     public static void renderPlanets(float par3)
@@ -689,18 +679,6 @@ public class ClientProxyCore extends CommonProxyCore
     public World getClientWorld()
     {
         return ClientProxyCore.mc.theWorld;
-    }
-
-    @Override
-    public int getTitaniumArmorRenderIndex()
-    {
-        return ClientProxyCore.renderIndexHeavyArmor;
-    }
-
-    @Override
-    public int getSensorArmorRenderIndex()
-    {
-        return ClientProxyCore.renderIndexSensorGlasses;
     }
 
     @Override

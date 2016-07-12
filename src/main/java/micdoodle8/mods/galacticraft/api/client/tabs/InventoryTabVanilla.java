@@ -1,4 +1,4 @@
-package tconstruct.client.tabs;
+package micdoodle8.mods.galacticraft.api.client.tabs;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

@@ -14,7 +14,7 @@ public class ItemArmorGC extends ItemArmor
 {
     public ItemArmorGC(int armorIndex, String assetSuffix)
     {
-        super(GCItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+        super(GCItems.ARMOR_STEEL, 0, armorIndex);
         this.setUnlocalizedName("steel_" + assetSuffix);
         //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
     }

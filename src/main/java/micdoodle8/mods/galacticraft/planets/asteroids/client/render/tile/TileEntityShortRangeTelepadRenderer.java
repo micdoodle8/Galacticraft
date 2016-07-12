@@ -1,68 +1,105 @@
-//package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
-//
-//import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
-//import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
-//import net.minecraftforge.fml.client.FMLClientHandler;
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
-//import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-//import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-//import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-//import net.minecraft.tileentity.TileEntity;
-//import net.minecraft.util.ResourceLocation;
-//
-//import org.lwjgl.opengl.GL11;
-//
-//@SideOnly(Side.CLIENT)
-//public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRenderer
-//{
-//    public static final ResourceLocation minerBaseTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter.png");
-//    public static final ResourceLocation telepadTexture0 = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/teleporter0.png");
-//    public static IModelCustom telepadModel;
-//
-//    public TileEntityShortRangeTelepadRenderer()
-//    {
-//        TileEntityShortRangeTelepadRenderer.telepadModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/teleporter.obj"));
-//    }
-//
-//    public void renderModelAt(TileEntityShortRangeTelepad tileEntity, double d, double d1, double d2, float f)
-//    {
-//        // Texture file
-//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.minerBaseTexture);
-//
-//        GL11.glPushMatrix();
-//
-//        GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
-//        GL11.glScalef(1F, 0.65F, 1F);
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Base");
-//        GL11.glTranslatef(0.0F, (float) Math.sin(tileEntity.ticks / 10.0F) / 15.0F - 0.25F, 0.0F);
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("Top");
-//
-//        GL11.glPopMatrix();
-//
-//        GL11.glPushMatrix();
-//
-//        GL11.glTranslatef((float) d + 0.5F, (float) d1 - 0.18F, (float) d2 + 0.5F);
-//        GL11.glScalef(1F, 0.65F, 1F);
-//        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityShortRangeTelepadRenderer.telepadTexture0);
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxNegz");
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxNegz");
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxNegz");
-//
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxMidz");
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxMidz");
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxMidz");
-//
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopMidxPosz");
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopPosxPosz");
-//        TileEntityShortRangeTelepadRenderer.telepadModel.renderPart("TopNegxPosz");
-//
-//        GL11.glPopMatrix();
-//    }
-//
-//    @Override
-//    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float var5, int var6)
-//    {
-//        this.renderModelAt((TileEntityShortRangeTelepad) tileEntity, posX, posY, posZ, var5);
-//    }
-//}
+package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.client.model.pipeline.LightUtil;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+@SideOnly(Side.CLIENT)
+public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRenderer<TileEntityShortRangeTelepad>
+{
+    private static OBJModel.OBJBakedModel teleporterTop;
+    private static OBJModel.OBJBakedModel teleporterBottom;
+
+    private void updateModels()
+    {
+        if (teleporterTop == null)
+        {
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "telepadShort.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                teleporterTop = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Top", "Connector"), false), DefaultVertexFormats.ITEM, spriteFunction);
+                teleporterBottom = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Bottom"), false), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void renderTileEntityAt(TileEntityShortRangeTelepad te, double x, double y, double z, float partialTicks, int destroyStage)
+    {
+        GL11.glPushMatrix();
+
+        RenderHelper.disableStandardItemLighting();
+        this.bindTexture(TextureMap.locationBlocksTexture);
+        if (Minecraft.isAmbientOcclusionEnabled())
+        {
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        }
+        else
+        {
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+        }
+
+        updateModels();
+
+        GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+
+        GL11.glScalef(0.745F, 1.0F, 0.745F);
+
+        drawBakedModel(teleporterBottom);
+        GL11.glTranslatef(0.0F, -0.7F, 0.0F);
+        drawBakedModel(teleporterTop);
+
+        GL11.glPopMatrix();
+    }
+
+    private void drawBakedModel(IFlexibleBakedModel model)
+    {
+        drawBakedModel(model, -1);
+    }
+
+    private void drawBakedModel(IFlexibleBakedModel model, int color)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+
+        for(BakedQuad bakedquad : model.getGeneralQuads())
+            LightUtil.renderQuadColor(worldrenderer, bakedquad, color);
+
+        tessellator.draw();
+    }
+}

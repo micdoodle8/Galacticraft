@@ -1,0 +1,9 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "galacticraftplanets:minerbase0.obj",
+    "custom": {
+      "flip-v": true
+    }
+  }
+}

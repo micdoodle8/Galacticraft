@@ -35,9 +35,6 @@ public abstract class BlockTransmitter extends Block
     public static final PropertyBool SOUTH = PropertyBool.create("south");
     public static final PropertyBool WEST = PropertyBool.create("west");
 
-    public Vector3 minVector = new Vector3(0.3, 0.3, 0.3);
-    public Vector3 maxVector = new Vector3(0.7, 0.7, 0.7);
-
     public BlockTransmitter(Material material)
     {
         super(material);
@@ -60,6 +57,9 @@ public abstract class BlockTransmitter extends Block
             ((INetworkConnection) tile).refresh();
         }
     }
+
+    public abstract Vector3 getMinVector(IBlockState state);
+    public abstract Vector3 getMaxVector(IBlockState state);
 
     /**
      * Returns a bounding box from the pool of bounding boxes (this means this
@@ -89,6 +89,9 @@ public abstract class BlockTransmitter extends Block
 
         if (tileEntity instanceof ITransmitter)
         {
+            Vector3 minVector = this.getMinVector(worldIn.getBlockState(pos));
+            Vector3 maxVector = this.getMaxVector(worldIn.getBlockState(pos));
+
             TileEntity[] connectable = new TileEntity[6];
             switch (this.getNetworkType(worldIn.getBlockState(pos)))
             {
@@ -105,12 +108,12 @@ public abstract class BlockTransmitter extends Block
                 break;
             }
 
-            float minX = (float) this.minVector.x;
-            float minY = (float) this.minVector.y;
-            float minZ = (float) this.minVector.z;
-            float maxX = (float) this.maxVector.x;
-            float maxY = (float) this.maxVector.y;
-            float maxZ = (float) this.maxVector.z;
+            float minX = (float) minVector.x;
+            float minY = (float) minVector.y;
+            float minZ = (float) minVector.z;
+            float maxX = (float) maxVector.x;
+            float maxY = (float) maxVector.y;
+            float maxZ = (float) maxVector.z;
 
             if (connectable[0] != null)
             {
@@ -151,7 +154,9 @@ public abstract class BlockTransmitter extends Block
     @Override
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
-        this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+        Vector3 minVector = this.getMinVector(state);
+        Vector3 maxVector = this.getMaxVector(state);
+        this.setBlockBounds((float) minVector.x, (float) minVector.y, (float) minVector.z, (float) maxVector.x, (float) maxVector.y, (float) maxVector.z);
         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
 
         TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -175,37 +180,37 @@ public abstract class BlockTransmitter extends Block
 
             if (connectable[4] != null)
             {
-                this.setBlockBounds(0, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+                this.setBlockBounds(0, (float) minVector.y, (float) minVector.z, (float) maxVector.x, (float) maxVector.y, (float) maxVector.z);
                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
             }
 
             if (connectable[5] != null)
             {
-                this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, 1, (float) this.maxVector.y, (float) this.maxVector.z);
+                this.setBlockBounds((float) minVector.x, (float) minVector.y, (float) minVector.z, 1, (float) maxVector.y, (float) maxVector.z);
                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
             }
 
             if (connectable[0] != null)
             {
-                this.setBlockBounds((float) this.minVector.x, 0, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+                this.setBlockBounds((float) minVector.x, 0, (float) minVector.z, (float) maxVector.x, (float) maxVector.y, (float) maxVector.z);
                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
             }
 
             if (connectable[1] != null)
             {
-                this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, 1, (float) this.maxVector.z);
+                this.setBlockBounds((float) minVector.x, (float) minVector.y, (float) minVector.z, (float) maxVector.x, 1, (float) maxVector.z);
                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
             }
 
             if (connectable[2] != null)
             {
-                this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, 0, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+                this.setBlockBounds((float) minVector.x, (float) minVector.y, 0, (float) maxVector.x, (float) maxVector.y, (float) maxVector.z);
                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
             }
 
             if (connectable[3] != null)
             {
-                this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, 1);
+                this.setBlockBounds((float) minVector.x, (float) minVector.y, (float) minVector.z, (float) maxVector.x, (float) maxVector.y, 1);
                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
             }
         }

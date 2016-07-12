@@ -68,16 +68,40 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         }
     }
 
+    private Vector3 minVectorNormal = new Vector3(0.38, 0.38, 0.38);
+    private Vector3 minVectorHeavy = new Vector3(0.3, 0.3, 0.3);
+    private Vector3 maxVectorNormal = new Vector3(0.62, 0.62, 0.62);
+    private Vector3 maxVectorHeavy = new Vector3(0.7, 0.7, 0.7);
+
     public BlockAluminumWire(String assetName)
     {
         super(Material.cloth);
         this.setStepSound(Block.soundTypeCloth);
         this.setResistance(0.2F);
         this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
-        this.minVector = new Vector3(0.4, 0.4, 0.4);
-        this.maxVector = new Vector3(0.6, 0.6, 0.6);
         this.setHardness(0.075F);
         this.setUnlocalizedName(assetName);
+    }
+
+    public Vector3 getMinVector(IBlockState state)
+    {
+        EnumWireType type = (EnumWireType)state.getValue(WIRE_TYPE);
+        if (type == EnumWireType.ALUMINUM_WIRE)
+        {
+            return minVectorNormal;
+        }
+        return minVectorHeavy;
+    }
+
+    @Override
+    public Vector3 getMaxVector(IBlockState state)
+    {
+        EnumWireType type = (EnumWireType)state.getValue(WIRE_TYPE);
+        if (type == EnumWireType.ALUMINUM_WIRE)
+        {
+            return maxVectorNormal;
+        }
+        return maxVectorHeavy;
     }
 
     @Override

@@ -1,11 +1,17 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,14 +20,17 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class EntityParachest extends Entity
+import java.util.ArrayList;
+
+public class EntityParachest extends Entity implements IPacketReceiver
 {
     public ItemStack[] cargo;
-
     public int fuelLevel;
-
     private boolean placedChest;
+    public EnumDyeColor color = EnumDyeColor.WHITE;
 
     public EntityParachest(World world, ItemStack[] cargo, int fuelLevel)
     {
@@ -64,6 +73,11 @@ public class EntityParachest extends Entity
 
         this.placedChest = nbt.getBoolean("placedChest");
         this.fuelLevel = nbt.getInteger("FuelLevel");
+
+        if (nbt.hasKey("color"))
+        {
+            this.color = EnumDyeColor.byDyeDamage(nbt.getInteger("color"));
+        }
     }
 
     @Override
@@ -86,6 +100,7 @@ public class EntityParachest extends Entity
 
         nbt.setBoolean("placedChest", this.placedChest);
         nbt.setInteger("FuelLevel", this.fuelLevel);
+        nbt.setInteger("color", this.color.getDyeDamage());
     }
 
     @Override
@@ -135,10 +150,15 @@ public class EntityParachest extends Entity
             }
             else
             {
-                this.motionY = -0.25;
+                this.motionY = -0.35;
             }
 
             this.moveEntity(0, this.motionY, 0);
+        }
+
+        if (!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
+        {
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 64.0));
         }
     }
 
@@ -152,6 +172,7 @@ public class EntityParachest extends Entity
             final TileEntityParaChest chest = (TileEntityParaChest) te;
 
             chest.chestContents = new ItemStack[this.cargo.length + 1];
+            chest.color = this.color;
 
             for (int i = 0; i < this.cargo.length; i++)
             {
@@ -166,5 +187,29 @@ public class EntityParachest extends Entity
         this.placedChest = true;
 
         return true;
+    }
+
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
+    {
+        if (!this.worldObj.isRemote)
+        {
+            sendData.add(this.color.getDyeDamage());
+        }
+    }
+
+    @Override
+    public void decodePacketdata(ByteBuf buffer)
+    {
+        if (this.worldObj.isRemote)
+        {
+            this.color = EnumDyeColor.byDyeDamage(buffer.readInt());
+        }
+    }
+
+    @Override
+    public void handlePacketData(Side side, EntityPlayer player)
+    {
+
     }
 }

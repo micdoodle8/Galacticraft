@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockParaChest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
@@ -11,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -31,12 +33,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public ItemStack[] chestContents = new ItemStack[3];
 
     public boolean adjacentChestChecked = false;
-
     public float lidAngle;
-
     public float prevLidAngle;
-
     public int numUsingPlayers;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public EnumDyeColor color = EnumDyeColor.RED;
 
     @Override
     public void validate()
@@ -181,6 +182,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
+
+        if (nbt.hasKey("color"))
+        {
+            this.color = EnumDyeColor.byDyeDamage(nbt.getInteger("color"));
+        }
     }
 
     @Override
@@ -209,6 +215,8 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+
+        nbt.setInteger("color", this.color.getDyeDamage());
     }
 
     @Override
@@ -406,5 +414,18 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public IChatComponent getDisplayName() {
         return null;
+    }
+
+    @Override
+    public void decodePacketdata(ByteBuf buffer)
+    {
+        EnumDyeColor color = this.color;
+
+        super.decodePacketdata(buffer);
+
+        if (this.worldObj.isRemote && color != this.color)
+        {
+            this.worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+        }
     }
 }

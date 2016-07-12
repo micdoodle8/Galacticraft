@@ -96,6 +96,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
         addVariants("marsMachine",
                 "galacticraftplanets:terraformer",
                 "galacticraftplanets:launch_controller");
+        addVariants("marsMachineT2",
+                "galacticraftplanets:gas_liquefier",
+                "galacticraftplanets:methane_synthesizer",
+                "galacticraftplanets:electrolyzer");
     }
 
     @Override
@@ -192,6 +196,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.creeperEgg);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 0, "terraformer");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 8, "launch_controller");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 0, "gas_liquefier");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 4, "methane_synthesizer");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 8, "electrolyzer");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.hydrogenPipe);
     }
 
     private void addVariants(String name, String... variants)

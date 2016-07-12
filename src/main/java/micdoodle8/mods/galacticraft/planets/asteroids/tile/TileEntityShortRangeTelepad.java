@@ -304,7 +304,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
                     if (!vecToAdd.equals(placedPosition))
                     {
-                        ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getStateFromMeta(y == 0 ? 1 : 0));
+                        ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().withProperty(BlockTelepadFake.TOP, y == 2));
                     }
                 }
             }

@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
@@ -31,6 +33,9 @@ import java.util.Random;
 
 public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityProvider
 {
+    public static final PropertyBool TOP = PropertyBool.create("top");
+    public static final PropertyBool CONNECTABLE = PropertyBool.create("connectable");
+
     public BlockTelepadFake(String assetName)
     {
         super(GCBlocks.machine);
@@ -51,19 +56,15 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
     {
         IBlockState state = world.getBlockState(pos);
-        int meta = state.getBlock().getMetaFromState(state);
+        boolean top = state.getValue(TOP);
 
-        if (meta == 0)
+        if (top)
         {
             this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
-        else if (meta == 1)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
-        }
         else
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
         }
     }
 
@@ -71,20 +72,16 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     @Override
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
     {
-        int meta = state.getBlock().getMetaFromState(state);
+        boolean top = state.getValue(TOP);
 
-        if (meta == 0)
+        if (top)
         {
             this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
             super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
         }
-        else if (meta == 1)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
-            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-        }
         else
         {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
             super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
         }
     }
@@ -252,12 +249,6 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
     {
-        IBlockState state = worldObj.getBlockState(target.getBlockPos());
-        if (state.getBlock().getMetaFromState(state) == 6)
-        {
-            return true;
-        }
-
         TileEntity tileEntity = worldObj.getTileEntity(target.getBlockPos());
 
         if (tileEntity instanceof TileEntityTelepadFake)
@@ -277,12 +268,23 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     @SideOnly(Side.CLIENT)
     public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer)
     {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock().getMetaFromState(state) == 6)
-        {
-            return true;
-        }
-
         return super.addDestroyEffects(world, pos, effectRenderer);
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, TOP, CONNECTABLE);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(TOP, meta % 2 == 1).withProperty(CONNECTABLE, meta > 1);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(TOP) ? 1 : 0) + (state.getValue(CONNECTABLE) ? 2 : 0);
     }
 }

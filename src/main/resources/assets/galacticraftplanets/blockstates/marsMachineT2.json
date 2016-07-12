@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "facing=north,type=gas_liquefier": { "model": "galacticraftplanets:gas_liquefier_model" },
+        "facing=east,type=gas_liquefier":  { "model": "galacticraftplanets:gas_liquefier_model", "y": 90 },
+        "facing=west,type=gas_liquefier":  { "model": "galacticraftplanets:gas_liquefier_model", "y": 270 },
+        "facing=south,type=gas_liquefier": { "model": "galacticraftplanets:gas_liquefier_model", "y": 180 },
+        "facing=north,type=methane_synthesizer": { "model": "galacticraftplanets:methane_synthesizer_model" },
+        "facing=east,type=methane_synthesizer":  { "model": "galacticraftplanets:methane_synthesizer_model", "y": 90 },
+        "facing=west,type=methane_synthesizer":  { "model": "galacticraftplanets:methane_synthesizer_model", "y": 270 },
+        "facing=south,type=methane_synthesizer": { "model": "galacticraftplanets:methane_synthesizer_model", "y": 180 },
+        "facing=north,type=electrolyzer": { "model": "galacticraftplanets:electrolyzer_model" },
+        "facing=east,type=electrolyzer":  { "model": "galacticraftplanets:electrolyzer_model", "y": 90 },
+        "facing=west,type=electrolyzer":  { "model": "galacticraftplanets:electrolyzer_model", "y": 270 },
+        "facing=south,type=electrolyzer": { "model": "galacticraftplanets:electrolyzer_model", "y": 180 }
+    }
+}

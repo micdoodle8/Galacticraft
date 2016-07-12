@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryTreasureChest;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -21,7 +24,6 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -43,6 +45,12 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         this.setCreativeTab(CreativeTabs.tabDecorations);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
     }
 
     public boolean isOpaqueCube()
@@ -155,9 +163,9 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         {
             TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if (tileentity instanceof TileEntityChest)
+            if (tileentity instanceof TileEntityTreasureChest)
             {
-                ((TileEntityChest)tileentity).setCustomName(stack.getDisplayName());
+                ((TileEntityTreasureChest)tileentity).setCustomName(stack.getDisplayName());
             }
         }
     }
@@ -399,7 +407,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityChest)
+        if (tileentity instanceof TileEntityTreasureChest)
         {
             tileentity.updateContainingBlockInfo();
         }
@@ -426,74 +434,15 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         }
         else
         {
-            ILockableContainer ilockablecontainer = this.getLockableContainer(worldIn, pos);
-
-            if (ilockablecontainer != null)
-            {
-                playerIn.displayGUIChest(ilockablecontainer);
-            }
-
+            TileEntity tile = worldIn.getTileEntity(pos);
+            playerIn.displayGUIChest((IInventory) tile);
             return true;
-        }
-    }
-
-    public ILockableContainer getLockableContainer(World worldIn, BlockPos pos)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-
-        if (!(tileentity instanceof TileEntityChest))
-        {
-            return null;
-        }
-        else
-        {
-            Object object = (TileEntityChest)tileentity;
-
-            if (this.isBlocked(worldIn, pos))
-            {
-                return null;
-            }
-            else
-            {
-                Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-
-                while (iterator.hasNext())
-                {
-                    EnumFacing enumfacing = (EnumFacing)iterator.next();
-                    BlockPos blockpos1 = pos.offset(enumfacing);
-                    Block block = worldIn.getBlockState(blockpos1).getBlock();
-
-                    if (block == this)
-                    {
-                        if (this.isBlocked(worldIn, blockpos1))
-                        {
-                            return null;
-                        }
-
-                        TileEntity tileentity1 = worldIn.getTileEntity(blockpos1);
-
-                        if (tileentity1 instanceof TileEntityChest)
-                        {
-                            if (enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH)
-                            {
-                                object = new InventoryLargeChest("container.chestDouble", (ILockableContainer)object, (TileEntityChest)tileentity1);
-                            }
-                            else
-                            {
-                                object = new InventoryLargeChest("container.chestDouble", (TileEntityChest)tileentity1, (ILockableContainer)object);
-                            }
-                        }
-                    }
-                }
-
-                return (ILockableContainer)object;
-            }
         }
     }
 
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TileEntityChest();
+        return new TileEntityTreasureChest();
     }
 
     public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side)
@@ -507,9 +456,9 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
             int i = 0;
             TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if (tileentity instanceof TileEntityChest)
+            if (tileentity instanceof TileEntityTreasureChest)
             {
-                i = ((TileEntityChest)tileentity).numPlayersUsing;
+                i = ((TileEntityTreasureChest)tileentity).numPlayersUsing;
             }
 
             return MathHelper.clamp_int(i, 0, 15);
@@ -554,11 +503,6 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
     public boolean hasComparatorInputOverride()
     {
         return true;
-    }
-
-    public int getComparatorInputOverride(World worldIn, BlockPos pos)
-    {
-        return Container.calcRedstoneFromInventory(this.getLockableContainer(worldIn, pos));
     }
 
     public IBlockState getStateFromMeta(int meta)

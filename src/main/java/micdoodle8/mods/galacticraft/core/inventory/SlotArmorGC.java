@@ -34,10 +34,10 @@ public class SlotArmorGC extends Slot
         return item != null && item.isValidArmor(par1ItemStack, this.armorType, this.thePlayer);
     }
 
-    /*@Override
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getBackgroundIconIndex()
+    public String getSlotTexture()
     {
-        return ItemArmor.func_94602_b(this.armorType);
-    }*/
+        return ItemArmor.EMPTY_SLOT_NAMES[this.armorType];
+    }
 }

@@ -1,4 +1,4 @@
-package tconstruct.client.tabs;
+package micdoodle8.mods.galacticraft.api.client.tabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -16,11 +16,13 @@ public abstract class AbstractTab extends GuiButton
 	ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	ItemStack renderStack;
 	public int potionOffsetLast;
+    protected RenderItem itemRender;
 
 	public AbstractTab(int id, int posX, int posY, ItemStack renderStack)
 	{
 		super(id, posX, posY, 28, 32, "");
 		this.renderStack = renderStack;
+        this.itemRender = FMLClientHandler.instance().getClient().getRenderItem();
 	}
 
 	@Override
@@ -46,14 +48,14 @@ public abstract class AbstractTab extends GuiButton
 
 			RenderHelper.enableGUIStandardItemLighting();
 			this.zLevel = 100.0F;
-//			FMLClientHandler.instance().getClient().getItemRenderer().zLevel = 100.0F;
-//			GL11.glEnable(GL11.GL_LIGHTING);
-//			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//            FMLClientHandler.instance().getClient().getItemRenderer().renderOverlays(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
-//            FMLClientHandler.instance().getClient().getItemRenderer().renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, this.renderStack, this.xPosition + 6, this.yPosition + 8);
-//			GL11.glDisable(GL11.GL_LIGHTING);
-//            GL11.glEnable(GL11.GL_BLEND);
-//            FMLClientHandler.instance().getClient().getItemRenderer().zLevel = 0.0F;
+            this.itemRender.zLevel = 100.0F;
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            this.itemRender.renderItemAndEffectIntoGUI(this.renderStack, this.xPosition + 6, this.yPosition + 8);
+            this.itemRender.renderItemOverlayIntoGUI(mc.fontRendererObj, this.renderStack, this.xPosition + 6, this.yPosition + 8, null);
+			GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL11.GL_BLEND);
+            this.itemRender.zLevel = 0.0F;
 			this.zLevel = 0.0F;
 			RenderHelper.disableStandardItemLighting();
 		}

@@ -1,0 +1,93 @@
+{
+"textures": {
+    "particle": "galacticraftcore:blocks/parachest",
+    "texture": "galacticraftcore:blocks/parachest",
+    "chute": "galacticraftcore:model/parachute/red"
+},
+"elements": [ 
+{
+    "from": [ 1, 0, 1 ],
+    "to": [ 15, 9, 15 ],
+    "faces": {
+        "down":  { "uv": [ 10.5, 8.25, 7, 4.75 ], "texture": "#texture" },
+        "up":    { "uv": [ 3.5, 0, 7, 3.5 ], "texture": "#texture" },
+        "north": { "uv": [ 10.5, 8.5, 14, 10.75 ], "texture": "#texture" },
+        "south": { "uv": [ 3.5, 8.5, 7, 10.75 ], "texture": "#texture" },
+        "west":  { "uv": [ 7, 8.5, 10.5, 10.75 ], "texture": "#texture" },
+        "east":  { "uv": [ 0, 8.5, 3.5, 10.75 ], "texture": "#texture" }
+    }
+},
+{
+    "from": [ 1, 9, 1 ],
+    "to": [ 15, 14, 15 ],
+    "faces": {
+        "down":  { "uv": [ 10.5, 3.5, 7, 0 ], "texture": "#texture" },
+        "up":    { "uv": [ 3.5, 0, 7, 3.5 ], "texture": "#texture" },
+        "north": { "uv": [ 10.5, 3.5, 14, 4.75 ], "texture": "#texture" },
+        "south": { "uv": [ 3.5, 3.5, 7, 4.75 ], "texture": "#texture" },
+        "west":  { "uv": [ 0, 3.5, 3.5, 4.75 ], "texture": "#texture" },
+        "east":  { "uv": [ 7, 3.5, 10.5, 4.75 ], "texture": "#texture" }
+    }
+},
+{
+    "from": [ 7, 7, 15 ],
+    "to": [ 9.25, 11, 16 ],
+    "faces": {
+        "down":  { "uv": [ 1.25, 0.25, 0.75, 0 ], "texture": "#texture" },
+        "up":    { "uv": [ 0.25, 0, 0.75, 0.25 ], "texture": "#texture" },
+        "north": { "uv": [ 0, 0.25, 0.5, 1.5 ], "texture": "#texture" },
+        "south": { "uv": [ 1.25, 0.25, 0.75, 1.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 2, 0.5, 2.25, 1.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 1.5, 0.5, 1.75, 1.5 ], "texture": "#texture" }
+    }
+},
+{
+    "from": [ 1, 14, 1 ],
+    "to": [ 13, 15, 12.5 ],
+    "faces": {
+        "down":  { "uv": [ 2.875, 2.75, 4.125, 4 ], "texture": "#chute" },
+        "up":    { "uv": [ 2.875, 3, 4.375, 4.5 ], "texture": "#chute" },
+        "north": { "uv": [ 2.75, 3.875, 3.875, 5 ], "texture": "#chute" },
+        "south": { "uv": [ 2.875, 3.125, 4.125, 4.375 ], "texture": "#chute" },
+        "west":  { "uv": [ 2.5, 2.75, 4.25, 3.125 ], "texture": "#chute" },
+        "east":  { "uv": [ 2.75, 3.25, 4, 3.625 ], "texture": "#chute" }
+    }
+},
+{
+    "from": [ 0, 3.5, 1 ],
+    "to": [ 1, 14, 12.5 ],
+    "faces": {
+        "down":  { "uv": [ 4.5, 5, 4.25, 3.25 ], "texture": "#chute" },
+        "up":    { "uv": [ 3.375, 2.625, 3.625, 4.5 ], "texture": "#chute" },
+        "north": { "uv": [ 2.75, 3, 3.125, 4.625 ], "texture": "#chute" },
+        "south": { "uv": [ 3.75, 3.25, 4, 4.75 ], "texture": "#chute" },
+        "west":  { "uv": [ 2.875, 3, 4.5, 4.75 ], "texture": "#chute" },
+        "east":  { "uv": [ 2.875, 3.25, 4.375, 5 ], "texture": "#chute" }
+    }
+},
+{
+    "from": [ 1, 3.5, 0 ],
+    "to": [ 13, 14, 1 ],
+    "faces": {
+        "down":  { "uv": [ 3.875, 3.125, 2.625, 3 ], "texture": "#chute" },
+        "up":    { "uv": [ 2.625, 3, 4, 3.375 ], "texture": "#chute" },
+        "north": { "uv": [ 2.625, 2.875, 3.75, 3.875 ], "texture": "#chute" },
+        "south": { "uv": [ 2.75, 3.125, 4, 4.25 ], "texture": "#chute" },
+        "west":  { "uv": [ 3.125, 3.125, 3.375, 4.5 ], "texture": "#chute" },
+        "east":  { "uv": [ 3.125, 3.25, 3.375, 4.625 ], "texture": "#chute" }
+    }
+},
+{
+    "from": [ 3, 15, 3.5 ],
+    "to": [ 10.5, 16, 10.5 ],
+    "faces": {
+        "down":  { "uv": [ 3.625, 3.875, 2.625, 3 ], "texture": "#chute" },
+        "up":    { "uv": [ 2.5, 2.75, 3.625, 3.75 ], "texture": "#chute" },
+        "north": { "uv": [ 2.625, 3.5, 3.625, 3.875 ], "texture": "#chute" },
+        "south": { "uv": [ 2.625, 3.25, 3.875, 3.625 ], "texture": "#chute" },
+        "west":  { "uv": [ 2.625, 3, 3.625, 3.375 ], "texture": "#chute" },
+        "east":  { "uv": [ 2.75, 3.75, 4, 4.125 ], "texture": "#chute" }
+    }
+}
+]
+}
