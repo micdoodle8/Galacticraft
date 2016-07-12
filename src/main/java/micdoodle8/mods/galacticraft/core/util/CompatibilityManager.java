@@ -22,7 +22,7 @@ public class CompatibilityManager
 
     public static void checkForCompatibleMods()
     {
-        if (Loader.isModLoaded("GregTech_Addon"))
+        if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("GregTech_Addon") || Loader.isModLoaded("GregTech") )
         {
             CompatibilityManager.modGTLoaded = true;
             try {
