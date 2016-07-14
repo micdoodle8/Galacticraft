@@ -280,6 +280,6 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] { FACING });
+        return new BlockState(this, FACING);
     }
 }
