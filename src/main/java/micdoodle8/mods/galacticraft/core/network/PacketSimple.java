@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.*;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -848,37 +850,7 @@ public class PacketSimple implements IPacket, Packet
             playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
-
-            if (playerBase.worldObj instanceof WorldServer)
-            {
-                final WorldServer world = (WorldServer) playerBase.worldObj;
-                world.addScheduledTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        try
-                        {
-                            final WorldProvider provider = WorldUtil.getProviderForNameServer((String) PacketSimple.this.data.get(0));
-                            final Integer dim = provider.getDimensionId();
-                            GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) PacketSimple.this.data.get(0));
-
-                            if (playerBase.worldObj instanceof WorldServer)
-                            {
-                                final WorldServer world = (WorldServer) playerBase.worldObj;
-
-                                WorldUtil.transferEntityToDimension(playerBase, dim, world);
-                            }
-
-                            stats.teleportCooldown = 10;
-                            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] { }), playerBase);
-                        }
-                        catch (final Exception e)
-                        {
-                            GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) PacketSimple.this.data.get(0));
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
+            TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, (String) PacketSimple.this.data.get(0)));
             break;
         case S_IGNITE_ROCKET:
             if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof EntityTieredRocket)

@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -64,6 +66,7 @@ public class TickHandlerServer
 	public static LinkedList<TileEntityOxygenTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityOxygenTransmitter>();
 	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
 	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
+    private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
 	private final int MAX_BLOCKS_PER_TICK = 50000; 
 	
     public static void restart()
@@ -146,6 +149,11 @@ public class TickHandlerServer
         TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
     }
 
+    public static void scheduleNewDimensionChange(ScheduledDimensionChange change)
+    {
+        scheduledDimensionChanges.add(change);
+    }
+
     public static void scheduleNewTorchUpdate(int dimID, List<BlockVec3> torches)
     {
         CopyOnWriteArrayList<BlockVec3> updateList = TickHandlerServer.scheduledTorchUpdates.get(dimID);
@@ -207,7 +215,35 @@ public class TickHandlerServer
     	if (server == null) return;
 
     	if (event.phase == Phase.START)
-        {       	
+        {
+            for (ScheduledDimensionChange change : TickHandlerServer.scheduledDimensionChanges)
+            {
+                try
+                {
+                    final GCPlayerStats stats = GCPlayerStats.get(change.getPlayer());
+                    final WorldProvider provider = WorldUtil.getProviderForNameServer(change.getDimensionName());
+                    final Integer dim = provider.getDimensionId();
+                    GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
+
+                    if (change.getPlayer().worldObj instanceof WorldServer)
+                    {
+                        final WorldServer world = (WorldServer) change.getPlayer().worldObj;
+
+                        WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
+                    }
+
+                    stats.teleportCooldown = 10;
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] { }), change.getPlayer());
+                }
+                catch (Exception e)
+                {
+                    GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + change.getDimensionName());
+                    e.printStackTrace();
+                }
+            }
+
+            TickHandlerServer.scheduledDimensionChanges.clear();
+
         	if (MapUtil.calculatingMap.get()) MapUtil.BiomeMapNextTick();
             else if (!MapUtil.doneOverworldTexture) MapUtil.makeOverworldTexture();
             
