@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.event.wgen;
 
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
 
@@ -15,30 +16,28 @@ public class GCCoreEventPopulate extends Event
 {
     public final World worldObj;
     public final Random rand;
-    public final int chunkX;
-    public final int chunkZ;
+    public final BlockPos pos;
 
-    public GCCoreEventPopulate(World worldObj, Random rand, int chunkX, int chunkZ)
+    public GCCoreEventPopulate(World worldObj, Random rand, BlockPos pos)
     {
         this.worldObj = worldObj;
         this.rand = rand;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
+        this.pos = pos;
     }
 
     public static class Pre extends GCCoreEventPopulate
     {
-        public Pre(World world, Random rand, int worldX, int worldZ)
+        public Pre(World world, Random rand, BlockPos pos)
         {
-            super(world, rand, worldX, worldZ);
+            super(world, rand, pos);
         }
     }
 
     public static class Post extends GCCoreEventPopulate
     {
-        public Post(World world, Random rand, int worldX, int worldZ)
+        public Post(World world, Random rand, BlockPos pos)
         {
-            super(world, rand, worldX, worldZ);
+            super(world, rand, pos);
         }
     }
 }

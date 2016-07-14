@@ -46,7 +46,7 @@ public abstract class StructureComponentGC extends StructureComponent
         BlockPos pos = new BlockPos(var8, var9, var10);
         if (var7.isVecInside(pos) && var1.getBlockState(pos).getBlock() != Blocks.mob_spawner)
         {
-            var1.setBlockState(pos, Blocks.mob_spawner.getDefaultState(), 3);
+            var1.setBlockState(pos, Blocks.mob_spawner.getDefaultState(), 2);
             final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(pos);
 
             if (var11 != null)

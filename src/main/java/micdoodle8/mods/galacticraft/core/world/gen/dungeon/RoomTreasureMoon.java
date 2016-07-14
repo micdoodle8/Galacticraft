@@ -88,7 +88,7 @@ public class RoomTreasureMoon extends DungeonRoom
 
             for (BlockPos coords : this.chests)
             {
-                this.worldObj.setBlockState(coords, GCBlocks.treasureChestTier1.getDefaultState(), 3);
+                this.worldObj.setBlockState(coords, GCBlocks.treasureChestTier1.getDefaultState(), 2);
                 this.worldObj.setTileEntity(coords, new TileEntityTreasureChest(1));
                 removeList.add(coords);
             }

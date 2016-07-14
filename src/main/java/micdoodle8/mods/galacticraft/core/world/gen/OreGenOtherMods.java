@@ -26,8 +26,7 @@ public class OreGenOtherMods
     private World worldObj;
     private Random randomGenerator;
 
-    private int chunkX;
-    private int chunkZ;
+    private BlockPos pos;
 
     private WorldGenerator oreGen;
     public static ArrayList<OreGenData> data = new ArrayList<OreGenData>();
@@ -178,9 +177,8 @@ public class OreGenOtherMods
     {
     	this.worldObj = event.worldObj;
     	this.randomGenerator = event.rand;
-    	this.chunkX = event.chunkX;
-    	this.chunkZ = event.chunkZ;
-    	
+    	this.pos = event.pos;
+
     	int dimDetected = 0;
     	
     	WorldProvider prov = worldObj.provider;
@@ -219,11 +217,8 @@ public class OreGenOtherMods
     {
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
-            final int var6 = this.chunkX + this.randomGenerator.nextInt(16);
-            final int var7 = this.randomGenerator.nextInt(maxY - minY) + minY;
-            if (var7 < 0) continue;
-            final int var8 = this.chunkZ + this.randomGenerator.nextInt(16);
-            worldGenerator.generate(this.worldObj, this.randomGenerator, new BlockPos(var6, var7, var8));
+            BlockPos blockpos = this.pos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
+            worldGenerator.generate(this.worldObj, this.randomGenerator, blockpos);
         }
     }
     

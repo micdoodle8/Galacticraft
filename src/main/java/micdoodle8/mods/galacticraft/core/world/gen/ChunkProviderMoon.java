@@ -45,7 +45,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     private final NoiseModule noiseGen3;
     private final NoiseModule noiseGen4;
 
-    public BiomeDecoratorMoon biomedecoratorplanet = new BiomeDecoratorMoon(BiomeGenBaseMoon.moonFlat);
+    public BiomeDecoratorMoon biomedecoratorplanet = new BiomeDecoratorMoon();
 
     private final World worldObj;
     private final MapGenVillageMoon villageGenerator = new MapGenVillageMoon();
@@ -91,7 +91,8 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
         this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25F);
     }
 
-    public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer)
+    @Override
+    public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.noiseGen1.setFrequency(0.0125F);
         this.noiseGen2.setFrequency(0.015F);
@@ -218,30 +219,54 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     }
 
     @Override
-    public Chunk provideChunk(int par1, int par2)
+    public Chunk provideChunk(int x, int z)
     {
-        ChunkPrimer primer = new ChunkPrimer();
-        this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-//        final Block[] ids = new Block[16 * 16 * 256];
-//        final byte[] meta = new byte[16 * 16 * 256];
-//        Arrays.fill(ids, Blocks.air);
-        this.generateTerrain(par1, par2, primer);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-        this.createCraters(par1, par2, primer);
-        this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
-        this.caveGenerator.generate(this, this.worldObj, par1, par2, primer);
-        this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), par1 * 16, 25, par2 * 16, par1, par2, primer);
+//        ChunkPrimer primer = new ChunkPrimer();
+//        this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
+////        final Block[] ids = new Block[16 * 16 * 256];
+////        final byte[] meta = new byte[16 * 16 * 256];
+////        Arrays.fill(ids, Blocks.air);
+//        this.generateTerrain(par1, par2, primer);
+//        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
+//        this.createCraters(par1, par2, primer);
+//        this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
+//        this.caveGenerator.generate(this, this.worldObj, par1, par2, primer);
+//        this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), par1 * 16, 25, par2 * 16, par1, par2, primer);
+//
+//        final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
+//
+//        // if (!var4.isTerrainPopulated &&
+//        // GCCoreConfigManager.disableExternalModGen)
+//        // {
+//        // var4.isTerrainPopulated = true;
+//        // }
+//
+//        var4.generateSkylightMap();
+//        return var4;
 
-        final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
+        this.rand.setSeed((long)x * 341873128712L + (long)z * 132897987541L);
+        ChunkPrimer chunkprimer = new ChunkPrimer();
+        this.setBlocksInChunk(x, z, chunkprimer);
+        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
+        this.createCraters(x, z, chunkprimer);
+        this.replaceBlocksForBiome(x, z, chunkprimer, this.biomesForGeneration);
 
-        // if (!var4.isTerrainPopulated &&
-        // GCCoreConfigManager.disableExternalModGen)
-        // {
-        // var4.isTerrainPopulated = true;
-        // }
+        this.caveGenerator.generate(this, this.worldObj, x, z, chunkprimer);
 
-        var4.generateSkylightMap();
-        return var4;
+        this.dungeonGenerator.generateUsingArrays(this, this.worldObj, 25, x, z, chunkprimer);
+
+        this.villageGenerator.generate(this, this.worldObj, x, z, chunkprimer);
+
+        Chunk chunk = new Chunk(this.worldObj, chunkprimer, x, z);
+        byte[] abyte = chunk.getBiomeArray();
+
+        for (int i = 0; i < abyte.length; ++i)
+        {
+            abyte[i] = (byte)this.biomesForGeneration[i].biomeID;
+        }
+
+        chunk.generateSkylightMap();
+        return chunk;
     }
 
     public void createCraters(int chunkX, int chunkZ, ChunkPrimer primer)
@@ -333,31 +358,50 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
         return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
     }
 
-    public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
-    {
-        this.biomedecoratorplanet.decorate(par1World, par2Random, par3, par4);
-    }
-
     @Override
-    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
+    public void populate(IChunkProvider chunkProvider, int x, int z)
     {
+//        BlockFalling.fallInstantly = true;
+//        final int var4 = par2 * 16;
+//        final int var5 = par3 * 16;
+//        this.worldObj.getBiomeGenForCoords(new BlockPos(var4 + 16, 0, var5 + 16));
+//        BlockPos blockpos = new BlockPos(par2, 0, par3);
+//        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
+//        this.rand.setSeed(this.worldObj.getSeed());
+//        final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
+//        final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
+//        this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
+//
+//        this.dungeonGenerator.handleTileEntities(this.rand);
+//
+//        if (!ConfigManagerCore.disableMoonVillageGen)
+//        {
+//            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(par2, par3));
+//        }
+//
+//        biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(par2, 0, par3));
+//        BlockFalling.fallInstantly = false;
+
+
+
         BlockFalling.fallInstantly = true;
-        final int var4 = par2 * 16;
-        final int var5 = par3 * 16;
-        this.worldObj.getBiomeGenForCoords(new BlockPos(var4 + 16, 0, var5 + 16));
+        int i = x * 16;
+        int j = z * 16;
+        BlockPos blockpos = new BlockPos(i, 0, j);
+        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
         this.rand.setSeed(this.worldObj.getSeed());
-        final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
-        final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
+        long k = this.rand.nextLong() / 2L * 2L + 1L;
+        long l = this.rand.nextLong() / 2L * 2L + 1L;
+        this.rand.setSeed((long)x * k + (long)z * l ^ this.worldObj.getSeed());
 
         this.dungeonGenerator.handleTileEntities(this.rand);
 
         if (!ConfigManagerCore.disableMoonVillageGen)
         {
-            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(par2, par3));
+            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
         }
 
-        this.decoratePlanet(this.worldObj, this.rand, var4, var5);
+        biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(i, 0, j));
         BlockFalling.fallInstantly = false;
     }
 

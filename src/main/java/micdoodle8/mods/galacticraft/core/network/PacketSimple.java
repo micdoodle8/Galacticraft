@@ -833,14 +833,14 @@ public class PacketSimple implements IPacket, Packet
     @Override
     public void handleServerSide(EntityPlayer player)
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        final EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
         if (playerBase == null)
         {
             return;
         }
         
-        GCPlayerStats stats = GCPlayerStats.get(playerBase);
+        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
         {
@@ -848,26 +848,36 @@ public class PacketSimple implements IPacket, Packet
             playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
-            try
+
+            if (playerBase.worldObj instanceof WorldServer)
             {
-                final WorldProvider provider = WorldUtil.getProviderForNameServer((String) this.data.get(0));
-                final Integer dim = provider.getDimensionId();
-                GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) this.data.get(0));
+                final WorldServer world = (WorldServer) playerBase.worldObj;
+                world.addScheduledTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        try
+                        {
+                            final WorldProvider provider = WorldUtil.getProviderForNameServer((String) PacketSimple.this.data.get(0));
+                            final Integer dim = provider.getDimensionId();
+                            GCLog.info("Found matching world (" + dim.toString() + ") for name: " + (String) PacketSimple.this.data.get(0));
 
-                if (playerBase.worldObj instanceof WorldServer)
-                {
-                    final WorldServer world = (WorldServer) playerBase.worldObj;
+                            if (playerBase.worldObj instanceof WorldServer)
+                            {
+                                final WorldServer world = (WorldServer) playerBase.worldObj;
 
-                    WorldUtil.transferEntityToDimension(playerBase, dim, world);
-                }
+                                WorldUtil.transferEntityToDimension(playerBase, dim, world);
+                            }
 
-                stats.teleportCooldown = 10;
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] { }), playerBase);
-            }
-            catch (final Exception e)
-            {
-                GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) this.data.get(0));
-                e.printStackTrace();
+                            stats.teleportCooldown = 10;
+                            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] { }), playerBase);
+                        }
+                        catch (final Exception e)
+                        {
+                            GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + (String) PacketSimple.this.data.get(0));
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
             break;
         case S_IGNITE_ROCKET:

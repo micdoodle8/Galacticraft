@@ -30,9 +30,9 @@ public abstract class BiomeDecoratorSpace
             this.rand = random;
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
-            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(world, this.rand, this.chunkX, this.chunkZ));
+//            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(world, this.rand, this.chunkX, this.chunkZ)); TODO
             this.decorate();
-            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(world, this.rand, this.chunkX, this.chunkZ));
+//            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(world, this.rand, this.chunkX, this.chunkZ)); TODO
             this.setCurrentWorld(null);
             this.rand = null;
         }

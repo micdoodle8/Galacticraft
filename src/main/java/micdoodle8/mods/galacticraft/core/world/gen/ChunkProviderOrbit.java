@@ -95,7 +95,7 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
         if (k == 0 && l == 0)
         {
             BlockPos pos = new BlockPos(k, 64, l);
-            this.worldObj.setBlockState(pos, GCBlocks.spaceStationBase.getDefaultState(), 3);
+            this.worldObj.setBlockState(pos, GCBlocks.spaceStationBase.getDefaultState(), 2);
 
             final TileEntity var8 = this.worldObj.getTileEntity(pos);
 

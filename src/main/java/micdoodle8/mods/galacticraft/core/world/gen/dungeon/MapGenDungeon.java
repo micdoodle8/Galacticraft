@@ -8,6 +8,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class MapGenDungeon
     public static boolean useArrays = false;
 
     public World worldObj;
+    protected Random rand = new Random();
 
     private final ArrayList<DungeonRoom> rooms = new ArrayList<DungeonRoom>();
 
@@ -40,12 +43,12 @@ public class MapGenDungeon
         this.HALLWAY_HEIGHT = hallwayHeight;
     }
 
-    public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, ChunkPrimer primer)
+    public void generateUsingArrays(IChunkProvider chunkProvider, World world, int y, int chunkX, int chunkZ, ChunkPrimer primer)
     {
-        final BlockPos dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
+        final BlockPos dungeonCoords = this.getDungeonNear(world.getSeed(), chunkX, chunkZ);
         if (dungeonCoords != null)
         {
-            this.generate(world, new Random(seed * dungeonCoords.getX() * dungeonCoords.getZ() * 24789), dungeonCoords.getX(), y, dungeonCoords.getZ(), chunkX, chunkZ, primer, true);
+            this.generate(chunkProvider, world, y, chunkX, chunkZ, primer, true);
         }
     }
 
@@ -58,21 +61,22 @@ public class MapGenDungeon
 //        }
 //    }
 
-    public void generate(World world, Random rand, int x, int y, int z, int chunkX, int chunkZ, ChunkPrimer primer, boolean useArrays)
+    private void generate(IChunkProvider chunkProvider, World world, int y, int chunkX, int chunkZ, ChunkPrimer primer, boolean useArrays)
     {
         MapGenDungeon.useArrays = useArrays;
         this.worldObj = world;
+        this.rand.setSeed(world.getSeed());
 
         final List<DungeonBoundingBox> boundingBoxes = new ArrayList<DungeonBoundingBox>();
 
         final int length = rand.nextInt(4) + 5;
 
-        DungeonRoom currentRoom = DungeonRoom.makeRoom(this, rand, x, y, z, EnumFacing.DOWN);
+        DungeonRoom currentRoom = DungeonRoom.makeRoom(this, rand, chunkX * 16, y, chunkZ * 16, EnumFacing.DOWN);
         currentRoom.generate(primer, chunkX, chunkZ);
         this.rooms.add(currentRoom);
         final DungeonBoundingBox cbb = currentRoom.getCollisionBoundingBox();
         boundingBoxes.add(cbb);
-        this.generateEntranceCrater(primer, x + (cbb.maxX - cbb.minX) / 2, y, z + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
+        this.generateEntranceCrater(primer, chunkX * 16 + (cbb.maxX - cbb.minX) / 2, y, chunkZ * 16 + (cbb.maxZ - cbb.minZ) / 2, chunkX, chunkZ);
 
         for (int i = 0; i <= length; i++)
         {

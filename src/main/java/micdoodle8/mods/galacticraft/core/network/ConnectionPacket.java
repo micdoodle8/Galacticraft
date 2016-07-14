@@ -109,7 +109,6 @@ public class ConnectionPacket
 		payload.writeByte(103);
         try
         {
-            System.err.println("findthis1 " + data);
     		NetworkUtil.encodeData(payload, data);
         }
         catch (IOException e)

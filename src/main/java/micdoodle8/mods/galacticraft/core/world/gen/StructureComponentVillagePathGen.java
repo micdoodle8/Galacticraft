@@ -148,7 +148,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
                 if (par3StructureBoundingBox.isVecInside(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.air == state.getBlock()))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1;
-                    par1World.setBlockState(new BlockPos(var5, var7, var6), var4.getStateFromMeta(1), 3);
+                    par1World.setBlockState(new BlockPos(var5, var7, var6), var4.getStateFromMeta(1), 2);
                 }
             }
         }

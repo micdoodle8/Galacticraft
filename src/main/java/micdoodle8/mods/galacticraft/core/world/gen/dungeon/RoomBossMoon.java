@@ -91,7 +91,7 @@ public class RoomBossMoon extends DungeonRoom
             return;
         }
 
-        this.worldObj.setBlockState(this.spawnerCoords, GCBlocks.blockMoon.getStateFromMeta(15), 3);
+        this.worldObj.setBlockState(this.spawnerCoords, GCBlocks.blockMoon.getStateFromMeta(15), 2);
 
         final TileEntity tile = this.worldObj.getTileEntity(this.spawnerCoords);
 

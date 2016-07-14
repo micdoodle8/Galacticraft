@@ -37,61 +37,63 @@ public class WorldGenMinableMeta extends WorldGenMinable
     }
 
     @Override
-    public boolean generate(World par1World, Random par2Random, BlockPos pos)
+    public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        final float f = par2Random.nextFloat() * (float) Math.PI;
-        final float sinf = MathHelper.sin(f) * this.numberOfBlocks / 8.0F;
-        final float cosf = MathHelper.cos(f) * this.numberOfBlocks / 8.0F;
-        final float x1 = pos.getX() + 8 + sinf;
-        final float x2 = -2F * sinf;
-        final float z1 = pos.getZ() + 8 + cosf;
-        final float z2 = -2F * cosf;
-        final float y1 = pos.getY() + par2Random.nextInt(3) - 2;
-        final float y2 = pos.getY() + par2Random.nextInt(3) - 2 - y1;
+        float f = rand.nextFloat() * (float)Math.PI;
+        double d0 = (double)((float)(position.getX() + 8) + MathHelper.sin(f) * (float)this.numberOfBlocks / 8.0F);
+        double d1 = (double)((float)(position.getX() + 8) - MathHelper.sin(f) * (float)this.numberOfBlocks / 8.0F);
+        double d2 = (double)((float)(position.getZ() + 8) + MathHelper.cos(f) * (float)this.numberOfBlocks / 8.0F);
+        double d3 = (double)((float)(position.getZ() + 8) - MathHelper.cos(f) * (float)this.numberOfBlocks / 8.0F);
+        double d4 = (double)(position.getY() + rand.nextInt(3) - 2);
+        double d5 = (double)(position.getY() + rand.nextInt(3) - 2);
 
-        for (int l = 0; l <= this.numberOfBlocks; ++l)
+        for (int i = 0; i < this.numberOfBlocks; ++i)
         {
-            final float progress = (float) l / this.numberOfBlocks;
-            final float cx = x1 + x2 * progress;
-            final float cy = y1 + y2 * progress;
-            final float cz = z1 + z2 * progress;
-            final float size = ((MathHelper.sin((float) Math.PI * progress) + 1.0F) * par2Random.nextFloat() * this.numberOfBlocks / 16.0F + 1.0F) / 2.0F;
-            final int xMin = MathHelper.floor_float(cx - size);
-            final int yMin = MathHelper.floor_float(cy - size);
-            final int zMin = MathHelper.floor_float(cz - size);
-            final int xMax = MathHelper.floor_float(cx + size);
-            final int yMax = MathHelper.floor_float(cy + size);
-            final int zMax = MathHelper.floor_float(cz + size);
+            float f1 = (float)i / (float)this.numberOfBlocks;
+            double d6 = d0 + (d1 - d0) * (double)f1;
+            double d7 = d4 + (d5 - d4) * (double)f1;
+            double d8 = d2 + (d3 - d2) * (double)f1;
+            double d9 = rand.nextDouble() * (double)this.numberOfBlocks / 16.0D;
+            double d10 = (double)(MathHelper.sin((float)Math.PI * f1) + 1.0F) * d9 + 1.0D;
+            double d11 = (double)(MathHelper.sin((float)Math.PI * f1) + 1.0F) * d9 + 1.0D;
+            int j = MathHelper.floor_double(d6 - d10 / 2.0D);
+            int k = MathHelper.floor_double(d7 - d11 / 2.0D);
+            int l = MathHelper.floor_double(d8 - d10 / 2.0D);
+            int i1 = MathHelper.floor_double(d6 + d10 / 2.0D);
+            int j1 = MathHelper.floor_double(d7 + d11 / 2.0D);
+            int k1 = MathHelper.floor_double(d8 + d10 / 2.0D);
 
-            for (int ix = xMin; ix <= xMax; ++ix)
+            for (int l1 = j; l1 <= i1; ++l1)
             {
-                float dx = (ix + 0.5F - cx) / size;
-                dx *= dx;
+                double d12 = ((double)l1 + 0.5D - d6) / (d10 / 2.0D);
 
-                if (dx < 1.0F)
+                if (d12 * d12 < 1.0D)
                 {
-                    for (int iy = yMin; iy <= yMax; ++iy)
+                    for (int i2 = k; i2 <= j1; ++i2)
                     {
-                        float dy = (iy + 0.5F - cy) / size;
-                        dy *= dy;
+                        double d13 = ((double)i2 + 0.5D - d7) / (d11 / 2.0D);
 
-                        if (dx + dy < 1.0F)
+                        if (d12 * d12 + d13 * d13 < 1.0D)
                         {
-                            for (int iz = zMin; iz <= zMax; ++iz)
+                            for (int j2 = l; j2 <= k1; ++j2)
                             {
-                                float dz = (iz + 0.5F - cz) / size;
-                                dz *= dz;
+                                double d14 = ((double)j2 + 0.5D - d8) / (d10 / 2.0D);
 
-                                IBlockState state = par1World.getBlockState(new BlockPos(ix, iy, iz));
-                                if (dx + dy + dz < 1.0F && state.getBlock() == this.fillerID && state.getBlock().getMetaFromState(state) == this.fillerMetadata)
+                                if (d12 * d12 + d13 * d13 + d14 * d14 < 1.0D)
                                 {
-                                    if (!this.usingMetadata)
+                                    BlockPos blockpos = new BlockPos(l1, i2, j2);
+                                    IBlockState state = worldIn.getBlockState(blockpos);
+
+                                    if (state.getBlock() == this.fillerID && state.getBlock().getMetaFromState(state) == this.fillerMetadata)
                                     {
-                                        par1World.setBlockState(new BlockPos(ix, iy, iz), this.minableBlockId.getStateFromMeta(0), 3);
-                                    }
-                                    else
-                                    {
-                                        par1World.setBlockState(new BlockPos(ix, iy, iz), this.minableBlockId.getStateFromMeta(this.metadata), 3);
+                                        if (!this.usingMetadata)
+                                        {
+                                            worldIn.setBlockState(blockpos, this.minableBlockId.getStateFromMeta(0), 2);
+                                        }
+                                        else
+                                        {
+                                            worldIn.setBlockState(blockpos, this.minableBlockId.getStateFromMeta(this.metadata), 2);
+                                        }
                                     }
                                 }
                             }
