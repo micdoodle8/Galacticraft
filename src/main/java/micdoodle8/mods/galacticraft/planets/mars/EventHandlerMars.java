@@ -140,16 +140,12 @@ public class EventHandlerMars
         if (event.worldObj.provider instanceof WorldProviderMars)
         {
             int eggsPerChunk = 2;
-            int x;
-            int y;
-            int z;
+            BlockPos blockpos;
 
             for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
             {
-                x = event.chunkX + event.rand.nextInt(16) + 8;
-                y = event.rand.nextInt(128);
-                z = event.chunkZ + event.rand.nextInt(16) + 8;
-                this.eggGenerator.generate(event.worldObj, event.rand, new BlockPos(x, y, z));
+                blockpos = event.pos.add(event.rand.nextInt(16), event.rand.nextInt(128), event.rand.nextInt(16));
+                this.eggGenerator.generate(event.worldObj, event.rand, blockpos);
             }
         }
     }

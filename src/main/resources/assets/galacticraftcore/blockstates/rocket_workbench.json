@@ -1,5 +1,11 @@
 {
-    "variants": {
-        "normal": { "model": "galacticraftcore:rocket_workbench_model" }
-    }
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true },
+    "model": "galacticraftcore:workbench.obj"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
 }

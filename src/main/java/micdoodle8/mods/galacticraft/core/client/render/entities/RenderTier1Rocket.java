@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderTier1Rocket extends Render
+public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
 {
     private ResourceLocation spaceshipTexture;
 
@@ -38,12 +38,13 @@ public class RenderTier1Rocket extends Render
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntitySpaceshipBase par1Entity)
     {
         return this.func_110779_a(par1Entity);
     }
 
-    public void renderSpaceship(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)
+    @Override
+    public void doRender(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
@@ -73,11 +74,5 @@ public class RenderTier1Rocket extends Render
         this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderSpaceship((EntitySpaceshipBase) par1Entity, par2, par4, par6, par8, par9);
     }
 }

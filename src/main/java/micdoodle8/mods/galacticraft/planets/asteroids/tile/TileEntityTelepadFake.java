@@ -20,6 +20,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @NetworkedField(targetSide = Side.CLIENT)
     public BlockPos mainBlockPosition;
     private WeakReference<TileEntityShortRangeTelepad> mainTelepad = null;
+    @NetworkedField(targetSide = Side.CLIENT)
     private boolean canConnect = false;
 
     public void setMainBlock(BlockPos mainBlock)

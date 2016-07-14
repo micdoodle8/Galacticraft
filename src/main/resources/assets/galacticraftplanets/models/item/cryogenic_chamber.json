@@ -1,5 +1,5 @@
 {
-    "parent":"galacticraftcore:block/arclamp_on_model",
+    "parent":"galacticraftplanets:block/cryo_0",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

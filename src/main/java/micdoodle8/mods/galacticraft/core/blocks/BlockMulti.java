@@ -2,10 +2,13 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
@@ -27,6 +30,7 @@ import java.util.Random;
 public class BlockMulti extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
 {
     public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
+    public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("renderType", 0, 7);
 
     public enum EnumBlockMultiType implements IStringSerializable
     {
@@ -409,6 +413,42 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, MULTI_TYPE);
+        return new BlockState(this, MULTI_TYPE, RENDER_TYPE);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        EnumBlockMultiType type = (EnumBlockMultiType)state.getValue(MULTI_TYPE);
+        int renderType = 0;
+
+        switch (type)
+        {
+        case CRYO_CHAMBER:
+            IBlockState stateAbove = worldIn.getBlockState(pos.up());
+            TileEntityMulti tile = (TileEntityMulti) worldIn.getTileEntity(pos);
+            if (stateAbove.getBlock() == this && (stateAbove.getValue(MULTI_TYPE)) == EnumBlockMultiType.CRYO_CHAMBER)
+            {
+                renderType = 0;
+            }
+            else
+            {
+                renderType = 4;
+            }
+            if (tile != null && tile.mainBlockPosition != null)
+            {
+                IBlockState stateMain = worldIn.getBlockState(tile.mainBlockPosition);
+                if (stateMain.getBlock() == MarsBlocks.machine && stateMain.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+                {
+                    EnumFacing dir = stateMain.getValue(BlockMachineMars.FACING);
+                    renderType += dir.getHorizontalIndex();
+                }
+            }
+            break;
+        default:
+            break;
+        }
+
+        return state.withProperty(RENDER_TYPE, renderType);
     }
 }

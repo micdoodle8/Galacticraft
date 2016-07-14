@@ -72,10 +72,12 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
                     final Block id = state.getBlock();
                     int meta = id.getMetaFromState(state);
 
+                    System.err.println("" + id + " " + meta);
+
                     if (id == GCBlocks.landingPadFull && meta == 0)
                     {
                         padFound = true;
-                        tile = worldIn.getTileEntity(pos);
+                        tile = worldIn.getTileEntity(pos.add(i, 0, j));
 
                         centerX = pos.getX() + i + 0.5F;
                         centerY = pos.getY() + 0.4F;

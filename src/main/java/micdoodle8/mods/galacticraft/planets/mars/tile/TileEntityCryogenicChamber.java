@@ -146,7 +146,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 continue;
             }
 
-            if (this.worldObj.getBlockState(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z)) == GCBlocks.fakeBlock)
+            if (this.worldObj.getBlockState(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z)).getBlock() == GCBlocks.fakeBlock)
             {
                 fakeBlockCount++;
             }

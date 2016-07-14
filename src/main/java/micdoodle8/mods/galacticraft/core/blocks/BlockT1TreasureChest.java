@@ -31,6 +31,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Iterator;
 
@@ -44,6 +46,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setCreativeTab(CreativeTabs.tabDecorations);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+        this.setHardness(100000.0F);
         this.setUnlocalizedName(assetName);
     }
 
@@ -519,12 +522,12 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
+        return (state.getValue(FACING)).getIndex();
     }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockState(this, FACING);
     }
 
     @Override
@@ -537,5 +540,12 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, BlockPos pos, net.minecraft.client.particle.EffectRenderer effectRenderer)
+    {
+        return false;
     }
 }

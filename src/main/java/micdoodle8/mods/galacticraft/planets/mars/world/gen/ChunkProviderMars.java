@@ -142,7 +142,7 @@ public class ChunkProviderMars extends ChunkProviderSpace
     @Override
     public void onChunkProvide(int cX, int cZ, ChunkPrimer primer)
     {
-        this.dungeonGenerator.generateUsingArrays(this.worldObj, this.worldObj.getSeed(), cX * 16, 30, cZ * 16, cX, cZ, primer);
+        this.dungeonGenerator.generateUsingArrays(this, this.worldObj, 30, cX, cZ, primer);
     }
 
     @Override

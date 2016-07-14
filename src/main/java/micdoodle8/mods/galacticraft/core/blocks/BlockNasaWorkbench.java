@@ -60,7 +60,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     @Override
     public int getRenderType()
     {
-        return GalacticraftCore.proxy.getBlockRender(this);
+        return 3;
     }
 
     @Override
