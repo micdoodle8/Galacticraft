@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
-import com.google.common.base.Function;
+import com.google.common.base.*;
 import com.google.common.collect.*;
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
@@ -19,6 +19,9 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemLiquidCanisterModel;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.*;
@@ -26,8 +29,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.items.ItemBasic;
-import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
@@ -69,8 +70,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.*;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.MinecraftForge;
@@ -90,7 +90,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -171,6 +170,10 @@ public class ClientProxyCore extends CommonProxyCore
     {
         RenderTier3Rocket.RocketTexture.instance.register(event.map);
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocketT1"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyMain"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyStorage"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyWheels"));
     }
 
     public static void reset()
@@ -221,6 +224,24 @@ public class ClientProxyCore extends CommonProxyCore
         Item nasaWorkbench = Item.getItemFromBlock(GCBlocks.nasaWorkbench);
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:rocket_workbench", "inventory");
         ModelLoader.setCustomModelResourceLocation(nasaWorkbench, 0, modelResourceLocation);
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:spaceship", "inventory");
+        for (int i = 0; i < 5; ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(GCItems.rocketTier1, i, modelResourceLocation);
+        }
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:buggy", "inventory");
+        for (int i = 0; i < 4; ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(GCItems.buggy, i, modelResourceLocation);
+        }
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:oilCanisterPartial_0", "inventory");
+        for (int i = 0; i < GCItems.oilCanister.getMaxDamage(); ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(GCItems.oilCanister, i, modelResourceLocation);
+        }
     }
 
     @SubscribeEvent
@@ -229,7 +250,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:rocket_workbench", "inventory");
         Object object = event.modelRegistry.getObject(modelResourceLocation);
-        if (object instanceof IBakedModel)
+        if (object != null)
         {
             IBakedModel newModel;
 
@@ -244,7 +265,7 @@ public class ClientProxyCore extends CommonProxyCore
                         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
                     }
                 };
-                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Cube"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.3F, 0.3F, 0.3F))), DefaultVertexFormats.ITEM, spriteFunction);
+                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Cube"), false), DefaultVertexFormats.ITEM, spriteFunction);
             }
             catch (Exception e)
             {
@@ -252,6 +273,78 @@ public class ClientProxyCore extends CommonProxyCore
             }
 
             event.modelRegistry.putObject(modelResourceLocation, newModel);
+        }
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:spaceship", "inventory");
+        object = event.modelRegistry.getObject(modelResourceLocation);
+        if (object != null)
+        {
+            IBakedModel newModel;
+
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "rocketT1.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Cube.010_Cube.045"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.3F, 0.3F, 0.3F))), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            ItemModelRocket modelFinal = new ItemModelRocket(newModel);
+            event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+        }
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:buggy", "inventory");
+        object = event.modelRegistry.getObject(modelResourceLocation);
+        if (object != null)
+        {
+            IBakedModel newModel;
+
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "buggyInv.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("MainBody", "RadarDish_Dish", "Wheels", "CargoLeft", "CargoMid", "CargoRight"), false), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            ItemModelBuggy modelFinal = new ItemModelBuggy(newModel);
+            event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+        }
+
+        for (int i = 0; i < 7; ++i)
+        {
+            modelResourceLocation = new ModelResourceLocation("galacticraftcore:oilCanisterPartial_" + i, "inventory");
+            object = event.modelRegistry.getObject(modelResourceLocation);
+            if (object != null)
+            {
+                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel((IBakedModel) object);
+                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+            }
+            modelResourceLocation = new ModelResourceLocation("galacticraftcore:fuelCanisterPartial_" + i, "inventory");
+            object = event.modelRegistry.getObject(modelResourceLocation);
+            if (object != null)
+            {
+                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel((IBakedModel) object);
+                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+            }
         }
     }
     
@@ -432,6 +525,16 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambientThermalController");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoricIronIngot");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressedMeteoricIron");
+        for (int i = 0; i <= GCItems.oilCanister.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / GCItems.oilCanister.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.oilCanister, i, "oilCanisterPartial_" + (7 - damage - 1));
+        }
+        for (int i = 0; i <= GCItems.fuelCanister.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / GCItems.fuelCanister.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.fuelCanister, i, "fuelCanisterPartial_" + (7 - damage - 1));
+        }
 
         // Blocks
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.breatheableAir);
@@ -522,6 +625,7 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("engine", "tier1engine", "tier1booster");
         addCoreVariant("parachute", "parachute_plain", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
         addCoreVariant("oilCanisterPartial", "oilCanisterPartial_0", "oilCanisterPartial_1", "oilCanisterPartial_2", "oilCanisterPartial_3", "oilCanisterPartial_4", "oilCanisterPartial_5", "oilCanisterPartial_6");
+        addCoreVariant("fuelCanisterPartial", "fuelCanisterPartial_0", "fuelCanisterPartial_1", "fuelCanisterPartial_2", "fuelCanisterPartial_3", "fuelCanisterPartial_4", "fuelCanisterPartial_5", "fuelCanisterPartial_6");
         addCoreVariant("schematic", "schematic_buggy", "schematic_rocketT2");
         addCoreVariant("key", "key");
         addCoreVariant("buggymat", "wheel", "seat", "storage");
