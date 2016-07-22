@@ -76,7 +76,7 @@ public class RenderGrapple extends Render
     @Override
     protected ResourceLocation getEntityTexture(Entity entity)
     {
-        return this.getEntityTexture((EntityGrapple) entity);
+        return new ResourceLocation("missing");
     }
 
     @Override

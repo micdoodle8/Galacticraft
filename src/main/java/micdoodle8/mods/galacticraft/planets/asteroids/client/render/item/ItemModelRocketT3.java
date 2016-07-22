@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.client.render.item;
+package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -8,9 +8,9 @@ import org.lwjgl.Sys;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
-public class ItemModelRocket extends ModelTransformWrapper
+public class ItemModelRocketT3 extends ModelTransformWrapper
 {
-    public ItemModelRocket(IBakedModel modelToWrap)
+    public ItemModelRocketT3(IBakedModel modelToWrap)
     {
         super(modelToWrap);
     }
@@ -25,10 +25,10 @@ public class ItemModelRocket extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.9F);
+            mul.setScale(1.0F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(-0.25F, -0.3F, 0.0F));
+            mul.setTranslation(new Vector3f(-0.125F, -0.2F, 0.0F));
             ret.mul(mul);
             mul.setIdentity();
             mul.rotY((float) (Math.PI / 2.0F));

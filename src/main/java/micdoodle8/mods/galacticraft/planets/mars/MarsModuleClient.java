@@ -1,13 +1,17 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
+import com.google.common.collect.ImmutableList;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockCavernousVine;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -16,6 +20,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityBacterialDripFX
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
@@ -37,7 +42,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -61,46 +70,25 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        addVariants("mars",
-                "galacticraftplanets:ore_copper_mars",
-                "galacticraftplanets:ore_tin_mars",
-                "galacticraftplanets:ore_desh_mars",
-                "galacticraftplanets:ore_iron_mars",
-                "galacticraftplanets:cobblestone",
-                "galacticraftplanets:mars_surface",
-                "galacticraftplanets:mars_middle",
-                "galacticraftplanets:dungeon_brick",
-                "galacticraftplanets:desh_block",
-                "galacticraftplanets:mars_stone",
-                "galacticraftplanets:dungeon_spawner");
-        addVariants("cavernVines",
-                "galacticraftplanets:vine_0",
-                "galacticraftplanets:vine_1",
-                "galacticraftplanets:vine_2");
-        addVariants("itemBasicMars",
-                "galacticraftplanets:rawDesh",
-                "galacticraftplanets:deshStick",
-                "galacticraftplanets:ingotDesh",
-                "galacticraftplanets:reinforcedPlateT2",
-                "galacticraftplanets:slimelingCargo",
-                "galacticraftplanets:compressedDesh",
-                "galacticraftplanets:fluidManip");
-        addVariants("schematic",
-                "galacticraftplanets:schematic_rocketT3",
-                "galacticraftplanets:schematic_rocket_cargo",
-                "galacticraftplanets:schematic_astroMiner");
-        addVariants("slimelingEgg",
-                "galacticraftplanets:slimelingEggRed",
-                "galacticraftplanets:slimelingEggBlue",
-                "galacticraftplanets:slimelingEggYellow");
-        addVariants("marsMachine",
-                "galacticraftplanets:terraformer",
-                "galacticraftplanets:cryogenic_chamber",
-                "galacticraftplanets:launch_controller");
-        addVariants("marsMachineT2",
-                "galacticraftplanets:gas_liquefier",
-                "galacticraftplanets:methane_synthesizer",
-                "galacticraftplanets:electrolyzer");
+        addPlanetVariants("mars", "ore_copper_mars", "ore_tin_mars", "ore_desh_mars", "ore_iron_mars", "cobblestone", "mars_surface", "mars_middle", "dungeon_brick", "desh_block", "mars_stone", "dungeon_spawner");
+        addPlanetVariants("cavernVines", "vine_0", "vine_1", "vine_2");
+        addPlanetVariants("itemBasicMars", "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh", "fluidManip");
+        addPlanetVariants("schematic", "schematic_rocketT3", "schematic_rocket_cargo", "schematic_astroMiner");
+        addPlanetVariants("slimelingEgg", "slimelingEggRed", "slimelingEggBlue", "slimelingEggYellow");
+        addPlanetVariants("marsMachine", "terraformer", "cryogenic_chamber", "launch_controller");
+        addPlanetVariants("marsMachineT2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void addPlanetVariants(String name, String... variants)
+    {
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
+        String[] variants0 = new String[variants.length];
+        for (int i = 0; i < variants.length; ++i)
+        {
+            variants0[i] = GalacticraftPlanets.TEXTURE_PREFIX + variants[i];
+        }
+        ModelBakery.addVariantName(itemBlockVariants, variants0);
     }
 
     @Override
@@ -108,7 +96,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         Item sludge = Item.getItemFromBlock(MarsBlocks.blockSludge);
         ModelBakery.registerItemVariants(sludge);
-        ModelBakery.addVariantName(sludge, "galacticraftplanets:sludge");
+        ModelBakery.addVariantName(sludge, GalacticraftPlanets.TEXTURE_PREFIX + "sludge");
         ModelLoader.setCustomMeshDefinition(sludge, new ItemMeshDefinition()
         {
             public ModelResourceLocation getModelLocation(ItemStack stack)
@@ -123,6 +111,18 @@ public class MarsModuleClient implements IPlanetsModuleClient
                 return sludgeLocation;
             }
         });
+
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "spaceshipTier2", "inventory");
+        for (int i = 0; i < 5; ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(MarsItems.spaceship, i, modelResourceLocation);
+        }
+
+        modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "cargoRocket", "inventory");
+        for (int i = 11; i < 15; ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(MarsItems.spaceship, i, modelResourceLocation);
+        }
     }
 
     @Override
@@ -145,6 +145,32 @@ public class MarsModuleClient implements IPlanetsModuleClient
         MinecraftForge.EVENT_BUS.register(new TickHandlerClient());
     }
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void loadTextures(TextureStitchEvent.Pre event)
+    {
+        registerTexture(event, "rocketT2");
+        registerTexture(event, "cargoRocket");
+    }
+
+    private void registerTexture(TextureStitchEvent.Pre event, String texture)
+    {
+        event.map.registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onModelBakeEvent(ModelBakeEvent event)
+    {
+        replaceModelDefault(event, "spaceshipTier2", "rocketT2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "cargoRocket", "cargoRocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
+    }
+
+    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
+    {
+        ClientUtil.replaceModel(GalacticraftPlanets.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState);
+    }
+
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
@@ -160,20 +186,15 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
 //        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
 //        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new RenderCreeperBoss());
-//            RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), GalacticraftPlanets.ASSET_PREFIX, "rocketT2"));
+            RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), GalacticraftPlanets.ASSET_PREFIX, "rocketT2"));
 ////        RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
 //        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new RenderProjectileTNT());
 //            RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
 //            RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
-//            RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new RenderCargoRocket(cargoRocketModel));
+            RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new RenderCargoRocket());
 
         // Add Armor Renderer Prefix
 //        RenderingRegistry.addNewArmourRendererPrefix("desh");
-
-        // Item Renderers
-//        MinecraftForgeClient.registerItemRenderer(MarsItems.spaceship, new ItemRendererTier2Rocket(cargoRocketModel));
-//        MinecraftForgeClient.registerItemRenderer(MarsItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/treasure.png")));
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MarsBlocks.machine), new ItemRendererMachine(chamberModel));
     }
 
     public static void registerBlockRenderers()

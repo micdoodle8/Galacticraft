@@ -9,8 +9,11 @@ import micdoodle8.mods.galacticraft.core.client.model.loader.AdvancedModelLoader
 import micdoodle8.mods.galacticraft.core.client.model.loader.IModelCustom;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelGrapple;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelRocketT3;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityCryoFX;
@@ -22,6 +25,7 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.*;
@@ -93,101 +97,49 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         Item teleporter = Item.getItemFromBlock(AsteroidBlocks.shortRangeTelepad);
         modelResourceLocation = new ModelResourceLocation("galacticraftplanets:telepadShort", "inventory");
         ModelLoader.setCustomModelResourceLocation(teleporter, 0, modelResourceLocation);
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:grapple", "inventory");
+        ModelLoader.setCustomModelResourceLocation(AsteroidsItems.grapple, 0, modelResourceLocation);
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:itemTier3Rocket", "inventory");
+        for (int i = 0; i < 5; ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(AsteroidsItems.tier3Rocket, i, modelResourceLocation);
+        }
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beamReceiver", "inventory");
-        Object object = event.modelRegistry.getObject(modelResourceLocation);
-        if (object instanceof IBakedModel)
-        {
-            IBakedModel newModel;
+        replaceModelDefault(event, "beamReceiver", "receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
+        replaceModelDefault(event, "beamReflector", "reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
+        replaceModelDefault(event, "telepadShort", "telepadShort.obj", ImmutableList.of("Top", "Bottom", "Connector"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.2F, 0.2F, 0.2F)));
+        replaceModelDefault(event, "grapple", "grapple.obj", ImmutableList.of("Grapple"), ItemModelGrapple.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "itemTier3Rocket", "tier3rocket.obj", ImmutableList.of("Boosters", "Cube", "NoseCone", "Rocket"), ItemModelRocketT3.class, TRSRTransformation.identity());
+    }
 
-            try
-            {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "receiver.obj"));
-                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
-                    @Override
-                    public TextureAtlasSprite apply(ResourceLocation location) {
-                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    }
-                };
-                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Main", "Receiver", "Ring"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F))), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-
-            event.modelRegistry.putObject(modelResourceLocation, newModel);
-        }
-        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beamReflector", "inventory");
-        object = event.modelRegistry.getObject(modelResourceLocation);
-        if (object instanceof IBakedModel)
-        {
-            IBakedModel newModel;
-
-            try
-            {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "reflector.obj"));
-                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
-                    @Override
-                    public TextureAtlasSprite apply(ResourceLocation location) {
-                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    }
-                };
-                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F))), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-
-            event.modelRegistry.putObject(modelResourceLocation, newModel);
-        }
-        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:telepadShort", "inventory");
-        object = event.modelRegistry.getObject(modelResourceLocation);
-        if (object instanceof IBakedModel)
-        {
-            IBakedModel newModel;
-
-            try
-            {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "telepadShort.obj"));
-                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
-                    @Override
-                    public TextureAtlasSprite apply(ResourceLocation location) {
-                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    }
-                };
-                newModel = model.bake(new OBJModel.OBJState(ImmutableList.of("Top", "Bottom", "Connector"), false, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.2F, 0.2F, 0.2F))), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-
-            event.modelRegistry.putObject(modelResourceLocation, newModel);
-        }
+    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
+    {
+        ClientUtil.replaceModel(GalacticraftPlanets.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState);
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void loadTextures(TextureStitchEvent.Pre evt)
+    public void loadTextures(TextureStitchEvent.Pre event)
     {
-        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/minerbase"));
-        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/beamReflector"));
-        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/beamReceiver"));
-        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/telepadShort"));
-        evt.map.registerSprite(new ResourceLocation("galacticraftplanets:blocks/telepadShort0"));
+        registerTexture(event, "minerbase");
+        registerTexture(event, "beamReflector");
+        registerTexture(event, "beamReceiver");
+        registerTexture(event, "telepadShort");
+        registerTexture(event, "telepadShort0");
+        registerTexture(event, "grapple");
+        registerTexture(event, "tier3rocket");
+    }
+
+    private void registerTexture(TextureStitchEvent.Pre event, String texture)
+    {
+        event.map.registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }
 
     @Override
@@ -206,21 +158,8 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, new RenderGrapple());
 //          IModelCustom podModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/pod.obj"));
 //          RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, new RenderEntryPod(podModel));
-          IModelCustom rocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/tier3rocket.obj"));
-          RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket(rocketModel, GalacticraftPlanets.ASSET_PREFIX, "tier3rocket"));
+          RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, new RenderTier3Rocket());
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, new RenderAstroMiner());
-//          IModelCustom grappleModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/grapple.obj"));
-//        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.grapple, new ItemRendererGrappleHook(grappleModel));
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReceiver), new ItemRendererBeamReceiver());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.beamReflector), new ItemRendererBeamReflector());
-//        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.tier3Rocket, new ItemRendererTier3Rocket(rocketModel));
-//        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.astroMiner, new ItemRendererAstroMiner());
-//        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.thermalPadding, new ItemRendererThermalArmor());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.shortRangeTelepad), new ItemRendererShortRangeTelepad());
-//        MinecraftForgeClient.registerItemRenderer(AsteroidsItems.heavyNoseCone, new ItemRendererHeavyNoseCone());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.blockWalkway), new ItemRendererWalkway());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.blockWalkwayOxygenPipe), new ItemRendererWalkway());
-//        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AsteroidBlocks.blockWalkwayWire), new ItemRendererWalkway());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMinerBase.class, new TileEntityMinerBaseRenderer());

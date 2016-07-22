@@ -1,0 +1,50 @@
+# Blender MTL File: 'None'
+# Material Count: 8
+
+newmtl Material.001
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.002
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.004
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.005
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.006
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.007
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.008
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple
+
+newmtl Material.009
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/grapple

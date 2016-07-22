@@ -50,7 +50,8 @@ public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
         final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
 
-        GL11.glTranslatef((float) par2, (float) par4 + 1.5F, (float) par6);
+        float sY = (float) (entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY) / 2.0F;
+        GL11.glTranslatef((float) par2, (float) par4 + sY, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);

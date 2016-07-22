@@ -1,8 +1,19 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IModelState;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,6 +27,8 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class ClientUtil
@@ -78,5 +91,39 @@ public class ClientUtil
         }
 
         return new Vector3(1, 1, 1);
+    }
+
+    public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
+    {
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, "inventory");
+        IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+        if (object != null)
+        {
+            IBakedModel newModel;
+
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                    @Override
+                    public TextureAtlasSprite apply(ResourceLocation location) {
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    }
+                };
+                newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+                if (clazz != null)
+                {
+                    newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+            event.modelRegistry.putObject(modelResourceLocation, newModel);
+        }
     }
 }

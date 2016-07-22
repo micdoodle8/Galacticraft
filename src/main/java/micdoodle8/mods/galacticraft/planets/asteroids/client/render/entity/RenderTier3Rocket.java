@@ -5,13 +5,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.client.model.loader.IModelCustom;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelRocketT3;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.model.Attributes;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModel;
@@ -38,14 +45,10 @@ import java.io.IOException;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class RenderTier3Rocket extends Render
+public class RenderTier3Rocket extends Render<EntityTier3Rocket>
 {
     private static Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER;
-    private ResourceLocation rocketTexture;
-    private IFlexibleBakedModel rocketModel;
-
-    protected IModelCustom rocketModelObj;
-
+    private ItemModelRocketT3 rocketModel;
 
     public static class RocketTexture extends TextureAtlasSprite
     {
@@ -89,45 +92,49 @@ public class RenderTier3Rocket extends Render
         }
     }
 
-    public RenderTier3Rocket(IModelCustom spaceshipModel, String textureDomain, String texture)
+    public RenderTier3Rocket()
     {
         super(FMLClientHandler.instance().getClient().getRenderManager());
-        this.rocketModelObj = spaceshipModel;
-        this.rocketTexture = new ResourceLocation(textureDomain, "textures/model/" + texture + ".png");
         this.shadowSize = 2F;
 
-        TEXTUREGETTER = new Function<ResourceLocation, TextureAtlasSprite>() {
-            @Override
-            public TextureAtlasSprite apply(ResourceLocation input) {
-                if (input.getResourceDomain().equals(GalacticraftPlanets.ASSET_PREFIX))
-                {
-                    return RocketTexture.instance;
+//        try
+//        {
+//            OBJModel model = (OBJModel) OBJLoader.instance.loadModel(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "models/tier3rocket.obj"));
+//
+//            IModel rocketmodel = ((OBJModel) model.process(ImmutableMap.of("flip-v", "true")));
+//
+//            rocketModel = rocketmodel.bake(new OBJModel.OBJState(ImmutableList.of("Rocket", "Cube", "Boosters", "NoseCone"), false), Attributes.DEFAULT_BAKED_FORMAT, TEXTUREGETTER);
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+    }
+
+    private void updateModel()
+    {
+        if (rocketModel == null)
+        {
+            TEXTUREGETTER = new Function<ResourceLocation, TextureAtlasSprite>() {
+                @Override
+                public TextureAtlasSprite apply(ResourceLocation input) {
+                    return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
                 }
-                return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
-            }
-        };
+            };
 
-        try
-        {
-            OBJModel model = (OBJModel) OBJLoader.instance.loadModel(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "models/tier3rocket.obj"));
-
-            IModel rocketmodel = ((OBJModel) model.retexture(ImmutableMap.of("#tier3rocket", "galacticraftplanets:model/tier3rocket"))).process(ImmutableMap.of("flip-v", "true"));
-
-            rocketModel = rocketmodel.bake(new OBJModel.OBJState(ImmutableList.of("Rocket", "Cube", "Boosters", "NoseCone"), false), Attributes.DEFAULT_BAKED_FORMAT, TEXTUREGETTER);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "itemTier3Rocket", "inventory");
+            rocketModel = (ItemModelRocketT3) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTier3Rocket par1Entity)
     {
-        return this.rocketTexture;
+        return new ResourceLocation("missing");
     }
 
-    public void renderSpaceship(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)
+    @Override
+    public void doRender(EntityTier3Rocket entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
@@ -152,14 +159,27 @@ public class RenderTier3Rocket extends Render
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 1.0F);
         }
 
-        this.bindEntityTexture(entity);
+        updateModel();
+
+        RenderHelper.disableStandardItemLighting();
+        this.bindTexture(TextureMap.locationBlocksTexture);
+
+        if (Minecraft.isAmbientOcclusionEnabled())
+        {
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        }
+        else
+        {
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+        }
+
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.9F, 0.9F, 0.9F);
 
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
-        this.bindTexture(rocketTexture);
+//        this.bindTexture(rocketTexture);
         worldrenderer.begin(GL11.GL_QUADS, rocketModel.getFormat());
 
         this.renderQuads(worldrenderer, rocketModel.getGeneralQuads(), -1);
@@ -194,16 +214,12 @@ public class RenderTier3Rocket extends Render
         GL11.glColor3f(1, 1, 1);
 
         GL11.glPopMatrix();
+
+        RenderHelper.enableStandardItemLighting();
     }
 
     private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color) {
         for(BakedQuad bakedquad : quads)
             LightUtil.renderQuadColor(renderer, bakedquad, color);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderSpaceship((EntitySpaceshipBase) par1Entity, par2, par4, par6, par8, par9);
     }
 }
