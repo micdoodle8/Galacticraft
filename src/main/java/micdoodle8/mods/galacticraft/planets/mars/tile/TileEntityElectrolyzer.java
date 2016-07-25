@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -99,8 +100,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 this.processTicks = 0;
             }
             
-            this.produceOxygen(EnumFacing.getFront(this.getOxygenOutputDirection()));
-            this.produceHydrogen(EnumFacing.getFront(this.getHydrogenOutputDirection()));
+            this.produceOxygen(this.getOxygenOutputDirection());
+            this.produceHydrogen(this.getHydrogenOutputDirection());
         }
     }
 
@@ -508,17 +509,15 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 	public float getMaxOxygenStored() {
 		return this.liquidTank.getCapacity();
 	}
-	
-	private int getOxygenOutputDirection()
+
+	private EnumFacing getOxygenOutputDirection()
 	{
-        int metaside = this.getBlockMetadata() + 2;
-        return (7 - (metaside ^ (metaside > 3 ? 0 : 1)) ^ 1);
+	    return this.getFacing().getOpposite();
 	}
-	
-	private int getHydrogenOutputDirection()
+
+	private EnumFacing getHydrogenOutputDirection()
 	{
-        int metaside = this.getBlockMetadata() + 2;
-        return (metaside ^ 1);
+	    return this.getFacing().rotateY().getOpposite();
 	}
 	
     private boolean produceOxygen(EnumFacing outputDirection)
@@ -636,7 +635,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public float provideOxygen(EnumFacing from, float request, boolean doProvide)
     {
-        if (this.getOxygenOutputDirection() == from.ordinal())
+        if (this.getOxygenOutputDirection() == from)
         {
             return this.provideOxygen(request, doProvide);
         }
@@ -682,12 +681,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public float getOxygenProvide(EnumFacing direction)
     {
-        return this.getOxygenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+        return this.getOxygenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }
 
     public float getHydrogenProvide(EnumFacing direction)
     {
-        return this.getHydrogenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0.0F;
+        return this.getHydrogenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0.0F;
     }
 
 	@Override
@@ -716,12 +715,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.OXYGEN)
         {
-            return this.getOxygenOutputDirection() == direction.ordinal();
+            return this.getOxygenOutputDirection() == direction;
         }
 
         if (type == NetworkType.HYDROGEN)
         {
-            return this.getHydrogenOutputDirection() == direction.ordinal();
+            return this.getHydrogenOutputDirection() == direction;
         }
 
         if (type == NetworkType.POWER)
@@ -735,5 +734,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public IChatComponent getDisplayName() {
         return null;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }
 }

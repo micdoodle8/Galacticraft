@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
@@ -530,10 +531,17 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         }
 
         if (type == NetworkType.POWER)
-        	return direction == this.getElectricInputDirection();
+        {
+            return direction == this.getElectricInputDirection();
+        }
         
         //Hydrogen pipe
-        return direction.equals(EnumFacing.getFront(this.getBlockMetadata() + 2));
+        if (type == NetworkType.HYDROGEN)
+        {
+            return direction == this.getFacing().rotateY();
+        }
+
+        return false;
     }
 
 	public Float getHydrogenRequest(EnumFacing direction)
@@ -556,4 +564,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     	
     	return 0;
 	}
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+    }
 }

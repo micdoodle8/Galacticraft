@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
@@ -682,5 +683,16 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public boolean getBubbleVisible()
     {
         return this.shouldRenderBubble;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFacing().rotateY();
     }
 }

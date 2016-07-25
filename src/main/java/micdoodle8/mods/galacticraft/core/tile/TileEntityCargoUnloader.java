@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
@@ -303,5 +304,16 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
     {
         return true;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockCargoLoader.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFacing().rotateY();
     }
 }

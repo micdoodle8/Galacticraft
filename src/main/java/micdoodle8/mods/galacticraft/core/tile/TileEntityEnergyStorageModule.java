@@ -365,9 +365,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     private EnumFacing getFacing()
     {
         if (getBlockType() instanceof BlockMachine) {
-            return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
+            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
         } else if (getBlockType() instanceof BlockMachineTiered) {
-            return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
+            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
         }
         return EnumFacing.NORTH;
     }
@@ -375,22 +375,19 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.of(getFacing());
-//        return EnumSet.of(EnumFacing.getFront((this.getBlockMetadata() & 3) + 2).getOpposite(), EnumFacing.UNKNOWN);
+        return EnumSet.of(getFacing().rotateY().getOpposite());
     }
 
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(getFacing());
-//        return EnumSet.of(EnumFacing.getFront((this.getBlockMetadata() & 3) + 2), EnumFacing.UNKNOWN);
+        return EnumSet.of(getFacing().rotateY());
     }
 
     @Override
     public EnumFacing getElectricalOutputDirectionMain()
     {
-        return getFacing();
-//        return EnumFacing.getFront((this.getBlockMetadata() & 3) + 2);
+        return getFacing().rotateY();
     }
 
     @Override
@@ -401,9 +398,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             return false;
         }
 
-        int metadata = this.getBlockMetadata() & 3;
-
-        return direction == getFacing();
-//        return direction == EnumFacing.getFront(metadata + 2) || direction == EnumFacing.getFront((metadata + 2) ^ 1);
+        return getElectricalInputDirections().contains(direction) || getElectricalOutputDirections().contains(direction);
     }
 }

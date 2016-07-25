@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -282,5 +283,16 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public IChatComponent getDisplayName() {
         return null;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFacing().rotateY();
     }
 }

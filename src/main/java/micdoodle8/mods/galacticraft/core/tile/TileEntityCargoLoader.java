@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingStat
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -297,5 +298,16 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
     {
         return true;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockCargoLoader.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFacing().rotateY();
     }
 }

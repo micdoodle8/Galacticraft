@@ -207,6 +207,11 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             }
         }
 
+        if (this.worldObj == null)
+        {
+            throw new RuntimeException("World is NULL! Connot decode packet data!");
+        }
+
         if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
         {
             return;

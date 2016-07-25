@@ -401,7 +401,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing();
+        return getFacing().rotateY();
     }
 
     @Override

@@ -1,5 +1,5 @@
 {
-    "parent":"galacticraftcore:block/oxygen_storage_module_model",
+    "parent":"galacticraftcore:block/oxygen_storage_model",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

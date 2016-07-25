@@ -41,9 +41,9 @@ public class SkyProviderOverworld extends IRenderHandler
         } catch (final Exception e) { }
     }
 
-    public int starGLCallList = GLAllocation.generateDisplayLists(7);
-    public int glSkyList;
-    public int glSkyList2;
+    private int starGLCallList = GLAllocation.generateDisplayLists(7);
+    private int glSkyList;
+    private int glSkyList2;
     private final ResourceLocation planetToRender = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
 
     public SkyProviderOverworld()
@@ -85,10 +85,10 @@ public class SkyProviderOverworld extends IRenderHandler
             for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
             {
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-                worldRenderer.pos(j + 0, f, l + 0).endVertex();
-                worldRenderer.pos(j + byte2, f, l + 0).endVertex();
+                worldRenderer.pos(j, f, l).endVertex();
+                worldRenderer.pos(j + byte2, f, l).endVertex();
                 worldRenderer.pos(j + byte2, f, l + byte2).endVertex();
-                worldRenderer.pos(j + 0, f, l + byte2).endVertex();
+                worldRenderer.pos(j, f, l + byte2).endVertex();
                 tessellator.draw();
             }
         }
@@ -103,9 +103,9 @@ public class SkyProviderOverworld extends IRenderHandler
         {
             for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
             {
-                worldRenderer.pos(k + byte2, f, i1 + 0).endVertex();
-                worldRenderer.pos(k + 0, f, i1 + 0).endVertex();
-                worldRenderer.pos(k + 0, f, i1 + byte2).endVertex();
+                worldRenderer.pos(k + byte2, f, i1).endVertex();
+                worldRenderer.pos(k, f, i1).endVertex();
+                worldRenderer.pos(k, f, i1 + byte2).endVertex();
                 worldRenderer.pos(k + byte2, f, i1 + byte2).endVertex();
             }
         }
@@ -269,10 +269,10 @@ public class SkyProviderOverworld extends IRenderHandler
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
         var20 = MathHelper.sqrt_float(var20);
         float bright1 = Math.min(0.9F, var20 * 3);
-        float bright2 = Math.min(0.85F, var20 * 2.5F);
-        float bright3 = Math.min(0.8F, var20 * 2);
-        float bright4 = Math.min(0.75F, var20 * 1.5F);
-        float bright5 = Math.min(0.7F, var20 * 0.75F);
+//        float bright2 = Math.min(0.85F, var20 * 2.5F);
+//        float bright3 = Math.min(0.8F, var20 * 2);
+//        float bright4 = Math.min(0.75F, var20 * 1.5F);
+//        float bright5 = Math.min(0.7F, var20 * 0.75F);
         if (bright1 > threshold)
         {
 	        GL11.glColor4f(bright1, bright1, bright1, 1.0F);
@@ -318,8 +318,8 @@ public class SkyProviderOverworld extends IRenderHandler
         float sinphi = this.minecraft.theWorld.getMoonPhase();
         final int cosphi = (int) (sinphi % 4);
         final int var29 = (int) (sinphi / 4 % 2);
-        final float yy = (cosphi + 0) / 4.0F;
-        final float rand7 = (var29 + 0) / 2.0F;
+        final float yy = (cosphi) / 4.0F;
+        final float rand7 = (var29) / 2.0F;
         final float zz = (cosphi + 1) / 4.0F;
         final float rand9 = (var29 + 1) / 2.0F;
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -368,9 +368,9 @@ public class SkyProviderOverworld extends IRenderHandler
 	        GL11.glColor4f(sinth, sinth, sinth, 1.0F);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
-	        if (zoomIn < 0F) zoomIn = 0F;
-	        zoomIn = 0.0F;
+//	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
+//	        if (zoomIn < 0F) zoomIn = 0F;
+            float zoomIn = 0.0F;
 	        float cornerB = 1.0F - zoomIn;
 	        worldRenderer.pos(-size, 0, size).tex(zoomIn, cornerB).endVertex();
 	        worldRenderer.pos(size, 0, size).tex(cornerB, cornerB).endVertex();

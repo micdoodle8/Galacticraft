@@ -201,21 +201,19 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
     private EnumFacing getFacing()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING));
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
     }
 
     @Override
     public EnumSet<EnumFacing> getOxygenInputDirections()
     {
-        return EnumSet.of(getFacing());
-//        return EnumSet.of(EnumFacing.getFront(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2));
+        return EnumSet.of(getFacing().rotateY());
     }
 
     @Override
     public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.of(getFacing().getOpposite());
-//        return EnumSet.of(EnumFacing.getFront(this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2).getOpposite());
+        return EnumSet.of(getFacing().rotateY().getOpposite());
     }
     
     @Override

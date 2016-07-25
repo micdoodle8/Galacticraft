@@ -1,6 +1,12 @@
 {
-    "parent": "block/cube_all",
+    "parent": "block/cube",
     "textures": {
-        "all": "galacticraftcore:blocks/collector"
+        "particle": "galacticraftcore:blocks/collector",
+        "down": "galacticraftcore:blocks/collector",
+        "up": "galacticraftcore:blocks/collector",
+        "north": "galacticraftcore:blocks/collector",
+        "east": "galacticraftcore:blocks/machine_input",
+        "south": "galacticraftcore:blocks/collector",
+        "west": "galacticraftcore:blocks/machine_oxygen_output"
     }
 }

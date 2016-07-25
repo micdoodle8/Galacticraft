@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -762,7 +763,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.OXYGEN)
         {
-            return direction.ordinal() == this.getBlockMetadata() + 2;
+            return direction == getFacing().rotateY();
         }
 
         if (type == NetworkType.POWER)
@@ -776,5 +777,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public IChatComponent getDisplayName() {
         return null;
+    }
+
+    private EnumFacing getFacing()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }
 }
