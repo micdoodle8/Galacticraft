@@ -434,7 +434,14 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
+    }
+
+    @Override
+    public float getRenderOffsetY()
+    {
+        return -0.1F;
     }
 }

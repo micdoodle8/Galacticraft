@@ -70,10 +70,10 @@ public class FootprintRenderer
 //                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
                     GL11.glColor4f(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
                     double footprintScale = 0.5F;
-                    worldRenderer.pos(0 + Math.sin((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f9).endVertex();
-                    worldRenderer.pos(0 + Math.sin((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f8).endVertex();
-                    worldRenderer.pos(0 + Math.sin((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f6, f8).endVertex();
-                    worldRenderer.pos(0 + Math.sin((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, 0 + Math.cos((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f6, f9).endVertex();
+                    worldRenderer.pos(Math.sin((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, Math.cos((45 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f9).endVertex();
+                    worldRenderer.pos(Math.sin((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, Math.cos((135 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f7, f8).endVertex();
+                    worldRenderer.pos(Math.sin((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, Math.cos((225 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f6, f8).endVertex();
+                    worldRenderer.pos(Math.sin((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale, 0, Math.cos((315 - footprint.rotation) * Math.PI / 180.0D) * footprintScale).tex(f6, f9).endVertex();
 
                     tessellator.draw();
                     GL11.glPopMatrix();

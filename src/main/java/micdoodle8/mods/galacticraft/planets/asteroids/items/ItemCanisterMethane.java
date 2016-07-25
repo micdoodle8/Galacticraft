@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;

@@ -28,7 +28,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
     public EntityTier2Rocket(World par1World)
     {
         super(par1World);
-        this.setSize(1.2F, 4.0F);
+        this.setSize(1.2F, 4.5F);
     }
 
     public EntityTier2Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -36,7 +36,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
-        this.setSize(1.2F, 4.0F);
+        this.setSize(1.2F, 4.5F);
     }
 
     public EntityTier2Rocket(World par1World, double par2, double par4, double par6, boolean reversed, EnumRocketType rocketType, ItemStack[] inv)
@@ -65,7 +65,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
     @Override
     public double getMountedYOffset()
     {
-        return -0.15D;
+        return 1.0D;
     }
 
     @Override
@@ -364,7 +364,14 @@ public class EntityTier2Rocket extends EntityTieredRocket
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
+    }
+
+    @Override
+    public float getRenderOffsetY()
+    {
+        return 1.34F;
     }
 }

@@ -243,6 +243,8 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glDisable(GL11.GL_FOG);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     private void renderStars()

@@ -19,10 +19,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemLiquidCanisterModel;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.*;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.*;
@@ -44,12 +41,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -100,6 +100,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -254,7 +255,7 @@ public class ClientProxyCore extends CommonProxyCore
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(0.0F, -0.48F, 0.0F), new Vector3f(0.42F, 0.42F, 0.42F)));
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(0.0F, -0.48F, 0.0F), new Vector3f(0.42F, 0.42F, 0.42F)));
         replaceModelDefault(event, "spaceship", "rocketT1.obj", ImmutableList.of("Cube.010_Cube.045"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
@@ -392,6 +393,24 @@ public class ClientProxyCore extends CommonProxyCore
         {
 //        	RenderingRegistry.registerEntityRenderingHandler(EntityPlayerSP.class, new RenderPlayerGC());
 //        	RenderingRegistry.registerEntityRenderingHandler(EntityOtherPlayerMP.class, new RenderPlayerGC());
+
+            try
+            {
+                Field field = RenderManager.class.getDeclaredField("playerRenderer");
+                field.setAccessible(true);
+                field.set(FMLClientHandler.instance().getClient().getRenderManager(), new RenderPlayerGC());
+
+                field = RenderManager.class.getDeclaredField("skinMap");
+                field.setAccessible(true);
+                Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) field.get(FMLClientHandler.instance().getClient().getRenderManager());
+                skinMap.put("default", new RenderPlayerGC());
+                skinMap.put("slim", new RenderPlayerGC(true));
+                field.set(FMLClientHandler.instance().getClient().getRenderManager(), skinMap);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 

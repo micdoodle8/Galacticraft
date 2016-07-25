@@ -630,4 +630,13 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		GL11.glTranslatef(0, this.height / 4, 0);
     }
 
+    /**
+     * Used in RenderTier1Rocket for standard rendering. Ignore if using a custom renderer.
+     *
+     * @return Y-axis offset for rendering at correct position
+     */
+    public float getRenderOffsetY()
+    {
+        return 1.34F;
+    }
 }

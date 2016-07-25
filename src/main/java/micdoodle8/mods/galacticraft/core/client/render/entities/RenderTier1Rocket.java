@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,7 +31,7 @@ public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
         this.shadowSize = 0.9F;
     }
 
-    protected ResourceLocation func_110779_a(Entity par1EntityArrow)
+    protected ResourceLocation func_110779_a(Entity entity)
     {
         return this.spaceshipTexture;
     }
@@ -50,18 +49,11 @@ public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
         final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
 
-        float sY = (float) (entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY) / 2.0F;
-        GL11.glTranslatef((float) par2, (float) par4 + sY, (float) par6);
+        GL11.glTranslatef((float) par2, (float) par4 + entity.getRenderOffsetY(), (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
         final float var28 = entity.rollAmplitude - par9;
-        float var30 = entity.shipDamage - par9;
-
-        if (var30 < 0.0F)
-        {
-            var30 = 0.0F;
-        }
 
         if (var28 > 0.0F)
         {

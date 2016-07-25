@@ -7,8 +7,8 @@ import net.minecraft.item.Item;
 
 public class CreativeTabGC extends CreativeTabs
 {
-    private final Item itemForTab;
-    private final int metaForTab;
+    private Item itemForTab;
+    private int metaForTab;
 
     public CreativeTabGC(int par1, String par2Str, Item itemForTab, int metaForTab)
     {
@@ -29,5 +29,15 @@ public class CreativeTabGC extends CreativeTabs
     public int getIconItemDamage()
     {
         return this.metaForTab;
+    }
+
+    public void setItemForTab(Item itemForTab)
+    {
+        this.itemForTab = itemForTab;
+    }
+
+    public void setMetaForTab(int metaForTab)
+    {
+        this.metaForTab = metaForTab;
     }
 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -134,6 +135,8 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
+        ((CreativeTabGC) GalacticraftCore.galacticraftItemsTab).setItemForTab(AsteroidsItems.astroMiner); // Set creative tab item to Astro Miner
+
         this.registerMicroBlocks();
     	SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
     	SchematicRegistry.registerSchematicRecipe(new SchematicAstroMiner());

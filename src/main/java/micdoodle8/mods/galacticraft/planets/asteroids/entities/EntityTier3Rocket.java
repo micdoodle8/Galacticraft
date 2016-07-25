@@ -62,7 +62,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public double getMountedYOffset()
     {
-        return 0.75D;
+        return 1.75D;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 1.75D;
+    	return 0.0D;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -366,5 +366,11 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public void clear() {
 
+    }
+
+    @Override
+    public float getRenderOffsetY()
+    {
+        return 1.1F;
     }
 }

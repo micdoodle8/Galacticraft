@@ -12,8 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelGrapple;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelRocketT3;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityCryoFX;
@@ -80,6 +79,9 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         addPlanetVariants("thermalPadding", "thermalHelm", "thermalChestplate", "thermalLeggings", "thermalBoots");
         addPlanetVariants("itemBasicAsteroids", "reinforcedPlateT3", "engineT2", "rocketFinsT2", "shardIron", "shardTitanium", "ingotTitanium", "compressedTitanium", "thermalCloth", "beamCore");
         addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
+        addPlanetVariants("methaneCanisterPartial", "methaneCanisterPartial_0", "methaneCanisterPartial_1", "methaneCanisterPartial_2", "methaneCanisterPartial_3", "methaneCanisterPartial_4", "methaneCanisterPartial_5", "methaneCanisterPartial_6");
+        addPlanetVariants("canisterPartialLN2", "canisterPartialLN2_0", "canisterPartialLN2_1", "canisterPartialLN2_2", "canisterPartialLN2_3", "canisterPartialLN2_4", "canisterPartialLN2_5", "canisterPartialLN2_6");
+        addPlanetVariants("canisterPartialLOX", "canisterPartialLOX_0", "canisterPartialLOX_1", "canisterPartialLOX_2", "canisterPartialLOX_3", "canisterPartialLOX_4", "canisterPartialLOX_5", "canisterPartialLOX_6");
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -106,17 +108,21 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         {
             ModelLoader.setCustomModelResourceLocation(AsteroidsItems.tier3Rocket, i, modelResourceLocation);
         }
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftplanets:itemAstroMiner", "inventory");
+        ModelLoader.setCustomModelResourceLocation(AsteroidsItems.astroMiner, 0, modelResourceLocation);
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "beamReceiver", "receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
-        replaceModelDefault(event, "beamReflector", "reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
-        replaceModelDefault(event, "telepadShort", "telepadShort.obj", ImmutableList.of("Top", "Bottom", "Connector"), null, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.2F, 0.2F, 0.2F)));
+        replaceModelDefault(event, "beamReceiver", "receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
+        replaceModelDefault(event, "beamReflector", "reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
+        replaceModelDefault(event, "telepadShort", "telepadShort.obj", ImmutableList.of("Top", "Bottom", "Connector"), ItemModelTelepad.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.2F, 0.2F, 0.2F)));
         replaceModelDefault(event, "grapple", "grapple.obj", ImmutableList.of("Grapple"), ItemModelGrapple.class, TRSRTransformation.identity());
         replaceModelDefault(event, "itemTier3Rocket", "tier3rocket.obj", ImmutableList.of("Boosters", "Cube", "NoseCone", "Rocket"), ItemModelRocketT3.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "itemAstroMiner", "astroMinerInv.obj", ImmutableList.of("Hull_Center"), ItemModelAstroMiner.class, TRSRTransformation.identity());
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
@@ -135,6 +141,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         registerTexture(event, "telepadShort0");
         registerTexture(event, "grapple");
         registerTexture(event, "tier3rocket");
+        registerTexture(event, "astroMiner_off");
     }
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
@@ -199,6 +206,22 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 6, "compressedTitanium");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 7, "thermalCloth");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 8, "beamCore");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.heavyNoseCone, 0, "heavyNoseCone");
+        for (int i = 0; i <= AsteroidsItems.methaneCanister.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / AsteroidsItems.methaneCanister.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.methaneCanister, i, "methaneCanisterPartial_" + (7 - damage - 1));
+        }
+        for (int i = 0; i <= AsteroidsItems.canisterLN2.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / AsteroidsItems.canisterLN2.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.canisterLN2, i, "canisterPartialLN2_" + (7 - damage - 1));
+        }
+        for (int i = 0; i <= AsteroidsItems.canisterLOX.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / AsteroidsItems.canisterLOX.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.canisterLOX, i, "canisterPartialLOX_" + (7 - damage - 1));
+        }
     }
 
     private void addPlanetVariants(String name, String... variants)
