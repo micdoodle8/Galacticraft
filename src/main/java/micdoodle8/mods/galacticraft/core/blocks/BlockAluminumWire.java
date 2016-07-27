@@ -34,11 +34,9 @@ import java.util.List;
 
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
-    public static final String[] names = { "aluminumWire", "aluminumWireHeavy" };
-    /*private static IIcon[] blockIcons;*/
     public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wireType", EnumWireType.class);
 
-    private enum EnumWireType implements IStringSerializable
+    public enum EnumWireType implements IStringSerializable
     {
         ALUMINUM_WIRE(0, "alu_wire"),
         ALUMINUM_WIRE_HEAVY(1, "alu_wire_heavy");
@@ -193,9 +191,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         switch (itemDamage)
         {
         case 0:
-            return GCCoreUtil.translate("tile.aluminumWire.description");
+            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire.description");
         case 1:
-            return GCCoreUtil.translate("tile.aluminumWireHeavy.description");
+            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_heavy.description");
         }
         return "";
     }

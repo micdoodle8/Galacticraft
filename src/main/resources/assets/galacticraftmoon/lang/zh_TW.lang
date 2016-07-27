@@ -1,30 +1,16 @@
-# Galacticraft Moon Language File = TRADITIONAL CHINESE
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=生隕鐵錠
-item.compressedMeteoricIron.name=致密隕鐵
-item.meteoricIronIngot.name=隕鐵錠
-
-# FOOD
-item.cheeseCurd.name=奶酪凝乳
-item.cheeseBlock.name=奶酪塊
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=石頭
-tile.moonBlock.moondirt.name=泥土
-tile.moonBlock.moongrass.name=月面草皮
-tile.moonBlock.tinmoon.name=錫礦石
-tile.moonBlock.coppermoon.name=銅礦石
-tile.moonBlock.cheesestone.name=奶酪礦石
-tile.moonBlock.bricks.name=磚塊
-tile.cheeseBlock.name=奶酪塊
-
-# GUI
-gui.choosePlanet.desc.moon=宜居#無氧氣#重力: 18%
+item.meteoric_iron_raw.name=生隕鐵錠
+item.compressed_meteoric_iron.name=致密隕鐵
+item.meteoric_iron_ingot.name=隕鐵錠
+item.cheese_curd.name=奶酪凝乳
+item.cheese_block.name=奶酪塊
+tile.basic_block_moon.moonstone.name=石頭
+tile.basic_block_moon.moondirt.name=泥土
+tile.basic_block_moon.moongrass.name=月面草皮
+tile.basic_block_moon.tinmoon.name=錫礦石
+tile.basic_block_moon.coppermoon.name=銅礦石
+tile.basic_block_moon.cheesestone.name=奶酪礦石
+tile.basic_block_moon.bricks.name=磚塊
+tile.cheese.name=奶酪塊
+gui.choose_planet.desc.moon=宜居#無氧氣#重力: 18%
 container.lander.name=Lander ##NEEDS TRANSLATE##
-
-dimension.Moon.name=月球
+dimension.moon.name=月球

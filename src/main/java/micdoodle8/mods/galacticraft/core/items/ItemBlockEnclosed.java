@@ -1,22 +1,19 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import java.lang.reflect.Method;
-
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
-import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlock;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockEnclosed extends ItemBlockDesc
 {
@@ -38,37 +35,37 @@ public class ItemBlockEnclosed extends ItemBlockDesc
             name = "null";
             break;
         case 1:
-            name = "oxygenPipe";
+            name = "oxygen_pipe";
             break;
         case 2:
-            name = "copperCable";
+            name = "copper_cable";
             break;
         case 3:
-            name = "goldCable";
+            name = "gold_cable";
             break;
         case 4:
-            name = "hvCable";
+            name = "hv_cable";
             break;
         case 5:
-            name = "glassFibreCable";
+            name = "glass_fibre_cable";
             break;
         case 6:
-            name = "lvCable";
+            name = "lv_cable";
             break;
         case 13:
-            name = "meCable";
+            name = "me_cable";
             break;
         case 14:
-            name = "aluminumWire";
+            name = "aluminum_wire";
             break;
         case 15:
-            name = "aluminumWireHeavy";
+            name = "aluminum_wire_heavy";
             break;
         default:
         	//The BuildCraft pipes
             try
             {
-                name = BlockEnclosed.getTypeFromMeta(par1ItemStack.getItemDamage()).getPipeType();
+                name = BlockEnclosed.EnumEnclosedBlockType.byMetadata(par1ItemStack.getItemDamage()).getBCPipeType();
             }
             catch (Exception e)
             {
@@ -84,9 +81,9 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = this.getMetadata(stack.getItemDamage());
-        EnumEnclosedBlock type = BlockEnclosed.getTypeFromMeta(metadata);
+        BlockEnclosed.EnumEnclosedBlockType type = BlockEnclosed.EnumEnclosedBlockType.byMetadata(metadata);
 
-        if (type != null && type.getPipeType() != null)
+        if (type != null && type.getBCPipeType() != null)
         {
             Block block = worldIn.getBlockState(pos).getBlock();
 
@@ -147,7 +144,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                     worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, this.getBlock().stepSound.getPlaceSound(), (this.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, 1.0F * 0.8F);
                     --stack.stackSize;
 
-                    if (metadata >= EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata() && metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+                    if (metadata >= BlockEnclosed.EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta() && metadata <= BlockEnclosed.EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta())
                     {
                         if (CompatibilityManager.isBCraftLoaded())
                         {
@@ -155,7 +152,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                         }
                     }
                     
-                    else if (metadata == EnumEnclosedBlock.ME_CABLE.getMetadata())
+                    else if (metadata == BlockEnclosed.EnumEnclosedBlockType.ME_CABLE.getMeta())
                     {
 //                    	ItemStack itemME = new ItemStack(Block.getBlockFromName("appliedenergistics2:tile.BlockCableBus"), 16);
 //                    	try

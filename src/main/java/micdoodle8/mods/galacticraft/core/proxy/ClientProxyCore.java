@@ -229,7 +229,7 @@ public class ClientProxyCore extends CommonProxyCore
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:rocket_workbench", "inventory");
         ModelLoader.setCustomModelResourceLocation(nasaWorkbench, 0, modelResourceLocation);
 
-        modelResourceLocation = new ModelResourceLocation("galacticraftcore:spaceship", "inventory");
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:rocket_t1", "inventory");
         for (int i = 0; i < 5; ++i)
         {
             ModelLoader.setCustomModelResourceLocation(GCItems.rocketTier1, i, modelResourceLocation);
@@ -241,7 +241,7 @@ public class ClientProxyCore extends CommonProxyCore
             ModelLoader.setCustomModelResourceLocation(GCItems.buggy, i, modelResourceLocation);
         }
 
-        modelResourceLocation = new ModelResourceLocation("galacticraftcore:oilCanisterPartial_0", "inventory");
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:oil_canister_partial_0", "inventory");
         for (int i = 0; i < GCItems.oilCanister.getMaxDamage(); ++i)
         {
             ModelLoader.setCustomModelResourceLocation(GCItems.oilCanister, i, modelResourceLocation);
@@ -256,7 +256,7 @@ public class ClientProxyCore extends CommonProxyCore
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(0.0F, -0.48F, 0.0F), new Vector3f(0.42F, 0.42F, 0.42F)));
-        replaceModelDefault(event, "spaceship", "rocketT1.obj", ImmutableList.of("Cube.010_Cube.045"), ItemModelRocket.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "rocket_t1", "rocketT1.obj", ImmutableList.of("Cube.010_Cube.045"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
         {
@@ -282,14 +282,14 @@ public class ClientProxyCore extends CommonProxyCore
 
         for (int i = 0; i < 7; ++i)
         {
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:oilCanisterPartial_" + i, "inventory");
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:oil_canister_partial_" + i, "inventory");
             IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
             if (object != null)
             {
                 ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
                 event.modelRegistry.putObject(modelResourceLocation, modelFinal);
             }
-            modelResourceLocation = new ModelResourceLocation("galacticraftcore:fuelCanisterPartial_" + i, "inventory");
+            modelResourceLocation = new ModelResourceLocation("galacticraftcore:fuel_canister_partial_" + i, "inventory");
             object = event.modelRegistry.getObject(modelResourceLocation);
             if (object != null)
             {
@@ -471,43 +471,43 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 14, "parachute_teal");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 15, "parachute_yellow");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic_buggy");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocketT2");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocket_t2");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.key, 0, "key");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 0, "wheel");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 1, "seat");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 2, "storage");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 0, "solar_module_0");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 1, "solar_module_1");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 2, "rawSilicon");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 3, "ingotCopper");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 4, "ingotTin");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 5, "ingotAluminum");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 6, "compressedCopper");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 7, "compressedTin");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 8, "compressedAluminum");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 9, "compressedSteel");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 10, "compressedBronze");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 11, "compressedIron");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 12, "waferSolar");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 13, "waferBasic");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 14, "waferAdvanced");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 15, "dehydratedApple");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 16, "dehydratedCarrot");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 17, "dehydratedMelon");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydratedPotato");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequencyModule");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambientThermalController");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoricIronIngot");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressedMeteoricIron");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 2, "raw_silicon");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 3, "ingot_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 4, "ingot_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 5, "ingot_aluminum");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 6, "compressed_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 7, "compressed_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 8, "compressed_aluminum");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 9, "compressed_steel");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 10, "compressed_bronze");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 11, "compressed_iron");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 12, "wafer_solar");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 13, "wafer_basic");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 14, "wafer_advanced");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 15, "dehydrated_apple");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 16, "dehydrated_carrot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 17, "dehydrated_melon");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydrated_potato");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequency_module");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambient_thermal_controller");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoric_iron_ingot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressed_meteoric_iron");
         for (int i = 0; i <= GCItems.oilCanister.getMaxDamage(); ++i)
         {
             int damage = 6 * i / GCItems.oilCanister.getMaxDamage();
-            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.oilCanister, i, "oilCanisterPartial_" + (7 - damage - 1));
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.oilCanister, i, "oil_canister_partial_" + (7 - damage - 1));
         }
         for (int i = 0; i <= GCItems.fuelCanister.getMaxDamage(); ++i)
         {
             int damage = 6 * i / GCItems.fuelCanister.getMaxDamage();
-            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.fuelCanister, i, "fuelCanisterPartial_" + (7 - damage - 1));
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.fuelCanister, i, "fuel_canister_partial_" + (7 - damage - 1));
         }
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteorChunk, 0, "meteor_chunk");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteorChunk, 1, "meteor_chunk_hot");
@@ -604,15 +604,15 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("canister", "canister_tin", "canister_copper");
         addCoreVariant("engine", "tier1engine", "tier1booster");
         addCoreVariant("parachute", "parachute_plain", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
-        addCoreVariant("oilCanisterPartial", "oilCanisterPartial_0", "oilCanisterPartial_1", "oilCanisterPartial_2", "oilCanisterPartial_3", "oilCanisterPartial_4", "oilCanisterPartial_5", "oilCanisterPartial_6");
-        addCoreVariant("fuelCanisterPartial", "fuelCanisterPartial_0", "fuelCanisterPartial_1", "fuelCanisterPartial_2", "fuelCanisterPartial_3", "fuelCanisterPartial_4", "fuelCanisterPartial_5", "fuelCanisterPartial_6");
-        addCoreVariant("schematic", "schematic_buggy", "schematic_rocketT2");
+        addCoreVariant("oil_canister_partial", "oil_canister_partial_0", "oil_canister_partial_1", "oil_canister_partial_2", "oil_canister_partial_3", "oil_canister_partial_4", "oil_canister_partial_5", "oil_canister_partial_6");
+        addCoreVariant("fuel_canister_partial", "fuel_canister_partial_0", "fuel_canister_partial_1", "fuel_canister_partial_2", "fuel_canister_partial_3", "fuel_canister_partial_4", "fuel_canister_partial_5", "fuel_canister_partial_6");
+        addCoreVariant("schematic", "schematic_buggy", "schematic_rocket_t2");
         addCoreVariant("key", "key");
         addCoreVariant("buggymat", "wheel", "seat", "storage");
-        addCoreVariant("basicItem", "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule", "ambientThermalController");
-        addCoreVariant("meteoricIronIngot", "meteoricIronIngot", "compressedMeteoricIron");
+        addCoreVariant("basic_item", "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
+        addCoreVariant("meteoric_iron_ingot", "meteoric_iron_ingot", "compressed_meteoric_iron");
         addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
-        addCoreVariant("meteorChunk", "meteor_chunk", "meteor_chunk_hot");
+        addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");
     }
 

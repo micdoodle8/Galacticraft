@@ -34,8 +34,7 @@ public class ItemBlockEgg extends ItemBlockDesc
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        String name = BlockSlimelingEgg.names[itemstack.getItemDamage() % 3];
-
+        String name = BlockSlimelingEgg.EnumEggColor.values()[itemstack.getItemDamage() % 3].getName();
         return this.getBlock().getUnlocalizedName() + "." + name;
     }
 

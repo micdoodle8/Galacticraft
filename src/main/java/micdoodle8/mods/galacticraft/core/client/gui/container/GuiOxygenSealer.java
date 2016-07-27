@@ -59,8 +59,8 @@ public class GuiOxygenSealer extends GuiContainerGC
     {
         super.initGui();
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 32, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> oxygenSlotDesc = new ArrayList<String>();
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.0"));
@@ -104,7 +104,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.oxygenUse.desc") + ": " + this.sealer.oxygenPerTick * 20 + GCCoreUtil.translate("gui.perSecond");
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
-        status = GCCoreUtil.translate("gui.message.thermalStatus.name") + ": " + this.getThermalStatus();
+        status = GCCoreUtil.translate("gui.message.thermal_status.name") + ": " + this.getThermalStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
         //		this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);
@@ -129,7 +129,7 @@ public class GuiOxygenSealer extends GuiContainerGC
 
         if (this.sealer.thermalControlEnabled())
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.notAvailable.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.not_available.name");
         }
 
         return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ItemThermalPadding extends Item implements IItemThermal
 {
-    public static String[] names = { "thermalHelm", "thermalChestplate", "thermalLeggings", "thermalBoots", "thermalHelm0", "thermalChestplate0", "thermalLeggings0", "thermalBoots0" };
+    public static String[] names = { "thermal_helm", "thermal_chestplate", "thermal_leggings", "thermal_boots", "thermal_helm0", "thermal_chestplate0", "thermal_leggings0", "thermal_boots0" };
 //    protected IIcon[] icons = new IIcon[ItemThermalPadding.names.length];
 
     public ItemThermalPadding(String assetName)

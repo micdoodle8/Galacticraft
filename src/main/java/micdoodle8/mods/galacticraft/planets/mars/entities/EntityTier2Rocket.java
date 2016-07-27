@@ -59,7 +59,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 	@Override
 	public ItemStack getPickedResult(MovingObjectPosition target)
 	{
-	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex());
+	return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex());
 	}
 
     @Override
@@ -170,7 +170,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
             }
 
             stats.rocketType = this.rocketType.getIndex();
-            stats.rocketItem = MarsItems.spaceship;
+            stats.rocketItem = MarsItems.rocketMars;
             stats.fuelLevel = this.fuelTank.getFluidAmount();
         }
     }
@@ -331,7 +331,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
     {
         super.getItemsDropped(droppedItems);
-        ItemStack rocket = new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex());
+        ItemStack rocket = new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex());
         rocket.setTagCompound(new NBTTagCompound());
         rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItems.add(rocket);

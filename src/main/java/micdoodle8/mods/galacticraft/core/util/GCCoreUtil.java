@@ -89,7 +89,7 @@ public class GCCoreUtil
     {
     	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+    		LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
 		}
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
@@ -128,7 +128,16 @@ public class GCCoreUtil
     {
         String result = StatCollector.translateToLocal(key);
         int comment = result.indexOf('#');
-        return (comment > 0) ? result.substring(0, comment).trim() : result;
+        String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
+        for (int i = 0; i < key.length(); ++i)
+        {
+            Character c = key.charAt(i);
+            if (Character.isUpperCase(c))
+            {
+                System.err.println(ret);
+            }
+        }
+        return ret;
     }
 
     public static List<String> translateWithSplit(String key)
@@ -143,7 +152,16 @@ public class GCCoreUtil
     {
         String result = StatCollector.translateToLocalFormatted(key, values);
         int comment = result.indexOf('#');
-        return (comment > 0) ? result.substring(0, comment).trim() : result;
+        String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
+        for (int i = 0; i < key.length(); ++i)
+        {
+            Character c = key.charAt(i);
+            if (Character.isUpperCase(c))
+            {
+                System.err.println(ret);
+            }
+        }
+        return ret;
     }
 
 	public static void drawStringRightAligned(String string, int x, int y, int color, FontRenderer fontRendererObj)

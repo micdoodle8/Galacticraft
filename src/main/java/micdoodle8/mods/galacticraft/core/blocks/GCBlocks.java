@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
@@ -116,61 +118,6 @@ public class GCBlocks
         GCBlocks.moonStoneStairs = new BlockStairsGC("moonStoneStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_STONE).setHardness(1.5F);
         GCBlocks.moonBricksStairs = new BlockStairsGC("moonBricksStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_BRICKS).setHardness(4.0F);
         GCBlocks.wallGC = new BlockWallGC("wallGC", blockMoon);*/
-
-        GCCoreUtil.registerGalacticraftBlock("rocket_launch_pad", GCBlocks.landingPad, 0);
-        GCCoreUtil.registerGalacticraftBlock("buggy_fueling_pad", GCBlocks.landingPad, 1);
-        GCCoreUtil.registerGalacticraftBlock("collector", GCBlocks.oxygenCollector);
-        GCCoreUtil.registerGalacticraftBlock("oxygen_compressor", GCBlocks.oxygenCompressor);
-        GCCoreUtil.registerGalacticraftBlock("oxygen_distributor", GCBlocks.oxygenDistributor);
-        GCCoreUtil.registerGalacticraftBlock("oxygen_sealer", GCBlocks.oxygenSealer);
-        GCCoreUtil.registerGalacticraftBlock("oxygen_detector", GCBlocks.oxygenDetector);
-        GCCoreUtil.registerGalacticraftBlock("oxygen_pipe", GCBlocks.oxygenPipe);
-        GCCoreUtil.registerGalacticraftBlock("refinery", GCBlocks.refinery);
-        GCCoreUtil.registerGalacticraftBlock("fuel_loader", GCBlocks.fuelLoader);
-        GCCoreUtil.registerGalacticraftBlock("cargo_loader", GCBlocks.cargoLoader, 0);
-        GCCoreUtil.registerGalacticraftBlock("cargo_unloader", GCBlocks.cargoLoader, 4);
-        GCCoreUtil.registerGalacticraftBlock("nasa_workbench", GCBlocks.nasaWorkbench);
-        GCCoreUtil.registerGalacticraftBlock("tin_decoration_block_1", GCBlocks.basicBlock, 3);
-        GCCoreUtil.registerGalacticraftBlock("tin_decoration_block_2", GCBlocks.basicBlock, 4);
-        GCCoreUtil.registerGalacticraftBlock("air_lock_frame", GCBlocks.airLockFrame);
-        GCCoreUtil.registerGalacticraftBlock("sealable_copper_wire", GCBlocks.sealableBlock, 0);
-        GCCoreUtil.registerGalacticraftBlock("sealable_oxygen_pipe", GCBlocks.sealableBlock, 1);
-        GCCoreUtil.registerGalacticraftBlock("sealable_copper_cable", GCBlocks.sealableBlock, 2);
-        GCCoreUtil.registerGalacticraftBlock("sealable_gold_cable", GCBlocks.sealableBlock, 3);
-        GCCoreUtil.registerGalacticraftBlock("sealable_high_voltage_cable", GCBlocks.sealableBlock, 4);
-        GCCoreUtil.registerGalacticraftBlock("sealable_glass_fibre_cable", GCBlocks.sealableBlock, 5);
-        GCCoreUtil.registerGalacticraftBlock("sealable_low_voltage_cable", GCBlocks.sealableBlock, 6);
-        GCCoreUtil.registerGalacticraftBlock("sealable_stone_pipe_item", GCBlocks.sealableBlock, 7);
-        GCCoreUtil.registerGalacticraftBlock("sealable_cobblestone_pipe_item", GCBlocks.sealableBlock, 8);
-        GCCoreUtil.registerGalacticraftBlock("sealable_stone_pipe_fluid", GCBlocks.sealableBlock, 9);
-        GCCoreUtil.registerGalacticraftBlock("sealable_cobblestone_pipe_fluid", GCBlocks.sealableBlock, 10);
-        GCCoreUtil.registerGalacticraftBlock("sealable_stone_pipe_power", GCBlocks.sealableBlock, 11);
-        GCCoreUtil.registerGalacticraftBlock("sealable_gold_pipe_power", GCBlocks.sealableBlock, 12);
-        GCCoreUtil.registerGalacticraftBlock("copper_wire", GCBlocks.aluminumWire);
-        GCCoreUtil.registerGalacticraftBlock("parachest", GCBlocks.parachest);
-        GCCoreUtil.registerGalacticraftBlock("coal_generator", GCBlocks.machineBase, 0);
-        GCCoreUtil.registerGalacticraftBlock("solar_panel_basic", GCBlocks.solarPanel, 0);
-        GCCoreUtil.registerGalacticraftBlock("solar_panel_advanced", GCBlocks.solarPanel, 4);
-        GCCoreUtil.registerGalacticraftBlock("energy_storage_module", GCBlocks.machineTiered, 0);
-        GCCoreUtil.registerGalacticraftBlock("electric_furnace", GCBlocks.machineTiered, 4);
-        GCCoreUtil.registerGalacticraftBlock("ingot_compressor", GCBlocks.machineBase, 12);
-        GCCoreUtil.registerGalacticraftBlock("circuit_fabricator", GCBlocks.machineBase2, 4);
-        GCCoreUtil.registerGalacticraftBlock("ingot_compressor_electric", GCBlocks.machineBase2, 0);
-        GCCoreUtil.registerGalacticraftBlock("electric_arc_furnace", GCBlocks.machineTiered, 12);
-        GCCoreUtil.registerGalacticraftBlock("energy_storage_cluster", GCBlocks.machineTiered, 8);
-        GCCoreUtil.registerGalacticraftBlock("ore_copper", GCBlocks.basicBlock, 5);
-        GCCoreUtil.registerGalacticraftBlock("ore_tin", GCBlocks.basicBlock, 6);
-        GCCoreUtil.registerGalacticraftBlock("ore_aluminum", GCBlocks.basicBlock, 7);
-        GCCoreUtil.registerGalacticraftBlock("ore_silicon", GCBlocks.basicBlock, 8);
-        GCCoreUtil.registerGalacticraftBlock("fallen_meteor", GCBlocks.fallenMeteor);
-        GCCoreUtil.registerGalacticraftBlock("torch_glowstone", GCBlocks.glowstoneTorch);
-        GCCoreUtil.registerGalacticraftBlock("wire_aluminum", GCBlocks.aluminumWire);
-        GCCoreUtil.registerGalacticraftBlock("wire_aluminumHeavy", GCBlocks.aluminumWire, 1);
-        GCCoreUtil.registerGalacticraftBlock("spin_thruster", GCBlocks.spinThruster);
-        GCCoreUtil.registerGalacticraftBlock("view_screen", GCBlocks.screen);
-        GCCoreUtil.registerGalacticraftBlock("telemetry", GCBlocks.telemetry);
-        GCCoreUtil.registerGalacticraftBlock("arclamp", GCBlocks.brightLamp);
-        GCCoreUtil.registerGalacticraftBlock("treasure_chest_tier_1", GCBlocks.treasureChestTier1);
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -289,9 +236,36 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 3, 14); //Moon dungeon brick (actually unharvestable)
     }
 
-    private static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+        registerBlockSorted(block, itemClass, null, true);
+    }
+
+    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock)
+    {
+        registerBlockSorted(block, itemClass, beforeBlock, true);
+    }
+
+    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock, boolean addToOrder)
+    {
+        String name = block.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftBlock(name, block);
+        GameRegistry.registerBlock(block, itemClass, name);
+        if (beforeBlock == null)
+        {
+            GalacticraftCore.itemOrderListBlocks.add(Item.getItemFromBlock(block));
+        }
+        else
+        {
+            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
+            {
+                if (GalacticraftCore.itemOrderListBlocks.get(i) == Item.getItemFromBlock(beforeBlock))
+                {
+                    GalacticraftCore.itemOrderListBlocks.add(i + 1, Item.getItemFromBlock(block));
+                    break;
+                }
+            }
+        }
     }
 
     public static void registerBlocks()
@@ -308,7 +282,8 @@ public class GCBlocks
         registerBlock(GCBlocks.oxygenCompressor, ItemBlockOxygenCompressor.class);
         registerBlock(GCBlocks.oxygenSealer, ItemBlockDesc.class);
         registerBlock(GCBlocks.oxygenDetector, ItemBlockDesc.class);
-        registerBlock(GCBlocks.oxygenPipe, ItemBlockDesc.class);
+        registerBlockSorted(GCBlocks.aluminumWire, ItemBlockAluminumWire.class, GCBlocks.landingPad);
+        registerBlockSorted(GCBlocks.oxygenPipe, ItemBlockDesc.class, GCBlocks.aluminumWire);
         registerBlock(GCBlocks.refinery, ItemBlockDesc.class);
         registerBlock(GCBlocks.fuelLoader, ItemBlockDesc.class);
         registerBlock(GCBlocks.cargoLoader, ItemBlockCargoLoader.class);
@@ -320,18 +295,17 @@ public class GCBlocks
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
         registerBlock(GCBlocks.parachest, ItemBlockDesc.class);
-        registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class);
-        registerBlock(GCBlocks.machineBase, ItemBlockMachine.class);
-        registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
-        registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class);
-        registerBlock(GCBlocks.aluminumWire, ItemBlockAluminumWire.class);
+        registerBlockSorted(GCBlocks.solarPanel, ItemBlockSolar.class, GCBlocks.cargoLoader);
+        registerBlockSorted(GCBlocks.machineBase, ItemBlockMachine.class, GCBlocks.solarPanel);
+        registerBlockSorted(GCBlocks.machineBase2, ItemBlockMachine.class, GCBlocks.machineBase);
+        registerBlockSorted(GCBlocks.machineTiered, ItemBlockMachine.class, GCBlocks.machineBase2);
         registerBlock(GCBlocks.glowstoneTorch, ItemBlockDesc.class);
         registerBlock(GCBlocks.fallenMeteor, ItemBlockDesc.class);
         registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class);
         registerBlock(GCBlocks.cheeseBlock, ItemBlockCheese.class);
         registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class);
         registerBlock(GCBlocks.screen, ItemBlockDesc.class);
-        registerBlock(GCBlocks.telemetry, ItemBlockDesc.class);
+        registerBlockSorted(GCBlocks.telemetry, ItemBlockDesc.class, GCBlocks.machineTiered);
         registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class);
         registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class);
         /*registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());

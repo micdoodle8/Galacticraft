@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -261,9 +262,9 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecStrut, placedPosition, 0);
 
         if (placedPosition.getY() + 2 > buildHeight) return;
-        for (int x = -1; x < 2; x++)
+        for (int x = 0; x < 1; ++x)
         {
-            for (int z = -1; z < 2; z++)
+            for (int z = 0; z < 1; ++z)
             {
                 final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + 2, placedPosition.getZ() + z);
 
@@ -282,13 +283,21 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                 for (int z = -1; z < 2; z++)
                 {
                     BlockPos pos = getPos().add((y == 2 ? x : 0), y, (y == 2 ? z : 0));
+                    IBlockState stateAt = this.worldObj.getBlockState(pos);
+                    IBlockState stateBelow = this.worldObj.getBlockState(pos.down());
 
-                    if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                    if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.byMetadata((this.getTierGC() == 1) ? 4 : 0))
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.solarPanel.getDefaultState());
-                    }
+                        if ((x == 0 && z == 0) || (stateBelow.getBlock().isAir(this.worldObj, pos.down())))
+                        {
+                            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                            {
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.solarPanel.getDefaultState());
+                            }
 
-                    this.worldObj.setBlockToAir(pos);
+                            this.worldObj.setBlockToAir(pos);
+                        }
+                    }
                 }
             }
         }

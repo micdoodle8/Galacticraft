@@ -339,7 +339,7 @@ public class TeleportTypeAsteroids implements ITeleportType
         stats.rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, EntityList.classToIDMapping.get(EntityCow.class));
         stats.rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
         stats.rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
-        stats.rocketStacks[i++] = new ItemStack(MarsItems.spaceship, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
+        stats.rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
       //stats.rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
       //stats.rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
 	}

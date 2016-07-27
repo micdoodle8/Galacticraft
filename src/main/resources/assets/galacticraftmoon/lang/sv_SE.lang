@@ -1,31 +1,16 @@
-# Galacticraft Moon Language File = SWEDEN SWEDISH
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=Meteoritmalm
-item.compressedMeteoricIron.name=Meteoritjärnplåt
-item.meteoricIronIngot.name=Meteoritjärntacka
-
-# FOOD
-item.cheeseCurd.name=Månkesella
-item.cheeseBlock.name=Månostkaka
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=Månsten
-tile.moonBlock.moondirt.name=Månjord
-tile.moonBlock.moongrass.name=Månmark
-tile.moonBlock.tinmoon.name=Tennmalm
-tile.moonBlock.coppermoon.name=Kopparmalm
-tile.moonBlock.cheesestone.name=Ostmalm
-tile.moonBlock.bricks.name=Månhåletegel
-tile.cheeseBlock.name=Månostkaka
-
-# GUI
-gui.choosePlanet.desc.moon=Habitable#No Oxygen#Gravity: 18%
-
-# OTHER
+item.meteoric_iron_raw.name=Meteoritmalm
+item.compressed_meteoric_iron.name=Meteoritjärnplåt
+item.meteoric_iron_ingot.name=Meteoritjärntacka
+item.cheese_curd.name=Månkesella
+item.cheese_block.name=Månostkaka
+tile.basic_block_moon.moonstone.name=Månsten
+tile.basic_block_moon.moondirt.name=Månjord
+tile.basic_block_moon.moongrass.name=Månmark
+tile.basic_block_moon.tinmoon.name=Tennmalm
+tile.basic_block_moon.coppermoon.name=Kopparmalm
+tile.basic_block_moon.cheesestone.name=Ostmalm
+tile.basic_block_moon.bricks.name=Månhåletegel
+tile.cheese.name=Månostkaka
+gui.choose_planet.desc.moon=Habitable#No Oxygen#Gravity: 18%
 container.lander.name=Månlandare
-dimension.Moon.name=Månen
+dimension.moon.name=Månen

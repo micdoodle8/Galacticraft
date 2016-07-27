@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockWalkway;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,11 +32,11 @@ public class ItemBlockWalkway extends ItemBlockDesc
     {
         if (itemStack.getItemDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_WIRE.getMeta())
         {
-            list.add(EnumColor.AQUA + GCBlocks.aluminumWire.getLocalizedName());
+            list.add(EnumColor.AQUA + GCCoreUtil.translate("tile.aluminum_wire.alu_wire.name"));
         }
         else if (itemStack.getItemDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_PIPE.getMeta())
         {
-            list.add(EnumColor.AQUA + GCBlocks.oxygenPipe.getLocalizedName());
+            list.add(EnumColor.AQUA + GCCoreUtil.translate("tile.oxygen_pipe.name"));
         }
 
         super.addInformation(itemStack, entityPlayer, list, advanced);
@@ -50,7 +51,8 @@ public class ItemBlockWalkway extends ItemBlockDesc
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        return this.getBlock().getUnlocalizedName() + "." + "todo";
+        String name = BlockWalkway.EnumWalkwayType.values()[itemstack.getItemDamage()].getName();
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override

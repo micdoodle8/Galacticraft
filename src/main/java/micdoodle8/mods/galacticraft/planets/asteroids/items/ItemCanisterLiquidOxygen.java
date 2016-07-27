@@ -38,15 +38,15 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     {
         if (ItemCanisterGeneric.EMPTY - itemStack.getItemDamage() == 0)
         {
-            return "item.emptyGasCanister";
+            return "item.empty_gas_canister";
         }
 
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.canister.LOX.full";
+            return "item.canister.lox.full";
         }
 
-        return "item.canister.LOX.partial";
+        return "item.canister.lox.partial";
     }
 
     /*@Override
@@ -69,7 +69,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     {
         if (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage() > 0)
         {
-            par3List.add(GCCoreUtil.translate("item.canister.LOX.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage()));
+            par3List.add(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage()));
         }
     }
 

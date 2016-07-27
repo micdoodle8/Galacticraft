@@ -14,8 +14,6 @@ import java.util.List;
 
 public class ItemKey extends Item implements IKeyItem
 {
-    public static String[] keyTypes = new String[] { "T1" };
-
     public ItemKey(String assetName)
     {
         super();
@@ -35,7 +33,7 @@ public class ItemKey extends Item implements IKeyItem
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return this.getUnlocalizedName() + "." + ItemKey.keyTypes[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + ".t1";
     }
 
     @Override
@@ -48,10 +46,7 @@ public class ItemKey extends Item implements IKeyItem
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
-        for (int i = 0; i < ItemKey.keyTypes.length; i++)
-        {
-            par3List.add(new ItemStack(par1, 1, i));
-        }
+        par3List.add(new ItemStack(par1, 1, 0));
     }
 
     @Override

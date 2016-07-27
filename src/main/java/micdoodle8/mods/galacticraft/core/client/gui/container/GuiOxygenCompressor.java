@@ -37,8 +37,8 @@ public class GuiOxygenCompressor extends GuiContainerGC
     {
         super.initGui();
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 46, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> oxygenSlotDesc = new ArrayList<String>();
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.0"));

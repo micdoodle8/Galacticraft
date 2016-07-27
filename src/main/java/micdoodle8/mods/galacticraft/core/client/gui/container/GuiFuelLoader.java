@@ -50,12 +50,12 @@ public class GuiFuelLoader extends GuiContainerGC
     {
         super.initGui();
         List<String> fuelTankDesc = new ArrayList<String>();
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.2"));
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.3"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.2"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.3"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 33, 16, 38, fuelTankDesc, this.width, this.height, this));
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 50, (this.height - this.ySize) / 2 + 54, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));

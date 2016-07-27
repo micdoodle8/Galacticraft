@@ -307,11 +307,11 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerNonMobEntities()
     {
-        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", 150, 3, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "GrappleHookGC", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", 150, 1, false);
-        MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "AstroMiner", 80, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "small_asteroid", 150, 3, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "grapple_hook", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "rocket_t3", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "entry_pod", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "astro_miner", 80, 1, true);
     }
 
     private void registerMicroBlocks()
@@ -331,10 +331,10 @@ public class AsteroidsModule implements IPlanetsModule
 					}
 				}
 				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroidsBlock.asteroid0");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroidsBlock.asteroid1");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroidsBlock.asteroid2");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.denseIce");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroids_block.asteroid_rock_0");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroids_block.asteroid_rock_1");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroids_block.asteroid_rock_2");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.dense_ice");
 			}
 		} catch (Exception e) {}
 	}

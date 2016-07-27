@@ -412,9 +412,9 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
         switch (meta & 4)
         {
         case ELECTRIC_FURNACE_METADATA:
-            return GCCoreUtil.translate("tile.electricFurnaceTier" + tier + ".description");
+            return GCCoreUtil.translate("tile.electric_furnace_tier" + tier + ".description");
         case STORAGE_MODULE_METADATA:
-            return GCCoreUtil.translate("tile.energyStorageModuleTier" + tier + ".description");
+            return GCCoreUtil.translate("tile.energy_storage_module_tier" + tier + ".description");
         }
         return "";
     }

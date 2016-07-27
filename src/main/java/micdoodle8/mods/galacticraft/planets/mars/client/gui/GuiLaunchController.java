@@ -85,7 +85,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         }
 
         this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name");
-        this.hideDestinationFrequency.displayString = !this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhideDest.name") : GCCoreUtil.translate("gui.button.hideDest.name");
+        this.hideDestinationFrequency.displayString = !this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhide_dest.name") : GCCoreUtil.translate("gui.button.hide_dest.name");
         // Hacky way of rendering buttons properly, possibly bugs here:
         List buttonList = new ArrayList(this.buttonList);
         List labelList = new ArrayList(this.labelList);
@@ -195,12 +195,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
-        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, GCCoreUtil.translate("gui.message.removePad.name"));
-        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, GCCoreUtil.translate("gui.message.launchWhen.name") + ": ");
+        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, GCCoreUtil.translate("gui.message.remove_pad.name"));
+        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
         this.dropdownTest = new GuiElementDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
         this.frequency = new GuiElementTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.destinationFrequency = new GuiElementTextBox(5, this, var5 + 45, var6 + 16 + 22, 48, 20, "", true, 6, false);
-        this.hideDestinationFrequency = new GuiButton(6, var5 + 95, var6 + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hideDest.name"));
+        this.hideDestinationFrequency = new GuiButton(6, var5 + 95, var6 + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"));
         this.buttonList.add(this.enableControllerButton);
         this.buttonList.add(this.enablePadRemovalButton);
         this.buttonList.add(this.launchWhenCheckbox);
@@ -215,8 +215,8 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 104, 18, 18, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launchController.desc.0"));

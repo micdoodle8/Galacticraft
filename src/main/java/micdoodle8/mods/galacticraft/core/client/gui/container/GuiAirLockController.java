@@ -111,7 +111,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 
         this.drawTexturedModalRect(var5 + 15, var6 + 51, 176, 0, 7, 9);
 
-        String displayString = GCCoreUtil.translateWithFormat("gui.title.airLock.name", this.controller.ownerName);
+        String displayString = GCCoreUtil.translateWithFormat("gui.title.air_lock.name", this.controller.ownerName);
         this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
 
         if (this.cannotEditTimer > 0)
@@ -122,11 +122,11 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 
         displayString = GCCoreUtil.translate("gui.message.status.name") + ":";
         this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
-        displayString = EnumColor.RED + GCCoreUtil.translate("gui.status.airLockClosed.name");
+        displayString = EnumColor.RED + GCCoreUtil.translate("gui.status.air_lock_closed.name");
 
         if (!this.controller.active)
         {
-            displayString = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.airLockOpen.name");
+            displayString = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.air_lock_open.name");
         }
 
         this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);

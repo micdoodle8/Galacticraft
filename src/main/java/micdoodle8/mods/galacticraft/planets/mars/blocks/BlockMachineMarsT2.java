@@ -332,9 +332,9 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         case ELECTROLYZER:
             return GCCoreUtil.translate("tile.electrolyzer.description");
         case GAS_LIQUEFIER:
-            return GCCoreUtil.translate("tile.gasLiquefier.description");
+            return GCCoreUtil.translate("tile.gas_liquefier.description");
         case METHANE_SYNTHESIZER:
-            return GCCoreUtil.translate("tile.methaneSynthesizer.description");
+            return GCCoreUtil.translate("tile.methane_synthesizer.description");
         }
         return "";
     }

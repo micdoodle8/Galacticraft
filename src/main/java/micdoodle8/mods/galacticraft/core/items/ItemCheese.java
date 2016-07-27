@@ -14,7 +14,7 @@ public class ItemCheese extends ItemFood
     public ItemCheese(int par1, float par2, boolean par3)
     {
         super(par1, par2, par3);
-        this.setUnlocalizedName("cheeseCurd");
+        this.setUnlocalizedName("cheese_curd");
     }
 
     public ItemCheese(int par1, boolean par2)

@@ -40,15 +40,15 @@ public class ItemOilCanister extends ItemCanisterGeneric
     {
         if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
         {
-            return "item.emptyLiquidCanister";
+            return "item.empty_liquid_canister";
         }
 
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.oilCanister";
+            return "item.oil_canister";
         }
 
-        return "item.oilCanisterPartial";
+        return "item.oil_canister_partial";
     }
 
     /*@Override

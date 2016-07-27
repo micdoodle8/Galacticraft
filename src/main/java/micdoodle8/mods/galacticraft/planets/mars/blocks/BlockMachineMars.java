@@ -475,9 +475,9 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
         switch (meta)
         {
         case CRYOGENIC_CHAMBER_METADATA:
-            return GCCoreUtil.translate("tile.cryoChamber.description");
+            return GCCoreUtil.translate("tile.cryo_chamber.description");
         case LAUNCH_CONTROLLER_METADATA:
-            return GCCoreUtil.translate("tile.launchController.description");
+            return GCCoreUtil.translate("tile.launch_controller.description");
         case TERRAFORMER_METADATA:
             return GCCoreUtil.translate("tile.terraformer.description");
         }

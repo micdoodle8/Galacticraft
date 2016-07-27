@@ -13,9 +13,9 @@
         }
     ],
     "textures": {
-        "particle": "galacticraftmoon:blocks/top",
-        "bottom": "galacticraftmoon:blocks/middle",
-        "top": "galacticraftmoon:blocks/top",
-        "side": "galacticraftmoon:blocks/top_side"
+        "particle": "galacticraftcore:blocks/top",
+        "bottom": "galacticraftcore:blocks/middle",
+        "top": "galacticraftcore:blocks/top",
+        "side": "galacticraftcore:blocks/top_side"
     }
 }

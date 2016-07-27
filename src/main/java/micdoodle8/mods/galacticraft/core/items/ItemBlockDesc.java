@@ -71,7 +71,7 @@ public class ItemBlockDesc extends ItemBlockGC
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)
                         {
-                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                         }
                     }
                 }
@@ -83,11 +83,11 @@ public class ItemBlockDesc extends ItemBlockGC
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)
                         {
-                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("itemDesc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                         }
                     }
                 }
-                info.add(GCCoreUtil.translateWithFormat("itemDesc.shift.name", GameSettings.getKeyDisplayString(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
+                info.add(GCCoreUtil.translateWithFormat("item_desc.shift.name", GameSettings.getKeyDisplayString(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
             }
         }
     }

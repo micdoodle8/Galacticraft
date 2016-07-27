@@ -48,8 +48,8 @@ public class GuiRocketInventory extends GuiContainerGC
     {
         super.initGui();
         List<String> fuelTankDesc = new ArrayList<String>();
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.0"));
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.1"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.0"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (((EntityTieredRocket) this.mc.thePlayer.ridingEntity).rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, fuelTankDesc, this.width, this.height, this));
     }
 

@@ -315,9 +315,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         switch (meta)
         {
         case METADATA_CARGO_LOADER:
-            return GCCoreUtil.translate("tile.cargoLoader.description");
+            return GCCoreUtil.translate("tile.cargo_loader.description");
         case METADATA_CARGO_UNLOADER:
-            return GCCoreUtil.translate("tile.cargoUnloader.description");
+            return GCCoreUtil.translate("tile.cargo_unloader.description");
         }
         return "";
     }

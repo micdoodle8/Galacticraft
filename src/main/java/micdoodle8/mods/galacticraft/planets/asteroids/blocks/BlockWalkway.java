@@ -277,15 +277,15 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         if (meta == EnumWalkwayType.WALKWAY.getMeta())
         {
-            return GCCoreUtil.translate("tile.walkway.description");
+            return GCCoreUtil.translate("tile.walkway.walkway.description");
         }
         else if (meta == EnumWalkwayType.WALKWAY_WIRE.getMeta())
         {
-            return GCCoreUtil.translate("tile.walkwayAluminumWire.description");
+            return GCCoreUtil.translate("tile.walkway.walkway_wire.description");
         }
         else if (meta == EnumWalkwayType.WALKWAY_PIPE.getMeta())
         {
-            return GCCoreUtil.translate("tile.walkwayOxygenPipe.description");
+            return GCCoreUtil.translate("tile.walkway.walkway_pipe.description");
         }
 
         return "";

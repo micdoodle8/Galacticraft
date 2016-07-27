@@ -1,12 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -29,15 +33,15 @@ public class MarsBlocks
     public static void initBlocks()
     {
     	MarsBlocks.marsBlock = new BlockBasicMars("mars").setHardness(2.2F);
-        MarsBlocks.vine = new BlockCavernousVine("cavernVines").setHardness(0.1F);
-        MarsBlocks.rock = new BlockSlimelingEgg("slimelingEgg").setHardness(0.75F);
+        MarsBlocks.vine = new BlockCavernousVine("cavern_vines").setHardness(0.1F);
+        MarsBlocks.rock = new BlockSlimelingEgg("slimeling_egg").setHardness(0.75F);
         MarsBlocks.tier2TreasureChest = AsteroidBlocks.treasureChestTier2;
-        MarsBlocks.machine = new BlockMachineMars("marsMachine").setHardness(1.8F);
-        MarsBlocks.machineT2 = new BlockMachineMarsT2("marsMachineT2").setHardness(1.8F);
-        MarsBlocks.creeperEgg = new BlockCreeperEgg("creeperEgg").setHardness(-1.0F);
+        MarsBlocks.machine = new BlockMachineMars("mars_machine").setHardness(1.8F);
+        MarsBlocks.machineT2 = new BlockMachineMarsT2("mars_machine_t2").setHardness(1.8F);
+        MarsBlocks.creeperEgg = new BlockCreeperEgg("creeper_egg").setHardness(-1.0F);
 //        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
 //        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
-        MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogenPipe");
+        MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogen_pipe");
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
@@ -67,9 +71,31 @@ public class MarsBlocks
 //        setHarvestLevel(MarsBlocks.marsBricksStairs, "pickaxe", 3);
     }
 
-    private static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+        registerBlockSorted(block, itemClass, null);
+    }
+
+    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock)
+    {
+        String name = block.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftBlock(name, block);
+        GameRegistry.registerBlock(block, itemClass, name);
+        if (beforeBlock == null)
+        {
+            GalacticraftCore.itemOrderListBlocks.add(Item.getItemFromBlock(block));
+        }
+        else
+        {
+            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
+            {
+                if (GalacticraftCore.itemOrderListBlocks.get(i) == Item.getItemFromBlock(beforeBlock))
+                {
+                    GalacticraftCore.itemOrderListBlocks.add(i + 1, Item.getItemFromBlock(block));
+                    break;
+                }
+            }
+        }
     }
 
     public static void registerBlocks()
@@ -78,11 +104,11 @@ public class MarsBlocks
         registerBlock(MarsBlocks.vine, ItemBlockDesc.class);
         registerBlock(MarsBlocks.rock, ItemBlockEgg.class);
         registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class);
-        registerBlock(MarsBlocks.machine, ItemBlockMachine.class);
-        registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
+        registerBlockSorted(MarsBlocks.machine, ItemBlockMachine.class, GCBlocks.telemetry);
+        registerBlockSorted(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machine);
 //        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
-        registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class);
+        registerBlockSorted(MarsBlocks.hydrogenPipe, ItemBlockDesc.class, GCBlocks.oxygenPipe);
     }
     
     public static void oreDictRegistration()

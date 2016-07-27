@@ -1285,14 +1285,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     public static enum EnumAutoLaunch
     {
-        CARGO_IS_UNLOADED(0, "cargoUnloaded"),
-        CARGO_IS_FULL(1, "cargoFull"),
-        ROCKET_IS_FUELED(2, "fullyFueled"),
+        CARGO_IS_UNLOADED(0, "cargo_unloaded"),
+        CARGO_IS_FULL(1, "cargo_full"),
+        ROCKET_IS_FUELED(2, "fully_fueled"),
         INSTANT(3, "instant"),
-        TIME_10_SECONDS(4, "tenSec"),
-        TIME_30_SECONDS(5, "thirtySec"),
-        TIME_1_MINUTE(6, "oneMin"),
-        REDSTONE_SIGNAL(7, "redstoneSig");
+        TIME_10_SECONDS(4, "ten_sec"),
+        TIME_30_SECONDS(5, "thirty_sec"),
+        TIME_1_MINUTE(6, "one_min"),
+        REDSTONE_SIGNAL(7, "redstone_sig");
 
         private final int index;
         private String title;

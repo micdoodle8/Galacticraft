@@ -37,11 +37,11 @@ public class GalacticraftPlanets
     @Instance(Constants.MOD_ID_PLANETS)
     public static GalacticraftPlanets instance;
 
-    public static Map<String, IPlanetsModule> commonModules = new HashMap<String, IPlanetsModule>();
-    public static Map<String, IPlanetsModuleClient> clientModules = new HashMap<String, IPlanetsModuleClient>();
+    public static List<IPlanetsModule> commonModules = new ArrayList<IPlanetsModule>();
+    public static List<IPlanetsModuleClient> clientModules = new ArrayList<IPlanetsModuleClient>();
 
-    public static final String MODULE_KEY_MARS = "MarsModule";
-    public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
+    public static final String MODULE_KEY_MARS = "Module_0_Mars";
+    public static final String MODULE_KEY_ASTEROIDS = "Module_1_Asteroids";
 
     public static final String ASSET_PREFIX = "galacticraftplanets";
     public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
@@ -66,8 +66,8 @@ public class GalacticraftPlanets
         new ConfigManagerMars(newPlanetsConf, update);
         new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
 
-        GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
-        GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
+        GalacticraftPlanets.commonModules.add(new MarsModule());
+        GalacticraftPlanets.commonModules.add(new AsteroidsModule());
         GalacticraftPlanets.proxy.preInit(event);
         GalacticraftPlanets.proxy.registerVariants();
     }
@@ -93,7 +93,7 @@ public class GalacticraftPlanets
 
     public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             module.spawnParticle(particleID, position, motion, extraData);
         }
@@ -103,27 +103,27 @@ public class GalacticraftPlanets
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
         }
@@ -136,7 +136,7 @@ public class GalacticraftPlanets
     {
         if (event.modID.equals(Constants.MOD_ID_PLANETS))
         {
-            for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+            for (IPlanetsModule module : GalacticraftPlanets.commonModules)
             {
                 module.syncConfig();
             }

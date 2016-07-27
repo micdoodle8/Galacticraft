@@ -14,7 +14,7 @@ public class PlanetsProxy implements IGuiHandler
 {
     public void preInit(FMLPreInitializationEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.preInit(event);
         }
@@ -27,7 +27,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void init(FMLInitializationEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.init(event);
         }
@@ -35,7 +35,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void postInit(FMLPostInitializationEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.postInit(event);
         }
@@ -43,7 +43,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void serverStarting(FMLServerStartingEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.serverStarting(event);
         }
@@ -51,7 +51,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void serverInit(FMLServerStartedEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.serverInit(event);
         }
@@ -60,7 +60,7 @@ public class PlanetsProxy implements IGuiHandler
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             List<Integer> guiIDs = new ArrayList<Integer>();
             module.getGuiIDs(guiIDs);
@@ -76,7 +76,7 @@ public class PlanetsProxy implements IGuiHandler
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             List<Integer> guiIDs = new ArrayList<Integer>();
             module.getGuiIDs(guiIDs);

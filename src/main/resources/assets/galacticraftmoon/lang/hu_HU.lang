@@ -1,30 +1,16 @@
-# Galacticraft Moon Language File =MAGYAR
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=Meteori Vas
-item.compressedMeteoricIron.name=Préselt Meteori Vas
-item.meteoricIronIngot.name=Meteori Vasrúd
-
-# FOOD
-item.cheeseCurd.name=Sajtdarab
-item.cheeseBlock.name=Sajtkorong
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=Holdkő
-tile.moonBlock.moondirt.name=Holdsár
-tile.moonBlock.moongrass.name=Holdpor
-tile.moonBlock.tinmoon.name=Holdi Ónérc
-tile.moonBlock.coppermoon.name=Holdi Rézérc
-tile.moonBlock.cheesestone.name=Holdi Sajtérc
-tile.moonBlock.bricks.name=Holdi Dungeon-fal
-tile.cheeseBlock.name=Sajtkorong
-
-# GUI
-gui.choosePlanet.desc.moon=Lakható#Nincs légkör#Gravitáció: 18%
+item.meteoric_iron_raw.name=Meteori Vas
+item.compressed_meteoric_iron.name=Préselt Meteori Vas
+item.meteoric_iron_ingot.name=Meteori Vasrúd
+item.cheese_curd.name=Sajtdarab
+item.cheese_block.name=Sajtkorong
+tile.basic_block_moon.moonstone.name=Holdkő
+tile.basic_block_moon.moondirt.name=Holdsár
+tile.basic_block_moon.moongrass.name=Holdpor
+tile.basic_block_moon.tinmoon.name=Holdi Ónérc
+tile.basic_block_moon.coppermoon.name=Holdi Rézérc
+tile.basic_block_moon.cheesestone.name=Holdi Sajtérc
+tile.basic_block_moon.bricks.name=Holdi Dungeon-fal
+tile.cheese.name=Sajtkorong
+gui.choose_planet.desc.moon=Lakható#Nincs légkör#Gravitáció: 18%
 container.lander.name=Lander ##NEEDS TRANSLATE##
-
-dimension.Moon.name=Hold
+dimension.moon.name=Hold

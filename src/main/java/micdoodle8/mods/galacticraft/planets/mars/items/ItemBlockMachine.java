@@ -49,15 +49,15 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
         {
             if (typenum == BlockMachineMarsT2.GAS_LIQUEFIER)
             {
-                return "tile.marsMachine.4";
+                return "tile.mars_machine.4";
             }
             else if (typenum == BlockMachineMarsT2.METHANE_SYNTHESIZER)
             {
-                return "tile.marsMachine.5";
+                return "tile.mars_machine.5";
             }
             else if (typenum == BlockMachineMarsT2.ELECTROLYZER)
             {
-                return "tile.marsMachine.6";
+                return "tile.mars_machine.6";
             }
         }
 

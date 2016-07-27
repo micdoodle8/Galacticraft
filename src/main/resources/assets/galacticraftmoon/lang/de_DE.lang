@@ -1,31 +1,16 @@
-# Galacticraft Moon Language File = GERMANY GERMAN
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=Rohes meteorisches Eisen
-item.compressedMeteoricIron.name=Gepresstes meteorisches Eisen
-item.meteoricIronIngot.name=Meteorischer Eisenbarren
-
-# FOOD
-item.cheeseCurd.name=Quark
-item.cheeseBlock.name=Käseblock
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=Mondgestein
-tile.moonBlock.moondirt.name=Monderde
-tile.moonBlock.moongrass.name=Mondrasen
-tile.moonBlock.tinmoon.name=Zinnerz
-tile.moonBlock.coppermoon.name=Kupfererz
-tile.moonBlock.cheesestone.name=Käseerz
-tile.moonBlock.bricks.name=Monddungeonziegel
-tile.cheeseBlock.name=Käseblock
-
-# GUI
-gui.choosePlanet.desc.moon=Bewohnbar#Kein Sauerstoff#Gravitation: 18%
-
-# OTHER
+item.meteoric_iron_raw.name=Rohes meteorisches Eisen
+item.compressed_meteoric_iron.name=Gepresstes meteorisches Eisen
+item.meteoric_iron_ingot.name=Meteorischer Eisenbarren
+item.cheese_curd.name=Quark
+item.cheese_block.name=Käseblock
+tile.basic_block_moon.moonstone.name=Mondgestein
+tile.basic_block_moon.moondirt.name=Monderde
+tile.basic_block_moon.moongrass.name=Mondrasen
+tile.basic_block_moon.tinmoon.name=Zinnerz
+tile.basic_block_moon.coppermoon.name=Kupfererz
+tile.basic_block_moon.cheesestone.name=Käseerz
+tile.basic_block_moon.bricks.name=Monddungeonziegel
+tile.cheese.name=Käseblock
+gui.choose_planet.desc.moon=Bewohnbar#Kein Sauerstoff#Gravitation: 18%
 container.lander.name=Landekapsel
-dimension.Moon.name=Mond
+dimension.moon.name=Mond

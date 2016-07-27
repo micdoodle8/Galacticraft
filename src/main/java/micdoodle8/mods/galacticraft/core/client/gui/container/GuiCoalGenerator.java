@@ -33,14 +33,14 @@ public class GuiCoalGenerator extends GuiContainer
 
         if (this.tileEntity.heatGJperTick <= 0 || this.tileEntity.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
         {
-            displayText = GCCoreUtil.translate("gui.status.notGenerating.name");
+            displayText = GCCoreUtil.translate("gui.status.not_generating.name");
         }
         
         this.fontRendererObj.drawString(displayText, 122 - this.fontRendererObj.getStringWidth(displayText) / 2, 33, 4210752);
         
         if (this.tileEntity.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
         {
-            displayText = GCCoreUtil.translate("gui.status.hullHeat.name") + ": " + (int) (this.tileEntity.heatGJperTick / TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK * 100) + "%";
+            displayText = GCCoreUtil.translate("gui.status.hull_heat.name") + ": " + (int) (this.tileEntity.heatGJperTick / TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK * 100) + "%";
         }
         else
         {

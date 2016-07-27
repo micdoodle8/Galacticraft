@@ -37,8 +37,8 @@ public class GuiOxygenDecompressor extends GuiContainerGC
     {
         super.initGui();
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> compressorSlotDesc = new ArrayList<String>();
         compressorSlotDesc.add(GCCoreUtil.translate("gui.oxygenDecompressor.slot.desc.0"));
@@ -90,7 +90,7 @@ public class GuiOxygenDecompressor extends GuiContainerGC
 
         if (this.decompressor.getStackInSlot(0) != null && this.decompressor.getStackInSlot(0).getItemDamage() == this.decompressor.getStackInSlot(0).getMaxDamage())
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.tankEmpty.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.tank_empty.name");
         }
 
         return this.decompressor.getGUIstatus();

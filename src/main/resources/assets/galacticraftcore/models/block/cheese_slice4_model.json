@@ -1,10 +1,10 @@
 {
     "textures": {
-        "particle": "galacticraftmoon:blocks/cheese_2",
-        "bottom": "galacticraftmoon:blocks/cheese_1",
-        "top": "galacticraftmoon:blocks/cheese_1",
-        "side": "galacticraftmoon:blocks/cheese_2",
-        "inside": "galacticraftmoon:blocks/cheese_3"
+        "particle": "galacticraftcore:blocks/cheese_2",
+        "bottom": "galacticraftcore:blocks/cheese_1",
+        "top": "galacticraftcore:blocks/cheese_1",
+        "side": "galacticraftcore:blocks/cheese_2",
+        "inside": "galacticraftcore:blocks/cheese_3"
     },
     "elements": [
         {   "from": [ 9, 0, 1 ],

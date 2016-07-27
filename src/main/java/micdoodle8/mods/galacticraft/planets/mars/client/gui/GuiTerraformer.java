@@ -74,8 +74,8 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 24, (this.height - this.ySize) / 2 + 38, 18, 18, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.showBubble.desc.0"));
@@ -93,7 +93,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enableGrass.name"));
         this.buttonList.add(this.enableTreesButton);
         this.buttonList.add(this.enableGrassButton);
-        this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubbleVisible.name"));
+        this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
         this.buttonList.add(this.checkboxRenderBubble);
     }
 

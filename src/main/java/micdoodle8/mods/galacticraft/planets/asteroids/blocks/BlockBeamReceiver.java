@@ -198,7 +198,7 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     @SideOnly(Side.CLIENT)
     private void sendIncorrectSideMessage()
     {
-        FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannotAttach")));
+        FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
     @Override

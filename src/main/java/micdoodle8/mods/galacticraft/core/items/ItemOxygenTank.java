@@ -51,6 +51,6 @@ public class ItemOxygenTank extends Item
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
-        par2List.add(GCCoreUtil.translate("gui.tank.oxygenRemaining") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        par2List.add(GCCoreUtil.translate("gui.tank.oxygen_remaining") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
     }
 }

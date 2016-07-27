@@ -196,7 +196,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 
         if (type.getPreFueled())
         {
-            par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creativeOnly.desc"));
+            par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
         }
 
         if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
@@ -217,14 +217,14 @@ public class ItemTier2Rocket extends Item implements IHoldableItem
 
         if (par1ItemStack.getItemDamage() >= 10)
         {
-            par2List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requiresController.desc"));
+            par2List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requires_controller.desc"));
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        return super.getUnlocalizedName(par1ItemStack) + (par1ItemStack.getItemDamage() < 10 ? ".t2Rocket" : ".cargoRocket");
+        return super.getUnlocalizedName(par1ItemStack) + (par1ItemStack.getItemDamage() < 10 ? ".t2Rocket" : ".cargo_rocket");
     }
 
     @Override

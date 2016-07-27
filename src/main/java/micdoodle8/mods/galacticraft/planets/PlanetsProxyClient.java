@@ -21,12 +21,12 @@ public class PlanetsProxyClient extends PlanetsProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         OBJLoader.instance.addDomain(GalacticraftPlanets.ASSET_PREFIX);
-        GalacticraftPlanets.clientModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModuleClient());
-        GalacticraftPlanets.clientModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModuleClient());
+        GalacticraftPlanets.clientModules.add(new MarsModuleClient());
+        GalacticraftPlanets.clientModules.add(new AsteroidsModuleClient());
 
         super.preInit(event);
 
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             module.preInit(event);
         }
@@ -35,7 +35,7 @@ public class PlanetsProxyClient extends PlanetsProxy
     @Override
     public void registerVariants()
     {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             module.registerVariants();
         }
@@ -51,7 +51,7 @@ public class PlanetsProxyClient extends PlanetsProxy
             ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, toReg);
         }
 
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             module.init(event);
         }
@@ -62,7 +62,7 @@ public class PlanetsProxyClient extends PlanetsProxy
     {
         super.postInit(event);
 
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             module.postInit(event);
         }

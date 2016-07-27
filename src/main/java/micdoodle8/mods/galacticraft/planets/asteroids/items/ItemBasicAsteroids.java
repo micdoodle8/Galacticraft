@@ -16,15 +16,15 @@ import java.util.List;
 
 public class ItemBasicAsteroids extends Item
 {
-    public static String[] names = { "reinforcedPlateT3", "engineT2", "rocketFinsT2", "shardIron", "shardTitanium", "ingotTitanium", "compressedTitanium", "thermalCloth", "beamCore" };
+    public static String[] names = { "reinforced_plate_t3", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core" };
 //    protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
 
-    public ItemBasicAsteroids()
+    public ItemBasicAsteroids(String name)
     {
         super();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        this.setUnlocalizedName("itemBasicAsteroids");
+        this.setUnlocalizedName(name);
     }
 
     @SideOnly(Side.CLIENT)

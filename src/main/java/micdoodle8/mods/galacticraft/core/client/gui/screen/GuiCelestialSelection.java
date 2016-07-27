@@ -2001,19 +2001,19 @@ public class GuiCelestialSelection extends GuiScreen
                     boolean flag1 = this.selectedBody instanceof Planet ? GalaxyRegistry.getMoonsForPlanet((Planet) this.selectedBody).size() > 0 : false;
                     if (flag0 && flag1)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.0.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.0.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 1 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
                     else if (!flag0 && flag1)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.1.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.1.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
                     else if (flag0)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.2.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.2.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 5 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
                     else
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.clickAgain.3.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 10 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.3.name"), width - GuiCelestialSelection.BORDER_WIDTH - GuiCelestialSelection.BORDER_EDGE_WIDTH - 182 + 41, GuiCelestialSelection.BORDER_WIDTH + GuiCelestialSelection.BORDER_EDGE_WIDTH + 10 - 38 + sliderPos, 79, ColorUtil.to32BitColor(255, 150, 150, 150), false, false);
                     }
 
                 }
@@ -2028,7 +2028,7 @@ public class GuiCelestialSelection extends GuiScreen
                     this.drawTexturedModalRect(width / 2 - 90 + 8, this.height / 2 - 38 + 18, 161, 13, 159, 67, 161, 13, false, false);
                     this.drawTexturedModalRect(width / 2 - 90 + 17, this.height / 2 - 38 + 59, 72, 12, 159, 80, 72, 12, true, false);
                     this.drawTexturedModalRect(width / 2, this.height / 2 - 38 + 59, 72, 12, 159, 80, 72, 12, false, false);
-                    str = GCCoreUtil.translate("gui.message.assignName.name");
+                    str = GCCoreUtil.translate("gui.message.assign_name.name");
                     this.fontRendererObj.drawString(str, width / 2 - this.fontRendererObj.getStringWidth(str) / 2, this.height / 2 - 35, ColorUtil.to32BitColor(255, 255, 255, 255));
                     str = GCCoreUtil.translate("gui.message.apply.name");
                     this.fontRendererObj.drawString(str, width / 2 - this.fontRendererObj.getStringWidth(str) / 2 - 36, this.height / 2 + 23, ColorUtil.to32BitColor(255, 255, 255, 255));

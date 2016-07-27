@@ -27,13 +27,13 @@ public class ItemBlockLandingPad extends ItemBlockDesc
         switch (par1ItemStack.getItemDamage())
         {
         case 0:
-            name = "landingPad";
+            name = "landing_pad";
             break;
         case 1:
-            name = "buggyFueler";
+            name = "buggy_fueler";
             break;
         case 2:
-            name = "cargoPad";
+            name = "cargo_pad";
             break;
         }
 

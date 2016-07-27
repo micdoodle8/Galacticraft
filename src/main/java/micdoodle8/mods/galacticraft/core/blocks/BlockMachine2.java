@@ -450,11 +450,11 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         switch (meta)
         {
         case CIRCUIT_FABRICATOR_METADATA:
-            return GCCoreUtil.translate("tile.circuitFabricator.description");
+            return GCCoreUtil.translate("tile.circuit_fabricator.description");
         case ELECTRIC_COMPRESSOR_METADATA:
-            return GCCoreUtil.translate("tile.compressorElectric.description");
+            return GCCoreUtil.translate("tile.compressor_electric.description");
         case OXYGEN_STORAGE_MODULE_METADATA:
-            return GCCoreUtil.translate("tile.oxygenStorageModule.description");
+            return GCCoreUtil.translate("tile.oxygen_storage_module.description");
         }
         return "";
     }

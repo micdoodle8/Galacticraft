@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ItemMeteorChunk extends Item
 {
-    public static final String[] names = { "meteorChunk", "meteorChunkHot" };
+    public static final String[] names = { "meteor_chunk", "meteor_chunk_hot" };
 
     public static final int METEOR_BURN_TIME = 45 * 20;
 
@@ -112,7 +112,7 @@ public class ItemMeteorChunk extends Item
                 burnTime = 45.0F;
             }
 
-            par3List.add(GCCoreUtil.translate("item.hotDescription.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
+            par3List.add(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
         }
     }
 

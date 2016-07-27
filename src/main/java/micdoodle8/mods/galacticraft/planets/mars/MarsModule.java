@@ -88,7 +88,7 @@ public class MarsModule implements IPlanetsModule
         {
             MarsBlocks.blockSludge = new BlockSludge("sludge");
             ((BlockSludge) MarsBlocks.blockSludge).setQuantaPerBlock(3);
-            GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class, MarsBlocks.blockSludge.getUnlocalizedName());
+            MarsBlocks.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class);
             sludge.setBlock(MarsBlocks.blockSludge);
         }
         else
@@ -98,8 +98,8 @@ public class MarsModule implements IPlanetsModule
 
         if (MarsBlocks.blockSludge != null)
         {
-            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucketSludge");
-            MarsItems.registerItem(MarsItems.bucketSludge);
+            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucket_sludge");
+            MarsItems.registerItemSorted(MarsItems.bucketSludge, GCItems.bucketFuel);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.bucket));
         }
 
@@ -203,18 +203,18 @@ public class MarsModule implements IPlanetsModule
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySludgeling.class, "sludgeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySlimeling.class, "slimeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntityCreeperBoss.class, "creeper_boss", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
     }
 
     public void registerOtherEntities()
     {
-        MarsModule.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "rocket_t2", 150, 1, false);
 //        MarsModule.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", 150, 20, false);
-        MarsModule.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", 150, 5, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "projectile_tnt", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "landing_balloons", 150, 5, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "rocket_cargo", 150, 1, false);
     }
 
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
@@ -233,7 +233,7 @@ public class MarsModule implements IPlanetsModule
     {
     	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftPlanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+    		LanguageRegistry.instance().addStringLocalization("entity.galacticraftplanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
 		}
     	EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }

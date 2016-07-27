@@ -73,11 +73,11 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         this.infoRegions.add(this.gasTank2Region);
 
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 53, edgeTop + 53, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> carbonSlotDesc = new ArrayList<String>();
-        carbonSlotDesc.add(GCCoreUtil.translate("gui.carbonSlot.desc.0"));
+        carbonSlotDesc.add(GCCoreUtil.translate("gui.carbon_slot.desc.0"));
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 27, edgeTop + 53, 18, 18, carbonSlotDesc, this.width, this.height, this));
 
         
@@ -88,25 +88,25 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         this.infoRegions.add(this.fuelTankRegion);
 
         List<String> fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.0"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.1"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.methaneOutput.desc.2"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.0"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.1"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.methane_output.desc.2"));
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 152, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 131, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogenInput.desc.0"));
-        fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogenInput.desc.1"));
-        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.withAtmosphere0.name"));
+        fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogen_input.desc.0"));
+        fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogen_input.desc.1"));
+        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0.name"));
         fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("fluid.hydrogen"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.withAtmosphere1.name") + ")");
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1.name") + ")");
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 6, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         fuelSlotDesc = new ArrayList<String>();
         fuelSlotDesc.add(GCCoreUtil.translate("item.atmosphericValve.name"));
-        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.withAtmosphere0.name"));
+        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0.name"));
         fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("gas.carbondioxide.name"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.withAtmosphere1.name") + ")");
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1.name") + ")");
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 27, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         this.electricInfoRegion.xPosition = edgeLeft + 66;
@@ -156,7 +156,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy.name");
         }
         else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity())
         {

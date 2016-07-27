@@ -324,7 +324,7 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
         switch (meta)
         {
         case COAL_GENERATOR_METADATA:
-            return GCCoreUtil.translate("tile.coalGenerator.description");
+            return GCCoreUtil.translate("tile.coal_generator.description");
         case COMPRESSOR_METADATA:
             return GCCoreUtil.translate("tile.compressor.description");
         }

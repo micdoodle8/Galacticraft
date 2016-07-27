@@ -44,8 +44,8 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 46, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> oxygenSlotDesc = new ArrayList<String>();
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygenSlot.desc.0"));
@@ -69,7 +69,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubbleVisible.name"));
+        this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubble_visible.name"));
         this.buttonList.add(this.checkboxRenderBubble);
     }
 

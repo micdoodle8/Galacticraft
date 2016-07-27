@@ -58,11 +58,11 @@ public class GuiRefinery extends GuiContainerGC
         this.oilTankRegion.parentHeight = this.height;
         this.infoRegions.add(this.oilTankRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 49, (this.height - this.ySize) / 2 + 50, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> fuelTankDesc = new ArrayList<String>();
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.4"));
         int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
         int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
         fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
@@ -73,9 +73,9 @@ public class GuiRefinery extends GuiContainerGC
         this.fuelTankRegion.parentHeight = this.height;
         this.infoRegions.add(this.fuelTankRegion);
         List<String> fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.0"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.1"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.2"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.0"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.1"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.2"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
@@ -157,7 +157,7 @@ public class GuiRefinery extends GuiContainerGC
         this.oilTankRegion.tooltipStrings = oilTankDesc;
 
         List<String> fuelTankDesc = new ArrayList<String>();
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.4"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.4"));
         int fuelLevel = this.tileEntity.fuelTank != null && this.tileEntity.fuelTank.getFluid() != null ? this.tileEntity.fuelTank.getFluid().amount : 0;
         int fuelCapacity = this.tileEntity.fuelTank != null ? this.tileEntity.fuelTank.getCapacity() : 0;
         fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);

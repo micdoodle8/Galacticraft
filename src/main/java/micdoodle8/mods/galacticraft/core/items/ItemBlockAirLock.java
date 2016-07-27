@@ -38,12 +38,12 @@ public class ItemBlockAirLock extends ItemBlockDesc
         {
         case 0:
         {
-            name = "airLockFrame";
+            name = "air_lock_frame";
             break;
         }
         case 1:
         {
-            name = "airLockController";
+            name = "air_lock_controller";
             break;
         }
         default:

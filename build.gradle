@@ -57,7 +57,6 @@ ext.coreFiles = ['micdoodle8/mods/galacticraft/api/**',
 					'micdoodle8/mods/galacticraft/core/**',
 					'tconstruct/**',
 					'assets/minecraft/**',
-					'assets/galacticraftmoon/**',
 					'assets/galacticraftcore/**',
 					'**/dependenciesGC.info']
 					

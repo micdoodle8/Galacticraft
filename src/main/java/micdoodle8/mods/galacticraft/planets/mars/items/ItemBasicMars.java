@@ -16,15 +16,15 @@ import java.util.List;
 
 public class ItemBasicMars extends Item
 {
-    public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh", "fluidManip" };
+    public static String[] names = { "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip" };
 //    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
 
-    public ItemBasicMars()
+    public ItemBasicMars(String name)
     {
         super();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        this.setUnlocalizedName("itemBasicMars");
+        this.setUnlocalizedName(name);
     }
 
     @SideOnly(Side.CLIENT)

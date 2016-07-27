@@ -38,11 +38,10 @@ import java.util.Random;
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
 {
 //    private IIcon[] icons;
-    public static String[] names = { "redEgg", "blueEgg", "yellowEgg" };
     public static final PropertyEnum EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
     public static final PropertyBool BROKEN = PropertyBool.create("broken");
 
-    private enum EnumEggColor implements IStringSerializable
+    public enum EnumEggColor implements IStringSerializable
     {
         RED(0, "red"),
         BLUE(1, "blue"),
@@ -227,7 +226,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (int var4 = 0; var4 < BlockSlimelingEgg.names.length; ++var4)
+        for (int var4 = 0; var4 < EnumEggColor.values().length; ++var4)
         {
             list.add(new ItemStack(itemIn, 1, var4));
         }

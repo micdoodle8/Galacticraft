@@ -1,31 +1,16 @@
-# Galacticraft Moon Language File = THAILAND
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=เหล็กอุกกาบาตดิบ
-item.compressedMeteoricIron.name=แผ่นเหล็กอุกกาบาต
-item.meteoricIronIngot.name=แท่งเหล็กอุกกาบาต
-
-# FOOD
-item.cheeseCurd.name=เศษชีส
-item.cheeseBlock.name=บล็อกชีส
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=หินดวงจันทร์
-tile.moonBlock.moondirt.name=ดินดวงจันทร์
-tile.moonBlock.moongrass.name=หินผิวดวงจันทร์
-tile.moonBlock.tinmoon.name=แร่ดีบุก
-tile.moonBlock.coppermoon.name=แร่ทองแดง
-tile.moonBlock.cheesestone.name=แร่ชีส
-tile.moonBlock.bricks.name=อิฐดันเจี้ยนดวงจันทร์
-tile.cheeseBlock.name=บล็อกชีส
-
-# GUI
-gui.choosePlanet.desc.moon=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 18%
-
-# OTHER
+item.meteoric_iron_raw.name=เหล็กอุกกาบาตดิบ
+item.compressed_meteoric_iron.name=แผ่นเหล็กอุกกาบาต
+item.meteoric_iron_ingot.name=แท่งเหล็กอุกกาบาต
+item.cheese_curd.name=เศษชีส
+item.cheese_block.name=บล็อกชีส
+tile.basic_block_moon.moonstone.name=หินดวงจันทร์
+tile.basic_block_moon.moondirt.name=ดินดวงจันทร์
+tile.basic_block_moon.moongrass.name=หินผิวดวงจันทร์
+tile.basic_block_moon.tinmoon.name=แร่ดีบุก
+tile.basic_block_moon.coppermoon.name=แร่ทองแดง
+tile.basic_block_moon.cheesestone.name=แร่ชีส
+tile.basic_block_moon.bricks.name=อิฐดันเจี้ยนดวงจันทร์
+tile.cheese.name=บล็อกชีส
+gui.choose_planet.desc.moon=อาศัยอยู่ได้#ไม่มีออกซิเจน#แรงโน้มถ่วง: 18%
 container.lander.name=ยานลงจอด
-dimension.Moon.name=ดวงจันทร์
+dimension.moon.name=ดวงจันทร์

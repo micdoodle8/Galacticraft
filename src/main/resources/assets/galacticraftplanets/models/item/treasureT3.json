@@ -1,8 +1,0 @@
-{
-    "parent":"galacticraftplanets:block/treasureT3",
-    "display": {
-		"gui": {
-            "rotation": [ 0, 180, 0 ]
-		}
-    }
-}

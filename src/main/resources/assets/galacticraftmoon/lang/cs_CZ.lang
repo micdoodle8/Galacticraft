@@ -1,30 +1,16 @@
-# Galacticraft Moon Language File = CZECH REPUBLIC CZECH
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=Nezpracované meteorické železo
-item.compressedMeteoricIron.name=Stlačené meteorické železo
-item.meteoricIronIngot.name=Ingot meteorického železa
-
-# FOOD
-item.cheeseCurd.name=Kousek sýra
-item.cheeseBlock.name=Sýr
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=Kámen
-tile.moonBlock.moondirt.name=Hlína
-tile.moonBlock.moongrass.name=Měsíční povrh
-tile.moonBlock.tinmoon.name=Cínová ruda
-tile.moonBlock.coppermoon.name=Měděná ruda
-tile.moonBlock.cheesestone.name=Sýrová ruda
-tile.moonBlock.bricks.name=Cihly
-tile.cheeseBlock.name=Blok sýra
-
-# GUI
-gui.choosePlanet.desc.moon=Obyvatelný#Žádný kyslík#Gravitace: 18%
+item.meteoric_iron_raw.name=Nezpracované meteorické železo
+item.compressed_meteoric_iron.name=Stlačené meteorické železo
+item.meteoric_iron_ingot.name=Ingot meteorického železa
+item.cheese_curd.name=Kousek sýra
+item.cheese_block.name=Sýr
+tile.basic_block_moon.moonstone.name=Kámen
+tile.basic_block_moon.moondirt.name=Hlína
+tile.basic_block_moon.moongrass.name=Měsíční povrh
+tile.basic_block_moon.tinmoon.name=Cínová ruda
+tile.basic_block_moon.coppermoon.name=Měděná ruda
+tile.basic_block_moon.cheesestone.name=Sýrová ruda
+tile.basic_block_moon.bricks.name=Cihly
+tile.cheese.name=Blok sýra
+gui.choose_planet.desc.moon=Obyvatelný#Žádný kyslík#Gravitace: 18%
 container.lander.name=Přistávací modul
-
-dimension.Moon.name=Měsíc
+dimension.moon.name=Měsíc

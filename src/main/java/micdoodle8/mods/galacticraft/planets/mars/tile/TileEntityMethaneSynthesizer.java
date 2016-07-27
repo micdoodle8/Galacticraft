@@ -293,7 +293,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public String getName()
     {
-        return GCCoreUtil.translate("tile.marsMachine.5.name");
+        return GCCoreUtil.translate("tile.mars_machine.5.name");
     }
 
     // ISidedInventory Implementation:

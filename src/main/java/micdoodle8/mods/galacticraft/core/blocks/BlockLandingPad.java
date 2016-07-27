@@ -201,7 +201,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         {
             return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
         }
-        return GCCoreUtil.translate("tile.buggyPad.description");
+        return GCCoreUtil.translate("tile.buggy_pad.description");
     }
 
     @Override

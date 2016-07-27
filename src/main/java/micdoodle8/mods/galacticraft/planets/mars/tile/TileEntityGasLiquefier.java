@@ -499,7 +499,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public String getName()
     {
-        return GCCoreUtil.translate("tile.marsMachine.4.name");
+        return GCCoreUtil.translate("tile.mars_machine.4.name");
     }
 
     // ISidedInventory Implementation:

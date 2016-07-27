@@ -2,14 +2,15 @@ package micdoodle8.mods.galacticraft.core;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -209,7 +210,9 @@ public class GalacticraftCore
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
     public static boolean enableJPEG = false;
-    
+    public static List<Item> itemOrderListBlocks = Lists.newArrayList();
+    public static List<Item> itemOrderListItems = Lists.newArrayList();
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -248,8 +251,22 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftBlocks", Item.getItemFromBlock(GCBlocks.machineBase2), 0);
-        GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "GalacticraftItems", GCItems.rocketTier1, 0);
+        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(new Function<ItemStack, Item>() {
+            @Override
+            public Item apply(ItemStack input) {
+                return input.getItem();
+            }
+        });
+        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(new Function<ItemStack, Item>() {
+            @Override
+            public Item apply(ItemStack input) {
+                return input.getItem();
+            }
+        });
+
+        GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_blocks", Item.getItemFromBlock(GCBlocks.machineBase2), 0, tabSorterBlocks);
+        GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", GCItems.rocketTier1, 0, tabSorterItems);
+
         GalacticraftCore.proxy.init(event);
 
         GalacticraftCore.packetPipeline = GalacticraftChannelHandler.init();
@@ -401,8 +418,8 @@ public class GalacticraftCore
         {
             GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
             ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
-            GCBlocks.crudeOil.setUnlocalizedName("crudeOilStill");
-            GameRegistry.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class, GCBlocks.crudeOil.getUnlocalizedName().substring(5));
+            GCBlocks.crudeOil.setUnlocalizedName("crude_oil_still");
+            GCBlocks.registerBlockSorted(GCBlocks.crudeOil, ItemBlockGC.class, null, false);
             fluidOil.setBlock(GCBlocks.crudeOil);
         }
         else
@@ -413,7 +430,7 @@ public class GalacticraftCore
         if (GCBlocks.crudeOil != null && Item.itemRegistry.getObject(new ResourceLocation("buildcraftenergy:items/bucketOil")) == null)
         {
             GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil);
-            GCItems.bucketOil.setUnlocalizedName("bucketOil");
+            GCItems.bucketOil.setUnlocalizedName("bucket_oil");
             GCItems.registerItem(GCItems.bucketOil);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
         }
@@ -440,7 +457,7 @@ public class GalacticraftCore
             GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
             ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
             GCBlocks.fuel.setUnlocalizedName("fuel");
-            GameRegistry.registerBlock(GCBlocks.fuel, ItemBlockGC.class, GCBlocks.fuel.getUnlocalizedName().substring(5));
+            GCBlocks.registerBlockSorted(GCBlocks.fuel, ItemBlockGC.class, null, false);
             fluidFuel.setBlock(GCBlocks.fuel);
         }
         else
@@ -451,7 +468,7 @@ public class GalacticraftCore
         if (GCBlocks.fuel != null && Item.itemRegistry.getObject(new ResourceLocation("buildcraftenergy:items/bucketFuel")) == null)
         {
             GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel);
-            GCItems.bucketFuel.setUnlocalizedName("bucketFuel");
+            GCItems.bucketFuel.setUnlocalizedName("bucket_fuel");
             GCItems.registerItem(GCItems.bucketFuel);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
         }
@@ -657,25 +674,24 @@ public class GalacticraftCore
 
     public void registerCreatures()
     {
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "EvolvedSpider", 3419431, 11013646);
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "EvolvedZombie", 44975, 7969893);
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "EvolvedCreeper", 894731, 0);
-        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "EvolvedSkeleton", 12698049, 4802889);
-        GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "EvolvedSkeletonBoss", 12698049, 4802889);
-        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "AlienVillager", ColorUtil.to32BitColor(255, 103, 145, 181), 12422002);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSpider.class, "evolved_spider", 3419431, 11013646);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedZombie.class, "evolved_zombie", 44975, 7969893);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedCreeper.class, "evolved_creeper", 894731, 0);
+        GCCoreUtil.registerGalacticraftCreature(EntityEvolvedSkeleton.class, "evolved_skeleton", 12698049, 4802889);
+        GCCoreUtil.registerGalacticraftCreature(EntitySkeletonBoss.class, "evolved_skeleton_boss", 12698049, 4802889);
+        GCCoreUtil.registerGalacticraftCreature(EntityAlienVillager.class, "alien_villager", ColorUtil.to32BitColor(255, 103, 145, 181), 12422002);
     }
 
     public void registerOtherEntities()
     {
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "Spaceship", 150, 1, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "Meteor", 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "Buggy", 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "GCFlag", 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "ParaChest", 150, 5, true);
-//        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBubble.class, "OxygenBubble", 150, 20, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "Lander", 150, 5, false);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "MeteorChunk", 150, 5, true);
-        GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "CelestialScreen", 150, 5, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityTier1Rocket.class, "rocket_t1", 150, 1, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteor.class, "meteor", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityBuggy.class, "buggy", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityFlag.class, "gcflag", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityParachest.class, "para_chest", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "lander", 150, 5, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "meteor_chunk", 150, 5, true);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "celestial_screen", 150, 5, false);
     }
     
     public Planet makeUnreachablePlanet(String name, SolarSystem system)

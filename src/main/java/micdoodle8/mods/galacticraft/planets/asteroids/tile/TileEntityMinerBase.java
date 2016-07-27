@@ -346,7 +346,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @Override
     public String getName()
     {
-        return GCCoreUtil.translate("tile.minerBase.name");
+        return GCCoreUtil.translate("tile.miner_base.name");
     }
 
     @Override

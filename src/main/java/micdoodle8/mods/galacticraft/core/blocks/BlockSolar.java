@@ -172,6 +172,20 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
             }
         }
 
+        for (int x = -2; x <= 2; x++)
+        {
+            for (int z = -2; z <= 2; z++)
+            {
+                BlockPos posAt = pos.add(x, 0, z);
+                Block block = worldIn.getBlockState(posAt).getBlock();
+
+                if (block == this)
+                {
+                    return false;
+                }
+            }
+        }
+
         return true;
         // return new BlockVec3(x1, y1, z1).newVecSide(side ^ 1).getBlock(world) != GCBlocks.fakeBlock; TODO
     }
@@ -341,9 +355,9 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
         switch (meta)
         {
         case BASIC_METADATA:
-            return GCCoreUtil.translate("tile.solarBasic.description");
+            return GCCoreUtil.translate("tile.solar_basic.description");
         case ADVANCED_METADATA:
-            return GCCoreUtil.translate("tile.solarAdv.description");
+            return GCCoreUtil.translate("tile.solar_adv.description");
         }
         return "";
     }

@@ -35,10 +35,10 @@ public class ItemFuelCanister extends ItemCanisterGeneric
     {
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.fuelCanister";
+            return "item.fuel_canister";
         }
 
-        return "item.fuelCanisterPartial";
+        return "item.fuel_canister_partial";
     }
 
     /*@Override

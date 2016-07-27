@@ -63,8 +63,8 @@ public class GuiGasLiquefier extends GuiContainerGC
         this.infoRegions.add(this.gasTankRegion);
 
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 33, (this.height - this.ySize) / 2 + 49, 18, 18, batterySlotDesc, this.width, this.height, this));
 
         this.fuelTankRegion.xPosition = (this.width - this.xSize) / 2 + 132;
@@ -80,8 +80,8 @@ public class GuiGasLiquefier extends GuiContainerGC
         this.infoRegions.add(this.fuelTank2Region);
 
         List<String> fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.0"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuelOutput.desc.1"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.0"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.1"));
         fuelSlotDesc.add(GCCoreUtil.translate("gui.liquidOutput.desc.2"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 131, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
@@ -138,7 +138,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy.name");
         }
         else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity() && this.tileEntity.liquidTank2.getFluidAmount() == this.tileEntity.liquidTank2.getCapacity())
         {

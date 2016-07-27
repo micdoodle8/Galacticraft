@@ -37,15 +37,15 @@ public class ItemCanisterMethane extends ItemCanisterGeneric
     {
         if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
         {
-            return "item.emptyGasCanister";
+            return "item.empty_gas_canister";
         }
 
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.methaneCanister";
+            return "item.methane_canister";
         }
 
-        return "item.methaneCanisterPartial";
+        return "item.methane_canister_partial";
     }
 
     /*@Override

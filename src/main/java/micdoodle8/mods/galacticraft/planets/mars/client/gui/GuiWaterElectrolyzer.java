@@ -63,8 +63,8 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         this.infoRegions.add(this.gasTankRegion);
 
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 33, (this.height - this.ySize) / 2 + 49, 18, 18, batterySlotDesc, this.width, this.height, this));
 
         this.fuelTankRegion.xPosition = (this.width - this.xSize) / 2 + 132;
@@ -133,7 +133,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy.name");
         }
         else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity() && this.tileEntity.liquidTank2.getFluidAmount() == this.tileEntity.liquidTank2.getCapacity())
         {
@@ -145,7 +145,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         }
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
-        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefyStop.name");
+        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefy_stop.name");
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 56, 45 + 23 + yOffset, 4210752);
         this.fontRendererObj.drawString(displayText, 62, 45 + 33 + yOffset, 4210752);
         //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);

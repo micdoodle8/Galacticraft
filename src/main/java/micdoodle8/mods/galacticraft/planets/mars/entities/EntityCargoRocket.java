@@ -73,7 +73,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 	@Override
 	public ItemStack getPickedResult(MovingObjectPosition target)
 	{
-	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+	return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
 	}
 
     @Override
@@ -360,7 +360,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItemList)
     {
         super.getItemsDropped(droppedItemList);
-        ItemStack rocket = new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+        ItemStack rocket = new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
         rocket.setTagCompound(new NBTTagCompound());
         rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItemList.add(rocket);

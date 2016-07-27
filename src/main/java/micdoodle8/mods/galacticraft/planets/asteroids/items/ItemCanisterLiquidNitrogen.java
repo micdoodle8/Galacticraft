@@ -42,15 +42,15 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
     {
         if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
         {
-            return "item.emptyGasCanister";
+            return "item.empty_gas_canister";
         }
 
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.canister.liquidNitrogen.full";
+            return "item.canister.liquid_nitrogen.full";
         }
 
-        return "item.canister.liquidNitrogen.partial";
+        return "item.canister.liquid_nitrogen.partial";
     }
 
     /*@Override
@@ -73,7 +73,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
         {
-            par3List.add(GCCoreUtil.translate("item.canister.liquidNitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+            par3List.add(GCCoreUtil.translate("item.canister.liquid_nitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
         }
     }
 

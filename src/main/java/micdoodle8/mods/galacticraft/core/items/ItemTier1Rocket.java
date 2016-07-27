@@ -165,7 +165,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
 
         if (type.getPreFueled())
         {
-            par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creativeOnly.desc"));
+            par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
         }
 
         if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))

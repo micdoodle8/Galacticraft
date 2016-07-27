@@ -1,13 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -30,26 +33,47 @@ public class AsteroidBlocks
 
     public static void initBlocks()
     {
-        AsteroidBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasureT2");
-        AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasureT3");
+        AsteroidBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasure_t2");
+        AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasure_t3");
         AsteroidBlocks.blockWalkway = new BlockWalkway("walkway");
-        AsteroidBlocks.blockBasic = new BlockBasicAsteroids("asteroidsBlock");
-//		AsteroidBlocks.machineFrame = new BlockMachineFrame("machineFrameOld");
-        AsteroidBlocks.beamReflector = new BlockBeamReflector("beamReflector");
-        AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beamReceiver");
-        AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepadShort");
-        AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepadFake");
-        AsteroidBlocks.blockDenseIce = new BlockIceAsteroids("denseIce");
-        AsteroidBlocks.blockMinerBase = new BlockMinerBase("minerBase");
-        AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("minerBaseFull");
+        AsteroidBlocks.blockBasic = new BlockBasicAsteroids("asteroids_block");
+        AsteroidBlocks.beamReflector = new BlockBeamReflector("beam_reflector");
+        AsteroidBlocks.beamReceiver = new BlockBeamReceiver("beam_receiver");
+        AsteroidBlocks.shortRangeTelepad = new BlockShortRangeTelepad("telepad_short");
+        AsteroidBlocks.fakeTelepad = new BlockTelepadFake("telepad_fake");
+        AsteroidBlocks.blockDenseIce = new BlockIceAsteroids("dense_ice");
+        AsteroidBlocks.blockMinerBase = new BlockMinerBase("miner_base");
+        AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("miner_base_full");
 
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
     }
 
-    private static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+        registerBlockSorted(block, itemClass, null);
+    }
+
+    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock)
+    {
+        String name = block.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftBlock(name, block);
+        GameRegistry.registerBlock(block, itemClass, name);
+        if (beforeBlock == null)
+        {
+            GalacticraftCore.itemOrderListBlocks.add(Item.getItemFromBlock(block));
+        }
+        else
+        {
+            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
+            {
+                if (GalacticraftCore.itemOrderListBlocks.get(i) == Item.getItemFromBlock(beforeBlock))
+                {
+                    GalacticraftCore.itemOrderListBlocks.add(i + 1, Item.getItemFromBlock(block));
+                    break;
+                }
+            }
+        }
     }
 
     public static void registerBlocks()
@@ -58,7 +82,6 @@ public class AsteroidBlocks
         registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class);
         registerBlock(AsteroidBlocks.blockWalkway, ItemBlockWalkway.class);
-//		registerBlock(AsteroidBlocks.machineFrame, ItemBlockGC.class);
         registerBlock(AsteroidBlocks.beamReflector, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.beamReceiver, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class);

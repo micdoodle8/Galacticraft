@@ -293,9 +293,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
         switch (meta)
         {
         case OXYGEN_COMPRESSOR_METADATA:
-            return GCCoreUtil.translate("tile.oxygenCompressor.description");
+            return GCCoreUtil.translate("tile.oxygen_compressor.description");
         case OXYGEN_DECOMPRESSOR_METADATA:
-            return GCCoreUtil.translate("tile.oxygenDecompressor.description");
+            return GCCoreUtil.translate("tile.oxygen_decompressor.description");
         }
         return "";
     }

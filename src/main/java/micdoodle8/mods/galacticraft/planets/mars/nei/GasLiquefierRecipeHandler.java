@@ -259,7 +259,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return GCCoreUtil.translate("tile.marsMachine.4.name");
+//        return GCCoreUtil.translate("tile.mars_machine.4.name");
 //    }
 //
 //    @Override

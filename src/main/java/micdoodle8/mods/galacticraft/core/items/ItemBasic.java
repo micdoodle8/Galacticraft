@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ItemBasic extends Item
 {
-    public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule", "ambientThermalController" };
+    public static final String[] names = { "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller" };
     public static final int WAFER_BASIC = 13;
     public static final int WAFER_ADVANCED = 14;
     
@@ -66,7 +66,7 @@ public class ItemBasic extends Item
     {
         if (itemStack.getItemDamage() > 14 && itemStack.getItemDamage() < 19)
         {
-            return this.getUnlocalizedName() + ".cannedFood";
+            return this.getUnlocalizedName() + ".canned_food";
         }
 
         return this.getUnlocalizedName() + "." + ItemBasic.names[itemStack.getItemDamage()];
@@ -110,8 +110,8 @@ public class ItemBasic extends Item
         }
         else if (par1ItemStack.getItemDamage() == 19)
         {
-            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequencyModule.desc.0"));
-            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequencyModule.desc.1"));
+            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequency_module.desc.0"));
+            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequency_module.desc.1"));
         }
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ItemMoon extends Item
 {
-    public static String[] names = { "meteoricIronIngot", "compressedMeteoricIron" };
+    public static String[] names = { "meteoric_iron_ingot", "compressed_meteoric_iron" };
 //    protected IIcon[] icons = new IIcon[ItemMoon.names.length];
 
     public ItemMoon(String str)

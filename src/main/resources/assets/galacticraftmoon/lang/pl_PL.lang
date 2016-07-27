@@ -1,30 +1,16 @@
-﻿# Galacticraft Moon Language File = Polski
-
-# GENERAL ITEMS
-item.meteoricIronRaw.name=Surowe Meteorytowe Żelazo
-item.compressedMeteoricIron.name=Skompresowane Meteorytowe Żelazo
-item.meteoricIronIngot.name=Sztabka Meteorytowego Żelaza
-
-# FOOD
-item.cheeseCurd.name=Pajdka Sera
-item.cheeseBlock.name=Blok Sera
-
-# TOOLS
-
-# ARMOR
-
-# BLOCKS
-tile.moonBlock.moonstone.name=Księżycowy Kamień
-tile.moonBlock.moondirt.name=Księżycowa Ziemia
-tile.moonBlock.moongrass.name=Księżycowa Gleba
-tile.moonBlock.tinmoon.name=Ruda Cyny
-tile.moonBlock.coppermoon.name=Ruda Miedzi
-tile.moonBlock.cheesestone.name=Ruda Sera
-tile.moonBlock.bricks.name=Księżycowe Cegły
-tile.cheeseBlock.name=Blok Sera
-
-# GUI
-gui.choosePlanet.desc.moon=Nadający się do Zamieszkania#Brak Tlenu#Grawitacja: 18%
+item.meteoric_iron_raw.name=Surowe Meteorytowe Żelazo
+item.compressed_meteoric_iron.name=Skompresowane Meteorytowe Żelazo
+item.meteoric_iron_ingot.name=Sztabka Meteorytowego Żelaza
+item.cheese_curd.name=Pajdka Sera
+item.cheese_block.name=Blok Sera
+tile.basic_block_moon.moonstone.name=Księżycowy Kamień
+tile.basic_block_moon.moondirt.name=Księżycowa Ziemia
+tile.basic_block_moon.moongrass.name=Księżycowa Gleba
+tile.basic_block_moon.tinmoon.name=Ruda Cyny
+tile.basic_block_moon.coppermoon.name=Ruda Miedzi
+tile.basic_block_moon.cheesestone.name=Ruda Sera
+tile.basic_block_moon.bricks.name=Księżycowe Cegły
+tile.cheese.name=Blok Sera
+gui.choose_planet.desc.moon=Nadający się do Zamieszkania#Brak Tlenu#Grawitacja: 18%
 container.lander.name=Lądownik
-
-dimension.Moon.name=Księżyc
+dimension.moon.name=Księżyc

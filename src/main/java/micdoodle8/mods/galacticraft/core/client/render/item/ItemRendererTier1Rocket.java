@@ -29,7 +29,7 @@
 //
 //    public ItemRendererTier1Rocket(EntitySpaceshipBase spaceship, ModelBase model, ResourceLocation texture)
 //    {
-//        this.spaceship = spaceship;
+//        this.rocketMars = rocketMars;
 //        this.modelSpaceship = model;
 //        this.texture = texture;
 //    }

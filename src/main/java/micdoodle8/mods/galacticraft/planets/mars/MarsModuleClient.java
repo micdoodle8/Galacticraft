@@ -26,7 +26,6 @@ import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -51,7 +50,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -71,12 +69,12 @@ public class MarsModuleClient implements IPlanetsModuleClient
     public void preInit(FMLPreInitializationEvent event)
     {
         addPlanetVariants("mars", "ore_copper_mars", "ore_tin_mars", "ore_desh_mars", "ore_iron_mars", "cobblestone", "mars_surface", "mars_middle", "dungeon_brick", "desh_block", "mars_stone", "dungeon_spawner");
-        addPlanetVariants("cavernVines", "vine_0", "vine_1", "vine_2");
-        addPlanetVariants("itemBasicMars", "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh", "fluidManip");
-        addPlanetVariants("schematic", "schematic_rocketT3", "schematic_rocket_cargo", "schematic_astroMiner");
-        addPlanetVariants("slimelingEgg", "slimelingEggRed", "slimelingEggBlue", "slimelingEggYellow");
-        addPlanetVariants("marsMachine", "terraformer", "cryogenic_chamber", "launch_controller");
-        addPlanetVariants("marsMachineT2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
+        addPlanetVariants("cavern_vines", "vine_0", "vine_1", "vine_2");
+        addPlanetVariants("item_basic_mars", "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip");
+        addPlanetVariants("schematic", "schematic_rocket_t3", "schematic_rocket_cargo", "schematic_astro_miner");
+        addPlanetVariants("slimeling_egg", "slimeling_egg_red", "slimeling_egg_blue", "slimeling_egg_yellow");
+        addPlanetVariants("mars_machine", "terraformer", "cryogenic_chamber", "launch_controller");
+        addPlanetVariants("mars_machine_t2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -112,16 +110,16 @@ public class MarsModuleClient implements IPlanetsModuleClient
             }
         });
 
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "spaceshipTier2", "inventory");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
         for (int i = 0; i < 5; ++i)
         {
-            ModelLoader.setCustomModelResourceLocation(MarsItems.spaceship, i, modelResourceLocation);
+            ModelLoader.setCustomModelResourceLocation(MarsItems.rocketMars, i, modelResourceLocation);
         }
 
-        modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "cargoRocket", "inventory");
+        modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_cargo", "inventory");
         for (int i = 11; i < 15; ++i)
         {
-            ModelLoader.setCustomModelResourceLocation(MarsItems.spaceship, i, modelResourceLocation);
+            ModelLoader.setCustomModelResourceLocation(MarsItems.rocketMars, i, modelResourceLocation);
         }
     }
 
@@ -130,17 +128,17 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         MarsModuleClient.registerBlockRenderers();
 
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 0, "rawDesh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 1, "deshStick");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 2, "ingotDesh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 3, "reinforcedPlateT2");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 4, "slimelingCargo");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 5, "compressedDesh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 6, "fluidManip");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 0, "raw_desh");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 1, "desh_stick");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 2, "ingot_desh");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 3, "reinforced_plate_t2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 4, "slimeling_cargo");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 5, "compressed_desh");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 6, "fluid_manip");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.key, 0, "key");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 0, "schematic_rocketT3");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 0, "schematic_rocket_t3");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 1, "schematic_rocket_cargo");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 2, "schematic_astroMiner");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 2, "schematic_astro_miner");
 
         MinecraftForge.EVENT_BUS.register(new TickHandlerClient());
     }
@@ -162,8 +160,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "spaceshipTier2", "rocketT2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
-        replaceModelDefault(event, "cargoRocket", "cargoRocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "rocket_t2", "rocketT2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "rocket_cargo", "cargoRocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
@@ -212,9 +210,9 @@ public class MarsModuleClient implements IPlanetsModuleClient
             ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.vine, vineType.getMeta(), vineType.getName());
         }
 
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 0, "slimelingEggRed");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 1, "slimelingEggBlue");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 2, "slimelingEggYellow");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 0, "slimeling_egg_red");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 1, "slimeling_egg_blue");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 2, "slimeling_egg_yellow");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.creeperEgg);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 0, "terraformer");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 4, "cryogenic_chamber");

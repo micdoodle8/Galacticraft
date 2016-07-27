@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -21,7 +23,7 @@ public class MarsItems
     public static Item deshChestplate;
     public static Item deshLeggings;
     public static Item deshBoots;
-    public static Item spaceship;
+    public static Item rocketMars;
     public static Item key;
     public static Item schematic;
     public static Item carbonFragments;
@@ -33,21 +35,21 @@ public class MarsItems
 
     public static void initItems()
     {
-        MarsItems.marsItemBasic = new ItemBasicMars();
-        MarsItems.deshPickaxe = new ItemPickaxeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshPick");
-        MarsItems.deshPickSlime = new ItemPickaxeStickyMars(MarsItems.TOOLDESH).setUnlocalizedName("deshPickSlime");
-        MarsItems.deshAxe = new ItemAxeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshAxe");
-        MarsItems.deshHoe = new ItemHoeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshHoe");
-        MarsItems.deshSpade = new ItemSpadeMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSpade");
-        MarsItems.deshSword = new ItemSwordMars(MarsItems.TOOLDESH).setUnlocalizedName("deshSword");
-        MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, 0).setUnlocalizedName("deshHelmet");
-        MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, 1).setUnlocalizedName("deshChestplate");
-        MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, 2).setUnlocalizedName("deshLeggings");
-        MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, 3).setUnlocalizedName("deshBoots");
-        MarsItems.spaceship = new ItemTier2Rocket().setUnlocalizedName("spaceshipTier2");
+        MarsItems.marsItemBasic = new ItemBasicMars("item_basic_mars");
+        MarsItems.deshPickaxe = new ItemPickaxeMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_pick");
+        MarsItems.deshPickSlime = new ItemPickaxeStickyMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_pick_slime");
+        MarsItems.deshAxe = new ItemAxeMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_axe");
+        MarsItems.deshHoe = new ItemHoeMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_hoe");
+        MarsItems.deshSpade = new ItemSpadeMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_spade");
+        MarsItems.deshSword = new ItemSwordMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_sword");
+        MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, 0).setUnlocalizedName("desh_helmet");
+        MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, 1).setUnlocalizedName("desh_chestplate");
+        MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, 2).setUnlocalizedName("desh_leggings");
+        MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, 3).setUnlocalizedName("desh_boots");
+        MarsItems.rocketMars = new ItemTier2Rocket().setUnlocalizedName("rocket_t2");
         MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
         MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");
-        MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbonFragments");
+        MarsItems.carbonFragments = new ItemCarbonFragments().setUnlocalizedName("carbon_fragments");
 
         MarsItems.registerItems();
         MarsItems.registerHarvestLevels();
@@ -75,14 +77,36 @@ public class MarsItems
         MarsItems.registerItem(MarsItems.deshChestplate);
         MarsItems.registerItem(MarsItems.deshLeggings);
         MarsItems.registerItem(MarsItems.deshBoots);
-        MarsItems.registerItem(MarsItems.spaceship);
-        MarsItems.registerItem(MarsItems.key);
-        MarsItems.registerItem(MarsItems.schematic);
+        MarsItems.registerItemSorted(MarsItems.rocketMars, GCItems.rocketTier1);
+        MarsItems.registerItemSorted(MarsItems.key, GCItems.key);
+        MarsItems.registerItemSorted(MarsItems.schematic, GCItems.schematic);
     }
 
     public static void registerItem(Item item)
     {
+        registerItemSorted(item, null);
+    }
+
+    public static void registerItemSorted(Item item, Item beforeItem)
+    {
+        String name = item.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftItem(name, item);
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+        if (beforeItem == null)
+        {
+            GalacticraftCore.itemOrderListItems.add(item);
+        }
+        else
+        {
+            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
+            {
+                if (GalacticraftCore.itemOrderListItems.get(i) == beforeItem)
+                {
+                    GalacticraftCore.itemOrderListItems.add(i + 1, item);
+                    break;
+                }
+            }
+        }
         GalacticraftPlanets.proxy.postRegisterItem(item);
     }
 }
