@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
@@ -12,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemKey extends Item implements IKeyItem
+public class ItemKey extends Item implements IKeyItem, ISortableItem
 {
     public ItemKey(String assetName)
     {
@@ -59,5 +60,11 @@ public class ItemKey extends Item implements IKeyItem
     public int getTier(ItemStack keyStack)
     {
         return 1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

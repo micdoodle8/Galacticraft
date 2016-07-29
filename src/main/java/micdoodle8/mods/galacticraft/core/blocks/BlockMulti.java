@@ -73,63 +73,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         super(GCBlocks.machine);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setResistance(1000000000000000.0F);
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.fakeIcons = new IIcon[5];
-        this.fakeIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
-        this.fakeIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
-        this.fakeIcons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
-        this.fakeIcons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_fueler_blank");
-
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            try
-            {
-                Class<?> c = Class.forName("micdoodle8.mods.galacticraft.planets.mars.MarsModule");
-                String texturePrefix = (String) c.getField("TEXTURE_PREFIX").get(null);
-                this.fakeIcons[3] = par1IconRegister.registerIcon(texturePrefix + "cryoDummy");
-            }
-            catch (Exception e)
-            {
-                this.fakeIcons[3] = this.fakeIcons[2];
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            this.fakeIcons[3] = this.fakeIcons[2];
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2)
-    {
-        switch (par2)
-        {
-        case 0:
-            return this.fakeIcons[2];
-        case 2:
-            return this.fakeIcons[0];
-        case 3:
-            return this.fakeIcons[1];
-        case 4:
-            return this.fakeIcons[2];
-        case 5:
-            return this.fakeIcons[3];
-        case 6:
-            return this.fakeIcons[4];
-        default:
-            return this.fakeIcons[0];
-        }
-    }*/
 
     @Override
     public boolean isOpaqueCube()
@@ -146,10 +92,10 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
         }
-        /*else if (meta == 7)
+        else if (meta == 0 || meta == 4)
         {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
-        }*/
+            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
+        }
         else
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -165,6 +111,11 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         if (meta == 2 || meta == 6)
         {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+        }
+        else if (meta == 0 || meta == 4)
+        {
+            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
             super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
         }
         /*else if (meta == 7)

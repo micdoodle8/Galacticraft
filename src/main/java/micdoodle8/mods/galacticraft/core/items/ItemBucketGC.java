@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,7 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 
-public class ItemBucketGC extends ItemBucket
+public class ItemBucketGC extends ItemBucket implements ISortableItem
 {
 //	private String texture_prefix;
 
@@ -36,10 +37,9 @@ public class ItemBucketGC extends ItemBucket
 		return GalacticraftCore.galacticraftItemsTab;
 	}
 
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister)
+	@Override
+	public EnumSortCategoryItem getCategory(int meta)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", texture_prefix));
-	}*/
+		return EnumSortCategoryItem.BUCKET;
+	}
 }

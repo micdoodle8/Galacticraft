@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -9,13 +10,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemOxygenGear extends Item
+public class ItemOxygenGear extends Item implements ISortableItem
 {
     public ItemOxygenGear(String assetName)
     {
         super();
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -31,9 +31,9 @@ public class ItemOxygenGear extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    /*@Override
-    public IIcon getIconFromDamage(int damage)
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
     {
-        return super.getIconFromDamage(damage);
-    }*/
+        return EnumSortCategoryItem.GEAR;
+    }
 }

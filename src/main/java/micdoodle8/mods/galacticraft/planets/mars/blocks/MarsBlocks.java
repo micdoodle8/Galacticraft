@@ -73,29 +73,10 @@ public class MarsBlocks
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        registerBlockSorted(block, itemClass, null);
-    }
-
-    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock)
-    {
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name);
-        if (beforeBlock == null)
-        {
-            GalacticraftCore.itemOrderListBlocks.add(Item.getItemFromBlock(block));
-        }
-        else
-        {
-            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
-            {
-                if (GalacticraftCore.itemOrderListBlocks.get(i) == Item.getItemFromBlock(beforeBlock))
-                {
-                    GalacticraftCore.itemOrderListBlocks.add(i + 1, Item.getItemFromBlock(block));
-                    break;
-                }
-            }
-        }
+        GCBlocks.registerSorted(block);
     }
 
     public static void registerBlocks()
@@ -104,11 +85,11 @@ public class MarsBlocks
         registerBlock(MarsBlocks.vine, ItemBlockDesc.class);
         registerBlock(MarsBlocks.rock, ItemBlockEgg.class);
         registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class);
-        registerBlockSorted(MarsBlocks.machine, ItemBlockMachine.class, GCBlocks.telemetry);
-        registerBlockSorted(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machine);
+        registerBlock(MarsBlocks.machine, ItemBlockMachine.class);
+        registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
 //        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
-        registerBlockSorted(MarsBlocks.hydrogenPipe, ItemBlockDesc.class, GCBlocks.oxygenPipe);
+        registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class);
     }
     
     public static void oreDictRegistration()

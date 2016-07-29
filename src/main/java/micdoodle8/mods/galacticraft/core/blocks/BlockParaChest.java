@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 import java.util.Iterator;
 import java.util.Random;
 
-public class BlockParaChest extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
+public class BlockParaChest extends BlockContainer implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
@@ -266,5 +267,11 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
             return state;
         TileEntityParaChest chest = (TileEntityParaChest) tile;
         return state.withProperty(COLOR, chest.color);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

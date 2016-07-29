@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
@@ -10,7 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSupply
+public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSupply, ISortableItem
 {
     public ItemCanisterOxygenInfinite(String assetName)
     {
@@ -61,4 +62,10 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     	{
         	return ClientProxyCore.galacticraftItem;
     	}
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
+    }
 }

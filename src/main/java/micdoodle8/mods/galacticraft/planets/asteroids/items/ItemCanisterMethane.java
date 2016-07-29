@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
@@ -11,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemCanisterMethane extends ItemCanisterGeneric
+public class ItemCanisterMethane extends ItemCanisterGeneric implements ISortableItem
 {
 //    protected IIcon[] icons = new IIcon[7];
 
@@ -70,5 +72,11 @@ public class ItemCanisterMethane extends ItemCanisterGeneric
         {
             par3List.add(GCCoreUtil.translate("item.canister.gas.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
         }
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
     }
 }

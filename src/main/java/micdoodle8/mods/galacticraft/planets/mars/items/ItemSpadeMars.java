@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -9,7 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 
-public class ItemSpadeMars extends ItemSpade
+public class ItemSpadeMars extends ItemSpade implements ISortableItem
 {
     public ItemSpadeMars(ToolMaterial par2EnumToolMaterial)
     {
@@ -30,10 +32,9 @@ public class ItemSpadeMars extends ItemSpade
         return GalacticraftCore.galacticraftItemsTab;
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
     {
-        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
-    }*/
+        return EnumSortCategoryItem.TOOLS;
+    }
 }

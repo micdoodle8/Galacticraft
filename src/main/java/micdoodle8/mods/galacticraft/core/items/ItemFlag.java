@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,7 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
-public class ItemFlag extends Item implements IHoldableItem
+public class ItemFlag extends Item implements IHoldableItem, ISortableItem
 {
     public int placeProgress;
 
@@ -168,5 +169,11 @@ public class ItemFlag extends Item implements IHoldableItem
     public boolean shouldCrouch(EntityPlayer player)
     {
         return false;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

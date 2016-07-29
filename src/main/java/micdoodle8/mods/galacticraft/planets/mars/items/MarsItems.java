@@ -77,36 +77,17 @@ public class MarsItems
         MarsItems.registerItem(MarsItems.deshChestplate);
         MarsItems.registerItem(MarsItems.deshLeggings);
         MarsItems.registerItem(MarsItems.deshBoots);
-        MarsItems.registerItemSorted(MarsItems.rocketMars, GCItems.rocketTier1);
-        MarsItems.registerItemSorted(MarsItems.key, GCItems.key);
-        MarsItems.registerItemSorted(MarsItems.schematic, GCItems.schematic);
+        MarsItems.registerItem(MarsItems.rocketMars);
+        MarsItems.registerItem(MarsItems.key);
+        MarsItems.registerItem(MarsItems.schematic);
     }
 
     public static void registerItem(Item item)
     {
-        registerItemSorted(item, null);
-    }
-
-    public static void registerItemSorted(Item item, Item beforeItem)
-    {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
-        if (beforeItem == null)
-        {
-            GalacticraftCore.itemOrderListItems.add(item);
-        }
-        else
-        {
-            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
-            {
-                if (GalacticraftCore.itemOrderListItems.get(i) == beforeItem)
-                {
-                    GalacticraftCore.itemOrderListItems.add(i + 1, item);
-                    break;
-                }
-            }
-        }
         GalacticraftPlanets.proxy.postRegisterItem(item);
+        GCItems.registerSorted(item);
     }
 }

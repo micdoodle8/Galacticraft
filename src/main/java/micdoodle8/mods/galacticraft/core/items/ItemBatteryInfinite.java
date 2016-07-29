@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBatteryInfinite extends ItemElectricBase
+public class ItemBatteryInfinite extends ItemElectricBase implements ISortableItem
 {
     public ItemBatteryInfinite(String assetName)
     {
@@ -94,5 +95,11 @@ public class ItemBatteryInfinite extends ItemElectricBase
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

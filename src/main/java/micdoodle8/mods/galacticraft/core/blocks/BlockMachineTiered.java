@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyDirection;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
+public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final int STORAGE_MODULE_METADATA = 0;
     public static final int ELECTRIC_FURNACE_METADATA = 4;
@@ -440,5 +441,11 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

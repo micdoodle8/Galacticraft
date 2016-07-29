@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -29,7 +30,7 @@ import java.util.Random;
  * Ore 6 = Tin Ore 7 = Aluminium Ore 8 = Silicon Ore 9 = Copper Block
  * 10 = Tin Block  11 = Aluminium Block  12 = Meteoric Iron Block
  */
-public class BlockBasic extends Block implements IDetectableResource
+public class BlockBasic extends Block implements IDetectableResource, ISortableBlock
 {
     /*IIcon[] iconBuffer;*/
 
@@ -286,5 +287,24 @@ public class BlockBasic extends Block implements IDetectableResource
     protected BlockState createBlockState()
     {
         return new BlockState(this, BASIC_TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            return EnumSortCategoryBlock.ORE;
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            return EnumSortCategoryBlock.INGOT_BLOCK;
+        }
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

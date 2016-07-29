@@ -10,6 +10,7 @@ import javax.imageio.ImageWriter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
@@ -114,15 +115,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.ThreadRequirementMissing;
-import micdoodle8.mods.galacticraft.core.util.ThreadVersionCheck;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
@@ -177,8 +170,8 @@ public class GalacticraftCore
     public static GalacticraftChannelHandler packetPipeline;
     public static GCPlayerHandler handler;
 
-    public static CreativeTabs galacticraftBlocksTab;
-    public static CreativeTabs galacticraftItemsTab;
+    public static CreativeTabGC galacticraftBlocksTab;
+    public static CreativeTabGC galacticraftItemsTab;
 
     public static SolarSystem solarSystemSol;
     public static Planet planetMercury;
@@ -210,12 +203,23 @@ public class GalacticraftCore
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
     public static boolean enableJPEG = false;
-    public static List<Item> itemOrderListBlocks = Lists.newArrayList();
-    public static List<Item> itemOrderListItems = Lists.newArrayList();
+//    public static List<StackSorted> itemOrderListBlocks = Lists.newArrayList();
+//    public static List<StackSorted> itemOrderListItems = Lists.newArrayList();
+    public static Map<EnumSortCategoryBlock, List<StackSorted>> sortMapBlocks = Maps.newHashMap();
+    public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        for (EnumSortCategoryBlock cat : EnumSortCategoryBlock.values())
+        {
+            sortMapBlocks.put(cat, new ArrayList<StackSorted>());
+        }
+        for (EnumSortCategoryItem cat : EnumSortCategoryItem.values())
+        {
+            sortMapItems.put(cat, new ArrayList<StackSorted>());
+        }
+
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
     	GCCoreUtil.nextID = 0;
     	
@@ -230,6 +234,9 @@ public class GalacticraftCore
         ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
+
+        GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_blocks", null, 0, null);
+        GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", null, 0, null);
 
         this.registerOilandFuel();
 
@@ -251,21 +258,35 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(new Function<ItemStack, Item>() {
+        GalacticraftCore.galacticraftBlocksTab.setItemForTab(Item.getItemFromBlock(GCBlocks.machineBase2));
+        GalacticraftCore.galacticraftItemsTab.setItemForTab(GCItems.rocketTier1);
+
+        List<StackSorted> itemOrderListBlocks = Lists.newArrayList();
+        for (EnumSortCategoryBlock type : EnumSortCategoryBlock.values())
+        {
+            itemOrderListBlocks.addAll(sortMapBlocks.get(type));
+        }
+        List<StackSorted> itemOrderListItems = Lists.newArrayList();
+        for (EnumSortCategoryItem type : EnumSortCategoryItem.values())
+        {
+            itemOrderListItems.addAll(sortMapItems.get(type));
+        }
+
+        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(new Function<ItemStack, StackSorted>() {
             @Override
-            public Item apply(ItemStack input) {
-                return input.getItem();
+            public StackSorted apply(ItemStack input) {
+                return new StackSorted(input.getItem(), input.getItemDamage());
             }
         });
-        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(new Function<ItemStack, Item>() {
+        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(new Function<ItemStack, StackSorted>() {
             @Override
-            public Item apply(ItemStack input) {
-                return input.getItem();
+            public StackSorted apply(ItemStack input) {
+                return new StackSorted(input.getItem(), input.getItemDamage());
             }
         });
 
-        GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_blocks", Item.getItemFromBlock(GCBlocks.machineBase2), 0, tabSorterBlocks);
-        GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", GCItems.rocketTier1, 0, tabSorterItems);
+        GalacticraftCore.galacticraftBlocksTab.setTabSorter(tabSorterBlocks);
+        GalacticraftCore.galacticraftItemsTab.setTabSorter(tabSorterItems);
 
         GalacticraftCore.proxy.init(event);
 
@@ -419,7 +440,7 @@ public class GalacticraftCore
             GCBlocks.crudeOil = new BlockFluidGC(fluidOil, "oil");
             ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
             GCBlocks.crudeOil.setUnlocalizedName("crude_oil_still");
-            GCBlocks.registerBlockSorted(GCBlocks.crudeOil, ItemBlockGC.class, null, false);
+            GCBlocks.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class);
             fluidOil.setBlock(GCBlocks.crudeOil);
         }
         else
@@ -457,7 +478,7 @@ public class GalacticraftCore
             GCBlocks.fuel = new BlockFluidGC(fluidFuel, "fuel");
             ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
             GCBlocks.fuel.setUnlocalizedName("fuel");
-            GCBlocks.registerBlockSorted(GCBlocks.fuel, ItemBlockGC.class, null, false);
+            GCBlocks.registerBlock(GCBlocks.fuel, ItemBlockGC.class);
             fluidFuel.setBlock(GCBlocks.fuel);
         }
         else

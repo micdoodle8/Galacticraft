@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
@@ -14,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
+public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem, ISortableItem
 {
     public ItemSchematicTier2()
     {
@@ -58,5 +60,11 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem
                 break;
             }
         }
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.SCHEMATIC;
     }
 }

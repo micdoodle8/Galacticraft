@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import micdoodle8.mods.galacticraft.core.client.model.loader.IModelCustom;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelRocketT3;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;

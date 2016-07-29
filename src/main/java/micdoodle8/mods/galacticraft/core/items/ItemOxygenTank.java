@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemOxygenTank extends Item
+public class ItemOxygenTank extends Item implements ISortableItem
 {
     public ItemOxygenTank(int tier, String assetName)
     {
@@ -52,5 +53,11 @@ public class ItemOxygenTank extends Item
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
     {
         par2List.add(GCCoreUtil.translate("gui.tank.oxygen_remaining") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GEAR;
     }
 }

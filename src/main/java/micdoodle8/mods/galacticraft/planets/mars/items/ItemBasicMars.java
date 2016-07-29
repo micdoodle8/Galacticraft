@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBasicMars extends Item
+public class ItemBasicMars extends Item implements ISortableItem
 {
     public static String[] names = { "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip" };
 //    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
@@ -100,5 +102,11 @@ public class ItemBasicMars extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

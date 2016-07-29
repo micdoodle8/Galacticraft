@@ -60,13 +60,6 @@ public class BlockSludge extends BlockFluidClassic
         this.setUnlocalizedName(assetName);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
-
     /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2)

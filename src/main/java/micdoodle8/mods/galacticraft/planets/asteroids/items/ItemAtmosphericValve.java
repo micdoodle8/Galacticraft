@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -9,7 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemAtmosphericValve extends Item
+public class ItemAtmosphericValve extends Item implements ISortableItem
 {
     public ItemAtmosphericValve(String assetName)
     {
@@ -17,7 +19,6 @@ public class ItemAtmosphericValve extends Item
         this.setMaxDamage(0);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(64);
-        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     @SideOnly(Side.CLIENT)
@@ -34,9 +35,9 @@ public class ItemAtmosphericValve extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    /*@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
     {
-        this.itemIcon = iconRegister.registerIcon(this.getIconString());
-    }*/
+        return EnumSortCategoryItem.GENERAL;
+    }
 }

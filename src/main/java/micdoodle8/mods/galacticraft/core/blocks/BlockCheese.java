@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
+public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, 6);
     // IIcon[] cheeseIcons;
@@ -267,5 +268,11 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc
     public boolean hasComparatorInputOverride()
     {
         return true;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

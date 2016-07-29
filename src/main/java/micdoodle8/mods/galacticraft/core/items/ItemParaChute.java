@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static net.minecraft.item.EnumDyeColor.*;
 
-public class ItemParaChute extends Item
+public class ItemParaChute extends Item implements ISortableItem
 {
     public static final String[] names = { "plain", // 0
             "black", // 1
@@ -232,5 +233,11 @@ public class ItemParaChute extends Item
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GEAR;
     }
 }

@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
 import net.minecraft.block.material.Material;
@@ -20,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
+public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public BlockMinerBase(String assetName)
     {
@@ -112,5 +114,11 @@ public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockS
     public EnumWorldBlockLayer getBlockLayer()
     {
         return EnumWorldBlockLayer.CUTOUT;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

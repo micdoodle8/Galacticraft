@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -25,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BlockIceAsteroids extends BlockBreakable
+public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
 {
     public BlockIceAsteroids(String assetName)
     {
@@ -33,7 +35,6 @@ public class BlockIceAsteroids extends BlockBreakable
         this.slipperiness = 0.98F;
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.tabBlock);
-//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
         this.setHardness(0.5F);
         this.setUnlocalizedName(assetName);
         this.setStepSound(soundTypeGlass);
@@ -45,13 +46,6 @@ public class BlockIceAsteroids extends BlockBreakable
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public int getRenderBlockPass()
-//    {
-//        return 1;
-//    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -131,10 +125,9 @@ public class BlockIceAsteroids extends BlockBreakable
         return 0;
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
     {
-        this.blockIcon = iconRegister.registerIcon(this.getTextureName());
-    }*/
+        return EnumSortCategoryBlock.GENERAL;
+    }
 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemMoon extends Item
+public class ItemMoon extends Item implements ISortableItem
 {
     public static String[] names = { "meteoric_iron_ingot", "compressed_meteoric_iron" };
 //    protected IIcon[] icons = new IIcon[ItemMoon.names.length];
@@ -85,5 +86,11 @@ public class ItemMoon extends Item
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBasicAsteroids extends Item
+public class ItemBasicAsteroids extends Item implements ISortableItem
 {
     public static String[] names = { "reinforced_plate_t3", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core" };
 //    protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
@@ -100,5 +102,11 @@ public class ItemBasicAsteroids extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

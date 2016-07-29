@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -31,7 +32,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc
+public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
 //    private IIcon[] enclosedIcons;
     public static Item[] pipeItemsBC = new Item[6];
@@ -467,5 +468,11 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     protected BlockState createBlockState()
     {
         return new BlockState(this, TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.TRANSMITTER;
     }
 }

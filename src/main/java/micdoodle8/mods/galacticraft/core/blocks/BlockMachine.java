@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyDirection;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
+public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final int COAL_GENERATOR_METADATA = 0;
     public static final int COMPRESSOR_METADATA = 12;
@@ -352,5 +353,11 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
-public class ItemBuggy extends Item implements IHoldableItem
+public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 {
     public ItemBuggy(String assetName)
     {
@@ -179,5 +180,11 @@ public class ItemBuggy extends Item implements IHoldableItem
     public boolean shouldCrouch(EntityPlayer player)
     {
         return true;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

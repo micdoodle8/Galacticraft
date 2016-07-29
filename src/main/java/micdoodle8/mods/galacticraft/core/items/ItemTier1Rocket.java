@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
-public class ItemTier1Rocket extends Item implements IHoldableItem
+public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableItem
 {
     public ItemTier1Rocket(String assetName)
     {
@@ -191,5 +192,11 @@ public class ItemTier1Rocket extends Item implements IHoldableItem
     public boolean shouldCrouch(EntityPlayer player)
     {
         return true;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.ROCKET;
     }
 }

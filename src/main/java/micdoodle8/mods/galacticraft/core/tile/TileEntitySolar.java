@@ -276,7 +276,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        for (int y = 1; y <= 2; y++)
+        for (int y = 1; y <= 1; y++)
         {
             for (int x = -1; x < 2; x++)
             {
@@ -286,9 +286,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                     IBlockState stateAt = this.worldObj.getBlockState(pos);
                     IBlockState stateBelow = this.worldObj.getBlockState(pos.down());
 
-                    if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.byMetadata((this.getTierGC() == 1) ? 4 : 0))
+                    if (stateAt.getBlock() == GCBlocks.fakeBlock)
                     {
-                        if ((x == 0 && z == 0) || (stateBelow.getBlock().isAir(this.worldObj, pos.down())))
+                        BlockMulti.EnumBlockMultiType type = (BlockMulti.EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE);
+                        if ((type == BlockMulti.EnumBlockMultiType.SOLAR_PANEL_0 || type == BlockMulti.EnumBlockMultiType.SOLAR_PANEL_1) &&
+                                ((x == 0 && z == 0) || (stateBelow.getBlock().isAir(this.worldObj, pos.down()))))
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                             {
@@ -380,19 +382,12 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
         return EnumSet.of(getFacing());
-
-//        int metadata = this.getBlockMetadata() & 3;
-
-//        return EnumSet.of(EnumFacing.getFront((metadata + 2) ^ 1), EnumFacing.UNKNOWN);
     }
 
     @Override
     public EnumFacing getElectricalOutputDirectionMain()
     {
         return getFacing();
-//        int metadata = this.getBlockMetadata() & 3;
-
-//        return EnumFacing.getFront((metadata + 2) ^ 1);
     }
 
     @Override
@@ -577,7 +572,8 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
@@ -13,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemKeyMars extends Item implements IKeyItem
+public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
 {
     public ItemKeyMars()
     {
@@ -60,5 +62,11 @@ public class ItemKeyMars extends Item implements IKeyItem
     public int getTier(ItemStack keyStack)
     {
         return 2;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

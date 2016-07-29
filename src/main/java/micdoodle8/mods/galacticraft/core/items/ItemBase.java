@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBase extends Item
+public class ItemBase extends Item implements ISortableItem
 {
     public ItemBase(String assetName)
     {
@@ -44,5 +45,11 @@ public class ItemBase extends Item
         {
             par3List.add(GCCoreUtil.translate("item.tier1.desc"));
         }
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockShiftDesc
+public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
     {
@@ -310,5 +311,11 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

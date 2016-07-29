@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider
+public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider, ISortableBlock
 {
     //public static IIcon thrusterIcon;
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -381,5 +382,11 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

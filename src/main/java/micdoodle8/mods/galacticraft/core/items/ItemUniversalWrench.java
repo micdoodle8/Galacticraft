@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -18,7 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemUniversalWrench extends Item
+public class ItemUniversalWrench extends Item implements ISortableItem
 {
     public ItemUniversalWrench(String assetName)
     {
@@ -106,5 +107,11 @@ public class ItemUniversalWrench extends Item
         }
 
         return false;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.TOOLS;
     }
 }

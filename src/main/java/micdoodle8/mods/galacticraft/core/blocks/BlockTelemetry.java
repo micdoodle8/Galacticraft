@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.UUID;
 
-public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
+public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     /*private IIcon iconFront;
     private IIcon iconSide;*/
@@ -195,5 +196,11 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 
 import java.lang.reflect.Field;
 
-public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider
+public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
@@ -244,5 +245,11 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

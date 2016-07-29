@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemAstroMiner extends Item implements IHoldableItem
+public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 {
     public ItemAstroMiner(String assetName)
     {
@@ -140,5 +142,11 @@ public class ItemAstroMiner extends Item implements IHoldableItem
     public boolean shouldCrouch(EntityPlayer player)
     {
         return true;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

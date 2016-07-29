@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
+public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeAsteroids", EnumBlockBasic.class);
 
@@ -235,4 +237,16 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         return new BlockState(this, BASIC_TYPE);
     }
 
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 3:
+        case 4:
+        case 5:
+            return EnumSortCategoryBlock.ORE;
+        }
+        return EnumSortCategoryBlock.GENERAL;
+    }
 }

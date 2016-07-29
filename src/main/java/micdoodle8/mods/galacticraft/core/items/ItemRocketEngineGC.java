@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemRocketEngineGC extends Item
+public class ItemRocketEngineGC extends Item implements ISortableItem
 {
     public static final String[] names = { "tier1engine", // 0
             "tier1booster" }; // 1
@@ -83,5 +84,11 @@ public class ItemRocketEngineGC extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -15,7 +17,7 @@ import net.minecraft.item.*;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public class ItemGrappleHook extends ItemBow
+public class ItemGrappleHook extends ItemBow implements ISortableItem
 {
     public ItemGrappleHook(String assetName)
     {
@@ -92,9 +94,9 @@ public class ItemGrappleHook extends ItemBow
         return par1ItemStack;
     }
 
-//    @SideOnly(Side.CLIENT)
-//    public void registerIcons(IIconRegister iconRegister)
-//    {
-//        this.itemIcon = iconRegister.registerIcon("arrow");
-//    }
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
+    }
 }

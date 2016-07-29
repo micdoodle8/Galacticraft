@@ -84,13 +84,13 @@ public class AsteroidsItems
     private static void registerItems()
     {
         registerItem(AsteroidsItems.grapple);
-        registerItemSorted(AsteroidsItems.tier3Rocket, MarsItems.rocketMars);
+        registerItem(AsteroidsItems.tier3Rocket);
         registerItem(AsteroidsItems.astroMiner);
         registerItem(AsteroidsItems.thermalPadding);
         registerItem(AsteroidsItems.basicItem);
-        registerItemSorted(AsteroidsItems.methaneCanister, GCItems.fuelCanister);
-        registerItemSorted(AsteroidsItems.canisterLOX, AsteroidsItems.methaneCanister);
-        registerItemSorted(AsteroidsItems.canisterLN2, AsteroidsItems.canisterLOX);
+        registerItem(AsteroidsItems.methaneCanister);
+        registerItem(AsteroidsItems.canisterLOX);
+        registerItem(AsteroidsItems.canisterLN2);
         //registerItem(AsteroidsItems.canisterLAr);
         registerItem(AsteroidsItems.atmosphericValve);
         registerItem(AsteroidsItems.heavyNoseCone);
@@ -108,29 +108,10 @@ public class AsteroidsItems
 
     public static void registerItem(Item item)
     {
-        registerItemSorted(item, null);
-    }
-
-    public static void registerItemSorted(Item item, Item beforeItem)
-    {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
-        if (beforeItem == null)
-        {
-            GalacticraftCore.itemOrderListItems.add(item);
-        }
-        else
-        {
-            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
-            {
-                if (GalacticraftCore.itemOrderListItems.get(i) == beforeItem)
-                {
-                    GalacticraftCore.itemOrderListItems.add(i + 1, item);
-                    break;
-                }
-            }
-        }
         GalacticraftPlanets.proxy.postRegisterItem(item);
+        GCItems.registerSorted(item);
     }
 }

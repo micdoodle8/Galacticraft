@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -12,6 +14,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GCItems
 {
@@ -48,7 +51,6 @@ public class GCItems
     public static Item oilCanister;
     public static Item fuelCanister;
     public static Item oxygenCanisterInfinite;
-    public static Item oilExtractor;
     public static Item schematic;
     public static Item key;
     public static Item partBuggy;
@@ -106,7 +108,6 @@ public class GCItems
         GCItems.fuelCanister = new ItemFuelCanister("fuel_canister_partial");
         GCItems.oxygenCanisterInfinite = new ItemCanisterOxygenInfinite("infinite_oxygen");
         GCItems.flagPole = new ItemBase("steel_pole");
-        GCItems.oilExtractor = new ItemOilExtractor("oil_extractor");
         GCItems.schematic = new ItemSchematic("schematic");
         GCItems.key = new ItemKey("key");
         GCItems.partBuggy = new ItemBuggyMaterial("buggymat");
@@ -119,8 +120,6 @@ public class GCItems
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoric_iron_raw");
         GCItems.meteoricIronIngot = new ItemMoon("meteoric_iron_ingot");
-
-        hiddenItems.add(GCItems.oilExtractor);
 
         GCItems.registerHarvestLevels();
 
@@ -145,6 +144,24 @@ public class GCItems
         GCItems.steelSpade.setHarvestLevel("shovel", 4);
     }
 
+    public static void registerSorted(Item item)
+    {
+        if (item instanceof ISortableItem)
+        {
+            ISortableItem sortableItem = (ISortableItem) item;
+            List<ItemStack> items = Lists.newArrayList();
+            item.getSubItems(item, null, items);
+            for (ItemStack stack : items)
+            {
+                GalacticraftCore.sortMapItems.get(sortableItem.getCategory(stack.getItemDamage())).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
+            }
+        }
+        else if (item.getCreativeTab() == GalacticraftCore.galacticraftItemsTab)
+        {
+            throw new RuntimeException(item.getClass() + " must inherit " + ISortableItem.class.getSimpleName() + "!");
+        }
+    }
+
     public static void registerItems()
     {
         GCItems.registerItem(GCItems.rocketTier1);
@@ -155,6 +172,7 @@ public class GCItems
         GCItems.registerItem(GCItems.oxTankHeavy);
         GCItems.registerItem(GCItems.sensorLens);
         GCItems.registerItem(GCItems.sensorGlasses);
+        GCItems.registerItem(GCItems.wrench);
         GCItems.registerItem(GCItems.steelPickaxe);
         GCItems.registerItem(GCItems.steelAxe);
         GCItems.registerItem(GCItems.steelHoe);
@@ -176,7 +194,6 @@ public class GCItems
         GCItems.registerItem(GCItems.canvas);
         GCItems.registerItem(GCItems.oilCanister);
         GCItems.registerItem(GCItems.fuelCanister);
-        GCItems.registerItem(GCItems.oilExtractor);
         GCItems.registerItem(GCItems.schematic);
         GCItems.registerItem(GCItems.key);
         GCItems.registerItem(GCItems.partBuggy);
@@ -186,7 +203,6 @@ public class GCItems
         GCItems.registerItem(GCItems.infiniteBatery);
         GCItems.registerItem(GCItems.oxygenCanisterInfinite);
         GCItems.registerItem(GCItems.meteorChunk);
-        GCItems.registerItem(GCItems.wrench);
         GCItems.registerItem(GCItems.cheeseCurd);
         GCItems.registerItem(GCItems.meteoricIronRaw);
         GCItems.registerItem(GCItems.meteoricIronIngot);
@@ -197,30 +213,10 @@ public class GCItems
 
     public static void registerItem(Item item)
     {
-        registerItemSorted(item, null);
-    }
-
-    public static void registerItemSorted(Item item, Item beforeItem)
-    {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
         GalacticraftCore.proxy.postRegisterItem(item);
-
-        if (beforeItem == null)
-        {
-            GalacticraftCore.itemOrderListItems.add(item);
-        }
-        else
-        {
-            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
-            {
-                if (GalacticraftCore.itemOrderListItems.get(i) == beforeItem)
-                {
-                    GalacticraftCore.itemOrderListItems.add(i + 1, item);
-                    break;
-                }
-            }
-        }
+        GCItems.registerSorted(item);
     }
 }

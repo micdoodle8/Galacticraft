@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class GCCoreUtil
@@ -180,4 +181,68 @@ public class GCCoreUtil
 		if (l.getLanguageCode().equals("de_DE")) return string;
 		return GCCoreUtil.translate(string).toLowerCase();
 	}
+
+//    public static void sortBlock(Block block, int meta, StackSorted beforeStack)
+//    {
+//        StackSorted newStack = new StackSorted(Item.getItemFromBlock(block), meta);
+//
+//        // Remove duplicates
+//        for (Iterator<StackSorted> it = GalacticraftCore.itemOrderListBlocks.iterator(); it.hasNext();)
+//        {
+//            StackSorted stack = it.next();
+//            if (stack.equals(newStack))
+//            {
+//                it.remove();
+//            }
+//        }
+//
+//        if (beforeStack == null)
+//        {
+//            GalacticraftCore.itemOrderListBlocks.add(newStack);
+//        }
+//        else
+//        {
+//            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
+//            {
+//                if (GalacticraftCore.itemOrderListBlocks.get(i).equals(beforeStack))
+//                {
+//                    GalacticraftCore.itemOrderListBlocks.add(i + 1, newStack);
+//                    return;
+//                }
+//            }
+//
+//            throw new RuntimeException("Could not find block to insert before: " + beforeStack);
+//        }
+//    }
+//
+//    public static void sortItem(Item item, int meta, StackSorted beforeStack)
+//    {
+//        StackSorted newStack = new StackSorted(item, meta);
+//
+//        // Remove duplicates
+//        for (Iterator<StackSorted> it = GalacticraftCore.itemOrderListBlocks.iterator(); it.hasNext();)
+//        {
+//            StackSorted stack = it.next();
+//            if (stack.equals(newStack))
+//            {
+//                it.remove();
+//            }
+//        }
+//
+//        if (beforeStack == null)
+//        {
+//            GalacticraftCore.itemOrderListItems.add(newStack);
+//        }
+//        else
+//        {
+//            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
+//            {
+//                if (GalacticraftCore.itemOrderListItems.get(i).equals(beforeStack))
+//                {
+//                    GalacticraftCore.itemOrderListItems.add(i + 1, newStack);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 }

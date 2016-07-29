@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GCBlocks
 {
@@ -238,33 +241,27 @@ public class GCBlocks
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        registerBlockSorted(block, itemClass, null, true);
-    }
-
-    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock)
-    {
-        registerBlockSorted(block, itemClass, beforeBlock, true);
-    }
-
-    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock, boolean addToOrder)
-    {
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name);
-        if (beforeBlock == null)
+        GCBlocks.registerSorted(block);
+    }
+
+    public static void registerSorted(Block block)
+    {
+        if (block instanceof ISortableBlock)
         {
-            GalacticraftCore.itemOrderListBlocks.add(Item.getItemFromBlock(block));
-        }
-        else
-        {
-            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
+            ISortableBlock sortableBlock = (ISortableBlock) block;
+            List<ItemStack> blocks = Lists.newArrayList();
+            block.getSubBlocks(Item.getItemFromBlock(block), null, blocks);
+            for (ItemStack stack : blocks)
             {
-                if (GalacticraftCore.itemOrderListBlocks.get(i) == Item.getItemFromBlock(beforeBlock))
-                {
-                    GalacticraftCore.itemOrderListBlocks.add(i + 1, Item.getItemFromBlock(block));
-                    break;
-                }
+                GalacticraftCore.sortMapBlocks.get(sortableBlock.getCategory(stack.getItemDamage())).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
             }
+        }
+        else if (block.getCreativeTabToDisplayOn() == GalacticraftCore.galacticraftBlocksTab)
+        {
+            throw new RuntimeException(block.getClass() + " must inherit " + ISortableBlock.class.getSimpleName() + "!");
         }
     }
 
@@ -282,8 +279,8 @@ public class GCBlocks
         registerBlock(GCBlocks.oxygenCompressor, ItemBlockOxygenCompressor.class);
         registerBlock(GCBlocks.oxygenSealer, ItemBlockDesc.class);
         registerBlock(GCBlocks.oxygenDetector, ItemBlockDesc.class);
-        registerBlockSorted(GCBlocks.aluminumWire, ItemBlockAluminumWire.class, GCBlocks.landingPad);
-        registerBlockSorted(GCBlocks.oxygenPipe, ItemBlockDesc.class, GCBlocks.aluminumWire);
+        registerBlock(GCBlocks.aluminumWire, ItemBlockAluminumWire.class);
+        registerBlock(GCBlocks.oxygenPipe, ItemBlockDesc.class);
         registerBlock(GCBlocks.refinery, ItemBlockDesc.class);
         registerBlock(GCBlocks.fuelLoader, ItemBlockDesc.class);
         registerBlock(GCBlocks.cargoLoader, ItemBlockCargoLoader.class);
@@ -295,17 +292,17 @@ public class GCBlocks
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
         registerBlock(GCBlocks.parachest, ItemBlockDesc.class);
-        registerBlockSorted(GCBlocks.solarPanel, ItemBlockSolar.class, GCBlocks.cargoLoader);
-        registerBlockSorted(GCBlocks.machineBase, ItemBlockMachine.class, GCBlocks.solarPanel);
-        registerBlockSorted(GCBlocks.machineBase2, ItemBlockMachine.class, GCBlocks.machineBase);
-        registerBlockSorted(GCBlocks.machineTiered, ItemBlockMachine.class, GCBlocks.machineBase2);
+        registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class);
+        registerBlock(GCBlocks.machineBase, ItemBlockMachine.class);
+        registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
+        registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class);
         registerBlock(GCBlocks.glowstoneTorch, ItemBlockDesc.class);
         registerBlock(GCBlocks.fallenMeteor, ItemBlockDesc.class);
         registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class);
         registerBlock(GCBlocks.cheeseBlock, ItemBlockCheese.class);
         registerBlock(GCBlocks.spinThruster, ItemBlockThruster.class);
         registerBlock(GCBlocks.screen, ItemBlockDesc.class);
-        registerBlockSorted(GCBlocks.telemetry, ItemBlockDesc.class, GCBlocks.machineTiered);
+        registerBlock(GCBlocks.telemetry, ItemBlockDesc.class);
         registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class);
         registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class);
         /*registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());
@@ -315,5 +312,8 @@ public class GCBlocks
         registerBlock(GCBlocks.wallGC, ItemBlockWallGC.class, GCBlocks.wallGC.getUnlocalizedName());
         registerBlock(GCBlocks.slabGCHalf, ItemBlockSlabGC.class, GCBlocks.slabGCHalf.getUnlocalizedName().replace("tile.", ""), GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
         registerBlock(GCBlocks.slabGCDouble, ItemBlockSlabGC.class, GCBlocks.slabGCDouble.getUnlocalizedName().replace("tile.", ""), GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);*/
+//        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
+//        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
+//        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));
     }
 }

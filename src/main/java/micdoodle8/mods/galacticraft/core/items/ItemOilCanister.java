@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemOilCanister extends ItemCanisterGeneric
+public class ItemOilCanister extends ItemCanisterGeneric implements ISortableItem
 {
 //    protected IIcon[] icons = new IIcon[7];
 
@@ -92,5 +93,11 @@ public class ItemOilCanister extends ItemCanisterGeneric
             par1ItemStack.setTagCompound(null);
         }
         else if (par1ItemStack.getItemDamage() <= 0) par1ItemStack.setItemDamage(1);
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
     }
 }

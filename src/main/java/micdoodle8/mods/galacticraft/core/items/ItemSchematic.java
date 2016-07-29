@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
@@ -15,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemSchematic extends Item implements ISchematicItem
+public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
 {
     public ItemSchematic(String assetName)
     {
@@ -77,5 +78,11 @@ public class ItemSchematic extends Item implements ISchematicItem
                 break;
             }
         }
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.SCHEMATIC;
     }
 }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockAirLockWall extends BlockBreakable implements IPartialSealableBlock
+public class BlockAirLockWall extends BlockBreakable implements IPartialSealableBlock, ISortableBlock
 {
     public BlockAirLockWall(String assetName)
     {
@@ -131,5 +132,11 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     public Item getItem(World world, BlockPos pos)
     {
 		return null;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

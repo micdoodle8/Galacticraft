@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,7 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockFuelLoader extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
+public class BlockFuelLoader extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     /*private IIcon iconMachineSide;
     private IIcon iconInput;
@@ -193,5 +194,11 @@ public class BlockFuelLoader extends BlockAdvancedTile implements ItemBlockDesc.
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

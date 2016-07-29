@@ -6,6 +6,8 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
@@ -36,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock
+public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock, ISortableBlock
 {
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeMars", EnumBlockBasic.class);
 
@@ -432,5 +434,23 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     protected BlockState createBlockState()
     {
         return new BlockState(this, BASIC_TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            return EnumSortCategoryBlock.ORE;
+        case 7:
+            return EnumSortCategoryBlock.BRICKS;
+        case 8:
+            return EnumSortCategoryBlock.INGOT_BLOCK;
+        }
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

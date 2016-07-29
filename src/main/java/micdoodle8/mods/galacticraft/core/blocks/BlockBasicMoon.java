@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -39,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
+public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
     // CopperMoon: 0, TinMoon: 1, CheeseStone: 2
     // Moon dirt: 3;  Moon rock: 4;  Moon topsoil: 5-13 (6-13 have GC2 footprints);  Moon dungeon brick: 14;  Moon boss spawner: 15;
@@ -523,5 +524,20 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     protected BlockState createBlockState()
     {
         return new BlockState(this, BASIC_TYPE_MOON);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 0:
+        case 1:
+        case 2:
+            return EnumSortCategoryBlock.ORE;
+        case 14:
+            return EnumSortCategoryBlock.BRICKS;
+        }
+        return EnumSortCategoryBlock.GENERAL;
     }
 }

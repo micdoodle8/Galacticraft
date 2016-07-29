@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
@@ -11,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply
+public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortableItem
 {
 //    protected IIcon[] icons = new IIcon[7];
     private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
@@ -109,4 +111,10 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 	{
 		return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
 	}
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
+    }
 }

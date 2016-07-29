@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -13,7 +14,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemSensorGlasses extends ItemArmor
+public class ItemSensorGlasses extends ItemArmor implements ISortableItem
 {
     public ItemSensorGlasses(String assetName)
     {
@@ -47,5 +48,11 @@ public class ItemSensorGlasses extends ItemArmor
     {
         OverlaySensorGlasses.renderSensorGlassesMain(stack, player, resolution, partialTicks);
         OverlaySensorGlasses.renderSensorGlassesValueableBlocks(stack, player, resolution, partialTicks);
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GEAR;
     }
 }

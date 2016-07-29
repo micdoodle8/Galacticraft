@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemCanister extends Item
+public class ItemCanister extends Item implements ISortableItem
 {
     public static final String[] names = { "tin", // 0
             "copper" }; // 1
@@ -84,5 +85,11 @@ public class ItemCanister extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
     }
 }

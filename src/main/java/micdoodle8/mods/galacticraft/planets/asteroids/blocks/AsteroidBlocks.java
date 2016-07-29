@@ -51,29 +51,10 @@ public class AsteroidBlocks
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        registerBlockSorted(block, itemClass, null);
-    }
-
-    public static void registerBlockSorted(Block block, Class<? extends ItemBlock> itemClass, Block beforeBlock)
-    {
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name);
-        if (beforeBlock == null)
-        {
-            GalacticraftCore.itemOrderListBlocks.add(Item.getItemFromBlock(block));
-        }
-        else
-        {
-            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
-            {
-                if (GalacticraftCore.itemOrderListBlocks.get(i) == Item.getItemFromBlock(beforeBlock))
-                {
-                    GalacticraftCore.itemOrderListBlocks.add(i + 1, Item.getItemFromBlock(block));
-                    break;
-                }
-            }
-        }
+        GCBlocks.registerSorted(block);
     }
 
     public static void registerBlocks()

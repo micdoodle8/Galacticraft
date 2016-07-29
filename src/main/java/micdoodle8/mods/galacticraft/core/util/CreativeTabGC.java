@@ -59,6 +59,14 @@ public class CreativeTabGC extends CreativeTabs
     public void displayAllReleventItems(List<ItemStack> list)
     {
         super.displayAllReleventItems(list);
-        Collections.sort(list, tabSorter);
+        if (this.tabSorter != null)
+        {
+            Collections.sort(list, tabSorter);
+        }
+    }
+
+    public void setTabSorter(Comparator<ItemStack> tabSorter)
+    {
+        this.tabSorter = tabSorter;
     }
 }
