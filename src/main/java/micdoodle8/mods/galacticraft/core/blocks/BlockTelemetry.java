@@ -154,11 +154,11 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         			{
         				UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
         				((TileEntityTelemetry) tile).addTrackedEntity(uuid);
-                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetrySucceed.message")));
+                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_succeed.message")));
         			}
         			else
         			{
-                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFail.message")));
+                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail.message")));
 
         				if (fmData == null)
             			{
@@ -177,10 +177,10 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         		if (wearing != null)
         		{
         			if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim")) return false;
-                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailWearingIt.message")));
+                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail_wearing_it.message")));
         		}
         		else
-                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetryFailNoFrequencyModule.message")));
+                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail_no_frequency_module.message")));
         	}
         }
     	return false;

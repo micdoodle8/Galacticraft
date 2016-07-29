@@ -103,7 +103,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 6, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.add(GCCoreUtil.translate("item.atmosphericValve.name"));
+        fuelSlotDesc.add(GCCoreUtil.translate("item.atmospheric_valve.name"));
         fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0.name"));
         fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("gas.carbondioxide.name"));
         fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1.name") + ")");
@@ -209,7 +209,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
     private void addToolTips()
     {
         List<String> gasTankDesc = new ArrayList<String>();
-        gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
+        gasTankDesc.add(GCCoreUtil.translate("gui.gas_tank.desc.0"));
         FluidStack gasTankContents = this.tileEntity.gasTank != null ? this.tileEntity.gasTank.getFluid() : null;
         if (gasTankContents != null)
         {
@@ -231,7 +231,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
         gasTankDesc = new ArrayList<String>();
         gasTankDesc.add(GCCoreUtil.translate("gas.carbondioxide.name"));
-        gasTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
+        gasTankDesc.add(GCCoreUtil.translate("gui.gas_tank.desc.0"));
         gasTankContents = this.tileEntity.gasTank2 != null ? this.tileEntity.gasTank2.getFluid() : null;
         if (gasTankContents != null)
         {
@@ -252,7 +252,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         this.gasTank2Region.tooltipStrings = gasTankDesc;
 
         List<String> fuelTankDesc = new ArrayList<String>();
-        fuelTankDesc.add(GCCoreUtil.translate("gui.gasTank.desc.0"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.gas_tank.desc.0"));
         gasTankContents = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getFluid() : null;
         if (gasTankContents != null)
         {
@@ -273,8 +273,8 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 
         List<String> electricityDesc = new ArrayList<String>();
-        electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
-//		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energyStorage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
+        electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
+//		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
     }

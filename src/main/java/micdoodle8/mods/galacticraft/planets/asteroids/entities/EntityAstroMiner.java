@@ -1899,11 +1899,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		str[2] = "y: " + data[1];
 		str[3] = "z: " + data[2];
 		int energyPerCent = data[3] / 120;
-		str[4] = GCCoreUtil.translate("gui.energyStorage.desc.1") + ": " + energyPerCent + "%";
+		str[4] = GCCoreUtil.translate("gui.energy_storage.desc.1") + ": " + energyPerCent + "%";
 		switch (data[4])
 		{
 			case EntityAstroMiner.AISTATE_STUCK:
-				str[0] = GCCoreUtil.translate("gui.message.noEnergy.name");
+				str[0] = GCCoreUtil.translate("gui.message.no_energy.name");
 				break;
 			case EntityAstroMiner.AISTATE_ATBASE:
 				str[0] = GCCoreUtil.translate("gui.miner.docked");

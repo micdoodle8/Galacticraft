@@ -78,7 +78,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 24, (this.height - this.ySize) / 2 + 38, 18, 18, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.showBubble.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.show_bubble.desc.0"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 85, (this.height - this.ySize) / 2 + 132, 85, 13, batterySlotDesc, this.width, this.height, this));
         this.waterTankInfoRegion.tooltipStrings = new ArrayList<String>();
         this.waterTankInfoRegion.xPosition = (this.width - this.xSize) / 2 + 55;
@@ -89,8 +89,8 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.buttonList.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableTreesButton = new GuiButton(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enableTrees.name"));
-        this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enableGrass.name"));
+        this.enableTreesButton = new GuiButton(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"));
+        this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"));
         this.buttonList.add(this.enableTreesButton);
         this.buttonList.add(this.enableGrassButton);
         this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
@@ -138,7 +138,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
         if (this.terraformer.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
         }
 
         if (this.terraformer.grassDisabled && this.terraformer.treesDisabled)
@@ -148,27 +148,27 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
         if (this.terraformer.waterTank.getFluid() == null || this.terraformer.waterTank.getFluid().amount <= 0)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noWater.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_water.name");
         }
 
         if (this.terraformer.getFirstBonemealStack() == null)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noBonemeal.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_bonemeal.name");
         }
 
         if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack() == null)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noSeeds.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_seeds.name");
         }
 
         if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack() == null)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noSaplings.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_saplings.name");
         }
 
         if (this.terraformer.getBubbleSize() < this.terraformer.MAX_SIZE - 0.5)
         {
-            return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubbleExp.name");
+            return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubble_exp.name");
         }
 
         if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
@@ -197,7 +197,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.drawTexturedModalRect(var5 + 45, var6 + 48, 176, 26, Math.min(scale, 54), 7);
 
         List<String> electricityDesc = new ArrayList<String>();
-        electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+        electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.terraformer.getEnergyStoredGC(), this.terraformer.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 

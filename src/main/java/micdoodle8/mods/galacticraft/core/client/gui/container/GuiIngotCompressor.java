@@ -95,7 +95,7 @@ public class GuiIngotCompressor extends GuiContainerGC
         
         List<String> processDesc = new ArrayList<String>();
         processDesc.clear();
-        processDesc.add(GCCoreUtil.translate("gui.electricCompressor.desc.0") + ": " + process + "%");
+        processDesc.add(GCCoreUtil.translate("gui.electric_compressor.desc.0") + ": " + process + "%");
         this.processInfoRegion.tooltipStrings = processDesc;
 
         if (this.tileEntity.processTicks > 0)

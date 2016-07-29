@@ -188,9 +188,9 @@ public class GameScreenText implements IGameScreen
 	        		int oxygen = telemeter.clientData[4];
 	        		oxygen = (oxygen % 4096) + (oxygen / 4096);
 	        		if (oxygen == 180 || oxygen == 90)
-	        			str[4] = GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": OK";
+	        			str[4] = GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": OK";
 	        		else
-	        			str[4] = GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + this.makeOxygenString(oxygen) + GCCoreUtil.translate("gui.seconds");
+	        			str[4] = GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + this.makeOxygenString(oxygen) + GCCoreUtil.translate("gui.seconds");
 	        	} 
         	}
         	else

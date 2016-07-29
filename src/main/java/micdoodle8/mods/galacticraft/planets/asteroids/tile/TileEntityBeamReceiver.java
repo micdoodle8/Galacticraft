@@ -133,9 +133,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public Vector3 getInputPoint()
     {
         Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
-        headVec.x += this.facing.getFrontOffsetX() * 0.1F;
-        headVec.y += this.facing.getFrontOffsetY() * 0.1F;
-        headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+        if (this.facing != null)
+        {
+            headVec.x += this.facing.getFrontOffsetX() * 0.1F;
+            headVec.y += this.facing.getFrontOffsetY() * 0.1F;
+            headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+        }
         return headVec;
     }
 
@@ -143,9 +146,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public Vector3 getOutputPoint(boolean offset)
     {
         Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
-        headVec.x += this.facing.getFrontOffsetX() * 0.1F;
-        headVec.y += this.facing.getFrontOffsetY() * 0.1F;
-        headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+        if (this.facing != null)
+        {
+            headVec.x += this.facing.getFrontOffsetX() * 0.1F;
+            headVec.y += this.facing.getFrontOffsetY() * 0.1F;
+            headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+        }
         return headVec;
     }
 

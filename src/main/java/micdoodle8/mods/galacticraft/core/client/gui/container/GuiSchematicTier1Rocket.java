@@ -54,7 +54,7 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchemati
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(GCCoreUtil.translate("schematic.rocketT1.name"), 7, -20 + 27, 4210752);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("schematic.rocket_t1.name"), 7, -20 + 27, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 

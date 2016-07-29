@@ -276,7 +276,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        for (int y = 1; y <= 1; y++)
+        for (int y = 1; y <= 2; y++)
         {
             for (int x = -1; x < 2; x++)
             {

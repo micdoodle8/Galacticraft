@@ -488,7 +488,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public String getName()
     {
-        return GCCoreUtil.translate("container.tileTerraformer.name");
+        return GCCoreUtil.translate("container.tile_terraformer.name");
     }
 
     // ISidedInventory Implementation:

@@ -630,7 +630,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         if (this.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
         }
 
         if (this.getEnergyStoredGC() <= ENERGY_USE_ON_TELEPORT)
@@ -671,7 +671,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         if (this.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
         }
 
         if (this.getEnergyStoredGC() <= ENERGY_USE_ON_TELEPORT)
