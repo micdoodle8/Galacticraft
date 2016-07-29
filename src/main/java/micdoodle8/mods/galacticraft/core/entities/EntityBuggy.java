@@ -153,7 +153,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             final double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
             final double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            this.riddenByEntity.setPosition(this.posX + var1, this.posY - 2 + this.riddenByEntity.getYOffset(), this.posZ + var3);
+            this.riddenByEntity.setPosition(this.posX + var1, this.posY + 0.4F + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
 

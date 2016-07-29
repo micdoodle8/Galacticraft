@@ -72,6 +72,7 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
 
         GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
+        RenderHelper.disableStandardItemLighting();
 
         this.bindTexture(TextureMap.locationBlocksTexture);
         if (Minecraft.isAmbientOcclusionEnabled())

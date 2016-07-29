@@ -171,7 +171,6 @@ public class ClientProxyCore extends CommonProxyCore
     @SubscribeEvent
     public void onTextureStitchedPre(TextureStitchEvent.Pre event)
     {
-        RenderTier3Rocket.RocketTexture.instance.register(event.map);
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocketT1"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyMain"));
@@ -260,19 +259,19 @@ public class ClientProxyCore extends CommonProxyCore
 
         for (int i = 0; i < 4; ++i)
         {
-            ImmutableList<String> objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheels");
+            ImmutableList<String> objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right");
             switch (i)
             {
             case 0:
                 break;
             case 1:
-                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheels", "CargoLeft");
+                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft");
                 break;
             case 2:
-                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheels", "CargoLeft", "CargoMid");
+                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid");
                 break;
             case 3:
-                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheels", "CargoLeft", "CargoMid", "CargoRight");
+                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
                 break;
             }
             replaceModelDefault(event, "buggy_" + i, "buggyInv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
@@ -380,7 +379,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
         RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
         RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
+        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
 //        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
 //        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
 

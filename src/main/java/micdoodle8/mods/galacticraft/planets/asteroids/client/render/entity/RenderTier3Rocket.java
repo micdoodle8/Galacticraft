@@ -46,75 +46,19 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class RenderTier3Rocket extends Render<EntityTier3Rocket>
 {
-    private static Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER;
     private ItemModelRocketT3 rocketModel;
-
-    public static class RocketTexture extends TextureAtlasSprite
-    {
-        public static ResourceLocation loc = new ResourceLocation("galacticraftplanets:model/tier3rocket");
-        public static RocketTexture instance = new RocketTexture();
-
-        protected RocketTexture()
-        {
-            super(loc.toString());
-        }
-
-        @Override
-        public boolean hasCustomLoader(IResourceManager manager, ResourceLocation location)
-        {
-            return true;
-        }
-
-        @Override
-        public boolean load(IResourceManager manager, ResourceLocation location)
-        {
-            BufferedImage image = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = image.createGraphics();
-            graphics.setBackground(Color.WHITE);
-            graphics.clearRect(0, 0, 16, 16);
-            BufferedImage[] images = new BufferedImage[Minecraft.getMinecraft().gameSettings.mipmapLevels + 1];
-            images[0] = image;
-            try
-            {
-                loadSprite(images, null);
-            }
-            catch(IOException e)
-            {
-                throw new RuntimeException(e);
-            }
-            return false;
-        }
-
-        public void register(TextureMap map)
-        {
-            map.setTextureEntry(RocketTexture.loc.toString(), RocketTexture.instance);
-        }
-    }
 
     public RenderTier3Rocket()
     {
         super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 2F;
-
-//        try
-//        {
-//            OBJModel model = (OBJModel) OBJLoader.instance.loadModel(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "models/tier3rocket.obj"));
-//
-//            IModel rocketmodel = ((OBJModel) model.process(ImmutableMap.of("flip-v", "true")));
-//
-//            rocketModel = rocketmodel.bake(new OBJModel.OBJState(ImmutableList.of("Rocket", "Cube", "Boosters", "NoseCone"), false), Attributes.DEFAULT_BAKED_FORMAT, TEXTUREGETTER);
-//        }
-//        catch (IOException e)
-//        {
-//            e.printStackTrace();
-//        }
     }
 
     private void updateModel()
     {
         if (rocketModel == null)
         {
-            TEXTUREGETTER = new Function<ResourceLocation, TextureAtlasSprite>() {
+            Function<ResourceLocation, TextureAtlasSprite> textureGetter = new Function<ResourceLocation, TextureAtlasSprite>() {
                 @Override
                 public TextureAtlasSprite apply(ResourceLocation input) {
                     return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
