@@ -129,7 +129,13 @@ public class GCItems
         {
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
             {
-                OreDictionary.registerOre(ItemBasic.names[i], new ItemStack(GCItems.basicItem, 1, i));
+                String name = ItemBasic.names[i];
+                while (name.contains("_"))
+                {
+                    int loc = name.indexOf("_");
+                    name = name.substring(0, loc) + name.substring(loc + 1, loc + 2).toUpperCase() + name.substring(loc + 2, name.length());
+                }
+                OreDictionary.registerOre(name, new ItemStack(GCItems.basicItem, 1, i));
             }
         }
 
@@ -170,6 +176,7 @@ public class GCItems
         GCItems.registerItem(GCItems.oxTankLight);
         GCItems.registerItem(GCItems.oxTankMedium);
         GCItems.registerItem(GCItems.oxTankHeavy);
+        GCItems.registerItem(GCItems.oxygenCanisterInfinite);
         GCItems.registerItem(GCItems.sensorLens);
         GCItems.registerItem(GCItems.sensorGlasses);
         GCItems.registerItem(GCItems.wrench);
@@ -201,7 +208,6 @@ public class GCItems
         GCItems.registerItem(GCItems.basicItem);
         GCItems.registerItem(GCItems.battery);
         GCItems.registerItem(GCItems.infiniteBatery);
-        GCItems.registerItem(GCItems.oxygenCanisterInfinite);
         GCItems.registerItem(GCItems.meteorChunk);
         GCItems.registerItem(GCItems.cheeseCurd);
         GCItems.registerItem(GCItems.meteoricIronRaw);

@@ -193,7 +193,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.targetNoEnergy.name")));
+                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.target_no_energy.name")));
                                         }
                                     }
                                     break;
@@ -365,7 +365,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
     @Override
     public String getName() {
-        return GCCoreUtil.translate("container.shortRangeTelepad.name");
+        return GCCoreUtil.translate("container.short_range_telepad.name");
     }
 
     @Override
@@ -625,7 +625,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         if (!this.addressValid)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalidAddress.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_address.name");
         }
 
         if (this.getEnergyStoredGC() <= 0.0F)
@@ -635,7 +635,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         if (this.getEnergyStoredGC() <= ENERGY_USE_ON_TELEPORT)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.notEnoughEnergy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.not_enough_energy.name");
         }
 
         if (this.getDisabled(0))
@@ -643,7 +643,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.receivingActive.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.receiving_active.name");
     }
 
     @SideOnly(Side.CLIENT)
@@ -651,22 +651,22 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         if (!this.addressValid)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalidTargetAddress.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_target_address.name");
         }
 
         if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.TOO_FAR)
         {
-            return EnumColor.RED + GCCoreUtil.translateWithFormat("gui.message.telepadTooFar.name", TELEPORTER_RANGE);
+            return EnumColor.RED + GCCoreUtil.translateWithFormat("gui.message.telepad_too_far.name", TELEPORTER_RANGE);
         }
 
         if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.WRONG_DIM)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepadWrongDim.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_wrong_dim.name");
         }
 
         if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.NOT_FOUND)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepadNotFound.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_not_found.name");
         }
 
         if (this.getEnergyStoredGC() <= 0.0F)
@@ -676,7 +676,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         if (this.getEnergyStoredGC() <= ENERGY_USE_ON_TELEPORT)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.notEnoughEnergy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.not_enough_energy.name");
         }
 
         if (this.getDisabled(0))
@@ -684,7 +684,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.sendingActive.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.sending_active.name");
     }
 
     @SideOnly(Side.CLIENT)

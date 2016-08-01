@@ -131,7 +131,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     	if (this.tile.linkedMinerID == null) return "";
     	EntityAstroMiner miner = this.tile.linkedMiner;
     	if (miner == null || miner.isDead) return "";
-    	if (this.tile.linkCountDown == 0) return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.outOfRange");
+    	if (this.tile.linkCountDown == 0) return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.out_of_range");
 
     	switch (miner.AIstate)
     	{

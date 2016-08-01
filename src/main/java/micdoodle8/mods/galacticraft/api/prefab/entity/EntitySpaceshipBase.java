@@ -618,7 +618,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		//  data4 = pitch angle
 		int countdown = data[0];
 		str[0] = "";
-		str[1] = (countdown == 400) ? GCCoreUtil.translate("gui.rocket.onLaunchpad") : ((countdown > 0) ? GCCoreUtil.translate("gui.rocket.countdown") + ": " + countdown / 20 : GCCoreUtil.translate("gui.rocket.launched"));
+		str[1] = (countdown == 400) ? GCCoreUtil.translate("gui.rocket.on_launchpad") : ((countdown > 0) ? GCCoreUtil.translate("gui.rocket.countdown") + ": " + countdown / 20 : GCCoreUtil.translate("gui.rocket.launched"));
 		str[2] = GCCoreUtil.translate("gui.rocket.height") + ": " + data[1];
 		str[3] = GameScreenText.makeSpeedString(data[2]);
 		str[4] = GCCoreUtil.translate("gui.message.fuel.name") + ": " + data[3] + "%";

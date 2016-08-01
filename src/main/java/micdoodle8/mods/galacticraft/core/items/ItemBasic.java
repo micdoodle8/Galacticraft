@@ -226,6 +226,20 @@ public class ItemBasic extends Item implements ISortableItem
     @Override
     public EnumSortCategoryItem getCategory(int meta)
     {
+        switch (meta)
+        {
+        case 3:
+        case 4:
+        case 5:
+            return EnumSortCategoryItem.INGOT;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+            return EnumSortCategoryItem.PLATE;
+        }
         return EnumSortCategoryItem.GENERAL;
     }
 }

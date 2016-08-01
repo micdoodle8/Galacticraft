@@ -172,7 +172,7 @@ public class GuiOxygenSealer extends GuiContainerGC
 
         if (this.sealer.calculatingSealed)
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.checkingSeal.name") + "...";
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.checking_seal.name") + "...";
         }
 
         int threadCooldown = this.sealer.getScaledThreadCooldown(25);
@@ -187,11 +187,11 @@ public class GuiOxygenSealer extends GuiContainerGC
                     elipsis += ".";
                 }
 
-                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.checkStarting.name") + elipsis;
+                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.check_starting.name") + elipsis;
             }
             else
             {
-                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.checkPending.name");
+                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.check_pending.name");
             }
         }
         else

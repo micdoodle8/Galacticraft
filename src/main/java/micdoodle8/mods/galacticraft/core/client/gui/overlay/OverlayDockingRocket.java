@@ -43,16 +43,16 @@ public class OverlayDockingRocket extends Overlay
                 String dYStr = String.valueOf(dY);
                 String dZStr = String.valueOf(dZ);
 
-                String warning = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.0", GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()));
-                String warning2 = GCCoreUtil.translateWithFormat("gui.dockingRocket.warning.name.1", GameSettings.getKeyDisplayString(KeyHandlerClient.leftShiftKey.getKeyCode()));
+                String warning = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.0", GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()));
+                String warning2 = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.1", GameSettings.getKeyDisplayString(KeyHandlerClient.leftShiftKey.getKeyCode()));
 
                 double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.getY()) / -100.0D, -0.9D) * 100.0D) / 100.0D;
                 double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;
                 double dMY = Math.floor((targetMotionY - currentMotionY) * 300);
                 int dMotionY = (int) Math.max(1, Math.min(255, dMY));
                 int dMotionYN = (int) Math.max(1, Math.min(255, -dMY));
-                String targetMotionYStr = GCCoreUtil.translate("gui.dockingRocket.targetVel.name") + ": " + String.valueOf(targetMotionY);
-                String currentMotionYStr = GCCoreUtil.translate("gui.dockingRocket.currentVel.name") + ": " + String.valueOf(currentMotionY);
+                String targetMotionYStr = GCCoreUtil.translate("gui.docking_rocket.target_vel.name") + ": " + String.valueOf(targetMotionY);
+                String currentMotionYStr = GCCoreUtil.translate("gui.docking_rocket.current_vel.name") + ": " + String.valueOf(currentMotionY);
 
                 int red = ColorUtil.to32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
                 int green = ColorUtil.to32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
@@ -71,7 +71,7 @@ public class OverlayDockingRocket extends Overlay
                 OverlayDockingRocket.minecraft.fontRendererObj.drawString(targetMotionYStr, width - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
                 OverlayDockingRocket.minecraft.fontRendererObj.drawString(currentMotionYStr, width - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
 
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.dockingRocket.distanceFrom.name"), 50, height / 3 + 15, grey);
+                OverlayDockingRocket.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from.name"), 50, height / 3 + 15, grey);
                 OverlayDockingRocket.minecraft.fontRendererObj.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
                 OverlayDockingRocket.minecraft.fontRendererObj.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : OverlayDockingRocket.screenTicks / 10 % 2 == 0 ? red : grey);
                 OverlayDockingRocket.minecraft.fontRendererObj.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);

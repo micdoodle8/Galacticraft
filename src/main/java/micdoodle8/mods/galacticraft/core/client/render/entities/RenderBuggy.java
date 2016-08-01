@@ -94,7 +94,6 @@ public class RenderBuggy extends Render<EntityBuggy>
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
         GL11.glScalef(0.41F, 0.41F, 0.41F);
-//        this.bindTexture(RenderBuggy.buggyTextureWheel);
 
         this.updateModels();
 
@@ -114,59 +113,42 @@ public class RenderBuggy extends Render<EntityBuggy>
 
         // Front wheels
         GL11.glPushMatrix();
-//        GL11.glTranslatef(0.0F, 1.0F, -2.7F);
         GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
         GL11.glRotatef(rotation, 1, 0, 0);
         this.drawBakedModel(wheelFrontRight);
         this.drawBakedModel(wheelFrontLeft);
-//        GL11.glTranslatef(1.4F, 0.0F, 0.0F);
-//        this.modelBuggyWheelRight.renderPart("WheelRight_Wheel");
-//        GL11.glTranslatef(-2.8F, 0.0F, 0.0F);
-//        this.modelBuggyWheelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
 
         // Back wheels
         GL11.glPushMatrix();
-//        GL11.glTranslatef(0.0F, 1.0F, 3.6F);
         GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
         GL11.glRotatef(rotation, 1, 0, 0);
         this.drawBakedModel(wheelBackRight);
         this.drawBakedModel(wheelBackLeft);
-//        GL11.glTranslatef(2.0F, 0.0F, 0.0F);
-//        this.modelBuggyWheelRight.renderPart("WheelRight_Wheel");
-//        GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
-//        this.modelBuggyWheelLeft.renderPart("WheelLeft_Wheel");
         GL11.glPopMatrix();
 
-//        this.bindTexture(RenderBuggy.buggyTextureBody);
-//        this.modelBuggy.renderPart("MainBody");
         this.drawBakedModel(mainModel);
 
         // Radar Dish
         GL11.glPushMatrix();
         GL11.glTranslatef(-1.178F, 4.1F, -2.397F);
-        GL11.glRotatef((float)Math.sin(entity.ticksExisted * 0.05) * 50.0F, 1, 0, 0);
-        GL11.glRotatef((float)Math.cos(entity.ticksExisted * 0.1) * 50.0F, 0, 0, 1);
-//        this.modelBuggy.renderPart("RadarDish_Dish");
+        int ticks = entity.ticksExisted + entity.getEntityId() * 10000;
+        GL11.glRotatef((float)Math.sin(ticks * 0.05) * 50.0F, 1, 0, 0);
+        GL11.glRotatef((float)Math.cos(ticks * 0.1) * 50.0F, 0, 0, 1);
         this.drawBakedModel(radarDish);
         GL11.glPopMatrix();
-
-//        this.bindTexture(RenderBuggy.buggyTextureStorage);
 
         if (entity.buggyType > 0)
         {
             this.drawBakedModel(cargoLeft);
-//            this.modelBuggy.renderPart("CargoLeft");
 
             if (entity.buggyType > 1)
             {
                 this.drawBakedModel(cargoMid);
-//                this.modelBuggy.renderPart("CargoMid");
 
                 if (entity.buggyType > 2)
                 {
                     this.drawBakedModel(cargoRight);
-//                    this.modelBuggy.renderPart("CargoRight");
                 }
             }
         }

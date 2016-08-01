@@ -373,7 +373,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeletonBoss.message")));
+                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
                 this.setDead();

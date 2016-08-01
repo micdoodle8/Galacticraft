@@ -107,6 +107,14 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
     @Override
     public EnumSortCategoryItem getCategory(int meta)
     {
+        switch (meta)
+        {
+        case 0:
+        case 6:
+            return EnumSortCategoryItem.PLATE;
+        case 5:
+            return EnumSortCategoryItem.INGOT;
+        }
         return EnumSortCategoryItem.GENERAL;
     }
 }

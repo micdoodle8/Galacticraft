@@ -91,6 +91,12 @@ public class ItemMoon extends Item implements ISortableItem
     @Override
     public EnumSortCategoryItem getCategory(int meta)
     {
-        return EnumSortCategoryItem.GENERAL;
+        switch (meta)
+        {
+        case 0:
+            return EnumSortCategoryItem.INGOT;
+        default:
+            return EnumSortCategoryItem.PLATE;
+        }
     }
 }

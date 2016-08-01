@@ -10,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class SpaceStationRecipe
 {
@@ -40,8 +41,9 @@ public class SpaceStationRecipe
             }
             else if (obj instanceof String)
             {
-                FMLLog.info("While registering space station recipe, found " + OreDictionary.getOres((String) obj).size() + " type(s) of " + obj);
-                this.input.put(OreDictionary.getOres((String) obj), amount);
+                List<ItemStack> stacks = OreDictionary.getOres((String) obj);
+                FMLLog.info("While registering space station recipe, found " + stacks.size() + " type(s) of " + obj);
+                this.input.put(stacks, amount);
             }
             else if (obj instanceof ArrayList)
             {

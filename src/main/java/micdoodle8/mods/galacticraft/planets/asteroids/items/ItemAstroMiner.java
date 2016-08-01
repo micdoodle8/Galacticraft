@@ -76,13 +76,13 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
         	{
     			if (worldIn.provider instanceof WorldProviderOrbit)
     			{
-                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner7.fail")));
+                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
         			return false;    				
     			}
     			
         		if (((TileEntityMinerBase)tile).getLinkedMiner() != null)
         		{
-                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner.fail")));
+                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner.fail")));
         			return false;
         		}
         		
@@ -97,13 +97,13 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                	int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;
                	if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
                	{
-                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner2.fail")));
+                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
                		return false;
                	}
 
         		if (!((TileEntityMinerBase)tile).spawnMiner(playerMP))
         		{
-                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
         			return false;
         		}
         	        			

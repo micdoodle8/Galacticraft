@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/infiniteBattery"
+        "layer0": "galacticraftcore:items/battery"
     },
     "display": {
         "thirdperson": {

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,7 +22,12 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
     {
         super();
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack)
+    {
+        return true;
     }
 
     @Override
@@ -53,7 +59,8 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        par3List.add("\u00a72" + GCCoreUtil.translate("gui.infinite_battery.desc"));
+        par3List.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
+        par3List.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
     }
 
     @Override

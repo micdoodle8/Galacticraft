@@ -123,7 +123,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     @Override
     public String getName()
     {
-        return GCCoreUtil.translate("container.entryPod.name");
+        return GCCoreUtil.translate("container.entry_pod.name");
     }
 
     @Override

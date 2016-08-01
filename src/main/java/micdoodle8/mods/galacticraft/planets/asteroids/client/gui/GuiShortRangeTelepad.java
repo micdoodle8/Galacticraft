@@ -147,7 +147,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
 
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.address.name") + ":", 7, 22, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.destAddress.name") + ":", 7, 44, 4210752);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.dest_address.name") + ":", 7, 44, 4210752);
         this.fontRendererObj.drawString(this.telepad.getReceivingStatus(), 7, 66, 4210752);
         if (!this.telepad.getReceivingStatus().equals(this.telepad.getSendingStatus()))
         {

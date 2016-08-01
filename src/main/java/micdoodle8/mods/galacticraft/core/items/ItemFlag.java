@@ -76,7 +76,7 @@ public class ItemFlag extends Item implements IHoldableItem, ISortableItem
                 }
                 else
                 {
-                    par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.flag.alreadyPlaced")));
+                    par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.flag.already_placed")));
                 }
             }
 

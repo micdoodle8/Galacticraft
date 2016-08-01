@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -108,7 +109,8 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     public static void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
-    	GL11.glPushMatrix();
+        GlStateManager.enableColorMaterial();
+        GlStateManager.pushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
         GL11.glScalef(-par3, par3, par3);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -134,12 +136,12 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         par0Minecraft.thePlayer.rotationYaw = f3;
         par0Minecraft.thePlayer.rotationPitch = f4;
         par0Minecraft.thePlayer.rotationYawHead = f5;
-        GL11.glPopMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.popMatrix();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 	
 	public int getPotionOffset()

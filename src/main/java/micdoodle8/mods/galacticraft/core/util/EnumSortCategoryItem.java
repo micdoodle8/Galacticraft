@@ -9,5 +9,7 @@ public enum EnumSortCategoryItem
     BUCKET,
     SCHEMATIC,
     ARMOR,
-    TOOLS,
+    PLATE,
+    INGOT,
+    TOOLS
 }

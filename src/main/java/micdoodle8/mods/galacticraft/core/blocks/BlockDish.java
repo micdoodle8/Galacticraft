@@ -194,7 +194,7 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     @Override
     public String getShiftDescription(int meta)
     {
-    	return GCCoreUtil.translate("tile.radioTelescope.description");
+    	return GCCoreUtil.translate("tile.radio_telescope.description");
     }
 
     @Override

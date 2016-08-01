@@ -466,7 +466,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		{
     			if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
     			{
-    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+FAIL_BASEDESTROYED+".fail")));
+    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner"+FAIL_BASEDESTROYED+".fail")));
     				this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
     				//Continue mining even though base was destroyed - maybe it will be replaced
     			}
@@ -614,7 +614,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		this.motionZ = 0;
 		if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
 		{
-			this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner"+i+".fail")));
+			this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner"+i+".fail")));
 			this.givenFailMessage += (1 << i);
 		}
 	}
@@ -727,7 +727,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			{
     			if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
     			{
-    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner6.fail")));
+    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
     				this.givenFailMessage += 64;
     			}
 			}
@@ -1021,7 +1021,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (wayBarred)
 		{
 			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astroMiner1A.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1A.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
 			this.motionX = 0;
 			this.motionY = 0;
 			this.motionZ = 0;

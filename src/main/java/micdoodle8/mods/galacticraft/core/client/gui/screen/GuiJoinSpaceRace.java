@@ -82,9 +82,9 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
             this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2;
             this.buttonFlag_yPosition = this.height / 2 - this.height / 3 + 10;
 
-            this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.spaceRace.create.close.name")));
+            this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close.name")));
             int width = (int) (var5 / 1.0F);
-            this.buttonList.add(new GuiElementGradientButton(1, this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.spaceRace.join.name", this.spaceRaceData.getTeamName())));
+            this.buttonList.add(new GuiElementGradientButton(1, this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName())));
         }
     }
 
@@ -131,10 +131,10 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 
         if (this.initialized)
         {
-            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.join.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.join.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
             this.drawFlagButton(par1, par2);
-            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.join.owner.name") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 25, ColorUtil.to32BitColor(255, 150, 150, 150));
-            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translateWithFormat("gui.spaceRace.join.memberCount.name", this.spaceRaceData.getPlayerNames().size()), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 40, ColorUtil.to32BitColor(255, 150, 150, 150));
+            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.join.owner.name") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 25, ColorUtil.to32BitColor(255, 150, 150, 150));
+            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translateWithFormat("gui.space_race.join.member_count.name", this.spaceRaceData.getPlayerNames().size()), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 40, ColorUtil.to32BitColor(255, 150, 150, 150));
             GL11.glPushMatrix();
             GL11.glTranslatef(this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 5 + FMLClientHandler.instance().getClient().fontRendererObj.FONT_HEIGHT / 2, 0);
             GL11.glScalef(1.5F, 1.5F, 1.0F);

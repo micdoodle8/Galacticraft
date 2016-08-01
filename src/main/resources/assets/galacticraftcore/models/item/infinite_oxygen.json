@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/oxygenCanisterInfinite"
+        "layer0": "galacticraftcore:items/oxygenTankHeavyFull"
     },
     "display": {
         "thirdperson": {

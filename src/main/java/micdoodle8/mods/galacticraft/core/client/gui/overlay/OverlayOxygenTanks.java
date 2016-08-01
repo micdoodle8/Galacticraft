@@ -167,7 +167,7 @@ public class OverlayOxygenTanks extends Overlay
 
         if (invalid)
         {
-            String value = GCCoreUtil.translate("gui.warning.invalidThermal");
+            String value = GCCoreUtil.translate("gui.warning.invalid_thermal");
             OverlayOxygenTanks.minecraft.fontRendererObj.drawString(value, minLeftX - 18 - OverlayOxygenTanks.minecraft.fontRendererObj.getStringWidth(value), (int) bottomY - heatLevelScaled - OverlayOxygenTanks.minecraft.fontRendererObj.FONT_HEIGHT / 2 - 1, ColorUtil.to32BitColor(255, 255, 10, 10));
         }
     }
