@@ -87,14 +87,14 @@ jar
 	includes.addAll(project.ext.micdoodleCoreFiles)
 }
 
-task moveCoreMcmodInfo(type: Copy, dependsOn: "reobf") {
+task moveCoreMcmodInfo(type: Copy, dependsOn: "reobfJar") {
 	from 'LICENSE.txt'
 	from(zipTree(project.ext.coreJar))
 	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
 	into 'temporary'
 }
 
-task movePlanetsMcmodInfo(type: Copy, dependsOn: "reobf") {
+task movePlanetsMcmodInfo(type: Copy, dependsOn: "reobfJar") {
 	from 'src/main/resources/assets/galacticraftplanets/mcmod.info'
 	into 'temporary'
 }
@@ -141,7 +141,7 @@ task packPlanetsJar(type: Jar, dependsOn: "rePackAllJarPlanets") {
 	}
 }
 
-task packMicCoreJar(type: Jar, dependsOn: "reobf") {
+task packMicCoreJar(type: Jar, dependsOn: "reobfJar") {
 	// Jar will always be updated
 	outputs.upToDateWhen {false}
 	// Set the jar's base name
