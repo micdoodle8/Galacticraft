@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import cofh.api.energy.IEnergyReceiver;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySource;
@@ -18,7 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.lang.reflect.Constructor;
 
-public abstract class TileBaseUniversalConductor extends TileBaseConductor implements IEnergyReceiver
+public abstract class TileBaseUniversalConductor extends TileBaseConductor
 {
     protected boolean isAddedToEnergyNet;
     protected Object powerHandlerBC;

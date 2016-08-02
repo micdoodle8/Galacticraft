@@ -156,6 +156,9 @@ task packMicCoreJar(type: Jar, dependsOn: "reobfJar") {
 		includes.addAll(project.ext.micdoodleCoreFiles)
 		includes.addAll('LICENSE.txt')
 		include('micdoodle8/mods/galacticraft/api/entity/IEntityBreathable.class')
+		excludes.addAll(project.ext.coreFiles)
+		excludes.addAll(project.ext.planetsFiles)
+		excludes.addAll(project.ext.dependencies)
 	}
 	
 	// Configure manifest attributes
