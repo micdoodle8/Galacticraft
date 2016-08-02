@@ -367,36 +367,6 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         return droppedItemList;
     }
 
-    //	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-    //	public boolean canLock(IMissile missile)
-    //	{
-    //		return true;
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-    //	public Vector3 getPredictedPosition(int ticks)
-    //	{
-    //		return new Vector3(this);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public void destroyCraft()
-    //	{
-    //		this.setDead();
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public int doDamage(int damage)
-    //	{
-    //		return (int) (this.shipDamage += damage);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public boolean canBeTargeted(Object entity)
-    //	{
-    //		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
-    //	} TODO Fix ICBM integration
-
     @Override
     public boolean isPlayerRocket()
     {

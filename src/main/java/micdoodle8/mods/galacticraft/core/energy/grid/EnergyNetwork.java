@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
+import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import net.minecraft.util.EnumFacing;
@@ -269,50 +272,32 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = ((IElectrical) acceptor).getRequest(sideFrom);
                     }
-//                    else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-//                    {
-//                        e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
-//                    }
-//                    else if (isIC2Loaded && acceptor instanceof IEnergySink)
-//                    {
-//                        double result = 0;
-//                        try
-//                        {
-//                            result = (Double) EnergyUtil.demandedEnergyIC2.invoke(acceptor);
-//                        }
-//                        catch (Exception ex)
-//                        {
-//                            if (ConfigManagerCore.enableDebug)
-//                            {
-//                                ex.printStackTrace();
-//                            }
-//                        }
-//                        //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
-//                        result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
-//                        e = (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
-//                    }
-//                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
-//					{
-//						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
-//					}
-//                    else if (isRF1Loaded && acceptor instanceof IEnergyHandler)
-//					{
-//						e = ((IEnergyHandler) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
-//					}
-//                    else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
-//                    //New BC API
-//                    {
-//                        e = (float) MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom).getEnergyRequested() / EnergyConfigHandler.TO_BC_RATIO;
-//                    }
-//                    else if (isBCLoaded && acceptor instanceof IPowerReceptor)
-//                    //Legacy BC API
-//                    {
-//                        PowerReceiver BCreceiver = ((IPowerReceptor) acceptor).getPowerReceiver(sideFrom);
-//                        if (BCreceiver != null)
-//                        {
-//                            e = (float) BCreceiver.powerRequest() / EnergyConfigHandler.TO_BC_RATIO;
-//                        }
-//                    }
+                    else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+                    {
+                        e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
+                    }
+                    else if (isIC2Loaded && acceptor instanceof IEnergySink)
+                    {
+                        double result = 0;
+                        try
+                        {
+                            result = (Double) EnergyUtil.demandedEnergyIC2.invoke(acceptor);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ConfigManagerCore.enableDebug)
+                            {
+                                ex.printStackTrace();
+                            }
+                        }
+                        //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
+                        result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
+                        e = (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
+                    }
+                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
+					{
+						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+					}
 
                     if (e > 0.0F)
                     {
@@ -612,43 +597,30 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-//                        else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-//                        {
-//                            if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
-//                            {
-//                                this.connectedAcceptors.add(acceptor);
-//                                this.connectedDirections.add(sideFrom);
-//                            }
-//                        }
-//                        else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor)
-//                        {
-//                            if (((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, sideFrom))
-//                            {
-//                                this.connectedAcceptors.add(acceptor);
-//                                this.connectedDirections.add(sideFrom);
-//                            }
-//                        }
-//						else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
-//						{
-//							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
-//							{
-//								this.connectedAcceptors.add(acceptor);
-//								this.connectedDirections.add(sideFrom);
-//							}
-//						}
-//                        else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
-//                        {
-//                            this.connectedAcceptors.add(acceptor);
-//                            this.connectedDirections.add(sideFrom);
-//                        }
-//                        else if (isBCLoaded && acceptor instanceof IPowerReceptor)
-//                        {
-//                            if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null && (!(acceptor instanceof IPowerEmitter) || !((IPowerEmitter)acceptor).canEmitPowerFrom(sideFrom)))
-//                            {
-//                                this.connectedAcceptors.add(acceptor);
-//                                this.connectedDirections.add(sideFrom);
-//                            }
-//                        }
+                        else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+                        {
+                            if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
+                            {
+                                this.connectedAcceptors.add(acceptor);
+                                this.connectedDirections.add(sideFrom);
+                            }
+                        }
+                        else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor && conductor instanceof IEnergyEmitter)
+                        {
+                            if (((IEnergyAcceptor) acceptor).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
+                            {
+                                this.connectedAcceptors.add(acceptor);
+                                this.connectedDirections.add(sideFrom);
+                            }
+                        }
+						else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
+						{
+							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
+							{
+								this.connectedAcceptors.add(acceptor);
+								this.connectedDirections.add(sideFrom);
+							}
+						}
                     }
                 }
             }
