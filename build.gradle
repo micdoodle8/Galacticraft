@@ -41,8 +41,9 @@ group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCoreAll"
 	
 minecraft {
-    version = "1.8-11.14.3.1487"
-    runDir = "eclipse/assets"
+    version = "1.8.9-11.15.1.1764"
+    runDir = "run"
+    mappings = "stable_20"
 }
 
 // Keep a list of dependencies files/directories for easy jar packing
