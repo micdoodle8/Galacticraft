@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.EnumSet;
 
 
-public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //implements IElectrical, IElectricalStorage
+public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 {
     protected boolean isAddedToEnergyNet;
     protected Object powerHandlerBC;
@@ -750,66 +750,66 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
 //    	return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
 //    }
 //
-//    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public double transferEnergyToAcceptor(ForgeDirection from, double amount)
-//    {
-//        if (EnergyConfigHandler.disableMekanismInput)
-//        {
-//            return 0;
-//        }
-//
-//        if (!this.getElectricalInputDirections().contains(from))
-//        {
-//            return 0;
-//        }
-//
-//        return this.receiveElectricity(from, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, true) / EnergyConfigHandler.MEKANISM_RATIO;
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public boolean canReceiveEnergy(ForgeDirection side)
-//    {
-//        return this.getElectricalInputDirections().contains(side);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public double getEnergy()
-//    {
-//        if (EnergyConfigHandler.disableMekanismInput)
-//        {
-//            return 0.0;
-//        }
-//
-//        return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public void setEnergy(double energy)
-//    {
-//        if (EnergyConfigHandler.disableMekanismInput)
-//        {
-//            return;
-//        }
-//
-//        this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-//    public double getMaxEnergy()
-//    {
-//        if (EnergyConfigHandler.disableMekanismInput)
-//        {
-//            return 0.0;
-//        }
-//
-//        return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-//    public boolean canOutputTo(ForgeDirection side)
-//    {
-//        return false;
-//    }
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public double transferEnergyToAcceptor(EnumFacing from, double amount)
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0;
+        }
+
+        if (!this.getElectricalInputDirections().contains(from))
+        {
+            return 0;
+        }
+
+        return this.receiveElectricity(from, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, true) / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public boolean canReceiveEnergy(EnumFacing side)
+    {
+        return this.getElectricalInputDirections().contains(side);
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public double getEnergy()
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
+        return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public void setEnergy(double energy)
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return;
+        }
+
+        this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public double getMaxEnergy()
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
+        return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
+    public boolean canOutputTo(EnumFacing side)
+    {
+        return false;
+    }
 
     @Override
     public ReceiverMode getModeFromDirection(EnumFacing direction)

@@ -1,12 +1,16 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -295,46 +299,46 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         return 0;
     }
 
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
-//    {
-//    	if (!stack.getGas().getName().equals("oxygen")) return 0;
-//    	return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public int receiveGas(EnumFacing side, GasStack stack)
-//    {
-//    	return this.receiveGas(side, stack, true);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
-//    {
-//        return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, doTransfer)));
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public GasStack drawGas(EnumFacing side, int amount)
-//    {
-//        return this.drawGas(side, amount, true);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public boolean canReceiveGas(EnumFacing side, Gas type)
-//    {
-//        return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public boolean canDrawGas(EnumFacing side, Gas type)
-//    {
-//        return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-//    public boolean canTubeConnect(EnumFacing side)
-//    {
-//        return this.canConnect(side, NetworkType.OXYGEN);
-//    }
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+    {
+    	if (!stack.getGas().getName().equals("oxygen")) return 0;
+    	return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack)
+    {
+    	return this.receiveGas(side, stack, true);
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
+    {
+        return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.provideOxygen(amount, doTransfer)));
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount)
+    {
+        return this.drawGas(side, amount, true);
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(EnumFacing side, Gas type)
+    {
+        return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(EnumFacing side, Gas type)
+    {
+        return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(EnumFacing side)
+    {
+        return this.canConnect(side, NetworkType.OXYGEN);
+    }
 }

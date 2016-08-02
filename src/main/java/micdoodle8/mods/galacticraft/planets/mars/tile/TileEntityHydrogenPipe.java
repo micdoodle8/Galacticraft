@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -174,46 +176,46 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
         return NetworkType.HYDROGEN;
     }
 
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
-//    {
-//    	if (!stack.getGas().getName().equals("hydrogen")) return 0;
-//        return stack.amount - (int) Math.floor(((IHydrogenNetwork) this.getNetwork()).produce(stack.amount, this));
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public int receiveGas(EnumFacing side, GasStack stack)
-//    {
-//    	return this.receiveGas(side, stack, true);
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
-//    {
-//        return null;
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public GasStack drawGas(EnumFacing side, int amount)
-//    {
-//        return null;
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public boolean canDrawGas(EnumFacing side, Gas type)
-//    {
-//        return false;
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-//    public boolean canReceiveGas(EnumFacing side, Gas type)
-//    {
-//        return type.getName().equals("hydrogen");
-//    }
-//
-//    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-//    public boolean canTubeConnect(EnumFacing side)
-//    {
-//        return this.canConnect(side, NetworkType.HYDROGEN);
-//    }
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+    {
+    	if (!stack.getGas().getName().equals("hydrogen")) return 0;
+        return stack.amount - (int) Math.floor(((IHydrogenNetwork) this.getNetwork()).produce(stack.amount, this));
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack)
+    {
+    	return this.receiveGas(side, stack, true);
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
+    {
+        return null;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount)
+    {
+        return null;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(EnumFacing side, Gas type)
+    {
+        return false;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(EnumFacing side, Gas type)
+    {
+        return type.getName().equals("hydrogen");
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(EnumFacing side)
+    {
+        return this.canConnect(side, NetworkType.HYDROGEN);
+    }
 }

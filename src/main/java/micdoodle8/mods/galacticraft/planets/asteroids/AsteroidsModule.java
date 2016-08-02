@@ -80,7 +80,7 @@ public class AsteroidsModule implements IPlanetsModule
         Fluid returnFluid = FluidRegistry.getFluid(fluidName);
     	if (returnFluid == null)
         {
-            ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":fluids/" + fluidTexture);
+            ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "fluids/" + fluidTexture);
     		FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
     		returnFluid = FluidRegistry.getFluid(fluidName);
         }
@@ -101,11 +101,9 @@ public class AsteroidsModule implements IPlanetsModule
         registerFluid("liquidmethane", 450, 120, 109, false, "LiquidMethane");
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
         registerFluid("liquidoxygen", 1141, 140, 90, false, "LiquidOxygen");
-        registerFluid("oxygen", 1, 13, 295, true, "OxygenGas");
         registerFluid("liquidnitrogen", 808, 130, 90, false, "LiquidNitrogen");
         registerFluid("nitrogen", 1, 12, 295, true, "NitrogenGas");
         registerFluid("carbondioxide", 2, 20, 295, true, "CarbonDioxideGas");
-        registerFluid("hydrogen", 1, 1, 295, true, "HydrogenGas");
         registerFluid("argon", 1, 4, 295, true, "ArgonGas");
         registerFluid("liquidargon", 900, 100, 87, false, "LiquidArgon");
         registerFluid("helium", 1, 1, 295, true, "HeliumGas");

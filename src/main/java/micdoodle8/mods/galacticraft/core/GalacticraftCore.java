@@ -122,7 +122,6 @@ import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -152,9 +151,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2; after:itemtransformhelper", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2; after:MekanismAPI|gas", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
@@ -195,6 +193,8 @@ public class GalacticraftCore
 
     public static Fluid fluidOil;
     public static Fluid fluidFuel;
+    public static Fluid fluidOxygenGas;
+    public static Fluid fluidHydrogenGas;
 	public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
@@ -239,6 +239,9 @@ public class GalacticraftCore
         GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", null, 0, null);
 
         this.registerOilandFuel();
+
+        fluidOxygenGas = registerFluid("oxygen", 1, 13, 295, true, "oxygen_gas");
+        fluidHydrogenGas = registerFluid("hydrogen", 1, 1, 295, true, "hydrogen_gas");
 
 //        if (Loader.isModLoaded("PlayerAPI"))
 //        {
@@ -382,10 +385,10 @@ public class GalacticraftCore
     	//Register now any unregistered "oil", "fuel", "oilgc" and "fuelgc" fluids
     	//This is for legacy compatibility with any 'in the world' tanks and items filled in different GC versions or with different GC config
     	//In those cases, FluidUtil methods (and TileEntityRefinery) will attempt to fresh containers/tanks with the current fuel or oil type
-        ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil_flow");
-        ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel_flow");
-        ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil_still");
-        ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel_still");
+        ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/oil_flow");
+        ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/fuel_flow");
+        ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/oil_still");
+        ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/fuel_still");
         if (!FluidRegistry.isFluidRegistered("oil"))
         {
             FluidRegistry.registerFluid(new Fluid("oil", stillOil, flowingOil).setDensity(800).setViscosity(1500));
@@ -729,5 +732,17 @@ public class GalacticraftCore
         planet.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/" + name + ".png"));
         GalaxyRegistry.registerPlanet(planet);
         return planet;
+    }
+
+    private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
+    {
+        Fluid returnFluid = FluidRegistry.getFluid(fluidName);
+        if (returnFluid == null)
+        {
+            ResourceLocation texture = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/" + fluidTexture);
+            FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
+            returnFluid = FluidRegistry.getFluid(fluidName);
+        }
+        return returnFluid;
     }
 }
