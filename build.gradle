@@ -1,27 +1,18 @@
 
-def mcVersion = "1.7"
-def versionMajor = 3
-def versionMinor = 0
-def versionRev = 12
-
+// For those who want the bleeding edge
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
-
-apply plugin: 'forge' // Add forge dependency
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 sourceSets.main {
     java {
@@ -39,11 +30,18 @@ if (System.getenv("BUILD_NUMBER") != null)
 version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionRev}.${versionBuild}" // Set the version number
 group= "micdoodle8.mods.galacticraft"
 archivesBaseName = "GalacticraftCoreAll"
-	
+
 minecraft {
     version = "1.8.9-11.15.1.1764"
     runDir = "run"
+    
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not allways work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "stable_20"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 // Keep a list of dependencies files/directories for easy jar packing
