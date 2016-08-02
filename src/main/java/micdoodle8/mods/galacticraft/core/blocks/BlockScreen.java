@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -105,39 +106,8 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = getMetaFromState(world.getBlockState(pos));
-        final int facing = metadata & 7;
-        int change = 0;
-        
-        switch (facing)
-        {
-        	case 0:
-        		change = 1;
-        		break;
-        	case 1:
-        		change = 3;
-        		break;
-        	case 2:
-        		change = 5;
-        		break;
-        	case 3:
-        		change = 4;
-        		break;
-        	case 4:
-        		change = 2;
-        		break;
-        	case 5:
-        		change = 0;       		
-        }
-        change += (8 & metadata);
-        world.setBlockState(pos, getStateFromMeta(change), 2);
-
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileEntityScreen)
-        {
-        	((TileEntityScreen) tile).breakScreen(getStateFromMeta(facing));
-        }
-
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getIndex();
+        world.setBlockState(pos, this.getStateFromMeta(change), 3);
         return true;
     }
 

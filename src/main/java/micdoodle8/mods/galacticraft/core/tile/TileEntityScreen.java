@@ -78,7 +78,7 @@ public class TileEntityScreen extends TileEntityAdvanced
 		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.imageType, connectedFlags } ), this.worldObj.provider.getDimensionId());
 	}
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.getFacing(this.worldObj.getBlockState(getPos()));
     }
@@ -601,7 +601,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     	ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
 
 //		int side = this.getRight(meta);
-		EnumFacing side = getFacing().rotateY();
+		EnumFacing side = getFront().rotateY();
 
     	for (int x = -left; x <= right; x++)
     	{
@@ -890,7 +890,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     {
     	int meta = this.getBlockMetadata();
 //    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
-        EnumFacing side = getFacing().rotateY();
+        EnumFacing side = getFront().rotateY();
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
 		{
@@ -919,7 +919,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     {
     	int meta = this.getBlockMetadata();
 //    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
-        EnumFacing side = getFacing().rotateY();
+        EnumFacing side = getFront().rotateY();
     	BlockVec3 vec = new BlockVec3(this);
     	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
 		{

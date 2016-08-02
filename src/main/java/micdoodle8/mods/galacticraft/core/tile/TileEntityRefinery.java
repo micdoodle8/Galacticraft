@@ -295,15 +295,15 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         return EnumFacing.UP;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockRefinery.FACING));
+        return (this.worldObj.getBlockState(getPos()).getValue(BlockRefinery.FACING));
     }
 
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(getFacing()))
+        if (from.equals(getFront()))
 //        if (from.equals(EnumFacing.getFront((this.getBlockMetadata() + 2) ^ 1)))
         {
         	return this.fuelTank.getFluid() != null && this.fuelTank.getFluidAmount() > 0;
@@ -315,7 +315,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        if (from.equals(getFacing()))
+        if (from.equals(getFront()))
 //        if (from.equals(EnumFacing.getFront((this.getBlockMetadata() + 2) ^ 1)))
         {
         	return this.fuelTank.drain(resource.amount, doDrain);
@@ -327,7 +327,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        if (from.equals(getFacing()))
+        if (from.equals(getFront()))
 //        if (from.equals(EnumFacing.getFront((this.getBlockMetadata() + 2) ^ 1)))
         {
             return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
@@ -339,7 +339,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(getFacing()))
+        if (from.equals(getFront()))
 //        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2)))
         {
             return this.oilTank.getFluid() == null || this.oilTank.getFluidAmount() < this.oilTank.getCapacity();
@@ -353,7 +353,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         int used = 0;
 
-        if (from.equals(getFacing()))
+        if (from.equals(getFront()))
 //        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2)))
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
@@ -379,12 +379,12 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] { };
 
-        if (from.equals(getFacing()))
+        if (from.equals(getFront()))
 //        if (from == EnumFacing.getFront(this.getBlockMetadata() + 2))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.oilTank) };
         }
-        else if (from.equals(getFacing()))
+        else if (from.equals(getFront()))
 //        else if (from == EnumFacing.getFront((this.getBlockMetadata() + 2) ^ 1))
         {
         	tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };

@@ -107,45 +107,10 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = getMetaFromState(world.getBlockState(pos));
-        int original = metadata;
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        if (metadata >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
-        {
-            original -= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-        }
-        else if (metadata >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
-        {
-            original -= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
-        }
-
-        int meta = 0;
-
-        // Re-orient the block
-        switch (original)
-        {
-        case 0:
-            meta = 3;
-            break;
-        case 3:
-            meta = 1;
-            break;
-        case 1:
-            meta = 2;
-            break;
-        case 2:
-            meta = 0;
-            break;
-        }
-
-        if (metadata >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
-        {
-            meta += BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-        }
-        else if (metadata >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
-        {
-            meta += BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
@@ -153,7 +118,6 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        world.setBlockState(pos, getStateFromMeta(meta), 3);
         return true;
     }
 

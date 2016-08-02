@@ -763,7 +763,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.OXYGEN)
         {
-            return direction == getFacing().rotateY();
+            return direction == getFront().rotateY();
         }
 
         if (type == NetworkType.POWER)
@@ -779,7 +779,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         return null;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }

@@ -516,12 +516,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
 	private EnumFacing getOxygenOutputDirection()
 	{
-	    return this.getFacing().getOpposite();
+	    return this.getFront().getOpposite();
 	}
 
 	private EnumFacing getHydrogenOutputDirection()
 	{
-	    return this.getFacing().rotateY().getOpposite();
+	    return this.getFront().rotateY().getOpposite();
 	}
 	
     private boolean produceOxygen(EnumFacing outputDirection)
@@ -740,7 +740,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return null;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }

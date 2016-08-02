@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergySource;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -145,176 +148,111 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         }
     }
 
-//    @VersionSpecific(version = "[1.7.2]")
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double demandedEnergyUnits()
-//    {
-//        if (this.getNetwork() == null)
-//        {
-//            return 0.0;
-//        }
-//
-//        if (this.IC2surplusJoules < 0.001F)
-//        {
-//            this.IC2surplusJoules = 0F;
-//            float result = this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
-//            //Cap energy which IC2 can put into Alu Wire at 128 EU/t for regular, 256 EU/t for heavy
-//            result = Math.max(((EnergyNetwork) this.getNetwork()).networkTierGC == 2 ? 256F : 128F, result);
-//            return result;
-//        }
-//
-//        this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
-//        if (this.IC2surplusJoules < 0.001F)
-//        {
-//            this.IC2surplusJoules = 0F;
-//            float result = this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
-//            //Cap energy which IC2 can put into Alu Wire at 128 EU/t for regular, 256 EU/t for heavy
-//            result = Math.max(((EnergyNetwork) this.getNetwork()).networkTierGC == 2 ? 256F : 128F, result);
-//            return result;
-//        }
-//        return 0D;
-//    }
-//
-//    @VersionSpecific(version = "[1.7.10]")
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double getDemandedEnergy()
-//    {
-//        if (this.getNetwork() == null)
-//        {
-//            return 0.0;
-//        }
-//
-//        if (this.IC2surplusJoules < 0.001F)
-//        {
-//            this.IC2surplusJoules = 0F;
-//            return this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
-//        }
-//
-//        this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
-//        if (this.IC2surplusJoules < 0.001F)
-//        {
-//            this.IC2surplusJoules = 0F;
-//            return this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
-//        }
-//        return 0D;
-//    }
-//
-//    @VersionSpecific(version = "[1.7.2]")
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
-//    {
-//        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
-//        int tier = 1;
-//        if (tile instanceof IEnergySource && ((IEnergySource) tile).getOfferedEnergy() >= 128)
-//        {
-//            tier = 2;
-//        }
-//        float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
-//        float surplus = this.getNetwork().produce(convertedEnergy, true, tier, this, tile);
-//
-//        if (surplus >= 0.001F)
-//        {
-//            this.IC2surplusJoules = surplus;
-//        }
-//        else
-//        {
-//            this.IC2surplusJoules = 0F;
-//        }
-//
-//        return 0D;
-//    }
-//
-//    @VersionSpecific(version = "[1.7.10]")
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
-//    {
-//        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
-//        int tier = ((int) voltage > 120) ? 2 : 1;
-//        if (tile instanceof IEnergySource && ((IEnergySource) tile).getOfferedEnergy() >= 128)
-//        {
-//            tier = 2;
-//        }
-//        float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
-//        float surplus = this.getNetwork().produce(convertedEnergy, true, tier, this, tile);
-//
-//        if (surplus >= 0.001F)
-//        {
-//            this.IC2surplusJoules = surplus;
-//        }
-//        else
-//        {
-//            this.IC2surplusJoules = 0F;
-//        }
-//
-//        return 0D;
-//    }
-//
-//    @VersionSpecific(version = "[1.7.10]")
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public int getSinkTier()
-//    {
-//        return 3;
-//    }
-//
-//    @VersionSpecific(version = "[1.7.2]")
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
-//    public double getMaxSafeInput()
-//    {
-//        return Integer.MAX_VALUE;
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
-//    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
-//    {
-//        //Don't add connection to IC2 grid if it's a Galacticraft tile
-//        if (emitter instanceof IElectrical || emitter instanceof IConductor)
-//        {
-//            return false;
-//        }
-//
-//        //Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
-//        try
-//        {
-//            Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
-//            if (conductorIC2.isInstance(emitter))
-//            {
-//                return false;
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        return true;
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
-//    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction)
-//    {
-//        //Don't add connection to IC2 grid if it's a Galacticraft tile
-//        if (receiver instanceof IElectrical || receiver instanceof IConductor)
-//        {
-//            return false;
-//        }
-//
-//        //Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
-//        try
-//        {
-//            Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
-//            if (conductorIC2.isInstance(receiver))
-//            {
-//                return false;
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        return true;
-//    }
-//
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    public double getDemandedEnergy()
+    {
+        if (this.getNetwork() == null)
+        {
+            return 0.0;
+        }
+
+        if (this.IC2surplusJoules < 0.001F)
+        {
+            this.IC2surplusJoules = 0F;
+            return this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
+        }
+
+        this.IC2surplusJoules = this.getNetwork().produce(this.IC2surplusJoules, true, 1, this);
+        if (this.IC2surplusJoules < 0.001F)
+        {
+            this.IC2surplusJoules = 0F;
+            return this.getNetwork().getRequest(this) / EnergyConfigHandler.IC2_RATIO;
+        }
+        return 0D;
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    public double injectEnergy(EnumFacing directionFrom, double amount, double voltage)
+    {
+        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
+        int tier = ((int) voltage > 120) ? 2 : 1;
+        if (tile instanceof IEnergySource && ((IEnergySource) tile).getOfferedEnergy() >= 128)
+        {
+            tier = 2;
+        }
+        float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
+        float surplus = this.getNetwork().produce(convertedEnergy, true, tier, this, tile);
+
+        if (surplus >= 0.001F)
+        {
+            this.IC2surplusJoules = surplus;
+        }
+        else
+        {
+            this.IC2surplusJoules = 0F;
+        }
+
+        return 0D;
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    public int getSinkTier()
+    {
+        return 3;
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
+    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side)
+    {
+        //Don't add connection to IC2 grid if it's a Galacticraft tile
+        if (emitter instanceof IElectrical || emitter instanceof IConductor)
+        {
+            return false;
+        }
+
+        //Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
+        try
+        {
+            Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+            if (conductorIC2.isInstance(emitter))
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
+    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing side)
+    {
+        //Don't add connection to IC2 grid if it's a Galacticraft tile
+        if (receiver instanceof IElectrical || receiver instanceof IConductor)
+        {
+            return false;
+        }
+
+        //Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
+        try
+        {
+            Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+            if (conductorIC2.isInstance(receiver))
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
 //    /**
 //     * BuildCraft functions
 //     */
@@ -420,7 +358,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 //
 //    	return MathHelper.floor_float(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
 //    }
-//
+
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double transferEnergyToAcceptor(EnumFacing side, double amount)
     {

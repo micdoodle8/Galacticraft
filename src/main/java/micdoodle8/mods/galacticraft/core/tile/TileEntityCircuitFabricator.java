@@ -242,7 +242,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         return this.processTicks > 0;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
     }
@@ -250,6 +250,6 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 }

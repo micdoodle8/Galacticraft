@@ -208,25 +208,7 @@ public class BlockMachine extends BlockTileGC implements ItemBlockDesc.IBlockShi
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
-        int original = metadata & 3;
-        int change = 0;
-
-        // Re-orient the block
-        switch (original)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
         if (metadata < BlockMachine.COMPRESSOR_METADATA)
         {

@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 public class TileEntityAluminumWire extends TileBaseUniversalConductor
 {

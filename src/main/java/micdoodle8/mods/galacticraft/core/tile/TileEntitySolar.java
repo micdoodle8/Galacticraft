@@ -373,7 +373,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         return EnumSet.noneOf(EnumFacing.class);
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockSolar.FACING));
     }
@@ -381,13 +381,13 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(getFacing());
+        return EnumSet.of(getFront());
     }
 
     @Override
     public EnumFacing getElectricalOutputDirectionMain()
     {
-        return getFacing();
+        return getFront();
     }
 
     @Override

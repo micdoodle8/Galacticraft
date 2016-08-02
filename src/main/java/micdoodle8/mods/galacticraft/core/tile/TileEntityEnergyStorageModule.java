@@ -362,7 +362,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         if (getBlockType() instanceof BlockMachine) {
             return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
@@ -375,19 +375,19 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.of(getFacing().rotateY().getOpposite());
+        return EnumSet.of(getFront().rotateY().getOpposite());
     }
 
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(getFacing().rotateY());
+        return EnumSet.of(getFront().rotateY());
     }
 
     @Override
     public EnumFacing getElectricalOutputDirectionMain()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 
     @Override

@@ -261,10 +261,15 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING);
+    }
+
+    @Override
     public EnumFacing getElectricInputDirection()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING)).rotateY();
-//        return EnumFacing.getFront(this.getBlockMetadata() - BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA + 2);
+        return getFront().rotateY();
     }
 
     @Override

@@ -1,6 +1,11 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
+import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -14,9 +19,9 @@ import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {
@@ -157,47 +162,39 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         }
     }
 
+    public abstract EnumFacing getFront();
+
     @Override
     public boolean getDisabled(int index)
     {
         return this.disabled;
     }
 
-//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-//    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
-//    {
-//        return false;
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-//    public short getFacing()
-//    {
-//        return (short) this.worldObj.getBlockMetadata(MathHelper.floor_double(this.getPos().getX()), MathHelper.floor_double(this.getPos().getY()), MathHelper.floor_double(this.getPos().getZ()));
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-//    public void setFacing(short facing)
-//    {
-//
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-//    public boolean wrenchCanRemove(EntityPlayer entityPlayer)
-//    {
-//        return false;
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-//    public float getWrenchDropRate()
-//    {
-//        return 1.0F;
-//    }
-//
-//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-//    public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
-//    {
-//        return this.getBlockType().getPickBlock(null, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-//    } TODO
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    public EnumFacing getFacing(World world, BlockPos pos)
+    {
+        return this.getFront();
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    public boolean setFacing(World world, BlockPos pos, EnumFacing newDirection, EntityPlayer player)
+    {
+        return false;
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    public boolean wrenchCanRemove(World world, BlockPos pos, EntityPlayer player)
+    {
+        return false;
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
+    {
+        List<ItemStack> drops = Lists.newArrayList();
+        drops.add(this.getBlockType().getPickBlock(null, this.worldObj, this.getPos()));
+        return drops;
+    }
 
     @Override
     public EnumSet<EnumFacing> getElectricalInputDirections()

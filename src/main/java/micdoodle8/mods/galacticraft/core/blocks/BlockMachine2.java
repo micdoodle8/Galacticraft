@@ -294,64 +294,21 @@ public class BlockMachine2 extends BlockTileGC implements ItemBlockDesc.IBlockSh
         }
     }
 
+
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
-        int original = metadata;
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        int change = 0;
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileBaseUniversalElectrical)
         {
-            original -= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-        }
-        else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            original -= BlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-        }
-        else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            original -= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
-
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileBaseUniversalElectrical)
-            {
-                ((TileBaseUniversalElectrical) te).updateFacing();
-            }
+            ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        // Re-orient the block
-        switch (original)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
-
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            change += BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-        }
-        else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            change += BlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-        }
-        else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            change += BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
-        }
-
-        world.setBlockState(pos, getStateFromMeta(change), 3);
         return true;
     }
 

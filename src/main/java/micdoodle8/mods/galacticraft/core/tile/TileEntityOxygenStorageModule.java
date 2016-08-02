@@ -199,7 +199,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
     }
@@ -207,13 +207,13 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public EnumSet<EnumFacing> getOxygenInputDirections()
     {
-        return EnumSet.of(getFacing().rotateY());
+        return EnumSet.of(getFront().rotateY());
     }
 
     @Override
     public EnumSet<EnumFacing> getOxygenOutputDirections()
     {
-        return EnumSet.of(getFacing().rotateY().getOpposite());
+        return EnumSet.of(getFront().rotateY().getOpposite());
     }
     
     @Override

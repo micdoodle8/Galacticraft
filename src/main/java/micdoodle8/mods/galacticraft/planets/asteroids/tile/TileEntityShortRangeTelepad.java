@@ -715,4 +715,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         return new Vector3(r, g, b);
     }
+
+    @Override
+    public EnumFacing getFront()
+    {
+        return EnumFacing.NORTH;
+    }
 }

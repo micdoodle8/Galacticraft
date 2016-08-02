@@ -476,10 +476,15 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockOxygenDistributor.FACING);
+    }
+
+    @Override
     public EnumFacing getElectricInputDirection()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenDistributor.FACING)).rotateY();
-//        return EnumFacing.getFront(this.getBlockMetadata() + 2);
+        return getFront().rotateY();
     }
 
     @Override

@@ -393,15 +393,15 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
         return this.storedOxygen > 0F && producedLastTick;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
+        return (this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
     }
 
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 
     @Override

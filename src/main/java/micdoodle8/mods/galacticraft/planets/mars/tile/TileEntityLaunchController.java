@@ -473,7 +473,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 		this.attachedDock = pad;
 	}
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
     }
@@ -481,6 +481,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 }

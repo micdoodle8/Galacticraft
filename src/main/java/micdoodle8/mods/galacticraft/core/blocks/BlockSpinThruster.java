@@ -100,7 +100,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return getStateFromMeta(facing.getHorizontalIndex() + 1);
+        return getStateFromMeta(facing.getHorizontalIndex());
     }
 
     @Override
@@ -120,27 +120,27 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         int metadata = getMetaFromState(state);
 //        TileEntityThruster tile = (TileEntityThruster) worldIn.getTileEntity(pos);
 //
-        if (metadata == 0)
-        {
-            if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST))
-            {
-                metadata = 1;
-            }
-            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST))
-            {
-                metadata = 2;
-            }
-            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH))
-            {
-                metadata = 3;
-            }
-            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH))
-            {
-                metadata = 4;
-            }
-
-            worldIn.setBlockState(pos, getStateFromMeta(metadata), 3);
-        }
+//        if (metadata == 0)
+//        {
+//            if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST))
+//            {
+//                metadata = 2;
+//            }
+//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST))
+//            {
+//                metadata = 3;
+//            }
+//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH))
+//            {
+//                metadata = 0;
+//            }
+//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH))
+//            {
+//                metadata = 1;
+//            }
+//
+//            worldIn.setBlockState(pos, getStateFromMeta(metadata), 3);
+//        }
 
         BlockPos baseBlock;
         switch (metadata)
@@ -316,10 +316,20 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = getMetaFromState(world.getBlockState(pos));
-        final int facing = metadata & 8;
-        final int change = (8 + metadata) & 15;
-        world.setBlockState(pos, getStateFromMeta(change), 2);
+        EnumFacing currentFacing = world.getBlockState(pos).getValue(FACING);
+        for (EnumFacing nextFacing = currentFacing.rotateY(); ; nextFacing = nextFacing.rotateY())
+        {
+            if (BlockSpinThruster.isBlockSolidOnSide(world, pos.offset(nextFacing.getOpposite()), nextFacing))
+            {
+                world.setBlockState(pos, getStateFromMeta(nextFacing.getHorizontalIndex()), 2);
+                break;
+            }
+
+            if (nextFacing == currentFacing)
+            {
+                break;
+            }
+        }
 
         if (world.provider instanceof WorldProviderOrbit && !world.isRemote)
         {
@@ -370,13 +380,13 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta - 1);
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + 1;
+        return (state.getValue(FACING)).getHorizontalIndex();
     }
 
     protected BlockState createBlockState()

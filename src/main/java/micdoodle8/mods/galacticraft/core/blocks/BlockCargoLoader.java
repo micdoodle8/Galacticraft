@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
@@ -210,38 +211,10 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        /*IBlockState state = world.getBlockState(pos);
-        int shiftedMeta = metadata;
-        int baseMeta = 0;
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
-        {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_UNLOADER;
-        }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
-        {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_LOADER;
-        }
-
-        shiftedMeta -= baseMeta;
-        int change = 0;
-
-        // Re-orient the block
-        switch (shiftedMeta)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
@@ -249,7 +222,6 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        return world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);*/
         return true;
     }
 

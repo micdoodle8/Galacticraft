@@ -278,15 +278,15 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         return this.usingEnergy;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING)).rotateY();
+        return (this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING)).rotateY();
     }
 
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing();
+        return getFront();
     }
 
     @Override

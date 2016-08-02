@@ -685,7 +685,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return this.shouldRenderBubble;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
     }
@@ -693,6 +693,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 }

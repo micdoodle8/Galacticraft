@@ -816,5 +816,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public IChatComponent getDisplayName() {
         return null;
     }
+
+    @Override
+    public EnumFacing getFront()
+    {
+        return this.facing;
+    }
 }
 

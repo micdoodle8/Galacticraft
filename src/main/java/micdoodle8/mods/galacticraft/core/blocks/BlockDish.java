@@ -133,34 +133,17 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        IBlockState state = world.getBlockState(pos);
-        int original = state.getBlock().getMetaFromState(state);
+//        IBlockState state = world.getBlockState(pos);
+//        int original = state.getBlock().getMetaFromState(state);
+//        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        int change = 0;
-
-        switch (original)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
-
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileBaseUniversalElectrical)
-        {
-            ((TileBaseUniversalElectrical) te).updateFacing();
-        }
-
-        world.setBlockState(pos, state.getBlock().getStateFromMeta(change), 3);
+//        TileEntity te = world.getTileEntity(pos);
+//        if (te instanceof TileBaseUniversalElectrical)
+//        {
+//            ((TileBaseUniversalElectrical) te).updateFacing();
+//        }
+//
+//        world.setBlockState(pos, state.getBlock().getStateFromMeta(change), 3);
         return true;
     }
 

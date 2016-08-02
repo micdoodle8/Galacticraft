@@ -300,25 +300,9 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
-        int original = metadata & 3;
-        int change = 0;
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        // Re-orient the block
-        switch (original)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
@@ -326,7 +310,6 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        world.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
         return true;
     }
 

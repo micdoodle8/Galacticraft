@@ -542,7 +542,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         //Hydrogen pipe
         if (type == NetworkType.HYDROGEN)
         {
-            return direction == this.getFacing().rotateY();
+            return direction == this.getFront().rotateY();
         }
 
         return false;
@@ -569,7 +569,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     	return 0;
 	}
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }

@@ -292,7 +292,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         return true;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING);
     }
@@ -300,6 +300,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 }

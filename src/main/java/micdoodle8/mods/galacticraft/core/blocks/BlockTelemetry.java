@@ -36,7 +36,6 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName("iron_block");
         this.setUnlocalizedName(assetName);
     }
 
@@ -68,8 +67,6 @@ public class BlockTelemetry extends BlockAdvancedTile implements ItemBlockDesc.I
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = 0;
-
         int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 

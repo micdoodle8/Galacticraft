@@ -488,10 +488,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
+    }
+
+    @Override
     public EnumFacing getElectricInputDirection()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING));
-//        return this.getFacing();
+        return getFront();
     }
 
     @Override

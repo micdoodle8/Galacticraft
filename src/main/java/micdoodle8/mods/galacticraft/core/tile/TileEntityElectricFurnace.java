@@ -285,7 +285,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         return null;
     }
 
-    private EnumFacing getFacing()
+    public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING);
     }
@@ -293,6 +293,6 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFacing().rotateY();
+        return getFront().rotateY();
     }
 }

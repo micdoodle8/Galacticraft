@@ -196,6 +196,12 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     }
 
     @Override
+    public EnumFacing getFront()
+    {
+        return EnumFacing.NORTH;
+    }
+
+    @Override
     public ItemStack getBatteryInSlot()
     {
         return null;
