@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 
 import java.util.EnumSet;
 
@@ -238,26 +239,20 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return null;
     }
 
-//    @RuntimeInterface(clazz = "buildcraft.api.power.IPowerEmitter", modID = "")
-//    public boolean canEmitPowerFrom(ForgeDirection side)
-//    {
-//        return this.getElectricalOutputDirections().contains(side);
-//    }
-//
-//    @Override
-//    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
-//    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
-//    {
-//        if (EnergyConfigHandler.disableRFOutput)
-//        {
-//            return 0;
-//        }
-//
-//    	if (!this.getElectricalOutputDirections().contains(from))
-//    	{
-//    		return 0;
-//    	}
-//
-//    	return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
-//    }
+    @Override
+    @Annotations.RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
+    {
+        if (EnergyConfigHandler.disableRFOutput)
+        {
+            return 0;
+        }
+
+    	if (!this.getElectricalOutputDirections().contains(from))
+    	{
+    		return 0;
+    	}
+
+    	return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+    }
 }
