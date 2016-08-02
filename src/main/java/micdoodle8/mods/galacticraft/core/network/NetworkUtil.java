@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.math.DoubleMath;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.handler.codec.EncoderException;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -487,11 +489,7 @@ public class NetworkUtil
         }
         else
         {
-            byte[] compressedNBT = new byte[dataLength];
-            buffer.readBytes(compressedNBT);
-            ByteArrayInputStream stream = new ByteArrayInputStream(compressedNBT);
-            return CompressedStreamTools.readCompressed(stream);
-//            return VersionUtil.decompressNBT(compressedNBT);
+            return CompressedStreamTools.read(new ByteBufInputStream(buffer), new NBTSizeTracker(2097152L));
         }
     }
 
@@ -503,11 +501,14 @@ public class NetworkUtil
         }
         else
         {
-            ByteOutputStream stream = new ByteOutputStream();
-            CompressedStreamTools.writeCompressed(nbt, stream);
-            buffer.writeShort((short) stream.getBytes().length);
-            buffer.writeBytes(stream.getBytes());
-            stream.close();
+            try
+            {
+                CompressedStreamTools.write(nbt, new ByteBufOutputStream(buffer));
+            }
+            catch (IOException ioexception)
+            {
+                throw new EncoderException(ioexception);
+            }
         }
     }
 
