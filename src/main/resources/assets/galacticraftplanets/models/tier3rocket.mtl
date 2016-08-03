@@ -1,0 +1,11 @@
+newmtl tier3rocket
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/tier3rocket
+
+newmtl tier3rocket_tier3rocket.png
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/tier3rocket

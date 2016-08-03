@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -34,15 +35,16 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class GuiLaunchController extends GuiContainerGC implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
-    private static final ResourceLocation launchControllerGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/launchController.png");
+    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launchController.png");
 
     private TileEntityLaunchController launchController;
 
@@ -60,7 +62,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
     public GuiLaunchController(InventoryPlayer playerInventory, TileEntityLaunchController launchController)
     {
-        super(new ContainerLaunchController(playerInventory, launchController));
+        super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().thePlayer));
         this.ySize = 209;
         this.launchController = launchController;
     }
@@ -83,7 +85,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         }
 
         this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name");
-        this.hideDestinationFrequency.displayString = !this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhideDest.name") : GCCoreUtil.translate("gui.button.hideDest.name");
+        this.hideDestinationFrequency.displayString = !this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhide_dest.name") : GCCoreUtil.translate("gui.button.hide_dest.name");
         // Hacky way of rendering buttons properly, possibly bugs here:
         List buttonList = new ArrayList(this.buttonList);
         List labelList = new ArrayList(this.labelList);
@@ -107,7 +109,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
         for (k = 0; k < labelList.size(); ++k)
         {
-            ((GuiLabel) labelList.get(k)).func_146159_a(this.mc, par1, par2);
+            ((GuiLabel) labelList.get(k)).drawLabel(this.mc, par1, par2);
         }
 
         for (k = 0; k < infoRegions.size(); ++k)
@@ -146,7 +148,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID)
+    protected void keyTyped(char keyChar, int keyID) throws IOException
     {
         if (keyID != Keyboard.KEY_ESCAPE && keyID != this.mc.gameSettings.keyBindInventory.getKeyCode())
         {
@@ -193,12 +195,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
-        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, GCCoreUtil.translate("gui.message.removePad.name"));
-        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, GCCoreUtil.translate("gui.message.launchWhen.name") + ": ");
+        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 59, GCCoreUtil.translate("gui.message.remove_pad.name"));
+        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 78, var6 + 77, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
         this.dropdownTest = new GuiElementDropdown(3, this, var5 + 95, var6 + 77, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
         this.frequency = new GuiElementTextBox(4, this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.destinationFrequency = new GuiElementTextBox(5, this, var5 + 45, var6 + 16 + 22, 48, 20, "", true, 6, false);
-        this.hideDestinationFrequency = new GuiButton(6, var5 + 95, var6 + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hideDest.name"));
+        this.hideDestinationFrequency = new GuiButton(6, var5 + 95, var6 + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"));
         this.buttonList.add(this.enableControllerButton);
         this.buttonList.add(this.enablePadRemovalButton);
         this.buttonList.add(this.launchWhenCheckbox);
@@ -213,28 +215,28 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         List<String> batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.0"));
-        batterySlotDesc.add(GCCoreUtil.translate("gui.batterySlot.desc.1"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
+        batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 104, 18, 18, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launchController.desc.0"));
+        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.0"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 20, 109, 13, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launchController.desc.1"));
+        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 42, 88, 13, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launchController.desc.2"));
+        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.2"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 59, 78, 13, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launchController.desc.3"));
+        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.3"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 77, 82, 13, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launchController.desc.4"));
+        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.4"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 95, (this.height - this.ySize) / 2 + 38, 38, 20, batterySlotDesc, this.width, this.height, this));
     }
 
     @Override
-    protected void mouseClicked(int px, int py, int par3)
+    protected void mouseClicked(int px, int py, int par3) throws IOException
     {
         super.mouseClicked(px, py, par3);
     }
@@ -253,10 +255,10 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.getPos().getX(), this.launchController.getPos().getY(), this.launchController.getPos().getZ(), 0 }));
                 break;
             case 6:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, 2 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.launchController.getPos().getX(), this.launchController.getPos().getY(), this.launchController.getPos().getZ(), 2 }));
             	break;
             default:
                 break;
@@ -267,7 +269,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String displayString = this.launchController.getOwnerName() + "\'s " + this.launchController.getInventoryName();
+        String displayString = this.launchController.getOwnerName() + "\'s " + this.launchController.getName();
         this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
 
         if (this.cannotEditTimer > 0)
@@ -284,7 +286,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         //		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
         //		this.fontRendererObj.drawString(displayString, this.xSize - 26 - this.fontRendererObj.getStringWidth(displayString), 104, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.frequency.name") + ":", 7, 22, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.destFrequency.name") + ":", 7, 44, 4210752);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.dest_frequency.name") + ":", 7, 44, 4210752);
 
     }
 
@@ -292,12 +294,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     {
         if (!this.launchController.frequencyValid)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalidFreq.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_freq.name");
         }
 
         if (this.launchController.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.noEnergy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
         }
 
         if (this.launchController.getDisabled(0))
@@ -319,7 +321,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         List<String> electricityDesc = new ArrayList<String>();
-        electricityDesc.add(GCCoreUtil.translate("gui.energyStorage.desc.0"));
+        electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.launchController.getEnergyStoredGC(), this.launchController.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
@@ -351,7 +353,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         if (dropdown.equals(this.dropdownTest))
         {
             this.launchController.launchDropdownSelection = selection;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 1, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.launchDropdownSelection }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 1, this.launchController.getPos(), this.launchController.launchDropdownSelection }));
         }
     }
 
@@ -380,12 +382,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 	        if (textBox.equals(this.frequency))
 	        {
 	            this.launchController.frequency = textBox.getIntegerValue();
-	            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 0, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.frequency }));
+	            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 0, this.launchController.getPos(), this.launchController.frequency }));
 	        }
 	        else if (textBox.equals(this.destinationFrequency))
 	        {
 	            this.launchController.destFrequency = textBox.getIntegerValue();
-	            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 2, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.destFrequency }));
+	            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 2, this.launchController.getPos(), this.launchController.destFrequency }));
 	        }
     	}
     }
@@ -440,12 +442,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         if (checkbox.equals(this.enablePadRemovalButton))
         {
             this.launchController.launchPadRemovalDisabled = !newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 3, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
         }
         else if (checkbox.equals(this.launchWhenCheckbox))
         {
             this.launchController.launchSchedulingEnabled = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 4, this.launchController.xCoord, this.launchController.yCoord, this.launchController.zCoord, this.launchController.launchSchedulingEnabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0 }));
         }
     }
 

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
@@ -42,11 +42,11 @@ public class ItemBlockMachine extends ItemBlockDesc
         int index = 0;
         int typenum = itemstack.getItemDamage() & 12;
 
-        if (this.field_150939_a == GCBlocks.machineBase)
+        if (this.getBlock() == GCBlocks.machineBase)
         {
             index = typenum / 4;
         }
-        else if (this.field_150939_a == GCBlocks.machineTiered)
+        else if (this.getBlock() == GCBlocks.machineTiered)
         {
             if (typenum == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
             {
@@ -83,7 +83,7 @@ public class ItemBlockMachine extends ItemBlockDesc
             }
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + index;
+        return this.getBlock().getUnlocalizedName() + "." + index;
     }
 
     @Override
@@ -96,11 +96,11 @@ public class ItemBlockMachine extends ItemBlockDesc
     	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
     	if (player instanceof EntityPlayerSP)
     	{
-	        if (this.field_150939_a == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
+	        if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
 	        {
 	        	ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
 	        }
-	        else if (this.field_150939_a == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+	        else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
 	        {
 	        	ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
 	        }
@@ -110,6 +110,6 @@ public class ItemBlockMachine extends ItemBlockDesc
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

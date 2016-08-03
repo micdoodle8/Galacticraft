@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.event.oxygen;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -25,7 +25,10 @@ public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
      * This event is posted just before the living entity suffocates
      * <p/>
      * Set the event as canceled to stop the living entity from suffocating
+<<<<<<< HEAD
+=======
      * IF THE PRE EVENT IS CANCELED, THE "WARNING: OXYGEN SETUP INVALID!" HUD MESSAGE WILL NOT BE SHOWN
+>>>>>>> refs/remotes/origin/master
      */
     @Cancelable
     public static class Pre extends GCCoreOxygenSuffocationEvent

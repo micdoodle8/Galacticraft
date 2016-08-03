@@ -290,102 +290,102 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         model.rotateAngleZ = z;
     }
 
-    @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
-    {
-        final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
-        super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
-        this.upperHead.rotateAngleY = 0;
-        this.upperHead.rotateAngleX = 0;
-        this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
-        this.leftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
-        this.rightArm.rotateAngleZ = 0.0F;
-        this.leftArm.rotateAngleZ = 0.0F;
-        this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-        this.rightLeg.rotateAngleY = 0.0F;
-        this.leftLeg.rotateAngleY = 0.0F;
-
-        if (this.isRiding)
-        {
-            this.rightArm.rotateAngleX += -((float) Math.PI / 5F);
-            this.leftArm.rotateAngleX += -((float) Math.PI / 5F);
-            this.rightLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
-            this.leftLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
-            this.rightLeg.rotateAngleY = (float) Math.PI / 10F;
-            this.leftLeg.rotateAngleY = -((float) Math.PI / 10F);
-        }
-
-        this.rightArm.rotateAngleY = 0.0F;
-        this.leftArm.rotateAngleY = 0.0F;
-        float var7;
-        float var8;
-
-        if (this.onGround > -9990.0F)
-        {
-            var7 = this.onGround;
-            this.spine.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float) Math.PI * 2.0F) * 0.2F;
-
-            this.rightArm.rotationPointZ = MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
-            this.rightArm.rotationPointX = -MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
-            this.leftArm.rotationPointZ = -MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
-            this.leftArm.rotationPointX = MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
-            this.rightArm.rotateAngleY += this.spine.rotateAngleY;
-            this.leftArm.rotateAngleY += this.spine.rotateAngleY;
-            this.leftArm.rotateAngleX += this.spine.rotateAngleY;
-            var7 = 1.0F - this.onGround;
-            var7 *= var7;
-            var7 *= var7;
-            var7 = 1.0F - var7;
-            var8 = MathHelper.sin(var7 * (float) Math.PI);
-            final float var9 = MathHelper.sin(this.onGround * (float) Math.PI) * -(this.upperHead.rotateAngleX - 0.7F) * 0.75F;
-            this.rightArm.rotateAngleX = (float) (this.rightArm.rotateAngleX - (var8 * 1.2D + var9));
-            this.rightArm.rotateAngleY += this.spine.rotateAngleY * 2.0F;
-            this.rightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float) Math.PI) * -0.4F;
-        }
-
-        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
-
-        MathHelper.sin(this.onGround * (float) Math.PI);
-        MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
-
-        var7 = 0.0F;
-        var8 = 0.0F;
-        this.rightArm.rotateAngleZ = 0.0F;
-        this.leftArm.rotateAngleZ = 0.0F;
-        this.rightArm.rotateAngleY = -(0.1F - var7 * 0.6F) + this.upperHead.rotateAngleY;
-        this.leftArm.rotateAngleY = 0.1F - var7 * 0.6F + this.upperHead.rotateAngleY + 0.4F;
-        this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + this.upperHead.rotateAngleX;
-        this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + this.upperHead.rotateAngleX;
-        this.rightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
-        this.leftArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
-        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
-
-        final float f6 = MathHelper.sin(this.onGround * (float) Math.PI);
-        final float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
-        this.rightArm.rotateAngleZ = 0.0F;
-        this.leftArm.rotateAngleZ = 0.0F;
-        this.rightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
-        this.leftArm.rotateAngleY = 0.1F - f6 * 0.6F;
-        this.rightArm.rotateAngleX = -((float) Math.PI / 2F);
-        this.leftArm.rotateAngleX = -((float) Math.PI / 2F);
-        this.rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-        this.leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
-
-        if (boss.throwTimer + boss.postThrowDelay > 0)
-        {
-            this.rightArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
-            this.leftArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
-        }
-    }
+//    @Override
+//    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
+//    {
+//        final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
+//        super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
+//        this.upperHead.rotateAngleY = 0;
+//        this.upperHead.rotateAngleX = 0;
+//        this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
+//        this.leftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+//        this.rightArm.rotateAngleZ = 0.0F;
+//        this.leftArm.rotateAngleZ = 0.0F;
+//        this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+//        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+//        this.rightLeg.rotateAngleY = 0.0F;
+//        this.leftLeg.rotateAngleY = 0.0F;
+//
+//        if (this.isRiding)
+//        {
+//            this.rightArm.rotateAngleX += -((float) Math.PI / 5F);
+//            this.leftArm.rotateAngleX += -((float) Math.PI / 5F);
+//            this.rightLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
+//            this.leftLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
+//            this.rightLeg.rotateAngleY = (float) Math.PI / 10F;
+//            this.leftLeg.rotateAngleY = -((float) Math.PI / 10F);
+//        }
+//
+//        this.rightArm.rotateAngleY = 0.0F;
+//        this.leftArm.rotateAngleY = 0.0F;
+//        float var7;
+//        float var8;
+//
+//        if (this.onGround > -9990.0F)
+//        {
+//            var7 = this.onGround;
+//            this.spine.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float) Math.PI * 2.0F) * 0.2F;
+//
+//            this.rightArm.rotationPointZ = MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
+//            this.rightArm.rotationPointX = -MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
+//            this.leftArm.rotationPointZ = -MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
+//            this.leftArm.rotationPointX = MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
+//            this.rightArm.rotateAngleY += this.spine.rotateAngleY;
+//            this.leftArm.rotateAngleY += this.spine.rotateAngleY;
+//            this.leftArm.rotateAngleX += this.spine.rotateAngleY;
+//            var7 = 1.0F - this.onGround;
+//            var7 *= var7;
+//            var7 *= var7;
+//            var7 = 1.0F - var7;
+//            var8 = MathHelper.sin(var7 * (float) Math.PI);
+//            final float var9 = MathHelper.sin(this.onGround * (float) Math.PI) * -(this.upperHead.rotateAngleX - 0.7F) * 0.75F;
+//            this.rightArm.rotateAngleX = (float) (this.rightArm.rotateAngleX - (var8 * 1.2D + var9));
+//            this.rightArm.rotateAngleY += this.spine.rotateAngleY * 2.0F;
+//            this.rightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float) Math.PI) * -0.4F;
+//        }
+//
+//        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+//        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+//        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+//        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+//
+//        MathHelper.sin(this.onGround * (float) Math.PI);
+//        MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
+//
+//        var7 = 0.0F;
+//        var8 = 0.0F;
+//        this.rightArm.rotateAngleZ = 0.0F;
+//        this.leftArm.rotateAngleZ = 0.0F;
+//        this.rightArm.rotateAngleY = -(0.1F - var7 * 0.6F) + this.upperHead.rotateAngleY;
+//        this.leftArm.rotateAngleY = 0.1F - var7 * 0.6F + this.upperHead.rotateAngleY + 0.4F;
+//        this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + this.upperHead.rotateAngleX;
+//        this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + this.upperHead.rotateAngleX;
+//        this.rightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
+//        this.leftArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
+//        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+//        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+//        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+//        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+//
+//        final float f6 = MathHelper.sin(this.onGround * (float) Math.PI);
+//        final float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
+//        this.rightArm.rotateAngleZ = 0.0F;
+//        this.leftArm.rotateAngleZ = 0.0F;
+//        this.rightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
+//        this.leftArm.rotateAngleY = 0.1F - f6 * 0.6F;
+//        this.rightArm.rotateAngleX = -((float) Math.PI / 2F);
+//        this.leftArm.rotateAngleX = -((float) Math.PI / 2F);
+//        this.rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+//        this.leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+//        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+//        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+//        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+//        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+//
+//        if (boss.throwTimer + boss.postThrowDelay > 0)
+//        {
+//            this.rightArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+//            this.leftArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+//        }
+//    }
 }

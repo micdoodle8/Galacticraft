@@ -1,12 +1,12 @@
 package codechicken.lib.render.uv;
 
 import codechicken.lib.vec.IrreversibleTransformationException;
-import net.minecraft.util.IIcon;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public class IconTransformation extends UVTransformation {
-    public IIcon icon;
+    public TextureAtlasSprite icon;
 
-    public IconTransformation(IIcon icon) {
+    public IconTransformation(TextureAtlasSprite icon) {
         this.icon = icon;
     }
 

@@ -13,12 +13,12 @@ public class ContainerRocketInventory extends Container
     private final IInventory spaceshipInv;
     private final EnumRocketType rocketType;
 
-    public ContainerRocketInventory(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType)
+    public ContainerRocketInventory(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType, EntityPlayer player)
     {
         this.lowerChestInventory = par1IInventory;
         this.spaceshipInv = par2IInventory;
         this.rocketType = rocketType;
-        par2IInventory.openInventory();
+        par2IInventory.openInventory(player);
 
         switch (rocketType.getInventorySpace() - 2)
         {
@@ -135,7 +135,7 @@ public class ContainerRocketInventory extends Container
     public void onContainerClosed(EntityPlayer par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
-        this.lowerChestInventory.closeInventory();
+        this.lowerChestInventory.closeInventory(par1EntityPlayer);
     }
 
     /**

@@ -4,8 +4,9 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -16,9 +17,9 @@ public class RoomTreasureMoon extends DungeonRoom
     int sizeY;
     int sizeZ;
 
-    private final HashSet<ChunkCoordinates> chests = new HashSet<ChunkCoordinates>();
+    private final HashSet<BlockPos> chests = new HashSet<BlockPos>();
 
-    public RoomTreasureMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomTreasureMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -31,7 +32,7 @@ public class RoomTreasureMoon extends DungeonRoom
     }
 
     @Override
-    public void generate(Block[] chunk, byte[] meta, int cx, int cz)
+    public void generate(ChunkPrimer primer, int cx, int cz)
     {
         for (int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
         {
@@ -41,17 +42,17 @@ public class RoomTreasureMoon extends DungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        this.placeBlock(primer, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                     }
                     else
                     {
                         if ((i == this.posX || i == this.posX + this.sizeX - 1) && (k == this.posZ || k == this.posZ + this.sizeZ - 1))
                         {
-                            this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.glowstone, 0);
+                            this.placeBlock(primer, i, j, k, cx, cz, Blocks.glowstone, 0);
                         }
                         else
                         {
-                            this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.air, 0);
+                            this.placeBlock(primer, i, j, k, cx, cz, Blocks.air, 0);
                         }
                     }
                 }
@@ -60,20 +61,20 @@ public class RoomTreasureMoon extends DungeonRoom
         final int hx = (this.posX + this.posX + this.sizeX) / 2;
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
 
-        if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, GCBlocks.treasureChestTier1, 0))
+        if (this.placeBlock(primer, hx, this.posY, hz, cx, cz, GCBlocks.treasureChestTier1, 0))
         {
-            this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
+            this.chests.add(new BlockPos(hx, this.posY, hz));
         }
     }
 
     @Override
-    public DungeonBoundingBox getBoundingBox()
+    public DungeonBoundingBox getCollisionBoundingBox()
     {
         return new DungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomTreasureMoon(dungeon, x, y, z, dir);
     }
@@ -83,12 +84,12 @@ public class RoomTreasureMoon extends DungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            HashSet<ChunkCoordinates> removeList = new HashSet<ChunkCoordinates>();
+            HashSet<BlockPos> removeList = new HashSet<BlockPos>();
 
-            for (ChunkCoordinates coords : this.chests)
+            for (BlockPos coords : this.chests)
             {
-                this.worldObj.setBlock(coords.posX, coords.posY, coords.posZ, GCBlocks.treasureChestTier1, 0, 3);
-                this.worldObj.setTileEntity(coords.posX, coords.posY, coords.posZ, new TileEntityTreasureChest(1));
+                this.worldObj.setBlockState(coords, GCBlocks.treasureChestTier1.getDefaultState(), 2);
+                this.worldObj.setTileEntity(coords, new TileEntityTreasureChest(1));
                 removeList.add(coords);
             }
 

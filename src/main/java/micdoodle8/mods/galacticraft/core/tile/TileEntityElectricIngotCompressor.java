@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
@@ -17,7 +20,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 
@@ -41,9 +43,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -59,7 +61,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
                     if (this.processTicks >= this.processTimeRequired)
                     {
-                        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
+                        this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_land", 0.2F, 0.5F);
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -90,12 +92,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
@@ -166,9 +168,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         				double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
         				double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
         				double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        				EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+        				EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-        				entityitem.delayBeforeCanPickup = 10;
+        				entityitem.setPickupDelay(10);
 
         				this.worldObj.spawnEntityInWorld(entityitem);
         			}
@@ -308,11 +310,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (par1 >= this.containingItems.length)
         {
-            return this.compressingCraftMatrix.getStackInSlotOnClosing(par1 - this.containingItems.length);
+            return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.containingItems.length);
         }
 
         if (this.containingItems[par1] != null)
@@ -347,7 +349,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("tile.machine2.4.name");
     }
@@ -361,14 +363,14 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public boolean isUseableByPlayer(EntityPlayer entityplayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
@@ -391,9 +393,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
-    	if (side == 0) return new int[] { 1, 2 };
+    	if (side == EnumFacing.DOWN) return new int[] { 1, 2 };
     	int[] slots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     	ArrayList<Integer> removeSlots = new ArrayList();
     	
@@ -438,15 +440,45 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
     	return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID == 1 || slotID == 2;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 
     @Override
@@ -456,9 +488,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getFront()
     {
-        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFront();
     }
 
     @Override

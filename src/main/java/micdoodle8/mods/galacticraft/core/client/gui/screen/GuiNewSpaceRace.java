@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -154,28 +156,28 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             this.buttonTeamColor_xPosition = this.buttonFlag_xPosition + this.buttonFlag_width + 10;
             this.buttonTeamColor_yPosition = this.buttonFlag_yPosition + this.buttonFlag_height / 2 - this.buttonTeamColor_height / 2;
 
-            this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? GCCoreUtil.translate("gui.spaceRace.create.close.name") : GCCoreUtil.translate("gui.spaceRace.create.back.name")));
+            this.buttonList.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? GCCoreUtil.translate("gui.space_race.create.close.name") : GCCoreUtil.translate("gui.space_race.create.back.name")));
 
             switch (this.currentState)
             {
             case MAIN:
-                this.textBoxRename = new GuiElementTextBox(1, this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, GCCoreUtil.translate("gui.spaceRace.create.rename.name"), false, 25, true);
+                this.textBoxRename = new GuiElementTextBox(1, this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, GCCoreUtil.translate("gui.space_race.create.rename.name"), false, 25, true);
                 this.buttonList.add(this.textBoxRename);
                 if (this.canEdit)
                 {
-                    this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.addPlayers.name")));
-                    this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.remPlayers.name")));
+                    this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.add_players.name")));
+                    this.buttonList.add(new GuiElementGradientButton(3, this.width / 2 - 120, this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.rem_players.name")));
                 }
 
-                GuiElementGradientButton localStats = new GuiElementGradientButton(4, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.serverStats.name"));
-                GuiElementGradientButton serverStats = new GuiElementGradientButton(5, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.spaceRace.create.globalStats.name"));
+                GuiElementGradientButton localStats = new GuiElementGradientButton(4, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.server_stats.name"));
+                GuiElementGradientButton serverStats = new GuiElementGradientButton(5, this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.yPosition + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.global_stats.name"));
                 localStats.enabled = false;
                 serverStats.enabled = false;
                 this.buttonList.add(localStats);
                 this.buttonList.add(serverStats);
                 break;
             case ADD_PLAYER:
-                this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.spaceRace.create.sendInvite.name")));
+                this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.send_invite.name")));
                 int xPos0 = ((GuiElementGradientButton) this.buttonList.get(0)).xPosition + ((GuiElementGradientButton) this.buttonList.get(0)).getButtonWidth() + 10;
                 int xPos1 = this.width / 2 + this.width / 3 - 10;
                 int yPos0 = this.height / 2 - this.height / 3 + 10;
@@ -183,7 +185,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 this.gradientListAddPlayers = new GuiElementGradientList(xPos0, yPos0, xPos1 - xPos0, yPos1 - yPos0);
                 break;
             case REMOVE_PLAYER:
-                this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.spaceRace.create.remove.name")));
+                this.buttonList.add(new GuiElementGradientButton(2, this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.remove.name")));
                 int xPos0b = ((GuiElementGradientButton) this.buttonList.get(0)).xPosition + ((GuiElementGradientButton) this.buttonList.get(0)).getButtonWidth() + 10;
                 int xPos1b = this.width / 2 + this.width / 3 - 10;
                 int yPos0b = this.height / 2 - this.height / 3 + 10;
@@ -220,8 +222,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 this.checkboxSelector = new GuiElementCheckbox(7, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 40, 13, 13, 26, 26, 133, 78, "", 4210752, false);
                 this.checkboxColorSelector = new GuiElementCheckbox(8, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 55, 13, 13, 26, 26, 133, 104, "", 4210752, false);
                 this.checkboxShowGrid = new GuiElementCheckbox(9, this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 90, 13, 13, 26, 26, 133, 26, "", 4210752, false);
-                this.sliderBrushSize = new GuiElementSlider(10, this.checkboxPaintbrush.xPosition - 40, this.checkboxPaintbrush.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), GCCoreUtil.translate("gui.spaceRace.create.brushSize.name"));
-                this.sliderEraserSize = new GuiElementSlider(11, this.checkboxEraser.xPosition - 40, this.checkboxEraser.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), GCCoreUtil.translate("gui.spaceRace.create.eraserSize.name"));
+                this.sliderBrushSize = new GuiElementSlider(10, this.checkboxPaintbrush.xPosition - 40, this.checkboxPaintbrush.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), GCCoreUtil.translate("gui.space_race.create.brush_size.name"));
+                this.sliderEraserSize = new GuiElementSlider(11, this.checkboxEraser.xPosition - 40, this.checkboxEraser.yPosition, 35, 13, false, new Vector3(0.34, 0.34, 0.34), new Vector3(0.34, 0.34, 0.34), GCCoreUtil.translate("gui.space_race.create.eraser_size.name"));
                 this.sliderEraserSize.visible = false;
                 this.buttonList.add(this.checkboxPaintbrush);
                 this.buttonList.add(this.checkboxShowGrid);
@@ -265,7 +267,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID)
+    protected void keyTyped(char keyChar, int keyID) throws IOException
     {
         if (this.textBoxRename != null && this.textBoxRename.keyTyped(keyChar, keyID))
         {
@@ -361,7 +363,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int clickIndex)
+    protected void mouseClicked(int x, int y, int clickIndex) throws IOException
     {
         super.mouseClicked(x, y, clickIndex);
     }
@@ -535,12 +537,12 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
             if (this.sliderBrushSize != null && this.sliderBrushSize.visible)
             {
-                this.sliderBrushSize.displayString = GCCoreUtil.translate("gui.spaceRace.create.brushRadius.name") + ": " + ((int) Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
+                this.sliderBrushSize.displayString = GCCoreUtil.translate("gui.space_race.create.brush_radius.name") + ": " + ((int) Math.floor(this.sliderBrushSize.getNormalizedValue() * 10) + 1);
             }
 
             if (this.sliderEraserSize != null && this.sliderEraserSize.visible)
             {
-                this.sliderEraserSize.displayString = GCCoreUtil.translate("gui.spaceRace.create.eraserRadius.name") + ": " + ((int) Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
+                this.sliderEraserSize.displayString = GCCoreUtil.translate("gui.space_race.create.eraser_radius.name") + ": " + ((int) Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
             }
         }
         else if (this.currentState == EnumSpaceRaceGui.MAIN)
@@ -645,7 +647,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             switch (this.currentState)
             {
             case MAIN:
-                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.create.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
                 this.drawFlagButton();
                 this.drawColorButton();
 
@@ -654,29 +656,29 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
                 if (par1 > serverStats.xPosition && par1 < serverStats.xPosition + serverStats.width && par2 > serverStats.yPosition && par2 < serverStats.yPosition + serverStats.height)
                 {
-                    serverStats.displayString = GCCoreUtil.translate("gui.spaceRace.comingSoon");
+                    serverStats.displayString = GCCoreUtil.translate("gui.space_race.coming_soon");
                 }
                 else
                 {
-                    serverStats.displayString = GCCoreUtil.translate("gui.spaceRace.create.serverStats.name");
+                    serverStats.displayString = GCCoreUtil.translate("gui.space_race.create.server_stats.name");
                 }
 
                 if (par1 > localStats.xPosition && par1 < localStats.xPosition + localStats.width && par2 > localStats.yPosition && par2 < localStats.yPosition + localStats.height)
                 {
-                    localStats.displayString = GCCoreUtil.translate("gui.spaceRace.comingSoon");
+                    localStats.displayString = GCCoreUtil.translate("gui.space_race.coming_soon");
                 }
                 else
                 {
-                    localStats.displayString = GCCoreUtil.translate("gui.spaceRace.create.globalStats.name");
+                    localStats.displayString = GCCoreUtil.translate("gui.space_race.create.global_stats.name");
                 }
 
                 break;
             case ADD_PLAYER:
-                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.invitePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
-                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.playerRadius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, ColorUtil.to32BitColor(255, 180, 40, 40));
+                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.create.invite_player.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.create.player_radius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, ColorUtil.to32BitColor(255, 180, 40, 40));
                 break;
             case REMOVE_PLAYER:
-                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.spaceRace.create.removePlayer.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+                this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.create.remove_player.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
                 break;
             case DESIGN_FLAG:
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -685,7 +687,8 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 OpenGlHelper.glBlendFunc(770, 771, 1, 0);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
-                Tessellator tessellator = Tessellator.instance;
+                Tessellator tessellator = Tessellator.getInstance();
+                WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
                 for (int x = 0; x < this.spaceRaceData.getFlagData().getWidth(); x++)
                 {
@@ -693,11 +696,11 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     {
                         Vector3 color = this.spaceRaceData.getFlagData().getColorAt(x, y);
                         GL11.glColor4f(color.floatX(), color.floatY(), color.floatZ(), 1.0F);
-                        tessellator.startDrawingQuads();
-                        tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D);
-                        tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D);
-                        tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D);
-                        tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D);
+                        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
                         tessellator.draw();
                     }
                 }
@@ -706,33 +709,30 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 {
                     for (int x = 0; x <= this.spaceRaceData.getFlagData().getWidth(); x++)
                     {
-                        tessellator.startDrawing(GL11.GL_LINES);
-                        tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
-                        tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.zLevel);
-                        tessellator.addVertex(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.zLevel);
+                        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.zLevel).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.zLevel).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
                         tessellator.draw();
                     }
 
                     for (int y = 0; y <= this.spaceRaceData.getFlagData().getHeight(); y++)
                     {
-                        tessellator.startDrawing(GL11.GL_LINES);
-                        tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
-                        tessellator.addVertex(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel);
-                        tessellator.addVertex(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel);
+                        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+                        worldRenderer.pos(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.zLevel).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
                         tessellator.draw();
                     }
                 }
 
                 if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - this.selectionMinX > 0 && this.selectionMaxY - this.selectionMinY > 0)
                 {
-                    tessellator.startDrawing(GL11.GL_LINE_STRIP);
+                    worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
                     float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
-                    tessellator.setColorRGBA_F(col, col, col, 1.0F);
-                    tessellator.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
-                    tessellator.addVertex(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
-                    tessellator.addVertex(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel);
-                    tessellator.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel);
-                    tessellator.addVertex(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel);
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.zLevel).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.zLevel).color(col, col, col, 1.0F).endVertex();
                     tessellator.draw();
                 }
 
@@ -743,20 +743,18 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 float y1 = guiBottom - 10 - (x2 - x1);
                 float y2 = guiBottom - 10;
 
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(0, 0, 0, 1.0F);
-                tessellator.addVertex(x2, y1, this.zLevel);
-                tessellator.addVertex(x1, y1, this.zLevel);
-                tessellator.addVertex(x1, y2, this.zLevel);
-                tessellator.addVertex(x2, y2, this.zLevel);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.pos(x2, y1, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x1, y1, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x1, y2, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x2, y2, this.zLevel).color(0, 0, 0, 1.0F).endVertex();
                 tessellator.draw();
 
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
-                tessellator.addVertex((double) x2 - 1, (double) y1 + 1, this.zLevel);
-                tessellator.addVertex((double) x1 + 1, (double) y1 + 1, this.zLevel);
-                tessellator.addVertex((double) x1 + 1, (double) y2 - 1, this.zLevel);
-                tessellator.addVertex((double) x2 - 1, (double) y2 - 1, this.zLevel);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
                 tessellator.draw();
 
                 GL11.glShadeModel(GL11.GL_FLAT);
@@ -789,13 +787,13 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     y2 = y1 + xDiff;
                 }
 
-                tessellator = Tessellator.instance;
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA_F(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F);
-                tessellator.addVertex((double) x2 - 1, (double) y1 + 1, this.zLevel);
-                tessellator.addVertex((double) x1 + 1, (double) y1 + 1, this.zLevel);
-                tessellator.addVertex((double) x1 + 1, (double) y2 - 1, this.zLevel);
-                tessellator.addVertex((double) x2 - 1, (double) y2 - 1, this.zLevel);
+                tessellator = Tessellator.getInstance();
+                worldRenderer = tessellator.getWorldRenderer();
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
                 tessellator.draw();
 
                 this.spaceRaceData.setTeamColor(new Vector3(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue()));
@@ -843,7 +841,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         int color = this.buttonFlag_hover ? 170 : 100;
         if (this.canEdit)
         {
-            String message = GCCoreUtil.translate("gui.spaceRace.create.customize.name");
+            String message = GCCoreUtil.translate("gui.space_race.create.customize.name");
             this.fontRendererObj.drawString(message, this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.fontRendererObj.getStringWidth(message) / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, ColorUtil.to32BitColor(255, color, color, color), this.buttonFlag_hover);
         }
         GL11.glPopMatrix();
@@ -868,10 +866,10 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         int color = this.buttonTeamColor_hover ? 170 : 100;
         if (canEdit)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.0")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 13, ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.space_race.create.change_color.name.0"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.space_race.create.change_color.name.0")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - 13, ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
         }
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.1")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - (canEdit ? 3 : 9), ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.spaceRace.create.changeColor.name.2")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + (canEdit ? 7 : 1), ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.space_race.create.change_color.name.1"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.space_race.create.change_color.name.1")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - (canEdit ? 3 : 9), ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.space_race.create.change_color.name.2"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.space_race.create.change_color.name.2")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + (canEdit ? 7 : 1), ColorUtil.to32BitColor(255, color, color, color), this.buttonTeamColor_hover);
         GL11.glPopMatrix();
 
         if (this.buttonTeamColor_hover)

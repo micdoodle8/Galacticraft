@@ -1,12 +1,8 @@
-/**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
- * http://www.mod-buildcraft.com
+/** Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team http://www.mod-buildcraft.com
  *
- * BuildCraft is distributed under the terms of the Minecraft Mod Public
- * License 1.0, or MMPL. Please check the contents of the license located in
- * http://www.mod-buildcraft.com/MMPL-1.0.txt
- */
-@API(apiVersion = "2.0", owner = "BuildCraftAPI|core", provides = "BuildCraftAPI|transport")
+ * The BuildCraft API is distributed under the terms of the MIT License. Please check the contents of the license, which
+ * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
+@API(apiVersion = "5.0", owner = "BuildCraftAPI|core", provides = "BuildCraftAPI|transport")
 package buildcraft.api.transport;
-import cpw.mods.fml.common.API;
 
+import net.minecraftforge.fml.common.API;

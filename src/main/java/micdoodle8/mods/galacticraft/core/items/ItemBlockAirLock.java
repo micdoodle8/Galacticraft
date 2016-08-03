@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
@@ -38,12 +38,12 @@ public class ItemBlockAirLock extends ItemBlockDesc
         {
         case 0:
         {
-            name = "airLockFrame";
+            name = "air_lock_frame";
             break;
         }
         case 1:
         {
-            name = "airLockController";
+            name = "air_lock_controller";
             break;
         }
         default:
@@ -56,6 +56,6 @@ public class ItemBlockAirLock extends ItemBlockDesc
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

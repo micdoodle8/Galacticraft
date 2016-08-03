@@ -7,6 +7,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -29,13 +30,13 @@ import java.util.Set;
 
 public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
-    private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+    private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
+    private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
     int ticksPassed;
     int extra = 0;
 
     boolean fillAtmos = false;
-    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRenderer;
+    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
 
     public String getRecipeId()
     {
@@ -97,9 +98,9 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
         if (this.fillAtmos)
         {
             String gasname = GCCoreUtil.translate("gas.carbondioxide.name");
-            String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
+            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
             String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
-            String text3 = GCCoreUtil.translate("gui.message.withAtmosphere1.name");
+            String text3 = GCCoreUtil.translate("gui.message.with_atmosphere1.name");
             this.fontRendererObj.drawString(text1, 4, 85, 4210752);
             this.fontRendererObj.drawString(text2, 18, 95, 4210752);
             this.fontRendererObj.drawString(text3, 18, 105, 4210752);
@@ -243,13 +244,13 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return GCCoreUtil.translate("tile.marsMachine.5.name");
+        return GCCoreUtil.translate("tile.mars_machine.5.name");
     }
 
     @Override
     public String getGuiTexture()
     {
-        return MarsModule.ASSET_PREFIX + "/textures/gui/methaneSynthesizer.png";
+        return GalacticraftPlanets.ASSET_PREFIX + "/textures/gui/methaneSynthesizer.png";
     }
 
     @Override
@@ -262,7 +263,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     {
         Point mousePos = getMousePosition();
     	try {
-        	Class<GuiContainer> clazz = GuiContainer.class;       	
+        	Class<GuiContainer> clazz = GuiContainer.class;
         	mousePos.x -= (Integer) clazz.getField("field_147003_i").get(gui);
         	mousePos.y -= (Integer) clazz.getField("field_147009_r").get(gui);
     	}  catch (Exception ee) { ee.printStackTrace(); }
@@ -271,7 +272,7 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
         	currenttip.add(GCCoreUtil.translate("fluid.hydrogen"));
         else if (mousePos.x < 44 && mousePos.x > 27 && mousePos.y < 60 && mousePos.y > 39)
     		currenttip.add(GCCoreUtil.translate("gas.carbondioxide.name"));
-        
+
         return currenttip;
     }
 }

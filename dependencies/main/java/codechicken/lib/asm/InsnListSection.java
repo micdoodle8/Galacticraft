@@ -18,10 +18,8 @@ import static org.objectweb.asm.tree.AbstractInsnNode.*;
 /**
  * A section of an InsnList, may become invalid if the insn list is modified
  */
-public class InsnListSection implements Iterable<AbstractInsnNode>
-{
-    private class InsnListSectionIterator implements Iterator<AbstractInsnNode>
-    {
+public class InsnListSection implements Iterable<AbstractInsnNode> {
+    private class InsnListSectionIterator implements Iterator<AbstractInsnNode> {
         int i = 0;
 
         @Override
@@ -51,7 +49,7 @@ public class InsnListSection implements Iterable<AbstractInsnNode>
     }
 
     public InsnListSection(InsnList list, AbstractInsnNode first, AbstractInsnNode last) {
-        this(list, list.indexOf(first), list.indexOf(last)+1);
+        this(list, list.indexOf(first), list.indexOf(last) + 1);
     }
 
     public InsnListSection(InsnList list) {
@@ -63,8 +61,9 @@ public class InsnListSection implements Iterable<AbstractInsnNode>
     }
 
     public void accept(MethodVisitor mv) {
-        for(AbstractInsnNode insn : this)
+        for (AbstractInsnNode insn : this) {
             insn.accept(mv);
+        }
     }
 
     public AbstractInsnNode getFirst() {
@@ -103,35 +102,38 @@ public class InsnListSection implements Iterable<AbstractInsnNode>
 
     public void insertBefore(InsnList insns) {
         int s = insns.size();
-        if(this.list.size() == 0)
+        if (this.list.size() == 0) {
             list.insert(insns);
-        else
+        } else {
             list.insertBefore(list.get(start), insns);
-        start+=s;
-        end+=s;
+        }
+        start += s;
+        end += s;
     }
 
     public void insert(InsnList insns) {
-        if(end == 0)
+        if (end == 0) {
             list.insert(insns);
-        else
-            list.insert(list.get(end-1), insns);
+        } else {
+            list.insert(list.get(end - 1), insns);
+        }
     }
 
     public void replace(InsnList insns) {
         int s = insns.size();
         remove();
         insert(insns);
-        end = start+s;
+        end = start + s;
     }
 
     public void remove() {
-        while(end != start)
+        while (end != start) {
             remove(0);
+        }
     }
 
     public void setLast(AbstractInsnNode last) {
-        end = list.indexOf(last)+1;
+        end = list.indexOf(last) + 1;
     }
 
     public void setFirst(AbstractInsnNode first) {
@@ -147,19 +149,22 @@ public class InsnListSection implements Iterable<AbstractInsnNode>
     }
 
     public InsnListSection slice(int start, int end) {
-        return new InsnListSection(list, this.start+start, this.start+end);
+        return new InsnListSection(list, this.start + start, this.start + end);
     }
 
     /**
      * Removes leading and trailing labels and line number nodes that don't affect control flow
+     *
      * @return this
      */
     public InsnListSection trim(Set<LabelNode> controlFlowLabels) {
-        while(start < end && !InsnComparator.insnImportant(getFirst(), controlFlowLabels))
+        while (start < end && !InsnComparator.insnImportant(getFirst(), controlFlowLabels)) {
             start++;
+        }
 
-        while(start < end && !InsnComparator.insnImportant(getLast(), controlFlowLabels))
+        while (start < end && !InsnComparator.insnImportant(getLast(), controlFlowLabels)) {
             end--;
+        }
 
         return this;
     }
@@ -176,48 +181,58 @@ public class InsnListSection implements Iterable<AbstractInsnNode>
         System.out.println(toString());
     }
 
-    public HashMap<LabelNode,LabelNode> identityLabelMap() {
+    public HashMap<LabelNode, LabelNode> identityLabelMap() {
         HashMap<LabelNode, LabelNode> labelMap = new HashMap<LabelNode, LabelNode>();
-        for (AbstractInsnNode insn : this)
-            switch(insn.getType()) {
-                case LABEL:
-                    labelMap.put((LabelNode) insn, (LabelNode) insn);
-                    break;
-                case JUMP_INSN:
-                    labelMap.put(((JumpInsnNode)insn).label, ((JumpInsnNode)insn).label);
-                    break;
-                case LOOKUPSWITCH_INSN:
-                    LookupSwitchInsnNode linsn = (LookupSwitchInsnNode)insn;
-                    labelMap.put(linsn.dflt, linsn.dflt);
-                    for(LabelNode label : linsn.labels)
-                        labelMap.put(label, label);
-                    break;
-                case TABLESWITCH_INSN:
-                    TableSwitchInsnNode tinsn = (TableSwitchInsnNode)insn;
-                    labelMap.put(tinsn.dflt, tinsn.dflt);
-                    for(LabelNode label : tinsn.labels)
-                        labelMap.put(label, label);
-                    break;
-                case FRAME:
-                    FrameNode fnode = (FrameNode)insn;
-                    if(fnode.local != null)
-                        for(Object o : fnode.local)
-                            if(o instanceof LabelNode)
-                                labelMap.put((LabelNode) o, (LabelNode) o);
-                    if(fnode.stack != null)
-                        for(Object o : fnode.stack)
-                            if(o instanceof LabelNode)
-                                labelMap.put((LabelNode) o, (LabelNode) o);
-                    break;
+        for (AbstractInsnNode insn : this) {
+            switch (insn.getType()) {
+            case LABEL:
+                labelMap.put((LabelNode) insn, (LabelNode) insn);
+                break;
+            case JUMP_INSN:
+                labelMap.put(((JumpInsnNode) insn).label, ((JumpInsnNode) insn).label);
+                break;
+            case LOOKUPSWITCH_INSN:
+                LookupSwitchInsnNode linsn = (LookupSwitchInsnNode) insn;
+                labelMap.put(linsn.dflt, linsn.dflt);
+                for (LabelNode label : linsn.labels) {
+                    labelMap.put(label, label);
+                }
+                break;
+            case TABLESWITCH_INSN:
+                TableSwitchInsnNode tinsn = (TableSwitchInsnNode) insn;
+                labelMap.put(tinsn.dflt, tinsn.dflt);
+                for (LabelNode label : tinsn.labels) {
+                    labelMap.put(label, label);
+                }
+                break;
+            case FRAME:
+                FrameNode fnode = (FrameNode) insn;
+                if (fnode.local != null) {
+                    for (Object o : fnode.local) {
+                        if (o instanceof LabelNode) {
+                            labelMap.put((LabelNode) o, (LabelNode) o);
+                        }
+                    }
+                }
+                if (fnode.stack != null) {
+                    for (Object o : fnode.stack) {
+                        if (o instanceof LabelNode) {
+                            labelMap.put((LabelNode) o, (LabelNode) o);
+                        }
+                    }
+                }
+                break;
             }
+        }
 
         return labelMap;
     }
 
     public Map<LabelNode, LabelNode> cloneLabels() {
         Map<LabelNode, LabelNode> labelMap = identityLabelMap();
-        for(Entry<LabelNode, LabelNode> entry : labelMap.entrySet())
+        for (Entry<LabelNode, LabelNode> entry : labelMap.entrySet()) {
             entry.setValue(new LabelNode());
+        }
 
         return labelMap;
     }
@@ -228,8 +243,9 @@ public class InsnListSection implements Iterable<AbstractInsnNode>
 
     public InsnListSection copy(Map<LabelNode, LabelNode> labelMap) {
         InsnListSection copy = new InsnListSection();
-        for(AbstractInsnNode insn : this)
+        for (AbstractInsnNode insn : this) {
             copy.add(insn.clone(labelMap));
+        }
 
         return copy;
     }

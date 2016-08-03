@@ -8,6 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematic extends Container
@@ -16,7 +17,7 @@ public class ContainerSchematic extends Container
     public IInventory craftResult = new InventoryCraftResult();
     private final World worldObj;
 
-    public ContainerSchematic(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public ContainerSchematic(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
         this.worldObj = par1InventoryPlayer.player.worldObj;
         this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
@@ -50,7 +51,7 @@ public class ContainerSchematic extends Container
         {
             for (int var2 = 0; var2 < 1; ++var2)
             {
-                final ItemStack var3 = this.craftMatrix.getStackInSlotOnClosing(var2);
+                final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
                 if (var3 != null)
                 {

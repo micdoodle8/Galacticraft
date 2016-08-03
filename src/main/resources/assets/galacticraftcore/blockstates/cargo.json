@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,type=cargo_loader": { "model": "galacticraftcore:cargo_loader_model" },
+        "facing=east,type=cargo_loader":  { "model": "galacticraftcore:cargo_loader_model", "y": 90 },
+        "facing=west,type=cargo_loader":  { "model": "galacticraftcore:cargo_loader_model", "y": 270 },
+        "facing=south,type=cargo_loader": { "model": "galacticraftcore:cargo_loader_model", "y": 180 },
+        "facing=north,type=cargo_unloader": { "model": "galacticraftcore:cargo_unloader_model" },
+        "facing=east,type=cargo_unloader":  { "model": "galacticraftcore:cargo_unloader_model", "y": 90 },
+        "facing=west,type=cargo_unloader":  { "model": "galacticraftcore:cargo_unloader_model", "y": 270 },
+        "facing=south,type=cargo_unloader": { "model": "galacticraftcore:cargo_unloader_model", "y": 180 }
+    }
+}

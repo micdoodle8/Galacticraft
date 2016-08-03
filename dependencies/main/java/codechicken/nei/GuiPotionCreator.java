@@ -6,30 +6,30 @@ import codechicken.core.gui.GuiScrollSlot;
 import codechicken.core.inventory.GuiContainerWidget;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.FontUtils;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GuiPotionCreator extends GuiContainerWidget
-{
-    public class GuiSlotPotionEffects extends GuiScrollSlot
-    {
+public class GuiPotionCreator extends GuiContainerWidget {
+    public class GuiSlotPotionEffects extends GuiScrollSlot {
         public int selectedslot = -1;
         public boolean enabled = true;
         private ArrayList<Potion> validPotions = new ArrayList<Potion>();
 
         public GuiSlotPotionEffects(int x, int y) {
             super(x, y, 108, 76);
-            for (Potion p : Potion.potionTypes)
-                if (p != null)
+            for (Potion p : Potion.potionTypes) {
+                if (p != null) {
                     validPotions.add(p);
+                }
+            }
             setSmoothScroll(false);
             setMargins(0, 0, 0, 0);
         }
@@ -63,12 +63,13 @@ public class GuiPotionCreator extends GuiContainerWidget
 
         @Override
         protected void drawSlot(int slot, int x, int y, int mx, int my, float frame) {
-            GL11.glColor4f(1, 1, 1, 1);
+            GlStateManager.color(1, 1, 1, 1);
             Potion potion = validPotions.get(slot);
             PotionEffect effect = getEffect(potion.id);
             boolean blank = effect == null;
-            if (effect == null)
+            if (effect == null) {
                 effect = new PotionEffect(potion.id, 1200, 0);
+            }
             int shade = selectedslot == slot ? 2 : blank ? 1 : 0;
 
             CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
@@ -102,8 +103,9 @@ public class GuiPotionCreator extends GuiContainerWidget
                 NBTTagList potionTagList = potion.getTagCompound().getTagList("CustomPotionEffects", 10);
                 for (int i = 0; i < potionTagList.tagCount(); i++) {
                     PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(potionTagList.getCompoundTagAt(i));
-                    if (effect.getPotionID() == id)
+                    if (effect.getPotionID() == id) {
                         return effect;
+                    }
                 }
             }
             return null;
@@ -116,8 +118,9 @@ public class GuiPotionCreator extends GuiContainerWidget
 
         @Override
         protected void slotClicked(int slot, int button, int mx, int my, int count) {
-            if (!enabled)
+            if (!enabled) {
                 return;
+            }
 
             if (button == 0) {
                 select(slot);
@@ -143,19 +146,22 @@ public class GuiPotionCreator extends GuiContainerWidget
         }
 
         public void setEnabled(boolean b) {
-            if (b == enabled)
+            if (b == enabled) {
                 return;
+            }
             enabled = b;
-            if (!enabled)
+            if (!enabled) {
                 deselect();
+            }
         }
 
         private void select(int slot) {
             selectedslot = slot;
             durationField.setEnabled(true);
             PotionEffect effect = getEffect(validPotions.get(slot).id);
-            if (effect == null)
+            if (effect == null) {
                 effect = new PotionEffect(validPotions.get(slot).id, 1200, 0);
+            }
             durationField.setDurationTicks(effect.getDuration());
             amplifier = effect.getAmplifier();
             validateInputButtons();
@@ -173,8 +179,7 @@ public class GuiPotionCreator extends GuiContainerWidget
         }
     }
 
-    public class GuiDurationField extends GuiCCTextField
-    {
+    public class GuiDurationField extends GuiCCTextField {
         private String baseValue;
 
         public GuiDurationField(int x, int y, int width, int height) {
@@ -188,27 +193,30 @@ public class GuiPotionCreator extends GuiContainerWidget
             i /= 20;
             String minutes = Integer.toString(i / 60);
             String seconds = Integer.toString(i % 60);
-            if (seconds.length() == 1)
+            if (seconds.length() == 1) {
                 seconds = '0' + seconds;
+            }
             setText(minutes + seconds);
         }
 
         @Override
         public void setEnabled(boolean b) {
             super.setEnabled(b);
-            if (!isEnabled())
+            if (!isEnabled()) {
                 setText("100");
+            }
         }
 
         @Override
         public void onFocusChanged() {
-            if (isFocused())
+            if (isFocused()) {
                 baseValue = getText();
-            else {
-                if (!validateValue())
+            } else {
+                if (!validateValue()) {
                     setText(baseValue);
-                else
+                } else {
                     applyEffect();
+                }
             }
         }
 
@@ -262,22 +270,23 @@ public class GuiPotionCreator extends GuiContainerWidget
     }
 
     public void applyEffect() {
-        if (slotPotionEffects.selectedslot >= 0)
+        if (slotPotionEffects.selectedslot >= 0) {
             container.setPotionEffect(slotPotionEffects.selectedPotion(), durationField.getDurationTicks(), amplifier);
+        }
     }
 
     public String translateAmplifier(int amplifier) {
         switch (amplifier) {
-            case 0:
-                return "I";
-            case 1:
-                return "II";
-            case 2:
-                return "III";
-            case 3:
-                return "IV";
-            case 4:
-                return "V";
+        case 0:
+            return "I";
+        case 1:
+            return "II";
+        case 2:
+            return "III";
+        case 3:
+            return "IV";
+        case 4:
+            return "V";
         }
         return Integer.toString(amplifier);
     }
@@ -319,10 +328,11 @@ public class GuiPotionCreator extends GuiContainerWidget
 
     @Override
     public void actionPerformed(String ident, Object... params) {
-        if (ident.equals("ampDown"))
+        if (ident.equals("ampDown")) {
             amplifier--;
-        else if (ident.equals("ampUp"))
+        } else if (ident.equals("ampUp")) {
             amplifier++;
+        }
         applyEffect();
         validateInputButtons();
     }

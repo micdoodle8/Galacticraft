@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelParaChest;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
@@ -11,33 +13,46 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderParaChest extends Render
+public class RenderParaChest extends Render<EntityParachest>
 {
-    private static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachest.png");
+    private static final ResourceLocation[] textures = { new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/plain.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/black.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/blue.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/lime.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/brown.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/darkblue.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/darkgray.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/darkgreen.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/gray.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/magenta.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/orange.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/pink.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/purple.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/red.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/teal.png"),
+                                                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/yellow.png") };
+    public static final ResourceLocation parachestTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachest.png");
 
     private final ModelParaChest chestModel;
 
     public RenderParaChest()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 1F;
         this.chestModel = new ModelParaChest();
     }
 
-    protected ResourceLocation func_110779_a(Entity par1EntityArrow)
+    @Override
+    protected ResourceLocation getEntityTexture(EntityParachest entity)
     {
-        return RenderParaChest.parachestTexture;
+        return RenderParaChest.textures[ItemParaChute.getParachuteDamageValueFromDyeEnum(entity.color)];
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return this.func_110779_a(par1Entity);
-    }
-
-    public void doRenderParaChest(EntityParachest entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityParachest entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) par2 - 0.5F, (float) par4, (float) par6);
+        GL11.glTranslatef((float) x - 0.5F, (float) y, (float) z);
 
         this.bindEntityTexture(entity);
 
@@ -45,12 +60,7 @@ public class RenderParaChest extends Render
         {
             this.chestModel.renderAll();
         }
-        GL11.glPopMatrix();
-    }
 
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.doRenderParaChest((EntityParachest) par1Entity, par2, par4, par6, par8, par9);
+        GL11.glPopMatrix();
     }
 }

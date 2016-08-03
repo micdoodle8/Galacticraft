@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -23,8 +24,7 @@ import static codechicken.lib.gui.GuiDraw.*;
 import static codechicken.nei.NEIClientConfig.*;
 import static codechicken.nei.NEIClientUtils.*;
 
-public class LayoutManager implements IContainerInputHandler, IContainerTooltipHandler, IContainerDrawHandler, IContainerObjectHandler, IKeyStateTracker
-{
+public class LayoutManager implements IContainerInputHandler, IContainerTooltipHandler, IContainerDrawHandler, IContainerObjectHandler, IKeyStateTracker {
     private static LayoutManager instance;
 
     private static Widget inputFocused;
@@ -95,25 +95,30 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-        if (isHidden())
+        if (isHidden()) {
             return;
+        }
 
-        for (Widget widget : controlWidgets)
+        for (Widget widget : controlWidgets) {
             widget.onGuiClick(mousex, mousey);
+        }
     }
 
     @Override
     public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-        if (isHidden())
+        if (isHidden()) {
             return false;
+        }
 
-        if (!isEnabled())
+        if (!isEnabled()) {
             return options.contains(mousex, mousey) && options.handleClick(mousex, mousey, button);
+        }
 
         for (Widget widget : controlWidgets) {
             widget.onGuiClick(mousex, mousey);
-            if (widget.contains(mousex, mousey) ? widget.handleClick(mousex, mousey, button) : widget.handleClickExt(mousex, mousey, button))
+            if (widget.contains(mousex, mousey) ? widget.handleClick(mousex, mousey, button) : widget.handleClickExt(mousex, mousey, button)) {
                 return true;
+            }
         }
 
         return false;
@@ -121,22 +126,28 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public boolean objectUnderMouse(GuiContainer gui, int mousex, int mousey) {
-        if (!isHidden() && isEnabled())
-            for (Widget widget : controlWidgets)
-                if (widget.contains(mousex, mousey))
+        if (!isHidden() && isEnabled()) {
+            for (Widget widget : controlWidgets) {
+                if (widget.contains(mousex, mousey)) {
                     return true;
+                }
+            }
+        }
 
         return false;
     }
 
     public boolean keyTyped(GuiContainer gui, char keyChar, int keyID) {
         if (isEnabled() && !isHidden()) {
-            if (inputFocused != null)
+            if (inputFocused != null) {
                 return inputFocused.handleKeyPress(keyID, keyChar);
+            }
 
-            for (Widget widget : controlWidgets)
-                if (widget.handleKeyPress(keyID, keyChar))
+            for (Widget widget : controlWidgets) {
+                if (widget.handleKeyPress(keyID, keyChar)) {
                     return true;
+                }
+            }
         }
 
         return false;
@@ -153,25 +164,29 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             return true;
         }
         if (isEnabled() && !isHidden()) {
-            for (Widget widget : controlWidgets)
-                if (inputFocused == null)
+            for (Widget widget : controlWidgets) {
+                if (inputFocused == null) {
                     widget.lastKeyTyped(keyID, keyChar);
+                }
+            }
         }
         return false;
     }
 
     public void onMouseUp(GuiContainer gui, int mx, int my, int button) {
         if (!isHidden() && isEnabled()) {
-            for (Widget widget : controlWidgets)
+            for (Widget widget : controlWidgets) {
                 widget.mouseUp(mx, my, button);
+            }
         }
     }
 
     @Override
     public void onMouseDragged(GuiContainer gui, int mx, int my, int button, long heldTime) {
         if (!isHidden() && isEnabled()) {
-            for (Widget widget : controlWidgets)
+            for (Widget widget : controlWidgets) {
                 widget.mouseDragged(mx, my, button, heldTime);
+            }
         }
     }
 
@@ -180,8 +195,9 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         if (!isHidden() && isEnabled()) {
             for (Widget widget : controlWidgets) {
                 ItemStack stack = widget.getStackMouseOver(mousex, mousey);
-                if (stack != null)
+                if (stack != null) {
                     return stack;
+                }
             }
         }
         return null;
@@ -192,30 +208,33 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             layout(gui);
             if (isEnabled()) {
                 getLayoutStyle().drawBackground(GuiContainerManager.getManager(gui));
-                for (Widget widget : drawWidgets)
+                for (Widget widget : drawWidgets) {
                     widget.draw(mousex, mousey);
+                }
             } else {
                 options.draw(mousex, mousey);
             }
 
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableLighting();
+            GlStateManager.disableDepth();
         }
     }
 
     @Override
     public void postRenderObjects(GuiContainer gui, int mousex, int mousey) {
         if (!isHidden() && isEnabled()) {
-            for (Widget widget : drawWidgets)
+            for (Widget widget : drawWidgets) {
                 widget.postDraw(mousex, mousey);
+            }
         }
     }
 
     @Override
     public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
         if (!isHidden() && isEnabled() && GuiContainerManager.shouldShowTooltip(gui)) {
-            for (Widget widget : controlWidgets)
+            for (Widget widget : controlWidgets) {
                 currenttip = widget.handleTooltip(mousex, mousey, currenttip);
+            }
         }
         return currenttip;
     }
@@ -223,14 +242,16 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     @Override
     public List<String> handleItemDisplayName(GuiContainer gui, ItemStack stack, List<String> currenttip) {
         String overridename = ItemInfo.getNameOverride(stack);
-        if (overridename != null)
+        if (overridename != null) {
             currenttip.set(0, overridename);
+        }
 
         String mainname = currenttip.get(0);
         if (showIDs()) {
             mainname += " " + Item.getIdFromItem(stack.getItem());
-            if (stack.getItemDamage() != 0)
+            if (stack.getItemDamage() != 0) {
                 mainname += ":" + stack.getItemDamage();
+            }
 
             currenttip.set(0, mainname);
         }
@@ -245,15 +266,19 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     public static void layout(GuiContainer gui) {
         VisiblityData visiblity = new VisiblityData();
-        if (isHidden())
+        if (isHidden()) {
             visiblity.showNEI = false;
-        if (gui.height - gui.ySize <= 40)
+        }
+        if (gui.height - gui.ySize <= 40) {
             visiblity.showSearchSection = false;
-        if (gui.guiLeft - 4 < 76)
+        }
+        if (gui.guiLeft - 4 < 76) {
             visiblity.showWidgets = false;
+        }
 
-        for (INEIGuiHandler handler : GuiInfo.guiHandlers)
+        for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             handler.modifyVisiblity(gui, visiblity);
+        }
 
         visiblity.translateDependancies();
 
@@ -267,12 +292,11 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         dropDown = new SubsetWidget();
         searchField = new SearchField("search");
 
-        options = new Button("Options")
-        {
+        options = new Button("Options") {
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
-                    getOptionList().showGui(getGuiContainer());
+                    getOptionList().openGui(getGuiContainer(), false);
                     return true;
                 }
                 return false;
@@ -283,8 +307,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
                 return translate("inventory.options");
             }
         };
-        prev = new Button("Prev")
-        {
+        prev = new Button("Prev") {
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
                     LayoutManager.itemPanel.scroll(-1);
@@ -298,8 +321,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
                 return translate("inventory.prev");
             }
         };
-        next = new Button("Next")
-        {
+        next = new Button("Next") {
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
                     LayoutManager.itemPanel.scroll(1);
@@ -314,35 +336,37 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             }
         };
         pageLabel = new Label("(0/0)", true);
-        more = new Button("+")
-        {
+        more = new Button("+") {
             @Override
             public boolean onButtonPress(boolean rightclick) {
-                if (rightclick)
+                if (rightclick) {
                     return false;
+                }
 
                 int modifier = controlKey() ? 64 : shiftKey() ? 10 : 1;
 
                 int quantity = getItemQuantity() + modifier;
-                if (quantity < 0)
+                if (quantity < 0) {
                     quantity = 0;
+                }
 
                 setItemQuantity(quantity);
                 return true;
             }
         };
-        less = new Button("-")
-        {
+        less = new Button("-") {
             @Override
             public boolean onButtonPress(boolean rightclick) {
-                if (rightclick)
+                if (rightclick) {
                     return false;
+                }
 
                 int modifier = controlKey() ? -64 : shiftKey() ? -10 : -1;
 
                 int quantity = getItemQuantity() + modifier;
-                if (quantity < 0)
+                if (quantity < 0) {
                     quantity = 0;
+                }
 
                 setItemQuantity(quantity);
                 return true;
@@ -355,14 +379,14 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
         for (int i = 0; i < 7; i++) {
             final int savestate = i;
-            stateButtons[i] = new SaveLoadButton("")
-            {
+            stateButtons[i] = new SaveLoadButton("") {
                 @Override
                 public boolean onButtonPress(boolean rightclick) {
-                    if (isStateSaved(savestate))
+                    if (isStateSaved(savestate)) {
                         loadState(savestate);
-                    else
+                    } else {
                         saveState(savestate);
+                    }
                     return true;
                 }
 
@@ -375,8 +399,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
                     global.saveNBT();
                 }
             };
-            deleteButtons[i] = new Button("x")
-            {
+            deleteButtons[i] = new Button("x") {
                 @Override
                 public boolean onButtonPress(boolean rightclick) {
                     if (!rightclick) {
@@ -388,48 +411,52 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             };
         }
 
-        delete = new Button()
-        {
+        delete = new Button() {
             @Override
             public boolean onButtonPress(boolean rightclick) {
-                if ((state & 0x3) == 2)
+                if ((state & 0x3) == 2) {
                     return false;
+                }
 
                 ItemStack held = getHeldItem();
                 if (held != null) {
                     if (shiftKey()) {
                         deleteHeldItem();
                         deleteItemsOfType(held);
-                    } else if (rightclick)
+                    } else if (rightclick) {
                         decreaseSlotStack(-999);
-                    else
+                    } else {
                         deleteHeldItem();
-                } else if (shiftKey())
+                    }
+                } else if (shiftKey()) {
                     deleteEverything();
-                else
+                } else {
                     NEIController.toggleDeleteMode();
+                }
 
                 return true;
             }
 
             public String getButtonTip() {
                 if ((state & 0x3) != 2) {
-                    if (shiftKey())
+                    if (shiftKey()) {
                         return translate("inventory.delete.inv");
-                    if (NEIController.canUseDeleteMode())
+                    }
+                    if (NEIController.canUseDeleteMode()) {
                         return getStateTip("delete", state);
+                    }
                 }
                 return null;
             }
 
             @Override
             public void postDraw(int mousex, int mousey) {
-                if(contains(mousex, mousey) && getHeldItem() != null && (state & 0x3) != 2)
+                if (contains(mousex, mousey) && getHeldItem() != null && (state & 0x3) != 2) {
                     GuiDraw.drawTip(mousex + 9, mousey, translate("inventory.delete." + (shiftKey() ? "all" : "one"), GuiContainerManager.itemDisplayNameShort(getHeldItem())));
+                }
             }
         };
-        gamemode = new ButtonCycled()
-        {
+        gamemode = new ButtonCycled() {
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
@@ -444,12 +471,12 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             }
         };
         gamemode.icons = new Image[3];
-        rain = new Button()
-        {
+        rain = new Button() {
             @Override
             public boolean onButtonPress(boolean rightclick) {
-                if (handleDisabledButtonPress("rain", rightclick))
+                if (handleDisabledButtonPress("rain", rightclick)) {
                     return true;
+                }
 
                 if (!rightclick) {
                     toggleRaining();
@@ -462,8 +489,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
                 return getStateTip("rain", state);
             }
         };
-        magnet = new Button()
-        {
+        magnet = new Button() {
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
@@ -479,12 +505,12 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         };
         for (int i = 0; i < 4; i++) {
             final int zone = i;
-            timeButtons[i] = new Button()
-            {
+            timeButtons[i] = new Button() {
                 @Override
                 public boolean onButtonPress(boolean rightclick) {
-                    if (handleDisabledButtonPress(NEIActions.timeZones[zone], rightclick))
+                    if (handleDisabledButtonPress(NEIActions.timeZones[zone], rightclick)) {
                         return true;
+                    }
 
                     if (!rightclick) {
                         setHourForward(zone * 6);
@@ -500,8 +526,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
             };
         }
-        heal = new Button()
-        {
+        heal = new Button() {
             @Override
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
@@ -524,8 +549,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     private static String getStateTip(String name, int state) {
-        String sfx = (state & 0x3) == 2 ? "enable" :
-                (state & 0x3) == 1 ? "0" : "1";
+        String sfx = (state & 0x3) == 2 ? "enable" : (state & 0x3) == 1 ? "0" : "1";
 
         return translate("inventory." + name + "." + sfx);
     }
@@ -536,10 +560,12 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     private static boolean handleDisabledButtonPress(String ident, boolean rightclick) {
-        if (!NEIActions.canDisable.contains(ident))
+        if (!NEIActions.canDisable.contains(ident)) {
             return false;
-        if (rightclick != disabledActions.contains(ident))
+        }
+        if (rightclick != disabledActions.contains(ident)) {
             return setPropertyDisabled(ident, rightclick);
+        }
         return false;
     }
 
@@ -547,14 +573,17 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         if (disable && NEIActions.base(ident).equals("time")) {
             int count = 0;
             for (int i = 0; i < 4; i++) {
-                if (disabledActions.contains(NEIActions.timeZones[i]))
+                if (disabledActions.contains(NEIActions.timeZones[i])) {
                     count++;
+                }
             }
-            if (count == 3)
+            if (count == 3) {
                 return false;
+            }
         }
-        if (hasSMPCounterPart())
+        if (hasSMPCounterPart()) {
             NEICPH.sendSetPropertyDisabled(ident, disable);
+        }
 
         return true;
     }
@@ -564,7 +593,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         if (isEnabled()) {
             setInputFocused(null);
 
-            ItemList.loadItems();
+            ItemList.loadItems.restart();
             overlayRenderer = null;
 
             getLayoutStyle().init();
@@ -574,7 +603,9 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         NEIController.load(gui);
 
         if (checkCreativeInv(gui) && gui.mc.currentScreen instanceof GuiContainerCreative)//override creative with creative+
+        {
             gui.mc.displayGuiScreen(null);//close the screen and wait for the server to open it for us
+        }
     }
 
     @Override
@@ -596,8 +627,9 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
         drawWidgets = new TreeSet<Widget>(new WidgetZOrder(false));
         controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
 
-        if (!visiblity.showNEI)
+        if (!visiblity.showNEI) {
             return;
+        }
 
         addWidget(options);
         if (visiblity.showItemPanel) {
@@ -617,38 +649,45 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             addWidget(searchField);
         }
 
-        if (canPerformAction("item") && visiblity.showStateButtons) {
+        if (canPerformAction("item") && hasSMPCounterPart() && visiblity.showStateButtons) {
             for (int i = 0; i < 7; i++) {
                 addWidget(stateButtons[i]);
-                if (isStateSaved(i))
+                if (isStateSaved(i)) {
                     addWidget(deleteButtons[i]);
+                }
             }
         }
         if (visiblity.showUtilityButtons) {
             if (canPerformAction("time")) {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++) {
                     addWidget(timeButtons[i]);
+                }
             }
-            if (canPerformAction("rain"))
+            if (canPerformAction("rain")) {
                 addWidget(rain);
-            if (canPerformAction("heal"))
+            }
+            if (canPerformAction("heal")) {
                 addWidget(heal);
-            if (canPerformAction("magnet"))
+            }
+            if (canPerformAction("magnet")) {
                 addWidget(magnet);
+            }
             if (isValidGamemode("creative") ||
                     isValidGamemode("creative+") ||
-                    isValidGamemode("adventure"))
+                    isValidGamemode("adventure")) {
                 addWidget(gamemode);
-            if (canPerformAction("delete"))
+            }
+            if (canPerformAction("delete")) {
                 addWidget(delete);
+            }
         }
     }
 
-
     public static LayoutStyle getLayoutStyle(int id) {
         LayoutStyle style = layoutStyles.get(id);
-        if (style == null)
+        if (style == null) {
             style = layoutStyles.get(0);
+        }
         return style;
     }
 
@@ -663,24 +702,30 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public void guiTick(GuiContainer gui) {
-        if (checkCreativeInv(gui))
+        if (checkCreativeInv(gui)) {
             return;
+        }
 
-        if (!isEnabled())
+        if (!isEnabled()) {
             return;
+        }
 
-        for (Widget widget : controlWidgets)
+        for (Widget widget : controlWidgets) {
             widget.update();
+        }
     }
 
     @Override
     public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-        if (isHidden() || !isEnabled())
+        if (isHidden() || !isEnabled()) {
             return false;
+        }
 
-        for (Widget widget : controlWidgets)
-            if (widget.onMouseWheel(scrolled, mousex, mousey))
+        for (Widget widget : controlWidgets) {
+            if (widget.onMouseWheel(scrolled, mousex, mousey)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -699,39 +744,42 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     public static void setInputFocused(Widget widget) {
-        if (inputFocused != null)
+        if (inputFocused != null) {
             inputFocused.loseFocus();
+        }
 
         inputFocused = widget;
-        if (inputFocused != null)
+        if (inputFocused != null) {
             inputFocused.gainFocus();
+        }
     }
 
     @Override
     public void renderSlotUnderlay(GuiContainer gui, Slot slot) {
-        if (overlayRenderer != null)
+        if (overlayRenderer != null) {
             overlayRenderer.renderOverlay(GuiContainerManager.getManager(gui), slot);
+        }
     }
 
     @Override
     public void renderSlotOverlay(GuiContainer window, Slot slot) {
         ItemStack item = slot.getStack();
         if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.itemMatches(item))) {
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glTranslatef(0, 0, 150);
+            GlStateManager.disableLighting();
+            GlStateManager.translate(0, 0, 150);
             drawRect(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, 0x80000000);
-            GL11.glTranslatef(0, 0, -150);
-            GL11.glEnable(GL11.GL_LIGHTING);
+            GlStateManager.translate(0, 0, -150);
+            GlStateManager.enableLighting();
         }
     }
 
     public static void drawIcon(int x, int y, Image image) {
         changeTexture("nei:textures/nei_sprites.png");
-        GL11.glColor4f(1, 1, 1, 1);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(1, 1, 1, 1);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         drawTexturedModalRect(x, y, image.x, image.y, image.width, image.height);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
     }
 
     public static void drawButtonBackground(int x, int y, int w, int h, boolean edges, int type) {
@@ -780,22 +828,30 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public void tickKeyStates() {
-        if (Minecraft.getMinecraft().currentScreen != null)
+        if (Minecraft.getMinecraft().currentScreen != null) {
             return;
+        }
 
-        if (KeyManager.keyStates.get("world.dawn").down)
+        if (KeyManager.keyStates.get("world.dawn").down) {
             timeButtons[0].onButtonPress(false);
-        if (KeyManager.keyStates.get("world.noon").down)
+        }
+        if (KeyManager.keyStates.get("world.noon").down) {
             timeButtons[1].onButtonPress(false);
-        if (KeyManager.keyStates.get("world.dusk").down)
+        }
+        if (KeyManager.keyStates.get("world.dusk").down) {
             timeButtons[2].onButtonPress(false);
-        if (KeyManager.keyStates.get("world.midnight").down)
+        }
+        if (KeyManager.keyStates.get("world.midnight").down) {
             timeButtons[3].onButtonPress(false);
-        if (KeyManager.keyStates.get("world.rain").down)
+        }
+        if (KeyManager.keyStates.get("world.rain").down) {
             rain.onButtonPress(false);
-        if (KeyManager.keyStates.get("world.heal").down)
+        }
+        if (KeyManager.keyStates.get("world.heal").down) {
             heal.onButtonPress(false);
-        if (KeyManager.keyStates.get("world.creative").down)
+        }
+        if (KeyManager.keyStates.get("world.creative").down) {
             gamemode.onButtonPress(false);
+        }
     }
 }

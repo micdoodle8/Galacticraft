@@ -3,12 +3,13 @@ package codechicken.lib.asm;
 import codechicken.lib.config.ConfigTag;
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
-import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
-import cpw.mods.fml.relauncher.FMLInjectionData;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -23,10 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class ObfMapping
-{
-    public static class ObfRemapper extends Remapper
-    {
+public class ObfMapping {
+    public static class ObfRemapper extends Remapper {
         private HashMap<String, String> fields = new HashMap<String, String>();
         private HashMap<String, String> funcs = new HashMap<String, String>();
 
@@ -39,17 +38,24 @@ public class ObfMapping
                 Map<String, Map<String, String>> rawFieldMaps = (Map<String, Map<String, String>>) rawFieldMapsField.get(FMLDeobfuscatingRemapper.INSTANCE);
                 Map<String, Map<String, String>> rawMethodMaps = (Map<String, Map<String, String>>) rawMethodMapsField.get(FMLDeobfuscatingRemapper.INSTANCE);
 
-                if (rawFieldMaps == null)
+                if (rawFieldMaps == null) {
                     throw new IllegalStateException("codechicken.lib.asm.ObfMapping loaded too early. Make sure all references are in or after the asm transformer load stage");
+                }
 
-                for (Map<String, String> map : rawFieldMaps.values())
-                    for (Entry<String, String> entry : map.entrySet())
-                        if (entry.getValue().startsWith("field"))
+                for (Map<String, String> map : rawFieldMaps.values()) {
+                    for (Entry<String, String> entry : map.entrySet()) {
+                        if (entry.getValue().startsWith("field")) {
                             fields.put(entry.getValue(), entry.getKey().substring(0, entry.getKey().indexOf(':')));
-                for (Map<String, String> map : rawMethodMaps.values())
-                    for (Entry<String, String> entry : map.entrySet())
-                        if (entry.getValue().startsWith("func"))
+                        }
+                    }
+                }
+                for (Map<String, String> map : rawMethodMaps.values()) {
+                    for (Entry<String, String> entry : map.entrySet()) {
+                        if (entry.getValue().startsWith("func")) {
                             funcs.put(entry.getValue(), entry.getKey().substring(0, entry.getKey().indexOf('(')));
+                        }
+                    }
+                }
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -82,21 +88,39 @@ public class ObfMapping
         }
     }
 
-    public static class MCPRemapper extends Remapper implements LineProcessor<Void>
-    {
+    public static class MCPRemapper extends Remapper implements LineProcessor<Void> {
         public static File[] getConfFiles() {
+
+            // check for GradleStart system vars
+            if (!Strings.isNullOrEmpty(System.getProperty("net.minecraftforge.gradle.GradleStart.srgDir"))) {
+                File srgDir = new File(System.getProperty("net.minecraftforge.gradle.GradleStart.srgDir"));
+                File csvDir = new File(System.getProperty("net.minecraftforge.gradle.GradleStart.csvDir"));
+
+                if (srgDir.exists() && csvDir.exists()) {
+                    File srg = new File(srgDir, "notch-srg.srg");
+                    File fieldCsv = new File(csvDir, "fields.csv");
+                    File methodCsv = new File(csvDir, "methods.csv");
+
+                    if (srg.exists() && fieldCsv.exists() && methodCsv.exists()) {
+                        return new File[] { srg, fieldCsv, methodCsv };
+                    }
+                }
+            }
+
             ConfigTag tag = ASMHelper.config.getTag("mappingDir").setComment("Path to directory holding packaged.srg, fields.csv and methods.csv for mcp remapping");
-            for (int i = 0; i < DIR_GUESSES+DIR_ASKS; i++) {
+            for (int i = 0; i < DIR_GUESSES + DIR_ASKS; i++) {
                 File dir = confDirectoryGuess(i, tag);
-                if (dir == null || dir.isFile())
+                if (dir == null || dir.isFile()) {
                     continue;
+                }
 
                 File[] mappings;
                 try {
                     mappings = parseConfDir(dir);
                 } catch (Exception e) {
-                    if (i >= DIR_GUESSES)
+                    if (i >= DIR_GUESSES) {
                         e.printStackTrace();
+                    }
                     continue;
                 }
 
@@ -109,50 +133,57 @@ public class ObfMapping
 
         private static final int DIR_GUESSES = 4;
         private static final int DIR_ASKS = 3;
+
         public static File confDirectoryGuess(int i, ConfigTag tag) {
             File mcDir = (File) FMLInjectionData.data()[6];
             switch (i) {
-                case 0:
-                    return tag.value != null ? new File(tag.getValue()) : null;
-                case 1:
-                    return new File(mcDir, "../conf");
-                case 2:
-                    return new File(mcDir, "../build/unpacked/conf");
-                case 3:
-                    return new File(System.getProperty("user.home"), ".gradle/caches/minecraft/net/minecraftforge/forge/"+
-                        FMLInjectionData.data()[4]+"-"+ ForgeVersion.getVersion()+"/unpacked/conf");
-                default:
-                    JFileChooser fc = new JFileChooser(mcDir);
-                    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                    fc.setDialogTitle("Select an mcp conf dir for the deobfuscator.");
-                    int ret = fc.showDialog(null, "Select");
-                    return ret == JFileChooser.APPROVE_OPTION ? fc.getSelectedFile() : null;
+            case 0:
+                return tag.value != null ? new File(tag.getValue()) : null;
+            case 1:
+                return new File(mcDir, "../conf");
+            case 2:
+                return new File(mcDir, "../build/unpacked/conf");
+            case 3:
+                return new File(System.getProperty("user.home"), ".gradle/caches/minecraft/net/minecraftforge/forge/" +
+                        FMLInjectionData.data()[4] + "-" + ForgeVersion.getVersion() + "/unpacked/conf");
+            default:
+                JFileChooser fc = new JFileChooser(mcDir);
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fc.setDialogTitle("Select an mcp conf dir for the deobfuscator.");
+                int ret = fc.showDialog(null, "Select");
+                return ret == JFileChooser.APPROVE_OPTION ? fc.getSelectedFile() : null;
             }
         }
 
         public static File[] parseConfDir(File confDir) {
             File srgDir = new File(confDir, "conf");
-            if (!srgDir.exists())
+            if (!srgDir.exists()) {
                 srgDir = confDir;
+            }
 
             File srgs = new File(srgDir, "packaged.srg");
-            if (!srgs.exists())
+            if (!srgs.exists()) {
                 srgs = new File(srgDir, "joined.srg");
-            if (!srgs.exists())
+            }
+            if (!srgs.exists()) {
                 throw new RuntimeException("Could not find packaged.srg or joined.srg");
+            }
 
             File mapDir = new File(confDir, "mappings");
-            if (!mapDir.exists())
+            if (!mapDir.exists()) {
                 mapDir = confDir;
+            }
 
             File methods = new File(mapDir, "methods.csv");
-            if (!methods.exists())
+            if (!methods.exists()) {
                 throw new RuntimeException("Could not find methods.csv");
+            }
             File fields = new File(mapDir, "fields.csv");
-            if (!fields.exists())
+            if (!fields.exists()) {
                 throw new RuntimeException("Could not find fields.csv");
+            }
 
-            return new File[]{srgs, methods, fields};
+            return new File[] { srgs, methods, fields };
         }
 
         private HashMap<String, String> fields = new HashMap<String, String>();
@@ -201,8 +232,9 @@ public class ObfMapping
     public static Remapper mcpMapper = null;
 
     public static void loadMCPRemapper() {
-        if (mcpMapper == null)
+        if (mcpMapper == null) {
             mcpMapper = new MCPRemapper();
+        }
     }
 
     public static final boolean obfuscated;
@@ -211,10 +243,12 @@ public class ObfMapping
         boolean obf = true;
         try {
             obf = Launch.classLoader.getClassBytes("net.minecraft.world.World") == null;
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
         obfuscated = obf;
-        if (!obf)
+        if (!obf) {
             loadMCPRemapper();
+        }
     }
 
     public String s_owner;
@@ -230,8 +264,9 @@ public class ObfMapping
         this.s_name = name;
         this.s_desc = desc;
 
-        if (s_owner.contains("."))
+        if (s_owner.contains(".")) {
             throw new IllegalArgumentException(s_owner);
+        }
     }
 
     public ObfMapping(ObfMapping descmap, String subclass) {
@@ -240,8 +275,9 @@ public class ObfMapping
 
     public static ObfMapping fromDesc(String s) {
         int lastDot = s.lastIndexOf('.');
-        if (lastDot < 0)
+        if (lastDot < 0) {
             return new ObfMapping(s, "", "");
+        }
         int sep = s.indexOf('(');//methods
         int sep_end = sep;
         if (sep < 0) {
@@ -252,8 +288,9 @@ public class ObfMapping
             sep = s.indexOf(':');//fields
             sep_end = sep + 1;
         }
-        if (sep < 0)
+        if (sep < 0) {
             return new ObfMapping(s.substring(0, lastDot), s.substring(lastDot + 1), "");
+        }
 
         return new ObfMapping(s.substring(0, lastDot), s.substring(lastDot + 1, sep), s.substring(sep_end));
     }
@@ -271,12 +308,13 @@ public class ObfMapping
     }
 
     public AbstractInsnNode toInsn(int opcode) {
-        if (isClass())
+        if (isClass()) {
             return new TypeInsnNode(opcode, s_owner);
-        else if (isMethod())
+        } else if (isMethod()) {
             return new MethodInsnNode(opcode, s_owner, s_name, s_desc);
-        else
+        } else {
             return new FieldInsnNode(opcode, s_owner, s_name, s_desc);
+        }
     }
 
     public void visitTypeInsn(MethodVisitor mv, int opcode) {
@@ -321,8 +359,9 @@ public class ObfMapping
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ObfMapping))
+        if (!(obj instanceof ObfMapping)) {
             return false;
+        }
 
         ObfMapping desc = (ObfMapping) obj;
         return s_owner.equals(desc.s_owner) && s_name.equals(desc.s_name) && s_desc.equals(desc.s_desc);
@@ -335,10 +374,12 @@ public class ObfMapping
 
     @Override
     public String toString() {
-        if (s_name.length() == 0)
+        if (s_name.length() == 0) {
             return "[" + s_owner + "]";
-        if (s_desc.length() == 0)
+        }
+        if (s_desc.length() == 0) {
             return "[" + s_owner + "." + s_name + "]";
+        }
         return "[" + (isMethod() ? methodDesc() : fieldDesc()) + "]";
     }
 
@@ -363,20 +404,23 @@ public class ObfMapping
     }
 
     public ObfMapping map(Remapper mapper) {
-        if (mapper == null)
+        if (mapper == null) {
             return this;
+        }
 
-        if (isMethod())
+        if (isMethod()) {
             s_name = mapper.mapMethodName(s_owner, s_name, s_desc);
-        else if (isField())
+        } else if (isField()) {
             s_name = mapper.mapFieldName(s_owner, s_name, s_desc);
+        }
 
         s_owner = mapper.mapType(s_owner);
 
-        if (isMethod())
+        if (isMethod()) {
             s_desc = mapper.mapMethodDesc(s_desc);
-        else if (s_desc.length() > 0)
+        } else if (s_desc.length() > 0) {
             s_desc = mapper.mapDesc(s_desc);
+        }
 
         return this;
     }
@@ -387,10 +431,11 @@ public class ObfMapping
     }
 
     public ObfMapping toClassloading() {
-        if(!obfuscated)
+        if (!obfuscated) {
             map(mcpMapper);
-        else if(obfMapper.isObf(s_owner))
+        } else if (obfMapper.isObf(s_owner)) {
             map(obfMapper);
+        }
         return this;
     }
 

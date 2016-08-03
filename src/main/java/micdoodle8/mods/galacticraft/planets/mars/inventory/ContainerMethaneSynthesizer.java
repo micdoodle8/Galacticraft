@@ -17,7 +17,7 @@ public class ContainerMethaneSynthesizer extends Container
 {
     private final TileEntityMethaneSynthesizer tileEntity;
 
-    public ContainerMethaneSynthesizer(InventoryPlayer par1InventoryPlayer, TileEntityMethaneSynthesizer tileEntity)
+    public ContainerMethaneSynthesizer(InventoryPlayer par1InventoryPlayer, TileEntityMethaneSynthesizer tileEntity, EntityPlayer player)
     {
         this.tileEntity = tileEntity;
 
@@ -50,14 +50,14 @@ public class ContainerMethaneSynthesizer extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
         }
 
-        tileEntity.openInventory();
+        tileEntity.openInventory(player);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory();
+        this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override

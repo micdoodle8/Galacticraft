@@ -1,20 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
-public class ItemHeavyNoseCone extends Item
+public class ItemHeavyNoseCone extends Item implements ISortableItem
 {
-    public IIcon[] icons;
+//    public IIcon[] icons;
 
     public ItemHeavyNoseCone(String assetName)
     {
@@ -22,21 +22,14 @@ public class ItemHeavyNoseCone extends Item
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses()
-    {
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int par1, int par2)
     {
         return par2 == 0 ? this.icons[0] : this.icons[1];
-    }
+    }*/
 
     @Override
     public CreativeTabs getCreativeTab()
@@ -51,13 +44,13 @@ public class ItemHeavyNoseCone extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         this.icons = new IIcon[2];
-        this.icons[0] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone");
-        this.icons[1] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "heavyNoseCone.0");
+        this.icons[0] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "heavyNoseCone");
+        this.icons[1] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "heavyNoseCone.0");
     }
 
     @Override
@@ -69,11 +62,17 @@ public class ItemHeavyNoseCone extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @Override
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

@@ -1,15 +1,16 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -17,31 +18,36 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
+public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     private final Random refineryRand = new Random();
 
-    private IIcon iconMachineSide;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+
+    /*private IIcon iconMachineSide;
     private IIcon iconFuelOutput;
     private IIcon iconOilInput;
     private IIcon iconFront;
     private IIcon iconBack;
-    private IIcon iconTop;
+    private IIcon iconTop;*/
 
     protected BlockRefinery(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -56,7 +62,7 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -66,13 +72,13 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
         this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_front");
         this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_side");
         this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }
+    }*/
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        final TileEntity te = par1World.getTileEntity(par2, par3, par4);
+        final TileEntity te = worldIn.getTileEntity(pos);
 
         if (te instanceof TileEntityRefinery)
         {
@@ -80,10 +86,9 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
 
             if (refinery.processTicks > 0)
             {
-                par1World.getBlockMetadata(par2, par3, par4);
-                final float var7 = par2 + 0.5F;
-                final float var8 = par3 + 1.1F;
-                final float var9 = par4 + 0.5F;
+                final float var7 = pos.getX() + 0.5F;
+                final float var8 = pos.getY() + 1.1F;
+                final float var9 = pos.getZ() + 0.5F;
                 final float var10 = 0.0F;
                 final float var11 = 0.0F;
 
@@ -91,8 +96,8 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
                 {
                     for (int j = -1; j <= 1; j++)
                     {
-                        par1World.spawnParticle("smoke", var7 + var11 + i * 0.2, var8, var9 + var10 + j * 0.2, 0.0D, 0.01D, 0.0D);
-                        par1World.spawnParticle("flame", var7 + var11 + i * 0.1, var8 - 0.2, var9 + var10 + j * 0.1, 0.0D, 0.0001D, 0.0D);
+                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7 + var11 + i * 0.2, var8, var9 + var10 + j * 0.2, 0.0D, 0.01D, 0.0D);
+                        worldIn.spawnParticle(EnumParticleTypes.FLAME, var7 + var11 + i * 0.1, var8 - 0.2, var9 + var10 + j * 0.1, 0.0D, 0.0001D, 0.0D);
                     }
                 }
             }
@@ -100,54 +105,39 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int change = 0;
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        // Re-orient the block
-        switch (par1World.getBlockMetadata(x, y, z))
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
-        TileEntity te = par1World.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, change, 3);
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityRefinery();
     }
 
     @Override
-    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        final TileEntityRefinery var7 = (TileEntityRefinery) par1World.getTileEntity(par2, par3, par4);
+        final TileEntityRefinery var7 = (TileEntityRefinery) worldIn.getTileEntity(pos);
 
         if (var7 != null)
         {
@@ -171,7 +161,7 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
                         }
 
                         var9.stackSize -= var13;
-                        final EntityItem var14 = new EntityItem(par1World, par2 + var10, par3 + var11, par4 + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
+                        final EntityItem var14 = new EntityItem(worldIn, pos.getX() + var10, pos.getY() + var11, pos.getZ() + var12, new ItemStack(var9.getItem(), var13, var9.getItemDamage()));
 
                         if (var9.hasTagCompound())
                         {
@@ -182,25 +172,25 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
                         var14.motionX = (float) this.refineryRand.nextGaussian() * var15;
                         var14.motionY = (float) this.refineryRand.nextGaussian() * var15 + 0.2F;
                         var14.motionZ = (float) this.refineryRand.nextGaussian() * var15;
-                        par1World.spawnEntityInWorld(var14);
+                        worldIn.spawnEntityInWorld(var14);
                     }
                 }
             }
         }
 
-        super.breakBlock(par1World, par2, par3, par4, par5, par6);
+        super.breakBlock(worldIn, pos, state);
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         if (side == metadata + 2)
         {
-            return this.iconOilInput;
+            return this.iconFuelOutput;
         }
         else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
         {
-            return this.iconFuelOutput;
+            return this.iconOilInput;
         }
 
         if (side == 1)
@@ -219,31 +209,13 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
         }
 
         return this.iconBack;
-    }
+    }*/
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, change, 3);
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        worldIn.setBlockState(pos, getStateFromMeta(EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex()), 3);
     }
 
     @Override
@@ -256,5 +228,27 @@ public class BlockRefinery extends BlockAdvancedTile implements ItemBlockDesc.IB
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

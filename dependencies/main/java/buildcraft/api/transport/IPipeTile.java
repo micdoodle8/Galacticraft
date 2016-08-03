@@ -1,51 +1,54 @@
-/**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
- * http://www.mod-buildcraft.com
+/** Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team http://www.mod-buildcraft.com
  *
- * BuildCraft is distributed under the terms of the Minecraft Mod Public
- * License 1.0, or MMPL. Please check the contents of the license located in
- * http://www.mod-buildcraft.com/MMPL-1.0.txt
- */
+ * The BuildCraft API is distributed under the terms of the MIT License. Please check the contents of the license, which
+ * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
 package buildcraft.api.transport;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.transport.pluggable.PipePluggable;
 
-public interface IPipeTile {
+public interface IPipeTile extends IInjectable {
+    enum PipeType {
+        ITEM,
+        FLUID,
+        POWER,
+        STRUCTURE
+    }
 
-	public enum PipeType {
+    PipeType getPipeType();
 
-		ITEM, FLUID, POWER, STRUCTURE;
-	}
+    World getWorldBC();
 
-	PipeType getPipeType();
+    BlockPos getPosBC();
 
-	/**
-	 * Offers an ItemStack for addition to the pipe. Will be rejected if the
-	 * pipe doesn't accept items from that side.
-	 *
-	 * @param stack ItemStack offered for addition. Do not manipulate this!
-	 * @param doAdd If false no actual addition should take place. Implementors
-	 * should simulate.
-	 * @param from Orientation the ItemStack is offered from.
-	 * @return Amount of items used from the passed stack.
-	 */
-	int injectItem(ItemStack stack, boolean doAdd, ForgeDirection from);
+    /** True if the pipe is connected to the block/pipe in the specific direction
+     * 
+     * @param with
+     * @return true if connect */
+    boolean isPipeConnected(EnumFacing with);
 
-	/**
-	 * True if the pipe is connected to the block/pipe in the specific direction
-	 * 
-	 * @param with
-	 * @return true if connect
-	 */
-	boolean isPipeConnected(ForgeDirection with);
+    Block getNeighborBlock(EnumFacing dir);
 
-	/**
-	 * True if the pipe has a powered wire of the specified color.
-	 *
-	 * @param wire
-	 * @return true if powered
-	 */
-	boolean isWireActive(PipeWire wire);
+    TileEntity getNeighborTile(EnumFacing dir);
+
+    IPipe getNeighborPipe(EnumFacing dir);
+
+    IPipe getPipe();
+
+    int getPipeColor();
+
+    PipePluggable getPipePluggable(EnumFacing direction); // Now in IPluggableProvider
+
+    boolean hasPipePluggable(EnumFacing direction); // Now in IPluggableProvider
+
+    boolean hasBlockingPluggable(EnumFacing direction);
+
+    void scheduleNeighborChange();
+
+    void scheduleRenderUpdate();
 }

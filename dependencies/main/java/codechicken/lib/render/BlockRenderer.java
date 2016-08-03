@@ -3,13 +3,14 @@ package codechicken.lib.render;
 import codechicken.lib.lighting.LC;
 import codechicken.lib.render.CCRenderState.VertexAttribute;
 import codechicken.lib.vec.Cuboid6;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
+import org.lwjgl.util.vector.Vector3f;
 
-public class BlockRenderer
-{
-    public static class BlockFace implements CCRenderState.IVertexSource
-    {
-        public Vertex5[] verts = new Vertex5[]{new Vertex5(), new Vertex5(), new Vertex5(), new Vertex5()};
-        public LC[] lightCoords = new LC[]{new LC(), new LC(), new LC(), new LC()};
+public class BlockRenderer {
+    public static class BlockFace implements CCRenderState.IVertexSource {
+        public Vertex5[] verts = new Vertex5[] { new Vertex5(), new Vertex5(), new Vertex5(), new Vertex5() };
+        public LC[] lightCoords = new LC[] { new LC(), new LC(), new LC(), new LC() };
         public boolean lcComputed = false;
         public int side;
 
@@ -20,7 +21,7 @@ public class BlockRenderer
 
         @Override
         public <T> T getAttributes(CCRenderState.VertexAttribute<T> attr) {
-            return attr == CCRenderState.lightCoordAttrib && lcComputed ? (T)lightCoords : null;
+            return attr == CCRenderState.lightCoordAttrib && lcComputed ? (T) lightCoords : null;
         }
 
         @Override
@@ -34,9 +35,10 @@ public class BlockRenderer
         }
 
         public BlockFace computeLightCoords() {
-            if(!lcComputed) {
-                for (int i = 0; i < 4; i++)
+            if (!lcComputed) {
+                for (int i = 0; i < 4; i++) {
                     lightCoords[i].compute(verts[i].vec, side);
+                }
                 lcComputed = true;
             }
             return this;
@@ -49,71 +51,86 @@ public class BlockRenderer
             double y2 = c.max.y;
             double z1 = c.min.z;
             double z2 = c.max.z;
-            double u1; double u2; double v1; double v2;
+            double u1;
+            double u2;
+            double v1;
+            double v2;
             this.side = side;
             lcComputed = false;
 
-            switch(side) {
-                case 0:
-                    u1 = x1; v1 = z1;
-                    u2 = x2; v2 = z2;
-                    verts[0].set(x1, y1, z2, u1, v2, 0);
-                    verts[1].set(x1, y1, z1, u1, v1, 0);
-                    verts[2].set(x2, y1, z1, u2, v1, 0);
-                    verts[3].set(x2, y1, z2, u2, v2, 0);
-                    break;
-                case 1:
-                    u1 = x1; v1 = z1;
-                    u2 = x2; v2 = z2;
-                    verts[0].set(x2, y2, z2, u2, v2, 1);
-                    verts[1].set(x2, y2, z1, u2, v1, 1);
-                    verts[2].set(x1, y2, z1, u1, v1, 1);
-                    verts[3].set(x1, y2, z2, u1, v2, 1);
-                    break;
-                case 2:
-                    u1 = 1-x1; v1 = 1-y2;
-                    u2 = 1-x2; v2 = 1-y1;
-                    verts[0].set(x1, y1, z1, u1, v2, 2);
-                    verts[1].set(x1, y2, z1, u1, v1, 2);
-                    verts[2].set(x2, y2, z1, u2, v1, 2);
-                    verts[3].set(x2, y1, z1, u2, v2, 2);
-                    break;
-                case 3:
-                    u1 = x1; v1 = 1-y2;
-                    u2 = x2; v2 = 1-y1;
-                    verts[0].set(x2, y1, z2, u2, v2, 3);
-                    verts[1].set(x2, y2, z2, u2, v1, 3);
-                    verts[2].set(x1, y2, z2, u1, v1, 3);
-                    verts[3].set(x1, y1, z2, u1, v2, 3);
-                    break;
-                case 4:
-                    u1 = z1; v1 = 1-y2;
-                    u2 = z2; v2 = 1-y1;
-                    verts[0].set(x1, y1, z2, u2, v2, 4);
-                    verts[1].set(x1, y2, z2, u2, v1, 4);
-                    verts[2].set(x1, y2, z1, u1, v1, 4);
-                    verts[3].set(x1, y1, z1, u1, v2, 4);
-                    break;
-                case 5:
-                    u1 = 1-z1; v1 = 1-y2;
-                    u2 = 1-z2; v2 = 1-y1;
-                    verts[0].set(x2, y1, z1, u1, v2, 5);
-                    verts[1].set(x2, y2, z1, u1, v1, 5);
-                    verts[2].set(x2, y2, z2, u2, v1, 5);
-                    verts[3].set(x2, y1, z2, u2, v2, 5);
+            switch (side) {
+            case 0:
+                u1 = x1;
+                v1 = z1;
+                u2 = x2;
+                v2 = z2;
+                verts[0].set(x1, y1, z2, u1, v2, 0);
+                verts[1].set(x1, y1, z1, u1, v1, 0);
+                verts[2].set(x2, y1, z1, u2, v1, 0);
+                verts[3].set(x2, y1, z2, u2, v2, 0);
+                break;
+            case 1:
+                u1 = x1;
+                v1 = z1;
+                u2 = x2;
+                v2 = z2;
+                verts[0].set(x2, y2, z2, u2, v2, 1);
+                verts[1].set(x2, y2, z1, u2, v1, 1);
+                verts[2].set(x1, y2, z1, u1, v1, 1);
+                verts[3].set(x1, y2, z2, u1, v2, 1);
+                break;
+            case 2:
+                u1 = 1 - x1;
+                v1 = 1 - y2;
+                u2 = 1 - x2;
+                v2 = 1 - y1;
+                verts[0].set(x1, y1, z1, u1, v2, 2);
+                verts[1].set(x1, y2, z1, u1, v1, 2);
+                verts[2].set(x2, y2, z1, u2, v1, 2);
+                verts[3].set(x2, y1, z1, u2, v2, 2);
+                break;
+            case 3:
+                u1 = x1;
+                v1 = 1 - y2;
+                u2 = x2;
+                v2 = 1 - y1;
+                verts[0].set(x2, y1, z2, u2, v2, 3);
+                verts[1].set(x2, y2, z2, u2, v1, 3);
+                verts[2].set(x1, y2, z2, u1, v1, 3);
+                verts[3].set(x1, y1, z2, u1, v2, 3);
+                break;
+            case 4:
+                u1 = z1;
+                v1 = 1 - y2;
+                u2 = z2;
+                v2 = 1 - y1;
+                verts[0].set(x1, y1, z2, u2, v2, 4);
+                verts[1].set(x1, y2, z2, u2, v1, 4);
+                verts[2].set(x1, y2, z1, u1, v1, 4);
+                verts[3].set(x1, y1, z1, u1, v2, 4);
+                break;
+            case 5:
+                u1 = 1 - z1;
+                v1 = 1 - y2;
+                u2 = 1 - z2;
+                v2 = 1 - y1;
+                verts[0].set(x2, y1, z1, u1, v2, 5);
+                verts[1].set(x2, y2, z1, u1, v1, 5);
+                verts[2].set(x2, y2, z2, u2, v1, 5);
+                verts[3].set(x2, y1, z2, u2, v2, 5);
             }
             return this;
         }
     }
 
-    public static class FullBlock implements CCRenderState.IVertexSource
-    {
+    public static class FullBlock implements CCRenderState.IVertexSource {
         public Vertex5[] verts = CCModel.quadModel(24).generateBlock(0, Cuboid6.full).verts;
         public LC[] lightCoords = new LC[24];
 
         public FullBlock() {
-            for(int i = 0; i < 24; i++)
-                lightCoords[i] = new LC().compute(verts[i].vec, i/4);
+            for (int i = 0; i < 24; i++) {
+                lightCoords[i] = new LC().compute(verts[i].vec, i / 4);
+            }
         }
 
         @Override
@@ -133,28 +150,56 @@ public class BlockRenderer
 
         @Override
         public void prepareVertex() {
-            CCRenderState.side = CCRenderState.vertexIndex>>2;
+            CCRenderState.side = CCRenderState.vertexIndex >> 2;
         }
     }
 
+    public static ItemTransformVec3f thirdPersonTransform = new ItemTransformVec3f(new Vector3f(10, -45, 170), new Vector3f(0, 1.5F / 16F, -2.75F / 16F), new Vector3f(0.375F, 0.375F, 0.375F));
+    public static ItemCameraTransforms blockCameraTransform = new ItemCameraTransforms(thirdPersonTransform, ItemTransformVec3f.DEFAULT, ItemTransformVec3f.DEFAULT, ItemTransformVec3f.DEFAULT, ItemTransformVec3f.DEFAULT, ItemTransformVec3f.DEFAULT);
+
     public static FullBlock fullBlock = new FullBlock();
+
+    public static void renderFullBlock(int sideMask) {
+        CCRenderState.setModel(fullBlock);
+        renderFaces(sideMask);
+    }
+
+    /**
+     * Renders faces of a block-like model based on a sideMask. Eg for side 2, verts 8-11 will be rendered
+     *
+     * @param sideMask A mask of faces not to render
+     */
+    public static void renderFaces(int sideMask) {
+        if (sideMask == 0x3F) {
+            return;
+        }
+        for (int s = 0; s < 6; s++) {
+            if ((sideMask & 1 << s) == 0) {
+                CCRenderState.setVertexRange(s * 4, (s + 1) * 4);
+                CCRenderState.render();
+            }
+        }
+    }
 
     private static BlockFace face = new BlockFace();
 
     /**
      * Renders faces of a cuboid with texture coordinates mapped to match a standard minecraft block
-     * @param bounds The bounding cuboid to render
+     *
+     * @param bounds   The bounding cuboid to render
      * @param sideMask A mask of faces not to render
      */
     public static void renderCuboid(Cuboid6 bounds, int sideMask) {
-        if(sideMask == 0x3F)
+        if (sideMask == 0x3F) {
             return;
+        }
 
         CCRenderState.setModel(face);
-        for(int s = 0; s < 6; s++)
-            if((sideMask & 1<<s) == 0) {
+        for (int s = 0; s < 6; s++) {
+            if ((sideMask & 1 << s) == 0) {
                 face.loadCuboidFace(bounds, s);
                 CCRenderState.render();
             }
+        }
     }
 }

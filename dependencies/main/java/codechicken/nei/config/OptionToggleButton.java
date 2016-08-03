@@ -1,7 +1,6 @@
 package codechicken.nei.config;
 
-public class OptionToggleButton extends OptionButton
-{
+public class OptionToggleButton extends OptionButton {
     public final boolean prefixed;
 
     public OptionToggleButton(String name, boolean prefixed) {
@@ -28,9 +27,6 @@ public class OptionToggleButton extends OptionButton
 
     @Override
     public boolean onClick(int button) {
-        if (defaulting())
-            return false;
-
         getTag().setBooleanValue(!state());
         return true;
     }

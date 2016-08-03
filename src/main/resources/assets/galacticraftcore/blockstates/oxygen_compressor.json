@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,type=compressor": { "model": "galacticraftcore:compressor_model" },
+        "facing=east,type=compressor":  { "model": "galacticraftcore:compressor_model", "y": 90 },
+        "facing=west,type=compressor":  { "model": "galacticraftcore:compressor_model", "y": 270 },
+        "facing=south,type=compressor": { "model": "galacticraftcore:compressor_model", "y": 180 },
+        "facing=north,type=decompressor": { "model": "galacticraftcore:decompressor_model" },
+        "facing=east,type=decompressor":  { "model": "galacticraftcore:decompressor_model", "y": 90 },
+        "facing=west,type=decompressor":  { "model": "galacticraftcore:decompressor_model", "y": 270 },
+        "facing=south,type=decompressor": { "model": "galacticraftcore:decompressor_model", "y": 180 }
+    }
+}

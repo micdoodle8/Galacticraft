@@ -11,7 +11,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.WorldServer;
 
 public class CommandPlanetTeleport extends CommandBase
@@ -29,35 +29,35 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring)
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
-        if (astring.length < 2)
+        if (args.length < 2)
         {
             try
             {
-                if (astring.length == 1)
+                if (args.length == 1)
                 {
-                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(astring[0], true);
+                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[0], true);
                 }
                 else
                 {
-                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getCommandSenderName(), true);
+                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
                 }
 
                 if (playerBase != null)
                 {
                     MinecraftServer server = MinecraftServer.getServer();
-                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.dimensionId);
-                    ChunkCoordinates chunkcoordinates = worldserver.getSpawnPoint();
+                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimensionId());
+                    BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.rocketStacks = new ItemStack[2];
                     stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
                     stats.rocketItem = GCItems.rocketTier1;
                     stats.fuelLevel = 1000;
-                    stats.coordsTeleportedFromX = chunkcoordinates.posX;
-                    stats.coordsTeleportedFromZ = chunkcoordinates.posZ;
+                    stats.coordsTeleportedFromX = spawnPoint.getX();
+                    stats.coordsTeleportedFromZ = spawnPoint.getZ();
 
                     try
                     {
@@ -69,11 +69,11 @@ public class CommandPlanetTeleport extends CommandBase
                         throw e;
                     }
 
-                    VersionUtil.notifyAdmins(icommandsender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getCommandSenderName()), "]" });
+                    CommandBase.notifyOperators(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {
-                    throw new Exception("Could not find player with name: " + astring[0]);
+                    throw new Exception("Could not find player with name: " + args[0]);
                 }
             }
             catch (final Exception var6)
@@ -83,7 +83,7 @@ public class CommandPlanetTeleport extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.tooMany", this.getCommandUsage(icommandsender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getCommandUsage(sender)), new Object[0]);
         }
     }
 }

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.Random;
@@ -28,7 +29,7 @@ public abstract class MapGenBaseMeta
      */
     protected World worldObj;
 
-    public void generate(IChunkProvider par1IChunkProvider, World world, int chunkX, int chunkZ, Block[] blocks, byte[] metadata)
+    public void generate(IChunkProvider par1IChunkProvider, World world, int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.worldObj = world;
         this.rand.setSeed(world.getSeed());
@@ -42,7 +43,7 @@ public abstract class MapGenBaseMeta
                 final long randX = x0 * r0;
                 final long randZ = y0 * r1;
                 this.rand.setSeed(randX ^ randZ ^ world.getSeed());
-                this.recursiveGenerate(world, x0, y0, chunkX, chunkZ, blocks, metadata);
+                this.recursiveGenerate(world, x0, y0, chunkX, chunkZ, primer);
             }
         }
     }
@@ -50,7 +51,7 @@ public abstract class MapGenBaseMeta
     /**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected void recursiveGenerate(World world, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, Block[] blocks, byte[] metadata)
+    protected void recursiveGenerate(World world, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, ChunkPrimer primer)
     {
     }
 }

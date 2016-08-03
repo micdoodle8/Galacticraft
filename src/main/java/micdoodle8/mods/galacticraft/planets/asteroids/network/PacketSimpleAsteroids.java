@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.network;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -13,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,7 +76,7 @@ public class PacketSimpleAsteroids implements IPacket
     {
         if (packetType.getDecodeClasses().length != data.size())
         {
-            GCLog.info("Simple Packet found data length different than packet type");
+            GCLog.info("Asteroids Simple Packet found data length different than packet type: " + packetType.name());
         }
 
         this.type = packetType;
@@ -111,11 +113,11 @@ public class PacketSimpleAsteroids implements IPacket
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        EntityClientPlayerMP playerBaseClient = null;
+        EntityPlayerSP playerBaseClient = null;
 
-        if (player instanceof EntityClientPlayerMP)
+        if (player instanceof EntityPlayerSP)
         {
-            playerBaseClient = (EntityClientPlayerMP) player;
+            playerBaseClient = (EntityPlayerSP) player;
         }
 
         TileEntity tile;
@@ -139,11 +141,11 @@ public class PacketSimpleAsteroids implements IPacket
             }
             break;
         case C_UPDATE_MINERBASE_FACING:
-        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	int facingNew = (Integer) this.data.get(3);
         	if (tile instanceof TileEntityMinerBase)
         	{
-        		((TileEntityMinerBase)tile).facing = facingNew;
+        		((TileEntityMinerBase)tile).facing = EnumFacing.getFront(facingNew);
         		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
             	int link = (Integer) this.data.get(7);
             	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
@@ -163,7 +165,7 @@ public class PacketSimpleAsteroids implements IPacket
         switch (this.type)
         {
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
+            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
 
             switch ((Integer) this.data.get(0))
             {
@@ -186,7 +188,7 @@ public class PacketSimpleAsteroids implements IPacket
             }
             break;
         case S_REQUEST_MINERBASE_FACING:
-        	tile = player.worldObj.getTileEntity((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	if (tile instanceof TileEntityMinerBase)
         	{
             	((TileEntityMinerBase)tile).updateClientFlag = true; 

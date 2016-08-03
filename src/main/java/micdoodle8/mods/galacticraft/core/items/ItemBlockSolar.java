@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
@@ -20,11 +20,11 @@ public class ItemBlockSolar extends ItemBlockDesc
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        int index = Math.min(Math.max(par1ItemStack.getItemDamage() / 4, 0), BlockSolar.names.length);
+        int index = Math.min(Math.max(par1ItemStack.getItemDamage() / 4, 0), BlockSolar.EnumSolarType.values().length);
 
-        String name = BlockSolar.names[index];
+        String name = BlockSolar.EnumSolarType.values()[index].getName();
 
-        return this.field_150939_a.getUnlocalizedName() + "." + name;
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override

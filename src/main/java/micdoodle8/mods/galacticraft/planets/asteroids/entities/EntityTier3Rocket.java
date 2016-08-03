@@ -8,10 +8,13 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -24,7 +27,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         super(par1World);
         this.setSize(1.8F, 6F);
-        this.yOffset = 1.5F;
     }
 
     public EntityTier3Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -32,13 +34,17 @@ public class EntityTier3Rocket extends EntityTieredRocket
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
-        this.yOffset = 1.5F;
     }
 
     public EntityTier3Rocket(World par1World, double par2, double par4, double par6, boolean reversed, EnumRocketType rocketType, ItemStack[] inv)
     {
         this(par1World, par2, par4, par6, rocketType);
         this.cargoItems = inv;
+    }
+
+    @Override
+    public double getYOffset() {
+        return 1.5F;
     }
 
 	@Override
@@ -56,7 +62,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public double getMountedYOffset()
     {
-        return 0.75D;
+        return 1.75D;
     }
 
     @Override
@@ -68,7 +74,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 1.75D;
+    	return 0.0D;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -175,7 +181,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
             double y1 = 3.2 * Math.cos((this.rotationPitch - 180) / 57.2957795D);
             if (this.landing && this.targetVec != null)
             {
-                double modifier = this.posY - this.targetVec.y;
+                double modifier = this.posY - this.targetVec.getY();
                 modifier = Math.max(modifier, 1.0);
                 x1 *= modifier / 60.0D;
                 y1 *= modifier / 60.0D;
@@ -250,18 +256,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
         super.readEntityFromNBT(par1NBTTagCompound);
     }
 
-    //	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-    //	public boolean canLock(IMissile missile)
-    //	{
-    //		return true;
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-    //	public Vector3 getPredictedPosition(int ticks)
-    //	{
-    //		return new Vector3(this);
-    //	} TODO Re-implement when ICBM is ready
-
     @Override
     public void onPadDestroyed()
     {
@@ -271,25 +265,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
             this.setDead();
         }
     }
-
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public void destroyCraft()
-    //	{
-    //		this.setDead();
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public int doDamage(int damage)
-    //	{
-    //		this.shipDamage += damage;
-    //		return damage;
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public boolean canBeTargeted(Object entity)
-    //	{
-    //		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
-    //	} TODO Fix when ICBM is ready
 
     @Override
     public int getRocketTier()
@@ -330,5 +305,41 @@ public class EntityTier3Rocket extends EntityTieredRocket
         rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItems.add(rocket);
         return droppedItems;
+    }
+
+    @Override
+    public ITickable getSoundUpdater() {
+        return null;
+    }
+
+    @Override
+    public ISound setSoundUpdater(EntityPlayerSP player) {
+        return null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public float getRenderOffsetY()
+    {
+        return 1.1F;
     }
 }

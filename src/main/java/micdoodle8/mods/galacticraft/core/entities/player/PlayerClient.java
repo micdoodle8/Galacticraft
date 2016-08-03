@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -157,7 +158,7 @@ public class PlayerClient implements IPlayerClient
             player.fallDistance = 0.0F;
         }
 
-        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
+        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
 
         stats.usingParachute = false;
 
@@ -172,7 +173,8 @@ public class PlayerClient implements IPlayerClient
             {
             	player.height = 1.8F;
             }
-        	player.boundingBox.maxY = player.boundingBox.minY + (double)player.height;
+            AxisAlignedBB bounds = player.getEntityBoundingBox();
+            player.setEntityBoundingBox(new AxisAlignedBB(bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.minY + (double)player.height, bounds.maxZ));
         }
 
         if (stats.usingParachute && player.onGround)
@@ -195,14 +197,16 @@ public class PlayerClient implements IPlayerClient
     {
         if (player.playerLocation != null)
         {
-            int x = player.playerLocation.posX;
-            int y = player.playerLocation.posY;
-            int z = player.playerLocation.posZ;
+            int x = player.playerLocation.getX();
+            int y = player.playerLocation.getY();
+            int z = player.playerLocation.getZ();
+            BlockPos pos = new BlockPos(x, y, z);
 
-            if (player.worldObj.getTileEntity(x, y, z) instanceof TileEntityAdvanced)
+            if (player.worldObj.getTileEntity(pos) instanceof TileEntityAdvanced)
             {
 //                int j = player.worldObj.getBlock(x, y, z).getBedDirection(player.worldObj, x, y, z);
-                switch (player.worldObj.getBlockMetadata(x, y, z) - 4)
+                IBlockState state = player.worldObj.getBlockState(pos);
+                switch (state.getBlock().getMetaFromState(state) - 4)
                 {
                 case 0:
                     return 90.0F;
@@ -234,12 +238,14 @@ public class PlayerClient implements IPlayerClient
             int iPosX = (int) Math.floor(player.posX);
             int iPosY = (int) Math.floor(player.posY - 2);
             int iPosZ = (int) Math.floor(player.posZ);
+            BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
+            IBlockState state = player.worldObj.getBlockState(pos1);
 
             // If the block below is the moon block
-            if (player.worldObj.getBlock(iPosX, iPosY, iPosZ) == GCBlocks.blockMoon)
+            if (state.getBlock() == GCBlocks.blockMoon)
             {
                 // And is the correct metadata (moon turf)
-                if (player.worldObj.getBlockMetadata(iPosX, iPosY, iPosZ) == 5)
+                if (state.getBlock().getMetaFromState(state) == 5)
                 {
                     // If it has been long enough since the last step
                     if (stats.distanceSinceLastStep > 0.35)
@@ -262,7 +268,7 @@ public class PlayerClient implements IPlayerClient
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.dimensionId, pos, player.rotationYaw, player.getCommandSenderName());
+                        ClientProxyCore.footprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimensionId(), pos, player.rotationYaw, player.getName());
 
                         // Increment and cap step counter at 1
                         stats.lastStep++;
@@ -280,11 +286,11 @@ public class PlayerClient implements IPlayerClient
 
     public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3, boolean bypass)
     {
-        ChunkCoordinates c = player.playerLocation;
+        BlockPos c = player.playerLocation;
 
         if (c != null)
         {
-            EventWakePlayer event = new EventWakePlayer(player, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
+            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (bypass || event.result == null || event.result == EntityPlayer.EnumStatus.OK)
@@ -321,19 +327,19 @@ public class PlayerClient implements IPlayerClient
 		case 1:
 		case 2:
 		case 3:
-			player.addChatMessage(IChatComponent.Serializer.func_150699_a("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/1" + "\"}}]"));
+			player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/1" + "\"}}]"));
 			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
 			break;
 		case 4:
 		case 5:
 		case 6:
-			player.addChatMessage(IChatComponent.Serializer.func_150699_a("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help2") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/2" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/2" + "\"}}]"));
+			player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help2") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/2" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/2" + "\"}}]"));
 			break;
 		case 7:
-			player.addChatMessage(IChatComponent.Serializer.func_150699_a("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help3") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/oil" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/oil" + "\"}}]"));
+			player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help3") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/oil" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/oil" + "\"}}]"));
 			break;
 		case 8:
-			player.addChatMessage(IChatComponent.Serializer.func_150699_a("[{\"text\":\"" + GCCoreUtil.translate("gui.message.prelaunch") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/pre" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/pre" + "\"}}]"));
+			player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.prelaunch") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki."+GalacticraftCore.PREFIX+"com/wiki/pre" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\""+ GCCoreUtil.translate("gui.message.clicklink") +"\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki."+GalacticraftCore.PREFIX+"com/wiki/pre" + "\"}}]"));
 			break;
 		}
 	}

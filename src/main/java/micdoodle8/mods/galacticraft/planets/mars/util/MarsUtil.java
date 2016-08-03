@@ -36,9 +36,9 @@ public class MarsUtil
         player.closeContainer();
         int windowId = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
-        player.openContainer = new ContainerParaChest(player.inventory, landerInv);
+        player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
         player.openContainer.windowId = windowId;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 
     public static void openSlimelingInventory(EntityPlayerMP player, EntitySlimeling slimeling)
@@ -47,9 +47,9 @@ public class MarsUtil
         player.closeContainer();
         int windowId = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_OPEN_CUSTOM_GUI, new Object[] { windowId, 0, slimeling.getEntityId() }), player);
-        player.openContainer = new ContainerSlimeling(player.inventory, slimeling);
+        player.openContainer = new ContainerSlimeling(player.inventory, slimeling, player);
         player.openContainer.windowId = windowId;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 
     public static void openCargoRocketInventory(EntityPlayerMP player, EntityCargoRocket rocket)
@@ -58,8 +58,8 @@ public class MarsUtil
         player.closeContainer();
         int windowId = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_OPEN_CUSTOM_GUI, new Object[] { windowId, 1, rocket.getEntityId() }), player);
-        player.openContainer = new ContainerRocketInventory(player.inventory, rocket, rocket.rocketType);
+        player.openContainer = new ContainerRocketInventory(player.inventory, rocket, rocket.rocketType, player);
         player.openContainer.windowId = windowId;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 }

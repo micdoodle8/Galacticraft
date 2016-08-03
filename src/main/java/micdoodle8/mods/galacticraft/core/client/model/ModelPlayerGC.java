@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -10,8 +8,9 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -22,9 +21,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Loader;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -36,7 +35,7 @@ import java.util.List;
  * for example holding both hands overhead when holding a rocket.
  *
  */
-public class ModelPlayerGC extends ModelBiped
+public class ModelPlayerGC extends ModelPlayer
 {
     public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
     public static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
@@ -52,7 +51,7 @@ public class ModelPlayerGC extends ModelBiped
 
     private boolean usingParachute;
 
-    private IModelCustom frequencyModule;
+//    private IModelCustom frequencyModule;
 
     private static boolean crossbowModLoaded = false;
 
@@ -61,9 +60,9 @@ public class ModelPlayerGC extends ModelBiped
         ModelPlayerGC.crossbowModLoaded = Loader.isModLoaded("CrossbowMod2");
     }
 
-    public ModelPlayerGC(float var1)
+    public ModelPlayerGC(float var1, boolean smallArms)
     {
-        super(var1);
+        super(var1, smallArms);
 
         this.oxygenMask = new ModelRenderer(this, 0, 0);
         this.oxygenMask.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 1);
@@ -191,15 +190,15 @@ public class ModelPlayerGC extends ModelBiped
         this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
         this.redOxygenTanks[1].mirror = true;
 
-        this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
+//        this.frequencyModule = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/frequencyModule.obj"));
     }
 
     @Override
     public void render(Entity var1, float var2, float var3, float var4, float var5, float var6, float var7)
     {
-        final Class<?> entityClass = EntityClientPlayerMP.class;
-        final Render render = RenderManager.instance.getEntityClassRenderObject(entityClass);
-        final ModelBiped modelBipedMain = ((RenderPlayer) render).modelBipedMain;
+//        final Class<? extends Entity> entityClass = EntityPlayerSP.class;
+//        final Render render = FMLClientHandler.instance().getClient().getRenderManager().getEntityClassRenderObject(entityClass);
+//        final ModelBiped modelBipedMain = ((RenderPlayer) render).getMainModel();
 
         this.usingParachute = false;
         boolean wearingMask = false;
@@ -213,7 +212,7 @@ public class ModelPlayerGC extends ModelBiped
         boolean wearingFrequencyModule = false;
 
         final EntityPlayer player = (EntityPlayer) var1;
-        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getCommandSenderName());
+        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
 
         if (gearData != null)
         {
@@ -242,7 +241,7 @@ public class ModelPlayerGC extends ModelBiped
 
         this.setRotationAngles(var2, var3, var4, var5, var6, var7, var1);
 
-        if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
+//        if (var1 instanceof AbstractClientPlayer && this.equals(modelBipedMain))
         {
             if (gearData != null)
             {
@@ -262,21 +261,21 @@ public class ModelPlayerGC extends ModelBiped
 
                 if (wearingFrequencyModule)
                 {
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
-                    GL11.glPushMatrix();
-                    GL11.glRotatef(180, 1, 0, 0);
-
-                    GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
-                    GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
-                    GL11.glScalef(0.3F, 0.3F, 0.3F);
-                    GL11.glTranslatef(-1.1F, 1.2F, 0);
-                    this.frequencyModule.renderPart("Main");
-                    GL11.glTranslatef(0, 1.2F, 0);
-                    GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
-                    GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
-                    GL11.glTranslatef(0, -1.2F, 0);
-                    this.frequencyModule.renderPart("Radar");
-                    GL11.glPopMatrix();
+//                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.frequencyModuleTexture);
+//                    GL11.glPushMatrix();
+//                    GL11.glRotatef(180, 1, 0, 0);
+//
+//                    GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
+//                    GL11.glRotatef((float) (this.bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
+//                    GL11.glScalef(0.3F, 0.3F, 0.3F);
+//                    GL11.glTranslatef(-1.1F, 1.2F, 0);
+//                    this.frequencyModule.renderPart("Main");
+//                    GL11.glTranslatef(0, 1.2F, 0);
+//                    GL11.glRotatef((float) (Math.sin(var1.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+//                    GL11.glRotatef((float) (Math.cos(var1.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+//                    GL11.glTranslatef(0, -1.2F, 0);
+//                    this.frequencyModule.renderPart("Radar");
+//                    GL11.glPopMatrix();
                 }
 
                 //
@@ -457,7 +456,7 @@ public class ModelPlayerGC extends ModelBiped
         this.redOxygenTanks[1].rotateAngleY = this.bipedBody.rotateAngleY;
         this.redOxygenTanks[1].rotateAngleZ = this.bipedBody.rotateAngleZ;
 
-        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.getBoundingBox(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.fromBounds(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
         for (int i = 0; i < l.size(); i++)
         {

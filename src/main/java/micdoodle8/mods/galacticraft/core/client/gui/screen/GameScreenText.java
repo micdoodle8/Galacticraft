@@ -2,13 +2,16 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import java.nio.DoubleBuffer;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -106,17 +109,16 @@ public class GameScreenText implements IGameScreen
 	        		if (telemeter.clientClass == EntityPlayerMP.class)
 	        		{
 	        			strName = telemeter.clientName;
-	        			entity = new EntityOtherPlayerMP(screen.driver.getWorldObj(), telemeter.clientGameProfile);
-	        			renderEntity = (Render) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
+	        			entity = new EntityOtherPlayerMP(screen.driver.getWorld(), telemeter.clientGameProfile);
+	        			renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(EntityPlayer.class);
 	        		}
 	        		else
 	        		{
 		        		try {
-		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorldObj());
+		        			entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorld());
 		        		} catch (Exception ex) { }
-		        		if (entity != null)
-		        			strName = entity.getCommandSenderName();
-		        		renderEntity = (Render) RenderManager.instance.entityRenderMap.get(telemeter.clientClass);
+		        		if (entity != null) strName = entity.getName();
+		        		renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(telemeter.clientClass);
 	        		}	        		
         		}
 
@@ -133,12 +135,12 @@ public class GameScreenText implements IGameScreen
 				} else
 				if (entity instanceof EntityWolf)
 				{
-					((EntityWolf) entity).setCollarColor(telemeter.clientData[3]);
-					((EntityWolf) entity).func_70918_i(telemeter.clientData[4] == 1);
+					((EntityWolf) entity).setCollarColor(EnumDyeColor.byDyeDamage(telemeter.clientData[3]));
+					((EntityWolf) entity).setBegging(telemeter.clientData[4] == 1);
 				} else
 				if (entity instanceof EntitySheep)
 				{
-					((EntitySheep) entity).setFleeceColor(telemeter.clientData[3]);
+					((EntitySheep) entity).setFleeceColor(EnumDyeColor.byDyeDamage(telemeter.clientData[3]));
 					((EntitySheep) entity).setSheared(telemeter.clientData[4] == 1);
 				} else
 				if (entity instanceof EntityOcelot)
@@ -186,9 +188,9 @@ public class GameScreenText implements IGameScreen
 	        		int oxygen = telemeter.clientData[4];
 	        		oxygen = (oxygen % 4096) + (oxygen / 4096);
 	        		if (oxygen == 180 || oxygen == 90)
-	        			str[4] = GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": OK";
+	        			str[4] = GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": OK";
 	        		else
-	        			str[4] = GCCoreUtil.translate("gui.oxygenStorage.desc.1") + ": " + this.makeOxygenString(oxygen) + GCCoreUtil.translate("gui.seconds");
+	        			str[4] = GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + this.makeOxygenString(oxygen) + GCCoreUtil.translate("gui.seconds");
 	        	} 
         	}
         	else
@@ -202,7 +204,7 @@ public class GameScreenText implements IGameScreen
     	else
     	{
     		//Default - draw a simple time display just to show the Display Screen is working
-			World w1 = screen.driver.getWorldObj();
+			World w1 = screen.driver.getWorld();
     		int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
     		str[2] = makeTimeString(time1 * 360);
         }
@@ -260,9 +262,9 @@ public class GameScreenText implements IGameScreen
         	{
             	((ITelemetry)entity).adjustDisplay(telemeter.clientData);
         	}
-        	RenderPlayerGC.flagThermalOverride = true;
-        	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-            RenderPlayerGC.flagThermalOverride = false;
+//        	RenderPlayerGC.flagThermalOverride = true;
+//        	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F); TODO
+//            RenderPlayerGC.flagThermalOverride = false;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -323,7 +325,7 @@ public class GameScreenText implements IGameScreen
 
     private void drawText(String str, int colour)
     {
-    	Minecraft.getMinecraft().fontRenderer.drawString(str, 0, yPos, colour, false);
+    	Minecraft.getMinecraft().fontRendererObj.drawString(str, 0, yPos, colour, false);
     	yPos += 10;
     }
 
@@ -331,14 +333,14 @@ public class GameScreenText implements IGameScreen
     {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        tess.startDrawingQuads();
-        
-        tess.addVertex(frameA, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameA, 0.005F);
-        tess.addVertex(frameA, frameA, 0.005F);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
+        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

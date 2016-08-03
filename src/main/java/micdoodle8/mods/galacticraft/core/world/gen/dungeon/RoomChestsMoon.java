@@ -3,10 +3,11 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,9 +18,9 @@ public class RoomChestsMoon extends DungeonRoom
     int sizeY;
     int sizeZ;
 
-    private final ArrayList<ChunkCoordinates> chests = new ArrayList<ChunkCoordinates>();
+    private final ArrayList<BlockPos> chests = new ArrayList<BlockPos>();
 
-    public RoomChestsMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomChestsMoon(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -32,7 +33,7 @@ public class RoomChestsMoon extends DungeonRoom
     }
 
     @Override
-    public void generate(Block[] chunk, byte[] meta, int cx, int cz)
+    public void generate(ChunkPrimer primer, int cx, int cz)
     {
         for (int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
         {
@@ -42,31 +43,31 @@ public class RoomChestsMoon extends DungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        this.placeBlock(primer, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                     }
                     else
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.air, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.air, 0);
                     }
                 }
             }
         }
         final int hx = (this.posX + this.posX + this.sizeX) / 2;
         final int hz = (this.posZ + this.posZ + this.sizeZ) / 2;
-        if (this.placeBlock(chunk, meta, hx, this.posY, hz, cx, cz, Blocks.chest, 0))
+        if (this.placeBlock(primer, hx, this.posY, hz, cx, cz, Blocks.chest, 0))
         {
-            this.chests.add(new ChunkCoordinates(hx, this.posY, hz));
+            this.chests.add(new BlockPos(hx, this.posY, hz));
         }
     }
 
     @Override
-    public DungeonBoundingBox getBoundingBox()
+    public DungeonBoundingBox getCollisionBoundingBox()
     {
         return new DungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomChestsMoon(dungeon, x, y, z, dir);
     }
@@ -76,8 +77,8 @@ public class RoomChestsMoon extends DungeonRoom
     {
         if (!this.chests.isEmpty())
         {
-            this.worldObj.setBlock(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ, Blocks.chest, 0, 2);
-            TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(this.chests.get(0).posX, this.chests.get(0).posY, this.chests.get(0).posZ);
+            this.worldObj.setBlockState(this.chests.get(0), Blocks.chest.getDefaultState(), 2);
+            TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(this.chests.get(0));
 
             if (chest != null)
             {

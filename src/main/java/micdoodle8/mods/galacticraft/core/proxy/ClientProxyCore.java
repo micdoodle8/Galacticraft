@@ -1,9 +1,102 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import com.google.common.base.*;
+import com.google.common.collect.*;
+import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
+import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
+import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
+import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
+import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
+import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.client.render.entities.*;
+import micdoodle8.mods.galacticraft.core.client.render.item.*;
+import micdoodle8.mods.galacticraft.core.client.render.tile.*;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
+import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
+import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderTier3Rocket;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.MusicTicker;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,170 +105,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
-import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
-import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerBaseGC;
-import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
-import micdoodle8.mods.galacticraft.core.client.render.ThreadDownloadImageDataGC;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererBreathableAir;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererLandingPad;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererMachine;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererMeteor;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererNasaWorkbench;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererOxygenPipe;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererParachest;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererTreasureChest;
-import micdoodle8.mods.galacticraft.core.client.render.block.BlockRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderAlienVillager;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEntityFake;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeletonBoss;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedZombie;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderFlag;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderLander;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteor;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderMeteorChunk;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParaChest;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerBaseGC;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererArclamp;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererFlag;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererKey;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererMeteorChunk;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererScreen;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererThruster;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererTier1Rocket;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTorch;
-import micdoodle8.mods.galacticraft.core.client.render.tile.*;
-import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
-import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
-import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
-import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
-import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
-import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
-import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
-import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
-import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
-import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
-import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
-import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.recipe.craftguide.CraftGuideIntegration;
-import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tile.*;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
-import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
-import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.IImageBuffer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.IFluidBlock;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
-import tconstruct.client.tabs.InventoryTabVanilla;
-import tconstruct.client.tabs.TabRegistry;
-import api.player.client.ClientPlayerAPI;
-import api.player.model.ModelPlayerAPI;
-import api.player.render.RenderPlayerAPI;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import java.util.*;
 
 public class ClientProxyCore extends CommonProxyCore
 {
-    private static int renderIdTreasureChest;
-    private static int renderIdParachest;
-    private static int renderIdTorchUnlit;
-    private static int renderIdBreathableAir;
-    private static int renderIdOxygenPipe;
-    private static int renderIdMeteor;
-    private static int renderIdCraftingTable;
-    private static int renderIdLandingPad;
-    private static int renderIdMachine;
-
     public static FootprintRenderer footprintRenderer = new FootprintRenderer();
 
     public static List<String> flagRequestsSent = new ArrayList<String>();
-
-    private static int renderIndexHeavyArmor;
-    private static int renderIndexSensorGlasses;
 
     public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
     public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
@@ -223,15 +159,148 @@ public class ClientProxyCore extends CommonProxyCore
     public static boolean overworldTexturesValid;
 
     public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
-    
+
     private static final ResourceLocation saturnRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");    
     private static final ResourceLocation uranusRingTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
-    
+
+    private static List<Item> itemsToRegisterJson = Lists.newArrayList();
+
+    private static ModelResourceLocation fuelLocation = new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fuel", "fluid");
+    private static ModelResourceLocation oilLocation = new ModelResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "oil", "fluid");
+
+    @SubscribeEvent
+    public void onTextureStitchedPre(TextureStitchEvent.Pre event)
+    {
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocketT1"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyMain"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyStorage"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyWheels"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
+    }
+
     public static void reset()
     {
         ClientProxyCore.playerItemData.clear();
         ClientProxyCore.overworldTextureRequestSent = false;
         ClientProxyCore.flagRequestsSent.clear();
+    }
+
+    @Override
+    public void registerVariants()
+    {
+        Item fuel = Item.getItemFromBlock(GCBlocks.fuel);
+        ModelBakery.registerItemVariants(fuel);
+        ModelBakery.addVariantName(fuel, "galacticraftcore:fuel");
+        ModelLoader.setCustomMeshDefinition(fuel, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return fuelLocation;
+            }
+        });
+        ModelLoader.setCustomStateMapper(GCBlocks.fuel, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return fuelLocation;
+            }
+        });
+        Item oil = Item.getItemFromBlock(GCBlocks.crudeOil);
+        ModelBakery.registerItemVariants(oil);
+        ModelBakery.addVariantName(oil, "galacticraftcore:oil");
+        ModelLoader.setCustomMeshDefinition(oil, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return oilLocation;
+            }
+        });
+        ModelLoader.setCustomStateMapper(GCBlocks.crudeOil, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return oilLocation;
+            }
+        });
+
+        Item nasaWorkbench = Item.getItemFromBlock(GCBlocks.nasaWorkbench);
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:rocket_workbench", "inventory");
+        ModelLoader.setCustomModelResourceLocation(nasaWorkbench, 0, modelResourceLocation);
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:rocket_t1", "inventory");
+        for (int i = 0; i < 5; ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(GCItems.rocketTier1, i, modelResourceLocation);
+        }
+
+        for (int i = 0; i < 4; ++i)
+        {
+            modelResourceLocation = new ModelResourceLocation("galacticraftcore:buggy_" + i, "inventory");
+            ModelLoader.setCustomModelResourceLocation(GCItems.buggy, i, modelResourceLocation);
+        }
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:oil_canister_partial_0", "inventory");
+        for (int i = 0; i < GCItems.oilCanister.getMaxDamage(); ++i)
+        {
+            ModelLoader.setCustomModelResourceLocation(GCItems.oilCanister, i, modelResourceLocation);
+        }
+
+        modelResourceLocation = new ModelResourceLocation("galacticraftcore:flag", "inventory");
+        ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onModelBakeEvent(ModelBakeEvent event)
+    {
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(0.0F, -0.48F, 0.0F), new Vector3f(0.42F, 0.42F, 0.42F)));
+        replaceModelDefault(event, "rocket_t1", "rocketT1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
+
+        for (int i = 0; i < 4; ++i)
+        {
+            ImmutableList<String> objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right");
+            switch (i)
+            {
+            case 0:
+                break;
+            case 1:
+                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft");
+                break;
+            case 2:
+                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid");
+                break;
+            case 3:
+                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
+                break;
+            }
+            replaceModelDefault(event, "buggy_" + i, "buggyInv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
+        }
+
+        replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
+
+        for (int i = 0; i < 7; ++i)
+        {
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:oil_canister_partial_" + i, "inventory");
+            IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+            if (object != null)
+            {
+                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
+                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+            }
+            modelResourceLocation = new ModelResourceLocation("galacticraftcore:fuel_canister_partial_" + i, "inventory");
+            object = event.modelRegistry.getObject(modelResourceLocation);
+            if (object != null)
+            {
+                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
+                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+            }
+        }
+    }
+
+    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
+    {
+        ClientUtil.replaceModel(GalacticraftCore.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState);
     }
     
     @Override
@@ -239,12 +308,11 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.scaleup.put(ClientProxyCore.numbers, 0, 16);
 
-        ClientProxyCore.renderIndexSensorGlasses = RenderingRegistry.addNewArmourRendererPrefix("sensor");
-        ClientProxyCore.renderIndexHeavyArmor = RenderingRegistry.addNewArmourRendererPrefix("titanium");
+        OBJLoader.instance.addDomain(GalacticraftCore.ASSET_PREFIX);
 
         if (Loader.isModLoaded("PlayerAPI"))
         {
-            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
+//            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
         }
     }
 
@@ -258,8 +326,8 @@ public class ClientProxyCore extends CommonProxyCore
         MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
         ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
-        ClientProxyCore.registerBlockHandlers();
         ClientProxyCore.setupCapes();
+        ClientProxyCore.registerInventoryJsons();
     }
 
     @Override
@@ -267,18 +335,34 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.registerInventoryTabs();
         ClientProxyCore.registerEntityRenderers();
-        ClientProxyCore.registerItemRenderers();
+        ClientProxyCore.addVariants();
+
         MinecraftForge.EVENT_BUS.register(new TabRegistry());
         //ClientProxyCore.playerList = GLAllocation.generateDisplayLists(1);
         
-        if (Loader.isModLoaded("craftguide"))
-        	CraftGuideIntegration.register();
+//        if (Loader.isModLoaded("craftguide"))
+//        	CraftGuideIntegration.register(); TODO
         
-        try {
-			Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_MUSICTICKER));
-			ftc.setAccessible(true);
-			ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
-        } catch (Exception e) {e.printStackTrace();} 
+//        try {
+//			Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_MUSICTICKER));
+//			ftc.setAccessible(true);
+//			ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
+//        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    @Override
+    public void postRegisterBlock(Block block)
+    {
+        // ModelLoader.setCustomStateMapper(block, GalacticraftStateMapper.INSTANCE);
+    }
+
+    @Override
+    public void postRegisterItem(Item item)
+    {
+        if (!item.getHasSubtypes())
+        {
+            ClientProxyCore.itemsToRegisterJson.add(item);
+        }
     }
 
     public static void registerEntityRenderers()
@@ -290,86 +374,256 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, new RenderEvolvedSkeleton());
         RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, new RenderEvolvedSkeletonBoss());
         RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, new RenderMeteor());
-        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
         RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
         RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
         RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
         RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
+        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
 
         if (Loader.isModLoaded("RenderPlayerAPI"))
         {
-            ModelPlayerAPI.register(Constants.MOD_ID_CORE, ModelPlayerBaseGC.class);
-            RenderPlayerAPI.register(Constants.MOD_ID_CORE, RenderPlayerBaseGC.class);
+//            ModelPlayerAPI.register(Constants.MOD_ID_CORE, ModelPlayerBaseGC.class);
+//            RenderPlayerAPI.register(Constants.MOD_ID_CORE, RenderPlayerBaseGC.class);
         }
         else
         {
-        	RenderingRegistry.registerEntityRenderingHandler(EntityPlayerSP.class, new RenderPlayerGC());
-        	RenderingRegistry.registerEntityRenderingHandler(EntityOtherPlayerMP.class, new RenderPlayerGC());
+//        	RenderingRegistry.registerEntityRenderingHandler(EntityPlayerSP.class, new RenderPlayerGC());
+//        	RenderingRegistry.registerEntityRenderingHandler(EntityOtherPlayerMP.class, new RenderPlayerGC());
+
+            try
+            {
+                Field field = RenderManager.class.getDeclaredField("playerRenderer");
+                field.setAccessible(true);
+                field.set(FMLClientHandler.instance().getClient().getRenderManager(), new RenderPlayerGC());
+
+                field = RenderManager.class.getDeclaredField("skinMap");
+                field.setAccessible(true);
+                Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) field.get(FMLClientHandler.instance().getClient().getRenderManager());
+                skinMap.put("default", new RenderPlayerGC());
+                skinMap.put("slim", new RenderPlayerGC(true));
+                field.set(FMLClientHandler.instance().getClient().getRenderManager(), skinMap);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static void registerItemRenderers()
-    {
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.unlitTorch), new ItemRendererUnlitTorch());
-        MinecraftForgeClient.registerItemRenderer(GCItems.rocketTier1, new ItemRendererTier1Rocket(new EntityTier1Rocket(ClientProxyCore.mc.theWorld), new ModelRocketTier1(), new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
-        MinecraftForgeClient.registerItemRenderer(GCItems.buggy, new ItemRendererBuggy());
-        MinecraftForgeClient.registerItemRenderer(GCItems.flag, new ItemRendererFlag());
-        MinecraftForgeClient.registerItemRenderer(GCItems.key, new ItemRendererKey(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/treasure.png")));
-        MinecraftForgeClient.registerItemRenderer(GCItems.meteorChunk, new ItemRendererMeteorChunk());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.spinThruster), new ItemRendererThruster());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.brightLamp), new ItemRendererArclamp());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GCBlocks.screen), new ItemRendererScreen());
-    }
-
-    public static void registerHandlers()
+    private static void registerHandlers()
     {
         TickHandlerClient tickHandlerClient = new TickHandlerClient();
-        FMLCommonHandler.instance().bus().register(tickHandlerClient);
         MinecraftForge.EVENT_BUS.register(tickHandlerClient);
-        FMLCommonHandler.instance().bus().register(new KeyHandlerClient());
+        MinecraftForge.EVENT_BUS.register(new KeyHandlerClient());
         ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
         MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
     }
 
-    public static void registerTileEntityRenderers()
+    private static void registerTileEntityRenderers()
     {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAluminumWire.class, new TileEntityAluminumWireRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenPipe.class, new TileEntityOxygenPipeRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
     }
 
-    public static void registerBlockHandlers()
+    private static void registerInventoryJsons()
     {
-        ClientProxyCore.renderIdTreasureChest = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdTorchUnlit = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdBreathableAir = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdOxygenPipe = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdMeteor = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdCraftingTable = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdLandingPad = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdMachine = RenderingRegistry.getNextAvailableRenderId();
-        ClientProxyCore.renderIdParachest = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new BlockRendererTreasureChest(ClientProxyCore.renderIdTreasureChest));
-        RenderingRegistry.registerBlockHandler(new BlockRendererParachest(ClientProxyCore.renderIdParachest));
-        RenderingRegistry.registerBlockHandler(new BlockRendererUnlitTorch(ClientProxyCore.renderIdTorchUnlit));
-        RenderingRegistry.registerBlockHandler(new BlockRendererBreathableAir(ClientProxyCore.renderIdBreathableAir));
-        RenderingRegistry.registerBlockHandler(new BlockRendererOxygenPipe(ClientProxyCore.renderIdOxygenPipe));
-        RenderingRegistry.registerBlockHandler(new BlockRendererMeteor(ClientProxyCore.renderIdMeteor));
-        RenderingRegistry.registerBlockHandler(new BlockRendererNasaWorkbench(ClientProxyCore.renderIdCraftingTable));
-        RenderingRegistry.registerBlockHandler(new BlockRendererLandingPad(ClientProxyCore.renderIdLandingPad));
-        RenderingRegistry.registerBlockHandler(new BlockRendererMachine(ClientProxyCore.renderIdMachine));
+        for (Item toReg : ClientProxyCore.itemsToRegisterJson)
+        {
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, toReg);
+        }
+
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 0, "canister_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.canister, 1, "canister_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 0, "tier1engine");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.rocketEngine, 1, "tier1booster");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 0, "parachute_plain");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 1, "parachute_black");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 2, "parachute_blue");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 3, "parachute_lime");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 4, "parachute_brown");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 5, "parachute_darkblue");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 6, "parachute_darkgray");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 7, "parachute_darkgreen");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 8, "parachute_gray");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 9, "parachute_magenta");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 10, "parachute_orange");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 11, "parachute_pink");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 12, "parachute_purple");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 13, "parachute_red");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 14, "parachute_teal");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.parachute, 15, "parachute_yellow");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic_buggy");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocket_t2");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.key, 0, "key");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 0, "wheel");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 1, "seat");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.partBuggy, 2, "storage");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 0, "solar_module_0");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 1, "solar_module_1");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 2, "raw_silicon");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 3, "ingot_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 4, "ingot_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 5, "ingot_aluminum");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 6, "compressed_copper");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 7, "compressed_tin");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 8, "compressed_aluminum");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 9, "compressed_steel");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 10, "compressed_bronze");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 11, "compressed_iron");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 12, "wafer_solar");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 13, "wafer_basic");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 14, "wafer_advanced");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 15, "dehydrated_apple");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 16, "dehydrated_carrot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 17, "dehydrated_melon");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydrated_potato");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequency_module");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambient_thermal_controller");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoric_iron_ingot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressed_meteoric_iron");
+        for (int i = 0; i <= GCItems.oilCanister.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / GCItems.oilCanister.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.oilCanister, i, "oil_canister_partial_" + (7 - damage - 1));
+        }
+        for (int i = 0; i <= GCItems.fuelCanister.getMaxDamage(); ++i)
+        {
+            int damage = 6 * i / GCItems.fuelCanister.getMaxDamage();
+            ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.fuelCanister, i, "fuel_canister_partial_" + (7 - damage - 1));
+        }
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteorChunk, 0, "meteor_chunk");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteorChunk, 1, "meteor_chunk_hot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.buggy, 0, "buggy_0");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.buggy, 1, "buggy_1");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.buggy, 2, "buggy_2");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.buggy, 3, "buggy_3");
+
+        // Blocks
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.breatheableAir);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightAir);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightBreatheableAir);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.brightLamp);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.treasureChestTier1);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPad, 0, "landing_pad");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPad, 1, "buggy_pad");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorch);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenDistributor);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenPipe);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCollector);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCompressor, 0, "oxygen_compressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCompressor, 4, "oxygen_decompressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenSealer);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenDetector);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.nasaWorkbench);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fallenMeteor);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 3, "deco_block_0");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 4, "deco_block_1");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 5, "ore_copper_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 6, "ore_tin_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 7, "ore_aluminum_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 8, "ore_silicon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 9, "block_copper_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 10, "block_tin_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 11, "block_aluminum_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 12, "block_meteoric_iron_gc");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockSeal);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.refinery);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fuelLoader);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPadFull, 1, "buggy_pad_full");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.spaceStationBase);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fakeBlock);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.sealableBlock, 1, "enclosed_oxygen_pipe");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.sealableBlock, 14, "enclosed_aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.sealableBlock, 15, "enclosed_heavy_aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.cargoLoader, 0, "cargo_loader");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.cargoLoader, 4, "cargo_unloader");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.parachest);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.solarPanel, 0, "basic_solar");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.solarPanel, 4, "advanced_solar");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase, 0, "coal_generator");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase, 12, "ingot_compressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase2, 0, "electric_ingot_compressor");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase2, 4, "circuit_fabricator");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineBase2, 8, "oxygen_storage_module");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 0, "energy_storage");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 4, "electric_furnace");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 8, "cluster_storage");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.machineTiered, 12, "arc_furnace");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 0, "aluminum_wire");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire_heavy");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 2, "ore_cheese_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 3, "moon_dirt_moon");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 4, "moon_stone");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 5, "moon_turf_0");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.blockMoon, 14, "moon_dungeon_brick");
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.cheeseBlock);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.spinThruster);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.screen);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.telemetry);
+    }
+
+    private static void addVariants()
+    {
+        addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
+        addCoreVariant("basic_block_core", "deco_block_0", "deco_block_1", "ore_copper_gc", "ore_tin_gc", "ore_aluminum_gc", "ore_silicon", "block_copper_gc", "block_tin_gc", "block_aluminum_gc", "block_meteoric_iron_gc");
+        addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
+        addCoreVariant("landing_pad", "landing_pad", "buggy_pad");
+        addCoreVariant("oxygen_compressor", "oxygen_compressor", "oxygen_decompressor");
+        addCoreVariant("cargo", "cargo_loader", "cargo_unloader");
+        addCoreVariant("enclosed", "enclosed_oxygen_pipe", "enclosed_aluminum_wire", "enclosed_heavy_aluminum_wire");
+        addCoreVariant("solar", "advanced_solar", "basic_solar");
+        addCoreVariant("machine", "coal_generator", "ingot_compressor");
+        addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor");
+        addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
+        addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "moon_stone", "moon_turf_0", "moon_dungeon_brick");
+        addCoreVariant("canister", "canister_tin", "canister_copper");
+        addCoreVariant("engine", "tier1engine", "tier1booster");
+        addCoreVariant("parachute", "parachute_plain", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
+        addCoreVariant("oil_canister_partial", "oil_canister_partial_0", "oil_canister_partial_1", "oil_canister_partial_2", "oil_canister_partial_3", "oil_canister_partial_4", "oil_canister_partial_5", "oil_canister_partial_6");
+        addCoreVariant("fuel_canister_partial", "fuel_canister_partial_0", "fuel_canister_partial_1", "fuel_canister_partial_2", "fuel_canister_partial_3", "fuel_canister_partial_4", "fuel_canister_partial_5", "fuel_canister_partial_6");
+        addCoreVariant("schematic", "schematic_buggy", "schematic_rocket_t2");
+        addCoreVariant("key", "key");
+        addCoreVariant("buggymat", "wheel", "seat", "storage");
+        addCoreVariant("basic_item", "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
+        addCoreVariant("meteoric_iron_ingot", "meteoric_iron_ingot", "compressed_meteoric_iron");
+        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
+        addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
+        addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");
+    }
+
+    private static void addCoreVariant(String name, String... variants)
+    {
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, name);
+        String[] variants0 = new String[variants.length];
+        for (int i = 0; i < variants.length; ++i)
+        {
+            variants0[i] = GalacticraftCore.TEXTURE_PREFIX + variants[i];
+        }
+        ModelBakery.addVariantName(itemBlockVariants, variants0);
     }
 
     public static void setupCapes()
@@ -496,7 +750,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerInventoryTabs()
     {
-        if (!Loader.isModLoaded("TConstruct") && TabRegistry.getTabList().size() < 1)
+        if (TabRegistry.getTabList().size() == 0)
         {
             TabRegistry.registerTab(new InventoryTabVanilla());
         }
@@ -511,62 +765,50 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public int getBlockRender(Block blockID)
     {
-        if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
-        {
-            return ClientProxyCore.renderIdBreathableAir;
-        }
-        else if (blockID == GCBlocks.oxygenPipe)
-        {
-            return ClientProxyCore.renderIdOxygenPipe;
-        }
-        else if (blockID == GCBlocks.fallenMeteor)
-        {
-            return ClientProxyCore.renderIdMeteor;
-        }
-        else if (blockID == GCBlocks.nasaWorkbench)
-        {
-            return ClientProxyCore.renderIdCraftingTable;
-        }
-        else if (blockID == GCBlocks.landingPadFull)
-        {
-            return ClientProxyCore.renderIdLandingPad;
-        }
-        else if (blockID instanceof BlockUnlitTorch || blockID == GCBlocks.glowstoneTorch)
-        {
-            return ClientProxyCore.renderIdTorchUnlit;
-        }
-        else if (blockID == GCBlocks.fuelLoader || blockID == GCBlocks.cargoLoader || blockID == GCBlocks.machineBase || blockID == GCBlocks.machineBase2 || blockID == GCBlocks.machineTiered || blockID == GCBlocks.oxygenCollector || blockID == GCBlocks.oxygenCompressor || blockID == GCBlocks.oxygenDetector || blockID == GCBlocks.oxygenDistributor || blockID == GCBlocks.oxygenSealer || blockID == GCBlocks.refinery || blockID == GCBlocks.telemetry)
-        {
-            return ClientProxyCore.renderIdMachine;
-        }
-        else if (blockID == GCBlocks.treasureChestTier1)
-        {
-            return ClientProxyCore.renderIdTreasureChest;
-        }
-        else if (blockID == GCBlocks.parachest)
-        {
-            return ClientProxyCore.renderIdParachest;
-        }
+//        if (blockID == GCBlocks.breatheableAir || blockID == GCBlocks.brightBreatheableAir)
+//        {
+//            return ClientProxyCore.renderIdBreathableAir;
+//        }
+//        else if (blockID == GCBlocks.oxygenPipe)
+//        {
+//            return ClientProxyCore.renderIdOxygenPipe;
+//        }
+//        else if (blockID == GCBlocks.fallenMeteor)
+//        {
+//            return ClientProxyCore.renderIdMeteor;
+//        }
+//        else if (blockID == GCBlocks.nasaWorkbench)
+//        {
+//            return ClientProxyCore.renderIdCraftingTable;
+//        }
+//        else if (blockID == GCBlocks.landingPadFull)
+//        {
+//            return ClientProxyCore.renderIdLandingPad;
+//        }
+//        else if (blockID instanceof BlockUnlitTorch || blockID == GCBlocks.glowstoneTorch)
+//        {
+//            return ClientProxyCore.renderIdTorchUnlit;
+//        }
+//        else if (blockID == GCBlocks.fuelLoader || blockID == GCBlocks.cargoLoader || blockID == GCBlocks.machineBase || blockID == GCBlocks.machineBase2 || blockID == GCBlocks.machineTiered || blockID == GCBlocks.oxygenCollector || blockID == GCBlocks.oxygenCompressor || blockID == GCBlocks.oxygenDetector || blockID == GCBlocks.oxygenDistributor || blockID == GCBlocks.oxygenSealer || blockID == GCBlocks.refinery || blockID == GCBlocks.telemetry)
+//        {
+//            return ClientProxyCore.renderIdMachine;
+//        }
+//        else if (blockID == GCBlocks.treasureChestTier1)
+//        {
+//            return ClientProxyCore.renderIdTreasureChest;
+//        }
+//        else if (blockID == GCBlocks.parachest)
+//        {
+//            return ClientProxyCore.renderIdParachest;
+//        }
 
-        return -1;
+        return 3;
     }
 
     @Override
     public World getClientWorld()
     {
         return ClientProxyCore.mc.theWorld;
-    }
-
-    @Override
-    public int getTitaniumArmorRenderIndex()
-    {
-        return ClientProxyCore.renderIndexHeavyArmor;
-    }
-
-    @Override
-    public int getSensorArmorRenderIndex()
-    {
-        return ClientProxyCore.renderIndexSensorGlasses;
     }
 
     @Override
@@ -586,7 +828,7 @@ public class ClientProxyCore extends CommonProxyCore
             return;
         }
 
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
         float f1 = ClientProxyCore.mc.thePlayer.getBrightness(partialTicks) / 3.0F;
         GL11.glColor4f(f1, f1, f1, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
@@ -600,11 +842,12 @@ public class ClientProxyCore extends CommonProxyCore
         float f7 = -0.5F;
         float f8 = -ClientProxyCore.mc.thePlayer.rotationYaw / 64.0F;
         float f9 = ClientProxyCore.mc.thePlayer.rotationPitch / 64.0F;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(f3, f5, f7, f2 + f8, f2 + f9);
-        tessellator.addVertexWithUV(f4, f5, f7, 0.0F + f8, f2 + f9);
-        tessellator.addVertexWithUV(f4, f6, f7, 0.0F + f8, 0.0F + f9);
-        tessellator.addVertexWithUV(f3, f6, f7, f2 + f8, 0.0F + f9);
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(f3, f5, f7).tex(f2 + f8, f2 + f9).endVertex();
+        worldRenderer.pos(f4, f5, f7).tex(0.0F + f8, f2 + f9).endVertex();
+        worldRenderer.pos(f4, f6, f7).tex(0.0F + f8, 0.0F + f9).endVertex();
+        worldRenderer.pos(f3, f6, f7).tex(f2 + f8, 0.0F + f9).endVertex();
         tessellator.draw();
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -617,11 +860,12 @@ public class ClientProxyCore extends CommonProxyCore
         int i = MathHelper.floor_double(entity.posX);
         int j = MathHelper.floor_float(MathHelper.floor_double(d0));
         int k = MathHelper.floor_double(entity.posZ);
-        Block block = entity.worldObj.getBlock(i, j, k);
+        BlockPos pos = new BlockPos(i, j, k);
+        Block block = entity.worldObj.getBlockState(pos).getBlock();
 
         if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid() != null && ((IFluidBlock) block).getFluid().getName().equals(fluid.getName()))
         {
-            double filled = ((IFluidBlock) block).getFilledPercentage(entity.worldObj, i, j, k);
+            double filled = ((IFluidBlock) block).getFilledPercentage(entity.worldObj, pos);
             if (filled < 0)
             {
                 filled *= -1;
@@ -659,7 +903,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         World world = ClientProxyCore.mc.theWorld;
 
-        if (world != null && world.provider.dimensionId == dimensionID)
+        if (world != null && world.provider.getDimensionId() == dimensionID)
         {
             return world;
         }
@@ -709,124 +953,124 @@ public class ClientProxyCore extends CommonProxyCore
     public void onPostRender(RenderPlayerEvent.Specials.Post event)
     {
         AbstractClientPlayer player = (AbstractClientPlayer) event.entityPlayer;
-        boolean flag = ClientProxyCore.capeMap.containsKey(event.entityPlayer.getCommandSenderName());
+        boolean flag = ClientProxyCore.capeMap.containsKey(event.entityPlayer.getName());
         float f4;
 
-        if (flag && !player.isInvisible() && !player.getHideCape())
-        {
-            String url = ClientProxyCore.capeMap.get(player.getCommandSenderName());
-            ResourceLocation capeLoc = capesMap.get(url);
-            if (!capesMap.containsKey(url))
-            {
-                try
-                {
-                    String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
-                    File directory = new File(dirName, "assets");
-                    boolean success = true;
-                    if (!directory.exists())
-                    {
-                        success = directory.mkdir();
-                    }
-                    if (success)
-                    {
-                        directory = new File(directory, "gcCapes");
-                        if (!directory.exists())
-                        {
-                            success = directory.mkdir();
-                        }
-
-                        if (success)
-                        {
-                            String hash = String.valueOf(player.getCommandSenderName().hashCode());
-                            File file1 = new File(directory, hash.substring(0, 2));
-                            File file2 = new File(file1, hash);
-                            final ResourceLocation resourcelocation = new ResourceLocation("gcCapes/" + hash);
-                            ThreadDownloadImageDataGC threaddownloadimagedata = new ThreadDownloadImageDataGC(file2, url, null, new IImageBuffer()
-                            {
-                                public BufferedImage parseUserSkin(BufferedImage p_78432_1_)
-                                {
-                                    if (p_78432_1_ == null)
-                                    {
-                                        return null;
-                                    }
-                                    else
-                                    {
-                                        BufferedImage bufferedimage1 = new BufferedImage(512, 256, 2);
-                                        Graphics graphics = bufferedimage1.getGraphics();
-                                        graphics.drawImage(p_78432_1_, 0, 0, null);
-                                        graphics.dispose();
-                                        p_78432_1_ = bufferedimage1;
-                                    }
-                                    return p_78432_1_;
-                                }
-
-                                public void func_152634_a()
-                                {
-                                }
-                            });
-
-                            if (ClientProxyCore.mc.getTextureManager().loadTexture(resourcelocation, threaddownloadimagedata))
-                            {
-                                capeLoc = resourcelocation;
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                capesMap.put(url, capeLoc);
-            }
-
-            if (capeLoc != null)
-            {
-            	ClientProxyCore.mc.getTextureManager().bindTexture(capeLoc);
-                GL11.glPushMatrix();
-                GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-                double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * event.partialRenderTick);
-                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * event.partialRenderTick);
-                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * event.partialRenderTick);
-                f4 = (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick) / 57.29578F;
-                double d1 = MathHelper.sin(f4);
-                double d2 = -MathHelper.cos(f4);
-                float f5 = (float) d4 * 10.0F;
-
-                if (f5 < -6.0F)
-                {
-                    f5 = -6.0F;
-                }
-
-                if (f5 > 32.0F)
-                {
-                    f5 = 32.0F;
-                }
-
-                float f6 = (float) (d3 * d1 + d0 * d2) * 100.0F;
-                float f7 = (float) (d3 * d2 - d0 * d1) * 100.0F;
-
-                if (f6 < 0.0F)
-                {
-                    f6 = 0.0F;
-                }
-
-                float f8 = player.prevCameraYaw + (player.cameraYaw - player.prevCameraYaw) * event.partialRenderTick;
-                f5 += MathHelper.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * event.partialRenderTick) * 6.0F) * 32.0F * f8;
-
-                if (player.isSneaking())
-                {
-                    f5 += 25.0F;
-                }
-
-                GL11.glRotatef(6.0F + f6 / 2.0F + f5, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(f7 / 2.0F, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                event.renderer.modelBipedMain.renderCloak(0.0625F);
-                GL11.glPopMatrix();
-            }
-        }
+//        if (flag && !player.isInvisible() && !player.getHideCape())
+//        {
+//            String url = ClientProxyCore.capeMap.get(player.getCommandSenderName());
+//            ResourceLocation capeLoc = capesMap.get(url);
+//            if (!capesMap.containsKey(url))
+//            {
+//                try
+//                {
+//                    String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+//                    File directory = new File(dirName, "assets");
+//                    boolean success = true;
+//                    if (!directory.exists())
+//                    {
+//                        success = directory.mkdir();
+//                    }
+//                    if (success)
+//                    {
+//                        directory = new File(directory, "gcCapes");
+//                        if (!directory.exists())
+//                        {
+//                            success = directory.mkdir();
+//                        }
+//
+//                        if (success)
+//                        {
+//                            String hash = String.valueOf(player.getCommandSenderName().hashCode());
+//                            File file1 = new File(directory, hash.substring(0, 2));
+//                            File file2 = new File(file1, hash);
+//                            final ResourceLocation resourcelocation = new ResourceLocation("gcCapes/" + hash);
+//                            ThreadDownloadImageDataGC threaddownloadimagedata = new ThreadDownloadImageDataGC(file2, url, null, new IImageBuffer()
+//                            {
+//                                public BufferedImage parseUserSkin(BufferedImage p_78432_1_)
+//                                {
+//                                    if (p_78432_1_ == null)
+//                                    {
+//                                        return null;
+//                                    }
+//                                    else
+//                                    {
+//                                        BufferedImage bufferedimage1 = new BufferedImage(512, 256, 2);
+//                                        Graphics graphics = bufferedimage1.getGraphics();
+//                                        graphics.drawImage(p_78432_1_, 0, 0, null);
+//                                        graphics.dispose();
+//                                        p_78432_1_ = bufferedimage1;
+//                                    }
+//                                    return p_78432_1_;
+//                                }
+//
+//                                public void func_152634_a()
+//                                {
+//                                }
+//                            });
+//
+//                            if (ClientProxyCore.mc.getTextureManager().loadTexture(resourcelocation, threaddownloadimagedata))
+//                            {
+//                                capeLoc = resourcelocation;
+//                            }
+//                        }
+//                    }
+//                }
+//                catch (Exception e)
+//                {
+//                    e.printStackTrace();
+//                }
+//
+//                capesMap.put(url, capeLoc);
+//            }
+//
+//            if (capeLoc != null)
+//            {
+//            	ClientProxyCore.mc.getTextureManager().bindTexture(capeLoc);
+//                GL11.glPushMatrix();
+//                GL11.glTranslatef(0.0F, 0.0F, 0.125F);
+//                double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * event.partialRenderTick - (player.prevPosX + (player.posX - player.prevPosX) * event.partialRenderTick);
+//                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * event.partialRenderTick);
+//                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * event.partialRenderTick);
+//                f4 = (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick) / 57.29578F;
+//                double d1 = MathHelper.sin(f4);
+//                double d2 = -MathHelper.cos(f4);
+//                float f5 = (float) d4 * 10.0F;
+//
+//                if (f5 < -6.0F)
+//                {
+//                    f5 = -6.0F;
+//                }
+//
+//                if (f5 > 32.0F)
+//                {
+//                    f5 = 32.0F;
+//                }
+//
+//                float f6 = (float) (d3 * d1 + d0 * d2) * 100.0F;
+//                float f7 = (float) (d3 * d2 - d0 * d1) * 100.0F;
+//
+//                if (f6 < 0.0F)
+//                {
+//                    f6 = 0.0F;
+//                }
+//
+//                float f8 = player.prevCameraYaw + (player.cameraYaw - player.prevCameraYaw) * event.partialRenderTick;
+//                f5 += MathHelper.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * event.partialRenderTick) * 6.0F) * 32.0F * f8;
+//
+//                if (player.isSneaking())
+//                {
+//                    f5 += 25.0F;
+//                }
+//
+//                GL11.glRotatef(6.0F + f6 / 2.0F + f5, 1.0F, 0.0F, 0.0F);
+//                GL11.glRotatef(f7 / 2.0F, 0.0F, 0.0F, 1.0F);
+//                GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
+//                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+//                event.renderer.modelBipedMain.renderCloak(0.0625F);
+//                GL11.glPopMatrix();
+//            }
+//        }
     }
 
     public static void adjustRenderPos(Entity entity, double offsetX, double offsetY, double offsetZ)
@@ -930,9 +1174,9 @@ public class ClientProxyCore extends CommonProxyCore
                     int pX = MathHelper.floor_double(player.posX / 16D) << 4;
                     int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
 
-                    int eX = tile.xCoord / 16 << 4;
-                    int eY = tile.yCoord / 16 << 4;
-                    int eZ = tile.zCoord / 16 << 4;
+                    int eX = tile.getPos().getX() / 16 << 4;
+                    int eY = tile.getPos().getY() / 16 << 4;
+                    int eZ = tile.getPos().getZ() / 16 << 4;
 
                     float dX = eX - pX;
                     float dZ = eZ - pZ;
@@ -984,7 +1228,7 @@ public class ClientProxyCore extends CommonProxyCore
                     {
                         phi += 360F;
                     }
-                    float ytranslate = ClientProxyCore.globalRadius + (float) player.posY - tile.yCoord + eY - ClientProxyCore.terrainHeight;
+                    float ytranslate = ClientProxyCore.globalRadius + (float) player.posY - tile.getPos().getY() + eY - ClientProxyCore.terrainHeight;
                     GL11.glTranslatef(-dX - floatPX + eX + 8F, -ytranslate, -dZ - floatPZ + eZ + 8F);
                     if (theta > 0)
                     {
@@ -1002,14 +1246,14 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void orientCamera(float partialTicks)
     {
-        EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
+        /*EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        EntityLivingBase entityLivingBase = ClientProxyCore.mc.renderViewEntity;
-        
+        EntityLivingBase entityLivingBase = ClientProxyCore.mc.getRenderViewEntity();
+
         if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;          
+            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
             float offset = entity.getRotateOffset() + PLAYER_Y_OFFSET;
             GL11.glTranslatef(0, -offset, 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
@@ -1055,7 +1299,7 @@ public class ClientProxyCore extends CommonProxyCore
             {
                 GL11.glRotatef(90.0F * (stats.gravityTurnRatePrev + (stats.gravityTurnRate - stats.gravityTurnRatePrev) * partialTicks), stats.gravityTurnVecX, stats.gravityTurnVecY, stats.gravityTurnVecZ);
             }
-        }
+        }*/
 
         //omit this for interesting 3P views
         //GL11.glTranslatef(0.0F, 0.0F, -0.1F);
@@ -1071,9 +1315,9 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void setPositionList(WorldRenderer rend, int glRenderList)
     {
-        GL11.glNewList(glRenderList + 3, GL11.GL_COMPILE);
+        /*GL11.glNewList(glRenderList + 3, GL11.GL_COMPILE);
 
-        EntityLivingBase entitylivingbase = ClientProxyCore.mc.renderViewEntity;
+        EntityLivingBase entitylivingbase = ClientProxyCore.mc.getRenderViewEntity();
 
         if (entitylivingbase != null)
         {
@@ -1217,7 +1461,7 @@ public class ClientProxyCore extends CommonProxyCore
                 ClientProxyCore.offsetY = 0;
             }
         }
-        GL11.glEndList();
+        GL11.glEndList();*/
     }
 
     @Override

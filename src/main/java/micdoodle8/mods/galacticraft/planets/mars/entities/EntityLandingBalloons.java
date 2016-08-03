@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -31,7 +31,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
 
     public EntityLandingBalloons(World world)
     {
-        super(world, 0F);
+        super(world);
         this.setSize(2.0F, 2.0F);
         this.rotationPitchSpeed = this.rand.nextFloat();
         this.rotationYawSpeed = this.rand.nextFloat();
@@ -86,13 +86,13 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
-        return GCCoreUtil.translate("container.marsLander.name");
+        return GCCoreUtil.translate("container.mars_lander.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -332,5 +332,25 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     public boolean shouldIgnoreShiftExit()
     {
         return this.groundHitCount < 14 || !this.onGround;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

@@ -1,15 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +21,8 @@ public class PlayerUtil
 	
 	public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
-        return VersionUtil.getPlayerForUsername(server, username);
+        return server.getConfigurationManager().getPlayerByUsername(username);
+//        return VersionUtil.getPlayerForUsername(server, username);
     }
 
     public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
@@ -49,7 +49,7 @@ public class PlayerUtil
 
                     entityplayermp = (EntityPlayerMP) iterator.next();
                 }
-                while (!entityplayermp.getCommandSenderName().equalsIgnoreCase(username));
+                while (!entityplayermp.getName().equalsIgnoreCase(username));
 
                 return entityplayermp;
             }
@@ -72,13 +72,13 @@ public class PlayerUtil
             return (EntityPlayerMP) player;
         }
 
-        return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getCommandSenderName(), ignoreCase);
+        return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getName(), ignoreCase);
     }
 
     @SideOnly(Side.CLIENT)
-    public static EntityClientPlayerMP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
+    public static EntityPlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
     {
-        EntityClientPlayerMP clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
+        EntityPlayerSP clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
 
         if (clientPlayer == null && player != null)
         {
@@ -110,14 +110,13 @@ public class PlayerUtil
 				}
 			}
 		}
-		if (profile == null) 
-			try {
-				UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
-				profile = VersionUtil.constructGameProfile(uuid, strName);
-			} catch (Exception e) { e.printStackTrace(); }
-		if (profile == null) profile = VersionUtil.constructGameProfile(UUID.randomUUID(), strName);
-		
-		PlayerUtil.knownSkins.put(strName, profile); 
+		if (profile == null)
+        {
+            UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
+            profile = new GameProfile(uuid, strName);
+        }
+
+		PlayerUtil.knownSkins.put(strName, profile);
 		return profile;
 	}
     

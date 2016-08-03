@@ -5,6 +5,7 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMiner;
 import net.minecraft.item.ItemStack;
@@ -127,13 +128,13 @@ public class AstroMinerRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return GCCoreUtil.translate("tile.rocketWorkbench.name");
+        return GCCoreUtil.translate("tile.rocket_workbench.name");
     }
 
     @Override
     public String getGuiTexture()
     {
-        return AsteroidsModule.TEXTURE_PREFIX + "textures/gui/schematic_astro_miner.png";
+        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_astro_miner.png";
     }
 
     @Override

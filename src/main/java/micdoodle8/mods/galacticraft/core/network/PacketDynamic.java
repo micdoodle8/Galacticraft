@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -31,7 +32,7 @@ public class PacketDynamic implements IPacket
     {
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
-        this.dimID = entity.worldObj.provider.dimensionId;
+        this.dimID = entity.worldObj.provider.getDimensionId();
         this.data = new Object[] { entity.getEntityId() };
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) entity).getNetworkedData(this.sendData);
@@ -41,8 +42,8 @@ public class PacketDynamic implements IPacket
     {
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
-        this.dimID = tile.getWorldObj().provider.dimensionId;
-        this.data = new Object[] { tile.xCoord, tile.yCoord, tile.zCoord };
+        this.dimID = tile.getWorld().provider.getDimensionId();
+        this.data = new Object[] { tile.getPos() };
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) tile).getNetworkedData(this.sendData);
     }
@@ -59,9 +60,9 @@ public class PacketDynamic implements IPacket
             buffer.writeInt((Integer) this.data[0]);
             break;
         case 1:
-            buffer.writeInt((Integer) this.data[0]);
-            buffer.writeInt((Integer) this.data[1]);
-            buffer.writeInt((Integer) this.data[2]);
+            buffer.writeInt(((BlockPos) this.data[0]).getX());
+            buffer.writeInt(((BlockPos) this.data[0]).getY());
+            buffer.writeInt(((BlockPos) this.data[0]).getZ());
             break;
         }
 
@@ -111,14 +112,12 @@ public class PacketDynamic implements IPacket
 
             break;
         case 1:
-            this.data = new Object[3];
-            this.data[0] = buffer.readInt();
-            this.data[1] = buffer.readInt();
-            this.data[2] = buffer.readInt();
+            this.data = new Object[1];
+            this.data[0] = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
 
             if (world != null)
             {
-                TileEntity tile = world.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+                TileEntity tile = world.getTileEntity((BlockPos) this.data[0]);
 
                 if (tile instanceof IPacketReceiver)
                 {
@@ -156,7 +155,7 @@ public class PacketDynamic implements IPacket
 
             break;
         case 1:
-            TileEntity tile = player.worldObj.getTileEntity((Integer) this.data[0], (Integer) this.data[1], (Integer) this.data[2]);
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
 
             if (tile instanceof IPacketReceiver)
             {

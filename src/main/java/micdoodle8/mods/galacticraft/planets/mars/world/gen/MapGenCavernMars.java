@@ -3,9 +3,12 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.Random;
@@ -13,7 +16,7 @@ import java.util.Random;
 public class MapGenCavernMars extends MapGenBaseMeta
 {
     @Override
-    public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, Block[] arrayOfIDs, byte[] arrayOfMeta)
+    public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, ChunkPrimer primer)
     {
         final int var6 = this.range;
         this.worldObj = par2World;
@@ -28,29 +31,29 @@ public class MapGenCavernMars extends MapGenBaseMeta
                 final long var13 = var11 * var7;
                 final long var15 = var12 * var9;
                 this.rand.setSeed(var13 ^ var15 ^ par2World.getSeed());
-                this.recursiveGenerate(par2World, var11, var12, par3, par4, arrayOfIDs, arrayOfMeta);
+                this.recursiveGenerate(par2World, var11, var12, par3, par4, primer);
             }
         }
     }
 
     @Override
-    protected void recursiveGenerate(World par1World, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, Block[] arrayOfIDs, byte[] arrayOfMeta)
+    protected void recursiveGenerate(World par1World, int xChunkCoord, int zChunkCoord, int origXChunkCoord, int origZChunkCoord, ChunkPrimer primer)
     {
         if (this.rand.nextInt(100) == 0)
         {
             final double xPos = xChunkCoord * 16 + this.rand.nextInt(16);
             final double yPos = 25;
             final double zPos = zChunkCoord * 16 + this.rand.nextInt(16);
-            this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, arrayOfIDs, arrayOfMeta, xPos, yPos, zPos);
+            this.generateLargeCaveNode(this.rand.nextLong(), origXChunkCoord, origZChunkCoord, primer, xPos, yPos, zPos);
         }
     }
 
-    protected void generateLargeCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, Block[] arrayOfIDs, byte[] arrayOfMeta, double xPos, double yPos, double zPos)
+    protected void generateLargeCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, ChunkPrimer primer, double xPos, double yPos, double zPos)
     {
-        this.generateCaveNode(par1, origXChunkCoord, origZChunkCoord, arrayOfIDs, arrayOfMeta, xPos, yPos, zPos, 1.0F + this.rand.nextFloat() * 6.0F, 10.0F, 10.0F, -1, -1, 0.2D);
+        this.generateCaveNode(par1, origXChunkCoord, origZChunkCoord, primer, xPos, yPos, zPos, 1.0F + this.rand.nextFloat() * 6.0F, 10.0F, 10.0F, -1, -1, 0.2D);
     }
 
-    protected void generateCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, Block[] arrayOfIDs, byte[] arrayOfMeta, double xPos, double yPos, double zPos, float par12, float par13, float par14, int par15, int par16, double heightMultiplier)
+    protected void generateCaveNode(long par1, int origXChunkCoord, int origZChunkCoord, ChunkPrimer primer, double xPos, double yPos, double zPos, float par12, float par13, float par14, int par15, int par16, double heightMultiplier)
     {
         final double var19 = origXChunkCoord * 16 + 8;
         final double var21 = origZChunkCoord * 16 + 8;
@@ -194,9 +197,12 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                         {
                                             int coords = (var42 * 16 + var45) * 256 + var50;
 
-                                            if (arrayOfIDs[coords] == MarsBlocks.marsBlock || arrayOfIDs[coords] == MarsBlocks.blockSludge || arrayOfIDs[coords] == MarsBlocks.vine)
+                                            Block block = primer.getBlockState(coords).getBlock();
+
+                                            if (block == MarsBlocks.marsBlock || block == MarsBlocks.blockSludge || block == MarsBlocks.vine)
                                             {
-                                                arrayOfIDs[coords] = Blocks.air;
+                                                primer.setBlockState(coords, Blocks.air.getDefaultState());
+//                                                arrayOfIDs[coords] = Blocks.air;
                                             }
                                         }
                                     }
@@ -223,28 +229,30 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                     {
                                         if (var51 > -0.7D)
                                         {
-                                            int coords = (var42 * 16 + var45) * 256 + var50;
-                                            int coordsAbove = (var42 * 16 + var45) * 256 + var50 + 1;
-                                            int coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1;
+                                            Block block = primer.getBlockState(var42, var50, var45).getBlock();
+                                            Block blockAbove = primer.getBlockState(var42, var50 + 1, var45).getBlock();
+                                            Block blockBelow = primer.getBlockState(var42, var50 - 1, var45).getBlock();
 
-                                            if (Blocks.air == arrayOfIDs[coords])
+                                            if (Blocks.air == block)
                                             {
-                                                if (arrayOfIDs[coordsAbove] == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
+                                                if (blockAbove == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
                                                 {
                                                     int modifier = 0;
 
-                                                    while (Blocks.air == arrayOfIDs[coordsBelow])
+                                                    while (Blocks.air == block && var50 + modifier > 0)
                                                     {
-                                                        arrayOfIDs[coordsBelow] = MarsBlocks.vine;
-                                                        arrayOfMeta[coordsBelow] = (byte) (Math.abs(modifier) % 3);
+                                                        primer.setBlockState(var42, var50 + modifier, var45, MarsBlocks.vine.getStateFromMeta(Math.abs(modifier) % 3));
+//                                                        arrayOfIDs[coordsBelow] = MarsBlocks.vine;
+//                                                        arrayOfMeta[coordsBelow] = (byte) (Math.abs(modifier) % 3);
                                                         modifier--;
-                                                        coordsBelow = (var42 * 16 + var45) * 256 + var50 - 1 + modifier;
+                                                        block = primer.getBlockState(var42, var50 + modifier, var45).getBlock();
                                                     }
                                                 }
-                                                else if (arrayOfIDs[coordsBelow] == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
+                                                else if (blockBelow == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
                                                 {
-                                                    arrayOfIDs[coords] = MarsBlocks.blockSludge;
-                                                    arrayOfMeta[coords] = 0;
+                                                    primer.setBlockState(var42, var50, var45, MarsBlocks.blockSludge.getStateFromMeta(0));
+//                                                    arrayOfIDs[coords] = MarsBlocks.blockSludge;
+//                                                    arrayOfMeta[coords] = 0;
                                                 }
                                             }
                                         }

@@ -1,32 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class ItemBasicAsteroids extends Item
+public class ItemBasicAsteroids extends Item implements ISortableItem
 {
-    public static String[] names = { "reinforcedPlateT3", "engineT2", "rocketFinsT2", "shardIron", "shardTitanium", "ingotTitanium", "compressedTitanium", "thermalCloth", "beamCore" };
-    protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
+    public static String[] names = { "reinforced_plate_t3", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core" };
+//    protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
 
-    public ItemBasicAsteroids()
+    public ItemBasicAsteroids(String name)
     {
         super();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        this.setUnlocalizedName("itemBasicAsteroids");
+        this.setUnlocalizedName(name);
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,7 +43,7 @@ public class ItemBasicAsteroids extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -51,7 +51,7 @@ public class ItemBasicAsteroids extends Item
 
         for (String name : ItemBasicAsteroids.names)
         {
-            this.icons[i++] = iconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + name);
+            this.icons[i++] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + name);
         }
     }
 
@@ -64,7 +64,7 @@ public class ItemBasicAsteroids extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -79,7 +79,7 @@ public class ItemBasicAsteroids extends Item
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        if (this.icons.length > par1ItemStack.getItemDamage())
+        if (ItemBasicAsteroids.names.length > par1ItemStack.getItemDamage())
         {
             return "item." + ItemBasicAsteroids.names[par1ItemStack.getItemDamage()];
         }
@@ -102,5 +102,19 @@ public class ItemBasicAsteroids extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 0:
+        case 6:
+            return EnumSortCategoryItem.PLATE;
+        case 5:
+            return EnumSortCategoryItem.INGOT;
+        }
+        return EnumSortCategoryItem.GENERAL;
     }
 }

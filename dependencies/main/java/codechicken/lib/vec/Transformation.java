@@ -1,24 +1,25 @@
 package codechicken.lib.vec;
 
 import codechicken.lib.render.CCRenderState;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Abstract supertype for any 3D vector transformation
  */
-public abstract class Transformation extends ITransformation<Vector3, Transformation> implements CCRenderState.IVertexOperation
-{
+public abstract class Transformation extends ITransformation<Vector3, Transformation> implements CCRenderState.IVertexOperation {
     public static final int operationIndex = CCRenderState.registerOperation();
 
     /**
      * Applies this transformation to a normal (doesn't translate)
+     *
      * @param normal The normal to transform
      */
     public abstract void applyN(Vector3 normal);
 
     /**
      * Applies this transformation to a matrix as a multiplication on the right hand side.
+     *
      * @param mat The matrix to combine this transformation with
      */
     public abstract void apply(Matrix4 mat);
@@ -43,8 +44,9 @@ public abstract class Transformation extends ITransformation<Vector3, Transforma
     @Override
     public void operate() {
         apply(CCRenderState.vert.vec);
-        if(CCRenderState.normalAttrib.active)
+        if (CCRenderState.normalAttrib.active) {
             applyN(CCRenderState.normal);
+        }
     }
 
     @Override

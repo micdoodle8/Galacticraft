@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import com.google.common.collect.Lists;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
 
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
@@ -22,13 +23,11 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
-@SuppressWarnings("unused")
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
     @NetworkedField(targetSide = Side.CLIENT)
-    public int facing = ForgeDirection.UNKNOWN.ordinal();
+    public EnumFacing facing = null;
     private int preLoadFacing = -1;
     private float maxRate = 1500;
     private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
@@ -37,19 +36,19 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public Vector3 color = new Vector3(0, 1, 0);
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (this.preLoadFacing != -1)
         {
-            this.setFacing(ForgeDirection.getOrientation(this.preLoadFacing));
+            this.setFacing(EnumFacing.getFront(this.preLoadFacing));
             this.preLoadFacing = -1;
         }
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getTarget() != null && this.modeReceive == ReceiverMode.EXTRACT.ordinal() && this.facing != ForgeDirection.UNKNOWN.ordinal())
+            if (this.getTarget() != null && this.modeReceive == ReceiverMode.EXTRACT.ordinal() && this.facing != null)
             {
                 TileEntity tile = this.getAttachedTile();
 
@@ -60,7 +59,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
                     if (electricalTile.storage.getEnergyStoredGC() > 0)
                     {
-                        EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
+                        EnergySourceAdjacent source = new EnergySourceAdjacent(EnumFacing.getFront(this.facing.getIndex() ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
                         electricalTile.extractEnergyGC(source, transmitted, false);
@@ -69,12 +68,11 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                 	  //Another mod's energy source
                 	  //But don't use other mods methods to connect Beam Receivers to GC's own wires or machines
                 {
-                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
-                	float availableToSend = EnergyUtil.otherModsEnergyExtract(tile, inputAdj, this.maxRate, true);
+                	float availableToSend = EnergyUtil.otherModsEnergyExtract(tile, this.facing, this.maxRate, true);
                 	if (availableToSend > 0F)
                 	{
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), availableToSend, false);
-                        EnergyUtil.otherModsEnergyExtract(tile, inputAdj, transmitted, false);
+                        EnergyUtil.otherModsEnergyExtract(tile, this.facing, transmitted, false);
                 	}               	
                 }
             }
@@ -96,14 +94,13 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 	                if (tileAdj instanceof TileBaseUniversalElectrical)
 	                {
 	                    TileBaseUniversalElectrical electricalTile = (TileBaseUniversalElectrical) tileAdj;
-	                    EnergySourceAdjacent source = new EnergySourceAdjacent(ForgeDirection.getOrientation(this.facing ^ 1));
+	                    EnergySourceAdjacent source = new EnergySourceAdjacent(this.facing.getOpposite());
 	                    this.storage.extractEnergyGCnoMax(electricalTile.receiveEnergyGC(source, maxTransfer, false), false);
 	                }
 	                else if (!(tileAdj instanceof EnergyStorageTile) && !(tileAdj instanceof TileBaseConductor))
 	                	  //Dont use other mods methods to connect Beam Receivers to GC's own wires or machines
 	                {
-	                    ForgeDirection inputAdj = ForgeDirection.getOrientation(this.facing);
-	                	float otherModTransferred = EnergyUtil.otherModsEnergyTransfer(tileAdj, inputAdj, maxTransfer, false);
+	                	float otherModTransferred = EnergyUtil.otherModsEnergyTransfer(tileAdj, this.facing, maxTransfer, false);
 	                	if (otherModTransferred > 0F)
 	                	{
 	                		this.storage.extractEnergyGCnoMax(otherModTransferred, false);
@@ -135,22 +132,26 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @Override
     public Vector3 getInputPoint()
     {
-        Vector3 headVec = new Vector3(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
-        ForgeDirection facingDir = ForgeDirection.getOrientation(this.facing);
-        headVec.x += facingDir.offsetX * 0.1F;
-        headVec.y += facingDir.offsetY * 0.1F;
-        headVec.z += facingDir.offsetZ * 0.1F;
+        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
+        if (this.facing != null)
+        {
+            headVec.x += this.facing.getFrontOffsetX() * 0.1F;
+            headVec.y += this.facing.getFrontOffsetY() * 0.1F;
+            headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+        }
         return headVec;
     }
 
     @Override
     public Vector3 getOutputPoint(boolean offset)
     {
-        Vector3 headVec = new Vector3(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
-        ForgeDirection facingDir = ForgeDirection.getOrientation(this.facing);
-        headVec.x += facingDir.offsetX * 0.1F;
-        headVec.y += facingDir.offsetY * 0.1F;
-        headVec.z += facingDir.offsetZ * 0.1F;
+        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
+        if (this.facing != null)
+        {
+            headVec.x += this.facing.getFrontOffsetX() * 0.1F;
+            headVec.y += this.facing.getFrontOffsetY() * 0.1F;
+            headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+        }
         return headVec;
     }
 
@@ -162,7 +163,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
     public TileEntity getAttachedTile()
     {
-        if (this.facing == ForgeDirection.UNKNOWN.ordinal())
+        if (this.facing == null)
         {
             return null;
         }
@@ -171,12 +172,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         if (tile == null || tile.isInvalid())
         {
-            this.setFacing(ForgeDirection.UNKNOWN);
+            this.setFacing(null);
         }
 
         if (tile instanceof IConductor)
         {
-            this.setFacing(ForgeDirection.UNKNOWN);
+            this.setFacing(null /* TODO */);
             return null;
         }
 
@@ -201,7 +202,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         //TileEntity tile = this.getAttachedTile();
 
-        if (this.facing == ForgeDirection.UNKNOWN.ordinal())
+        if (this.facing == null)
         {
             return 0;
         }
@@ -227,7 +228,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         TileEntity tile = this.getAttachedTile();
 
-        if (this.facing == ForgeDirection.UNKNOWN.ordinal())
+        if (this.facing == null)
         {
             return 0;
         }
@@ -250,7 +251,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     {
         TileEntity tile = this.getAttachedTile();
 
-        if (this.facing == ForgeDirection.UNKNOWN.ordinal())
+        if (this.facing == null)
         {
             return 0;
         }
@@ -263,7 +264,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     {
         TileEntity tile = this.getAttachedTile();
 
-        if (this.facing == ForgeDirection.UNKNOWN.ordinal())
+        if (this.facing == null)
         {
             return 0;
         }
@@ -276,15 +277,15 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     {
         TileEntity tile = this.getAttachedTile();
 
-        return this.facing != ForgeDirection.UNKNOWN.ordinal();
+        return this.facing != null;
 
     }
 
-    public void setFacing(ForgeDirection newDirection)
+    public void setFacing(EnumFacing newDirection)
     {
-        if (newDirection.ordinal() != this.facing)
+        if (newDirection != this.facing)
         {
-            if (newDirection == ForgeDirection.UNKNOWN)
+            if (newDirection == null)
             {
                 this.modeReceive = ReceiverMode.UNDEFINED.ordinal();
             }
@@ -320,7 +321,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             }
         }
 
-        this.facing = newDirection.ordinal();
+        this.facing = newDirection;
     }
 
     @Override
@@ -367,6 +368,6 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("FacingSide", this.facing);
+        nbt.setInteger("FacingSide", this.facing.ordinal());
     }
 }

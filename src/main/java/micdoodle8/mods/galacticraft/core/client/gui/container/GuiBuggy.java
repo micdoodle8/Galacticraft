@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -33,7 +34,7 @@ public class GuiBuggy extends GuiContainerGC
 
     public GuiBuggy(IInventory par1IInventory, IInventory par2IInventory, int type)
     {
-        super(new ContainerBuggy(par1IInventory, par2IInventory, type));
+        super(new ContainerBuggy(par1IInventory, par2IInventory, type, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.allowUserInput = false;
         this.type = type;
@@ -45,8 +46,8 @@ public class GuiBuggy extends GuiContainerGC
     {
         super.initGui();
         List<String> oxygenDesc = new ArrayList<String>();
-        oxygenDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.0"));
-        oxygenDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.1"));
+        oxygenDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.0"));
+        oxygenDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 71, (this.height - this.ySize) / 2 + 6, 36, 40, oxygenDesc, this.width, this.height, this));
     }
 
@@ -55,7 +56,7 @@ public class GuiBuggy extends GuiContainerGC
     {
         this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, this.type == 0 ? 50 : 39, 4210752);
+        this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, this.type == 0 ? 50 : 39, 4210752);
 
         if (this.mc.thePlayer != null && this.mc.thePlayer.ridingEntity != null && this.mc.thePlayer.ridingEntity instanceof EntityBuggy)
         {

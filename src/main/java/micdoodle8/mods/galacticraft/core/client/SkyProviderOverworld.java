@@ -1,23 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
@@ -40,47 +41,54 @@ public class SkyProviderOverworld extends IRenderHandler
         } catch (final Exception e) { }
     }
 
-    public int starGLCallList = GLAllocation.generateDisplayLists(7);
-    public int glSkyList;
-    public int glSkyList2;
+    private int starGLCallList = GLAllocation.generateDisplayLists(7);
+    private int glSkyList;
+    private int glSkyList2;
     private final ResourceLocation planetToRender = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
 
     public SkyProviderOverworld()
     {
         GL11.glPushMatrix();
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         final Random rand = new Random(10842L);
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-        this.renderStars(rand);
+        this.renderStars(worldrenderer, rand);
+        tessellator.draw();
         GL11.glEndList();
         GL11.glNewList(this.starGLCallList + 1, GL11.GL_COMPILE);
-        this.renderStars(rand);
+        this.renderStars(worldrenderer, rand);
+        tessellator.draw();
         GL11.glEndList();
         GL11.glNewList(this.starGLCallList + 2, GL11.GL_COMPILE);
-        this.renderStars(rand);
+        this.renderStars(worldrenderer, rand);
+        tessellator.draw();
         GL11.glEndList();
         GL11.glNewList(this.starGLCallList + 3, GL11.GL_COMPILE);
-        this.renderStars(rand);
+        this.renderStars(worldrenderer, rand);
+        tessellator.draw();
         GL11.glEndList();
         GL11.glNewList(this.starGLCallList + 4, GL11.GL_COMPILE);
-        this.renderStars(rand);
+        this.renderStars(worldrenderer, rand);
+        tessellator.draw();
         GL11.glEndList();
         GL11.glPopMatrix();
-        final Tessellator tessellator = Tessellator.instance;
         this.glSkyList = this.starGLCallList + 5;
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 5;
         final int i = 256 / byte2 + 2;
         float f = 16F;
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
             for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
             {
-                tessellator.startDrawingQuads();
-                tessellator.addVertex(j + 0, f, l + 0);
-                tessellator.addVertex(j + byte2, f, l + 0);
-                tessellator.addVertex(j + byte2, f, l + byte2);
-                tessellator.addVertex(j + 0, f, l + byte2);
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+                worldRenderer.pos(j, f, l).endVertex();
+                worldRenderer.pos(j + byte2, f, l).endVertex();
+                worldRenderer.pos(j + byte2, f, l + byte2).endVertex();
+                worldRenderer.pos(j, f, l + byte2).endVertex();
                 tessellator.draw();
             }
         }
@@ -89,16 +97,16 @@ public class SkyProviderOverworld extends IRenderHandler
         this.glSkyList2 = this.starGLCallList + 6;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16F;
-        tessellator.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
         {
             for (int i1 = -byte2 * i; i1 <= byte2 * i; i1 += byte2)
             {
-                tessellator.addVertex(k + byte2, f, i1 + 0);
-                tessellator.addVertex(k + 0, f, i1 + 0);
-                tessellator.addVertex(k + 0, f, i1 + byte2);
-                tessellator.addVertex(k + byte2, f, i1 + byte2);
+                worldRenderer.pos(k + byte2, f, i1).endVertex();
+                worldRenderer.pos(k, f, i1).endVertex();
+                worldRenderer.pos(k, f, i1 + byte2).endVertex();
+                worldRenderer.pos(k + byte2, f, i1 + byte2).endVertex();
             }
         }
 
@@ -117,55 +125,47 @@ public class SkyProviderOverworld extends IRenderHandler
             ClientProxyCore.overworldTextureRequestSent = true;
         }
         
-        double zoom = 0.0;
-        double yaw = 0.0;
-        double pitch = 0.0;
-        Method m = null;
-        
-        if (!optifinePresent)
-        {
-	        try
-	        {
-	        	Class<?> c = mc.entityRenderer.getClass();
-	        	Field cameraZoom = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_ZOOM));
-	        	cameraZoom.setAccessible(true);
-	        	zoom = cameraZoom.getDouble(mc.entityRenderer);
-	        	Field cameraYaw = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_YAW));
-	        	cameraYaw.setAccessible(true);
-	        	yaw = cameraYaw.getDouble(mc.entityRenderer);
-	        	Field cameraPitch = c.getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_CAMERA_PITCH));
-	        	cameraPitch.setAccessible(true);
-	        	pitch = cameraPitch.getDouble(mc.entityRenderer);
-	        	
-	            GL11.glMatrixMode(GL11.GL_PROJECTION);
-	            GL11.glLoadIdentity();
-	
-	            if (zoom != 1.0D)
-	            {
-	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
-	                GL11.glScaled(zoom, zoom, 1.0D);
-	            }
-
-	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
-	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	            GL11.glLoadIdentity();
-            
-	        	m = c.getDeclaredMethod(VersionUtil.getNameDynamic(VersionUtil.KEY_METHOD_ORIENT_CAMERA), float.class);
-	        	m.setAccessible(true);
-	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
-	        }
-	        catch(Exception e)
-	        {
-	        	e.printStackTrace();
-	        }
-        }
+//        double zoom = 0.0;
+//        double yaw = 0.0;
+//        double pitch = 0.0;
+//        Method m = null;
+//
+//        if (!optifinePresent)
+//        {
+//	        try
+//	        {
+//	        	Class<?> c = mc.entityRenderer.getClass();
+//	        	zoom = mc.entityRenderer.cameraZoom;
+//	        	yaw = mc.entityRenderer.cameraYaw;
+//	        	pitch = mc.entityRenderer.cameraPitch;
+//
+//	            GL11.glMatrixMode(GL11.GL_PROJECTION);
+//	            GL11.glLoadIdentity();
+//
+//	            if (zoom != 1.0D)
+//	            {
+//	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
+//	                GL11.glScaled(zoom, zoom, 1.0D);
+//	            }
+//
+//	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
+//	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//	            GL11.glLoadIdentity();
+//
+//                mc.entityRenderer.orientCamera(partialTicks);
+//	        }
+//	        catch(Exception e)
+//	        {
+//	        	e.printStackTrace();
+//	        }
+//        }
         
         float theta = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.renderViewEntity, partialTicks);
+        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float i = (float) var2.xCoord * var21;
         float x = (float) var2.yCoord * var21;
         float var5 = (float) var2.zCoord * var21;
@@ -182,7 +182,8 @@ public class SkyProviderOverworld extends IRenderHandler
         }
 
         GL11.glColor3f(i, x, var5);
-        final Tessellator var23 = Tessellator.instance;
+        final Tessellator var23 = Tessellator.getInstance();
+        WorldRenderer worldRenderer = var23.getWorldRenderer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(i, x, var5);
@@ -226,19 +227,17 @@ public class SkyProviderOverworld extends IRenderHandler
                 size = rand3;
             }
 
-            var23.startDrawing(6);
+            worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 
-            var23.setColorRGBA_F(z * sunsetModInv, var9 * sunsetModInv, size * sunsetModInv, costh[3]);
-            var23.addVertex(0.0D, 100.0D, 0.0D);
+            worldRenderer.pos(0.0D, 100.0D, 0.0D).color(z * sunsetModInv, var9 * sunsetModInv, size * sunsetModInv, costh[3]).endVertex();
             final byte phi = 16;
-            var23.setColorRGBA_F(costh[0] * sunsetModInv, costh[1] * sunsetModInv, costh[2] * sunsetModInv, 0.0F);
 
             for (int var27 = 0; var27 <= phi; ++var27)
             {
                 rand3 = var27 * (float) Math.PI * 2.0F / phi;
                 final float xx = MathHelper.sin(rand3);
                 final float rand5 = MathHelper.cos(rand3);
-                var23.addVertex(xx * 120.0F, rand5 * 120.0F, -rand5 * 40.0F * costh[3]);
+                worldRenderer.pos(xx * 120.0F, rand5 * 120.0F, -rand5 * 40.0F * costh[3]).color(costh[0] * sunsetModInv, costh[1] * sunsetModInv, costh[2] * sunsetModInv, 0.0F).endVertex();
             }
 
             var23.draw();
@@ -270,35 +269,35 @@ public class SkyProviderOverworld extends IRenderHandler
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
         var20 = MathHelper.sqrt_float(var20);
         float bright1 = Math.min(0.9F, var20 * 3);
-        float bright2 = Math.min(0.85F, var20 * 2.5F);
-        float bright3 = Math.min(0.8F, var20 * 2);
-        float bright4 = Math.min(0.75F, var20 * 1.5F);
-        float bright5 = Math.min(0.7F, var20 * 0.75F);
+//        float bright2 = Math.min(0.85F, var20 * 2.5F);
+//        float bright3 = Math.min(0.8F, var20 * 2);
+//        float bright4 = Math.min(0.75F, var20 * 1.5F);
+//        float bright5 = Math.min(0.7F, var20 * 0.75F);
         if (bright1 > threshold)
         {
 	        GL11.glColor4f(bright1, bright1, bright1, 1.0F);
 	        GL11.glCallList(this.starGLCallList);
         }
-        if (bright2 > threshold)
-        {
-	        GL11.glColor4f(bright2, bright2, bright2, 1.0F);
-	        GL11.glCallList(this.starGLCallList + 1);
-        }
-        if (bright3 > threshold)
-        {
-	        GL11.glColor4f(bright3, bright3, bright3, 1.0F);
+//        if (bright2 > threshold)
+//        {
+//	        GL11.glColor4f(bright2, bright2, bright2, 1.0F);
+//	        GL11.glCallList(this.starGLCallList + 1);
+//        }
+//        if (bright3 > threshold)
+//        {
+//	        GL11.glColor4f(bright3, bright3, bright3, 1.0F);
 	        GL11.glCallList(this.starGLCallList + 2);
-        }
-        if (bright4 > threshold)
-        {
-	        GL11.glColor4f(bright4, bright4, bright4, 1.0F);
+//        }
+//        if (bright4 > threshold)
+//        {
+//	        GL11.glColor4f(bright4, bright4, bright4, 1.0F);
 	        GL11.glCallList(this.starGLCallList + 3);
-        }
-        if (bright5 > threshold)
-        {
-	        GL11.glColor4f(bright5, bright5, bright5, 1.0F);
+//        }
+//        if (bright5 > threshold)
+//        {
+//	        GL11.glColor4f(bright5, bright5, bright5, 1.0F);
 	        GL11.glCallList(this.starGLCallList + 4);
-        }
+//        }
 
         //Draw sun
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -306,11 +305,11 @@ public class SkyProviderOverworld extends IRenderHandler
         r = 30.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.sunTexture);
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-r, 100.0D, -r, 0.0D, 0.0D);
-        var23.addVertexWithUV(r, 100.0D, -r, 1.0D, 0.0D);
-        var23.addVertexWithUV(r, 100.0D, r, 1.0D, 1.0D);
-        var23.addVertexWithUV(-r, 100.0D, r, 0.0D, 1.0D);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(-r, 100.0D, -r).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(r, 100.0D, -r).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(r, 100.0D, r).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(-r, 100.0D, r).tex(0.0D, 1.0D).endVertex();
         var23.draw();
 
         //Draw moon
@@ -319,16 +318,16 @@ public class SkyProviderOverworld extends IRenderHandler
         float sinphi = this.minecraft.theWorld.getMoonPhase();
         final int cosphi = (int) (sinphi % 4);
         final int var29 = (int) (sinphi / 4 % 2);
-        final float yy = (cosphi + 0) / 4.0F;
-        final float rand7 = (var29 + 0) / 2.0F;
+        final float yy = (cosphi) / 4.0F;
+        final float rand7 = (var29) / 2.0F;
         final float zz = (cosphi + 1) / 4.0F;
         final float rand9 = (var29 + 1) / 2.0F;
-        var23.startDrawingQuads();
-        var23.addVertexWithUV(-r, -100.0D, r, zz, rand9);
-        var23.addVertexWithUV(r, -100.0D, r, yy, rand9);
-        var23.addVertexWithUV(r, -100.0D, -r, yy, rand7);
-        var23.addVertexWithUV(-r, -100.0D, -r, zz, rand7);
-        var23.draw();      
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(-r, -100.0D, r).tex(zz, rand9).endVertex();
+        worldRenderer.pos(r, -100.0D, r).tex(yy, rand9).endVertex();
+        worldRenderer.pos(r, -100.0D, -r).tex(yy, rand7).endVertex();
+        worldRenderer.pos(-r, -100.0D, -r).tex(zz, rand7).endVertex();
+        var23.draw();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -367,16 +366,16 @@ public class SkyProviderOverworld extends IRenderHandler
 	        size = 1.0F;
 	
 	        GL11.glColor4f(sinth, sinth, sinth, 1.0F);
-	        var23.startDrawingQuads();
-	
-	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
-	        if (zoomIn < 0F) zoomIn = 0F;
-	        zoomIn = 0.0F;
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+//	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
+//	        if (zoomIn < 0F) zoomIn = 0F;
+            float zoomIn = 0.0F;
 	        float cornerB = 1.0F - zoomIn;
-	        var23.addVertexWithUV(-size, 0, size, zoomIn, cornerB);
-	        var23.addVertexWithUV(size, 0, size, cornerB, cornerB);
-	        var23.addVertexWithUV(size, 0, -size, cornerB, zoomIn);
-	        var23.addVertexWithUV(-size, 0, -size, zoomIn, zoomIn);
+	        worldRenderer.pos(-size, 0, size).tex(zoomIn, cornerB).endVertex();
+	        worldRenderer.pos(size, 0, size).tex(cornerB, cornerB).endVertex();
+	        worldRenderer.pos(size, 0, -size).tex(cornerB, zoomIn).endVertex();
+	        worldRenderer.pos(-size, 0, -size).tex(zoomIn, zoomIn).endVertex();
 	        var23.draw();
 	        GL11.glDisable(GL11.GL_TEXTURE_2D);
 	        GL11.glPopMatrix();
@@ -387,37 +386,38 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
 
-        if (!optifinePresent && m != null)
-        {
-	        try
-	        {
-	            GL11.glMatrixMode(GL11.GL_PROJECTION);
-	            GL11.glLoadIdentity();
-	
-	            if (zoom != 1.0D)
-	            {
-	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
-	                GL11.glScaled(zoom, zoom, 1.0D);
-	            }
-	            
-	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
-	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	            GL11.glLoadIdentity();
-            
-	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
-	        }
-	        catch(Exception e)
-	        {
-	        	e.printStackTrace();
-	        }
-        }
+//        if (!optifinePresent && m != null)
+//        {
+//	        try
+//	        {
+//	            GL11.glMatrixMode(GL11.GL_PROJECTION);
+//	            GL11.glLoadIdentity();
+//
+//	            if (zoom != 1.0D)
+//	            {
+//	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
+//	                GL11.glScaled(zoom, zoom, 1.0D);
+//	            }
+//
+//	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
+//	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//	            GL11.glLoadIdentity();
+//
+//	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
+//	        }
+//	        catch(Exception e)
+//	        {
+//	        	e.printStackTrace();
+//	        }
+//        }
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void renderStars(Random rand)
+    private void renderStars(WorldRenderer worldRenderer, Random rand)
     {
-        final Tessellator var2 = Tessellator.instance;
-        var2.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int i = 0; i < (ConfigManagerCore.moreStars ? 4000 : 1200); ++i)
         {
@@ -459,11 +459,9 @@ public class SkyProviderOverworld extends IRenderHandler
                     final double ff = a * sinphi - d * cosphi;
                     final double dx = ff * sinth - e * costh;
                     final double dz = e * sinth + ff * costh;
-                    var2.addVertex(xx + dx, yy + dy, zz + dz);
+                    worldRenderer.pos(xx + dx, yy + dy, zz + dz).endVertex();
                 }
             }
         }
-
-        var2.draw();
     }
 }

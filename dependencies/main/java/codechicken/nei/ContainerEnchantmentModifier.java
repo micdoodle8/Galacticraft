@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.lib.render.CCRenderState;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,18 +12,16 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 
 /**
  * This is crap code, don't ever do this.
  */
-public class ContainerEnchantmentModifier extends ContainerEnchantment
-{
-    public static class EnchantmentHash
-    {
+public class ContainerEnchantmentModifier extends ContainerEnchantment {
+    public static class EnchantmentHash {
         public EnchantmentHash(Enchantment e, int i, int l) {
             enchantment = e;
             state = i;
@@ -48,8 +47,8 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     public int slotheight = 19;
     public GuiEnchantmentModifier parentscreen;
 
-    public ContainerEnchantmentModifier(InventoryPlayer inventoryplayer, World world, int i, int j, int k) {
-        super(inventoryplayer, world, i, j, k);
+    public ContainerEnchantmentModifier(InventoryPlayer inventoryplayer, World world) {
+        super(inventoryplayer, world, new BlockPos(0, 0, 0));
     }
 
     public int getNumSlots() {
@@ -143,7 +142,9 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
                 mousey >= rely && mousey <= rely + height)//in the box
         {
             int slot = getClickedSlot(mousey);
-            if (slot >= getNumSlots()) return false;
+            if (slot >= getNumSlots()) {
+                return false;
+            }
             toggleSlotEnchantment(slot);
             return true;
         }
@@ -180,10 +181,12 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
                 int ID = nbttaglist.getCompoundTagAt(i).getShort("id");
                 if (ID == e) {
                     nbttaglist.removeTag(i);
-                    if (nbttaglist.tagCount() == 0)
+                    if (nbttaglist.tagCount() == 0) {
                         stack.getTagCompound().removeTag("ench");
-                    if (stack.getTagCompound().hasNoTags())
+                    }
+                    if (stack.getTagCompound().hasNoTags()) {
                         stack.setTagCompound(null);
+                    }
                     return;
                 }
             }
@@ -195,8 +198,9 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     }
 
     public void onCraftMatrixChanged(IInventory iinventory) {
-        if (parentscreen != null)
+        if (parentscreen != null) {
             updateEnchantmentOptions(GuiEnchantmentModifier.validateEnchantments());
+        }
     }
 
     public void updateEnchantmentOptions(boolean validate) {
@@ -247,19 +251,19 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
                 EnchantmentHash e = slotEnchantment.get(containerslot);
                 shade = e.state;
                 text = e.enchantment.getTranslatedName(e.level == -1 ? level : e.level);
-                if (gui.mc.fontRenderer.getStringWidth(text) > 95 && text.contains("Projectile")) {
+                if (gui.mc.fontRendererObj.getStringWidth(text) > 95 && text.contains("Projectile")) {
                     text = text.replace("Projectile", "Proj");
                 }
-                if (gui.mc.fontRenderer.getStringWidth(text) > 95 && text.contains("Protection")) {
+                if (gui.mc.fontRendererObj.getStringWidth(text) > 95 && text.contains("Protection")) {
                     text = text.replace("Protection", "Protect");
                 }
-                if (gui.mc.fontRenderer.getStringWidth(text) > 95 && text.contains("Bane of")) {
+                if (gui.mc.fontRendererObj.getStringWidth(text) > 95 && text.contains("Bane of")) {
                     text = text.replace("Bane of ", "");
                 }
             }
 
             CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
-            GL11.glColor3f(1, 1, 1);
+            GlStateManager.color(1, 1, 1);
             if (hasScrollBar()) {
                 gui.drawTexturedModalRect(relx, rely + slot * slotheight, 0, gui.ySize + slotheight * shade, cwidth - 30, slotheight);
                 gui.drawTexturedModalRect(relx + cwidth - 30, rely + slot * slotheight, cwidth - 23, gui.ySize + slotheight * shade, 30, slotheight);
@@ -276,7 +280,9 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     }
 
     public void drawScrollBar(GuiEnchantmentModifier gui) {
-        if (!hasScrollBar()) return;
+        if (!hasScrollBar()) {
+            return;
+        }
 
         int sbary = rely + (int) ((height - getScrollBarHeight()) * percentscrolled + 0.5);
         int sbarx = relx + cwidth;
@@ -289,10 +295,13 @@ public class ContainerEnchantmentModifier extends ContainerEnchantment
     }
 
     private int textColourFromState(int shade) {
-        switch(shade) {
-            case 0: return 0x685e4a;
-            case 1: return 0x407f10;
-            default: return 0xffff80;
+        switch (shade) {
+        case 0:
+            return 0x685e4a;
+        case 1:
+            return 0x407f10;
+        default:
+            return 0xffff80;
         }
     }
 

@@ -91,12 +91,12 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         GalacticraftCore.proxy.player.knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
     }
     
-    @Override
+    /*@Override
     public void setInPortal()
     {
     	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
     	{
     		super.setInPortal();
     	}
-    }
+    } TODO Fix disable of portal */
 }

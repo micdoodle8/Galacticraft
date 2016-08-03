@@ -1,0 +1,9 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "galacticraftplanets:reflector.obj",
+    "custom": {
+      "flip-v": true
+    }
+  }
+}

@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -46,7 +47,7 @@ public class GuiCargoRocket extends GuiContainerGC
 
     public GuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket, EnumRocketType rocketType)
     {
-        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType));
+        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.rocket = rocket;
         this.allowUserInput = false;
@@ -77,8 +78,8 @@ public class GuiCargoRocket extends GuiContainerGC
         this.launchButton = new GuiButton(0, var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"));
         this.buttonList.add(this.launchButton);
         List<String> fuelTankDesc = new ArrayList<String>();
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.0"));
-        fuelTankDesc.add(GCCoreUtil.translate("gui.fuelTank.desc.1"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.0"));
+        fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, fuelTankDesc, this.width, this.height, this));
     }
 
@@ -87,11 +88,11 @@ public class GuiCargoRocket extends GuiContainerGC
     {
         if (this.rocket.rocketType.getInventorySpace() == 2)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
+            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
         else
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
+            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
 
         String str = GCCoreUtil.translate("gui.message.fuel.name") + ":";

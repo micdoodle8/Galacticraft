@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockParaChest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
@@ -12,11 +12,14 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Iterator;
 import java.util.List;
@@ -30,12 +33,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public ItemStack[] chestContents = new ItemStack[3];
 
     public boolean adjacentChestChecked = false;
-
     public float lidAngle;
-
     public float prevLidAngle;
-
     public int numUsingPlayers;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public EnumDyeColor color = EnumDyeColor.RED;
 
     @Override
     public void validate()
@@ -113,7 +115,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -141,13 +143,13 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.parachest.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -180,6 +182,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
+
+        if (nbt.hasKey("color"))
+        {
+            this.color = EnumDyeColor.byDyeDamage(nbt.getInteger("color"));
+        }
     }
 
     @Override
@@ -208,6 +215,8 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+
+        nbt.setInteger("color", this.color.getDyeDamage());
     }
 
     @Override
@@ -219,7 +228,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -230,16 +239,16 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         float f;
 
-        if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticks + this.xCoord + this.yCoord + this.zCoord) % 200 == 0)
+        if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticks + this.getPos().getX() + this.getPos().getY() + this.getPos().getZ()) % 200 == 0)
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
+            List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
             Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())
@@ -259,10 +268,10 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F)
         {
-            double d1 = this.xCoord + 0.5D;
-            d0 = this.zCoord + 0.5D;
+            double d1 = this.getPos().getX() + 0.5D;
+            d0 = this.getPos().getZ() + 0.5D;
 
-            this.worldObj.playSoundEffect(d1, this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSoundEffect(d1, this.getPos().getY() + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -287,10 +296,10 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
             if (this.lidAngle < f2 && f1 >= f2)
             {
-                d0 = this.xCoord + 0.5D;
-                double d2 = this.zCoord + 0.5D;
+                d0 = this.getPos().getX() + 0.5D;
+                double d2 = this.getPos().getZ() + 0.5D;
 
-                this.worldObj.playSoundEffect(d0, this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSoundEffect(d0, this.getPos().getY() + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -326,7 +335,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
         if (this.numUsingPlayers < 0)
         {
@@ -334,20 +343,20 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         }
 
         ++this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+        this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+        this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
+        this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
         if (this.getBlockType() != null && this.getBlockType() instanceof BlockParaChest)
         {
             --this.numUsingPlayers;
-            this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, this.numUsingPlayers);
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+            this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+            this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
+            this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
         }
     }
 
@@ -380,5 +389,43 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public boolean isNetworkedTile()
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
+    }
+
+    @Override
+    public void decodePacketdata(ByteBuf buffer)
+    {
+        EnumDyeColor color = this.color;
+
+        super.decodePacketdata(buffer);
+
+        if (this.worldObj.isRemote && color != this.color)
+        {
+            this.worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+        }
     }
 }

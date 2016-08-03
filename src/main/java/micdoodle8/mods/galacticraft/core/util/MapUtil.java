@@ -20,11 +20,10 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -36,12 +35,14 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -109,9 +110,9 @@ public class MapUtil
         	     if (f.isFile()) f.delete();        	
         }
 		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
-		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
-		MapUtil.biomeColours.clear();
-		setupColours();
+//		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+//		MapUtil.biomeColours.clear();
+//		setupColours();
 	}
 	
 	/**
@@ -131,9 +132,9 @@ public class MapUtil
                     {
                         for (int x = 0; x < 16; x++)
                         {
-                            int l4 = chunk.getHeightValue(x, z) + 1;
+                            int l4 = chunk.getHeight(new BlockPos(x, 0, z)) + 1;
                             Block block = Blocks.air;
-                            int i5 = 0;
+                            IBlockState i5 = null;
 
                             if (l4 > 1)
                             {
@@ -141,7 +142,7 @@ public class MapUtil
                                 {
                                     --l4;
                                     block = chunk.getBlock(x, l4, z);
-                                    i5 = chunk.getBlockMetadata(x, l4, z);
+                                    i5 = chunk.getBlockState(new BlockPos(x, l4, z));
                                 }
                                 while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
                             }
@@ -562,8 +563,10 @@ public class MapUtil
 	}
 	
     @SideOnly(Side.CLIENT)
-	public static boolean getMap(int[] image, World world, int xCoord, int zCoord)
+	public static boolean getMap(int[] image, World world, BlockPos pos)
 	{
+        int xCoord = pos.getX();
+        int zCoord = pos.getZ();
         int cx = convertMap(xCoord);
         int cz = convertMap(zCoord);
 
@@ -574,7 +577,7 @@ public class MapUtil
     		return false;            	
         }
 
-        int dim = world.provider.dimensionId;
+        int dim = world.provider.getDimensionId();
         boolean result = true;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, result)) result = false;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz, 0, SIZE_STD, xCoord, zCoord, dim, result)) result = false;
@@ -788,15 +791,16 @@ public class MapUtil
                         {
                             int l4 = chunk.getHeightValue(x, z) + 1;
                             Block block = Blocks.air;
-                            int i5 = 0;
+                            IBlockState i5 = block.getDefaultState();
 
                             if (l4 > 1)
                             {
                                 do
                                 {
                                     --l4;
-                                    block = chunk.getBlock(x, l4, z);
-                                    i5 = chunk.getBlockMetadata(x, l4, z);
+                                    BlockPos pos = new BlockPos(x, l4, z);
+                                    block = chunk.getBlock(pos);
+                                    i5 = chunk.getBlockState(pos);
                                 }
                                 while (block.getMapColor(i5) == MapColor.airColor && l4 > 0);
                             }

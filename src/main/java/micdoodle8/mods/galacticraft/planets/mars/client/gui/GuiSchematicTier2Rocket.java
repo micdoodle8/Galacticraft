@@ -3,25 +3,26 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier2Rocket extends GuiContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_T2.png");
+    private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_T2.png");
 
     private int pageIndex;
 
-    public GuiSchematicTier2Rocket(InventoryPlayer par1InventoryPlayer, int x, int y, int z)
+    public GuiSchematicTier2Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematicTier2Rocket(par1InventoryPlayer, x, y, z));
+        super(new ContainerSchematicTier2Rocket(par1InventoryPlayer, pos));
         this.ySize = 238;
     }
 
@@ -55,7 +56,7 @@ public class GuiSchematicTier2Rocket extends GuiContainer implements ISchematicR
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(MarsItems.spaceship.getItemStackDisplayName(new ItemStack(MarsItems.spaceship, 1, 0)), 7, -20 + 27, 4210752);
+        this.fontRendererObj.drawString(MarsItems.rocketMars.getItemStackDisplayName(new ItemStack(MarsItems.rocketMars, 1, 0)), 7, -20 + 27, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 27, 4210752);
     }
 

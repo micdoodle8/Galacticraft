@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -31,6 +32,7 @@ public class ConnectionPacket
 	{
 		int packetId = payload.readByte();
 		List<Object> data = new ArrayList<Object>();
+        System.err.println(packetId);
 		switch (packetId)
 		{
 		case 101:
@@ -89,7 +91,7 @@ public class ConnectionPacket
 
 	public static FMLProxyPacket createPacket(byte packetId, Collection<Integer> data)
 	{
-		ByteBuf payload = Unpooled.buffer();
+        PacketBuffer payload = new PacketBuffer(Unpooled.buffer());
 
 		payload.writeByte(packetId);
 		payload.writeInt(data.size());
@@ -103,7 +105,7 @@ public class ConnectionPacket
 
 	public static FMLProxyPacket createConfigPacket(List<Object> data)
 	{
-		ByteBuf payload = Unpooled.buffer();
+        PacketBuffer payload = new PacketBuffer(Unpooled.buffer());
 		payload.writeByte(103);
         try
         {

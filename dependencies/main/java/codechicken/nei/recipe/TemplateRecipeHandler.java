@@ -12,10 +12,11 @@ import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.awt.*;
 import java.util.*;
@@ -30,14 +31,12 @@ import static codechicken.lib.gui.GuiDraw.*;
  * you can now extend this class to make your custom recipe handlers much easier to create.
  * Just look at the 5 handlers included by default to work out how to do stuff if you are still stuck.
  */
-public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageHandler
-{
+public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageHandler {
     /**
      * This Recipe Handler runs on this internal class
      * Fill the recipe array with subclasses of this to make transforming the different types of recipes out there into a nice format for NEI a much easier job.
      */
-    public abstract class CachedRecipe
-    {
+    public abstract class CachedRecipe {
         final long offset = System.currentTimeMillis();
 
         /**
@@ -54,8 +53,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         public List<PositionedStack> getIngredients() {
             ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
             PositionedStack stack = getIngredient();
-            if (stack != null)
+            if (stack != null) {
                 stacks.add(stack);
+            }
             return stacks;
         }
 
@@ -75,8 +75,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         public List<PositionedStack> getOtherStacks() {
             ArrayList<PositionedStack> stacks = new ArrayList<PositionedStack>();
             PositionedStack stack = getOtherStack();
-            if (stack != null)
+            if (stack != null) {
                 stacks.add(stack);
+            }
             return stacks;
         }
 
@@ -95,8 +96,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
          * @return
          */
         public List<PositionedStack> getCycledIngredients(int cycle, List<PositionedStack> ingredients) {
-            for (int itemIndex = 0; itemIndex < ingredients.size(); itemIndex++)
+            for (int itemIndex = 0; itemIndex < ingredients.size(); itemIndex++) {
                 randomRenderPermutation(ingredients.get(itemIndex), cycle + itemIndex);
+            }
 
             return ingredients;
         }
@@ -117,7 +119,10 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
                     if (NEIServerUtils.areStacksSameTypeCrafting(ingredient, stack.items[i])) {
                         stack.item = stack.items[i];
                         stack.item.setItemDamage(ingredient.getItemDamage());
-                        stack.items = new ItemStack[]{stack.item};
+                        if (ingredient.hasTagCompound()) {
+                            stack.item.setTagCompound((NBTTagCompound) ingredient.getTagCompound().copy());
+                        }
+                        stack.items = new ItemStack[] { stack.item };
                         stack.setPermutationToRender(0);
                         break;
                     }
@@ -130,9 +135,11 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
          * @return true if any of the permutations of any of the ingredients contain this stack
          */
         public boolean contains(Collection<PositionedStack> ingredients, ItemStack ingredient) {
-            for (PositionedStack stack : ingredients)
-                if (stack.contains(ingredient))
+            for (PositionedStack stack : ingredients) {
+                if (stack.contains(ingredient)) {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -142,9 +149,11 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
          * @return true if any of the permutations of any of the ingredients contain this stack
          */
         public boolean contains(Collection<PositionedStack> ingredients, Item ingred) {
-            for (PositionedStack stack : ingredients)
-                if (stack.contains(ingred))
+            for (PositionedStack stack : ingredients) {
+                if (stack.contains(ingred)) {
                     return true;
+                }
+            }
             return false;
         }
     }
@@ -153,8 +162,7 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * The Rectangle is an region of the gui relative to the corner of the recipe that will activate the recipe with the corresponding outputId apon being clicked.
      * Apply this over fuel icons or arrows that the user may click to see all recipes pertaining to that action.
      */
-    public static class RecipeTransferRect
-    {
+    public static class RecipeTransferRect {
         public RecipeTransferRect(Rectangle rectangle, String outputId, Object... results) {
             rect = rectangle;
             this.outputId = outputId;
@@ -162,8 +170,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         }
 
         public boolean equals(Object obj) {
-            if (!(obj instanceof RecipeTransferRect))
+            if (!(obj instanceof RecipeTransferRect)) {
                 return false;
+            }
 
             return rect.equals(((RecipeTransferRect) obj).rect);
         }
@@ -177,13 +186,13 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         Object[] results;
     }
 
-    public static class RecipeTransferRectHandler implements IContainerInputHandler, IContainerTooltipHandler
-    {
+    public static class RecipeTransferRectHandler implements IContainerInputHandler, IContainerTooltipHandler {
         private static HashMap<Class<? extends GuiContainer>, HashSet<RecipeTransferRect>> guiMap = new HashMap<Class<? extends GuiContainer>, HashSet<RecipeTransferRect>>();
 
         public static void registerRectsToGuis(List<Class<? extends GuiContainer>> classes, List<RecipeTransferRect> rects) {
-            if (classes == null)
+            if (classes == null) {
                 return;
+            }
 
             for (Class<? extends GuiContainer> clazz : classes) {
                 HashSet<RecipeTransferRect> set = guiMap.get(clazz);
@@ -201,26 +210,30 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 
         @Override
         public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            if (!canHandle(gui))
+            if (!canHandle(gui)) {
                 return false;
+            }
 
-            if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
+            if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
                 return transferRect(gui, false);
-            else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
+            } else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
                 return transferRect(gui, true);
+            }
 
             return false;
         }
 
         @Override
         public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-            if (!canHandle(gui))
+            if (!canHandle(gui)) {
                 return false;
+            }
 
-            if (button == 0)
+            if (button == 0) {
                 return transferRect(gui, false);
-            else if (button == 1)
+            } else if (button == 1) {
                 return transferRect(gui, true);
+            }
 
             return false;
         }
@@ -258,8 +271,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 
         @Override
         public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
-            if (!canHandle(gui))
+            if (!canHandle(gui)) {
                 return currenttip;
+            }
 
             if (GuiContainerManager.shouldShowTooltip(gui) && currenttip.size() == 0) {
                 int[] offset = RecipeInfo.getGuiOffset(gui);
@@ -323,8 +337,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * @param results  Objects representing the results that matching recipes must produce.
      */
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals("item"))
+        if (outputId.equals("item")) {
             loadCraftingRecipes((ItemStack) results[0]);
+        }
     }
 
     /**
@@ -332,7 +347,8 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      *
      * @param result The result the recipes must output.
      */
-    public void loadCraftingRecipes(ItemStack result) {}
+    public void loadCraftingRecipes(ItemStack result) {
+    }
 
     /**
      * In this function you need to fill up the empty recipe array with recipes
@@ -342,8 +358,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * @param ingredients Objects representing the ingredients that matching recipes must contain.
      */
     public void loadUsageRecipes(String inputId, Object... ingredients) {
-        if (inputId.equals("item"))
+        if (inputId.equals("item")) {
             loadUsageRecipes((ItemStack) ingredients[0]);
+        }
     }
 
     /**
@@ -351,7 +368,8 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      *
      * @param ingredient The ingredient the recipes must contain.
      */
-    public void loadUsageRecipes(ItemStack ingredient) {}
+    public void loadUsageRecipes(ItemStack ingredient) {
+    }
 
     /**
      * @return The filepath to the texture to use when drawing this recipe
@@ -371,16 +389,15 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
     /**
      * Extension point for drawing progress bars and other overlays
      *
-     * @param gui    Drawing class
      * @param recipe The recipeIndex being drawn
      */
-    public void drawExtras(int recipe) {}
+    public void drawExtras(int recipe) {
+    }
 
     /**
      * Draws a texture rectangle that changes size with time.
      * Commonly used for progress bars.
      *
-     * @param gui       Drawing class
      * @param x         X position on screen
      * @param y         Y position on screen
      * @param tx        Texture X position
@@ -399,7 +416,6 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
      * Commonly used for progress bars.
      * If for some reason you don't like the default counter use this and specify the progress percentage.
      *
-     * @param gui        Drawing class
      * @param x          X position on screen
      * @param y          Y position on screen
      * @param tx         Texture X position
@@ -417,18 +433,18 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         int var = (int) (completion * (direction % 2 == 0 ? w : h));
 
         switch (direction) {
-            case 0://right
-                drawTexturedModalRect(x, y, tx, ty, var, h);
-                break;
-            case 1://down
-                drawTexturedModalRect(x, y, tx, ty, w, var);
-                break;
-            case 2://left
-                drawTexturedModalRect(x + w - var, y, tx + w - var, ty, var, h);
-                break;
-            case 3://up
-                drawTexturedModalRect(x, y + h - var, tx, ty + h - var, w, var);
-                break;
+        case 0://right
+            drawTexturedModalRect(x, y, tx, ty, var, h);
+            break;
+        case 1://down
+            drawTexturedModalRect(x, y, tx, ty, w, var);
+            break;
+        case 2://left
+            drawTexturedModalRect(x + w - var, y, tx + w - var, ty, var, h);
+            break;
+        case 3://up
+            drawTexturedModalRect(x, y + h - var, tx, ty + h - var, w, var);
+            break;
         }
     }
 
@@ -477,14 +493,14 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
     }
 
     public void drawBackground(int recipe) {
-        GL11.glColor4f(1, 1, 1, 1);
+        GlStateManager.color(1, 1, 1, 1);
         changeTexture(getGuiTexture());
         drawTexturedModalRect(0, 0, 5, 11, 166, 65);
     }
 
     public void drawForeground(int recipe) {
-        GL11.glColor4f(1, 1, 1, 1);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.color(1, 1, 1, 1);
+        GlStateManager.disableLighting();
         changeTexture(getGuiTexture());
         drawExtras(recipe);
     }
@@ -502,8 +518,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
     }
 
     public void onUpdate() {
-        if (!NEIClientUtils.shiftKey())
+        if (!NEIClientUtils.shiftKey()) {
             cycleticks++;
+        }
     }
 
     public boolean hasOverlay(GuiContainer gui, Container container, int recipe) {
@@ -512,8 +529,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 
     public IRecipeOverlayRenderer getOverlayRenderer(GuiContainer gui, int recipe) {
         IStackPositioner positioner = RecipeInfo.getStackPositioner(gui, getOverlayIdentifier());
-        if (positioner == null)
+        if (positioner == null) {
             return null;
+        }
         return new DefaultOverlayRenderer(getIngredientStacks(recipe), positioner);
     }
 
@@ -543,20 +561,22 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 
     @Override
     public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe) {
-        if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe"))
+        if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
             return transferRect(gui, recipe, false);
-        else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage"))
+        } else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
             return transferRect(gui, recipe, true);
+        }
 
         return false;
     }
 
     @Override
     public boolean mouseClicked(GuiRecipe gui, int button, int recipe) {
-        if (button == 0)
+        if (button == 0) {
             return transferRect(gui, recipe, false);
-        else if (button == 1)
+        } else if (button == 1) {
             return transferRect(gui, recipe, true);
+        }
 
         return false;
     }
@@ -570,11 +590,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
         Point pos = getMousePosition();
         Point relMouse = new Point(pos.x - gui.guiLeft - offsetx, pos.y - gui.guiTop - offsety);
         for (RecipeTransferRect rect : transferRects) {
-            if (rect.rect.contains(relMouse) &&
-                    (usage ?
-                            GuiUsageRecipe.openRecipeGui(rect.outputId, rect.results) :
-                            GuiCraftingRecipe.openRecipeGui(rect.outputId, rect.results)))
+            if (rect.rect.contains(relMouse) && (usage ? GuiUsageRecipe.openRecipeGui(rect.outputId, rect.results) : GuiCraftingRecipe.openRecipeGui(rect.outputId, rect.results))) {
                 return true;
+            }
         }
 
         return false;

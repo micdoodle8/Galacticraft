@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -33,14 +33,14 @@ public class MapGenVillageMoon extends MapGenStructure
         if (!MapGenVillageMoon.initialized)
         {
             MapGenStructureIO.registerStructure(StructureVillageStartMoon.class, "MoonVillage");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageField.class, "MoonField1");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageField2.class, "MoonField2");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageHouse.class, "MoonHouse");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageRoadPiece.class, "MoonRoadPiece");
-            MapGenStructureIO.func_143031_a(StructureComponentVillagePathGen.class, "MoonPath");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageTorch.class, "MoonTorch");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageStartPiece.class, "MoonWell");
-            MapGenStructureIO.func_143031_a(StructureComponentVillageWoodHut.class, "MoonWoodHut");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageField.class, "MoonField1");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageField2.class, "MoonField2");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageHouse.class, "MoonHouse");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageRoadPiece.class, "MoonRoadPiece");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillagePathGen.class, "MoonPath");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageTorch.class, "MoonTorch");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageStartPiece.class, "MoonWell");
+            MapGenStructureIO.registerStructureComponent(StructureComponentVillageWoodHut.class, "MoonWoodHut");
         }
 
         MapGenVillageMoon.initialized = true;
@@ -89,7 +89,7 @@ public class MapGenVillageMoon extends MapGenStructure
     }
 
     @Override
-    public String func_143025_a()
+    public String getStructureName()
     {
         return "MoonVillage";
     }

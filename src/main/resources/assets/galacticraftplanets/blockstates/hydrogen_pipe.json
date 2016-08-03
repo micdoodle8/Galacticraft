@@ -1,0 +1,89 @@
+{
+    "variants": {
+        "down=false,east=false,north=false,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe" },
+		
+        "down=false,east=false,north=true,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_n", "y": 0 },
+        "down=false,east=true,north=false,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_n", "y": 90 },
+        "down=false,east=false,north=false,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_n", "y": 180 },
+        "down=false,east=false,north=false,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_n", "y": 270 },
+		
+        "down=true,east=false,north=true,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nd", "y": 0 },
+        "down=true,east=true,north=false,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nd", "y": 90 },
+        "down=true,east=false,north=false,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nd", "y": 180 },
+        "down=true,east=false,north=false,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nd", "y": 270 },
+		
+        "down=false,east=false,north=true,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nu", "y": 0 },
+        "down=false,east=true,north=false,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nu", "y": 90 },
+        "down=false,east=false,north=false,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nu", "y": 180 },
+        "down=false,east=false,north=false,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nu", "y": 270 },
+		
+        "down=true,east=false,north=true,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nud", "y": 0 },
+        "down=true,east=true,north=false,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nud", "y": 90 },
+        "down=true,east=false,north=false,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nud", "y": 180 },
+        "down=true,east=false,north=false,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nud", "y": 270 },
+		
+        "down=false,east=false,north=true,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_ns", "y": 0 },
+        "down=false,east=true,north=false,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_ns", "y": 90 },
+		
+        "down=true,east=false,north=true,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nsd", "y": 0 },
+        "down=true,east=true,north=false,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nsd", "y": 90 },
+		
+        "down=false,east=false,north=true,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nsu", "y": 0 },
+        "down=false,east=true,north=false,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nsu", "y": 90 },
+		
+        "down=true,east=false,north=true,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nsud", "y": 0 },
+        "down=true,east=true,north=false,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nsud", "y": 90 },
+		
+        "down=false,east=true,north=true,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nes", "y": 0 },
+        "down=false,east=true,north=false,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nes", "y": 90 },
+        "down=false,east=false,north=true,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nes", "y": 180 },
+        "down=false,east=true,north=true,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nes", "y": 270 },
+		
+        "down=true,east=true,north=true,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nesd", "y": 0 },
+        "down=true,east=true,north=false,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesd", "y": 90 },
+        "down=true,east=false,north=true,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesd", "y": 180 },
+        "down=true,east=true,north=true,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesd", "y": 270 },
+		
+        "down=false,east=true,north=true,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nesu", "y": 0 },
+        "down=false,east=true,north=false,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesu", "y": 90 },
+        "down=false,east=false,north=true,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesu", "y": 180 },
+        "down=false,east=true,north=true,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesu", "y": 270 },
+		
+        "down=true,east=true,north=true,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_nesud", "y": 0 },
+        "down=true,east=true,north=false,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesud", "y": 90 },
+        "down=true,east=false,north=true,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesud", "y": 180 },
+        "down=true,east=true,north=true,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesud", "y": 270 },
+		
+        "down=false,east=true,north=true,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_ne", "y": 0 },
+        "down=false,east=true,north=false,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_ne", "y": 90 },
+        "down=false,east=false,north=false,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_ne", "y": 180 },
+        "down=false,east=false,north=true,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_ne", "y": 270 },
+		
+        "down=true,east=true,north=true,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_ned", "y": 0 },
+        "down=true,east=true,north=false,south=true,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_ned", "y": 90 },
+        "down=true,east=false,north=false,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_ned", "y": 180 },
+        "down=true,east=false,north=true,south=false,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_ned", "y": 270 },
+		
+        "down=false,east=true,north=true,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_neu", "y": 0 },
+        "down=false,east=true,north=false,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_neu", "y": 90 },
+        "down=false,east=false,north=false,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neu", "y": 180 },
+        "down=false,east=false,north=true,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neu", "y": 270 },
+		
+        "down=true,east=true,north=true,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_neud", "y": 0 },
+        "down=true,east=true,north=false,south=true,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_neud", "y": 90 },
+        "down=true,east=false,north=false,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neud", "y": 180 },
+        "down=true,east=false,north=true,south=false,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neud", "y": 270 },
+		
+        "down=false,east=true,north=true,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_nesw", "y": 0 },
+		
+        "down=false,east=false,north=false,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_u", "y": 0 },
+		
+        "down=true,east=false,north=false,south=false,up=false,west=false": { "model": "galacticraftplanets:hydrogen_pipe_d", "y": 0 },
+		
+        "down=true,east=false,north=false,south=false,up=true,west=false": { "model": "galacticraftplanets:hydrogen_pipe_ud", "y": 0 },
+		
+        "down=false,east=true,north=true,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neswu", "y": 0 },
+        "down=true,east=true,north=true,south=true,up=false,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neswd", "y": 0 },
+        "down=true,east=true,north=true,south=true,up=true,west=true": { "model": "galacticraftplanets:hydrogen_pipe_neswud", "y": 0 }
+    }
+}

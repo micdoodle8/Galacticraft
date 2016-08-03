@@ -17,8 +17,9 @@ public class MCStripTransformer {
 
         @Override
         public String map(String typeName) {
-            if(typeName.startsWith("net/minecraft") || !typeName.contains("/"))
+            if (typeName.startsWith("net/minecraft") || !typeName.contains("/")) {
                 found = true;
+            }
             return typeName;
         }
     }
@@ -28,17 +29,19 @@ public class MCStripTransformer {
 
         boolean changed = false;
         Iterator<MethodNode> it = cnode.methods.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             MethodNode mnode = it.next();
             ReferenceDetector r = new ReferenceDetector();
-            mnode.accept(new RemappingMethodAdapter(mnode.access, mnode.desc, new MethodVisitor(Opcodes.ASM4) {}, r));
-            if(r.found) {
+            mnode.accept(new RemappingMethodAdapter(mnode.access, mnode.desc, new MethodVisitor(Opcodes.ASM4) {
+            }, r));
+            if (r.found) {
                 it.remove();
                 changed = true;
             }
         }
-        if(changed)
+        if (changed) {
             bytes = ASMHelper.createBytes(cnode, 0);
+        }
         return bytes;
     }
 }

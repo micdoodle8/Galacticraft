@@ -15,7 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,7 +29,7 @@ public class PlayerServer implements IPlayerServer
     {
         if (oldPlayer instanceof EntityPlayerMP)
         {
-            GCPlayerStats.get(player).copyFrom(GCPlayerStats.get((EntityPlayerMP) oldPlayer), keepInv || player.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"));
+            GCPlayerStats.get(player).copyFrom(GCPlayerStats.get((EntityPlayerMP) oldPlayer), keepInv || player.worldObj.getGameRules().getBoolean("keepInventory"));
             TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, player);
         }
     }
@@ -159,11 +159,11 @@ public class PlayerServer implements IPlayerServer
 
     public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3, boolean bypass)
     {
-        ChunkCoordinates c = player.playerLocation;
+        BlockPos c = player.playerLocation;
 
         if (c != null)
         {
-            EventWakePlayer event = new EventWakePlayer(player, c.posX, c.posY, c.posZ, par1, par2, par3, bypass);
+            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (bypass || event.result == null || event.result == EntityPlayer.EnumStatus.OK)

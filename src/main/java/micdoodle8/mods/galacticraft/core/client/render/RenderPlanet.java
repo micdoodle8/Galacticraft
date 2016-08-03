@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render;
 
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.renderer.Tessellator;
@@ -95,48 +96,49 @@ public class RenderPlanet
     	float yab = y + height * y1;
     	float yba = y + height * y2;
     	float ybb = y + height * y3;
-    	Tessellator tessellator = Tessellator.instance;
+    	Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
     	if (prog <= 1F - span)
     	{
-        	tessellator.startDrawingQuads();
-	    	tessellator.addVertexWithUV(x, yab, 0F, prog, y1);
-	    	tessellator.addVertexWithUV(x + width, yab, 0F, prog + span, y1);
-	    	tessellator.addVertexWithUV(x + width, yaa, 0F, prog + span, y0);
-	    	tessellator.addVertexWithUV(x, yaa, 0F, prog, y0);
-	    	tessellator.draw();
-        	tessellator.startDrawingQuads();
-	    	tessellator.addVertexWithUV(x, ybb, 0F, prog, y3);
-	    	tessellator.addVertexWithUV(x + width, ybb, 0F, prog + span, y3);
-	    	tessellator.addVertexWithUV(x + width, yba, 0F, prog + span, y2);
-	    	tessellator.addVertexWithUV(x, yba, 0F, prog, y2);
-	    	tessellator.draw();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(x, yab, 0F).tex(prog, y1).endVertex();
+            worldRenderer.pos(x + width, yab, 0F).tex(prog + span, y1).endVertex();
+            worldRenderer.pos(x + width, yaa, 0F).tex(prog + span, y0).endVertex();
+            worldRenderer.pos(x, yaa, 0F).tex(prog, y0).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.pos(x, ybb, 0F).tex(prog, y3).endVertex();
+            worldRenderer.pos(x + width, ybb, 0F).tex(prog + span, y3).endVertex();
+            worldRenderer.pos(x + width, yba, 0F).tex(prog + span, y2).endVertex();
+            worldRenderer.pos(x, yba, 0F).tex(prog, y2).endVertex();
+            tessellator.draw();
     	}
     	else
     	{
     		double xp = x + width * (1F - prog) / span;
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(x, yab, 0F, prog, y1);
-    		tessellator.addVertexWithUV(xp, yab, 0F, 1.0F, y1);
-    		tessellator.addVertexWithUV(xp, yaa, 0F, 1.0F, y0);
-    		tessellator.addVertexWithUV(x, yaa, 0F, prog, y0);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    		worldRenderer.pos(x, yab, 0F).tex(prog, y1).endVertex();
+    		worldRenderer.pos(xp, yab, 0F).tex(1.0F, y1).endVertex();
+    		worldRenderer.pos(xp, yaa, 0F).tex(1.0F, y0).endVertex();
+    		worldRenderer.pos(x, yaa, 0F).tex(prog, y0).endVertex();
         	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(x, ybb, 0F, prog, y3);
-    		tessellator.addVertexWithUV(xp, ybb, 0F, 1.0F, y3);
-    		tessellator.addVertexWithUV(xp, yba, 0F, 1.0F, y2);
-    		tessellator.addVertexWithUV(x, yba, 0F, prog, y2);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    		worldRenderer.pos(x, ybb, 0F).tex(prog, y3).endVertex();
+    		worldRenderer.pos(xp, ybb, 0F).tex(1.0F, y3).endVertex();
+    		worldRenderer.pos(xp, yba, 0F).tex(1.0F, y2).endVertex();
+    		worldRenderer.pos(x, yba, 0F).tex(prog, y2).endVertex();
         	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(xp, yab, 0F, 0F, y1);
-    		tessellator.addVertexWithUV(x + width, yab, 0F, prog - 1F + span, y1);
-    		tessellator.addVertexWithUV(x + width, yaa, 0F, prog - 1F + span, y0);
-    		tessellator.addVertexWithUV(xp, yaa, 0F, 0F, y0);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    		worldRenderer.pos(xp, yab, 0F).tex(0F, y1).endVertex();
+    		worldRenderer.pos(x + width, yab, 0F).tex(prog - 1F + span, y1).endVertex();
+    		worldRenderer.pos(x + width, yaa, 0F).tex(prog - 1F + span, y0).endVertex();
+    		worldRenderer.pos(xp, yaa, 0F).tex(0F, y0).endVertex();
         	tessellator.draw();
-        	tessellator.startDrawingQuads();
-    		tessellator.addVertexWithUV(xp, ybb, 0F, 0F, y3);
-    		tessellator.addVertexWithUV(x + width, ybb, 0F, prog - 1F + span, y3);
-    		tessellator.addVertexWithUV(x + width, yba, 0F, prog - 1F + span, y2);
-    		tessellator.addVertexWithUV(xp, yba, 0F, 0F, y2);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    		worldRenderer.pos(xp, ybb, 0F).tex(0F, y3).endVertex();
+    		worldRenderer.pos(x + width, ybb, 0F).tex(prog - 1F + span, y3).endVertex();
+    		worldRenderer.pos(x + width, yba, 0F).tex(prog - 1F + span, y2).endVertex();
+    		worldRenderer.pos(xp, yba, 0F).tex(0F, y2).endVertex();
         	tessellator.draw();
     	}    		
     }

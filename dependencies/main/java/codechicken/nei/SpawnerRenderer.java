@@ -1,91 +1,113 @@
 package codechicken.nei;
 
 import codechicken.core.ClientUtils;
-import codechicken.lib.render.TextureUtils;
+import codechicken.lib.render.BlockRenderer;
+import codechicken.lib.render.IItemRenderer;
+import codechicken.lib.render.ModelRegistryHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class SpawnerRenderer implements IItemRenderer
-{
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type)
-    {
-        return true;
+import java.util.List;
+
+public class SpawnerRenderer implements IItemRenderer {
+    public static void load(ItemMobSpawner item) {
+        ModelRegistryHelper.registerItemRenderer(item, new SpawnerRenderer(), new ResourceLocation("mob_spawner"));
     }
-    
-    public void renderInventoryItem(RenderBlocks render, ItemStack item)
-    {
-        int meta = item.getItemDamage();
-        
-        if(meta == 0)
+
+    public void renderItem(ItemStack stack) {
+        int meta = stack.getItemDamage();
+
+        if (meta == 0) {
             meta = ItemMobSpawner.idPig;
+        }
 
         String bossName = BossStatus.bossName;
         int bossTimeout = BossStatus.statusBarTime;
-        try
-        {
-            World world = NEIClientUtils.mc().theWorld;
-            ItemMobSpawner.loadSpawners(world);
-            TextureUtils.bindAtlas(0);
-            render.renderBlockAsItem(Blocks.mob_spawner, 0, 1F);
-            GL11.glPushMatrix();
-            
+        Minecraft mc = Minecraft.getMinecraft();
+        World world = mc.theWorld;
+
+        IBakedModel baseModel = mc.getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation("mob_spawner"));
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(.5, .5, .5);
+        GlStateManager.scale(2, 2, 2);
+        mc.getRenderItem().renderItem(stack, baseModel);
+        GlStateManager.popMatrix();
+
+        try {
             Entity entity = ItemMobSpawner.getEntity(meta);
             entity.setWorld(world);
-            float f1 = 0.4375F;
-            if(entity.getShadowSize() > 1.5)
-                f1 = 0.1F;
-            GL11.glRotatef((float) (ClientUtils.getRenderTime()*10), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-20F, 1.0F, 0.0F, 0.0F);
-            GL11.glTranslatef(0.0F, -0.4F, 0.0F);
-            GL11.glScalef(f1, f1, f1);
-            entity.setLocationAndAngles(0, 0, 0, 0.0F, 0.0F);
-            RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0);
-            GL11.glPopMatrix();
-    
+            float scale = 0.6F / Math.max(entity.height, entity.width);
+
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0.5, 0.4, 0.5);
+            GlStateManager.rotate((float) (ClientUtils.getRenderTime() * 10), 0, 1, 0);
+            GlStateManager.rotate(-20, 1, 0, 0);
+            GlStateManager.translate(0, -0.4, 0);
+            GlStateManager.scale(scale, scale, scale);
+            entity.setLocationAndAngles(0, 0, 0, 0, 0);
+            mc.getRenderManager().renderEntityWithPosYaw(entity, 0, 0, 0, 0, 0);
+            GlStateManager.disableLighting();
+            GlStateManager.popMatrix();
+
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        }
-        catch(Exception e)
-        {
-            if(Tessellator.instance.isDrawing)
-                Tessellator.instance.draw();
+        } catch (Exception e) {
+            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
+                Tessellator.getInstance().draw();
+            }
         }
         BossStatus.bossName = bossName;
         BossStatus.statusBarTime = bossTimeout;
     }
-    
-    @SuppressWarnings("incomplete-switch")
+
     @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-    {
-        switch(type)
-        {
-            case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON:
-                GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-            case INVENTORY:
-            case ENTITY:
-                renderInventoryItem((RenderBlocks)data[0], item);
-            break;
-        }
+    public List getFaceQuads(EnumFacing p_177551_1_) {
+        return null;
     }
-    
+
     @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-    {
+    public List getGeneralQuads() {
+        return null;
+    }
+
+    @Override
+    public boolean isAmbientOcclusion() {
+        return false;
+    }
+
+    @Override
+    public boolean isGui3d() {
         return true;
-    }    
+    }
+
+    @Override
+    public boolean isBuiltInRenderer() {
+        return true;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/mob_spawner");
+    }
+
+    @Override
+    public ItemCameraTransforms getItemCameraTransforms() {
+        return BlockRenderer.blockCameraTransform;
+    }
 }

@@ -5,29 +5,65 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
+public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final int STORAGE_MODULE_METADATA = 0;
     public static final int ELECTRIC_FURNACE_METADATA = 4;
 
-    private IIcon iconMachineSide;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
+
+    public enum EnumTieredMachineType implements IStringSerializable
+    {
+        STORAGE_MODULE(0, "energy_storage"),
+        ELECTRIC_FURNACE(1, "electric_furnace"),
+        STORAGE_CLUSTER(2, "cluster_storage"),
+        ARC_FURNACE(3, "arc_furnace");
+
+        private final int meta;
+        private final String name;
+
+        private EnumTieredMachineType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumTieredMachineType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    /*private IIcon iconMachineSide;
     private IIcon iconInput;
     private IIcon iconOutput;
     private IIcon iconTier2;
@@ -38,15 +74,15 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     private IIcon[] iconEnergyStorageModule;
     private IIcon[] iconEnergyStorageModuleT2;
     private IIcon iconElectricFurnace;
-    private IIcon iconElectricFurnaceT2;
+    private IIcon iconElectricFurnaceT2;*/
 
     public BlockMachineTiered(String assetName)
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + "machine");
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -61,7 +97,7 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister iconRegister)
     {
         this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
@@ -229,69 +265,51 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
             return this.iconMachineSideT2;
         }
         return this.iconMachineSide;
-    }
+    }*/
 
     /**
      * Called when the block is placed in the world.
      */
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        switch (angle)
+        if (metadata >= BlockMachineTiered.ELECTRIC_FURNACE_METADATA + 8)
         {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.ELECTRIC_FURNACE_METADATA + 8 + change), 3);
         }
-
-        world.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
+        else if (metadata >= BlockMachineTiered.STORAGE_MODULE_METADATA + 8)
+        {
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.STORAGE_MODULE_METADATA + 8 + change), 3);
+        }
+        else if (metadata >= BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
+        {
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.ELECTRIC_FURNACE_METADATA + change), 3);
+        }
+        else if (metadata >= BlockMachineTiered.STORAGE_MODULE_METADATA)
+        {
+            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.STORAGE_MODULE_METADATA + change), 3);
+        }
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
-        int original = metadata & 3;
-        int change = 0;
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        // Re-orient the block
-        switch (original)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
-        TileEntity te = par1World.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
         return true;
     }
 
@@ -299,19 +317,20 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (!par1World.isRemote)
+        if (!world.isRemote)
         {
-            par5EntityPlayer.openGui(GalacticraftCore.instance, -1, par1World, x, y, z);
+            entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         }
 
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
+        int metadata = getMetaFromState(state);
         int tier = metadata / 8 + 1;
 
         if ((metadata & 4) == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
@@ -344,9 +363,8 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
         return new ItemStack(this, 1, 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(this.getEnergyStorageModule());
         par3List.add(this.getElectricFurnace());
@@ -358,15 +376,15 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
-        return metadata & 12;
+        return getMetaFromState(state) & 12;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = this.getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, pos);
 
         return new ItemStack(this, 1, metadata);
     }
@@ -378,9 +396,9 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
         switch (meta & 4)
         {
         case ELECTRIC_FURNACE_METADATA:
-            return GCCoreUtil.translate("tile.electricFurnaceTier" + tier + ".description");
+            return GCCoreUtil.translate("tile.electric_furnace_tier" + tier + ".description");
         case STORAGE_MODULE_METADATA:
-            return GCCoreUtil.translate("tile.energyStorageModuleTier" + tier + ".description");
+            return GCCoreUtil.translate("tile.energy_storage_module_tier" + tier + ".description");
         }
         return "";
     }
@@ -389,5 +407,28 @@ public class BlockMachineTiered extends BlockTileGC implements ItemBlockDesc.IBl
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumTieredMachineType type = EnumTieredMachineType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

@@ -140,7 +140,7 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return GCCoreUtil.translate("tile.rocketWorkbench.name");
+        return GCCoreUtil.translate("tile.rocket_workbench.name");
     }
 
     @Override

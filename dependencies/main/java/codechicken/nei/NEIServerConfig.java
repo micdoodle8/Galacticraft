@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -24,8 +23,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class NEIServerConfig
-{
+public class NEIServerConfig {
     private static MinecraftServer server;
 
     public static Logger logger = LogManager.getLogger("NotEnoughItems");
@@ -48,17 +46,18 @@ public class NEIServerConfig
         loadWorld(world);
     }
 
-    public static File getSaveDir(int dim) {
-        return new File(CommonUtils.getSaveLocation(dim), "NEI");
+    public static File getSaveDir(World world) {
+        return new File(CommonUtils.getSaveLocation(world), "NEI");
     }
 
     private static void loadWorld(World world) {
         try {
-            File file = new File(getSaveDir(CommonUtils.getDimension(world)), "world.dat");
-            NBTTagCompound tag = CompressedStreamTools.read(file);
-            if(tag == null)
+            File file = new File(getSaveDir(world), "world.dat");
+            NBTTagCompound tag = NEIServerUtils.readNBT(file);
+            if (tag == null) {
                 tag = new NBTTagCompound();
-            dimTags.put(CommonUtils.getDimension(world), tag);
+            }
+            dimTags.put(world.provider.getDimensionId(), tag);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -88,13 +87,15 @@ public class NEIServerConfig
     }
 
     private static void setDefaultFeature(String featurename, String... names) {
-        if (names.length == 0)
-            names = new String[]{"OP"};
+        if (names.length == 0) {
+            names = new String[] { "OP" };
+        }
 
         String list = "";
         for (int i = 0; i < names.length; i++) {
-            if (i >= 1)
+            if (i >= 1) {
                 list += ", ";
+            }
             list += names[i];
         }
         serverConfig.getTag("permissions." + featurename).setDefaultValue(list);
@@ -102,8 +103,8 @@ public class NEIServerConfig
 
     private static void saveWorld(int dim) {
         try {
-            File file = new File(getSaveDir(dim), "world.dat");
-            CompressedStreamTools.write(dimTags.get(dim), file);
+            File file = new File(getSaveDir(DimensionManager.getWorld(dim)), "world.dat");
+            NEIServerUtils.writeNBT(dimTags.get(dim), file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -114,16 +115,19 @@ public class NEIServerConfig
     }
 
     public static boolean isPlayerInList(String playername, Set<String> list, boolean allowCards) {
-        if (playername.equals("CONSOLE"))
+        if (playername.equals("CONSOLE")) {
             return list.contains(playername);
+        }
 
         playername = playername.toLowerCase();
 
         if (allowCards) {
-            if (list.contains("ALL"))
+            if (list.contains("ALL")) {
                 return true;
-            if ((ServerUtils.isPlayerOP(playername) || ServerUtils.isPlayerOwner(playername)) && list.contains("OP"))
+            }
+            if ((ServerUtils.isPlayerOP(playername) || ServerUtils.isPlayerOwner(playername)) && list.contains("OP")) {
                 return true;
+            }
         }
 
         return list.contains(playername);
@@ -147,8 +151,9 @@ public class NEIServerConfig
     public static void addPlayerToList(String playername, String tag) {
         HashSet<String> list = getPlayerList(tag);
 
-        if (!playername.equals("CONSOLE") && !playername.equals("ALL") && !playername.equals("OP"))
+        if (!playername.equals("CONSOLE") && !playername.equals("ALL") && !playername.equals("OP")) {
             playername = playername.toLowerCase();
+        }
 
         list.add(playername);
         savePlayerList(tag, list);
@@ -157,8 +162,9 @@ public class NEIServerConfig
     public static void remPlayerFromList(String playername, String tag) {
         HashSet<String> list = getPlayerList(tag);
 
-        if (!playername.equals("CONSOLE") && !playername.equals("ALL") && !playername.equals("OP"))
+        if (!playername.equals("CONSOLE") && !playername.equals("ALL") && !playername.equals("OP")) {
             playername = playername.toLowerCase();
+        }
 
         list.remove(playername);
         savePlayerList(tag, list);
@@ -168,8 +174,9 @@ public class NEIServerConfig
         StringBuilder sb = new StringBuilder();
         int i = 0;
         for (Iterator<String> iterator = list.iterator(); iterator.hasNext(); i++) {
-            if (i != 0)
+            if (i != 0) {
                 sb.append(", ");
+            }
 
             sb.append(iterator.next());
         }
@@ -180,30 +187,32 @@ public class NEIServerConfig
     private static void loadBannedItems() {
         bannedItems.clear();
         File file = new File(saveDir, "banneditems.cfg");
-        if(!file.exists()) {
-            bannedItems.put(new ItemStack(Blocks.bedrock), new HashSet<String>(Arrays.asList("NONE")));
+        if (!file.exists()) {
+            bannedItems.put(new ItemStack(Blocks.command_block), new HashSet<String>(Arrays.asList("NONE")));
             saveBannedItems();
             return;
         }
         try {
             FileReader r = new FileReader(file);
             int line = 0;
-            for(String s : IOUtils.readLines(r)) {
-                if(s.charAt(0) == '#' || s.trim().length() == 0)
+            for (String s : IOUtils.readLines(r)) {
+                if (s.charAt(0) == '#' || s.trim().length() == 0) {
                     continue;
+                }
                 int delim = s.lastIndexOf('=');
-                if(delim < 0) {
-                    System.err.println("line "+line+": Missing =");
+                if (delim < 0) {
+                    logger.error("line " + line + ": Missing =");
                     continue;
                 }
                 try {
-                    NBTTagCompound key = (NBTTagCompound) JsonToNBT.func_150315_a(s.substring(0, delim));
+                    NBTTagCompound key = JsonToNBT.getTagFromJson(s.substring(0, delim));
                     Set<String> values = new HashSet<String>();
-                    for(String s2 : s.substring(delim+1).split(","))
+                    for (String s2 : s.substring(delim + 1).split(",")) {
                         values.add(s2.trim());
+                    }
                     bannedItems.put(InventoryUtils.loadPersistant(key), values);
                 } catch (Exception e) {
-                    System.err.println("line "+line+": "+e.getMessage());
+                    logger.error("line " + line + ": " + e.getMessage());
                 }
             }
             r.close();
@@ -215,8 +224,9 @@ public class NEIServerConfig
     public static void saveBannedItems() {
         File file = new File(saveDir, "banneditems.cfg");
         try {
-            if(!file.exists())
+            if (!file.exists()) {
                 file.createNewFile();
+            }
 
             PrintWriter p = new PrintWriter(file);
             p.println("#Saved in this format for external editing. The format isn't that hard to figure out. If you think you're up to it, modify it here!");
@@ -224,13 +234,17 @@ public class NEIServerConfig
             for (ItemStackMap.Entry<Set<String>> entry : bannedItems.entries()) {
                 NBTTagCompound key = InventoryUtils.savePersistant(entry.key, new NBTTagCompound());
                 key.removeTag("Count");
-                if(key.getByte("Damage") == 0) key.removeTag("Damage");
+                if (key.getByte("Damage") == 0) {
+                    key.removeTag("Damage");
+                }
 
                 p.print(key.toString());
                 p.print("=[");
                 int i = 0;
                 for (String s : entry.value) {
-                    if(i++ != 0) p.print(", ");
+                    if (i++ != 0) {
+                        p.print(", ");
+                    }
                     p.print(s);
                 }
                 p.println("]");
@@ -247,38 +261,39 @@ public class NEIServerConfig
 
     public static void loadPlayer(EntityPlayer player) {
         logger.debug("Loading Player: " + player.getGameProfile().getName());
-        playerSaves.put(player.getCommandSenderName(), new PlayerSave(player.getCommandSenderName(), new File(saveDir, "players")));
+        playerSaves.put(player.getName(), new PlayerSave((EntityPlayerMP) player, new File(saveDir, "players")));
     }
 
     public static void unloadPlayer(EntityPlayer player) {
-        logger.debug("Unloading Player: " + player.getCommandSenderName());
-        PlayerSave playerSave = playerSaves.remove(player.getCommandSenderName());
-        if (playerSave != null)
+        logger.debug("Unloading Player: " + player.getName());
+        PlayerSave playerSave = playerSaves.remove(player.getName());
+        if (playerSave != null) {
             playerSave.save();
+        }
     }
 
     public static boolean authenticatePacket(EntityPlayerMP sender, PacketCustom packet) {
         switch (packet.getType()) {
-            case 1:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "item");
-            case 4:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "delete");
-            case 6:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "magnet");
-            case 7:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "time");
-            case 8:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "heal");
-            case 9:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "rain");
-            case 14:
-            case 23:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "creative+");
-            case 21:
-            case 22:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "enchant");
-            case 24:
-                return canPlayerPerformAction(sender.getCommandSenderName(), "potion");
+        case 1:
+            return canPlayerPerformAction(sender.getName(), "item");
+        case 4:
+            return canPlayerPerformAction(sender.getName(), "delete");
+        case 6:
+            return canPlayerPerformAction(sender.getName(), "magnet");
+        case 7:
+            return canPlayerPerformAction(sender.getName(), "time");
+        case 8:
+            return canPlayerPerformAction(sender.getName(), "heal");
+        case 9:
+            return canPlayerPerformAction(sender.getName(), "rain");
+        case 14:
+        case 23:
+            return canPlayerPerformAction(sender.getName(), "creative+");
+        case 21:
+        case 22:
+            return canPlayerPerformAction(sender.getName(), "enchant");
+        case 24:
+            return canPlayerPerformAction(sender.getName(), "potion");
         }
         return true;
     }

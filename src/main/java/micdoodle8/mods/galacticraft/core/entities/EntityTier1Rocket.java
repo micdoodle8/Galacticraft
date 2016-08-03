@@ -10,11 +10,14 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -29,7 +32,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         super(par1World);
         this.setSize(1.2F, 3.5F);
-        this.yOffset = 1.5F;
+//        this.yOffset = 1.5F;
     }
 
     public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -38,13 +41,19 @@ public class EntityTier1Rocket extends EntityTieredRocket
         this.rocketType = rocketType;
         this.cargoItems = new ItemStack[this.getSizeInventory()];
         this.setSize(1.2F, 3.5F);
-        this.yOffset = 1.5F;
+//        this.yOffset = 1.5F;
+    }
+
+    @Override
+    public double getMountedYOffset()
+    {
+        return 0.3D;
     }
 
     @Override
     public float getRotateOffset()
     {
-        return -1.5F;
+        return 0.0F;
     }
 
 	@Override
@@ -158,7 +167,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
             if (this.landing && this.targetVec != null)
             {
-                double modifier = this.posY - this.targetVec.y;
+                double modifier = this.posY - this.targetVec.getY();
                 modifier = Math.max(modifier, 1.0);
                 x1 *= modifier / 60.0D;
                 y1 *= modifier / 60.0D;
@@ -232,7 +241,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }
@@ -242,20 +251,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         return false;
     }
-
-    // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
-    // "ICBM|Explosion")
-    // public boolean canLock(IMissile missile)
-    // {
-    // return true;
-    // }
-    //
-    // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
-    // "ICBM|Explosion")
-    // public Vector3 getPredictedPosition(int ticks)
-    // {
-    // return new Vector3(this);
-    // } TODO Re-enable ICBM integration
 
     @Override
     public void onPadDestroyed()
@@ -272,28 +267,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         return dock instanceof TileEntityLandingPad;
     }
-
-    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-    // "ICBM|Explosion")
-    // public void destroyCraft()
-    // {
-    // this.setDead();
-    // }
-    //
-    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-    // "ICBM|Explosion")
-    // public int doDamage(int damage)
-    // {
-    // return (int) (this.shipDamage += damage);
-    // }
-    //
-    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-    // "ICBM|Explosion")
-    // public boolean canBeTargeted(Object entity)
-    // {
-    // return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() &&
-    // this.timeSinceLaunch > 50;
-    // } TODO Re-enable ICBM integration
 
     @Override
     public int getRocketTier()
@@ -322,6 +295,31 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 1.5D;
+    	return 0.0D;
+    }
+
+    @Override
+    public ITickable getSoundUpdater() {
+        return null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

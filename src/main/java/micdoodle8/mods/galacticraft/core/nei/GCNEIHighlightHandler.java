@@ -5,9 +5,11 @@ import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -38,7 +40,8 @@ public class GCNEIHighlightHandler implements IHighlightHandler
 
         if (stack.getItem() == Items.redstone)
         {
-            int md = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
+            IBlockState state = world.getBlockState(mop.getBlockPos());
+            int md = state.getBlock().getMetaFromState(state);
             String s = "" + md;
             if (s.length() < 2)
             {
@@ -53,11 +56,10 @@ public class GCNEIHighlightHandler implements IHighlightHandler
     @Override
     public ItemStack identifyHighlight(World world, EntityPlayer player, MovingObjectPosition mop)
     {
-        int x = mop.blockX;
-        int y = mop.blockY;
-        int z = mop.blockZ;
-        Block b = world.getBlock(x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
+        BlockPos pos = mop.getBlockPos();
+        IBlockState state = world.getBlockState(pos);
+        Block b = state.getBlock();
+        int meta = b.getMetaFromState(state);
         if (meta == 8 && b == GCBlocks.basicBlock)
         {
             return new ItemStack(GCBlocks.basicBlock, 1, 8);

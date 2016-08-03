@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": { "model": "galacticraftcore:air_lock_frame_model" },
+        "airlocktype=air_lock_frame": { "model": "galacticraftcore:air_lock_frame_model" },
+        "airlocktype=air_lock_controller": { "model": "galacticraftcore:air_lock_controller_model" }
+    }
+}

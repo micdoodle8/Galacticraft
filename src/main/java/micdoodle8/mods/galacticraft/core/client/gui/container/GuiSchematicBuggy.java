@@ -7,7 +7,9 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicBuggy extends GuiContainerGC implements ISchematicResultPage
@@ -16,9 +18,9 @@ public class GuiSchematicBuggy extends GuiContainerGC implements ISchematicResul
 
     private int pageIndex;
 
-    public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer)
+    public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerBuggyBench(par1InventoryPlayer, 0, 0, 0));
+        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().thePlayer));
         this.ySize = 221;
     }
 

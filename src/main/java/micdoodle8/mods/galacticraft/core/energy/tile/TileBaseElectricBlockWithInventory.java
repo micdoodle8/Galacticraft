@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectricBlock implements IInventory
 {
@@ -95,7 +95,7 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         ItemStack containingItems[] = this.getContainingItems();
         if (containingItems[par1] != null)
@@ -134,23 +134,13 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory()
+    public EnumFacing getElectricInputDirection()
     {
-    }
-
-    @Override
-    public void closeInventory()
-    {
-    }
-
-    @Override
-    public ForgeDirection getElectricInputDirection()
-    {
-        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+        return EnumFacing.getFront((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override
@@ -163,4 +153,34 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
      * Must be overridden by identical code, to get the actual containingItems
      */
     abstract protected ItemStack[] getContainingItems();
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
 }

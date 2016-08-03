@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.FMLEmbeddedChannel;
-import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
-import cpw.mods.fml.common.network.FMLOutboundHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
+import net.minecraftforge.fml.common.network.FMLIndexedMessageToMessageCodec;
+import net.minecraftforge.fml.common.network.FMLOutboundHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -85,7 +85,7 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
      *
      * @param message The message to send
      * @param point   The
-     *                {@link cpw.mods.fml.common.network.NetworkRegistry.TargetPoint}
+     *                {@link net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint}
      *                around which to send
      */
     public void sendToAllAround(IPacket message, NetworkRegistry.TargetPoint point)
@@ -108,13 +108,13 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
      *
      * @param message     The message to send
-     * @param dimensionId The dimension id to target
+     * @param dimensionID The dimension id to target
      */
-    public void sendToDimension(IPacket message, int dimensionId)
+    public void sendToDimension(IPacket message, int dimensionID)
     {
     	try {
 	    	this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
-	        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
+	        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionID);
 	        this.channels.get(Side.SERVER).writeOutbound(message);
     	} catch (Exception e)
     	{

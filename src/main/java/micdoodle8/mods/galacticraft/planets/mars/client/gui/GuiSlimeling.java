@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -19,19 +20,22 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.io.IOException;
+
 public class GuiSlimeling extends GuiScreen
 {
     private final int xSize;
     private final int ySize;
-    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/slimelingPanel0.png");
+    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimelingPanel0.png");
     private final EntitySlimeling slimeling;
 
-    public static RenderItem drawItems = new RenderItem();
+//    public static RenderItem drawItems = new RenderItem();
 
     public long timeBackspacePressed;
     public int cursorPulse;
@@ -77,7 +81,7 @@ public class GuiSlimeling extends GuiScreen
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID)
+    protected void keyTyped(char keyChar, int keyID) throws IOException
     {
         if (!this.isTextFocused)
         {
@@ -160,7 +164,7 @@ public class GuiSlimeling extends GuiScreen
     }
 
     @Override
-    protected void mouseClicked(int px, int py, int par3)
+    protected void mouseClicked(int px, int py, int par3) throws IOException
     {
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
@@ -181,7 +185,7 @@ public class GuiSlimeling extends GuiScreen
 
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, new Object[] { this.slimeling.getEntityId(), 6, "" }));
         }
 
@@ -281,7 +285,7 @@ public class GuiSlimeling extends GuiScreen
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
+//        TODO GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
 
@@ -312,9 +316,9 @@ public class GuiSlimeling extends GuiScreen
         slimeling.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         slimeling.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GL11.glTranslatef(0.0F, slimeling.yOffset, 0.0F);
-        RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        GL11.glTranslatef(0.0F, (float)slimeling.getYOffset(), 0.0F);
+        FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
+        FMLClientHandler.instance().getClient().getRenderManager().renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;

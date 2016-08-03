@@ -1,13 +1,12 @@
 package codechicken.lib.render;
 
 import codechicken.lib.render.SpriteSheetManager.SpriteSheet;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TextureFX
-{
+public class TextureFX {
     public int[] imageData;
     public int tileSizeBase = 16;
     public int tileSizeSquare = 256;
@@ -35,8 +34,9 @@ public class TextureFX
     }
 
     public void onTextureDimensionsUpdate(int width, int height) {
-        if (width != height)
+        if (width != height) {
             throw new IllegalArgumentException("Non-Square textureFX not supported (" + width + ":" + height + ")");
+        }
 
         tileSizeBase = width;
         tileSizeSquare = tileSizeBase * tileSizeBase;

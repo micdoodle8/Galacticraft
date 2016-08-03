@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -14,13 +16,18 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBatteryInfinite extends ItemElectricBase
+public class ItemBatteryInfinite extends ItemElectricBase implements ISortableItem
 {
     public ItemBatteryInfinite(String assetName)
     {
         super();
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+    }
+
+    @Override
+    public boolean hasEffect(ItemStack stack)
+    {
+        return true;
     }
 
     @Override
@@ -52,7 +59,8 @@ public class ItemBatteryInfinite extends ItemElectricBase
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        par3List.add("\u00a72" + GCCoreUtil.translate("gui.infiniteBattery.desc"));
+        par3List.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
+        par3List.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
     }
 
     @Override
@@ -94,5 +102,11 @@ public class ItemBatteryInfinite extends ItemElectricBase
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

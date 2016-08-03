@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
@@ -13,7 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemArmorMars extends ItemArmor
+public class ItemArmorMars extends ItemArmor implements ISortableItem
 {
     private final ArmorMaterial material;
 
@@ -23,13 +25,13 @@ public class ItemArmorMars extends ItemArmor
         this.material = par2EnumArmorMaterial;
     }
 
-    @Override
+    /*@Override
     public Item setUnlocalizedName(String par1Str)
     {
-        super.setTextureName(par1Str);
+//        super.setTextureName(par1Str);
         super.setUnlocalizedName(par1Str);
         return this;
-    }
+    }*/
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
@@ -38,15 +40,15 @@ public class ItemArmorMars extends ItemArmor
         {
             if (stack.getItem() == MarsItems.deshHelmet)
             {
-                return MarsModule.TEXTURE_PREFIX + "textures/model/armor/desh_1.png";
+                return GalacticraftPlanets.TEXTURE_PREFIX + "textures/model/armor/desh_1.png";
             }
             else if (stack.getItem() == MarsItems.deshChestplate || stack.getItem() == MarsItems.deshBoots)
             {
-                return MarsModule.TEXTURE_PREFIX + "textures/model/armor/desh_2.png";
+                return GalacticraftPlanets.TEXTURE_PREFIX + "textures/model/armor/desh_2.png";
             }
             else if (stack.getItem() == MarsItems.deshLeggings)
             {
-                return MarsModule.TEXTURE_PREFIX + "textures/model/armor/desh_3.png";
+                return GalacticraftPlanets.TEXTURE_PREFIX + "textures/model/armor/desh_3.png";
             }
         }
 
@@ -68,9 +70,8 @@ public class ItemArmorMars extends ItemArmor
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
+    public EnumSortCategoryItem getCategory(int meta)
     {
-        this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
+        return EnumSortCategoryItem.ARMOR;
     }
 }

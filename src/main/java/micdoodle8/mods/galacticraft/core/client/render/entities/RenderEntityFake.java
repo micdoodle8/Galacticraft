@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -12,6 +13,7 @@ public class RenderEntityFake extends Render
 {
     public RenderEntityFake()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
     }
 
     protected ResourceLocation func_110779_a(EntityMeteor entity)

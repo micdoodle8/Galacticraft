@@ -2,10 +2,11 @@ package micdoodle8.mods.galacticraft.core.wrappers;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 
 public class ScheduledBlockChange
 {
-    private BlockVec3 changePosition;
+    private BlockPos changePosition;
     private Block change;
     private int changeMeta;
     private int changeUpdateFlag;
@@ -17,18 +18,18 @@ public class ScheduledBlockChange
 
     public ScheduledBlockChange(BlockVec3 changePosition, Block change, int changeMeta, int changeUpdateFlag)
     {
-        this.changePosition = changePosition;
+        this.changePosition = changePosition.toBlockPos();
         this.change = change;
         this.changeMeta = changeMeta;
         this.changeUpdateFlag = changeUpdateFlag;
     }
 
-    public BlockVec3 getChangePosition()
+    public BlockPos getChangePosition()
     {
         return this.changePosition;
     }
 
-    public void setChangePosition(BlockVec3 changePosition)
+    public void setChangePosition(BlockPos changePosition)
     {
         this.changePosition = changePosition;
     }

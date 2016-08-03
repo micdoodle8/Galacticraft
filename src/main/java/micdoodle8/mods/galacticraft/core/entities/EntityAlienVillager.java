@@ -1,7 +1,12 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.google.common.base.Predicate;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -10,7 +15,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.village.MerchantRecipe;
@@ -32,22 +37,19 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     public EntityAlienVillager(World par1World)
     {
         super(par1World);
-        this.randomTickDivider = 0;
-        this.isMating = false;
-        this.isPlaying = false;
-        this.villageObj = null;
-        this.setSize(0.6F, 2.35F);
-        this.getNavigator().setBreakDoors(true);
-        this.getNavigator().setAvoidsWater(true);
+        this.setSize(0.6F, 1.8F);
+        ((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
+        ((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.3F));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 15.0F, 1.0F));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 15.0F, 0.05F));
-        this.tasks.addTask(9, new EntityAIWander(this, 0.3F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 15.0F));
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
+        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new EntityAIWander(this, 0.6D));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.setCanPickUpLoot(true);
     }
 
     @Override
@@ -60,43 +62,11 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    @Override
-    public boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    /**
-     * main AI tick function, replaces updateEntityActionState
-     */
-    @Override
-    protected void updateAITick()
-    {
-        if (--this.randomTickDivider <= 0)
-        {
-            this.worldObj.villageCollectionObj.addVillagerPosition(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
-            this.randomTickDivider = 70 + this.rand.nextInt(50);
-            this.villageObj = this.worldObj.villageCollectionObj.findNearestVillage(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 32);
-
-            if (this.villageObj == null)
-            {
-                this.detachHome();
-            }
-            else
-            {
-                ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int) (this.villageObj.getVillageRadius() * 0.6F));
-
-                if (this.field_82190_bM)
-                {
-                    this.field_82190_bM = false;
-                    this.villageObj.setDefaultPlayerReputation(5);
-                }
-            }
-        }
-
-        super.updateAITick();
-    }
+//    @Override
+//    public boolean isAIEnabled()
+//    {
+//        return true;
+//    }
 
     @Override
     protected void entityInit()
@@ -216,7 +186,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
                     b0 = -3;
                 }
 
-                this.villageObj.setReputationForPlayer(((EntityPlayer) par1EntityLiving).getCommandSenderName(), b0);
+                this.villageObj.setReputationForPlayer(((EntityPlayer) par1EntityLiving).getName(), b0);
 
                 if (this.isEntityAlive())
                 {
@@ -240,7 +210,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
             {
                 if (entity instanceof EntityPlayer)
                 {
-                    this.villageObj.setReputationForPlayer(((EntityPlayer) entity).getCommandSenderName(), -2);
+                    this.villageObj.setReputationForPlayer(((EntityPlayer) entity).getName(), -2);
                 }
                 else if (entity instanceof IMob)
                 {
@@ -286,37 +256,36 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
         }
     }
 
-    @Override
     @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte par1)
+    public void handleStatusUpdate(byte p_70103_1_)
     {
-        if (par1 == 12)
+        if (p_70103_1_ == 12)
         {
-            this.generateRandomParticles("heart");
+            this.func_180489_a(EnumParticleTypes.HEART);
         }
-        else if (par1 == 13)
+        else if (p_70103_1_ == 13)
         {
-            this.generateRandomParticles("angryVillager");
+            this.func_180489_a(EnumParticleTypes.VILLAGER_ANGRY);
         }
-        else if (par1 == 14)
+        else if (p_70103_1_ == 14)
         {
-            this.generateRandomParticles("happyVillager");
+            this.func_180489_a(EnumParticleTypes.VILLAGER_HAPPY);
         }
         else
         {
-            super.handleHealthUpdate(par1);
+            super.handleStatusUpdate(p_70103_1_);
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private void generateRandomParticles(String par1Str)
+    private void func_180489_a(EnumParticleTypes p_180489_1_)
     {
         for (int i = 0; i < 5; ++i)
         {
-            final double d0 = this.rand.nextGaussian() * 0.02D;
-            final double d1 = this.rand.nextGaussian() * 0.02D;
-            final double d2 = this.rand.nextGaussian() * 0.02D;
-            this.worldObj.spawnParticle(par1Str, this.posX + this.rand.nextFloat() * this.width * 2.0F - this.width, this.posY + 1.0D + this.rand.nextFloat() * this.height, this.posZ + this.rand.nextFloat() * this.width * 2.0F - this.width, d0, d1, d2);
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            this.worldObj.spawnParticle(p_180489_1_, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 1.0D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d0, d1, d2, new int[0]);
         }
     }
 

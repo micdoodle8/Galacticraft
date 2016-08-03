@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -37,9 +37,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     private Boolean shouldMoveClient;
     private Boolean shouldMoveServer;
 
-    public EntityLanderBase(World var1, float yOffset)
+    public EntityLanderBase(World var1)
     {
-        super(var1, yOffset);
+        super(var1);
         this.setSize(3.0F, 3.0F);
     }
 
@@ -74,8 +74,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     public EntityLanderBase(World var1, double var2, double var4, double var6, float yOffset)
     {
-        this(var1, yOffset);
-        this.setPosition(var2, var4 + this.yOffset, var6);
+        this(var1);
+        this.setPosition(var2, var4, var6);
     }
 
     public EntityLanderBase(EntityPlayerMP player, float yOffset)
@@ -126,7 +126,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
    			this.checkFluidTankTransfer(this.containedItems.length - 1, this.fuelTank);
         }
 
-        AxisAlignedBB box = this.boundingBox.expand(0.2D, 0.4D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
 
         final List<Entity> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -359,7 +359,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 			 {
     	        				 if (e instanceof EntityPlayer)
     	        				 {
-    	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+    	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
                 					 e.mountEntity(this);
                 				 }
                 			 }
@@ -383,7 +383,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                			 {
 	        				 if (e instanceof EntityPlayer)
 	        				 {
-	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.difficultySetting.getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
+	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
                					 e.mountEntity(this);
                				 }
                			 }

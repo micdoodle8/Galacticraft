@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.creativetab.CreativeTabs;
@@ -83,7 +83,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             {
         		this.replaceEmptyCanisterItem(par1ItemStack, GCItems.oilCanister);
         	}
-            par1ItemStack.stackTagCompound = null;
+            par1ItemStack.setTagCompound(null);
         }
         else if (par1ItemStack.getItemDamage() <= 0) par1ItemStack.setItemDamage(1);
     }
@@ -125,12 +125,12 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         		}     		
         	}
         	//Delete any Forge fluid contents
-	    	container.stackTagCompound = null;
+	    	container.setTagCompound(null);
         }
         else
         {
 	    	//Refresh the Forge fluid contents
-	    	container.stackTagCompound = null;
+            container.setTagCompound(null);
 	    	super.fill(container, this.getFluid(container), true);
         }
     	
@@ -151,7 +151,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         	return null;
         
     	//Refresh the Forge fluid contents
-    	container.stackTagCompound = null;
+        container.setTagCompound(null);
         super.fill(container, this.getFluid(container), true);
 
         FluidStack used = super.drain(container, maxDrain, doDrain);
@@ -167,7 +167,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     	newDamage = Math.min(newDamage, ItemCanisterGeneric.EMPTY);
     	if (newDamage == ItemCanisterGeneric.EMPTY)
     	{
-            container.stackTagCompound = null;
+            container.setTagCompound(null);
     		if (container.getItem() != GCItems.oilCanister)
         	{
         		this.replaceEmptyCanisterItem(container, GCItems.oilCanister);

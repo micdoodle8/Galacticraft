@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import com.google.common.collect.Lists;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.StackSorted;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
@@ -11,6 +14,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GCItems
 {
@@ -47,7 +51,6 @@ public class GCItems
     public static Item oilCanister;
     public static Item fuelCanister;
     public static Item oxygenCanisterInfinite;
-    public static Item oilExtractor;
     public static Item schematic;
     public static Item key;
     public static Item partBuggy;
@@ -63,20 +66,21 @@ public class GCItems
     public static Item bucketFuel;
 //	public static Item cheeseBlock;
 
-    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", 200, new int[] { 0, 0, 0, 0 }, 0);
-    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", 30, new int[] { 3, 8, 6, 3 }, 12);
+//    public static ArmorMaterial addArmorMaterial(String name, String textureName, int durability, int[] reductionAmounts, int enchantability)
+    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0);
+    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 8, 6, 3 }, 12);
     public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
 
     public static void initItems()
     {
-        GCItems.oxTankLight = new ItemOxygenTank(1, "oxygenTankLightFull");
-        GCItems.oxTankMedium = new ItemOxygenTank(2, "oxygenTankMedFull");
-        GCItems.oxTankHeavy = new ItemOxygenTank(3, "oxygenTankHeavyFull");
-        GCItems.oxMask = new ItemOxygenMask("oxygenMask");
-        GCItems.rocketTier1 = new ItemTier1Rocket("spaceship");
-        GCItems.sensorGlasses = new ItemSensorGlasses("sensorGlasses");
+        GCItems.oxTankLight = new ItemOxygenTank(1, "oxygen_tank_light_full");
+        GCItems.oxTankMedium = new ItemOxygenTank(2, "oxygen_tank_med_full");
+        GCItems.oxTankHeavy = new ItemOxygenTank(3, "oxygen_tank_heavy_full");
+        GCItems.oxMask = new ItemOxygenMask("oxygen_mask");
+        GCItems.rocketTier1 = new ItemTier1Rocket("rocket_t1");
+        GCItems.sensorGlasses = new ItemSensorGlasses("sensor_glasses");
         GCItems.steelPickaxe = new ItemPickaxeGC("steel_pickaxe");
         GCItems.steelAxe = new ItemAxeGC("steel_axe");
         GCItems.steelHoe = new ItemHoeGC("steel_hoe");
@@ -87,151 +91,37 @@ public class GCItems
         GCItems.steelLeggings = new ItemArmorGC(2, "leggings");
         GCItems.steelBoots = new ItemArmorGC(3, "boots");
         GCItems.canister = new ItemCanister("canister");
-        GCItems.oxygenVent = new ItemBase("airVent");
-        GCItems.oxygenFan = new ItemBase("airFan");
-        GCItems.oxygenConcentrator = new ItemBase("oxygenConcentrator");
-        GCItems.heavyPlatingTier1 = new ItemBase("heavyPlating");
+        GCItems.oxygenVent = new ItemBase("air_vent");
+        GCItems.oxygenFan = new ItemBase("air_fan");
+        GCItems.oxygenConcentrator = new ItemBase("oxygen_concentrator");
+        GCItems.heavyPlatingTier1 = new ItemBase("heavy_plating");
         GCItems.rocketEngine = new ItemRocketEngineGC("engine");
-        GCItems.partFins = new ItemBase("rocketFins");
-        GCItems.partNoseCone = new ItemBase("noseCone");
-        GCItems.sensorLens = new ItemBase("sensorLens");
+        GCItems.partFins = new ItemBase("rocket_fins");
+        GCItems.partNoseCone = new ItemBase("nose_cone");
+        GCItems.sensorLens = new ItemBase("sensor_lens");
         GCItems.buggy = new ItemBuggy("buggy");
         GCItems.flag = new ItemFlag("flag");
-        GCItems.oxygenGear = new ItemOxygenGear("oxygenGear");
+        GCItems.oxygenGear = new ItemOxygenGear("oxygen_gear");
         GCItems.parachute = new ItemParaChute("parachute");
         GCItems.canvas = new ItemBase("canvas");
-        GCItems.oilCanister = new ItemOilCanister("oilCanisterPartial");
-        GCItems.fuelCanister = new ItemFuelCanister("fuelCanisterPartial");
-        GCItems.oxygenCanisterInfinite = new ItemCanisterOxygenInfinite("infiniteOxygen");
-        GCItems.flagPole = new ItemBase("steelPole");
-        GCItems.oilExtractor = new ItemOilExtractor("oilExtractor");
+        GCItems.oilCanister = new ItemOilCanister("oil_canister_partial");
+        GCItems.fuelCanister = new ItemFuelCanister("fuel_canister_partial");
+        GCItems.oxygenCanisterInfinite = new ItemCanisterOxygenInfinite("infinite_oxygen");
+        GCItems.flagPole = new ItemBase("steel_pole");
         GCItems.schematic = new ItemSchematic("schematic");
         GCItems.key = new ItemKey("key");
         GCItems.partBuggy = new ItemBuggyMaterial("buggymat");
-        GCItems.basicItem = new ItemBasic("basicItem");
+        GCItems.basicItem = new ItemBasic("basic_item");
         GCItems.battery = new ItemBattery("battery");
-        GCItems.infiniteBatery = new ItemBatteryInfinite("infiniteBattery");
-        GCItems.meteorChunk = new ItemMeteorChunk("meteorChunk");
-        GCItems.wrench = new ItemUniversalWrench("standardWrench");
+        GCItems.infiniteBatery = new ItemBatteryInfinite("infinite_battery");
+        GCItems.meteorChunk = new ItemMeteorChunk("meteor_chunk");
+        GCItems.wrench = new ItemUniversalWrench("standard_wrench");
         GCItems.cheeseCurd = new ItemCheese(1, 0.1F, false);
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
-        GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoricIronRaw");
-        GCItems.meteoricIronIngot = new ItemMoon("meteoricIronIngot");
-
-        hiddenItems.add(GCItems.oilExtractor);
+        GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoric_iron_raw");
+        GCItems.meteoricIronIngot = new ItemMoon("meteoric_iron_ingot");
 
         GCItems.registerHarvestLevels();
-
-        GCCoreUtil.registerGalacticraftItem("oxygenTankLightFull", GCItems.oxTankLight);
-        GCCoreUtil.registerGalacticraftItem("oxygenTankMediumFull", GCItems.oxTankMedium);
-        GCCoreUtil.registerGalacticraftItem("oxygenTankHeavyFull", GCItems.oxTankHeavy);
-        GCCoreUtil.registerGalacticraftItem("oxygenTankLightEmpty", GCItems.oxTankLight, 90);
-        GCCoreUtil.registerGalacticraftItem("oxygenTankMediumEmpty", GCItems.oxTankMedium, 180);
-        GCCoreUtil.registerGalacticraftItem("oxygenTankHeavyEmpty", GCItems.oxTankHeavy, 270);
-        GCCoreUtil.registerGalacticraftItem("oxygenMask", GCItems.oxMask);
-        GCCoreUtil.registerGalacticraftItem("rocketTier1", GCItems.rocketTier1, 0);
-        GCCoreUtil.registerGalacticraftItem("rocketTier1_18cargo", GCItems.rocketTier1, 1);
-        GCCoreUtil.registerGalacticraftItem("rocketTier1_36cargo", GCItems.rocketTier1, 2);
-        GCCoreUtil.registerGalacticraftItem("rocketTier1_54cargo", GCItems.rocketTier1, 3);
-        GCCoreUtil.registerGalacticraftItem("rocketTier1_prefueled", GCItems.rocketTier1, 4);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyPickaxe", GCItems.steelPickaxe);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyShovel", GCItems.steelSpade);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyAxe", GCItems.steelAxe);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyHoe", GCItems.steelHoe);
-        GCCoreUtil.registerGalacticraftItem("heavyDutySword", GCItems.steelSword);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyHelmet", GCItems.steelHelmet);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyChestplate", GCItems.steelChestplate);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyLeggings", GCItems.steelLeggings);
-        GCCoreUtil.registerGalacticraftItem("heavyDutyBoots", GCItems.steelBoots);
-        GCCoreUtil.registerGalacticraftItem("tinCanister", GCItems.canister, 0);
-        GCCoreUtil.registerGalacticraftItem("copperCanister", GCItems.canister, 1);
-        GCCoreUtil.registerGalacticraftItem("oxygenVent", GCItems.oxygenVent);
-        GCCoreUtil.registerGalacticraftItem("oxygenFan", GCItems.oxygenFan);
-        GCCoreUtil.registerGalacticraftItem("oxygenConcentrator", GCItems.oxygenConcentrator);
-        GCCoreUtil.registerGalacticraftItem("heavyPlatingTier1", GCItems.heavyPlatingTier1);
-        GCCoreUtil.registerGalacticraftItem("rocketEngineTier1", GCItems.rocketEngine, 0);
-        GCCoreUtil.registerGalacticraftItem("rocketBoosterTier1", GCItems.rocketEngine, 1);
-        GCCoreUtil.registerGalacticraftItem("rocketFins", GCItems.partFins);
-        GCCoreUtil.registerGalacticraftItem("rocketNoseCone", GCItems.partNoseCone);
-        GCCoreUtil.registerGalacticraftItem("sensorLens", GCItems.sensorLens);
-        GCCoreUtil.registerGalacticraftItem("moonBuggy", GCItems.buggy, 0);
-        GCCoreUtil.registerGalacticraftItem("moonBuggy_18cargo", GCItems.buggy, 1);
-        GCCoreUtil.registerGalacticraftItem("moonBuggy_36cargo", GCItems.buggy, 2);
-        GCCoreUtil.registerGalacticraftItem("moonBuggy_54cargo", GCItems.buggy, 3);
-        GCCoreUtil.registerGalacticraftItem("flagAmerican", GCItems.flag, 0);
-        GCCoreUtil.registerGalacticraftItem("flagBlack", GCItems.flag, 1);
-        GCCoreUtil.registerGalacticraftItem("flagLightBlue", GCItems.flag, 2);
-        GCCoreUtil.registerGalacticraftItem("flagLime", GCItems.flag, 3);
-        GCCoreUtil.registerGalacticraftItem("flagBrown", GCItems.flag, 4);
-        GCCoreUtil.registerGalacticraftItem("flagBlue", GCItems.flag, 5);
-        GCCoreUtil.registerGalacticraftItem("flagGray", GCItems.flag, 6);
-        GCCoreUtil.registerGalacticraftItem("flagGreen", GCItems.flag, 7);
-        GCCoreUtil.registerGalacticraftItem("flagLightGray", GCItems.flag, 8);
-        GCCoreUtil.registerGalacticraftItem("flagMagenta", GCItems.flag, 9);
-        GCCoreUtil.registerGalacticraftItem("flagOrange", GCItems.flag, 10);
-        GCCoreUtil.registerGalacticraftItem("flagPink", GCItems.flag, 11);
-        GCCoreUtil.registerGalacticraftItem("flagPurple", GCItems.flag, 12);
-        GCCoreUtil.registerGalacticraftItem("flagRed", GCItems.flag, 13);
-        GCCoreUtil.registerGalacticraftItem("flagCyan", GCItems.flag, 14);
-        GCCoreUtil.registerGalacticraftItem("flagYellow", GCItems.flag, 15);
-        GCCoreUtil.registerGalacticraftItem("flagWhite", GCItems.flag, 16);
-        GCCoreUtil.registerGalacticraftItem("oxygenGear", GCItems.oxygenGear);
-        GCCoreUtil.registerGalacticraftItem("parachuteWhite", GCItems.parachute, 0);
-        GCCoreUtil.registerGalacticraftItem("parachuteBlack", GCItems.parachute, 1);
-        GCCoreUtil.registerGalacticraftItem("parachuteLightBlue", GCItems.parachute, 2);
-        GCCoreUtil.registerGalacticraftItem("parachuteLime", GCItems.parachute, 3);
-        GCCoreUtil.registerGalacticraftItem("parachuteBrown", GCItems.parachute, 4);
-        GCCoreUtil.registerGalacticraftItem("parachuteBlue", GCItems.parachute, 5);
-        GCCoreUtil.registerGalacticraftItem("parachuteGray", GCItems.parachute, 6);
-        GCCoreUtil.registerGalacticraftItem("parachuteGreen", GCItems.parachute, 7);
-        GCCoreUtil.registerGalacticraftItem("parachuteLightGray", GCItems.parachute, 8);
-        GCCoreUtil.registerGalacticraftItem("parachutePink", GCItems.parachute, 9);
-        GCCoreUtil.registerGalacticraftItem("parachuteOrange", GCItems.parachute, 10);
-        GCCoreUtil.registerGalacticraftItem("parachutePink", GCItems.parachute, 11);
-        GCCoreUtil.registerGalacticraftItem("parachutePurple", GCItems.parachute, 12);
-        GCCoreUtil.registerGalacticraftItem("parachuteRed", GCItems.parachute, 13);
-        GCCoreUtil.registerGalacticraftItem("parachuteCyan", GCItems.parachute, 14);
-        GCCoreUtil.registerGalacticraftItem("parachuteYellow", GCItems.parachute, 15);
-        GCCoreUtil.registerGalacticraftItem("canvas", GCItems.canvas);
-        //These exact names are important, ItemCanisterGeneric searches for "CanisterFull"
-        GCCoreUtil.registerGalacticraftItem("fuelCanisterFull", GCItems.fuelCanister, 1);
-        GCCoreUtil.registerGalacticraftItem("oilCanisterFull", GCItems.oilCanister, 1);
-        GCCoreUtil.registerGalacticraftItem("liquidCanisterEmpty", GCItems.oilCanister, GCItems.oilCanister.getMaxDamage());
-        GCCoreUtil.registerGalacticraftItem("steelPole", GCItems.flagPole);
-        GCCoreUtil.registerGalacticraftItem("oilExtractor", GCItems.oilExtractor);
-        GCCoreUtil.registerGalacticraftItem("schematicMoonBuggy", GCItems.schematic, 0);
-        GCCoreUtil.registerGalacticraftItem("schematicRocketTier2", GCItems.schematic, 1);
-        GCCoreUtil.registerGalacticraftItem("tier1Key", GCItems.key);
-        GCCoreUtil.registerGalacticraftItem("buggyMaterialWheel", GCItems.partBuggy, 0);
-        GCCoreUtil.registerGalacticraftItem("buggyMaterialSeat", GCItems.partBuggy, 1);
-        GCCoreUtil.registerGalacticraftItem("buggyMaterialStorage", GCItems.partBuggy, 2);
-        GCCoreUtil.registerGalacticraftItem("solarModuleSingle", GCItems.basicItem, 0);
-        GCCoreUtil.registerGalacticraftItem("solarModuleFull", GCItems.basicItem, 1);
-        GCCoreUtil.registerGalacticraftItem("batteryEmpty", GCItems.battery, 100);
-        GCCoreUtil.registerGalacticraftItem("batteryFull", GCItems.battery, 0);
-        GCCoreUtil.registerGalacticraftItem("infiniteBattery", GCItems.infiniteBatery);
-        GCCoreUtil.registerGalacticraftItem("infiniteOxygen", GCItems.oxygenCanisterInfinite);
-        GCCoreUtil.registerGalacticraftItem("rawSilicon", GCItems.basicItem, 2);
-        GCCoreUtil.registerGalacticraftItem("ingotCopper", GCItems.basicItem, 3);
-        GCCoreUtil.registerGalacticraftItem("ingotTin", GCItems.basicItem, 4);
-        GCCoreUtil.registerGalacticraftItem("ingotAluminum", GCItems.basicItem, 5);
-        GCCoreUtil.registerGalacticraftItem("compressedCopper", GCItems.basicItem, 6);
-        GCCoreUtil.registerGalacticraftItem("compressedTin", GCItems.basicItem, 7);
-        GCCoreUtil.registerGalacticraftItem("compressedAluminum", GCItems.basicItem, 8);
-        GCCoreUtil.registerGalacticraftItem("compressedSteel", GCItems.basicItem, 9);
-        GCCoreUtil.registerGalacticraftItem("compressedBronze", GCItems.basicItem, 10);
-        GCCoreUtil.registerGalacticraftItem("compressedIron", GCItems.basicItem, 11);
-        GCCoreUtil.registerGalacticraftItem("waferSolar", GCItems.basicItem, 12);
-        GCCoreUtil.registerGalacticraftItem("waferBasic", GCItems.basicItem, 13);
-        GCCoreUtil.registerGalacticraftItem("waferAdvanced", GCItems.basicItem, 14);
-        GCCoreUtil.registerGalacticraftItem("dehydratedApple", GCItems.basicItem, 15);
-        GCCoreUtil.registerGalacticraftItem("dehydratedCarrot", GCItems.basicItem, 16);
-        GCCoreUtil.registerGalacticraftItem("dehydratedMelon", GCItems.basicItem, 17);
-        GCCoreUtil.registerGalacticraftItem("dehydratedPotato", GCItems.basicItem, 18);
-        GCCoreUtil.registerGalacticraftItem("frequencyModule", GCItems.basicItem, 19);
-        GCCoreUtil.registerGalacticraftItem("meteorThrowable", GCItems.meteorChunk);
-        GCCoreUtil.registerGalacticraftItem("meteorThrowableHot", GCItems.meteorChunk, 1);
-        GCCoreUtil.registerGalacticraftItem("standardWrench", GCItems.wrench);
 
         GCItems.registerItems();
 
@@ -239,11 +129,17 @@ public class GCItems
         {
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
             {
-                OreDictionary.registerOre(ItemBasic.names[i], new ItemStack(GCItems.basicItem, 1, i));
+                String name = ItemBasic.names[i];
+                while (name.contains("_"))
+                {
+                    int loc = name.indexOf("_");
+                    name = name.substring(0, loc) + name.substring(loc + 1, loc + 2).toUpperCase() + name.substring(loc + 2, name.length());
+                }
+                OreDictionary.registerOre(name, new ItemStack(GCItems.basicItem, 1, i));
             }
         }
 
-        OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
+        OreDictionary.registerOre("oreMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 0));
     }
 
@@ -254,6 +150,24 @@ public class GCItems
         GCItems.steelSpade.setHarvestLevel("shovel", 4);
     }
 
+    public static void registerSorted(Item item)
+    {
+        if (item instanceof ISortableItem)
+        {
+            ISortableItem sortableItem = (ISortableItem) item;
+            List<ItemStack> items = Lists.newArrayList();
+            item.getSubItems(item, null, items);
+            for (ItemStack stack : items)
+            {
+                GalacticraftCore.sortMapItems.get(sortableItem.getCategory(stack.getItemDamage())).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
+            }
+        }
+        else if (item.getCreativeTab() == GalacticraftCore.galacticraftItemsTab)
+        {
+            throw new RuntimeException(item.getClass() + " must inherit " + ISortableItem.class.getSimpleName() + "!");
+        }
+    }
+
     public static void registerItems()
     {
         GCItems.registerItem(GCItems.rocketTier1);
@@ -262,8 +176,10 @@ public class GCItems
         GCItems.registerItem(GCItems.oxTankLight);
         GCItems.registerItem(GCItems.oxTankMedium);
         GCItems.registerItem(GCItems.oxTankHeavy);
+        GCItems.registerItem(GCItems.oxygenCanisterInfinite);
         GCItems.registerItem(GCItems.sensorLens);
         GCItems.registerItem(GCItems.sensorGlasses);
+        GCItems.registerItem(GCItems.wrench);
         GCItems.registerItem(GCItems.steelPickaxe);
         GCItems.registerItem(GCItems.steelAxe);
         GCItems.registerItem(GCItems.steelHoe);
@@ -285,7 +201,6 @@ public class GCItems
         GCItems.registerItem(GCItems.canvas);
         GCItems.registerItem(GCItems.oilCanister);
         GCItems.registerItem(GCItems.fuelCanister);
-        GCItems.registerItem(GCItems.oilExtractor);
         GCItems.registerItem(GCItems.schematic);
         GCItems.registerItem(GCItems.key);
         GCItems.registerItem(GCItems.partBuggy);
@@ -293,9 +208,7 @@ public class GCItems
         GCItems.registerItem(GCItems.basicItem);
         GCItems.registerItem(GCItems.battery);
         GCItems.registerItem(GCItems.infiniteBatery);
-        GCItems.registerItem(GCItems.oxygenCanisterInfinite);
         GCItems.registerItem(GCItems.meteorChunk);
-        GCItems.registerItem(GCItems.wrench);
         GCItems.registerItem(GCItems.cheeseCurd);
         GCItems.registerItem(GCItems.meteoricIronRaw);
         GCItems.registerItem(GCItems.meteoricIronIngot);
@@ -306,6 +219,10 @@ public class GCItems
 
     public static void registerItem(Item item)
     {
-        GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_CORE);
+        String name = item.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftItem(name, item);
+        GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+        GalacticraftCore.proxy.postRegisterItem(item);
+        GCItems.registerSorted(item);
     }
 }

@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -37,13 +38,13 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.tasks.taskEntries.clear();
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAICreeperSwell(this));
-        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 0.25F, 0.3F));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 0.25F, false));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
+        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
+        this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.setSize(0.7F, 2.2F);
     }
 
@@ -176,7 +177,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     }
 
     @Override
-    protected void dropRareDrop(int p_70600_1_)
+    protected void dropFewItems(boolean b, int i)
     {
         switch (this.rand.nextInt(12))
         {
@@ -184,7 +185,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         case 1:
         case 2:
         case 3:
-        	this.entityDropItem(new ItemStack(VersionUtil.sand), 0.0F);
+        	this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
         	break;
         case 4:
         case 5:

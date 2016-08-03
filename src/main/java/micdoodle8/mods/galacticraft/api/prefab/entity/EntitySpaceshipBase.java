@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -36,6 +34,8 @@ import net.minecraftforge.event.entity.EntityEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -94,7 +94,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getCollisionBoundingBox()
     {
         return null;
     }
@@ -112,7 +112,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
 			boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
         	Entity e = par1DamageSource.getEntity(); 
-            if (this.isEntityInvulnerable() || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+            if (this.isEntityInvulnerable(par1DamageSource) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
@@ -194,7 +194,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return false;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
     {
@@ -286,7 +285,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         AxisAlignedBB box = null;
 
-        box = this.boundingBox.expand(0.2D, 0.2D, 0.2D);
+        box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
 
         final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -359,10 +358,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.dimensionId);
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
-            // this.worldObj.provider.dimensionId);
+            // this.worldObj.provider.getDimensionId());
         }
     }
 
@@ -418,9 +417,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
-        this.setRotation(par7, par8);
+        this.setRotation(yaw, pitch);
     }
 
     @Override
@@ -449,7 +448,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         boolean hasOldTags = false;
 
         // Backwards compatibility:
-        if (nbt.func_150296_c().contains("launched"))
+        if (nbt.getKeySet().contains("launched"))
         {
             hasOldTags = true;
 
@@ -462,7 +461,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         }
 
         // Backwards compatibility:
-        if (nbt.func_150296_c().contains("ignite"))
+        if (nbt.getKeySet().contains("ignite"))
         {
             hasOldTags = true;
 
@@ -619,7 +618,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		//  data4 = pitch angle
 		int countdown = data[0];
 		str[0] = "";
-		str[1] = (countdown == 400) ? GCCoreUtil.translate("gui.rocket.onLaunchpad") : ((countdown > 0) ? GCCoreUtil.translate("gui.rocket.countdown") + ": " + countdown / 20 : GCCoreUtil.translate("gui.rocket.launched"));
+		str[1] = (countdown == 400) ? GCCoreUtil.translate("gui.rocket.on_launchpad") : ((countdown > 0) ? GCCoreUtil.translate("gui.rocket.countdown") + ": " + countdown / 20 : GCCoreUtil.translate("gui.rocket.launched"));
 		str[2] = GCCoreUtil.translate("gui.rocket.height") + ": " + data[1];
 		str[3] = GameScreenText.makeSpeedString(data[2]);
 		str[4] = GCCoreUtil.translate("gui.message.fuel.name") + ": " + data[3] + "%";
@@ -631,4 +630,13 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		GL11.glTranslatef(0, this.height / 4, 0);
     }
 
+    /**
+     * Used in RenderTier1Rocket for standard rendering. Ignore if using a custom renderer.
+     *
+     * @return Y-axis offset for rendering at correct position
+     */
+    public float getRenderOffsetY()
+    {
+        return 1.34F;
+    }
 }

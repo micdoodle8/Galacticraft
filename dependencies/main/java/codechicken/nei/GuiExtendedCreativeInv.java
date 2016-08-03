@@ -4,15 +4,14 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandler
-{
+public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandler {
     public GuiExtendedCreativeInv(Container par1Container) {
         super(par1Container);
         ySize = 198;
@@ -20,7 +19,7 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-        GL11.glColor4f(1, 1, 1, 1);
+        GlStateManager.color(1, 1, 1, 1);
         CCRenderState.changeTexture("nei:textures/gui/inv.png");
 
         int x = guiLeft;

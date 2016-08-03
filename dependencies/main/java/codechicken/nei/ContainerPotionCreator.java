@@ -16,10 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 
-public class ContainerPotionCreator extends ContainerExtended
-{
-    public class SlotPotion extends Slot
-    {
+public class ContainerPotionCreator extends ContainerExtended {
+    public class SlotPotion extends Slot {
         public SlotPotion(IInventory inv, int slotIndex, int x, int y) {
             super(inv, slotIndex, x, y);
         }
@@ -34,16 +32,17 @@ public class ContainerPotionCreator extends ContainerExtended
             super.onSlotChanged();
             if (getHasStack()) {
                 ItemStack stack = getStack();
-                if (!stack.hasTagCompound())
+                if (!stack.hasTagCompound()) {
                     stack.setTagCompound(new NBTTagCompound());
-                if (!stack.getTagCompound().hasKey("CustomPotionEffects"))
+                }
+                if (!stack.getTagCompound().hasKey("CustomPotionEffects")) {
                     stack.getTagCompound().setTag("CustomPotionEffects", new NBTTagList());
+                }
             }
         }
     }
 
-    public class SlotPotionStore extends SlotHandleClicks
-    {
+    public class SlotPotionStore extends SlotHandleClicks {
         public SlotPotionStore(IInventory inv, int slotIndex, int x, int y) {
             super(inv, slotIndex, x, y);
         }
@@ -60,8 +59,9 @@ public class ContainerPotionCreator extends ContainerExtended
                     putStack(InventoryUtils.copyStack(held, 1));
                     player.inventory.setItemStack(null);
                 }
-            } else if (getHasStack())
+            } else if (getHasStack()) {
                 player.inventory.setItemStack(getStack());
+            }
 
             return null;
         }
@@ -72,8 +72,7 @@ public class ContainerPotionCreator extends ContainerExtended
         }
     }
 
-    public static class InventoryPotionStore extends InventoryNBT
-    {
+    public static class InventoryPotionStore extends InventoryNBT {
         public InventoryPotionStore() {
             super(9, NEIClientConfig.global.nbt.getCompoundTag("potionStore"));
         }
@@ -96,15 +95,17 @@ public class ContainerPotionCreator extends ContainerExtended
         this.potionStoreInv = potionStoreInv;
 
         addSlotToContainer(new SlotPotion(potionInv, 0, 25, 102));
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i++) {
             addSlotToContainer(new SlotPotionStore(potionStoreInv, i, 8 + i * 18, 14));
+        }
         bindPlayerInventory(inventoryPlayer, 8, 125);
     }
 
     @Override
     public boolean doMergeStackAreas(int slotIndex, ItemStack stack) {
-        if (slotIndex < 10)
+        if (slotIndex < 10) {
             return mergeItemStack(stack, 10, 46, true);
+        }
         return mergeItemStack(stack, 0, 1, false);
     }
 
@@ -117,30 +118,34 @@ public class ContainerPotionCreator extends ContainerExtended
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
 
-        if (!player.worldObj.isRemote)
+        if (!player.worldObj.isRemote) {
             InventoryUtils.dropOnClose(player, potionInv);
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void handleInputPacket(PacketCustom packet) {
         ItemStack potion = potionInv.getStackInSlot(0);
-        if (potion == null)
+        if (potion == null) {
             return;
+        }
 
         boolean add = packet.readBoolean();
         int effectID = packet.readUByte();
 
         NBTTagList effects = potion.getTagCompound().getTagList("CustomPotionEffects", 10);
         NBTTagList newEffects = new NBTTagList();
-        for(int i = 0; i < effects.tagCount(); i++) {
+        for (int i = 0; i < effects.tagCount(); i++) {
             NBTTagCompound tag = effects.getCompoundTagAt(i);
             PotionEffect e = PotionEffect.readCustomPotionEffectFromNBT(tag);
-            if(e.getPotionID() != effectID)
+            if (e.getPotionID() != effectID) {
                 newEffects.appendTag(tag);
+            }
         }
-        if(add)
+        if (add) {
             newEffects.appendTag(new PotionEffect(effectID, packet.readInt(), packet.readUByte()).writeCustomPotionEffectToNBT(new NBTTagCompound()));
+        }
         potion.getTagCompound().setTag("CustomPotionEffects", newEffects);
     }
 

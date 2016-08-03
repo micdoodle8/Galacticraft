@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
-import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
@@ -18,9 +15,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.lang.reflect.Method;
 
@@ -52,11 +47,10 @@ public class EnergyUtil
     {
         final TileEntity[] adjacentConnections = new TileEntity[6];
         
-        final BlockVec3 thisVec = new BlockVec3(tile);
-        final World world = tile.getWorldObj(); 
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        BlockVec3 thisVec = new BlockVec3(tile);
+        for (EnumFacing direction : EnumFacing.values())
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity instanceof IConnector)
             {
@@ -66,7 +60,7 @@ public class EnergyUtil
                 }
                 continue;
             }
-            
+
             if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
             {
                 //Do not connect GC wires directly to Mek Universal Cables
@@ -87,10 +81,10 @@ public class EnergyUtil
                 }
                 continue;
             }
-            
+
             if (isBCReallyLoaded)
             {
-                //Do not connect GC wires directly to BC pipes of any type 
+                //Do not connect GC wires directly to BC pipes of any type
                 try
                 {
                     if (clazzPipeTile.isInstance(tileEntity))
@@ -103,7 +97,7 @@ public class EnergyUtil
                     }
                 } catch (Exception e) { }
             }
-            
+
             if (isIC2Loaded && tileEntity instanceof IEnergyTile)
             {
                 if (tileEntity instanceof IEnergyConductor)
@@ -112,18 +106,18 @@ public class EnergyUtil
                 }
 
                 boolean doneIC2 = false;
-                if (tileEntity instanceof IEnergyAcceptor)
+                if (tileEntity instanceof IEnergyAcceptor && tile instanceof IEnergyEmitter)
                 {
                     doneIC2 = true;
-                	if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom(tile, direction.getOpposite()))
+                	if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom((IEnergyEmitter) tile, direction.getOpposite()))
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
                     }
                 }
-                if (tileEntity instanceof IEnergyEmitter)
+                if (tileEntity instanceof IEnergyEmitter && tile instanceof IEnergyAcceptor)
                 {
                     doneIC2 = true;
-                    if (((IEnergyEmitter) tileEntity).emitsEnergyTo(tile, direction.getOpposite()))
+                    if (((IEnergyEmitter) tileEntity).emitsEnergyTo((IEnergyAcceptor) tile, direction.getOpposite()))
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
                     }
@@ -131,7 +125,7 @@ public class EnergyUtil
 
                 if (doneIC2) continue;
             }
-            
+
             if (isRFLoaded && tileEntity instanceof IEnergyConnection)
             {
                 if (isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver) || isRF1Loaded && tileEntity instanceof IEnergyHandler || clazzRailcraftEngine != null && clazzRailcraftEngine.isInstance(tileEntity))
@@ -145,36 +139,18 @@ public class EnergyUtil
                     {
                         continue;
                     }
-                    
+
 	                if (((IEnergyConnection)tileEntity).canConnectEnergy(direction.getOpposite()))
 	                	adjacentConnections[direction.ordinal()] = tileEntity;
                 }
                 continue;
-            }
-            
-            if (isBCLoaded)
-            {
-                //Compatibility for pre-RF versions of Buildcraft: these may still be installed alongside Galacticraft, who knows?
-            	
-            	//BC6 API
-                if (isBC6Loaded && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, direction.getOpposite()) != null)
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                    continue;
-                }
-
-                //Legacy BC API
-                if (tileEntity instanceof IPowerReceptor && ((IPowerReceptor) tileEntity).getPowerReceiver(direction.getOpposite()) != null)
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                }
             }
         }
 
         return adjacentConnections;
     }
     
-    public static float otherModsEnergyTransfer(TileEntity tileAdj, ForgeDirection inputAdj, float toSend, boolean simulate)
+    public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
     {
     	if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput && tileAdj instanceof IStrictEnergyAcceptor)
         {
@@ -203,10 +179,10 @@ public class EnergyUtil
                     ex.printStackTrace();
                 }
             }
-        	
+
         	if (simulate)
         		return Math.min(toSend,  (float) demanded / EnergyConfigHandler.TO_IC2_RATIO);
-        	
+
             double energySendingIC2 = Math.min(toSend * EnergyConfigHandler.TO_IC2_RATIO, demanded);
             if (energySendingIC2 >= 1D)
             {
@@ -233,50 +209,17 @@ public class EnergyUtil
                 return (float) result / EnergyConfigHandler.TO_IC2_RATIO;
             }
         }
-        else if (isRF1Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyHandler)
-        {
-        	float sent = ((IEnergyHandler)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-//        	GCLog.debug("Beam/storage offering RF1 up to " + toSend + " into pipe, it accepted " + sent);
-        	return sent;
-        }
         else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
         {
-        	float sent = ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, MathHelper.floor_float(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	float sent = ((IEnergyReceiver)tileAdj).receiveEnergy(inputAdj, (int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
 //        	GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
         	return sent;
         }
-        else if (isBC6Loaded && !EnergyConfigHandler.disableBuildCraftOutput && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
-        //New BC API
-        {
-            double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).getEnergyRequested());
-            if (simulate)
-            {
-                return (float) toSendBC / EnergyConfigHandler.TO_BC_RATIO;
-            }
-            float sent = (float) MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj).addEnergy(toSendBC) / EnergyConfigHandler.TO_BC_RATIO;
-//            GCLog.debug("Beam/storage offering BC up to " + toSend + " into pipe, it accepted " + sent);
-            return sent;
-        }
-        else if (isBCLoaded && !EnergyConfigHandler.disableBuildCraftOutput && tileAdj instanceof IPowerReceptor)
-        //Legacy BC API
-        {
-            PowerReceiver receiver = ((IPowerReceptor) tileAdj).getPowerReceiver(inputAdj);
-            if (receiver != null)
-            {
-                double toSendBC = Math.min(toSend * EnergyConfigHandler.TO_BC_RATIO, Math.min(receiver.powerRequest(), receiver.getMaxEnergyReceived()));
-                if (simulate)
-                {
-                    return (float) toSendBC / EnergyConfigHandler.TO_BC_RATIO;
-                }
-                float rec = (float) receiver.receiveEnergy(buildcraft.api.power.PowerHandler.Type.PIPE, toSendBC, inputAdj); 
-                return rec / EnergyConfigHandler.TO_BC_RATIO;
-            }
-        }
-        
+
         return 0F;
     }
 
-    public static float otherModsEnergyExtract(TileEntity tileAdj, ForgeDirection inputAdj, float toPull, boolean simulate)
+    public static float otherModsEnergyExtract(TileEntity tileAdj, EnumFacing inputAdj, float toPull, boolean simulate)
     {
         if (isIC2Loaded && !EnergyConfigHandler.disableIC2Input && tileAdj instanceof IEnergySource)
         {
@@ -291,7 +234,7 @@ public class EnergyUtil
             }
 
         	if (simulate)
-        		return Math.min(toPull,  (float) offered / EnergyConfigHandler.TO_IC2_RATIO);       	
+        		return Math.min(toPull,  (float) offered / EnergyConfigHandler.TO_IC2_RATIO);
 
         	double energySendingIC2 = Math.min(toPull * EnergyConfigHandler.TO_IC2_RATIO, offered);
             if (energySendingIC2 >= 1D)
@@ -314,15 +257,10 @@ public class EnergyUtil
         }
         else if (isRF2Loaded && !EnergyConfigHandler.disableRFInput && tileAdj instanceof IEnergyProvider)
         {
-        	float sent = ((IEnergyProvider)tileAdj).extractEnergy(inputAdj, MathHelper.floor_float(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+        	float sent = ((IEnergyProvider)tileAdj).extractEnergy(inputAdj, (int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
         	return sent;
         }
-        else if (isRF1Loaded && !EnergyConfigHandler.disableRFInput && tileAdj instanceof IEnergyHandler)
-        {
-        	float sent = ((IEnergyHandler)tileAdj).extractEnergy(inputAdj, MathHelper.floor_float(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-        	return sent;
-        }
-        
+
         return 0F;
     }
 
@@ -334,11 +272,11 @@ public class EnergyUtil
      * @param tileAdj - the tile under test, it might be an energy tile from another mod
      * @param inputAdj - the energy input side for that tile which is under test
      */
-	public static boolean otherModCanReceive(TileEntity tileAdj, ForgeDirection inputAdj)
+	public static boolean otherModCanReceive(TileEntity tileAdj, EnumFacing inputAdj)
 	{
         if (tileAdj instanceof TileBaseConductor || tileAdj instanceof EnergyStorageTile)
         	return false;  //Do not try using other mods' methods to connect to GC's own tiles
-        
+
 		if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
         {
             return ((IStrictEnergyAcceptor) tileAdj).canReceiveEnergy(inputAdj);
@@ -351,17 +289,7 @@ public class EnergyUtil
         {
         	return ((IEnergyConnection)tileAdj).canConnectEnergy(inputAdj);
         }
-        else if (isBC6Loaded && MjAPI.getMjBattery(tileAdj, MjAPI.DEFAULT_POWER_FRAMEWORK, inputAdj) != null)
-        //New BC API
-        {
-            return true;
-        }
-        else if (isBCLoaded && tileAdj instanceof IPowerReceptor)
-        //Legacy BC API
-        {
-            return ((IPowerReceptor) tileAdj).getPowerReceiver(inputAdj) != null;
-        }
-		
+
 		return false;
 	}
 
@@ -373,7 +301,7 @@ public class EnergyUtil
     * @param tileAdj - the tile under test, it might be an energy tile from another mod
     * @param side - the energy output side for that tile which is under test
     */
-	public static boolean otherModCanProduce(TileEntity tileAdj, ForgeDirection side)
+	public static boolean otherModCanProduce(TileEntity tileAdj, EnumFacing side)
 	{
        if (tileAdj instanceof TileBaseConductor || tileAdj instanceof EnergyStorageTile)
        	return false;  //Do not try using other mods' methods to connect to GC's own tiles
@@ -382,11 +310,7 @@ public class EnergyUtil
        {
            return ((IEnergyEmitter) tileAdj).emitsEnergyTo(null, side);
        }
-       else if (isRF1Loaded && tileAdj instanceof IEnergyHandler || isRF2Loaded && tileAdj instanceof IEnergyProvider)
-       {
-       	return ((IEnergyConnection)tileAdj).canConnectEnergy(side);
-       }
-		
+
        return false;
 	}
 
@@ -445,7 +369,7 @@ public class EnergyUtil
                 try
                 {
                     //1.7.2 version
-                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", ForgeDirection.class, double.class);
+                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", EnumFacing.class, double.class);
                     GCLog.debug("IC2 inject 1.7.2 succeeded");
                 }
                 catch (Exception e)
@@ -453,7 +377,7 @@ public class EnergyUtil
                     //if that fails, try 1.7.10 version
                     try
                     {
-                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", ForgeDirection.class, double.class, double.class);
+                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", EnumFacing.class, double.class, double.class);
                         EnergyUtil.voltageParameterIC2 = true;
                         GCLog.debug("IC2 inject 1.7.10 succeeded");
                     }

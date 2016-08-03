@@ -2,7 +2,10 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -38,13 +41,13 @@ public abstract class StructureComponentVillage extends StructureComponent
     }
 
     @Override
-    protected void func_143012_a(NBTTagCompound nbttagcompound)
+    protected void writeStructureToNBT(NBTTagCompound nbttagcompound)
     {
         nbttagcompound.setInteger("VCount", this.villagersSpawned);
     }
 
     @Override
-    protected void func_143011_b(NBTTagCompound nbttagcompound)
+    protected void readStructureFromNBT(NBTTagCompound nbttagcompound)
     {
         this.villagersSpawned = nbttagcompound.getInteger("VCount");
     }
@@ -52,16 +55,16 @@ public abstract class StructureComponentVillage extends StructureComponent
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected StructureComponent getNextComponentNN(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
-        switch (this.coordBaseMode)
+        switch (this.coordBaseMode.getHorizontalIndex())
         {
         case 0:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 1, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(1), this.getComponentType());
         case 1:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, 2, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, EnumFacing.getHorizontal(2), this.getComponentType());
         case 2:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 1, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(1), this.getComponentType());
         case 3:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, 2, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, EnumFacing.getHorizontal(2), this.getComponentType());
         default:
             return null;
         }
@@ -70,16 +73,16 @@ public abstract class StructureComponentVillage extends StructureComponent
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected StructureComponent getNextComponentPP(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
-        switch (this.coordBaseMode)
+        switch (this.coordBaseMode.getHorizontalIndex())
         {
         case 0:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 3, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(3), this.getComponentType());
         case 1:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, EnumFacing.getHorizontal(0), this.getComponentType());
         case 2:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, 3, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(3), this.getComponentType());
         case 3:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, EnumFacing.getHorizontal(0), this.getComponentType());
         default:
             return null;
         }
@@ -94,9 +97,9 @@ public abstract class StructureComponentVillage extends StructureComponent
         {
             for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6)
             {
-                if (par2StructureBoundingBox.isVecInside(var6, 64, var5))
+                if (par2StructureBoundingBox.isVecInside(new BlockPos(var6, 64, var5)))
                 {
-                    var3 += Math.max(par1World.getTopSolidOrLiquidBlock(var6, var5), par1World.provider.getAverageGroundLevel());
+                    var3 += Math.max(par1World.getTopSolidOrLiquidBlock(new BlockPos(var6, 64, var5)).getY(), par1World.provider.getAverageGroundLevel());
                     ++var4;
                 }
             }
@@ -130,7 +133,7 @@ public abstract class StructureComponentVillage extends StructureComponent
                 var8 += par1World.rand.nextInt(3) - 1;
                 var10 += par1World.rand.nextInt(3) - 1;
 
-                if (!par2StructureBoundingBox.isVecInside(var8, var9, var10))
+                if (!par2StructureBoundingBox.isVecInside(new BlockPos(var8, var9, var10)))
                 {
                     break;
                 }
@@ -141,46 +144,5 @@ public abstract class StructureComponentVillage extends StructureComponent
                 par1World.spawnEntityInWorld(var11);
             }
         }
-    }
-
-    protected int getVillagerType(int par1)
-    {
-        return 0;
-    }
-
-    protected Block getBiomeSpecificBlock(Block par1, int par2)
-    {
-        return par1;
-    }
-
-    protected int getBiomeSpecificBlockMetadata(Block par1, int par2)
-    {
-        return par2;
-    }
-
-    @Override
-    protected void placeBlockAtCurrentPosition(World par1World, Block par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
-    {
-        final Block var8 = this.getBiomeSpecificBlock(par2, par3);
-        final int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
-        super.placeBlockAtCurrentPosition(par1World, var8, var9, par4, par5, par6, par7StructureBoundingBox);
-    }
-
-    @Override
-    protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, Block par9, Block par10, boolean par11)
-    {
-        final Block var12 = this.getBiomeSpecificBlock(par9, 0);
-        final int var13 = this.getBiomeSpecificBlockMetadata(par9, 0);
-        final Block var14 = this.getBiomeSpecificBlock(par10, 0);
-        final int var15 = this.getBiomeSpecificBlockMetadata(par10, 0);
-        super.fillWithMetadataBlocks(par1World, par2StructureBoundingBox, par3, par4, par5, par6, par7, par8, var12, var13, var14, var15, par11);
-    }
-
-    @Override
-    protected void func_151554_b(World par1World, Block par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
-    {
-        final Block var8 = this.getBiomeSpecificBlock(par2, par3);
-        final int var9 = this.getBiomeSpecificBlockMetadata(par2, par3);
-        super.func_151554_b(par1World, var8, var9, par4, par5, par6, par7StructureBoundingBox);
     }
 }

@@ -1,6 +1,5 @@
 package codechicken.nei;
 
-import codechicken.core.CommonUtils;
 import codechicken.core.IGuiPacketSender;
 import codechicken.core.ServerUtils;
 import codechicken.core.inventory.ContainerExtended;
@@ -8,7 +7,6 @@ import codechicken.core.inventory.SlotDummy;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import codechicken.lib.vec.BlockCoord;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryBasic;
@@ -18,111 +16,111 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.LinkedList;
 import java.util.Set;
 
-public class NEISPH implements IServerPacketHandler
-{
+public class NEISPH implements IServerPacketHandler {
     @Override
     public void handlePacket(PacketCustom packet, EntityPlayerMP sender, INetHandlerPlayServer netHandler) {
-        if (!NEIServerConfig.authenticatePacket(sender, packet))
+        if (!NEIServerConfig.authenticatePacket(sender, packet)) {
             return;
+        }
 
         switch (packet.getType()) {
-            case 1:
-                handleGiveItem(sender, packet);
-                break;
-            case 4:
-                NEIServerUtils.deleteAllItems(sender);
-                break;
-            case 5:
-                setInventorySlot(sender, packet);
-                break;
-            case 6:
-                NEIServerUtils.toggleMagnetMode(sender);
-                break;
-            case 7:
-                NEIServerUtils.setHourForward(sender.worldObj, packet.readUByte(), true);
-                break;
-            case 8:
-                NEIServerUtils.healPlayer(sender);
-                break;
-            case 9:
-                NEIServerUtils.toggleRaining(sender.worldObj, true);
-                break;
-            case 10:
-                sendLoginState(sender);
-                break;
-            case 11:
-                sender.sendContainerAndContentsToPlayer(sender.openContainer, sender.openContainer.getInventory());
-                break;
-            case 12:
-                handlePropertyChange(sender, packet);
-                break;
-            case 13:
-                NEIServerUtils.setGamemode(sender, packet.readUByte());
-                break;
-            case 14:
-                NEIServerUtils.cycleCreativeInv(sender, packet.readInt());
-                break;
-            case 15:
-                handleMobSpawnerID(sender.worldObj, packet.readCoord(), packet.readString());
-                break;
-            case 20:
-                handleContainerPacket(sender, packet);
-                break;
-            case 21:
-                openEnchantmentGui(sender);
-                break;
-            case 22:
-                modifyEnchantment(sender, packet.readUByte(), packet.readUByte(), packet.readBoolean());
-                break;
-            case 23:
-                processCreativeInv(sender, packet.readBoolean());
-                break;
-            case 24:
-                openPotionGui(sender, packet);
-                break;
-            case 25:
-                handleDummySlotSet(sender, packet);
-                break;
+        case 1:
+            handleGiveItem(sender, packet);
+            break;
+        case 4:
+            NEIServerUtils.deleteAllItems(sender);
+            break;
+        case 5:
+            setInventorySlot(sender, packet);
+            break;
+        case 6:
+            NEIServerUtils.toggleMagnetMode(sender);
+            break;
+        case 7:
+            NEIServerUtils.setHourForward(sender.worldObj, packet.readUByte(), true);
+            break;
+        case 8:
+            NEIServerUtils.healPlayer(sender);
+            break;
+        case 9:
+            NEIServerUtils.toggleRaining(sender.worldObj, true);
+            break;
+        case 10:
+            sendLoginState(sender);
+            break;
+        case 11:
+            sender.updateCraftingInventory(sender.openContainer, sender.openContainer.getInventory());
+            break;
+        case 12:
+            handlePropertyChange(sender, packet);
+            break;
+        case 13:
+            NEIServerUtils.setGamemode(sender, packet.readUByte());
+            break;
+        case 14:
+            NEIServerUtils.cycleCreativeInv(sender, packet.readInt());
+            break;
+        case 15:
+            handleMobSpawnerID(sender.worldObj, packet.readCoord(), packet.readString());
+            break;
+        case 20:
+            handleContainerPacket(sender, packet);
+            break;
+        case 21:
+            openEnchantmentGui(sender);
+            break;
+        case 22:
+            modifyEnchantment(sender, packet.readUByte(), packet.readUByte(), packet.readBoolean());
+            break;
+        case 23:
+            processCreativeInv(sender, packet.readBoolean());
+            break;
+        case 24:
+            openPotionGui(sender, packet);
+            break;
+        case 25:
+            handleDummySlotSet(sender, packet);
+            break;
         }
     }
 
     private void handleDummySlotSet(EntityPlayerMP sender, PacketCustom packet) {
-        int slotNumber = packet.readShort();
-        ItemStack stack = packet.readItemStack(true);
-
-        Slot slot = sender.openContainer.getSlot(slotNumber);
-        if (slot instanceof SlotDummy)
-            slot.putStack(stack);
+        Slot slot = sender.openContainer.getSlot(packet.readShort());
+        if (slot instanceof SlotDummy) {
+            slot.putStack(packet.readItemStack());
+        }
     }
 
     private void handleContainerPacket(EntityPlayerMP sender, PacketCustom packet) {
-        if (sender.openContainer instanceof ContainerExtended)
+        if (sender.openContainer instanceof ContainerExtended) {
             ((ContainerExtended) sender.openContainer).handleInputPacket(packet);
+        }
     }
 
     private void handleMobSpawnerID(World world, BlockCoord coord, String mobtype) {
-        TileEntity tile = world.getTileEntity(coord.x, coord.y, coord.z);
+        TileEntity tile = world.getTileEntity(coord.pos());
         if (tile instanceof TileEntityMobSpawner) {
-            ((TileEntityMobSpawner) tile).func_145881_a().setEntityName(mobtype);
+            ((TileEntityMobSpawner) tile).getSpawnerBaseLogic().setEntityName(mobtype);
             tile.markDirty();
-            world.markBlockForUpdate(coord.x, coord.y, coord.z);
+            world.markBlockForUpdate(coord.pos());
         }
     }
 
     private void handlePropertyChange(EntityPlayerMP sender, PacketCustom packet) {
         String name = packet.readString();
-        if (NEIServerConfig.canPlayerPerformAction(sender.getCommandSenderName(), name))
+        if (NEIServerConfig.canPlayerPerformAction(sender.getName(), name)) {
             NEIServerConfig.disableAction(sender.dimension, name, packet.readBoolean());
+        }
     }
 
     public static void processCreativeInv(EntityPlayerMP sender, boolean open) {
         if (open) {
-            ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.forPlayer(sender.getCommandSenderName()), Side.SERVER)), new IGuiPacketSender()
-            {
+            ServerUtils.openSMPContainer(sender, new ContainerCreativeInv(sender, new ExtendedCreativeInv(NEIServerConfig.forPlayer(sender.getName()), Side.SERVER)), new IGuiPacketSender() {
                 @Override
                 public void sendPacket(EntityPlayerMP player, int windowId) {
                     PacketCustom packet = new PacketCustom(channel, 23);
@@ -140,7 +138,7 @@ public class NEISPH implements IServerPacketHandler
     }
 
     private void handleGiveItem(EntityPlayerMP player, PacketCustom packet) {
-        NEIServerUtils.givePlayerItem(player, packet.readItemStack(true), packet.readBoolean(), packet.readBoolean());
+        NEIServerUtils.givePlayerItem(player, packet.readItemStack(), packet.readBoolean(), packet.readBoolean());
     }
 
     private void setInventorySlot(EntityPlayerMP player, PacketCustom packet) {
@@ -150,8 +148,9 @@ public class NEISPH implements IServerPacketHandler
 
         ItemStack old = NEIServerUtils.getSlotContents(player, slot, container);
         boolean deleting = item == null || old != null && NEIServerUtils.areStacksSameType(item, old) && item.stackSize < old.stackSize;
-        if (NEIServerConfig.canPlayerPerformAction(player.getCommandSenderName(), deleting ? "delete" : "item"))
+        if (NEIServerConfig.canPlayerPerformAction(player.getName(), deleting ? "delete" : "item")) {
             NEIServerUtils.setSlotContents(player, slot, item, container);
+        }
     }
 
     private void modifyEnchantment(EntityPlayerMP player, int e, int lvl, boolean add) {
@@ -164,8 +163,7 @@ public class NEISPH implements IServerPacketHandler
     }
 
     private void openEnchantmentGui(EntityPlayerMP player) {
-        ServerUtils.openSMPContainer(player, new ContainerEnchantmentModifier(player.inventory, player.worldObj, 0, 0, 0), new IGuiPacketSender()
-        {
+        ServerUtils.openSMPContainer(player, new ContainerEnchantmentModifier(player.inventory, player.worldObj), new IGuiPacketSender() {
             @Override
             public void sendPacket(EntityPlayerMP player, int windowId) {
                 PacketCustom packet = new PacketCustom(channel, 21);
@@ -177,10 +175,10 @@ public class NEISPH implements IServerPacketHandler
 
     private void openPotionGui(EntityPlayerMP player, PacketCustom packet) {
         InventoryBasic b = new InventoryBasic("potionStore", true, 9);
-        for (int i = 0; i < b.getSizeInventory(); i++)
+        for (int i = 0; i < b.getSizeInventory(); i++) {
             b.setInventorySlotContents(i, packet.readItemStack());
-        ServerUtils.openSMPContainer(player, new ContainerPotionCreator(player.inventory, b), new IGuiPacketSender()
-        {
+        }
+        ServerUtils.openSMPContainer(player, new ContainerPotionCreator(player.inventory, b), new IGuiPacketSender() {
             @Override
             public void sendPacket(EntityPlayerMP player, int windowId) {
                 PacketCustom packet = new PacketCustom(channel, 24);
@@ -191,17 +189,11 @@ public class NEISPH implements IServerPacketHandler
     }
 
     public static void sendActionDisabled(int dim, String name, boolean disable) {
-        new PacketCustom(channel, 11)
-                .writeString(name)
-                .writeBoolean(disable)
-                .sendToDimension(dim);
+        new PacketCustom(channel, 11).writeString(name).writeBoolean(disable).sendToDimension(dim);
     }
 
     public static void sendActionEnabled(EntityPlayerMP player, String name, boolean enable) {
-        new PacketCustom(channel, 12)
-                .writeString(name)
-                .writeBoolean(enable)
-                .sendToPlayer(player);
+        new PacketCustom(channel, 12).writeString(name).writeBoolean(enable).sendToPlayer(player);
     }
 
     private void sendLoginState(EntityPlayerMP player) {
@@ -209,46 +201,55 @@ public class NEISPH implements IServerPacketHandler
         LinkedList<String> disabled = new LinkedList<String>();
         LinkedList<String> enabled = new LinkedList<String>();
         LinkedList<ItemStack> bannedItems = new LinkedList<ItemStack>();
-        PlayerSave playerSave = NEIServerConfig.forPlayer(player.getCommandSenderName());
+        PlayerSave playerSave = NEIServerConfig.forPlayer(player.getName());
 
         for (String name : NEIActions.nameActionMap.keySet()) {
-            if (NEIServerConfig.canPlayerPerformAction(player.getCommandSenderName(), name))
+            if (NEIServerConfig.canPlayerPerformAction(player.getName(), name)) {
                 actions.add(name);
-            if (NEIServerConfig.isActionDisabled(player.dimension, name))
+            }
+            if (NEIServerConfig.isActionDisabled(player.dimension, name)) {
                 disabled.add(name);
-            if (playerSave.isActionEnabled(name))
+            }
+            if (playerSave.isActionEnabled(name)) {
                 enabled.add(name);
+            }
         }
-        for (ItemStackMap.Entry<Set<String>> entry : NEIServerConfig.bannedItems.entries())
-            if (!NEIServerConfig.isPlayerInList(player.getCommandSenderName(), entry.value, true))
+        for (ItemStackMap.Entry<Set<String>> entry : NEIServerConfig.bannedItems.entries()) {
+            if (!NEIServerConfig.isPlayerInList(player.getName(), entry.value, true)) {
                 bannedItems.add(entry.key);
+            }
+        }
 
         PacketCustom packet = new PacketCustom(channel, 10);
 
         packet.writeByte(actions.size());
-        for (String s : actions)
+        for (String s : actions) {
             packet.writeString(s);
+        }
 
         packet.writeByte(disabled.size());
-        for (String s : disabled)
+        for (String s : disabled) {
             packet.writeString(s);
+        }
 
         packet.writeByte(enabled.size());
-        for (String s : enabled)
+        for (String s : enabled) {
             packet.writeString(s);
+        }
 
         packet.writeInt(bannedItems.size());
-        for (ItemStack stack : bannedItems)
+        for (ItemStack stack : bannedItems) {
             packet.writeItemStack(stack);
+        }
 
         packet.sendToPlayer(player);
     }
 
     public static void sendHasServerSideTo(EntityPlayerMP player) {
-        NEIServerConfig.logger.debug("Sending serverside check to: " + player.getCommandSenderName());
+        NEIServerConfig.logger.debug("Sending serverside check to: " + player.getName());
         PacketCustom packet = new PacketCustom(channel, 1);
         packet.writeByte(NEIActions.protocol);
-        packet.writeString(CommonUtils.getWorldName(player.worldObj));
+        packet.writeString(player.worldObj.getWorldInfo().getWorldName());
 
         packet.sendToPlayer(player);
     }

@@ -17,16 +17,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Loader;
 import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.common.Loader;
 
 /**
  * This renders the thermal armor (unless RenderPlayerAPI is installed).
  * The thermal armor render is done after the corresponding body part of the player is drawn.
  * This ALSO patches RenderPlayer so that it uses ModelPlayerGC in place of ModelPlayer to draw the player.
- * 
+ *
  * Finally, this also adds a hook into rotateCorpse so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
- * 
+ *
  * @author User
  *
  */
@@ -38,20 +39,25 @@ public class RenderPlayerGC extends RenderPlayer
     private static ResourceLocation thermalPaddingTexture1;
     public static boolean flagThermalOverride = false;
     private static Boolean isSmartRenderLoaded = null;
-    
+
     static
     {
-        modelThermalPadding = new ModelPlayerGC(0.25F);
-        modelThermalPaddingHelmet = new ModelPlayerGC(0.9F);
+        modelThermalPadding = new ModelPlayerGC(0.25F, false);
+        modelThermalPaddingHelmet = new ModelPlayerGC(0.9F, false);
     }
 
     public RenderPlayerGC()
     {
-        super();
-        this.mainModel = new ModelPlayerGC(0.0F);
-        this.modelBipedMain = (ModelPlayerGC) this.mainModel;
-        this.modelArmorChestplate = new ModelPlayerGC(1.0F);
-        this.modelArmor = new ModelPlayerGC(0.5F);
+        this(false);
+    }
+
+    public RenderPlayerGC(boolean smallArms)
+    {
+        super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
+        this.mainModel = new ModelPlayerGC(0.0F, smallArms);
+//        this.modelBipedMain = (ModelPlayerGC) this.mainModel;
+//        this.modelArmorChestplate = new ModelPlayerGC(1.0F);
+//        this.modelArmor = new ModelPlayerGC(0.5F);
 
         if (GalacticraftCore.isPlanetsLoaded)
         {
@@ -65,15 +71,15 @@ public class RenderPlayerGC extends RenderPlayer
     	if (inst instanceof RenderPlayer)
     	{
     		RenderPlayer thisInst = (RenderPlayer)inst;
-    		
+
     		if (isSmartRenderLoaded == null)
     		{
     			isSmartRenderLoaded = Loader.isModLoaded("SmartRender");
     		}
-    		
+
             if (RenderPlayerGC.thermalPaddingTexture0 != null && !isSmartRenderLoaded)
             {
-                PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getCommandSenderName());
+                PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getName());
 
                 if (gearData != null && !RenderPlayerGC.flagThermalOverride)
                 {
@@ -103,8 +109,8 @@ public class RenderPlayerGC extends RenderPlayer
                             modelBiped.bipedLeftArm.showModel = i == 1;
                             modelBiped.bipedRightLeg.showModel = i == 2 || i == 3;
                             modelBiped.bipedLeftLeg.showModel = i == 2 || i == 3;
-                            
-                            modelBiped.onGround = thisInst.mainModel.onGround;
+
+//                            modelBiped.onGround = thisInst.mainModel.onGround;
                             modelBiped.isRiding = thisInst.mainModel.isRiding;
                             modelBiped.isChild = thisInst.mainModel.isChild;
                             if (thisInst.mainModel instanceof ModelBiped)
@@ -167,7 +173,7 @@ public class RenderPlayerGC extends RenderPlayer
         {
             RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
             MinecraftForge.EVENT_BUS.post(event);
-            
+
             if (!event.vanillaOverride)
             {
                 super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);

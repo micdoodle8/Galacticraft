@@ -8,8 +8,7 @@ import static codechicken.lib.gui.GuiDraw.getStringWidth;
 import static codechicken.nei.LayoutManager.*;
 import static codechicken.nei.NEIClientConfig.*;
 
-public abstract class LayoutStyleDefault extends LayoutStyle
-{
+public abstract class LayoutStyleDefault extends LayoutStyle {
     @Override
     public void layout(GuiContainer gui, VisiblityData visiblity) {
         int windowWidth = gui.width;
@@ -36,8 +35,9 @@ public abstract class LayoutStyleDefault extends LayoutStyle
         itemPanel.x = (containerWidth + windowWidth) / 2 + 3;
         itemPanel.w = windowWidth - 3 - itemPanel.x;
         itemPanel.h = windowHeight - 15 - itemPanel.y;
-        if (!canPerformAction("item"))
+        if (!canPerformAction("item")) {
             itemPanel.h += 15;
+        }
         itemPanel.resize();
 
         more.w = more.h = less.w = less.h = 16;
@@ -56,50 +56,58 @@ public abstract class LayoutStyleDefault extends LayoutStyle
         options.h = 22;
 
         delete.state = 0x4;
-        if (NEIController.getDeleteMode())
+        if (NEIController.getDeleteMode()) {
             delete.state |= 1;
-        else if (!visiblity.enableDeleteMode)
+        } else if (!visiblity.enableDeleteMode) {
             delete.state |= 2;
+        }
 
         rain.state = 0x4;
-        if (disabledActions.contains("rain"))
+        if (disabledActions.contains("rain")) {
             rain.state |= 2;
-        else if (NEIClientUtils.isRaining())
+        } else if (NEIClientUtils.isRaining()) {
             rain.state |= 1;
+        }
 
         gamemode.state = 0x4;
         if (NEIClientUtils.getGamemode() != 0) {
             gamemode.state |= 0x1;
             gamemode.index = NEIClientUtils.getGamemode() - 1;
         } else {
-            if (NEIClientUtils.isValidGamemode("creative"))
+            if (NEIClientUtils.isValidGamemode("creative")) {
                 gamemode.index = 0;
-            else if (NEIClientUtils.isValidGamemode("creative+"))
+            } else if (NEIClientUtils.isValidGamemode("creative+")) {
                 gamemode.index = 1;
-            else if (NEIClientUtils.isValidGamemode("adventure"))
+            } else if (NEIClientUtils.isValidGamemode("adventure")) {
                 gamemode.index = 2;
+            }
         }
 
         magnet.state = 0x4 | (getMagnetMode() ? 1 : 0);
 
-        if (canPerformAction("delete"))
+        if (canPerformAction("delete")) {
             layoutButton(delete);
-        if (canPerformAction("rain"))
+        }
+        if (canPerformAction("rain")) {
             layoutButton(rain);
+        }
         if (NEIClientUtils.isValidGamemode("creative") ||
                 NEIClientUtils.isValidGamemode("creative+") ||
-                NEIClientUtils.isValidGamemode("adventure"))
+                NEIClientUtils.isValidGamemode("adventure")) {
             layoutButton(gamemode);
-        if (canPerformAction("magnet"))
+        }
+        if (canPerformAction("magnet")) {
             layoutButton(magnet);
+        }
         if (canPerformAction("time")) {
             for (int i = 0; i < 4; i++) {
                 timeButtons[i].state = disabledActions.contains(NEIActions.timeZones[i]) ? 2 : 0;
                 layoutButton(timeButtons[i]);
             }
         }
-        if (canPerformAction("heal"))
+        if (canPerformAction("heal")) {
             layoutButton(heal);
+        }
 
         searchField.y = windowHeight - searchField.h - 2;
 
@@ -130,11 +138,13 @@ public abstract class LayoutStyleDefault extends LayoutStyle
             stateButtons[i].saved = isStateSaved(i);
 
             int width = getStringWidth(stateButtons[i].getRenderLabel()) + 26;
-            if (width + 22 > containerLeft)
+            if (width + 22 > containerLeft) {
                 width = containerLeft - 22;
+            }
 
-            if (width > maxWidth)
+            if (width > maxWidth) {
                 maxWidth = width;
+            }
         }
 
         for (int i = 0; i < 7; i++) {

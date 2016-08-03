@@ -15,6 +15,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -24,13 +25,16 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     {
         super(par1World);
         this.setSize(0.3F, 0.2F);
+        this.tasks.taskEntries.clear();
+        this.targetTasks.taskEntries.clear();
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedZombie.class, 0, false, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedSkeleton.class, 0, false, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedSpider.class, 0, false, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedCreeper.class, 0, false, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySlimeling.class, 200, false));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedZombie.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedSkeleton.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedSpider.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedCreeper.class, 0, false, true, null));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySlimeling.class, 200, false, true, null));
     }
 
     @Override
@@ -48,22 +52,9 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    public boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     protected boolean canTriggerWalking()
     {
         return false;
-    }
-
-    @Override
-    protected Entity findPlayerToAttack()
-    {
-        double var1 = 8.0D;
-        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
     }
 
     @Override
@@ -105,17 +96,7 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    protected void attackEntity(Entity par1Entity, float par2)
-    {
-        if (this.attackTime <= 0 && par2 < 1.2F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
-        {
-            this.attackTime = 20;
-            par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), par2);
-        }
-    }
-
-    @Override
-    protected void func_145780_a(int x, int y, int z, Block block)
+    protected void playStepSound(BlockPos pos, Block block)
     {
         this.worldObj.playSoundAtEntity(this, "mob.silverfish.step", 1.0F, 1.0F);
     }

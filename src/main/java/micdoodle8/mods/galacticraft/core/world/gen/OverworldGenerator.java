@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -85,10 +87,10 @@ public class OverworldGenerator implements IWorldGenerator
                             {
                                 double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
-                                Block block = par1World.getBlock(var38, var41, var44);
-                                if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block.isReplaceableOreGen(par1World, var38, var41, var44, Blocks.stone))
+                                Block block = par1World.getBlockState(new BlockPos(var38, var41, var44)).getBlock();
+                                if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && block.isReplaceableOreGen(par1World, new BlockPos(var38, var41, var44), BlockHelper.forBlock(Blocks.stone)))
                                 {
-                                    par1World.setBlock(var38, var41, var44, this.oreBlock, this.metadata, 2);
+                                    par1World.setBlockState(new BlockPos(var38, var41, var44), this.oreBlock.getStateFromMeta(this.metadata), 2);
                                 }
                             }
                         }

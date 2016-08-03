@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
@@ -15,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
 {
@@ -35,9 +38,9 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -82,29 +85,26 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     {
         boolean foundFuelable = false;
 
-        for (final ForgeDirection dir : ForgeDirection.values())
+        for (final EnumFacing dir : EnumFacing.values())
         {
-            if (dir != ForgeDirection.UNKNOWN)
+            final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
+
+            if (pad != null && pad instanceof TileEntityMulti)
             {
-                final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
+                final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
 
-                if (pad != null && pad instanceof TileEntityMulti)
+                if (mainTile instanceof ICargoEntity)
                 {
-                   	final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
-
-                    if (mainTile instanceof ICargoEntity)
-                    {
-                        this.attachedFuelable = (ICargoEntity) mainTile;
-                        foundFuelable = true;
-                        break;
-                    }
-                }
-                else if (pad != null && pad instanceof ICargoEntity)
-                {
-                    this.attachedFuelable = (ICargoEntity) pad;
+                    this.attachedFuelable = (ICargoEntity) mainTile;
                     foundFuelable = true;
                     break;
                 }
+            }
+            else if (pad != null && pad instanceof ICargoEntity)
+            {
+                this.attachedFuelable = (ICargoEntity) pad;
+                foundFuelable = true;
+                break;
             }
         }
 
@@ -134,14 +134,25 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         return this.containingItems;
     }
 
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
+
+
     @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
+    public boolean hasCustomName() {
+        return false;
     }
 
     @Override
-    public String getInventoryName()
+    public IChatComponent getDisplayName() {
+        return null;
+    }
+
+    @Override
+    public String getName()
     {
         return GCCoreUtil.translate("container.cargounloader.name");
     }
@@ -149,31 +160,32 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
-        return side != this.getBlockMetadata() - 2 ? new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] { };
+        return new int[] {};
+//        return side != this.getBlockMetadata() - 2 ? new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] { };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (side != this.getBlockMetadata() - 2)
-        {
-            if (slotID == 0)
-            {
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
-            }
-            else
-            {
-                return true;
-            }
-        }
+//        if (side != this.getBlockMetadata() - 2)
+//        {
+//            if (slotID == 0)
+//            {
+//                return ItemElectricBase.isElectricItem(itemstack.getItem());
+//            }
+//            else
+//            {
+//                return true;
+//            }
+//        }
 
         return false;
     }
@@ -289,8 +301,19 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z)
+    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
     {
         return true;
+    }
+
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockCargoLoader.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFront().rotateY();
     }
 }

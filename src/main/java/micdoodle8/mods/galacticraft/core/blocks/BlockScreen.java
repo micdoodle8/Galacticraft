@@ -1,47 +1,61 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock
+public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock, ITileEntityProvider, ISortableBlock
 {
-    private IIcon iconFront;
-    private IIcon iconSide;
+    /*private IIcon iconFront;
+    private IIcon iconSide;*/
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyBool LEFT = PropertyBool.create("left");
+    public static final PropertyBool RIGHT = PropertyBool.create("right");
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
 	
 	//Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
 	protected BlockScreen(String assetName)
     {
         super(Material.circuits);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeGlass);
-        this.setBlockTextureName("glass");
-        this.setBlockName(assetName);
+        //this.setBlockTextureName("glass");
+        this.setUnlocalizedName(assetName);
     }
 
 	@Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing direction)
     {
-    	return direction.ordinal() != world.getBlockMetadata(x, y, z);
+    	return direction.ordinal() != getMetaFromState(world.getBlockState(pos));
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        ((TileEntityScreen) worldIn.getTileEntity(pos)).breakScreen(state);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -51,7 +65,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -62,7 +76,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -79,71 +93,21 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         }
 
         return this.iconFront;
+    }*/
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getIndex();
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = 0;
-
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
-
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 4;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 5;
-            break;
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, change, 3);
-    }
-
-    @Override
-    public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
-    {
-        final int metadata = world.getBlockMetadata(x, y, z);
-        final int facing = metadata & 7;
-        int change = 0;
-        
-        switch (facing)
-        {
-        	case 0:
-        		change = 1;
-        		break;
-        	case 1:
-        		change = 3;
-        		break;
-        	case 2:
-        		change = 5;
-        		break;
-        	case 3:
-        		change = 4;
-        		break;
-        	case 4:
-        		change = 2;
-        		break;
-        	case 5:
-        		change = 0;       		
-        }
-        change += (8 & metadata);
-        world.setBlockMetadataWithNotify(x, y, z, change, 2);
-
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityScreen)
-        {
-        	((TileEntityScreen) tile).breakScreen(facing);
-        }
-
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getIndex();
+        world.setBlockState(pos, this.getStateFromMeta(change), 3);
         return true;
     }
 
@@ -160,9 +124,9 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
         {
         	((TileEntityScreen) tile).changeChannel();
@@ -172,9 +136,9 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbour)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
         {
         	((TileEntityScreen) tile).refreshConnections(true);
@@ -194,15 +158,15 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
 	@Override
-	public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+	public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
 	{
     	return true;
 	}
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World par1World, int x, int y, int z, Vec3 par5Vec3, Vec3 par6Vec3)
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
-        final int metadata = par1World.getBlockMetadata(x, y, z) & 7;
+        final int metadata = getMetaFromState(worldIn.getBlockState(pos)) & 7;
         float boundsFront = 0.094F;
         float boundsBack = 1.0F - boundsFront;
 
@@ -215,19 +179,54 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         	this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
         	break;
         case 2:
-        	this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);        	
-        	break;
+            this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
+            break;
         case 3:
-        	this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);        	
+            this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
         	break;
         case 4:
-        	this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);        	
-        	break;
+            this.setBlockBounds(boundsFront, 0F, 0F,  1.0F, 1.0F, 1.0F);
+            break;
         case 5:
-        	this.setBlockBounds(boundsFront, 0F, 0F,  1.0F, 1.0F, 1.0F);        	
+            this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
         	break;
         }
 
-        return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
+        return super.collisionRayTrace(worldIn, pos, start, end);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getFront(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(FACING)).getIndex();
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, LEFT, RIGHT, UP, DOWN);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntityScreen screen = (TileEntityScreen) worldIn.getTileEntity(pos);
+        return state.withProperty(LEFT, screen.connectedLeft)
+                .withProperty(RIGHT, screen.connectedRight)
+                .withProperty(UP, screen.connectedUp)
+                .withProperty(DOWN, screen.connectedDown);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

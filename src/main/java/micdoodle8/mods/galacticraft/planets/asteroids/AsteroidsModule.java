@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -61,9 +64,6 @@ public class AsteroidsModule implements IPlanetsModule
 {
     public static Planet planetAsteroids;
 
-    public static final String ASSET_PREFIX = "galacticraftasteroids";
-    public static final String TEXTURE_PREFIX = AsteroidsModule.ASSET_PREFIX + ":";
-
     public static AsteroidsPlayerHandler playerHandler;
     public static Fluid fluidMethaneGas;
     public static Fluid fluidOxygenGas;
@@ -75,12 +75,13 @@ public class AsteroidsModule implements IPlanetsModule
     public static Fluid fluidAtmosphericGases;
     //public static Fluid fluidCO2Gas;
 
-    private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous)
+    private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
     {
         Fluid returnFluid = FluidRegistry.getFluid(fluidName);
     	if (returnFluid == null)
         {
-    		FluidRegistry.registerFluid(new Fluid(fluidName).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
+            ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "fluids/" + fluidTexture);
+    		FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
     		returnFluid = FluidRegistry.getFluid(fluidName);
         }
     	return returnFluid;
@@ -91,25 +92,29 @@ public class AsteroidsModule implements IPlanetsModule
     {
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
-        FMLCommonHandler.instance().bus().register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
         MinecraftForge.EVENT_BUS.register(eventHandler);
-        FMLCommonHandler.instance().bus().register(eventHandler);
-        RecipeSorter.register("galacticraftmars:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+        RecipeSorter.register("galacticraftplanets:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
-        AsteroidsModule.fluidMethaneGas = registerFluid("methane", 1, 11, 295, true);
-        AsteroidsModule.fluidAtmosphericGases = registerFluid("atmosphericgases", 1, 13, 295, true);
-        AsteroidsModule.fluidLiquidMethane = registerFluid("liquidmethane", 450, 120, 109, false);
+        registerFluid("methane", 1, 11, 295, true, "MethaneGas");
+        registerFluid("atmosphericgases", 1, 13, 295, true, "AtmosphericGases");
+        registerFluid("liquidmethane", 450, 120, 109, false, "LiquidMethane");
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
-        AsteroidsModule.fluidLiquidOxygen = registerFluid("liquidoxygen", 1141, 140, 90, false);
-        AsteroidsModule.fluidOxygenGas = registerFluid("oxygen", 1, 13, 295, true);
-        AsteroidsModule.fluidLiquidNitrogen = registerFluid("liquidnitrogen", 808, 130, 90, false);
-        AsteroidsModule.fluidNitrogenGas = registerFluid("nitrogen", 1, 12, 295, true);
-        registerFluid("carbondioxide", 2, 20, 295, true);
-        registerFluid("hydrogen", 1, 1, 295, true);
-        registerFluid("argon", 1, 4, 295, true);
-        AsteroidsModule.fluidLiquidArgon = registerFluid("liquidargon", 900, 100, 87, false);
-        registerFluid("helium", 1, 1, 295, true);
+        registerFluid("liquidoxygen", 1141, 140, 90, false, "LiquidOxygen");
+        registerFluid("liquidnitrogen", 808, 130, 90, false, "LiquidNitrogen");
+        registerFluid("nitrogen", 1, 12, 295, true, "NitrogenGas");
+        registerFluid("carbondioxide", 2, 20, 295, true, "CarbonDioxideGas");
+        registerFluid("argon", 1, 4, 295, true, "ArgonGas");
+        registerFluid("liquidargon", 900, 100, 87, false, "LiquidArgon");
+        registerFluid("helium", 1, 1, 295, true, "HeliumGas");
+        AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
+        AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
+        AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");
+        AsteroidsModule.fluidLiquidOxygen = FluidRegistry.getFluid("liquidoxygen");
+        AsteroidsModule.fluidOxygenGas = FluidRegistry.getFluid("oxygen");
+        AsteroidsModule.fluidLiquidNitrogen = FluidRegistry.getFluid("liquidnitrogen");
+        AsteroidsModule.fluidLiquidArgon = FluidRegistry.getFluid("liquidargon");
+        AsteroidsModule.fluidNitrogenGas = FluidRegistry.getFluid("nitrogen");
 
         //AsteroidsModule.fluidCO2Gas = FluidRegistry.getFluid("carbondioxide");
 
@@ -128,6 +133,8 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
+        ((CreativeTabGC) GalacticraftCore.galacticraftItemsTab).setItemForTab(AsteroidsItems.astroMiner); // Set creative tab item to Astro Miner
+
         this.registerMicroBlocks();
     	SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
     	SchematicRegistry.registerSchematicRecipe(new SchematicAstroMiner());
@@ -135,7 +142,6 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
 
         AsteroidsTickHandlerServer eventHandler = new AsteroidsTickHandlerServer();
-        FMLCommonHandler.instance().bus().register(eventHandler);
         MinecraftForge.EVENT_BUS.register(eventHandler);
 
         this.registerEntities();
@@ -263,7 +269,7 @@ public class AsteroidsModule implements IPlanetsModule
     {
         if (side == Side.SERVER)
         {
-	        TileEntity tile = world.getTileEntity(x, y, z);
+	        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 	
 	        switch (ID)
 	        {
@@ -271,7 +277,7 @@ public class AsteroidsModule implements IPlanetsModule
 	
 	            if (tile instanceof TileEntityShortRangeTelepad)
 	            {
-	                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile));
+	                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile), player);
 	            }
 	            if (tile instanceof TileEntityMinerBase)
 	            {
@@ -299,11 +305,11 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerNonMobEntities()
     {
-        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "SmallAsteroidGC", 150, 3, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "GrappleHookGC", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "Tier3RocketGC", 150, 1, false);
-        MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "EntryPodAsteroids", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "AstroMiner", 80, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntitySmallAsteroid.class, "small_asteroid", 150, 3, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityGrapple.class, "grapple_hook", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTier3Rocket.class, "rocket_t3", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityEntryPod.class, "entry_pod", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityAstroMiner.class, "astro_miner", 80, 1, true);
     }
 
     private void registerMicroBlocks()
@@ -323,10 +329,10 @@ public class AsteroidsModule implements IPlanetsModule
 					}
 				}
 				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroidsBlock.asteroid0");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroidsBlock.asteroid1");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroidsBlock.asteroid2");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.denseIce");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroids_block.asteroid_rock_0");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroids_block.asteroid_rock_1");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroids_block.asteroid_rock_2");
+				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.dense_ice");
 			}
 		} catch (Exception e) {}
 	}

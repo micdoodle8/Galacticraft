@@ -1,16 +1,9 @@
 package codechicken.core.featurehack;
 
-import java.util.Random;
+//import static net.minecraftforge.common.util.ForgeDirection.UP;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-
-public class TweakTransformerHelper
-{
-    public static void quenchFireTick(World world, int x, int y, int z, Random rand)
+public class TweakTransformerHelper {
+    /*public static void quenchFireTick(World world, int x, int y, int z, Random rand)
     {
         Block base = world.getBlock(x, y - 1, z);
         boolean supported = (base != null && base.isFireSource(world, x, y - 1, z, UP));
@@ -35,5 +28,5 @@ public class TweakTransformerHelper
     {
         Block block = world.getBlock(x, y, z);
         return block.isAir(world, x, y, z) || block.isReplaceable(world, x, y, z);
-    }
+    }*/
 }

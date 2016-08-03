@@ -1,23 +1,23 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
 
-public class GCEntityClientPlayerMP extends EntityClientPlayerMP
+public class GCEntityClientPlayerMP extends EntityPlayerSP
 {
-    public GCEntityClientPlayerMP(Minecraft minecraft, World world, Session session, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
+    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
     {
-        super(minecraft, world, session, netHandler, statFileWriter);
+        super(mcIn, worldIn, netHandler, statFileWriter);
     }
 
     @Override
@@ -95,12 +95,12 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 //    }
 //
 
-    @Override
+    /*@Override
     public void setInPortal()
     {
     	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
     	{
     		super.setInPortal();
     	}
-    }
+    } TODO Fix disable of portal */
 }

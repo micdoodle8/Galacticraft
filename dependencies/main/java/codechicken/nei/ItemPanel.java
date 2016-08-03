@@ -15,8 +15,10 @@ import java.util.ArrayList;
 
 import static codechicken.lib.gui.GuiDraw.drawRect;
 
-public class ItemPanel extends Widget
-{
+public class ItemPanel extends Widget {
+    /**
+     * Should not be externally modified, use updateItemList
+     */
     public static ArrayList<ItemStack> items = new ArrayList<ItemStack>();
     /**
      * Swapped into visible items on update
@@ -27,8 +29,7 @@ public class ItemPanel extends Widget
         _items = newItems;
     }
 
-    public class ItemPanelSlot
-    {
+    public class ItemPanelSlot {
         public ItemStack item;
         public int slotIndex;
 
@@ -60,42 +61,55 @@ public class ItemPanel extends Widget
         marginTop = y + (h % 18) / 2;
         columns = w / 18;
         rows = h / 18;
+        //sometimes width and height can be negative with certain resizing
+        if (rows < 0) {
+            rows = 0;
+        }
+        if (columns < 0) {
+            columns = 0;
+        }
 
         calculatePage();
         updateValidSlots();
     }
 
     private void calculatePage() {
-        if (itemsPerPage == 0)
+        if (itemsPerPage == 0) {
             numPages = 0;
-        else
+        } else {
             numPages = (int) Math.ceil((float) items.size() / (float) itemsPerPage);
+        }
 
-        if (firstIndex >= items.size())
+        if (firstIndex >= items.size()) {
             firstIndex = 0;
+        }
 
-        if (numPages == 0)
+        if (numPages == 0) {
             page = 0;
-        else
+        } else {
             page = firstIndex / itemsPerPage + 1;
+        }
     }
 
     private void updateValidSlots() {
         GuiContainer gui = NEIClientUtils.getGuiContainer();
         validSlotMap = new boolean[rows * columns];
         itemsPerPage = 0;
-        for (int i = 0; i < validSlotMap.length; i++)
+        for (int i = 0; i < validSlotMap.length; i++) {
             if (slotValid(gui, i)) {
                 validSlotMap[i] = true;
                 itemsPerPage++;
             }
+        }
     }
 
     private boolean slotValid(GuiContainer gui, int i) {
         Rectangle4i rect = getSlotRect(i);
-        for (INEIGuiHandler handler : GuiInfo.guiHandlers)
-            if (handler.hideItemPanelSlot(gui, rect.x, rect.y, rect.w, rect.h))
+        for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
+            if (handler.hideItemPanelSlot(gui, rect.x, rect.y, rect.w, rect.h)) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -109,16 +123,18 @@ public class ItemPanel extends Widget
 
     @Override
     public void draw(int mousex, int mousey) {
-        if (itemsPerPage == 0)
+        if (itemsPerPage == 0) {
             return;
+        }
 
         GuiContainerManager.enableMatrixStackLogging();
         int index = firstIndex;
         for (int i = 0; i < rows * columns && index < items.size(); i++) {
             if (validSlotMap[i]) {
                 Rectangle4i rect = getSlotRect(i);
-                if (rect.contains(mousex, mousey))
+                if (rect.contains(mousex, mousey)) {
                     drawRect(rect.x, rect.y, rect.w, rect.h, 0xee555555);//highlight
+                }
 
                 GuiContainerManager.drawItem(rect.x + 1, rect.y + 1, items.get(index));
 
@@ -145,8 +161,9 @@ public class ItemPanel extends Widget
             ItemStack stack = new ItemPanelSlot(mouseDownSlot).item;
             if (stack != null && (mouseOverSlot == null || mouseOverSlot.slotIndex != mouseDownSlot || heldTime > 500)) {
                 int amount = NEIClientConfig.getItemQuantity();
-                if (amount == 0)
+                if (amount == 0) {
                     amount = stack.getMaxStackSize();
+                }
 
                 draggedStack = NEIServerUtils.copyStack(stack, amount);
             }
@@ -155,21 +172,26 @@ public class ItemPanel extends Widget
 
     @Override
     public boolean handleClick(int mousex, int mousey, int button) {
-        if (handleDraggedClick(mousex, mousey, button))
+        if (handleDraggedClick(mousex, mousey, button)) {
             return true;
+        }
 
         if (NEIClientUtils.getHeldItem() != null) {
-            for (INEIGuiHandler handler : GuiInfo.guiHandlers)
-                if (handler.hideItemPanelSlot(NEIClientUtils.getGuiContainer(), mousex, mousey, 1, 1))
+            for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
+                if (handler.hideItemPanelSlot(NEIClientUtils.getGuiContainer(), mousex, mousey, 1, 1)) {
                     return false;
+                }
+            }
 
-            if (NEIClientConfig.canPerformAction("delete") && NEIClientConfig.canPerformAction("item"))
-                if (button == 1)
+            if (NEIClientConfig.canPerformAction("delete") && NEIClientConfig.canPerformAction("item")) {
+                if (button == 1) {
                     NEIClientUtils.decreaseSlotStack(-999);
-                else
+                } else {
                     NEIClientUtils.deleteHeldItem();
-            else
+                }
+            } else {
                 NEIClientUtils.dropHeldItem();
+            }
 
             return true;
         }
@@ -180,8 +202,9 @@ public class ItemPanel extends Widget
                 ItemStack stack = hoverSlot.item;
                 if (stack != null) {
                     int amount = NEIClientConfig.getItemQuantity();
-                    if (amount == 0)
+                    if (amount == 0) {
                         amount = stack.getMaxStackSize();
+                    }
 
                     draggedStack = NEIServerUtils.copyStack(stack, amount);
                 }
@@ -194,12 +217,13 @@ public class ItemPanel extends Widget
     }
 
     private boolean handleDraggedClick(int mousex, int mousey, int button) {
-        if (draggedStack == null)
+        if (draggedStack == null) {
             return false;
+        }
 
         GuiContainer gui = NEIClientUtils.getGuiContainer();
         boolean handled = false;
-        for (INEIGuiHandler handler : GuiInfo.guiHandlers)
+        for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             if (handler.handleDragNDrop(gui, mousex, mousey, draggedStack, button)) {
                 handled = true;
                 if (draggedStack.stackSize == 0) {
@@ -207,17 +231,20 @@ public class ItemPanel extends Widget
                     return true;
                 }
             }
+        }
 
-        if (handled)
+        if (handled) {
             return true;
+        }
 
         Slot overSlot = gui.getSlotAtPosition(mousex, mousey);
         if (overSlot != null && overSlot.isItemValid(draggedStack)) {
             if (NEIClientConfig.canCheatItem(draggedStack)) {
                 int contents = overSlot.getHasStack() ? overSlot.getStack().stackSize : 0;
                 int add = button == 0 ? draggedStack.stackSize : 1;
-                if (overSlot.getHasStack() && !NEIServerUtils.areStacksSameType(draggedStack, overSlot.getStack()))
+                if (overSlot.getHasStack() && !NEIServerUtils.areStacksSameType(draggedStack, overSlot.getStack())) {
                     contents = 0;
+                }
                 int total = Math.min(contents + add, Math.min(overSlot.getSlotStackLimit(), draggedStack.getMaxStackSize()));
 
                 if (total > contents) {
@@ -225,8 +252,9 @@ public class ItemPanel extends Widget
                     NEICPH.sendGiveItem(NEIServerUtils.copyStack(draggedStack, total), false, false);
                     draggedStack.stackSize -= total - contents;
                 }
-                if (draggedStack.stackSize == 0)
+                if (draggedStack.stackSize == 0) {
                     draggedStack = null;
+                }
             } else {
                 draggedStack = null;
             }
@@ -248,10 +276,11 @@ public class ItemPanel extends Widget
         if (hoverSlot != null && hoverSlot.slotIndex == mouseDownSlot && draggedStack == null) {
             ItemStack item = hoverSlot.item;
             if (NEIController.manager.window instanceof GuiRecipe || !NEIClientConfig.canCheatItem(item)) {
-                if (button == 0)
+                if (button == 0) {
                     GuiCraftingRecipe.openRecipeGui("item", item);
-                else if (button == 1)
+                } else if (button == 1) {
                     GuiUsageRecipe.openRecipeGui("item", item);
+                }
 
                 draggedStack = null;
                 mouseDownSlot = -1;
@@ -266,8 +295,9 @@ public class ItemPanel extends Widget
 
     @Override
     public boolean onMouseWheel(int i, int mousex, int mousey) {
-        if (!contains(mousex, mousey))
+        if (!contains(mousex, mousey)) {
             return false;
+        }
 
         scroll(-i);
         return true;
@@ -294,12 +324,14 @@ public class ItemPanel extends Widget
 
     public ItemPanelSlot getSlotMouseOver(int mousex, int mousey) {
         int index = firstIndex;
-        for (int i = 0; i < rows * columns && index < items.size(); i++)
+        for (int i = 0; i < rows * columns && index < items.size(); i++) {
             if (validSlotMap[i]) {
-                if (getSlotRect(i).contains(mousex, mousey))
+                if (getSlotRect(i).contains(mousex, mousey)) {
                     return new ItemPanelSlot(index);
+                }
                 index++;
             }
+        }
 
         return null;
     }
@@ -308,13 +340,16 @@ public class ItemPanel extends Widget
         if (itemsPerPage != 0) {
             int oldIndex = firstIndex;
             firstIndex += i * itemsPerPage;
-            if (firstIndex >= items.size())
+            if (firstIndex >= items.size()) {
                 firstIndex = 0;
-            if (firstIndex < 0)
-                if (oldIndex > 0)
+            }
+            if (firstIndex < 0) {
+                if (oldIndex > 0) {
                     firstIndex = 0;
-                else
+                } else {
                     firstIndex = (items.size() - 1) / itemsPerPage * itemsPerPage;
+                }
+            }
 
             calculatePage();
         }
@@ -332,9 +367,11 @@ public class ItemPanel extends Widget
     public boolean contains(int px, int py) {
         GuiContainer gui = NEIClientUtils.getGuiContainer();
         Rectangle4i rect = new Rectangle4i(px, py, 1, 1);
-        for (INEIGuiHandler handler : GuiInfo.guiHandlers)
-            if (handler.hideItemPanelSlot(gui, rect.x, rect.y, rect.w, rect.h))
+        for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
+            if (handler.hideItemPanelSlot(gui, rect.x, rect.y, rect.w, rect.h)) {
                 return false;
+            }
+        }
 
         return super.contains(px, py);
     }

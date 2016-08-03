@@ -11,10 +11,12 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,31 +47,31 @@ public class ThreadFindSeal
 
     public ThreadFindSeal(TileEntityOxygenSealer sealer)
     {
-        this(sealer.getWorldObj(), new BlockVec3(sealer).translate(0, 1, 0), sealer.getFindSealChecks(), new ArrayList<TileEntityOxygenSealer>(Arrays.asList(sealer)));
+        this(sealer.getWorld(), sealer.getPos().up(), sealer.getFindSealChecks(), new ArrayList<TileEntityOxygenSealer>(Arrays.asList(sealer)));
     }
 
     @SuppressWarnings("unchecked")
-    public ThreadFindSeal(World world, BlockVec3 head, int checkCount, List<TileEntityOxygenSealer> sealers)
+    public ThreadFindSeal(World world, BlockPos head, int checkCount, List<TileEntityOxygenSealer> sealers)
     {
         this.world = world;
-        this.head = head;
+        this.head = new BlockVec3(head);
         this.checkCount = checkCount;
         this.sealers = sealers;
         this.foundAmbientThermal = false;
         this.checked = new HashSet<BlockVec3>();
         this.torchesToUpdate = new LinkedList<BlockVec3>();
 
-        this.sealersAround = TileEntityOxygenSealer.getSealersAround(world, head.x, head.y, head.z, 1024 * 1024);
+        this.sealersAround = TileEntityOxygenSealer.getSealersAround(world, head, 1024 * 1024);
 
         //If called by a sealer test the head block and if partiallySealable mark its sides done as required
         if (!sealers.isEmpty())
         {
             if (checkCount > 0)
             {
-                Block headBlock = head.getBlockID(this.world);
-                if (headBlock != null && !(headBlock.isAir(world, head.x, head.y, head.z)))
+                Block headBlock = this.world.getBlockState(head).getBlock();
+                if (headBlock != null && !(headBlock.isAir(world, head)))
                 {
-                    this.canBlockPassAirCheck(headBlock, this.head, 1);
+                    this.canBlockPassAirCheck(headBlock, this.head, EnumFacing.UP);
                     //reset the checkCount as canBlockPassAirCheck might have changed it
                     this.checkCount = checkCount;
                 }
@@ -124,7 +126,7 @@ public class ThreadFindSeal
         long time1 = System.nanoTime();
 
         this.sealed = true;
-        TileEntity tile = this.head.getTileEntityOnSide(world, ForgeDirection.DOWN);
+        TileEntity tile = this.head.getTileEntityOnSide(world, EnumFacing.DOWN);
         this.foundAmbientThermal = tile instanceof TileEntityOxygenSealer && ((TileEntityOxygenSealer) tile).thermalControlEnabled();
         this.checked.add(this.head.clone());
         this.currentLayer = new LinkedList<BlockVec3>();
@@ -388,11 +390,11 @@ public class ThreadFindSeal
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlock(world), metadata, 3));
             }
 
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
+            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimensionId(), this.torchesToUpdate);
         }
 	}
 
@@ -409,14 +411,14 @@ public class ThreadFindSeal
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0, 2));
             }
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.dimensionId, changeList);
+            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.dimensionId, this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimensionId(), this.torchesToUpdate);
         }
     }
-    
+
 	private void unseal()
     {
         //Local variables are fractionally faster than statics
@@ -485,7 +487,7 @@ public class ThreadFindSeal
                             else
                             {
                                 checkedLocal.add(sideVec);
-                                if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
+                                if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                                 {
                                     //Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
                                     nextLayer.add(sideVec);
@@ -572,7 +574,7 @@ public class ThreadFindSeal
                         else
                         {
                             checkedLocal.add(sideVec);
-                            if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, side))
+                            if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                             {
                                 //Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
                                 nextLayer.add(sideVec);
@@ -614,8 +616,8 @@ public class ThreadFindSeal
                     //This is also used to skip looking on the solid sides of partially sealable blocks
                     if ((bits & (1 << side)) == 0)
                     {
-                        // The sides 0 to 5 correspond with the ForgeDirections
-                        // but saves a bit of time not to call ForgeDirection
+                        // The sides 0 to 5 correspond with the EnumFacings
+                        // but saves a bit of time not to call EnumFacing
                         BlockVec3 sideVec = vec.newVecSide(side);
 
                         if (!checkedLocal.contains(sideVec))
@@ -657,7 +659,7 @@ public class ThreadFindSeal
                                     this.sealed = false;
                                     return;
                                 }
-                                else if (this.canBlockPassAirCheck(id, sideVec, side))
+                                else if (this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                                 {
                                     nextLayer.add(sideVec);
                                 }
@@ -693,7 +695,7 @@ public class ThreadFindSeal
                                 Block id = sideVec.getBlockIDsafe_noChunkLoad(this.world);
                                 // id == null means the void or height y>255, both
                                 // of which are unsealed obviously
-                                if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, side))
+                                if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                                 {
                                     this.sealed = false;
                                     if (this.sealers.size() > 0) traceLeak(vec);
@@ -740,8 +742,8 @@ public class ThreadFindSeal
                     //This is also used to skip looking on the solid sides of partially sealable blocks
                     if ((bits & (1 << side)) == 0)
                     {
-                        // The sides 0 to 5 correspond with the ForgeDirections
-                        // but saves a bit of time not to call ForgeDirection
+                        // The sides 0 to 5 correspond with the EnumFacings
+                        // but saves a bit of time not to call EnumFacing
                         BlockVec3 sideVec = vec.newVecSide(side);
 
                         if (!checkedLocal.contains(sideVec))
@@ -782,7 +784,7 @@ public class ThreadFindSeal
                                     this.sealed = false;
                                     return;
                                 }
-                                else if (this.canBlockPassAirCheck(id, sideVec, side))
+                                else if (this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                                 {
                                     nextLayer.add(sideVec);
                                 }
@@ -818,7 +820,7 @@ public class ThreadFindSeal
                                 Block id = sideVec.getBlockID_noChunkLoad(this.world);
                                 // id == null means the void or height y>255, both
                                 // of which are unsealed obviously
-                                if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, side))
+                                if (id == null || id == airID || id == breatheableAirID || id == airIDBright || id == breatheableAirIDBright || this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                                 {
                                     this.sealed = false;
                                     return;
@@ -886,14 +888,7 @@ public class ThreadFindSeal
     	}
     }
 
-    /**
-     * 
-     * @param block - the block ID, already taken from the world (can't be null or air here)
-     * @param vec - the position of the block to check: metadata might be needed
-     * @param side - this is the side approached from, e.g. 1 means this was approached from beneath
-     * @return
-     */
-    private boolean canBlockPassAirCheck(Block block, BlockVec3 vec, int side)
+    private boolean canBlockPassAirCheck(Block block, BlockVec3 vec, EnumFacing side)
     {
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
@@ -927,7 +922,7 @@ public class ThreadFindSeal
         if (block instanceof IPartialSealableBlock)
         {
             IPartialSealableBlock blockPartial = (IPartialSealableBlock) block;
-            if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side)))
+            if (blockPartial.isSealed(this.world, new BlockPos(vec.x, vec.y, vec.z), side))
             {
                 // If a partial block checks as solid, allow it to be tested
                 // again from other directions
@@ -939,15 +934,15 @@ public class ThreadFindSeal
             }
 
             //Find the solid sides so they don't get iterated into, when doing the next layer
-            for (int i = 0; i < 6; i++)
+            for (EnumFacing face : EnumFacing.values())
             {
-                if (i == side)
+                if (face == side)
                 {
                     continue;
                 }
-                if (blockPartial.isSealed(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(i)))
+                if (blockPartial.isSealed(this.world, new BlockPos(vec.x, vec.y, vec.z), face))
                 {
-                    vec.setSideDone(i ^ 1);
+                    vec.setSideDone(face.getIndex() ^ 1);
                 }
             }
             return true;
@@ -964,7 +959,7 @@ public class ThreadFindSeal
         {
             boolean isTopSlab = (vec.getBlockMetadata(this.world) & 8) == 8;
             //Looking down onto a top slab or looking up onto a bottom slab
-            if (side == 0 && isTopSlab || side == 1 && !isTopSlab)
+            if (side == EnumFacing.DOWN && isTopSlab || side == EnumFacing.UP && !isTopSlab)
             {
                 //Sealed from that solid side but allow other sides still to be checked
                 this.checked.remove(vec);
@@ -979,7 +974,7 @@ public class ThreadFindSeal
         //Farmland etc only seals on the solid underside
         if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockLiquid)
         {
-            if (side == 1)
+            if (side == EnumFacing.UP)
             {
                 //Sealed from the underside but allow other sides still to be checked
                 this.checked.remove(vec);
@@ -994,17 +989,17 @@ public class ThreadFindSeal
         if (block instanceof BlockPistonBase)
         {
             BlockPistonBase piston = (BlockPistonBase) block;
-            int meta = vec.getBlockMetadata(this.world);
-            if (BlockPistonBase.isExtended(meta))
+            IBlockState state = this.world.getBlockState(new BlockPos(vec.x, vec.y, vec.z));
+            if (((Boolean)state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
             {
-                int facing = BlockPistonBase.getPistonOrientation(meta);
+                EnumFacing facing = (EnumFacing)state.getValue(BlockPistonBase.FACING);
                 if (side == facing)
                 {
                     this.checked.remove(vec);
                     this.checkCount--;
                     return false;
                 }
-                vec.setSideDone(facing ^ 1);
+                vec.setSideDone(facing.getIndex() ^ 1);
                 return true;
             }
             return false;
@@ -1013,10 +1008,10 @@ public class ThreadFindSeal
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(side ^ 1)))
+        if (block.isSideSolid(this.world, new BlockPos(vec.x, vec.y, vec.z), EnumFacing.getFront(side.getIndex() ^ 1)))
         {
             //Solid on all sides
-            if (block.getMaterial().blocksMovement() && block.renderAsNormalBlock())
+            if (block.getMaterial().blocksMovement() && block.isFullCube())
             {
                 return false;
             }
@@ -1036,11 +1031,11 @@ public class ThreadFindSeal
         //Look to see if there is any other side which is solid in which case a check will not be needed next time
         for (int i = 0; i < 6; i++)
         {
-            if (i == (side ^ 1))
+            if (i == (side.getIndex() ^ 1))
             {
                 continue;
             }
-            if (block.isSideSolid(this.world, vec.x, vec.y, vec.z, ForgeDirection.getOrientation(i)))
+            if (block.isSideSolid(this.world, new BlockPos(vec.x, vec.y, vec.z), EnumFacing.getFront(i)))
             {
                 vec.setSideDone(i);
             }

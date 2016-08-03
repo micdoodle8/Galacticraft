@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
@@ -30,7 +31,7 @@ public class GuiParaChest extends GuiContainerGC
 
     public GuiParaChest(IInventory par1IInventory, IInventory par2IInventory)
     {
-        super(new ContainerParaChest(par1IInventory, par2IInventory));
+        super(new ContainerParaChest(par1IInventory, par2IInventory, FMLClientHandler.instance().getClient().thePlayer));
         this.upperChestInventory = par1IInventory;
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;
@@ -41,8 +42,8 @@ public class GuiParaChest extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.lowerChestInventory.getInventoryName(), 8, 6, 4210752);
-        this.fontRendererObj.drawString(this.upperChestInventory.hasCustomInventoryName() ? this.upperChestInventory.getInventoryName() : GCCoreUtil.translate(this.upperChestInventory.getInventoryName()), 8, this.ySize - 103 + (this.inventorySlots == 3 ? 2 : 4), 4210752);
+        this.fontRendererObj.drawString(this.lowerChestInventory.getName(), 8, 6, 4210752);
+        this.fontRendererObj.drawString(this.upperChestInventory.hasCustomName() ? this.upperChestInventory.getName() : GCCoreUtil.translate(this.upperChestInventory.getName()), 8, this.ySize - 103 + (this.inventorySlots == 3 ? 2 : 4), 4210752);
     }
 
     @Override

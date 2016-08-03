@@ -1,55 +1,93 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
+public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    @SideOnly(Side.CLIENT)
-    private IIcon[] blockIcons;
+    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeAsteroids", EnumBlockBasic.class);
+
+    public enum EnumBlockBasic implements IStringSerializable
+    {
+        ASTEROID_0(0, "asteroid_rock_0"),
+        ASTEROID_1(1, "asteroid_rock_1"),
+        ASTEROID_2(2, "asteroid_rock_2"),
+        ORE_ALUMINUM(3, "ore_aluminum_asteroids"),
+        ORE_ILMENITE(4, "ore_ilmenite_asteroids"),
+        ORE_IRON(5, "ore_iron_asteroids");
+
+        private final int meta;
+        private final String name;
+
+        private EnumBlockBasic(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumBlockBasic byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     public BlockBasicAsteroids(String assetName)
     {
         super(Material.rock);
         this.blockHardness = 3.0F;
-        this.setBlockName(assetName);
+        this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcons = new IIcon[6];
-        this.blockIcons[0] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid0");
-        this.blockIcons[1] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid1");
-        this.blockIcons[2] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "asteroid2");
-        this.blockIcons[3] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreAluminum");
-        this.blockIcons[4] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIlmenite");
-        this.blockIcons[5] = par1IconRegister.registerIcon(AsteroidsModule.TEXTURE_PREFIX + "oreIron");
+        this.blockIcons[0] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid0");
+        this.blockIcons[1] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid1");
+        this.blockIcons[2] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid2");
+        this.blockIcons[3] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreAluminum");
+        this.blockIcons[4] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreIlmenite");
+        this.blockIcons[5] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreIron");
         this.blockIcon = this.blockIcons[0];
-    }
+    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -58,7 +96,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta)
     {
@@ -68,64 +106,48 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         }
 
         return this.blockIcons[meta];
-    }
+    }*/
 
     @Override
-    public Item getItemDropped(int meta, Random random, int par3)
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        switch (meta)
+        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_ILMENITE && world instanceof World)
         {
-        default:
-            return super.getItemDropped(meta, random, par3);
-        }
-    }
-
-    @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
-    {
-        switch (metadata)
-        {
-        case 4:
             ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
-            int count = quantityDropped(metadata, fortune, world.rand);
+            int count = quantityDropped(state, fortune, ((World)world).rand);
             for (int i = 0; i < count; i++)
             {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 3));
             }
-            count = quantityDropped(metadata, fortune, world.rand);
+            count = quantityDropped(state, fortune, ((World)world).rand);
             for (int i = 0; i < count; i++)
             {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 4));
             }
             return ret;
-        default:
-            return super.getDrops(world, x, y, z, metadata, fortune);
         }
+
+
+        return super.getDrops(world, pos, state, fortune);
     }
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
-        switch (meta)
+        switch (getMetaFromState(state))
         {
         case 4:
             return 0;
         default:
-            return meta;
+            return getMetaFromState(state);
         }
-    }
-    
-    @Override
-    public int getDamageValue(World p_149643_1_, int p_149643_2_, int p_149643_3_, int p_149643_4_)
-    {
-    	return p_149643_1_.getBlockMetadata(p_149643_2_, p_149643_3_, p_149643_4_);    	
     }
 
     @Override
-    public int quantityDropped(int meta, int fortune, Random random)
+    public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        switch (meta)
+        switch (getMetaFromState(state))
         {
         case 4:
             if (fortune >= 1)
@@ -144,16 +166,16 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     {
         int var4;
 
-        for (var4 = 0; var4 < this.blockIcons.length; ++var4)
+        for (var4 = 0; var4 < EnumBlockBasic.values().length; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
 
     @Override
-    public boolean isValueable(int metadata)
+    public boolean isValueable(IBlockState state)
     {
-        switch (metadata)
+        switch (this.getMetaFromState(state))
         {
         case 3:
         case 4:
@@ -165,7 +187,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         return false;
     }
@@ -183,21 +205,48 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public boolean isTerraformable(World world, int x, int y, int z)
+    public boolean isTerraformable(World world, BlockPos pos)
     {
         return false;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
-        if (metadata == 4)
+        IBlockState state = world.getBlockState(pos);
+        if (getMetaFromState(state) == 4)
         {
-            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+            return new ItemStack(Item.getItemFromBlock(this), 1, getMetaFromState(state));
         }
 
-        return super.getPickBlock(target, world, x, y, z);
+        return super.getPickBlock(target, world, pos, player);
     }
 
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, BASIC_TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 3:
+        case 4:
+        case 5:
+            return EnumSortCategoryBlock.ORE;
+        }
+        return EnumSortCategoryBlock.GENERAL;
+    }
 }

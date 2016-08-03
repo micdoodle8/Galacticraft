@@ -6,8 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-public abstract class TextField extends Widget
-{
+public abstract class TextField extends Widget {
     public TextField(String ident) {
         identifier = ident;
     }
@@ -28,11 +27,13 @@ public abstract class TextField extends Widget
         String drawtext = text;
 
         int textWidth;
-        while((textWidth = getStringWidth(drawtext)) > w - 14)
+        while ((textWidth = getStringWidth(drawtext)) > w - 14) {
             drawtext = drawtext.substring(1);
+        }
 
-        if (focused() && (cursorCounter / 6) % 2 == 0)
+        if (focused() && (cursorCounter / 6) % 2 == 0) {
             drawtext = drawtext + '_';
+        }
 
         int textx = centered ? x + (w - textWidth) / 2 : x + 4;
         int texty = y + (h + 1) / 2 - 3;
@@ -42,22 +43,25 @@ public abstract class TextField extends Widget
 
     @Override
     public void onGuiClick(int mousex, int mousey) {
-        if (!contains(mousex, mousey))
+        if (!contains(mousex, mousey)) {
             setFocus(false);
+        }
     }
 
     @Override
     public boolean handleClick(int mousex, int mousey, int button) {
-        if (button == 1)
+        if (button == 1) {
             setText("");
+        }
         setFocus(true);
         return true;
     }
 
     @Override
     public boolean handleKeyPress(int keyID, char keyChar) {
-        if (!focused())
+        if (!focused()) {
             return false;
+        }
 
         if (keyID == Keyboard.KEY_BACK) {
             if (text.length() > 0) {
@@ -70,13 +74,16 @@ public abstract class TextField extends Widget
         } else if (keyChar == 22)//paste
         {
             String pastestring = GuiScreen.getClipboardString();
-            if (pastestring == null)
+            if (pastestring == null) {
                 pastestring = "";
+            }
 
-            if (isValid(text + pastestring))
+            if (isValid(text + pastestring)) {
                 setText(text + pastestring);
-        } else if (isValid(text + keyChar))
+            }
+        } else if (isValid(text + keyChar)) {
             setText(text + keyChar);
+        }
 
         return true;
     }

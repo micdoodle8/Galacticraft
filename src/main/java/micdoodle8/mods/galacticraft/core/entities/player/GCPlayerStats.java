@@ -371,7 +371,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
 		final GCPlayerStats GCPlayer = GCPlayerStats.get(player); 
     	if (!GCPlayer.receivedBedWarning)
 		{
-			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bedFail.message")));
+			player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
 			GCPlayer.receivedBedWarning = true;
 		}
     }

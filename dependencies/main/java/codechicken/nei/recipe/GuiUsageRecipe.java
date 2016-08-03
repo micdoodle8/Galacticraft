@@ -1,16 +1,14 @@
 package codechicken.nei.recipe;
 
 import codechicken.core.TaskProfiler;
-import codechicken.nei.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 import java.util.ArrayList;
 
-public class GuiUsageRecipe extends GuiRecipe
-{
+public class GuiUsageRecipe extends GuiRecipe {
     public static boolean openRecipeGui(String inputId, Object... ingredients) {
-        Minecraft mc = NEIClientUtils.mc();
+        Minecraft mc = Minecraft.getMinecraft();
         GuiContainer prevscreen = mc.currentScreen instanceof GuiContainer ? (GuiContainer) mc.currentScreen : null;
 
         TaskProfiler profiler = ProfilerRecipeHandler.getProfiler();
@@ -18,12 +16,14 @@ public class GuiUsageRecipe extends GuiRecipe
         for (IUsageHandler usagehandler : usagehandlers) {
             profiler.start(usagehandler.getRecipeName());
             IUsageHandler handler = usagehandler.getUsageHandler(inputId, ingredients);
-            if (handler.numRecipes() > 0)
+            if (handler.numRecipes() > 0) {
                 handlers.add(handler);
+            }
         }
         profiler.end();
-        if (handlers.isEmpty())
+        if (handlers.isEmpty()) {
             return false;
+        }
 
         mc.displayGuiScreen(new GuiUsageRecipe(prevscreen, handlers));
         return true;
@@ -36,8 +36,9 @@ public class GuiUsageRecipe extends GuiRecipe
 
     public static void registerUsageHandler(IUsageHandler handler) {
         for (IUsageHandler handler1 : usagehandlers) {
-            if (handler1.getClass() == handler.getClass())
+            if (handler1.getClass() == handler.getClass()) {
                 return;
+            }
         }
 
         usagehandlers.add(handler);

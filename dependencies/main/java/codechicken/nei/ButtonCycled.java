@@ -1,10 +1,8 @@
 package codechicken.nei;
 
-public abstract class ButtonCycled extends Button
-{    
+public abstract class ButtonCycled extends Button {
     @Override
-    public Image getRenderIcon()
-    {
+    public Image getRenderIcon() {
         return icons[index];
     }
 

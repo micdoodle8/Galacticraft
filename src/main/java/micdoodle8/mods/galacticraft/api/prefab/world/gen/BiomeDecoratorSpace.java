@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,9 +30,9 @@ public abstract class BiomeDecoratorSpace
             this.rand = random;
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
-            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(world, this.rand, this.chunkX, this.chunkZ));
+//            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(world, this.rand, this.chunkX, this.chunkZ)); TODO
             this.decorate();
-            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(world, this.rand, this.chunkX, this.chunkZ));
+//            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(world, this.rand, this.chunkX, this.chunkZ)); TODO
             this.setCurrentWorld(null);
             this.rand = null;
         }
@@ -49,7 +50,7 @@ public abstract class BiomeDecoratorSpace
             final int var6 = this.chunkX + this.rand.nextInt(16);
             final int var7 = this.rand.nextInt(maxY - minY) + minY;
             final int var8 = this.chunkZ + this.rand.nextInt(16);
-            worldGenerator.generate(currentWorld, this.rand, var6, var7, var8);
+            worldGenerator.generate(currentWorld, this.rand, new BlockPos(var6, var7, var8));
         }
     }
 

@@ -44,11 +44,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         for (Block block : GCBlocks.hiddenBlocks)
         {
             API.hideItem(new ItemStack(block, 1, 0));
-            if (block == GCBlocks.slabGCDouble)
-            {
-            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
-            		API.hideItem(new ItemStack(block, 1, j));
-            }
+//            if (block == GCBlocks.slabGCDouble) TODO
+//            {
+//            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
+//            		API.hideItem(new ItemStack(block, 1, j));
+//            }
         }
 
         API.registerRecipeHandler(new RocketT1RecipeHandler());
@@ -261,10 +261,10 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
         for (int j = 0; j < siliconCount; j++)
         {
-        	silicons[j + 1] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j); 
-        }	
+        	silicons[j + 1] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j);
+        }
         input1.put(1, new PositionedStack(silicons, 69, 51));
-        input1.put(2, new PositionedStack(silicons, 69, 69));      	
+        input1.put(2, new PositionedStack(silicons, 69, 69));
         input1.put(3, new PositionedStack(new ItemStack(Items.redstone), 117, 51));
         input1.put(4, new PositionedStack(new ItemStack(Blocks.redstone_torch), 140, 25));
         this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), 147, 91));

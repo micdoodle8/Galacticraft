@@ -1,13 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.gui.container.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
@@ -18,13 +13,18 @@ import micdoodle8.mods.galacticraft.core.inventory.*;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiHandler implements IGuiHandler
 {
@@ -43,20 +43,21 @@ public class GuiHandler implements IGuiHandler
 
         if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
         {
-            return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
+            return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType(), player);
         }
         else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
         {
             return new ContainerExtendedInventory(player, stats.extendedInventory);
         }
 
-        TileEntity tile = world.getTileEntity(x, y, z);
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null)
         {
             if (tile instanceof TileEntityRefinery)
             {
-                return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile);
+                return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile, player);
             }
             else if (tile instanceof TileEntityOxygenCollector)
             {
@@ -84,7 +85,7 @@ public class GuiHandler implements IGuiHandler
             }
             else if (tile instanceof TileEntityParaChest)
             {
-                return new ContainerParaChest(player.inventory, (TileEntityParaChest) tile);
+                return new ContainerParaChest(player.inventory, (TileEntityParaChest) tile, player);
             }
             else if (tile instanceof TileEntitySolar)
             {
@@ -120,11 +121,11 @@ public class GuiHandler implements IGuiHandler
             }
             else if (tile instanceof TileEntityOxygenCompressor)
             {
-                return new ContainerOxygenCompressor(player.inventory, (TileEntityOxygenCompressor) tile);
+                return new ContainerOxygenCompressor(player.inventory, (TileEntityOxygenCompressor) tile, player);
             }
             else if (tile instanceof TileEntityOxygenDecompressor)
             {
-                return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
+                return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile, player);
             }
         }
 
@@ -132,7 +133,7 @@ public class GuiHandler implements IGuiHandler
         {
             if (ID == page.getGuiID())
             {
-                return page.getResultContainer(playerBase, x, y, z);
+                return page.getResultContainer(playerBase, new BlockPos(x, y, z));
             }
         }
 
@@ -144,16 +145,16 @@ public class GuiHandler implements IGuiHandler
     {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
-            return this.getClientGuiElement(ID, player, world, new Vector3(x, y, z));
+            return this.getClientGuiElement(ID, player, world, new BlockPos(x, y, z));
         }
 
         return null;
     }
 
     @SideOnly(Side.CLIENT)
-    private Object getClientGuiElement(int ID, EntityPlayer player, World world, Vector3 position)
+    private Object getClientGuiElement(int ID, EntityPlayer player, World world, BlockPos position)
     {
-        EntityClientPlayerMP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+        EntityPlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
         if (ID == GuiIdsCore.GALAXY_MAP)
         {
@@ -176,13 +177,13 @@ public class GuiHandler implements IGuiHandler
             return new GuiJoinSpaceRace(playerClient);
         }
 
-        TileEntity tile = world.getTileEntity(position.intX(), position.intY(), position.intZ());
+        TileEntity tile = world.getTileEntity(position);
 
         if (tile != null)
         {
             if (tile instanceof TileEntityRefinery)
             {
-                return new GuiRefinery(player.inventory, (TileEntityRefinery) world.getTileEntity(position.intX(), position.intY(), position.intZ()));
+                return new GuiRefinery(player.inventory, (TileEntityRefinery) world.getTileEntity(position));
             }
             else if (tile instanceof TileEntityOxygenCollector)
             {
@@ -265,7 +266,7 @@ public class GuiHandler implements IGuiHandler
             {
                 if (ID == page.getGuiID())
                 {
-                    GuiScreen screen = page.getResultScreen(playerClient, position.intX(), position.intY(), position.intZ());
+                    GuiScreen screen = page.getResultScreen(playerClient, position);
 
                     if (screen instanceof ISchematicResultPage)
                     {

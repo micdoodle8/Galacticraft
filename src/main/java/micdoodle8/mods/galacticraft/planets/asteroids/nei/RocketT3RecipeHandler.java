@@ -5,6 +5,7 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 public class RocketT3RecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/schematic_rocket_T3.png");
+    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_T3.png");
 
     public String getRecipeId()
     {
@@ -125,13 +126,13 @@ public class RocketT3RecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return GCCoreUtil.translate("tile.rocketWorkbench.name");
+        return GCCoreUtil.translate("tile.rocket_workbench.name");
     }
 
     @Override
     public String getGuiTexture()
     {
-        return AsteroidsModule.TEXTURE_PREFIX + "textures/gui/schematic_rocket_T3.png";
+        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_T3.png";
     }
 
     @Override

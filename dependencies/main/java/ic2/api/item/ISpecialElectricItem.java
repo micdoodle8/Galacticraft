@@ -6,9 +6,8 @@ public interface ISpecialElectricItem extends IElectricItem {
 	/**
 	 * Supply a custom IElectricItemManager.
 	 * 
-	 * @param itemStack
-	 *            ItemStack to get the manager for
+	 * @param stack ItemStack to get the manager for
 	 * @return IElectricItemManager instance
 	 */
-	IElectricItemManager getManager(ItemStack itemStack);
+	IElectricItemManager getManager(ItemStack stack);
 }

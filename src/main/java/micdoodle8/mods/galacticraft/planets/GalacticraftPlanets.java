@@ -1,18 +1,19 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -36,11 +37,14 @@ public class GalacticraftPlanets
     @Instance(Constants.MOD_ID_PLANETS)
     public static GalacticraftPlanets instance;
 
-    public static Map<String, IPlanetsModule> commonModules = new HashMap<String, IPlanetsModule>();
-    public static Map<String, IPlanetsModuleClient> clientModules = new HashMap<String, IPlanetsModuleClient>();
+    public static List<IPlanetsModule> commonModules = new ArrayList<IPlanetsModule>();
+    public static List<IPlanetsModuleClient> clientModules = new ArrayList<IPlanetsModuleClient>();
 
-    public static final String MODULE_KEY_MARS = "MarsModule";
-    public static final String MODULE_KEY_ASTEROIDS = "AsteroidsModule";
+    public static final String MODULE_KEY_MARS = "Module_0_Mars";
+    public static final String MODULE_KEY_ASTEROIDS = "Module_1_Asteroids";
+
+    public static final String ASSET_PREFIX = "galacticraftplanets";
+    public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
 
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxyClient", serverSide = "micdoodle8.mods.galacticraft.planets.PlanetsProxy")
     public static PlanetsProxy proxy;
@@ -48,7 +52,7 @@ public class GalacticraftPlanets
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
         
         //Initialise configs, converting mars.conf + asteroids.conf to planets.conf if necessary
         File oldMarsConf = new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf");
@@ -62,9 +66,10 @@ public class GalacticraftPlanets
         new ConfigManagerMars(newPlanetsConf, update);
         new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
 
-        GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_MARS, new MarsModule());
-        GalacticraftPlanets.commonModules.put(GalacticraftPlanets.MODULE_KEY_ASTEROIDS, new AsteroidsModule());
+        GalacticraftPlanets.commonModules.add(new MarsModule());
+        GalacticraftPlanets.commonModules.add(new AsteroidsModule());
         GalacticraftPlanets.proxy.preInit(event);
+        GalacticraftPlanets.proxy.registerVariants();
     }
 
     @EventHandler
@@ -86,24 +91,9 @@ public class GalacticraftPlanets
         GalacticraftPlanets.proxy.serverStarting(event);
     }
 
-    public static int getBlockRenderID(Block block)
-    {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
-        {
-            int id = module.getBlockRenderID(block);
-
-            if (id > 1)
-            {
-                return id;
-            }
-        }
-
-        return 1;
-    }
-
     public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             module.spawnParticle(particleID, position, motion, extraData);
         }
@@ -113,27 +103,27 @@ public class GalacticraftPlanets
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
         }
 
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
         }
@@ -146,7 +136,7 @@ public class GalacticraftPlanets
     {
         if (event.modID.equals(Constants.MOD_ID_PLANETS))
         {
-            for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+            for (IPlanetsModule module : GalacticraftPlanets.commonModules)
             {
                 module.syncConfig();
             }

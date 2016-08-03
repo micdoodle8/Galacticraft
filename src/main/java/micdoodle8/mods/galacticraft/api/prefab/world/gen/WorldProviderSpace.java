@@ -1,7 +1,12 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import net.minecraft.entity.Entity;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -47,7 +52,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      * Default: 24000
      */
     public abstract long getDayLength();
-   
+
     public abstract Class<? extends IChunkProvider> getChunkProviderClass();
 
     public abstract Class<? extends WorldChunkManager> getWorldChunkManagerClass();
@@ -108,7 +113,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
-    public boolean canBlockFreeze(int x, int y, int z, boolean byWater)
+    public boolean canBlockFreeze(BlockPos pos, boolean byWater)
     {
         return this.canRainOrSnow();
     }
@@ -157,14 +162,14 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public Vec3 getFogColor(float var1, float var2)
     {
         Vector3 fogColor = this.getFogColor();
-        return Vec3.createVectorHelper(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
+        return new Vec3(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
     }
 
     @Override
     public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
     {
         Vector3 skyColor = this.getSkyColor();
-        return Vec3.createVectorHelper(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
+        return new Vec3(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
     }
 
     @Override

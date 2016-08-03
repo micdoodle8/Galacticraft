@@ -1,3 +1,4 @@
-@API(apiVersion = "8.0.0", owner = "Mekanism", provides = "MekanismAPI|gas")
+@API(apiVersion = "8.9.9", owner = "Mekanism", provides = "MekanismAPI|gas")
 package mekanism.api.gas;
-import cpw.mods.fml.common.API;
+import net.minecraftforge.fml.common.API;
+

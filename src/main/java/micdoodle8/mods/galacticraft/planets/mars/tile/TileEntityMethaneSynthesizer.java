@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
@@ -16,17 +15,20 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 
@@ -56,9 +58,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (this.hasCO2 == -1)
         {
@@ -86,10 +88,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     //CO2 -> CO2 tank
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
                     {
-                        Block blockAbove = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+                        Block blockAbove = this.worldObj.getBlockState(this.getPos().up()).getBlock();
                         if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
-                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1D, this.zCoord + 0.5D))
+                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
 	                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
 	                            this.gasTank2.fill(gcAtmosphere, true);
@@ -286,27 +288,27 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
-        return GCCoreUtil.translate("tile.marsMachine.5.name");
+        return GCCoreUtil.translate("tile.mars_machine.5.name");
     }
 
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1, 2, 3, 4 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -326,7 +328,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -376,13 +378,13 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.DOWN;
+        return EnumFacing.DOWN;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -393,7 +395,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -407,7 +409,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -420,7 +422,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
         if (from.ordinal() == this.getBlockMetadata() + 2)
         {
@@ -431,7 +433,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -447,15 +449,15 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 
-        if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2))
+        if (from == EnumFacing.getFront(this.getBlockMetadata() + 2))
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
         }
-        else if (from == ForgeDirection.getOrientation(this.getBlockMetadata() + 2).getOpposite())
+        else if (from == EnumFacing.getFront(this.getBlockMetadata() + 2).getOpposite())
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
         }
@@ -466,18 +468,18 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public int getBlockMetadata()
     {
-        if (this.blockMetadata == -1)
-        {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-        }
-
-        return this.blockMetadata & 3;
+        return this.getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
-    	if (!stack.getGas().getName().equals("hydrogen")) return 0;  
+    	if (!stack.getGas().getName().equals("hydrogen")) return 0;
     	int used = 0;
         //System.out.println("Giving gas amount "+stack.amount);
         if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
@@ -487,59 +489,66 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         return used;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack)
     {
         return this.receiveGas(side, stack, true);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
     {
         return null;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection side, int amount)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount)
     {
         return null;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(EnumFacing side, Gas type)
     {
         //System.out.println("Testing receipt of gas "+type.getName());
-        return type.getName().equals("hydrogen") && side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+        return type.getName().equals("hydrogen") && side.equals(EnumFacing.getFront(this.getBlockMetadata() + 2));
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(ForgeDirection side, Gas type)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(EnumFacing side, Gas type)
     {
         return false;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(ForgeDirection side)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(EnumFacing side)
     {
-        return side.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2));
+        return side.equals(EnumFacing.getFront(this.getBlockMetadata() + 2));
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type == NetworkType.OXYGEN)
+        if (direction == null || type == NetworkType.OXYGEN)
         {
             return false;
         }
 
         if (type == NetworkType.POWER)
-        	return direction == this.getElectricInputDirection();
+        {
+            return direction == this.getElectricInputDirection();
+        }
         
         //Hydrogen pipe
-        return direction.equals(ForgeDirection.getOrientation(this.getBlockMetadata() + 2)); 
+        if (type == NetworkType.HYDROGEN)
+        {
+            return direction == this.getFront().rotateY();
+        }
+
+        return false;
     }
 
-	public Float getHydrogenRequest(ForgeDirection direction)
+	public Float getHydrogenRequest(EnumFacing direction)
 	{
 		return this.receiveHydrogen(direction, 1000000F, false);
 	}
@@ -549,7 +558,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 		return this.gasTank.getFluidAmount() < this.gasTank.getCapacity();
 	}
 
-	public float receiveHydrogen(ForgeDirection from, float receive, boolean doReceive)
+	public float receiveHydrogen(EnumFacing from, float receive, boolean doReceive)
 	{
 		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullHydrogen())
     	{
@@ -559,4 +568,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     	
     	return 0;
 	}
+
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+    }
 }

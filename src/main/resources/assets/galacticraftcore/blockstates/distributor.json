@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "galacticraftcore:distributor_model" },
+        "facing=east":  { "model": "galacticraftcore:distributor_model", "y": 90 },
+        "facing=west":  { "model": "galacticraftcore:distributor_model", "y": 270 },
+        "facing=south": { "model": "galacticraftcore:distributor_model", "y": 180 }
+    }
+}

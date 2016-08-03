@@ -1,0 +1,4 @@
+newmtl MinerBase
+Ks 0.500000 0.500000 0.500000
+d 1.000000
+map_Kd galacticraftplanets:blocks/minerbase

@@ -1,14 +1,21 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.math.DoubleMath;
-import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.handler.codec.EncoderException;
+import net.minecraft.block.BlockPortal;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.nbt.NBTSizeTracker;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
@@ -22,6 +29,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -167,6 +175,21 @@ public class NetworkUtil
                     ByteBufUtils.writeUTF8String(buffer, array[i].owner);
                 }
             }
+            else if (dataValue instanceof EnumFacing)
+            {
+                buffer.writeInt(((EnumFacing) dataValue).getIndex());
+            }
+            else if (dataValue instanceof BlockPos)
+            {
+                BlockPos pos = (BlockPos) dataValue;
+                buffer.writeInt(pos.getX());
+                buffer.writeInt(pos.getY());
+                buffer.writeInt(pos.getZ());
+            }
+            else if (dataValue instanceof EnumDyeColor)
+            {
+                buffer.writeInt(((EnumDyeColor) dataValue).getDyeDamage());
+            }
             else
             {
                 if (dataValue == null)
@@ -297,6 +320,18 @@ public class NetworkUtil
                     objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), ByteBufUtils.readUTF8String(buffer)));
                 }
             }
+            else if (clazz.equals(EnumFacing.class))
+            {
+                objList.add(EnumFacing.getFront(buffer.readInt()));
+            }
+            else if (clazz.equals(BlockPos.class))
+            {
+                objList.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+            }
+            else if (clazz.equals(EnumDyeColor.class))
+            {
+                objList.add(EnumDyeColor.byDyeDamage(buffer.readInt()));
+            }
         }
 
         return objList;
@@ -376,6 +411,18 @@ public class NetworkUtil
             storage.setEnergyStored(buffer.readFloat());
             return storage;
         }
+        else if (dataValue.equals(EnumFacing.class))
+        {
+            return EnumFacing.getFront(buffer.readInt());
+        }
+        else if (dataValue.equals(BlockPos.class))
+        {
+            return new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+        }
+        else if (dataValue.equals(EnumDyeColor.class))
+        {
+            return EnumDyeColor.byDyeDamage(buffer.readInt());
+        }
         else
         {
             Class<?> c = dataValue;
@@ -404,7 +451,7 @@ public class NetworkUtil
             byte stackSize = buffer.readByte();
             short meta = buffer.readShort();
             itemstack = new ItemStack(Item.getItemById(itemID), stackSize, meta);
-            itemstack.stackTagCompound = NetworkUtil.readNBTTagCompound(buffer);
+            itemstack.setTagCompound(readNBTTagCompound(buffer));
         }
 
         return itemstack;
@@ -425,7 +472,7 @@ public class NetworkUtil
 
             if (itemStack.getItem().isDamageable() || itemStack.getItem().getShareTag())
             {
-                nbttagcompound = itemStack.stackTagCompound;
+                nbttagcompound = itemStack.getTagCompound();
             }
 
             NetworkUtil.writeNBTTagCompound(nbttagcompound, buffer);
@@ -442,9 +489,7 @@ public class NetworkUtil
         }
         else
         {
-            byte[] compressedNBT = new byte[dataLength];
-            buffer.readBytes(compressedNBT);
-            return VersionUtil.decompressNBT(compressedNBT);
+            return CompressedStreamTools.read(new ByteBufInputStream(buffer), new NBTSizeTracker(2097152L));
         }
     }
 
@@ -456,9 +501,14 @@ public class NetworkUtil
         }
         else
         {
-            byte[] compressedNBT = CompressedStreamTools.compress(nbt);
-            buffer.writeShort((short) compressedNBT.length);
-            buffer.writeBytes(compressedNBT);
+            try
+            {
+                CompressedStreamTools.write(nbt, new ByteBufOutputStream(buffer));
+            }
+            catch (IOException ioexception)
+            {
+                throw new EncoderException(ioexception);
+            }
         }
     }
 
@@ -467,13 +517,13 @@ public class NetworkUtil
         if (fluidTank == null)
         {
             buffer.writeInt(0);
-            buffer.writeInt(-1);
+            ByteBufUtils.writeUTF8String(buffer, "");
             buffer.writeInt(0);
         }
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            buffer.writeInt(fluidTank.getFluid() == null ? -1 : FluidUtil.getFluidID(fluidTank.getFluid()));
+            ByteBufUtils.writeUTF8String(buffer, fluidTank.getFluid() == null ? "" : fluidTank.getFluid().getFluid().getName());
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }
@@ -481,17 +531,17 @@ public class NetworkUtil
     public static FluidTank readFluidTank(ByteBuf buffer) throws IOException
     {
         int capacity = buffer.readInt();
-        int fluidID = buffer.readInt();
+        String fluidName = ByteBufUtils.readUTF8String(buffer);
         FluidTank fluidTank = new FluidTank(capacity);
         int amount = buffer.readInt();
 
-        if (fluidID == -1)
+        if (fluidName == "")
         {
             fluidTank.setFluid(null);
         }
         else
         {
-            Fluid fluid = FluidRegistry.getFluid(fluidID);
+            Fluid fluid = FluidRegistry.getFluid(fluidName);
             fluidTank.setFluid(new FluidStack(fluid, amount));
         }
 
@@ -546,7 +596,7 @@ public class NetworkUtil
             FluidStack fluidA = a2.getFluid();
             FluidStack fluidB = b2.getFluid();
             return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
-                    fuzzyEquals(fluidA != null ? FluidUtil.getFluidID(fluidA) : -1, fluidB != null ? FluidUtil.getFluidID(fluidB) : -1) &&
+                    fuzzyEquals(fluidA != null ? fluidA.getFluid().getName() : "", fluidB != null ? fluidB.getFluid().getName() : "") &&
                     fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
         }
         else

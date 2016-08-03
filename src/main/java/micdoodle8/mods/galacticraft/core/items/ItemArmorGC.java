@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,13 +11,13 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemArmorGC extends ItemArmor
+public class ItemArmorGC extends ItemArmor implements ISortableItem
 {
     public ItemArmorGC(int armorIndex, String assetSuffix)
     {
-        super(GCItems.ARMOR_STEEL, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+        super(GCItems.ARMOR_STEEL, 0, armorIndex);
         this.setUnlocalizedName("steel_" + assetSuffix);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
+        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + "steel_" + assetSuffix);
     }
 
     @Override
@@ -52,5 +53,11 @@ public class ItemArmorGC extends ItemArmor
         }
 
         return null;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.ARMOR;
     }
 }

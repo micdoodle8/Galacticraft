@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -71,7 +71,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, null));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     {
         if (damageSource.getDamageType().equals("fireball"))
         {
-            if (this.isEntityInvulnerable())
+            if (this.isEntityInvulnerable(damageSource))
             {
                 return false;
             }
@@ -89,9 +89,9 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
                 if (this.riddenByEntity != entity && this.ridingEntity != entity)
                 {
-                    if (entity != this)
+                    if (entity != this && entity instanceof EntityLivingBase)
                     {
-                        this.entityToAttack = entity;
+                        this.setAttackTarget((EntityLivingBase)entity);
                     }
 
                     return true;
@@ -129,11 +129,11 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     {
     }
 
-    @Override
-    public boolean isAIEnabled()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean isAIEnabled()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean canBePushed()
@@ -173,7 +173,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
             final float f = (this.rand.nextFloat() - 0.5F) * 1.5F;
             final float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F;
             final float f2 = (this.rand.nextFloat() - 0.5F) * 1.5F;
-            this.worldObj.spawnParticle("hugeexplosion", this.posX + f, this.posY + 2.0D + f1, this.posZ + f2, 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + f, this.posY + 2.0D + f1, this.posZ + f2, 0.0D, 0.0D, 0.0D);
         }
 
         int i;
@@ -183,8 +183,8 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, new Object[] { }), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
-                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, new Object[] { }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimensionId(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -201,8 +201,8 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, new Object[] {}), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 40.0D));
-                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.dimensionId, PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, new Object[] {}), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimensionId(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
             }
         }
 
@@ -224,9 +224,9 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
             {
                 if (tile instanceof TileEntityTreasureChestMars)
                 {
-                	final double d3 = tile.xCoord + 0.5D - this.posX;
-                    final double d4 = tile.yCoord + 0.5D - this.posY;
-                    final double d5 = tile.zCoord + 0.5D - this.posZ;
+                	final double d3 = tile.getPos().getX() + 0.5D - this.posX;
+                    final double d4 = tile.getPos().getY() + 0.5D - this.posY;
+                    final double d5 = tile.getPos().getZ() + 0.5D - this.posZ;
                     final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
                     TileEntityTreasureChestMars chest = (TileEntityTreasureChestMars) tile; 
 
@@ -324,19 +324,17 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
         if (this.roomCoords != null && this.roomSize != null)
         {
-            @SuppressWarnings("unchecked")
-            List<Entity> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+            List<EntityPlayer> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             this.entitiesWithin = entitiesWithin.size();
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
-                @SuppressWarnings("unchecked")
-                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
+                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeletonBoss.message")));
+                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
                 this.setDead();
@@ -362,16 +360,11 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     }
 
     @Override
-    protected void dropFewItems(boolean par1, int par2)
-    {
-    }
-
-    @Override
     public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
         final EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
-        entityitem.delayBeforeCanPickup = 10;
+        entityitem.setDefaultPickupDelay();
         if (this.captureDrops)
         {
             this.capturedDrops.add(entityitem);
@@ -384,9 +377,14 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     }
 
     @Override
-    protected void dropRareDrop(int par1)
+    protected void dropFewItems(boolean b, int i)
     {
-        if (par1 > 0)
+        if (this.rand.nextInt(200) - i >= 5)
+        {
+            return;
+        }
+
+        if (i > 0)
         {
             final ItemStack var2 = new ItemStack(Items.bow);
             EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
@@ -473,7 +471,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
     private void func_82209_a(int par1, double par2, double par4, double par6)
     {
-        this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1014, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+        this.worldObj.playAuxSFXAtEntity(null, 1014, new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ), 0);
         double d3 = this.func_82214_u(par1);
         double d4 = this.func_82208_v(par1);
         double d5 = this.func_82213_w(par1);

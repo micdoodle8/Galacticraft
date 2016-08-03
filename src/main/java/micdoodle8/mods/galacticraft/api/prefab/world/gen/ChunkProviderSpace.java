@@ -7,11 +7,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 
@@ -57,7 +59,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
     public ChunkProviderSpace(World par1World, long seed, boolean mapFeaturesEnabled)
     {
-        super(par1World, seed, mapFeaturesEnabled);
+        super(par1World, seed, mapFeaturesEnabled, "");
         this.worldObj = par1World;
         this.rand = new Random(seed);
 
@@ -70,7 +72,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         this.noiseGen7 = new Gradient(this.rand.nextLong(), 1, 0.25F);
     }
 
-    public void generateTerrain(int chunkX, int chunkZ, Block[] idArray, byte[] metaArray)
+    public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.noiseGen1.setFrequency(0.015F);
         this.noiseGen2.setFrequency(0.01F);
@@ -102,8 +104,9 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                 {
                     if (y < this.MID_HEIGHT + yDev)
                     {
-                        idArray[this.getIndex(x, y, z)] = this.getStoneBlock().getBlock();
-                        metaArray[this.getIndex(x, y, z)] = this.getStoneBlock().getMetadata();
+                        primer.setBlockState(this.getIndex(x, y, z), this.getStoneBlock().getBlock().getStateFromMeta(this.getStoneBlock().getMetadata()));
+//                        idArray[this.getIndex(x, y, z)] = this.getStoneBlock().getBlock();
+//                        metaArray[this.getIndex(x, y, z)] = this.getStoneBlock().getMetadata();
                     }
                 }
             }
@@ -145,7 +148,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
     }
 
     @Override
-    public void replaceBlocksForBiome(int par1, int par2, Block[] arrayOfIDs, byte[] arrayOfMeta, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+    public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
     {
         final int var5 = 20;
         final float var6 = 0.03125F;
@@ -167,11 +170,13 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
                     if (var16 <= 0 + this.rand.nextInt(5))
                     {
-                        arrayOfIDs[index] = Blocks.bedrock;
+                        primer.setBlockState(index, Blocks.bedrock.getDefaultState());
+//                        arrayOfIDs[index] = Blocks.bedrock;
                     }
                     else
                     {
-                        final Block var18 = arrayOfIDs[index];
+//                        final Block var18 = arrayOfIDs[index];
+                        Block var18 = primer.getBlockState(index).getBlock();
 
                         if (Blocks.air == var18)
                         {
@@ -179,7 +184,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                         }
                         else if (var18 == this.getStoneBlock().getBlock())
                         {
-                            arrayOfMeta[index] = this.getStoneBlock().getMetadata();
+//                            arrayOfMeta[index] = this.getStoneBlock().getMetadata();
 
                             if (var13 == -1)
                             {
@@ -202,20 +207,23 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
                                 if (var16 >= var5 - 1)
                                 {
-                                    arrayOfIDs[index] = var14;
-                                    arrayOfMeta[index] = var14m;
+//                                    arrayOfIDs[index] = var14;
+//                                    arrayOfMeta[index] = var14m;
+                                    primer.setBlockState(index, var14.getStateFromMeta(var14m));
                                 }
                                 else
                                 {
-                                    arrayOfIDs[index] = var15;
-                                    arrayOfMeta[index] = var15m;
+//                                    arrayOfIDs[index] = var15;
+//                                    arrayOfMeta[index] = var15m;
+                                    primer.setBlockState(index, var15.getStateFromMeta(var15m));
                                 }
                             }
                             else if (var13 > 0)
                             {
                                 --var13;
-                                arrayOfIDs[index] = var15;
-                                arrayOfMeta[index] = var15m;
+//                                arrayOfIDs[index] = var15;
+//                                arrayOfMeta[index] = var15m;
+                                primer.setBlockState(index, var15.getStateFromMeta(var15m));
                             }
                         }
                     }
@@ -227,13 +235,14 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
     @Override
     public Chunk provideChunk(int par1, int par2)
     {
+        ChunkPrimer primer = new ChunkPrimer();
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-        final Block[] ids = new Block[32768 * 2];
-        final byte[] meta = new byte[32768 * 2];
-        this.generateTerrain(par1, par2, ids, meta);
-        this.createCraters(par1, par2, ids, meta);
+//        final Block[] ids = new Block[32768 * 2];
+//        final byte[] meta = new byte[32768 * 2];
+        this.generateTerrain(par1, par2, primer);
+        this.createCraters(par1, par2, primer);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-        this.replaceBlocksForBiome(par1, par2, ids, meta, this.biomesForGeneration);
+        this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
 
         if (this.worldGenerators == null)
         {
@@ -242,12 +251,12 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
         for (MapGenBaseMeta generator : this.worldGenerators)
         {
-            generator.generate(this, this.worldObj, par1, par2, ids, meta);
+            generator.generate(this, this.worldObj, par1, par2, primer);
         }
 
-        this.onChunkProvide(par1, par2, ids, meta);
+        this.onChunkProvide(par1, par2, primer);
 
-        final Chunk var4 = new Chunk(this.worldObj, ids, meta, par1, par2);
+        final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
 
         for (int var6 = 0; var6 < var5.length; ++var6)
@@ -259,7 +268,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return var4;
     }
 
-    public void createCraters(int chunkX, int chunkZ, Block[] chunkArray, byte[] metaArray)
+    public void createCraters(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.noiseGen5.setFrequency(0.015F);
         for (int cx = chunkX - 2; cx <= chunkX + 2; cx++)
@@ -275,7 +284,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                             final Random random = new Random(cx * 16 + x + (cz * 16 + z) * 5000);
                             final EnumCraterSize cSize = EnumCraterSize.sizeArray[random.nextInt(EnumCraterSize.sizeArray.length)];
                             final int size = random.nextInt(cSize.MAX_SIZE - cSize.MIN_SIZE) + cSize.MIN_SIZE + 15;
-                            this.makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, chunkArray, metaArray);
+                            this.makeCrater(cx * 16 + x, cz * 16 + z, chunkX * 16, chunkZ * 16, size, primer);
                         }
                     }
                 }
@@ -283,7 +292,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         }
     }
 
-    public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, Block[] chunkArray, byte[] metaArray)
+    public void makeCrater(int craterX, int craterZ, int chunkX, int chunkZ, int size, ChunkPrimer primer)
     {
         for (int x = 0; x < ChunkProviderSpace.CHUNK_SIZE_X; x++)
         {
@@ -301,15 +310,17 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                     int helper = 0;
                     for (int y = 127; y > 0; y--)
                     {
+                        if (Blocks.air != primer.getBlockState(this.getIndex(x, y, z)).getBlock() && helper <= yDev)
+                        {
+                            primer.setBlockState(getIndex(x, y, z), Blocks.air.getDefaultState());
+//                            chunkArray[this.getIndex(x, y, z)] = Blocks.air;
+//                            metaArray[this.getIndex(x, y, z)] = 0;
+                            helper++;
+                        }
+
                         if (helper > yDev)
                         {
                             break;
-                        }
-                        if (chunkArray[this.getIndex(x, y, z)] != null)
-                        {
-                            chunkArray[this.getIndex(x, y, z)] = Blocks.air;
-                            metaArray[this.getIndex(x, y, z)] = 0;
-                            helper++;
                         }
                     }
                 }
@@ -347,7 +358,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         BlockFalling.fallInstantly = true;
         int var4 = par2 * 16;
         int var5 = par3 * 16;
-        this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
+        this.worldObj.getBiomeGenForCoords(new BlockPos(var4 + 16, 0, var5 + 16));
         this.rand.setSeed(this.worldObj.getSeed());
         final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
         final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -376,11 +387,10 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return "RandomLevelSource";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int i, int j, int k)
+    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        if (par1EnumCreatureType == EnumCreatureType.monster)
+        if (creatureType == EnumCreatureType.MONSTER)
         {
             final List monsters = new ArrayList();
 
@@ -391,7 +401,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
             return monsters;
         }
-        else if (par1EnumCreatureType == EnumCreatureType.creature)
+        else if (creatureType == EnumCreatureType.CREATURE)
         {
             final List creatures = new ArrayList();
 
@@ -495,7 +505,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
      */
     public abstract int getCraterProbability();
 
-    public abstract void onChunkProvide(int cX, int cZ, Block[] blocks, byte[] metadata);
+    public abstract void onChunkProvide(int cX, int cZ, ChunkPrimer primer);
 
     public abstract void onPopulate(IChunkProvider provider, int cX, int cZ);
 }

@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -21,7 +22,6 @@ import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
@@ -59,9 +59,6 @@ import java.util.List;
 
 public class MarsModule implements IPlanetsModule
 {
-    public static final String ASSET_PREFIX = "galacticraftmars";
-    public static final String TEXTURE_PREFIX = MarsModule.ASSET_PREFIX + ":";
-
     public static Fluid sludge;
     public static Fluid sludgeGC;
     public static Material sludgeMaterial = new MaterialLiquid(MapColor.foliageColor);
@@ -75,7 +72,9 @@ public class MarsModule implements IPlanetsModule
 
         if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
-            sludgeGC = new Fluid("bacterialsludge").setDensity(800).setViscosity(1500);
+            ResourceLocation stillIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/sludge_still");
+            ResourceLocation flowingIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/sludge_flow");
+            sludgeGC = new Fluid("bacterialsludge", stillIcon, flowingIcon).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(sludgeGC);
         }
         else
@@ -87,9 +86,9 @@ public class MarsModule implements IPlanetsModule
 
         if (sludge.getBlock() == null)
         {
-            MarsBlocks.blockSludge = new BlockSludge().setBlockName("sludge");
+            MarsBlocks.blockSludge = new BlockSludge("sludge");
             ((BlockSludge) MarsBlocks.blockSludge).setQuantaPerBlock(3);
-            GameRegistry.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class, MarsBlocks.blockSludge.getUnlocalizedName());
+            MarsBlocks.registerBlock(MarsBlocks.blockSludge, ItemBlockDesc.class);
             sludge.setBlock(MarsBlocks.blockSludge);
         }
         else
@@ -99,7 +98,7 @@ public class MarsModule implements IPlanetsModule
 
         if (MarsBlocks.blockSludge != null)
         {
-            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge, MarsModule.TEXTURE_PREFIX).setUnlocalizedName("bucketSludge");
+            MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucket_sludge");
             MarsItems.registerItem(MarsItems.bucketSludge);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.bucket));
         }
@@ -134,7 +133,7 @@ public class MarsModule implements IPlanetsModule
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
         GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());
-        GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
+        GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 1));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematic, 1, 2));
@@ -204,18 +203,18 @@ public class MarsModule implements IPlanetsModule
 
     public void registerCreatures()
     {
-        this.registerGalacticraftCreature(EntitySludgeling.class, "Sludgeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntitySlimeling.class, "Slimeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
-        this.registerGalacticraftCreature(EntityCreeperBoss.class, "CreeperBoss", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySludgeling.class, "sludgeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntitySlimeling.class, "slimeling", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
+        this.registerGalacticraftCreature(EntityCreeperBoss.class, "creeper_boss", ColorUtil.to32BitColor(255, 0, 50, 0), ColorUtil.to32BitColor(255, 0, 150, 0));
     }
 
     public void registerOtherEntities()
     {
-        MarsModule.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "SpaceshipT2", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "rocket_t2", 150, 1, false);
 //        MarsModule.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", 150, 20, false);
-        MarsModule.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "ProjectileTNT", 150, 1, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "LandingBalloons", 150, 5, true);
-        MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "CargoRocket", 150, 1, false);
+        MarsModule.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "projectile_tnt", 150, 1, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "landing_balloons", 150, 5, true);
+        MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "rocket_cargo", 150, 1, false);
     }
 
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
@@ -224,8 +223,8 @@ public class MarsModule implements IPlanetsModule
         int nextEggID = GCCoreUtil.getNextValidEggID();
         if (nextEggID < 65536)
         {
-	        EntityList.IDtoClassMapping.put(nextEggID, var0);
-	        VersionUtil.putClassToIDMapping(var0, nextEggID);
+	        EntityList.idToClassMapping.put(nextEggID, var0);
+            EntityList.classToIDMapping.put(var0, nextEggID);
 	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
         } 
     }
@@ -234,7 +233,7 @@ public class MarsModule implements IPlanetsModule
     {
     	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftMars." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+    		LanguageRegistry.instance().addStringLocalization("entity.galacticraftplanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
 		}
     	EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }
@@ -250,29 +249,30 @@ public class MarsModule implements IPlanetsModule
     {
         if (side == Side.SERVER)
         {
-            TileEntity tile = world.getTileEntity(x, y, z);
+            BlockPos pos = new BlockPos(x, y, z);
+            TileEntity tile = world.getTileEntity(pos);
 
             if (ID == GuiIdsPlanets.MACHINE_MARS)
             {
                 if (tile instanceof TileEntityTerraformer)
                 {
-                    return new ContainerTerraformer(player.inventory, (TileEntityTerraformer) tile);
+                    return new ContainerTerraformer(player.inventory, (TileEntityTerraformer) tile, player);
                 }
                 else if (tile instanceof TileEntityLaunchController)
                 {
-                    return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile);
+                    return new ContainerLaunchController(player.inventory, (TileEntityLaunchController) tile, player);
                 }
                 else if (tile instanceof TileEntityElectrolyzer)
                 {
-                    return new ContainerElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile);
+                    return new ContainerElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile, player);
                 }
                 else if (tile instanceof TileEntityGasLiquefier)
                 {
-                    return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
+                    return new ContainerGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile, player);
                 }
                 else if (tile instanceof TileEntityMethaneSynthesizer)
                 {
-                    return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
+                    return new ContainerMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile, player);
                 }
             }
         }

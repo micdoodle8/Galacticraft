@@ -2,11 +2,13 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.ModAPIManager;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -123,7 +125,6 @@ public class ConfigManagerCore
     public static boolean invertMapMouseScroll;
 	
     public static ArrayList<Object> clientSave = null;
-
 
     public static void initialize(File file)
     {
@@ -423,7 +424,14 @@ public class ConfigManagerCore
                 FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
             }
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore), GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore), GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore), GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore), GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore), GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore) });
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] {
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.coal_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.diamond_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.gold_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.iron_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.lapis_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.redstone_ore)).getResourcePath(),
+                    ((ResourceLocation)GameData.getBlockRegistry().getNameForObject(Blocks.lit_redstone_ore)).getResourcePath() });
             prop.comment = "List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.";
             prop.setLanguageKey("gc.configgui.detectableIDs").setRequiresMcRestart(true);
             detectableIDs = prop.getStringList();
@@ -553,12 +561,10 @@ public class ConfigManagerCore
             disableUpdateCheck = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-            boolean thisIsMC172 = VersionUtil.mcVersion1_7_2; 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", thisIsMC172);
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Biome Type Registrations", false);
             prop.comment = "Biome Types will not be registered in the BiomeDictionary if this is set to true. Ignored (always true) for MC 1.7.2.";
             prop.setLanguageKey("gc.configgui.disableBiomeTypeRegistrations");
-            disableBiomeTypeRegistrations = prop.getBoolean(thisIsMC172);
-            if (thisIsMC172) disableBiomeTypeRegistrations = true; 
+            disableBiomeTypeRegistrations = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Space Race Manager Popup", false);
@@ -577,6 +583,7 @@ public class ConfigManagerCore
         catch (final Exception e)
         {
             GCLog.severe("Problem loading core config (\"core.conf\")");
+            e.printStackTrace();
         }
     }
 
@@ -714,10 +721,10 @@ public class ConfigManagerCore
         Block block = Block.getBlockFromName(name);
         if (block == null)
         {
-        	Item item = (Item)Item.itemRegistry.getObject(name);
+        	Item item = (Item)Item.itemRegistry.getObject(new ResourceLocation(name));
         	if (item instanceof ItemBlock)
         	{
-        		block = ((ItemBlock)item).field_150939_a;
+        		block = ((ItemBlock)item).block;
         	}
         	if (block == null)
         	{
@@ -728,7 +735,7 @@ public class ConfigManagerCore
         try
         {
             Integer.parseInt(name);
-            String bName = GameData.getBlockRegistry().getNameForObject(block);
+            String bName = (String)GameData.getBlockRegistry().getNameForObject(block).toString();
             if (logging) GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
         }
         catch (NumberFormatException ex) { }

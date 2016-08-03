@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,18 +14,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemBasic extends Item
+public class ItemBasic extends Item implements ISortableItem
 {
-    public static final String[] names = { "solar_module_0", "solar_module_1", "rawSilicon", "ingotCopper", "ingotTin", "ingotAluminum", "compressedCopper", "compressedTin", "compressedAluminum", "compressedSteel", "compressedBronze", "compressedIron", "waferSolar", "waferBasic", "waferAdvanced", "dehydratedApple", "dehydratedCarrot", "dehydratedMelon", "dehydratedPotato", "frequencyModule", "ambientThermalController" };
+    public static final String[] names = { "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller" };
     public static final int WAFER_BASIC = 13;
     public static final int WAFER_ADVANCED = 14;
     
-    protected IIcon[] icons = new IIcon[ItemBasic.names.length];
+//    protected IIcon[] icons = new IIcon[ItemBasic.names.length];
 
     public ItemBasic(String assetName)
     {
@@ -35,7 +34,7 @@ public class ItemBasic extends Item
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class ItemBasic extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -61,20 +60,20 @@ public class ItemBasic extends Item
         {
             this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "." + name);
         }
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
         if (itemStack.getItemDamage() > 14 && itemStack.getItemDamage() < 19)
         {
-            return this.getUnlocalizedName() + ".cannedFood";
+            return this.getUnlocalizedName() + ".canned_food";
         }
 
         return this.getUnlocalizedName() + "." + ItemBasic.names[itemStack.getItemDamage()];
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int damage)
     {
         if (this.icons.length > damage)
@@ -83,7 +82,7 @@ public class ItemBasic extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
@@ -112,8 +111,8 @@ public class ItemBasic extends Item
         }
         else if (par1ItemStack.getItemDamage() == 19)
         {
-            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequencyModule.desc.0"));
-            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequencyModule.desc.1"));
+            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequency_module.desc.0"));
+            par3List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequency_module.desc.1"));
         }
     }
 
@@ -152,21 +151,21 @@ public class ItemBasic extends Item
     }
 
     @Override
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
     {
-        if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
+        if (stack.getItemDamage() > 14 && stack.getItemDamage() < 19)
         {
-            --par1ItemStack.stackSize;
-            par3EntityPlayer.getFoodStats().addStats(this.getHealAmount(par1ItemStack), this.getSaturationModifier(par1ItemStack));
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
-            if (!par2World.isRemote)
+            --stack.stackSize;
+            playerIn.getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
+            worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+            if (!worldIn.isRemote)
             {
-                par3EntityPlayer.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
+                playerIn.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
             }
-            return par1ItemStack;
+            return stack;
         }
 
-        return super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
+        return super.onItemUseFinish(stack, worldIn, playerIn);
     }
 
     @Override
@@ -185,7 +184,7 @@ public class ItemBasic extends Item
     {
         if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
         {
-            return EnumAction.eat;
+            return EnumAction.EAT;
         }
 
         return super.getItemUseAction(par1ItemStack);
@@ -210,17 +209,37 @@ public class ItemBasic extends Item
     	//Frequency module
     	if (!player.worldObj.isRemote && entity != null && !(entity instanceof EntityPlayer))
     	{
-    		if (itemStack.stackTagCompound == null)
+    		if (itemStack.getTagCompound() == null)
     		{
     			itemStack.setTagCompound(new NBTTagCompound());
     		}
 
-   			itemStack.stackTagCompound.setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
-   			itemStack.stackTagCompound.setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
+   			itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
+   			itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
 
     		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.tracking.message")));
     		return true;
     	}
     	return false;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 3:
+        case 4:
+        case 5:
+            return EnumSortCategoryItem.INGOT;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+            return EnumSortCategoryItem.PLATE;
+        }
+        return EnumSortCategoryItem.GENERAL;
     }
 }

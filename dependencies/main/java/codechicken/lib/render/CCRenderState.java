@@ -10,6 +10,10 @@ import codechicken.lib.vec.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 
@@ -19,8 +23,7 @@ import java.util.ArrayList;
  * The core of the CodeChickenLib render system.
  * Rendering operations are written to avoid object allocations by reusing static variables.
  */
-public class CCRenderState
-{
+public class CCRenderState {
     private static int nextOperationIndex;
 
     public static int registerOperation() {
@@ -34,8 +37,7 @@ public class CCRenderState
     /**
      * Represents an operation to be run for each vertex that operates on and modifies the current state
      */
-    public static interface IVertexOperation
-    {
+    public static interface IVertexOperation {
         /**
          * Load any required references and add dependencies to the pipeline based on the current model (may be null)
          * Return false if this operation is redundant in the pipeline with the given model
@@ -55,9 +57,10 @@ public class CCRenderState
     }
 
     private static ArrayList<VertexAttribute<?>> vertexAttributes = new ArrayList<VertexAttribute<?>>();
+
     private static int registerVertexAttribute(VertexAttribute<?> attr) {
         vertexAttributes.add(attr);
-        return vertexAttributes.size()-1;
+        return vertexAttributes.size() - 1;
     }
 
     public static VertexAttribute<?> getAttribute(int index) {
@@ -67,10 +70,10 @@ public class CCRenderState
     /**
      * Management class for a vertex attrute such as colour, normal etc
      * This class should handle the loading of the attrute from an array provided by IVertexSource.getAttributes or the computation of this attrute from others
+     *
      * @param <T> The array type for this attrute eg. int[], Vector3[]
      */
-    public static abstract class VertexAttribute<T> implements IVertexOperation
-    {
+    public static abstract class VertexAttribute<T> implements IVertexOperation {
         public final int attributeIndex = registerVertexAttribute(this);
         private final int operationIndex = registerOperation();
         /**
@@ -91,29 +94,31 @@ public class CCRenderState
 
     public static void arrayCopy(Object src, int srcPos, Object dst, int destPos, int length) {
         System.arraycopy(src, srcPos, dst, destPos, length);
-        if(dst instanceof Copyable[]) {
-            Object[] oa = (Object[])dst;
-            Copyable<Object>[] c = (Copyable[])dst;
-            for(int i = destPos; i < destPos+length; i++)
-                if(c[i] != null)
+        if (dst instanceof Copyable[]) {
+            Object[] oa = (Object[]) dst;
+            Copyable<Object>[] c = (Copyable[]) dst;
+            for (int i = destPos; i < destPos + length; i++) {
+                if (c[i] != null) {
                     oa[i] = c[i].copy();
+                }
+            }
         }
     }
 
     public static <T> T copyOf(VertexAttribute<T> attr, T src, int length) {
         T dst = attr.newArray(length);
-        arrayCopy(src, 0, dst, 0, ((Object[])src).length);
+        arrayCopy(src, 0, dst, 0, ((Object[]) src).length);
         return dst;
     }
 
-    public static interface IVertexSource
-    {
+    public static interface IVertexSource {
         public Vertex5[] getVertices();
 
         /**
          * Gets an array of vertex attrutes
+         *
          * @param attr The vertex attrute to get
-         * @param <T> The attrute array type
+         * @param <T>  The attrute array type
          * @return An array, or null if not computed
          */
         public <T> T getAttributes(VertexAttribute<T> attr);
@@ -140,10 +145,11 @@ public class CCRenderState
         @Override
         public boolean load() {
             normalRef = model.getAttributes(this);
-            if(model.hasAttribute(this))
+            if (model.hasAttribute(this)) {
                 return normalRef != null;
+            }
 
-            if(model.hasAttribute(sideAttrib)) {
+            if (model.hasAttribute(sideAttrib)) {
                 pipeline.addDependency(sideAttrib);
                 return true;
             }
@@ -152,10 +158,11 @@ public class CCRenderState
 
         @Override
         public void operate() {
-            if(normalRef != null)
+            if (normalRef != null) {
                 setNormal(normalRef[vertexIndex]);
-            else
+            } else {
                 setNormal(Rotation.axes[side]);
+            }
         }
     };
     public static VertexAttribute<int[]> colourAttrib = new VertexAttribute<int[]>() {
@@ -174,10 +181,11 @@ public class CCRenderState
 
         @Override
         public void operate() {
-            if(colourRef != null)
+            if (colourRef != null) {
                 setColour(ColourRGBA.multiply(baseColour, colourRef[vertexIndex]));
-            else
+            } else {
                 setColour(baseColour);
+            }
         }
     };
     public static VertexAttribute<int[]> lightingAttrib = new VertexAttribute<int[]>() {
@@ -190,11 +198,12 @@ public class CCRenderState
 
         @Override
         public boolean load() {
-            if(!computeLighting || !useColour || !model.hasAttribute(this))
+            if (!computeLighting || !useColour || !model.hasAttribute(this)) {
                 return false;
+            }
 
             colourRef = model.getAttributes(this);
-            if(colourRef != null) {
+            if (colourRef != null) {
                 pipeline.addDependency(colourAttrib);
                 return true;
             }
@@ -217,8 +226,9 @@ public class CCRenderState
         @Override
         public boolean load() {
             sideRef = model.getAttributes(this);
-            if(model.hasAttribute(this))
+            if (model.hasAttribute(this)) {
                 return sideRef != null;
+            }
 
             pipeline.addDependency(normalAttrib);
             return true;
@@ -226,10 +236,11 @@ public class CCRenderState
 
         @Override
         public void operate() {
-            if(sideRef != null)
+            if (sideRef != null) {
                 side = sideRef[vertexIndex];
-            else
+            } else {
                 side = CCModel.findSide(normal);
+            }
         }
     };
     /**
@@ -248,8 +259,9 @@ public class CCRenderState
         @Override
         public boolean load() {
             lcRef = model.getAttributes(this);
-            if(model.hasAttribute(this))
+            if (model.hasAttribute(this)) {
                 return lcRef != null;
+            }
 
             pos.set(lightMatrix.pos.x, lightMatrix.pos.y, lightMatrix.pos.z);
             pipeline.addDependency(sideAttrib);
@@ -259,10 +271,11 @@ public class CCRenderState
 
         @Override
         public void operate() {
-            if(lcRef != null)
+            if (lcRef != null) {
                 lc.set(lcRef[vertexIndex]);
-            else
+            } else {
                 lc.compute(vec.set(vert.vec).sub(pos), side);
+            }
         }
     };
 
@@ -313,7 +326,7 @@ public class CCRenderState
     }
 
     public static void bindModel(IVertexSource model) {
-        if(CCRenderState.model != model) {
+        if (CCRenderState.model != model) {
             CCRenderState.model = model;
             pipeline.rebuild();
         }
@@ -340,7 +353,7 @@ public class CCRenderState
 
     public static void render() {
         Vertex5[] verts = model.getVertices();
-        for(vertexIndex = firstVertexIndex; vertexIndex < lastVertexIndex; vertexIndex++) {
+        for (vertexIndex = firstVertexIndex; vertexIndex < lastVertexIndex; vertexIndex++) {
             model.prepareVertex();
             vert.set(verts[vertexIndex]);
             runPipeline();
@@ -353,13 +366,17 @@ public class CCRenderState
     }
 
     public static void writeVert() {
-        if(hasNormal)
-            Tessellator.instance.setNormal((float)normal.x, (float)normal.y, (float)normal.z);
-        if(hasColour)
-            Tessellator.instance.setColorRGBA(colour>>>24, colour>>16 & 0xFF, colour>>8 & 0xFF, alphaOverride >= 0 ? alphaOverride : colour & 0xFF);
-        if(hasBrightness)
-            Tessellator.instance.setBrightness(brightness);
-        Tessellator.instance.addVertexWithUV(vert.vec.x, vert.vec.y, vert.vec.z, vert.uv.u, vert.uv.v);
+        WorldRenderer r = Tessellator.getInstance().getWorldRenderer();
+
+        if (hasNormal) {
+            r.normal((float) normal.x, (float) normal.y, (float) normal.z);
+        }
+        if (hasColour) {
+            r.color(colour >>> 24, colour >> 16 & 0xFF, colour >> 8 & 0xFF, alphaOverride >= 0 ? alphaOverride : colour & 0xFF);
+        }
+        if (hasBrightness) {
+            r.lightmap(brightness >> 16 & 65535, brightness & 65535);
+        }
     }
 
     public static void setNormal(double x, double y, double z) {
@@ -382,12 +399,16 @@ public class CCRenderState
         brightness = b;
     }
 
-    public static void setBrightness(IBlockAccess world, int x, int y, int z) {
-        setBrightness(world.getBlock(x, y, z).getMixedBrightnessForBlock(world, x, y, z));
+    public static void setBrightness(IBlockAccess world, BlockPos pos) {
+        setBrightness(world.getBlockState(pos).getBlock().getMixedBrightnessForBlock(world, pos));
     }
 
     public static void pullLightmap() {
-        setBrightness((int)OpenGlHelper.lastBrightnessY << 16 | (int)OpenGlHelper.lastBrightnessX);
+        setBrightness((int) OpenGlHelper.lastBrightnessY << 16 | (int) OpenGlHelper.lastBrightnessX);
+    }
+
+    public static void pushLightmap() {
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightness & 0xFFFF, brightness >>> 16);
     }
 
     /**
@@ -406,19 +427,27 @@ public class CCRenderState
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
     }
 
-    public static void startDrawing() {
-        startDrawing(7);
+    public static WorldRenderer startDrawing() {
+        return startDrawing(7, DefaultVertexFormats.POSITION_TEX);
     }
 
-    public static void startDrawing(int mode) {
-        Tessellator.instance.startDrawing(mode);
-        if(hasColour)
-            Tessellator.instance.setColorRGBA(colour>>>24, colour>>16 & 0xFF, colour>>8 & 0xFF, alphaOverride >= 0 ? alphaOverride : colour & 0xFF);
-        if(hasBrightness)
-            Tessellator.instance.setBrightness(brightness);
+    public static WorldRenderer startDrawing(VertexFormat format) {
+        return startDrawing(7, format);
+    }
+
+    public static WorldRenderer startDrawing(int mode, VertexFormat format) {
+        WorldRenderer r = Tessellator.getInstance().getWorldRenderer();
+        r.begin(mode, format);
+        if (hasColour) {
+            r.color(colour >>> 24, colour >> 16 & 0xFF, colour >> 8 & 0xFF, alphaOverride >= 0 ? alphaOverride : colour & 0xFF);
+        }
+        if (hasBrightness) {
+            r.lightmap(brightness >> 16 & 65535, brightness & 65535);
+        }
+        return r;
     }
 
     public static void draw() {
-        Tessellator.instance.draw();
+        Tessellator.getInstance().draw();
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 public class ChunkLoadingCallback implements LoadingCallback
 {
     private static boolean loaded;
-    private static HashMap<String, HashMap<Integer, HashSet<ChunkCoordinates>>> chunkLoaderList = new HashMap<String, HashMap<Integer, HashSet<ChunkCoordinates>>>();
+    private static HashMap<String, HashMap<Integer, HashSet<BlockPos>>> chunkLoaderList = new HashMap<String, HashMap<Integer, HashSet<BlockPos>>>();
     // private static HashMap<Integer, HashSet<IChunkLoader>> loadedChunks = new
     // HashMap<Integer, HashSet<IChunkLoader>>();
 
@@ -45,7 +45,7 @@ public class ChunkLoadingCallback implements LoadingCallback
                 int tileX = nbt.getInteger("ChunkLoaderTileX");
                 int tileY = nbt.getInteger("ChunkLoaderTileY");
                 int tileZ = nbt.getInteger("ChunkLoaderTileZ");
-                TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
+                TileEntity tile = world.getTileEntity(new BlockPos(tileX, tileY, tileZ));
 
                 if (tile instanceof IChunkLoader)
                 {
@@ -86,23 +86,23 @@ public class ChunkLoadingCallback implements LoadingCallback
 
     public static void addToList(World world, int x, int y, int z, String playerName)
     {
-        HashMap<Integer, HashSet<ChunkCoordinates>> dimensionMap = ChunkLoadingCallback.chunkLoaderList.get(playerName);
+        HashMap<Integer, HashSet<BlockPos>> dimensionMap = ChunkLoadingCallback.chunkLoaderList.get(playerName);
 
         if (dimensionMap == null)
         {
-            dimensionMap = new HashMap<Integer, HashSet<ChunkCoordinates>>();
+            dimensionMap = new HashMap<Integer, HashSet<BlockPos>>();
             ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         }
 
-        HashSet<ChunkCoordinates> chunkLoaders = dimensionMap.get(world.provider.dimensionId);
+        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimensionId());
 
         if (chunkLoaders == null)
         {
-            chunkLoaders = new HashSet<ChunkCoordinates>();
+            chunkLoaders = new HashSet<BlockPos>();
         }
 
-        chunkLoaders.add(new ChunkCoordinates(x, y, z));
-        dimensionMap.put(world.provider.dimensionId, chunkLoaders);
+        chunkLoaders.add(new BlockPos(x, y, z));
+        dimensionMap.put(world.provider.getDimensionId(), chunkLoaders);
         ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
     }
 
@@ -117,7 +117,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // if (tile instanceof IChunkLoader)
         // {
         // IChunkLoader chunkLoader = (IChunkLoader) tile;
-        // int dimID = world.provider.dimensionId;
+        // int dimID = world.provider.getDimensionId();
         //
         // HashSet<IChunkLoader> chunkList = loadedChunks.get(dimID);
         //
@@ -172,21 +172,21 @@ public class ChunkLoadingCallback implements LoadingCallback
 	            {
 		            dataStream.writeInt(ChunkLoadingCallback.chunkLoaderList.size());
 	
-		            for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
+		            for (Entry<String, HashMap<Integer, HashSet<BlockPos>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
 		            {
 		                dataStream.writeUTF(playerEntry.getKey());
 		                dataStream.writeInt(playerEntry.getValue().size());
 	
-		                for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
+		                for (Entry<Integer, HashSet<BlockPos>> dimensionEntry : playerEntry.getValue().entrySet())
 		                {
 		                    dataStream.writeInt(dimensionEntry.getKey());
 		                    dataStream.writeInt(dimensionEntry.getValue().size());
 	
-		                    for (ChunkCoordinates coords : dimensionEntry.getValue())
+		                    for (BlockPos coords : dimensionEntry.getValue())
 		                    {
-		                        dataStream.writeInt(coords.posX);
-		                        dataStream.writeInt(coords.posY);
-		                        dataStream.writeInt(coords.posZ);
+		                        dataStream.writeInt(coords.getX());
+		                        dataStream.writeInt(coords.getY());
+		                        dataStream.writeInt(coords.getZ());
 		                    }
 		                }
 		            }
@@ -264,18 +264,18 @@ public class ChunkLoadingCallback implements LoadingCallback
                         String ownerName = dataStream.readUTF();
 
                         int mapSize = dataStream.readInt();
-                        HashMap<Integer, HashSet<ChunkCoordinates>> dimensionMap = new HashMap<Integer, HashSet<ChunkCoordinates>>();
+                        HashMap<Integer, HashSet<BlockPos>> dimensionMap = new HashMap<Integer, HashSet<BlockPos>>();
 
                         for (int i = 0; i < mapSize; i++)
                         {
                             int dimensionID = dataStream.readInt();
-                            HashSet<ChunkCoordinates> coords = new HashSet<ChunkCoordinates>();
+                            HashSet<BlockPos> coords = new HashSet<BlockPos>();
                             dimensionMap.put(dimensionID, coords);
                             int coordSetSize = dataStream.readInt();
 
                             for (int j = 0; j < coordSetSize; j++)
                             {
-                                coords.add(new ChunkCoordinates(dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
+                                coords.add(new BlockPos(dataStream.readInt(), dataStream.readInt(), dataStream.readInt()));
                             }
                         }
 
@@ -308,11 +308,11 @@ public class ChunkLoadingCallback implements LoadingCallback
 
     public static void onPlayerLogin(EntityPlayer player)
     {
-        for (Entry<String, HashMap<Integer, HashSet<ChunkCoordinates>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
+        for (Entry<String, HashMap<Integer, HashSet<BlockPos>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
         {
             if (player.getGameProfile().getName().equals(playerEntry.getKey()))
             {
-                for (Entry<Integer, HashSet<ChunkCoordinates>> dimensionEntry : playerEntry.getValue().entrySet())
+                for (Entry<Integer, HashSet<BlockPos>> dimensionEntry : playerEntry.getValue().entrySet())
                 {
                     int dimID = dimensionEntry.getKey();
 
@@ -339,7 +339,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // {
         // World world = loader.getWorldObj();
         //
-        // ChunkCoordinates coords = loader.getCoords();
+        // BlockPos coords = loader.getCoords();
         // TileEntity tile = world.getTileEntity(coords.posX, coords.posY,
         // coords.posZ);
         //
@@ -361,12 +361,12 @@ public class ChunkLoadingCallback implements LoadingCallback
         //
         // if (!otherLoader.getOwnerName().equals(loader.getOwnerName()))
         // {
-        // HashMap<Integer, HashSet<ChunkCoordinates>> otherDimMap =
+        // HashMap<Integer, HashSet<BlockPos>> otherDimMap =
         // chunkLoaderList.get(loader.getOwnerName());
         //
         // if (otherDimMap != null)
         // {
-        // HashSet<ChunkCoordinates> otherLoaders = otherDimMap.get(dimID);
+        // HashSet<BlockPos> otherLoaders = otherDimMap.get(dimID);
         //
         // if (otherLoaders != null && otherLoaders.contains(otherLoader))
         // {
@@ -390,12 +390,12 @@ public class ChunkLoadingCallback implements LoadingCallback
         // {
         // dimEntry.getValue().remove(loader);
         //
-        // HashMap<Integer, HashSet<ChunkCoordinates>> dimMap =
+        // HashMap<Integer, HashSet<BlockPos>> dimMap =
         // chunkLoaderList.get(player.getGameProfile().getName());
         //
         // if (dimMap != null)
         // {
-        // HashSet<ChunkCoordinates> coordSet = dimMap.get(dimID);
+        // HashSet<BlockPos> coordSet = dimMap.get(dimID);
         //
         // if (coordSet != null)
         // {

@@ -1,12 +1,11 @@
 package codechicken.nei;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 import static codechicken.lib.gui.GuiDraw.drawStringC;
 import static codechicken.nei.LayoutManager.*;
 
-public class LayoutStyleMinecraft extends LayoutStyleDefault
-{
+public class LayoutStyleMinecraft extends LayoutStyleDefault {
     int stateButtonCount;
     int clickButtonCount;
 
@@ -54,27 +53,28 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault
 
     @Override
     public void drawButton(Button b, int mousex, int mousey) {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glColor4f(1, 1, 1, 1);
+        GlStateManager.disableLighting();
+        GlStateManager.color(1, 1, 1, 1);
 
         int tex;
-        if ((b.state & 0x3) == 2)
+        if ((b.state & 0x3) == 2) {
             tex = 0;
-        else if ((b.state & 0x4) == 0 && b.contains(mousex, mousey) ||//not a state button and mouseover
+        } else if ((b.state & 0x4) == 0 && b.contains(mousex, mousey) ||//not a state button and mouseover
                 (b.state & 0x3) == 1)//state active
+        {
             tex = 2;
-        else
+        } else {
             tex = 1;
+        }
         LayoutManager.drawButtonBackground(b.x, b.y, b.w, b.h, true, tex);
 
         Image icon = b.getRenderIcon();
         if (icon == null) {
-            int colour = tex == 2 ? 0xffffa0 :
-                    tex == 0 ? 0x601010 : 0xe0e0e0;
+            int colour = tex == 2 ? 0xffffa0 : tex == 0 ? 0x601010 : 0xe0e0e0;
 
             drawStringC(b.getRenderLabel(), b.x + b.w / 2, b.y + (b.h - 8) / 2, colour);
         } else {
-            GL11.glColor4f(1, 1, 1, 1);
+            GlStateManager.color(1, 1, 1, 1);
 
             int iconx = b.x + (b.w - icon.width) / 2;
             int icony = b.y + (b.h - icon.height) / 2;
@@ -84,12 +84,14 @@ public class LayoutStyleMinecraft extends LayoutStyleDefault
 
     @Override
     public void drawSubsetTag(String text, int x, int y, int w, int h, int state, boolean mouseover) {
-        if(state == 1)
-            GL11.glColor4f(0.65F, 0.65F, 0.65F, 1.0F);
-        else
-            GL11.glColor4f(1, 1, 1, 1);
+        if (state == 1) {
+            GlStateManager.color(0.65F, 0.65F, 0.65F, 1.0F);
+        } else {
+            GlStateManager.color(1, 1, 1, 1);
+        }
         LayoutManager.drawButtonBackground(x, y, w, h, false, state == 0 ? 0 : 1);
-        if(text != null)
+        if (text != null) {
             drawStringC(text, x, y, w, h, state == 2 ? 0xFFE0E0E0 : 0xFFA0A0A0);
+        }
     }
 }

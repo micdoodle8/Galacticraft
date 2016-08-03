@@ -1,34 +1,35 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
+public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements ISortableItem
 {
-    protected IIcon[] icons = new IIcon[7];
+//    protected IIcon[] icons = new IIcon[7];
 
     public ItemCanisterLiquidNitrogen(String assetName)
     {
         super(assetName);
         this.setAllowedFluid("liquidnitrogen");
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -36,25 +37,25 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
         {
             this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
         }
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
         if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
         {
-            return "item.emptyGasCanister";
+            return "item.empty_gas_canister";
         }
 
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.canister.liquidNitrogen.full";
+            return "item.canister.liquid_nitrogen.full";
         }
 
-        return "item.canister.liquidNitrogen.partial";
+        return "item.canister.liquid_nitrogen.partial";
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int par1)
     {
         final int damage = 6 * par1 / this.getMaxDamage();
@@ -65,7 +66,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -74,11 +75,11 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
         {
-            par3List.add(GCCoreUtil.translate("item.canister.liquidNitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+            par3List.add(GCCoreUtil.translate("item.canister.liquid_nitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
         }
     }
 
-    private Block canFreeze(Block b, int meta)
+    private Block canFreeze(Block b)
     {
         if (b == Blocks.water)
         {
@@ -109,35 +110,40 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric
         {
             if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
             {
-                int x = movingobjectposition.blockX;
-                int y = movingobjectposition.blockY;
-                int z = movingobjectposition.blockZ;
+                BlockPos pos = movingobjectposition.getBlockPos();
 
-                if (!par2World.canMineBlock(par3EntityPlayer, x, y, z))
+                if (!par2World.canMineBlockBody(par3EntityPlayer, pos))
                 {
                     return itemStack;
                 }
 
-                if (!par3EntityPlayer.canPlayerEdit(x, y, z, movingobjectposition.sideHit, itemStack))
+                if (!par3EntityPlayer.canPlayerEdit(pos, movingobjectposition.sideHit, itemStack))
                 {
                     return itemStack;
                 }
 
                 //Material material = par2World.getBlock(i, j, k).getMaterial();
-                Block b = par2World.getBlock(x, y, z);
-                int meta = par2World.getBlockMetadata(x, y, z);
+                IBlockState state = par2World.getBlockState(pos);
+                Block b = state.getBlock();
+                int meta = b.getMetaFromState(state);
 
-                Block result = this.canFreeze(b, meta);
+                Block result = this.canFreeze(b);
                 if (result != null)
                 {
 	                this.setNewDamage(itemStack, damage);
-                    par2World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
-                    par2World.setBlock(x, y, z, result, 0, 3);
+                    par2World.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+                    par2World.setBlockState(pos, result.getDefaultState(), 3);
                     return itemStack;
                 }
             }
 
             return itemStack;
         }
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
     }
 }

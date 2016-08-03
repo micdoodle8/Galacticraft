@@ -1,24 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
+import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.common.Loader;
-import tconstruct.client.tabs.AbstractTab;
-import tconstruct.client.tabs.TabRegistry;
+import net.minecraftforge.fml.common.Loader;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
@@ -40,7 +40,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 75, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
+        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 			for (int k = 0; k < this.buttonList.size(); ++k)
 	        {
 	        	GuiButton b = (GuiButton) this.buttonList.get(k);
-	        	if (!(b instanceof AbstractTab)) b.xPosition += diff;	        	
+	        	if (!(b instanceof AbstractTab)) b.xPosition += diff;
 	        }
 		}
         super.drawScreen(par1, par2, par3);
@@ -109,7 +109,8 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     public static void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
     {
-    	GL11.glPushMatrix();
+        GlStateManager.enableColorMaterial();
+        GlStateManager.pushMatrix();
         GL11.glTranslatef(par1, par2, 50.0F);
         GL11.glScalef(-par3, par3, par3);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -128,19 +129,19 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         par0Minecraft.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
         par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
         par0Minecraft.thePlayer.rotationPitch = (float)Math.sin(par0Minecraft.getSystemTime() / 500.0F) * 3.0F;
-        GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
-        RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        GL11.glTranslatef(0.0F, (float)par0Minecraft.thePlayer.getYOffset(), 0.0F);
+        par0Minecraft.getRenderManager().playerViewY = 180.0F;
+        par0Minecraft.getRenderManager().renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         par0Minecraft.thePlayer.renderYawOffset = f2;
         par0Minecraft.thePlayer.rotationYaw = f3;
         par0Minecraft.thePlayer.rotationPitch = f4;
         par0Minecraft.thePlayer.rotationYawHead = f5;
-        GL11.glPopMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.popMatrix();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 	
 	public int getPotionOffset()

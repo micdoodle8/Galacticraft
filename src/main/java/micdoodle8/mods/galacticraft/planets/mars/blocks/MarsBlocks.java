@@ -1,15 +1,19 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import micdoodle8.mods.galacticraft.core.blocks.BlockStairsGC;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MarsBlocks
@@ -28,46 +32,64 @@ public class MarsBlocks
 
     public static void initBlocks()
     {
-    	MarsBlocks.marsBlock = new BlockBasicMars().setHardness(2.2F).setBlockName("mars");
-        MarsBlocks.vine = new BlockCavernousVine().setHardness(0.1F).setBlockName("cavernVines");
-        MarsBlocks.rock = new BlockSlimelingEgg().setHardness(0.75F).setBlockName("slimelingEgg");
+    	MarsBlocks.marsBlock = new BlockBasicMars("mars").setHardness(2.2F);
+        MarsBlocks.vine = new BlockCavernousVine("cavern_vines").setHardness(0.1F);
+        MarsBlocks.rock = new BlockSlimelingEgg("slimeling_egg").setHardness(0.75F);
         MarsBlocks.tier2TreasureChest = AsteroidBlocks.treasureChestTier2;
-        MarsBlocks.machine = new BlockMachineMars().setHardness(1.8F).setBlockName("marsMachine");
-        MarsBlocks.machineT2 = new BlockMachineMarsT2().setHardness(1.8F).setBlockName("marsMachineT2");
-        MarsBlocks.creeperEgg = new BlockCreeperEgg().setHardness(-1.0F).setBlockName("creeperEgg");
-        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
-        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
-        MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogenPipe");
+        MarsBlocks.machine = new BlockMachineMars("mars_machine").setHardness(1.8F);
+        MarsBlocks.machineT2 = new BlockMachineMarsT2("mars_machine_t2").setHardness(1.8F);
+        MarsBlocks.creeperEgg = new BlockCreeperEgg("creeper_egg").setHardness(-1.0F);
+//        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
+//        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
+        MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogen_pipe");
+    }
+
+    private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
+    {
+        block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
+    }
+
+    private static void setHarvestLevel(Block block, String toolClass, int level)
+    {
+        block.setHarvestLevel(toolClass, level);
     }
 
     public static void setHarvestLevels()
     {
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 2, 0); //Copper ore
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 2, 1); //Tin ore
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 3, 2); //Desh ore
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 1, 3); //Iron ore
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 0, 4); //Cobblestone
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 3, 7); //Dungeon brick
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 0, 8); //Decoration block
-        MarsBlocks.marsBlock.setHarvestLevel("pickaxe", 1, 9); //Stone
-        MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 5); //Top dirt
-        MarsBlocks.marsBlock.setHarvestLevel("shovel", 0, 6); //Dirt
-        MarsBlocks.rock.setHarvestLevel("pickaxe", 3);
-        MarsBlocks.marsCobblestoneStairs.setHarvestLevel("pickaxe", 0);
-        MarsBlocks.marsBricksStairs.setHarvestLevel("pickaxe", 3);
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 2, 0); //Copper ore
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 2, 1); //Tin ore
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 3, 2); //Desh ore
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 1, 3); //Iron ore
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 0, 4); //Cobblestone
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 3, 7); //Dungeon brick
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 0, 8); //Decoration block
+        setHarvestLevel(MarsBlocks.marsBlock, "pickaxe", 1, 9); //Stone
+        setHarvestLevel(MarsBlocks.marsBlock, "shovel", 0, 5); //Top dirt
+        setHarvestLevel(MarsBlocks.marsBlock, "shovel", 0, 6); //Dirt
+        setHarvestLevel(MarsBlocks.rock, "pickaxe", 3);
+//        setHarvestLevel(MarsBlocks.marsCobblestoneStairs, "pickaxe", 0);
+//        setHarvestLevel(MarsBlocks.marsBricksStairs, "pickaxe", 3);
+    }
+
+    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    {
+        String name = block.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftBlock(name, block);
+        GameRegistry.registerBlock(block, itemClass, name);
+        GCBlocks.registerSorted(block);
     }
 
     public static void registerBlocks()
     {
-        GameRegistry.registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class, MarsBlocks.marsBlock.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.vine, ItemBlockDesc.class, MarsBlocks.vine.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.rock, ItemBlockEgg.class, MarsBlocks.rock.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class, MarsBlocks.creeperEgg.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.machine, ItemBlockMachine.class, MarsBlocks.machine.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class, MarsBlocks.machineT2.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class, MarsBlocks.marsCobblestoneStairs.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class, MarsBlocks.marsBricksStairs.getUnlocalizedName());
-        GameRegistry.registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class, MarsBlocks.hydrogenPipe.getUnlocalizedName());
+        registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class);
+        registerBlock(MarsBlocks.vine, ItemBlockDesc.class);
+        registerBlock(MarsBlocks.rock, ItemBlockEgg.class);
+        registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class);
+        registerBlock(MarsBlocks.machine, ItemBlockMachine.class);
+        registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
+//        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
+//        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
+        registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class);
     }
     
     public static void oreDictRegistration()

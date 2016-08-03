@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
@@ -16,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -24,12 +23,17 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +45,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
-    private List<ChunkCoordinates> connectedPads = new ArrayList<ChunkCoordinates>();
+    private List<BlockPos> connectedPads = new ArrayList<BlockPos>();
     @NetworkedField(targetSide = Side.CLIENT)
     public int frequency = -1;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -69,9 +73,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -100,13 +104,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 {
                     for (int i = 0; i < this.connectedPads.size(); i++)
                     {
-                        ChunkCoordinates coords = this.connectedPads.get(i);
-                        Block block = this.worldObj.getBlock(coords.posX, coords.posY, coords.posZ);
+                        BlockPos coords = this.connectedPads.get(i);
+                        Block block = this.worldObj.getBlockState(coords).getBlock();
 
                         if (block != GCBlocks.landingPadFull)
                         {
                             this.connectedPads.remove(i);
-                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.getX() >> 4, coords.getZ() >> 4));
                         }
                     }
                 }
@@ -116,7 +120,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 5, this.xCoord, this.yCoord, this.zCoord, 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 5, this.getPos(), 0 }));
             }
         }
     }
@@ -160,36 +164,36 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             }
 
             NBTTagCompound nbt = this.chunkLoadTicket.getModData();
-            nbt.setInteger("ChunkLoaderTileX", this.xCoord);
-            nbt.setInteger("ChunkLoaderTileY", this.yCoord);
-            nbt.setInteger("ChunkLoaderTileZ", this.zCoord);
+            nbt.setInteger("ChunkLoaderTileX", this.getPos().getX());
+            nbt.setInteger("ChunkLoaderTileY", this.getPos().getY());
+            nbt.setInteger("ChunkLoaderTileZ", this.getPos().getZ());
 
             for (int x = -2; x <= 2; x++)
             {
                 for (int z = -2; z <= 2; z++)
                 {
-                    Block blockID = this.worldObj.getBlock(this.xCoord + x, this.yCoord, this.zCoord + z);
+                    Block blockID = this.worldObj.getBlockState(this.getPos().add(x, 0, z)).getBlock();
 
                     if (blockID instanceof BlockLandingPadFull)
                     {
-                        if (this.xCoord + x >> 4 != this.xCoord >> 4 || this.zCoord + z >> 4 != this.zCoord >> 4)
+                        if (this.getPos().getX() + x >> 4 != this.getPos().getX() >> 4 || this.getPos().getZ() + z >> 4 != this.getPos().getZ() >> 4)
                         {
-                            this.connectedPads.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
+                            this.connectedPads.add(new BlockPos(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
 
                             if (placed)
                             {
-                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord + x, this.yCoord, this.zCoord + z, this.getOwnerName());
+                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z, this.getOwnerName());
                             }
                             else
                             {
-                                ChunkLoadingCallback.addToList(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
+                                ChunkLoadingCallback.addToList(this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
                             }
                         }
                     }
                 }
             }
 
-            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.getOwnerName());
+            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
         }
     }
 
@@ -200,9 +204,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public ChunkCoordinates getCoords()
+    public BlockPos getCoords()
     {
-        return new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
+        return new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     @Override
@@ -243,13 +247,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("container.launchcontroller.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -261,19 +265,19 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID == 0;
     }
@@ -323,9 +327,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockAccess world, int x, int y, int z)
+    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         return tile instanceof TileEntityLandingPad;
     }
@@ -348,7 +352,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 {
                     if (this != tile2)
                     {
-                        tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
+                        tile2 = world.getTileEntity(tile2.getPos());
                         if (tile2 == null)
                             continue;
 
@@ -398,7 +402,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     {
                         if (this != tile2)
                         {
-                            tile2 = world.getTileEntity(tile2.xCoord, tile2.yCoord, tile2.zCoord);
+                            tile2 = world.getTileEntity(tile2.getPos());
                             if (tile2 == null)
                                 continue;
 
@@ -458,8 +462,25 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         }
     }
 
+    @Override
+    public IChatComponent getDisplayName()
+    {
+        return null;
+    }
+
 	public void setAttachedPad(IFuelDock pad)
 	{
 		this.attachedDock = pad;
 	}
+
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFront().rotateY();
+    }
 }

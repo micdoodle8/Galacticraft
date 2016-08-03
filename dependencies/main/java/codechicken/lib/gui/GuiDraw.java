@@ -6,23 +6,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GuiDraw
-{
-    public static class GuiHook extends Gui
-    {
+public class GuiDraw {
+    public static class GuiHook extends Gui {
         public void setZLevel(float f) {
             zLevel = f;
         }
@@ -42,7 +38,7 @@ public class GuiDraw
     }
 
     public static final GuiHook gui = new GuiHook();
-    public static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    public static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
     public static TextureManager renderEngine = Minecraft.getMinecraft().renderEngine;
 
     public static void drawRect(int x, int y, int w, int h, int colour) {
@@ -58,10 +54,11 @@ public class GuiDraw
     }
 
     public static void drawString(String text, int x, int y, int colour, boolean shadow) {
-        if (shadow)
+        if (shadow) {
             fontRenderer.drawStringWithShadow(text, x, y, colour);
-        else
+        } else {
             fontRenderer.drawString(text, x, y, colour);
+        }
     }
 
     public static void drawString(String text, int x, int y, int colour) {
@@ -92,17 +89,14 @@ public class GuiDraw
         drawStringR(text, x, y, colour, true);
     }
 
-
     public static int getStringWidth(String s) {
-        if (s == null || s.equals(""))
-            return 0;
-        return fontRenderer.getStringWidth(EnumChatFormatting.getTextWithoutFormattingCodes(s));
+        return fontRenderer.getStringWidth(s);
     }
 
     public static Dimension displaySize() {
         Minecraft mc = Minecraft.getMinecraft();
-//        ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-        return new Dimension(1920, 1080);
+        ScaledResolution res = new ScaledResolution(mc);
+        return new Dimension(res.getScaledWidth(), res.getScaledHeight());
     }
 
     public static Dimension displayRes() {
@@ -142,8 +136,7 @@ public class GuiDraw
     public static final String TOOLTIP_HANDLER = "\u00A7x";
     private static List<ITooltipLineHandler> tipLineHandlers = new ArrayList<ITooltipLineHandler>();
 
-    public static interface ITooltipLineHandler
-    {
+    public static interface ITooltipLineHandler {
         public Dimension getSize();
 
         public void draw(int x, int y);
@@ -151,39 +144,42 @@ public class GuiDraw
 
     public static int getTipLineId(ITooltipLineHandler handler) {
         tipLineHandlers.add(handler);
-        return tipLineHandlers.size()-1;
+        return tipLineHandlers.size() - 1;
     }
 
     public static ITooltipLineHandler getTipLine(String line) {
-        if(!line.startsWith(TOOLTIP_HANDLER))
+        if (!line.startsWith(TOOLTIP_HANDLER)) {
             return null;
+        }
         return tipLineHandlers.get(Integer.parseInt(line.substring(2)));
     }
 
     public static void drawMultilineTip(int x, int y, List<String> list) {
-        if (list.isEmpty())
+        if (list.isEmpty()) {
             return;
+        }
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableDepth();
 
         int w = 0;
         int h = -2;
         for (int i = 0; i < list.size(); i++) {
             String s = list.get(i);
             ITooltipLineHandler line = getTipLine(s);
-            Dimension d = line != null ?
-                    line.getSize() :
-                    new Dimension(getStringWidth(s), list.get(i).endsWith(TOOLTIP_LINESPACE) && i + 1 < list.size() ? 12 : 10);
+            Dimension d = line != null ? line.getSize() : new Dimension(getStringWidth(s), list.get(i).endsWith(TOOLTIP_LINESPACE) && i + 1 < list.size() ? 12 : 10);
             w = Math.max(w, d.width);
             h += d.height;
         }
 
-        if (x < 8) x = 8;
-        else if (x > displaySize().width - w - 8) {
+        if (x < 8) {
+            x = 8;
+        } else if (x > displaySize().width - w - 8) {
             x -= 24 + w;//flip side of cursor
-            if(x < 8) x = 8;
+            if (x < 8) {
+                x = 8;
+            }
         }
         y = (int) MathHelper.clip(y, 8, displaySize().height - 8 - h);
 
@@ -191,11 +187,10 @@ public class GuiDraw
         drawTooltipBox(x - 4, y - 4, w + 7, h + 7);
         for (String s : list) {
             ITooltipLineHandler line = getTipLine(s);
-            if(line != null) {
+            if (line != null) {
                 line.draw(x, y);
                 y += line.getSize().height;
-            }
-            else {
+            } else {
                 fontRenderer.drawStringWithShadow(s, x, y, -1);
                 y += s.endsWith(TOOLTIP_LINESPACE) ? 12 : 10;
             }
@@ -204,9 +199,9 @@ public class GuiDraw
         tipLineHandlers.clear();
         gui.incZLevel(-300);
 
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.enableDepth();
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.enableRescaleNormal();
     }
 
     public static void drawTooltipBox(int x, int y, int w, int h) {

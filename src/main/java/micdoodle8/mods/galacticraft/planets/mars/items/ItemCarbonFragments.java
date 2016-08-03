@@ -1,17 +1,18 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemCarbonFragments extends Item
+public class ItemCarbonFragments extends Item implements ISortableItem
 {
 
     public ItemCarbonFragments()
@@ -36,9 +37,8 @@ public class ItemCarbonFragments extends Item
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
+    public EnumSortCategoryItem getCategory(int meta)
     {
-        this.itemIcon = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "carbonFragments");
+        return EnumSortCategoryItem.GENERAL;
     }
 }

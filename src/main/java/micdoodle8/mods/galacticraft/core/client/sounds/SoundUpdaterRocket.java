@@ -11,17 +11,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * 
+ *
  * This file is part of the Galacticraft project
- * 
+ *
  * @author micdoodle8
- *  
+ *
  */
 public class SoundUpdaterRocket extends MovingSound
 {
-	//private final SoundHandler soundHandler;
-	//private final ISound theSound;
-	
 	private final EntityPlayerSP thePlayer;
 	private final EntityAutoRocket theRocket;
 	private boolean soundStopped;
@@ -29,15 +26,15 @@ public class SoundUpdaterRocket extends MovingSound
 
 	public SoundUpdaterRocket(EntityPlayerSP par1EntityPlayerSP, EntityAutoRocket par2Entity)
 	{
-        super(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "shuttle.shuttle"));
+		super(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "shuttle.shuttle"));
 		this.theRocket = par2Entity;
 		this.thePlayer = par1EntityPlayerSP;
-        this.field_147666_i = ISound.AttenuationType.NONE;
-        this.volume = 0.00001F;  //If it's zero it won't start playing
-        this.field_147663_c = 0.0F;  //pitch
-        this.repeat = true;
-        this.field_147665_h = 0;  //repeat delay
-        this.updateSoundLocation(par2Entity);
+		this.attenuationType = ISound.AttenuationType.NONE;
+		this.volume = 0.00001F;  //If it's zero it won't start playing
+		this.pitch = 0.0F;  //pitch
+		this.repeat = true;
+		this.repeatDelay = 0;  //repeat delay
+		this.updateSoundLocation(par2Entity);
 	}
 
 	/**
@@ -46,65 +43,60 @@ public class SoundUpdaterRocket extends MovingSound
 	@Override
 	public void update()
 	{
-        if (!this.theRocket.isDead)
-        {	
-        	if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal())
+		if (!this.theRocket.isDead)
+		{
+			if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal())
 			{
 				if (!ignition)
 				{
-					this.field_147663_c = 0.0F;
+					this.pitch = 0.0F;
 					ignition = true;
 				}
-        		if (this.theRocket.timeUntilLaunch < this.theRocket.getPreLaunchWait())
-    			{
-    				if (this.field_147663_c < 1.0F)
-    				{
-    					this.field_147663_c += 0.0025F;
-    				}
+				if (this.theRocket.timeUntilLaunch < this.theRocket.getPreLaunchWait())
+				{
+					if (this.pitch < 1.0F)
+					{
+						this.pitch += 0.0025F;
+					}
 
-    				if (this.field_147663_c > 1.0F)
-    				{
-    					this.field_147663_c = 1.0F;
-    				}
-    			}
+					if (this.pitch > 1.0F)
+					{
+						this.pitch = 1.0F;
+					}
+				}
 			}
-        	else
-        		this.field_147663_c = 1.0F;
-        	
-        	if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.theRocket.getLaunched())
-        	{
-//    			float var10 = MathHelper.clamp_float((float) this.minecartSpeed, 0.0F, 4.0F) / 4.0F;
-//    			this.minecartRideSoundVolume = 0.0F + var10 * 0.75F;
-//    			var10 = MathHelper.clamp_float(var10 * 2.0F, 0.0F, 1.0F);
-//    			this.minecartMoveSoundVolume = 0.0F + var10 * 6.7F;
+			else
+				this.pitch = 1.0F;
 
-    			if (this.theRocket.posY > 1000)
-    			{
-    				this.volume = 0F;
-    				if (!this.theRocket.landing) this.donePlaying = true;
-    			}
-    			else if (this.theRocket.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
-    			{
-    				this.volume = (1000F + Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - (float) this.theRocket.posY) * 0.001F;
-    			}
-    			else
-    				this.volume = 1.0F;
-    		}
+			if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.theRocket.getLaunched())
+			{
+                if (this.theRocket.posY > 1000)
+                {
+                    this.volume = 0F;
+                    if (!this.theRocket.landing) this.donePlaying = true;
+                }
+                else if (this.theRocket.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+                {
+                    this.volume = (1000F + Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - (float) this.theRocket.posY) * 0.001F;
+                }
+                else
+                    this.volume = 1.0F;
+            }
 
-   			this.updateSoundLocation(this.theRocket);
-        }
-        else
-        {
-            this.donePlaying = true;
-        }
-	} 
-		
+			this.updateSoundLocation(this.theRocket);
+		}
+		else
+		{
+			this.donePlaying = true;
+		}
+	}
+
 	public void stopRocketSound()
 	{
 		this.donePlaying = true;
 		this.soundStopped = true;
 	}
-	
+
 	public void updateSoundLocation(Entity e)
 	{
 		this.xPosF = (float) e.posX;

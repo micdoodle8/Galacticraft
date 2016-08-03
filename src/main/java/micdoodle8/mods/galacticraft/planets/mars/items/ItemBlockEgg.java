@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSlimelingEgg;
@@ -34,14 +34,13 @@ public class ItemBlockEgg extends ItemBlockDesc
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        String name = BlockSlimelingEgg.names[itemstack.getItemDamage() % 3];
-
-        return this.field_150939_a.getUnlocalizedName() + "." + name;
+        String name = BlockSlimelingEgg.EnumEggColor.values()[itemstack.getItemDamage() % 3].getName();
+        return this.getBlock().getUnlocalizedName() + "." + name;
     }
 
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

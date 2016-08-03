@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class NEIChestGuiHandler extends INEIGuiAdapter
-{
+public class NEIChestGuiHandler extends INEIGuiAdapter {
     public int chestSize(GuiContainer gui) {
         return ((ContainerChest) gui.inventorySlots).getLowerChestInventory().getSizeInventory();
     }

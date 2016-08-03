@@ -1,62 +1,75 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc
+import java.lang.reflect.Field;
+
+public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider, ISortableBlock
 {
-    public static IIcon icon;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     //Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
 
     protected BlockBrightLamp(String assetName)
     {
         super(Material.glass);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ACTIVE, true));
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName("stone");
-        this.setBlockName(assetName);
+        this.setStepSound(Block.soundTypeWood);
+        //this.setBlockTextureName("stone");
+        this.setUnlocalizedName(assetName);
         this.setLightLevel(1.0F);
     }
 
-    public int getLightValue(IBlockAccess world, int x, int y, int z)
+    @Override
+    public int getLightValue(IBlockAccess world, BlockPos pos)
     {
-        Block block = world.getBlock(x, y, z);
+        Block block = world.getBlockState(pos).getBlock();
         if (block != this)
         {
-            return block.getLightValue(world, x, y, z);
+            return block.getLightValue(world, pos);
         }
         /**
          * Gets the light value of the specified block coords. Args: x, y, z
          */
-        int redstone = 0;
-        World w = VersionUtil.getWorld(world);
-        return RedstoneUtil.isBlockReceivingRedstone(w, x, y, z) ? 0 : this.getLightValue();
+
+        if (world instanceof World)
+        {
+            return RedstoneUtil.isBlockReceivingRedstone((World) world, pos) ? 0 : this.getLightValue();
+        }
+
+        return 0;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
         double boundsMin = 0.2D;
         double boundsMax = 0.8D;
-        return AxisAlignedBB.getBoundingBox(x + boundsMin, y + boundsMin, z + boundsMin, x + boundsMax, y + boundsMax, z + boundsMax);
+        return AxisAlignedBB.fromBounds(pos.getX() + boundsMin, pos.getY() + boundsMin, pos.getZ() + boundsMin, pos.getX() + boundsMax, pos.getY() + boundsMax, pos.getZ() + boundsMax);
     }
 
     @Override
@@ -66,7 +79,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -78,12 +91,13 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean canPlaceBlockAt(World par1World, int x, int y, int z)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        BlockVec3 thisvec = new BlockVec3(x, y, z);
-        for (int i = 0; i < 6; i++)
+        for (EnumFacing side : EnumFacing.values())
         {
-            if (thisvec.blockOnSideHasSolidFace(par1World, i))
+            BlockPos offsetPos = pos.offset(side);
+            IBlockState state = worldIn.getBlockState(offsetPos);
+            if (state.getBlock().isSideSolid(worldIn, offsetPos, EnumFacing.getFront(side.getIndex() ^ 1)))
             {
                 return true;
             }
@@ -92,16 +106,17 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metaOld)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        BlockVec3 thisvec = new BlockVec3(x, y, z);
-
-        if (thisvec.blockOnSideHasSolidFace(world, side ^ 1))
+        EnumFacing opposite = EnumFacing.values()[facing.getIndex() ^ 1];
+        BlockPos offsetPos = pos.offset(opposite);
+        IBlockState state = worldIn.getBlockState(offsetPos);
+        if (state.getBlock().isSideSolid(worldIn, offsetPos, facing))
         {
-            return side ^ 1;
+            return this.getDefaultState().withProperty(FACING, opposite);
         }
 
-        return metaOld;
+        return this.getDefaultState().withProperty(FACING, facing);
     }
 
     /**
@@ -110,19 +125,19 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
      * neighbor blockID
      */
     @Override
-    public void onNeighborBlockChange(World par1World, int x, int y, int z, Block par5)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        final int side = par1World.getBlockMetadata(x, y, z);
+        EnumFacing side = (EnumFacing)state.getValue(FACING);
 
-        BlockVec3 thisvec = new BlockVec3(x, y, z);
-
-        if (thisvec.blockOnSideHasSolidFace(par1World, side))
+        BlockPos offsetPos = pos.offset(side);
+        IBlockState state1 = worldIn.getBlockState(offsetPos);
+        if (state1.getBlock().isSideSolid(worldIn, offsetPos, EnumFacing.getFront(side.getIndex() ^ 1)))
         {
             return;
         }
 
-        this.dropBlockAsItem(par1World, x, y, z, 0, 0);
-        par1World.setBlock(x, y, z, Blocks.air);
+        this.dropBlockAsItem(worldIn, pos, state, 0);
+        worldIn.setBlockToAir(pos);
     }
 
     /**
@@ -130,28 +145,28 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
      * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
      */
     @Override
-    public MovingObjectPosition collisionRayTrace(World par1World, int x, int y, int z, Vec3 par5Vec3, Vec3 par6Vec3)
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
-        final int var7 = par1World.getBlockMetadata(x, y, z);
+        EnumFacing side = worldIn.getBlockState(pos).getValue(FACING);
         float var8 = 0.3F;
 
-        if (var7 == 4)
+        if (side == EnumFacing.WEST)
         {
             this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
         }
-        else if (var7 == 5)
+        else if (side == EnumFacing.EAST)
         {
             this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
         }
-        else if (var7 == 2)
+        else if (side == EnumFacing.NORTH)
         {
             this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
         }
-        else if (var7 == 3)
+        else if (side == EnumFacing.SOUTH)
         {
             this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
         }
-        else if (var7 == 0)
+        else if (side == EnumFacing.DOWN)
         {
             this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
         }
@@ -160,15 +175,15 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
             this.setBlockBounds(0.5F - var8, 0.4F, 0.5F - var8, 0.5F + var8, 1.0F, 0.5F + var8);
         }
 
-        return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
+        return super.collisionRayTrace(worldIn, pos, start, end);
     }
 
     @Override
-    public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
-	    	TileEntity tile = world.getTileEntity(x, y, z);
+	    	TileEntity tile = world.getTileEntity(pos);
 	        if (tile instanceof TileEntityArclamp)
 	        {
 	            ((TileEntityArclamp) tile).facingChanged();
@@ -199,5 +214,42 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+        {
+            enumfacing = EnumFacing.NORTH;
+        }
+
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(FACING)).getIndex();
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {FACING, ACTIVE});
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return state.withProperty(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

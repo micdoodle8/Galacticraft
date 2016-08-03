@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "rendertype=0,type=solar": { "model": "galacticraftcore:block_multi_model" },
+        "rendertype=0,type=ss_base": { "model": "galacticraftcore:block_multi_model" },
+        "rendertype=0,type=rocket_pad": { "model": "galacticraftcore:landing_pad_model" },
+        "rendertype=0,type=nasa_workbench": { "model": "galacticraftcore:block_multi_model" },
+        "rendertype=0,type=solar_panel": { "model": "galacticraftcore:block_multi_model" },
+        "rendertype=0,type=cryo_chamber": { "model": "galacticraftcore:cryo_1" },
+        "rendertype=1,type=cryo_chamber": { "model": "galacticraftcore:cryo_1", "y": 90 },
+        "rendertype=2,type=cryo_chamber": { "model": "galacticraftcore:cryo_1", "y": 180 },
+        "rendertype=3,type=cryo_chamber": { "model": "galacticraftcore:cryo_1", "y": 270 },
+        "rendertype=4,type=cryo_chamber": { "model": "galacticraftcore:cryo_2" },
+        "rendertype=5,type=cryo_chamber": { "model": "galacticraftcore:cryo_2", "y": 90 },
+        "rendertype=6,type=cryo_chamber": { "model": "galacticraftcore:cryo_2", "y": 180 },
+        "rendertype=7,type=cryo_chamber": { "model": "galacticraftcore:cryo_2", "y": 270 },
+        "rendertype=0,type=buggy_pad": { "model": "galacticraftcore:buggy_pad_model" },
+        "rendertype=0,type=miner_base": { "model": "galacticraftcore:block_multi_model" }
+    }
+}

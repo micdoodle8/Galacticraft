@@ -1,12 +1,12 @@
 package codechicken.nei;
 
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class ExtendedCreativeInv implements IInventory
-{
+public class ExtendedCreativeInv implements IInventory {
     PlayerSave playerSave;
     Side side;
 
@@ -22,8 +22,9 @@ public class ExtendedCreativeInv implements IInventory
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        if (side.isClient())
+        if (side.isClient()) {
             return NEIClientConfig.creativeInv[slot];
+        }
         return playerSave.creativeInv[slot];
     }
 
@@ -33,15 +34,15 @@ public class ExtendedCreativeInv implements IInventory
 
         if (item != null) {
             if (item.stackSize <= size) {
-                ItemStack itemstack = item;
                 setInventorySlotContents(slot, null);
                 markDirty();
-                return itemstack;
+                return item;
             }
             ItemStack itemstack1 = item.splitStack(size);
             if (item.stackSize == 0) {
                 setInventorySlotContents(slot, null);
             }
+
             markDirty();
             return itemstack1;
         }
@@ -49,7 +50,7 @@ public class ExtendedCreativeInv implements IInventory
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
+    public ItemStack removeStackFromSlot(int slot) {
         synchronized (this) {
             ItemStack stack = getStackInSlot(slot);
             setInventorySlotContents(slot, null);
@@ -59,17 +60,13 @@ public class ExtendedCreativeInv implements IInventory
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        if (side.isClient())
+        if (side.isClient()) {
             NEIClientConfig.creativeInv[slot] = stack;
-        else
+        } else {
             playerSave.creativeInv[slot] = stack;
+        }
 
         markDirty();
-    }
-
-    @Override
-    public String getInventoryName() {
-        return "Extended Creative";
     }
 
     @Override
@@ -79,8 +76,9 @@ public class ExtendedCreativeInv implements IInventory
 
     @Override
     public void markDirty() {
-        if (side.isServer())
+        if (side.isServer()) {
             playerSave.setCreativeDirty();
+        }
     }
 
     @Override
@@ -89,21 +87,48 @@ public class ExtendedCreativeInv implements IInventory
     }
 
     @Override
-    public void openInventory() {
-    }
-
-    @Override
-    public void closeInventory() {
-    }
-
-    @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return true;
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return true;
+    public void openInventory(EntityPlayer player) {
     }
 
+    @Override
+    public void closeInventory(EntityPlayer player) {
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
+    }
 }

@@ -11,11 +11,11 @@ public class ContainerBuggy extends Container
     private final IInventory lowerChestInventory;
     private final IInventory spaceshipInv;
 
-    public ContainerBuggy(IInventory par1IInventory, IInventory par2IInventory, int type)
+    public ContainerBuggy(IInventory par1IInventory, IInventory par2IInventory, int type, EntityPlayer player)
     {
         this.lowerChestInventory = par1IInventory;
         this.spaceshipInv = par2IInventory;
-        par2IInventory.openInventory();
+        par2IInventory.openInventory(player);
 
         int var4;
         int var5;
@@ -99,7 +99,7 @@ public class ContainerBuggy extends Container
     public void onContainerClosed(EntityPlayer par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
-        this.lowerChestInventory.closeInventory();
+        this.lowerChestInventory.closeInventory(par1EntityPlayer);
     }
 
     /**

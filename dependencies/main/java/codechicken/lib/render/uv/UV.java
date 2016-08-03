@@ -71,8 +71,9 @@ public class UV implements Copyable<UV> {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof UV))
+        if (!(o instanceof UV)) {
             return false;
+        }
         UV uv = (UV) o;
         return u == uv.u && v == uv.v;
     }

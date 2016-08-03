@@ -3,8 +3,7 @@ package codechicken.nei.config;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 
-public class OptionKeyBind extends OptionButton
-{
+public class OptionKeyBind extends OptionButton {
     private boolean hasFocus = false;
 
     public OptionKeyBind(String name) {
@@ -26,9 +25,6 @@ public class OptionKeyBind extends OptionButton
 
     @Override
     public boolean onClick(int button) {
-        if (defaulting())
-            return false;
-
         if (button == 0) {
             hasFocus = true;
             return true;
@@ -41,12 +37,15 @@ public class OptionKeyBind extends OptionButton
     }
 
     public boolean conflicted() {
-        if (getValue() == 0)
+        if (getValue() == 0) {
             return false;
+        }
 
-        for (Option o : slot.options)
-            if (o instanceof OptionKeyBind && o != this && ((OptionKeyBind) o).getValue() == getValue())
+        for (Option o : slot.options) {
+            if (o instanceof OptionKeyBind && o != this && ((OptionKeyBind) o).getValue() == getValue()) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -66,11 +65,13 @@ public class OptionKeyBind extends OptionButton
 
     @Override
     public String getButtonText() {
-        if (hasFocus)
+        if (hasFocus) {
             return EnumChatFormatting.WHITE + "> " + EnumChatFormatting.YELLOW + "??? " + EnumChatFormatting.WHITE + "<";
+        }
 
-        if (conflicted())
+        if (conflicted()) {
             return EnumChatFormatting.RED + Keyboard.getKeyName(getValue());
+        }
 
         return Keyboard.getKeyName(getValue());
     }

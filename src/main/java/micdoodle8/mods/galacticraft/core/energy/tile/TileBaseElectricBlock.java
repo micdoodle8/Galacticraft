@@ -1,6 +1,12 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import cpw.mods.fml.relauncher.Side;
+import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -13,10 +19,9 @@ import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
 {
@@ -38,7 +43,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public abstract boolean shouldUseEnergy();
 
-    public abstract ForgeDirection getElectricInputDirection();
+    public abstract EnumFacing getElectricInputDirection();
 
     public abstract ItemStack getBatteryInSlot();
 
@@ -70,7 +75,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     //	@Override
-    //	public float getRequest(ForgeDirection direction)
+    //	public float getRequest(EnumFacing direction)
     //	{
     //		if (this.shouldPullEnergy())
     //		{
@@ -83,13 +88,13 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     //	}
     //
     //	@Override
-    //	public float getProvide(ForgeDirection direction)
+    //	public float getProvide(EnumFacing direction)
     //	{
     //		return 0;
     //	}
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (!this.worldObj.isRemote)
         {
@@ -98,7 +103,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
                 this.discharge(this.getBatteryInSlot());
             }
 
-            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.xCoord, this.yCoord, this.zCoord)))
+            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos())))
             {
                 this.hasEnoughEnergyToRun = true;
                 if (this.shouldUseEnergy())
@@ -115,7 +120,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             }
         }
 
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -157,6 +162,8 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         }
     }
 
+    public abstract EnumFacing getFront();
+
     @Override
     public boolean getDisabled(int index)
     {
@@ -164,47 +171,37 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
+    public EnumFacing getFacing(World world, BlockPos pos)
+    {
+        return this.getFront();
+    }
+
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    public boolean setFacing(World world, BlockPos pos, EnumFacing newDirection, EntityPlayer player)
     {
         return false;
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-    public short getFacing()
-    {
-        return (short) this.worldObj.getBlockMetadata(MathHelper.floor_double(this.xCoord), MathHelper.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord));
-    }
-
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-    public void setFacing(short facing)
-    {
-
-    }
-
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-    public boolean wrenchCanRemove(EntityPlayer entityPlayer)
+    public boolean wrenchCanRemove(World world, BlockPos pos, EntityPlayer player)
     {
         return false;
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-    public float getWrenchDropRate()
+    public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
-        return 1.0F;
-    }
-
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
-    public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
-    {
-        return this.getBlockType().getPickBlock(null, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        List<ItemStack> drops = Lists.newArrayList();
+        drops.add(this.getBlockType().getPickBlock(null, this.worldObj, this.getPos()));
+        return drops;
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
         if (this.getElectricInputDirection() == null)
         {
-            return EnumSet.noneOf(ForgeDirection.class);
+            return EnumSet.noneOf(EnumFacing.class);
         }
 
         return EnumSet.of(this.getElectricInputDirection());
@@ -212,13 +209,13 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public boolean isUseableByPlayer(EntityPlayer entityplayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && entityplayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        if (direction == null || type != NetworkType.POWER)
         {
             return false;
         }
@@ -233,7 +230,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
         }
 
-        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.xCoord, this.yCoord, this.zCoord))
+        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
         }

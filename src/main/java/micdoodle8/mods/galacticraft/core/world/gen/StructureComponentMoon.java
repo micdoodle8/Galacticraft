@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -49,14 +50,14 @@ public abstract class StructureComponentMoon extends StructureComponent
         final int var10 = this.getYWithOffset(var4);
         final int var11 = this.getZWithOffset(var3, var5);
 
-        if (var7.isVecInside(var9, var10, var11) && var1.getBlock(var9, var10, var11) != Blocks.mob_spawner)
+        if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.mob_spawner)
         {
-            var1.setBlock(var9, var10, var11, Blocks.mob_spawner, 0, 3);
-            var8 = (TileEntityMobSpawner) var1.getTileEntity(var9, var10, var11);
+            var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.mob_spawner.getDefaultState(), 2);
+            var8 = (TileEntityMobSpawner) var1.getTileEntity(new BlockPos(var9, var10, var11));
 
             if (var8 != null)
             {
-                var8.func_145881_a().setEntityName(var6);
+                var8.getSpawnerBaseLogic().setEntityName(var6);
             }
         }
 
@@ -71,22 +72,22 @@ public abstract class StructureComponentMoon extends StructureComponent
         return var5 == 0 ? new int[] { var6 + 1, var7 - 1, var8 - var4 / 2 } : var5 == 1 ? new int[] { var6 + var4 / 2, var7 - 1, var8 + 1 } : var5 == 2 ? new int[] { var6 - 1, var7 - 1, var8 + var4 / 2 } : var5 == 3 ? new int[] { var6 - var4 / 2, var7 - 1, var8 - 1 } : new int[] { var1, var2, var3 };
     }
 
-    public int[] getOffsetAsIfRotated(int[] var1, int var2)
-    {
-        final int var3 = this.getCoordBaseMode();
-        final int[] var4 = new int[3];
-        this.setCoordBaseMode(var2);
-        var4[0] = this.getXWithOffset(var1[0], var1[2]);
-        var4[1] = this.getYWithOffset(var1[1]);
-        var4[2] = this.getZWithOffset(var1[0], var1[2]);
-        this.setCoordBaseMode(var3);
-        return var4;
-    }
+//    public int[] getOffsetAsIfRotated(int[] var1, int var2)
+//    {
+//        final int var3 = this.getCoordBaseMode();
+//        final int[] var4 = new int[3];
+//        this.coordBaseMode = (var2);
+//        var4[0] = this.getXWithOffset(var1[0], var1[2]);
+//        var4[1] = this.getYWithOffset(var1[1]);
+//        var4[2] = this.getZWithOffset(var1[0], var1[2]);
+//        this.setCoordBaseMode(var3);
+//        return var4;
+//    }
 
     @Override
     protected int getXWithOffset(int var1, int var2)
     {
-        switch (this.getCoordBaseMode())
+        switch (this.coordBaseMode.getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minX + var1;
@@ -114,7 +115,7 @@ public abstract class StructureComponentMoon extends StructureComponent
     @Override
     protected int getZWithOffset(int var1, int var2)
     {
-        switch (this.getCoordBaseMode())
+        switch (this.coordBaseMode.getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minZ + var2;
@@ -135,13 +136,13 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getXWithOffsetAsIfRotated(int var1, int var2, int var3)
     {
-        if (this.coordBaseMode < 0)
+        if (this.coordBaseMode.getHorizontalIndex() < 0)
         {
             return var1;
         }
         else
         {
-            switch ((this.coordBaseMode + var3) % 4)
+            switch ((this.coordBaseMode.getHorizontalIndex() + var3) % 4)
             {
             case 0:
                 return this.boundingBox.minX + var1;
@@ -163,13 +164,13 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getZWithOffsetAsIfRotated(int var1, int var2, int var3)
     {
-        if (this.coordBaseMode < 0)
+        if (this.coordBaseMode.getHorizontalIndex() < 0)
         {
             return var1;
         }
         else
         {
-            switch ((this.coordBaseMode + var3) % 4)
+            switch ((this.coordBaseMode.getHorizontalIndex() + var3) % 4)
             {
             case 0:
                 return this.boundingBox.minZ + var2;
@@ -189,31 +190,11 @@ public abstract class StructureComponentMoon extends StructureComponent
         }
     }
 
-    public int getCoordBaseMode()
-    {
-        return this.coordBaseMode;
-    }
-
-    public void setCoordBaseMode(int var1)
-    {
-        this.coordBaseMode = var1;
-    }
-
-    @Override
-    protected Block getBlockAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
-    {
-        return super.getBlockAtCurrentPosition(var1, var2, var3, var4, var5);
-    }
-
-    /**
-     * current Position depends on currently set Coordinates mode, is computed
-     * here
-     */
-    @Override
-    protected void placeBlockAtCurrentPosition(World var1, Block var2, int var3, int var4, int var5, int var6, StructureBoundingBox var7)
-    {
-        super.placeBlockAtCurrentPosition(var1, var2, var3, var4, var5, var6, var7);
-    }
+//    @Override
+//    protected Block getBlockAtCurrentPosition(World var1, int var2, int var3, int var4, StructureBoundingBox var5)
+//    {
+//        return super.getBlockAtCurrentPosition(var1, var2, var3, var4, var5);
+//    }
 
     protected void placeBlockRotated(World var1, Block var2, int var3, int var4, int var5, int var6, int var7, StructureBoundingBox var8)
     {
@@ -221,9 +202,9 @@ public abstract class StructureComponentMoon extends StructureComponent
         final int var10 = this.getYWithOffset(var5);
         final int var11 = this.getZWithOffsetAsIfRotated(var4, var6, var7);
 
-        if (var8.isVecInside(var9, var10, var11))
+        if (var8.isVecInside(new BlockPos(var9, var10, var11)))
         {
-            var1.setBlock(var9, var10, var11, var2, var3, 3);
+            var1.setBlockState(new BlockPos(var9, var10, var11), var2.getStateFromMeta(var3), 2);
         }
     }
 
@@ -248,7 +229,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getStairMeta(int var1)
     {
-        switch ((this.getCoordBaseMode() + var1) % 4)
+        switch ((this.coordBaseMode.getHorizontalIndex() + var1) % 4)
         {
         case 0:
             return 0;
@@ -269,7 +250,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getLadderMeta(int var1)
     {
-        switch ((this.getCoordBaseMode() + var1) % 4)
+        switch ((this.coordBaseMode.getHorizontalIndex() + var1) % 4)
         {
         case 0:
             return 4;
@@ -311,7 +292,7 @@ public abstract class StructureComponentMoon extends StructureComponent
             {
                 for (int var10 = var3; var10 <= var6; ++var10)
                 {
-                    var1.setLightValue(EnumSkyBlock.Sky, var8, var10, var9, 0);
+                    var1.setLightFor(EnumSkyBlock.SKY, new BlockPos(var8, var10, var9), 0);
                 }
             }
         }

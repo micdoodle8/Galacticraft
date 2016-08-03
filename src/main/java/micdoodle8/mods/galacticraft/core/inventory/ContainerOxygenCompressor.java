@@ -15,7 +15,7 @@ public class ContainerOxygenCompressor extends Container
 {
     private TileBaseElectricBlock tileEntity;
 
-    public ContainerOxygenCompressor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenCompressor compressor)
+    public ContainerOxygenCompressor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenCompressor compressor, EntityPlayer player)
     {
         this.tileEntity = compressor;
         this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
@@ -37,7 +37,7 @@ public class ContainerOxygenCompressor extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 20 + 142));
         }
 
-        compressor.openInventory();
+        compressor.openInventory(player);
     }
 
     @Override

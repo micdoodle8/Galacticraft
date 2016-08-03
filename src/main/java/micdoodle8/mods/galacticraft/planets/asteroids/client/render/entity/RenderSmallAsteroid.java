@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderSmallAsteroid extends Render
 {
-    private RenderBlocks blockRenderer = new RenderBlocks();
+    public RenderSmallAsteroid() {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
+    }
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float f, float partialTickTime)
@@ -27,7 +27,7 @@ public class RenderSmallAsteroid extends Render
         GL11.glRotatef(asteroid.rotationYaw, 0, 1, 0);
 
         this.bindEntityTexture(asteroid);
-        this.blockRenderer.renderBlockAsItem(AsteroidBlocks.blockBasic, 0, 1.0F);
+//        this.blockRenderer.renderBlockAsItem(AsteroidBlocks.blockBasic, 0, 1.0F); TODO
 
         GL11.glPopMatrix();
     }

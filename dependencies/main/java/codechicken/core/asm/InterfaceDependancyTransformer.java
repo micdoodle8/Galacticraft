@@ -1,39 +1,36 @@
 package codechicken.core.asm;
 
-import java.util.Iterator;
-
-import codechicken.lib.asm.ASMInit;
+import codechicken.lib.asm.ASMHelper;
+import codechicken.lib.asm.ObfMapping;
+import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 
-import codechicken.lib.asm.ASMHelper;
-import codechicken.lib.asm.ObfMapping;
+import java.util.Iterator;
 
-import net.minecraft.launchwrapper.IClassTransformer;
-
-public class InterfaceDependancyTransformer implements IClassTransformer
-{
-    static {
-        ASMInit.init();
-    }
-
+public class InterfaceDependancyTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String tname, byte[] bytes) {
-        if (bytes == null) return null;
+        if (bytes == null) {
+            return null;
+        }
         ClassNode cnode = ASMHelper.createClassNode(bytes);
 
         boolean hasDependancyInterfaces = false;
-        if (cnode.visibleAnnotations != null)
-            for (AnnotationNode ann : cnode.visibleAnnotations)
+        if (cnode.visibleAnnotations != null) {
+            for (AnnotationNode ann : cnode.visibleAnnotations) {
                 if (ann.desc.equals(Type.getDescriptor(InterfaceDependancies.class))) {
                     hasDependancyInterfaces = true;
                     break;
                 }
+            }
+        }
 
-        if (!hasDependancyInterfaces)
+        if (!hasDependancyInterfaces) {
             return bytes;
+        }
 
         hasDependancyInterfaces = false;
         for (Iterator<String> iterator = cnode.interfaces.iterator(); iterator.hasNext(); ) {
@@ -45,8 +42,9 @@ public class InterfaceDependancyTransformer implements IClassTransformer
             }
         }
 
-        if (!hasDependancyInterfaces)
+        if (!hasDependancyInterfaces) {
             return bytes;
+        }
 
         return ASMHelper.createBytes(cnode, 0);
     }

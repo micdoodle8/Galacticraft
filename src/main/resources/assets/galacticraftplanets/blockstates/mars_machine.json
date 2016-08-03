@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "facing=north,type=terraformer": { "model": "galacticraftplanets:terraformer_model" },
+        "facing=east,type=terraformer":  { "model": "galacticraftplanets:terraformer_model", "y": 90 },
+        "facing=west,type=terraformer":  { "model": "galacticraftplanets:terraformer_model", "y": 270 },
+        "facing=south,type=terraformer": { "model": "galacticraftplanets:terraformer_model", "y": 180 },
+        "facing=north,type=cryogenic_chamber": { "model": "galacticraftplanets:cryo_0", "y": 180 },
+        "facing=east,type=cryogenic_chamber":  { "model": "galacticraftplanets:cryo_0", "y": 270 },
+        "facing=west,type=cryogenic_chamber":  { "model": "galacticraftplanets:cryo_0", "y": 90 },
+        "facing=south,type=cryogenic_chamber": { "model": "galacticraftplanets:cryo_0", "y": 0 },
+        "facing=north,type=launch_controller": { "model": "galacticraftplanets:launch_controller_model" },
+        "facing=east,type=launch_controller":  { "model": "galacticraftplanets:launch_controller_model", "y": 90 },
+        "facing=west,type=launch_controller":  { "model": "galacticraftplanets:launch_controller_model", "y": 270 },
+        "facing=south,type=launch_controller": { "model": "galacticraftplanets:launch_controller_model", "y": 180 }
+    }
+}

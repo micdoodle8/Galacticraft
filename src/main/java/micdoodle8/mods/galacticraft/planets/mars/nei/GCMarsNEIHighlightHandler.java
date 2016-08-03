@@ -6,9 +6,11 @@ import codechicken.nei.guihook.GuiContainerManager;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -39,7 +41,8 @@ public class GCMarsNEIHighlightHandler implements IHighlightHandler
 
         if (stack.getItem() == Items.redstone)
         {
-            int md = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
+            IBlockState state = world.getBlockState(mop.getBlockPos());
+            int md = state.getBlock().getMetaFromState(state);
             String s = "" + md;
             if (s.length() < 2)
             {
@@ -54,23 +57,22 @@ public class GCMarsNEIHighlightHandler implements IHighlightHandler
     @Override
     public ItemStack identifyHighlight(World world, EntityPlayer player, MovingObjectPosition mop)
     {
-        int x = mop.blockX;
-        int y = mop.blockY;
-        int z = mop.blockZ;
-        Block b = world.getBlock(x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
+        BlockPos pos = mop.getBlockPos();
+        IBlockState state = world.getBlockState(pos);
+        Block b = state.getBlock();
+        int meta = b.getMetaFromState(state);
         if (b == MarsBlocks.marsBlock)
         {
-        	if (meta == 2) 
+        	if (meta == 2)
         		return new ItemStack(MarsBlocks.marsBlock, 1, 2);
-        	
+
         	if (meta == 9)
         		return new ItemStack(MarsBlocks.marsBlock, 1, 9);
         }
         else if (b == AsteroidBlocks.blockBasic)
         {
-        	if (meta == 4) 
-        		return new ItemStack(AsteroidBlocks.blockBasic, 1, 4);   	
+        	if (meta == 4)
+        		return new ItemStack(AsteroidBlocks.blockBasic, 1, 4);
         }
         return null;
     }

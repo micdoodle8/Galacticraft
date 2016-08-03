@@ -4,18 +4,19 @@ import codechicken.lib.render.CCRenderState;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 import static codechicken.nei.NEIClientUtils.translate;
 
-public class GuiEnchantmentModifier extends GuiContainer
-{
+public class GuiEnchantmentModifier extends GuiContainer {
     ContainerEnchantmentModifier container;
 
-    public GuiEnchantmentModifier(InventoryPlayer inventoryplayer, World world, int i, int j, int k) {
-        super(new ContainerEnchantmentModifier(inventoryplayer, world, i, j, k));
+    public GuiEnchantmentModifier(InventoryPlayer inventoryplayer, World world) {
+        super(new ContainerEnchantmentModifier(inventoryplayer, world));
         container = (ContainerEnchantmentModifier) inventorySlots;
         container.parentscreen = this;
     }
@@ -27,9 +28,9 @@ public class GuiEnchantmentModifier extends GuiContainer
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        GL11.glColor4f(1, 1, 1, 1);
+        GlStateManager.color(1, 1, 1, 1);
         CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
-        GL11.glTranslatef(guiLeft, guiTop, 0);
+        GlStateManager.translate(guiLeft, guiTop, 0);
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
         container.onUpdate(i, j);
@@ -39,7 +40,7 @@ public class GuiEnchantmentModifier extends GuiContainer
         String levelstring = "" + container.level;
         fontRendererObj.drawString(levelstring, 33 - fontRendererObj.getStringWidth(levelstring) / 2, 34, 0xFF606060);
 
-        GL11.glTranslatef(-guiLeft, -guiTop, 0);
+        GlStateManager.translate(-guiLeft, -guiTop, 0);
     }
 
     public void initGui() {
@@ -81,16 +82,22 @@ public class GuiEnchantmentModifier extends GuiContainer
         ((GuiButton) buttonList.get(1)).enabled = container.level != 10;
     }
 
-    protected void mouseClicked(int i, int j, int k) {
-        if (container.clickButton(i, j, k)) return;
-        if (container.clickScrollBar(i, j, k)) return;
+    @Override
+    protected void mouseClicked(int i, int j, int k) throws IOException {
+        if (container.clickButton(i, j, k)) {
+            return;
+        }
+        if (container.clickScrollBar(i, j, k)) {
+            return;
+        }
 
         super.mouseClicked(i, j, k);
     }
 
-    protected void mouseMovedOrUp(int i, int j, int k) {
+    @Override
+    protected void mouseReleased(int i, int j, int k) {
         container.mouseUp(i, j, k);
-        super.mouseMovedOrUp(i, j, k);
+        super.mouseReleased(i, j, k);
     }
 
     public FontRenderer getFontRenderer() {

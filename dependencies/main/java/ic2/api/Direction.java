@@ -1,9 +1,13 @@
 package ic2.api;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import java.util.EnumSet;
+import java.util.Set;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 /**
  * Represents the 6 possible directions along the axis of a block.
@@ -21,7 +25,7 @@ public enum Direction {
 	/**
 	 * -Y
 	 */
-	YN, // MC-Code starts with 0 here
+	YN, //MC-Code starts with 0 here
 	/**
 	 * +Y
 	 */
@@ -36,53 +40,50 @@ public enum Direction {
 	 */
 	ZP;
 
+	private Direction() {
+		int side = ordinal() / 2;
+		int sign = getSign();
+
+		xOffset = side == 0 ? sign : 0;
+		yOffset = side == 1 ? sign : 0;
+		zOffset = side == 2 ? sign : 0;
+	}
+
 	public static Direction fromSideValue(int side) {
 		return directions[(side + 2) % 6];
 	}
 
-	public static Direction fromForgeDirection(ForgeDirection dir) {
-		if (dir == ForgeDirection.UNKNOWN)
-			return null;
+	public static Direction fromEnumFacing(EnumFacing dir) {
 
 		return fromSideValue(dir.ordinal());
 	}
 
 	/**
 	 * Get the tile entity next to a tile entity following this direction.
-	 * 
-	 * @param tileEntity
-	 *            tile entity to check
+	 *
+	 * @param tileEntity tile entity to check
 	 * @return Adjacent tile entity or null if none exists
 	 */
 	public TileEntity applyToTileEntity(TileEntity te) {
-		return applyTo(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+		return applyTo(te.getWorld(), te.getPos());
 	}
 
 	/**
 	 * Get the tile entity next to a position following this direction.
-	 * 
-	 * @param world
-	 *            World to check
-	 * @param x
-	 *            X coordinate to check from
-	 * @param y
-	 *            Y coordinate to check from
-	 * @param z
-	 *            Z coordinate to check from
+	 *
+	 * @param world World to check
+	 * @param x X coordinate to check from
+	 * @param y Y coordinate to check from
+	 * @param z Z coordinate to check from
 	 * @return Adjacent tile entity or null if none exists
 	 */
-	public TileEntity applyTo(World world, int x, int y, int z) {
-		int coords[] = { x, y, z };
+	public TileEntity applyTo(World world, BlockPos pos) {
 
-		coords[ordinal() / 2] += getSign();
-
-		if (world != null && world.blockExists(coords[0], coords[1], coords[2])) {
+		if (world != null && world.getBlockState(pos).getBlock() != Blocks.air) {
 			try {
-				return world.getTileEntity(coords[0], coords[1], coords[2]);
+				return world.getTileEntity(pos);
 			} catch (Exception e) {
-				throw new RuntimeException("error getting TileEntity at dim "
-						+ world.provider.dimensionId + " " + coords[0] + "/"
-						+ coords[1] + "/" + coords[2]);
+				throw new RuntimeException("error getting TileEntity at dim "+world.provider.getDimensionId()+" "+pos);
 			}
 		}
 
@@ -91,7 +92,7 @@ public enum Direction {
 
 	/**
 	 * Get the inverse of this direction (XN -> XP, XP -> XN, etc.)
-	 * 
+	 *
 	 * @return Inverse direction
 	 */
 	public Direction getInverse() {
@@ -100,7 +101,7 @@ public enum Direction {
 
 	/**
 	 * Convert this direction to a Minecraft side value.
-	 * 
+	 *
 	 * @return Minecraft side value
 	 */
 	public int toSideValue() {
@@ -109,16 +110,23 @@ public enum Direction {
 
 	/**
 	 * Determine direction sign (N for negative or P for positive).
-	 * 
+	 *
 	 * @return -1 if the direction is negative, +1 if the direction is positive
 	 */
 	private int getSign() {
 		return (ordinal() % 2) * 2 - 1;
 	}
 
-	public ForgeDirection toForgeDirection() {
-		return ForgeDirection.getOrientation(toSideValue());
+	public EnumFacing toFacing() {
+		return EnumFacing.VALUES[toSideValue()];
 	}
 
+	public final int xOffset;
+	public final int yOffset;
+	public final int zOffset;
+
 	public static final Direction[] directions = Direction.values();
+	public static final Set<Direction> noDirections = EnumSet.noneOf(Direction.class);
+	public static final Set<Direction> allDirections = EnumSet.allOf(Direction.class);
 }
+

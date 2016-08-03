@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
@@ -48,51 +49,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         super(par1World);
         this.setSize(0.98F, 4F);
-        this.yOffset = this.height / 2.0F;
+//        this.yOffset = this.height / 2.0F;
     }
 
     public EntityTieredRocket(World world, double posX, double posY, double posZ)
     {
         super(world, posX, posY, posZ);
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-
-	//TODO reimplement once Resonant Engine comes out of alpha, bug DarkGuardsman for info
-        //if (Loader.isModLoaded("ICBM|Explosion"))
-        //{
-        //    try
-        //    {
-        //        Class.forName("icbm.api.RadarRegistry").getMethod("register", Entity.class).invoke(null, this);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        e.printStackTrace();
-        //    }
-        //}
-    }
-
-    @Override
-    public void setDead()
-    {
-        if (!this.isDead)
-        	super.setDead();
-
-	//TODO reimplement once Resonant Engine comes out of alpha, bug Dark for info
-        //if (Loader.isModLoaded("ICBM|Explosion"))
-        //{
-        //    try
-        //    {
-        //        Class.forName("icbm.api.RadarRegistry").getMethod("unregister", Entity.class).invoke(null, this);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        e.printStackTrace();
-        //    }
-        //}
     }
 
     public void igniteCheckingCooldown()
@@ -248,7 +210,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             for (ILandingPadAttachable tile : this.getLandingPad().getConnectedTiles())
             {
-                if (this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) != null && this.worldObj.getTileEntity(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord) instanceof TileEntityFuelLoader)
+                if (this.worldObj.getTileEntity(((TileEntity) tile).getPos()) != null && this.worldObj.getTileEntity(((TileEntity) tile).getPos()) instanceof TileEntityFuelLoader)
                 {
                     if (tile instanceof TileEntityFuelLoader && ((TileEntityFuelLoader) tile).getEnergyStoredGC() > 0)
                     {
@@ -338,7 +300,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             if (this.targetVec != null)
             {
-                if (this.targetDimension != this.worldObj.provider.dimensionId)
+                if (this.targetDimension != this.worldObj.provider.getDimensionId())
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                     if (targetDim != null && targetDim.worldObj instanceof WorldServer)
@@ -374,7 +336,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                                 else {
                                     Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
                                     if(e instanceof EntityAutoRocket) {
-                                        e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5f);
+                                        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
                                         ((EntityAutoRocket)e).landing = true;
                                         ((EntityAutoRocket)e).setWaitForPlayer(false);
                                         if(e != this)
@@ -394,7 +356,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 else
                 {
                 	//Same dimension controlled rocket flight
-                	this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+                	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                     if (this.riddenByEntity != null)
                     {
                         this.setWaitForPlayer(true);
@@ -442,9 +404,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    protected void onRocketLand(int x, int y, int z)
+    protected void onRocketLand(BlockPos pos)
     {
-        super.onRocketLand(x, y, z);
+        super.onRocketLand(pos);
         this.launchCooldown = 40;
     }
 
@@ -528,7 +490,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     {
         if (this.targetVec != null)
         {
-            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
             this.landing = true;
             this.setWaitForPlayer(true);
             this.motionX = this.motionY = this.motionZ = 0.0D;

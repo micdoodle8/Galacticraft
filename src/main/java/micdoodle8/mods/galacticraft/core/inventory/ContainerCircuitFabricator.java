@@ -11,7 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -47,7 +47,7 @@ public class ContainerCircuitFabricator extends Container
         this.addSlotToContainer(new SlotSpecific(tileEntity, 5, 145, 20, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnace(playerInv.player, tileEntity, 6, 152, 86));
+        this.addSlotToContainer(new SlotFurnaceOutput(playerInv.player, tileEntity, 6, 152, 86));
 
         int slot;
 

@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -13,15 +14,20 @@ public class PlanetsProxy implements IGuiHandler
 {
     public void preInit(FMLPreInitializationEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.preInit(event);
         }
     }
 
+    public void registerVariants()
+    {
+
+    }
+
     public void init(FMLInitializationEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.init(event);
         }
@@ -29,7 +35,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void postInit(FMLPostInitializationEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.postInit(event);
         }
@@ -37,7 +43,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void serverStarting(FMLServerStartingEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.serverStarting(event);
         }
@@ -45,7 +51,7 @@ public class PlanetsProxy implements IGuiHandler
 
     public void serverInit(FMLServerStartedEvent event)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.serverInit(event);
         }
@@ -54,7 +60,7 @@ public class PlanetsProxy implements IGuiHandler
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             List<Integer> guiIDs = new ArrayList<Integer>();
             module.getGuiIDs(guiIDs);
@@ -70,7 +76,7 @@ public class PlanetsProxy implements IGuiHandler
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules.values())
+        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
             List<Integer> guiIDs = new ArrayList<Integer>();
             module.getGuiIDs(guiIDs);
@@ -81,5 +87,9 @@ public class PlanetsProxy implements IGuiHandler
         }
 
         return null;
+    }
+
+    public void postRegisterItem(Item item)
+    {
     }
 }

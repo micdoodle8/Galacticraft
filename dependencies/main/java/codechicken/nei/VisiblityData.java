@@ -1,7 +1,6 @@
 package codechicken.nei;
 
-public class VisiblityData
-{
+public class VisiblityData {
     public boolean showUtilityButtons = true;
     public boolean showStateButtons = true;
     /**
@@ -25,14 +24,16 @@ public class VisiblityData
      */
     public boolean showNEI = true;
     public boolean enableDeleteMode = true;
-    
-    public void translateDependancies()
-    {
-        if(!showNEI)
+
+    public void translateDependancies() {
+        if (!showNEI) {
             showWidgets = false;
-        if(!showWidgets)
+        }
+        if (!showWidgets) {
             showItemSection = showUtilityButtons = showStateButtons = false;
-        if(!showItemSection)
+        }
+        if (!showItemSection) {
             showSearchSection = showItemPanel = false;
+        }
     }
 }

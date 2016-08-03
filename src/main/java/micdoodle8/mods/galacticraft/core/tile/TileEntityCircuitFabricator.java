@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -9,11 +8,15 @@ import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +37,9 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         this.updateInput();
 
@@ -52,7 +55,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
 
                     if (this.processTicks == TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED)
                     {
-                        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 0.2F, 0.5F);
+                        this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_land", 0.2F, 0.5F);
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -136,9 +139,9 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
                         double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
                         double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
                         double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+                        EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-                        entityitem.delayBeforeCanPickup = 10;
+                        entityitem.setPickupDelay(10);
 
                         this.worldObj.spawnEntityInWorld(entityitem);
                     }
@@ -178,15 +181,19 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate("tile.machine2.5.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 
     @Override
@@ -207,9 +214,9 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
-        if (side == 0)
+        if (side == EnumFacing.UP)
         	return new int[] { 6 };
 
         //Offer whichever silicon slot has less silicon
@@ -218,13 +225,13 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID < 6 && this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
         return slotID == 6;
     }
@@ -233,5 +240,16 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public boolean shouldUseEnergy()
     {
         return this.processTicks > 0;
+    }
+
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        return getFront().rotateY();
     }
 }

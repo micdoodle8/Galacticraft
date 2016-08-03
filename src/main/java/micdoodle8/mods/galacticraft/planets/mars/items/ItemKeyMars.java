@@ -1,25 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class ItemKeyMars extends Item implements IKeyItem
+public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
 {
-    public static String[] keyTypes = new String[] { "T2" };
-    public IIcon[] keyIcons = new IIcon[1];
-
     public ItemKeyMars()
     {
         super();
@@ -38,7 +35,7 @@ public class ItemKeyMars extends Item implements IKeyItem
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item." + "key." + ItemKeyMars.keyTypes[itemStack.getItemDamage()];
+        return "item.key.t2";
     }
 
     @Override
@@ -48,37 +45,11 @@ public class ItemKeyMars extends Item implements IKeyItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        int i = 0;
-
-        for (final String name : ItemKeyMars.keyTypes)
-        {
-            this.keyIcons[i++] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "key_" + name);
-        }
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int damage)
-    {
-        if (this.keyIcons.length > damage)
-        {
-            return this.keyIcons[damage];
-        }
-
-        return super.getIconFromDamage(damage);
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int i = 0; i < ItemKeyMars.keyTypes.length; i++)
-        {
-            par3List.add(new ItemStack(par1, 1, i));
-        }
+        par3List.add(new ItemStack(par1, 1, 0));
     }
 
     @Override
@@ -91,5 +62,11 @@ public class ItemKeyMars extends Item implements IKeyItem
     public int getTier(ItemStack keyStack)
     {
         return 2;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

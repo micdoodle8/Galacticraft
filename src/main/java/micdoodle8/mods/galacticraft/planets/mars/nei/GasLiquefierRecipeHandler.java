@@ -6,6 +6,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -23,14 +24,14 @@ import java.util.Set;
 
 public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation liquefierGuiTexture = new ResourceLocation(MarsModule.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
-    private static final ResourceLocation liquefierGasesTexture = new ResourceLocation(AsteroidsModule.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+    private static final ResourceLocation liquefierGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
+    private static final ResourceLocation liquefierGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
     int ticksPassed;
     int extra = 0;
     int inputGas = 0;  //0 is methane   1 is oxygen   2 is atmosphere or nitrogen
     int outputGas = 0;  //0 is fuel   1 is oxygen   2 is nitrogen
     boolean fillAtmos = false;
-    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRenderer;
+    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
 
     public String getRecipeId()
     {
@@ -103,8 +104,8 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
         if (this.fillAtmos)
         {
             String gasname = this.outputGas == 3 ? GCCoreUtil.translate("gas.oxygen.name") : GCCoreUtil.translate("gas.nitrogen.name");
-            String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
-            String text2 = GCCoreUtil.lowerCaseNoun(gasname) + " " + GCCoreUtil.translate("gui.message.withAtmosphere1.name");
+            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
+            String text2 = GCCoreUtil.lowerCaseNoun(gasname) + " " + GCCoreUtil.translate("gui.message.with_atmosphere1.name");
             this.fontRendererObj.drawString(text1, 4, 83, 4210752);
             this.fontRendererObj.drawString(text2, 4, 93, 4210752);
         }
@@ -259,13 +260,13 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getRecipeName()
     {
-        return GCCoreUtil.translate("tile.marsMachine.4.name");
+        return GCCoreUtil.translate("tile.mars_machine.4.name");
     }
 
     @Override
     public String getGuiTexture()
     {
-        return MarsModule.ASSET_PREFIX + "textures/gui/gasLiquefier.png";
+        return GalacticraftPlanets.ASSET_PREFIX + "textures/gui/gasLiquefier.png";
     }
 
     @Override

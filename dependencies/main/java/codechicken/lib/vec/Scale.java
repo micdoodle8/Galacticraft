@@ -1,8 +1,8 @@
 package codechicken.lib.vec;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -40,7 +40,7 @@ public class Scale extends Transformation {
     @Override
     @SideOnly(Side.CLIENT)
     public void glApply() {
-        GL11.glScaled(factor.x, factor.y, factor.z);
+        GlStateManager.scale(factor.x, factor.y, factor.z);
     }
 
     @Override
@@ -50,8 +50,9 @@ public class Scale extends Transformation {
 
     @Override
     public Transformation merge(Transformation next) {
-        if (next instanceof Scale)
+        if (next instanceof Scale) {
             return new Scale(factor.copy().multiply(((Scale) next).factor));
+        }
 
         return null;
     }

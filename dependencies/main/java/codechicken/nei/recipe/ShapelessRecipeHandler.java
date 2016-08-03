@@ -13,21 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ShapelessRecipeHandler extends ShapedRecipeHandler
-{
-    public int[][] stackorder = new int[][]{
-            {0, 0},
-            {1, 0},
-            {0, 1},
-            {1, 1},
-            {0, 2},
-            {1, 2},
-            {2, 0},
-            {2, 1},
-            {2, 2}};
+public class ShapelessRecipeHandler extends ShapedRecipeHandler {
+    public int[][] stackorder = new int[][] { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 }, { 0, 2 }, { 1, 2 }, { 2, 0 }, { 2, 1 }, { 2, 2 } };
 
-    public class CachedShapelessRecipe extends CachedRecipe
-    {
+    public class CachedShapelessRecipe extends CachedRecipe {
         public CachedShapelessRecipe() {
             ingredients = new ArrayList<PositionedStack>();
         }
@@ -83,13 +72,15 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler
             List<IRecipe> allrecipes = CraftingManager.getInstance().getRecipeList();
             for (IRecipe irecipe : allrecipes) {
                 CachedShapelessRecipe recipe = null;
-                if (irecipe instanceof ShapelessRecipes)
+                if (irecipe instanceof ShapelessRecipes) {
                     recipe = shapelessRecipe((ShapelessRecipes) irecipe);
-                else if (irecipe instanceof ShapelessOreRecipe)
+                } else if (irecipe instanceof ShapelessOreRecipe) {
                     recipe = forgeShapelessRecipe((ShapelessOreRecipe) irecipe);
+                }
 
-                if (recipe == null)
+                if (recipe == null) {
                     continue;
+                }
 
                 arecipes.add(recipe);
             }
@@ -104,13 +95,15 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler
         for (IRecipe irecipe : allrecipes) {
             if (NEIServerUtils.areStacksSameTypeCrafting(irecipe.getRecipeOutput(), result)) {
                 CachedShapelessRecipe recipe = null;
-                if (irecipe instanceof ShapelessRecipes)
+                if (irecipe instanceof ShapelessRecipes) {
                     recipe = shapelessRecipe((ShapelessRecipes) irecipe);
-                else if (irecipe instanceof ShapelessOreRecipe)
+                } else if (irecipe instanceof ShapelessOreRecipe) {
                     recipe = forgeShapelessRecipe((ShapelessOreRecipe) irecipe);
+                }
 
-                if (recipe == null)
+                if (recipe == null) {
                     continue;
+                }
 
                 arecipes.add(recipe);
             }
@@ -122,13 +115,15 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler
         List<IRecipe> allrecipes = CraftingManager.getInstance().getRecipeList();
         for (IRecipe irecipe : allrecipes) {
             CachedShapelessRecipe recipe = null;
-            if (irecipe instanceof ShapelessRecipes)
+            if (irecipe instanceof ShapelessRecipes) {
                 recipe = shapelessRecipe((ShapelessRecipes) irecipe);
-            else if (irecipe instanceof ShapelessOreRecipe)
+            } else if (irecipe instanceof ShapelessOreRecipe) {
                 recipe = forgeShapelessRecipe((ShapelessOreRecipe) irecipe);
+            }
 
-            if (recipe == null)
+            if (recipe == null) {
                 continue;
+            }
 
             if (recipe.contains(recipe.ingredients, ingredient)) {
                 recipe.setIngredientPermutation(recipe.ingredients, ingredient);
@@ -138,8 +133,10 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler
     }
 
     private CachedShapelessRecipe shapelessRecipe(ShapelessRecipes recipe) {
-        if(recipe.recipeItems == null) //because some mod subclasses actually do this
+        if (recipe.recipeItems == null) //because some mod subclasses actually do this
+        {
             return null;
+        }
 
         return new CachedShapelessRecipe(recipe.recipeItems, recipe.getRecipeOutput());
     }
@@ -147,9 +144,12 @@ public class ShapelessRecipeHandler extends ShapedRecipeHandler
     public CachedShapelessRecipe forgeShapelessRecipe(ShapelessOreRecipe recipe) {
         ArrayList<Object> items = recipe.getInput();
 
-        for (Object item : items)
+        for (Object item : items) {
             if (item instanceof List && ((List<?>) item).isEmpty())//ore handler, no ores
+            {
                 return null;
+            }
+        }
 
         return new CachedShapelessRecipe(items, recipe.getRecipeOutput());
     }

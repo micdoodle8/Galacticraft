@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -27,7 +28,6 @@ public class EntityFlag extends Entity
     public EntityFlag(World world)
     {
         super(world);
-        this.yOffset = 1.5F;
         this.setSize(0.4F, 3F);
         this.ignoreFrustumCheck = true;
     }
@@ -49,7 +49,7 @@ public class EntityFlag extends Entity
 		
         if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
         {
-            if (this.isEntityInvulnerable())
+            if (this.isEntityInvulnerable(par1DamageSource))
             {
                 return false;
             }
@@ -57,7 +57,7 @@ public class EntityFlag extends Entity
             {
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
-                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getPitch() + 1.0F);
+                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getFrequency() + 1.0F);
 
                 if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {
@@ -122,13 +122,7 @@ public class EntityFlag extends Entity
     @Override
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.boundingBox;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox()
-    {
-        return this.boundingBox;
+        return par1Entity.getCollisionBoundingBox();
     }
 
     @Override
@@ -196,7 +190,7 @@ public class EntityFlag extends Entity
             {
 
             }
-            else if (blockAt.isAir(this.worldObj, vec.intX(), vec.intY(), vec.intZ()))
+            else if (blockAt.isAir(this.worldObj, new BlockPos(vec.intX(), vec.intY(), vec.intZ())))
             {
                 this.motionY -= 0.02F;
             }

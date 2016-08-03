@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -17,9 +18,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemMeteorChunk extends Item
+public class ItemMeteorChunk extends Item implements ISortableItem
 {
-    public static final String[] names = { "meteorChunk", "meteorChunkHot" };
+    public static final String[] names = { "meteor_chunk", "meteor_chunk_hot" };
 
     public static final int METEOR_BURN_TIME = 45 * 20;
 
@@ -30,7 +31,8 @@ public class ItemMeteorChunk extends Item
         this.setHasSubtypes(true);
         this.maxStackSize = 16;
         this.setCreativeTab(CreativeTabs.tabMaterials);
-        this.setTextureName("arrow");
+        this.setUnlocalizedName(assetName);
+        //this.setTextureName("arrow");
     }
 
     @Override
@@ -56,7 +58,7 @@ public class ItemMeteorChunk extends Item
                 else
                 {
                     itemstack.setItemDamage(0);
-                    itemstack.stackTagCompound = null;
+                    itemstack.setTagCompound(null);
                 }
             }
             else
@@ -111,7 +113,7 @@ public class ItemMeteorChunk extends Item
                 burnTime = 45.0F;
             }
 
-            par3List.add(GCCoreUtil.translate("item.hotDescription.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
+            par3List.add(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
         }
     }
 
@@ -154,4 +156,9 @@ public class ItemMeteorChunk extends Item
         return itemStack;
     }
 
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
+    }
 }

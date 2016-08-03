@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
@@ -13,12 +15,12 @@ public class MapGenCaveMars extends MapGenBaseMeta
 {
     public static final int BREAK_THROUGH_CHANCE = 25; // 1 in n chance
 
-    protected void generateLargeCaveNode(long par1, int par3, int par4, Block[] blockIdArray, byte[] metaArray, double par6, double par8, double par10)
+    protected void generateLargeCaveNode(long par1, int par3, int par4, ChunkPrimer primer, double par6, double par8, double par10)
     {
-        this.generateCaveNode(par1, par3, par4, blockIdArray, metaArray, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
+        this.generateCaveNode(par1, par3, par4, primer, par6, par8, par10, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
-    protected void generateCaveNode(long par1, int par3, int par4, Block[] blockIdArray, byte[] metaArray, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
+    protected void generateCaveNode(long par1, int par3, int par4, ChunkPrimer primer, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
         final double d4 = par3 * 16 + 8;
         final double d5 = par4 * 16 + 8;
@@ -70,8 +72,8 @@ public class MapGenCaveMars extends MapGenBaseMeta
 
             if (!flag && par15 == k1 && par12 > 1.0F && par16 > 0)
             {
-                this.generateCaveNode(random.nextLong(), par3, par4, blockIdArray, metaArray, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
-                this.generateCaveNode(random.nextLong(), par3, par4, blockIdArray, metaArray, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, primer, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, primer, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
                 return;
             }
 
@@ -169,15 +171,20 @@ public class MapGenCaveMars extends MapGenBaseMeta
 
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            if (blockIdArray[coords] == MarsBlocks.marsBlock)
+                                            IBlockState state = primer.getBlockState(coords);
+                                            Block block = state.getBlock();
+                                            int metadata = state.getBlock().getMetaFromState(state);
+                                            if (block == MarsBlocks.marsBlock)
                                             {
-                                                if (metaArray[coords] == 6 || metaArray[coords] == 9)
+                                                if (metadata == 6 || metadata == 9)
                                                 {
-                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.air;
                                                 }
-                                                else if (metaArray[coords] == 5 && random.nextInt(MapGenCaveMars.BREAK_THROUGH_CHANCE) == 0)
+                                                else if (metadata == 5 && random.nextInt(MapGenCaveMars.BREAK_THROUGH_CHANCE) == 0)
                                                 {
-                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.air;
                                                 }
                                             }
                                         }
@@ -197,7 +204,7 @@ public class MapGenCaveMars extends MapGenBaseMeta
     }
 
     @Override
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, Block[] blockIdArray, byte[] metaArray)
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, ChunkPrimer primer)
     {
         int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 
@@ -215,7 +222,7 @@ public class MapGenCaveMars extends MapGenBaseMeta
 
             if (this.rand.nextInt(4) == 0)
             {
-                this.generateLargeCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, var9, var11, var13);
+                this.generateLargeCaveNode(this.rand.nextLong(), par4, par5, primer, var9, var11, var13);
                 var15 += this.rand.nextInt(4);
             }
 
@@ -230,7 +237,7 @@ public class MapGenCaveMars extends MapGenBaseMeta
                     var19 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
                 }
 
-                this.generateCaveNode(this.rand.nextLong(), par4, par5, blockIdArray, metaArray, var9, var11, var13, var19, var17, var18, 0, 0, 1.0D);
+                this.generateCaveNode(this.rand.nextLong(), par4, par5, primer, var9, var11, var13, var19, var17, var18, 0, 0, 1.0D);
             }
         }
     }

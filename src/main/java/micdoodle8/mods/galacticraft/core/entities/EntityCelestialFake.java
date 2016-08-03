@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -28,13 +28,8 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 	private boolean hasReceivedPacket;
 
 	public EntityCelestialFake(World var1)
-	{
-		this(var1, 0F);
-	}
-	
-	public EntityCelestialFake(World var1, float yOffset)
     {
-        super(var1, yOffset);
+        super(var1);
         this.setSize(3.0F, 1.0F);
     }
 
@@ -59,15 +54,15 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         return this.shouldSendAdvancedMotionPacket();
     }
 
-    public EntityCelestialFake(World var1, double var2, double var4, double var6, float yOffset)
+    public EntityCelestialFake(World var1, double var2, double var4, double var6)
     {
-        this(var1, yOffset);
-        this.setPosition(var2, var4 + this.yOffset, var6);
+        this(var1);
+        this.setPosition(var2, var4, var6);
     }
 
-    public EntityCelestialFake(EntityPlayerMP player, float yOffset)
+    public EntityCelestialFake(EntityPlayerMP player)
     {
-        this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
+        this(player.worldObj, player.posX, player.posY, player.posZ);
 
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
@@ -93,7 +88,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             }
         }
 
-        AxisAlignedBB box = this.boundingBox.expand(0.2D, 0.4D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
 
         final List<Entity> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -325,12 +320,12 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return null;
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
 	}
 
@@ -357,7 +352,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
 	@Override
 	public void onGroundHit() {
-		
+
 	}
 
 	@Override
@@ -369,4 +364,24 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 	public boolean shouldIgnoreShiftExit() {
 		return true;
 	}
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
 }

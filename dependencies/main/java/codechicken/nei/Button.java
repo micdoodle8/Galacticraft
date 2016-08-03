@@ -4,8 +4,7 @@ import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.getStringWidth;
 
-public abstract class Button extends Widget
-{
+public abstract class Button extends Widget {
     public Button(String s) {
         label = s;
     }
@@ -25,9 +24,11 @@ public abstract class Button extends Widget
 
     @Override
     public boolean handleClick(int mx, int my, int button) {
-        if (button == 1 || button == 0)
-            if (onButtonPress(button == 1))
+        if (button == 1 || button == 0) {
+            if (onButtonPress(button == 1)) {
                 NEIClientUtils.playClickSound();
+            }
+        }
         return true;
     }
 
@@ -39,12 +40,14 @@ public abstract class Button extends Widget
 
     @Override
     public List<String> handleTooltip(int mx, int my, List<String> tooltip) {
-        if (!contains(mx, my))
+        if (!contains(mx, my)) {
             return tooltip;
+        }
 
         String tip = getButtonTip();
-        if (tip != null)
+        if (tip != null) {
             tooltip.add(tip);
+        }
         return tooltip;
     }
 

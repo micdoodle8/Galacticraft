@@ -2,9 +2,8 @@ package codechicken.lib.config;
 
 import java.io.*;
 
-public class ConfigFile extends ConfigTagParent
-{
-    public static final byte[] crlf = new byte[]{0xD, 0xA};
+public class ConfigFile extends ConfigTagParent {
+    public static final byte[] crlf = new byte[] { 0xD, 0xA };
 
     public File file;
     private boolean loading;
@@ -14,14 +13,17 @@ public class ConfigFile extends ConfigTagParent
         load(file);
     }
 
-    protected ConfigFile() {}
+    protected ConfigFile() {
+    }
 
     protected void load(File file) {
         try {
-            if(!file.getParentFile().exists())
+            if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
-            if (!file.exists())
+            }
+            if (!file.exists()) {
                 file.createNewFile();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -39,10 +41,11 @@ public class ConfigFile extends ConfigTagParent
                 reader.mark(2000);
                 String line = reader.readLine();
                 if (line != null && line.startsWith("#")) {
-                    if (comment == null || comment.equals(""))
+                    if (comment == null || comment.equals("")) {
                         comment = line.substring(1);
-                    else
+                    } else {
                         comment = comment + "\n" + line.substring(1);
+                    }
                 } else {
                     reader.reset();
                     break;
@@ -81,15 +84,17 @@ public class ConfigFile extends ConfigTagParent
     }
 
     public static void writeLine(PrintWriter writer, String line, int tabs) {
-        for (int i = 0; i < tabs; i++)
+        for (int i = 0; i < tabs; i++) {
             writer.print('\t');
+        }
 
         writer.println(line);
     }
 
     public void saveConfig() {
-        if (loading)
+        if (loading) {
             return;
+        }
 
         PrintWriter writer;
         try {

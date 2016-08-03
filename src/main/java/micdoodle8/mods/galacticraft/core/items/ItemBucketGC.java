@@ -1,25 +1,25 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 
-public class ItemBucketGC extends ItemBucket
+public class ItemBucketGC extends ItemBucket implements ISortableItem
 {
-	private String texture_prefix;
+//	private String texture_prefix;
 
-	public ItemBucketGC(Block block, String texture_prefix)
+	public ItemBucketGC(Block block)
 	{
 		super(block);
-		this.texture_prefix = texture_prefix;
+//		this.texture_prefix = texture_prefix;
 		this.setContainerItem(Items.bucket);
 	}
 
@@ -38,9 +38,8 @@ public class ItemBucketGC extends ItemBucket
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister)
+	public EnumSortCategoryItem getCategory(int meta)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", texture_prefix));
+		return EnumSortCategoryItem.BUCKET;
 	}
 }

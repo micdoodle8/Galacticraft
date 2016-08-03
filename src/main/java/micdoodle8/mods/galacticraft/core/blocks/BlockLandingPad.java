@@ -1,39 +1,75 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, ItemBlockDesc.IBlockShiftDesc
+public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
-    private IIcon[] icons = new IIcon[3];
+    //private IIcon[] icons = new IIcon[3];
+
+    public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);
+
+    public enum EnumLandingPadType implements IStringSerializable
+    {
+        ROCKET_PAD(0, "rocket"),
+        BUGGY_PAD(1, "buggy");
+
+        private final int meta;
+        private final String name;
+
+        private EnumLandingPadType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumLandingPadType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
 
     public BlockLandingPad(String assetName)
     {
         super(Material.iron);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 3 / 16.0F, 1.0F);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        this.setStepSound(Block.soundTypeStone);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -42,10 +78,9 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -53,7 +88,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         }
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
@@ -72,50 +107,52 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         }
 
         return this.icons[par2];
+    }*/
+
+    private boolean checkAxis(World worldIn, BlockPos pos, Block block, EnumFacing facing)
+    {
+        int sameCount = 0;
+        for (int i = 1; i <= 3; i++)
+        {
+            if (worldIn.getBlockState(pos.offset(facing, i)).getBlock() == block)
+            {
+                sameCount++;
+            }
+        }
+
+        return sameCount < 3;
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
     {
         final Block id = GCBlocks.landingPad;
 
-        if (par1World.getBlock(par2 + 1, par3, par4) == id && par1World.getBlock(par2 + 2, par3, par4) == id && par1World.getBlock(par2 + 3, par3, par4) == id)
+        if (!checkAxis(worldIn, pos, id, EnumFacing.EAST) ||
+                !checkAxis(worldIn, pos, id, EnumFacing.WEST) ||
+                !checkAxis(worldIn, pos, id, EnumFacing.NORTH) ||
+                !checkAxis(worldIn, pos, id, EnumFacing.SOUTH))
         {
             return false;
         }
 
-        if (par1World.getBlock(par2 - 1, par3, par4) == id && par1World.getBlock(par2 - 2, par3, par4) == id && par1World.getBlock(par2 - 3, par3, par4) == id)
-        {
-            return false;
-        }
-
-        if (par1World.getBlock(par2, par3, par4 + 1) == id && par1World.getBlock(par2, par3, par4 + 2) == id && par1World.getBlock(par2, par3, par4 + 3) == id)
-        {
-            return false;
-        }
-
-        if (par1World.getBlock(par2, par3, par4 - 1) == id && par1World.getBlock(par2, par3, par4 - 2) == id && par1World.getBlock(par2, par3, par4 - 3) == id)
-        {
-            return false;
-        }
-
-        if (par1World.getBlock(par2, par3 - 1, par4) == GCBlocks.landingPad && par5 == 1)
+        if (worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() == GCBlocks.landingPad && side == EnumFacing.UP)
         {
             return false;
         }
         else
         {
-            return this.canPlaceBlockAt(par1World, par2, par3, par4);
+            return this.canPlaceBlockAt(worldIn, pos);
         }
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         if (world.isRemote)
         	return null;
 
-        switch (metadata)
+        switch (getMetaFromState(state))
         {
         case 0:
         	return new TileEntityLandingPadSingle();
@@ -135,7 +172,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -147,15 +184,15 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public boolean isSealed(World world, int x, int y, int z, ForgeDirection direction)
+    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
     {
-        return direction == ForgeDirection.UP;
+        return direction == EnumFacing.UP;
     }
 
     @Override
-    public int damageDropped(int meta)
+    public int damageDropped(IBlockState state)
     {
-        return meta;
+        return getMetaFromState(state);
     }
 
     @Override
@@ -165,12 +202,33 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         {
             return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
         }
-        return GCCoreUtil.translate("tile.buggyPad.description");
+        return GCCoreUtil.translate("tile.buggy_pad.description");
     }
 
     @Override
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadType.byMetadata(meta));
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumLandingPadType)state.getValue(PAD_TYPE)).getMeta();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, PAD_TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.PAD;
     }
 }

@@ -166,7 +166,6 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.brown_mushroom_block));
         IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.wall_sign));
         IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.standing_sign));
-        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.wooden_door));
         IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.trapped_chest));
     }
 

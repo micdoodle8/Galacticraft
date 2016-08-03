@@ -1,0 +1,15 @@
+{
+    "parent":"galacticraftcore:block/spin_thruster_model",
+    "display": {
+        "thirdperson": {
+            "rotation": [ 10, -45, 170 ],
+            "translation": [ 0, 1.5, -2.75 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+		"gui": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 3.0, 0.0, -1.0 ],
+            "scale": [ 1.2, 1.2, 1.2 ]
+		}
+    }
+}

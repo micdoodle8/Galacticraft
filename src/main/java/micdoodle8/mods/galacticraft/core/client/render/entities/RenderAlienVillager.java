@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
@@ -21,7 +22,7 @@ public class RenderAlienVillager extends RenderLiving
 
     public RenderAlienVillager()
     {
-        super(new ModelAlienVillager(0.0F), 0.5F);
+        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelAlienVillager(0.0F), 0.5F);
         this.villagerModel = (ModelAlienVillager) this.mainModel;
     }
 
@@ -33,11 +34,6 @@ public class RenderAlienVillager extends RenderLiving
     public void renderVillager(EntityAlienVillager par1EntityVillager, double par2, double par4, double par6, float par8, float par9)
     {
         super.doRender(par1EntityVillager, par2, par4, par6, par8, par9);
-    }
-
-    protected void renderVillagerEquipedItems(EntityAlienVillager par1EntityVillager, float par2)
-    {
-        super.renderEquippedItems(par1EntityVillager, par2);
     }
 
     protected void preRenderVillager(EntityAlienVillager par1EntityVillager, float par2)
@@ -67,18 +63,6 @@ public class RenderAlienVillager extends RenderLiving
     protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
     {
         this.preRenderVillager((EntityAlienVillager) par1EntityLivingBase, par2);
-    }
-
-    @Override
-    protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3)
-    {
-        return this.shouldVillagerRenderPass((EntityAlienVillager) par1EntityLivingBase, par2, par3);
-    }
-
-    @Override
-    protected void renderEquippedItems(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-        this.renderVillagerEquipedItems((EntityAlienVillager) par1EntityLivingBase, par2);
     }
 
     @Override

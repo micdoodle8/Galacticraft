@@ -356,49 +356,4 @@ public class FluidUtil
             return container;
         }
 	}
-
-	public static int getFluidID(FluidStack stack)
-	{
-	    try
-	    {
-	        if (oldFluidIDMethod)
-	        {
-	            try
-	            {
-	                if (getFluidMethod == null)
-	                {
-	                    if (fluidStackClass == null)
-	                    {
-	                        fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
-	                    }
-	                    getFluidMethod = fluidStackClass.getDeclaredMethod("getFluidID");
-	                }
-	                return (Integer) getFluidMethod.invoke(stack);
-	            }
-	            catch (NoSuchMethodException error)
-	            {
-	                oldFluidIDMethod = false;
-	                getFluidID(stack);
-	            }
-	        }
-	        else
-	        {
-	            if (fluidIdField == null)
-	            {
-	                if (fluidStackClass == null)
-	                {
-	                    fluidStackClass = Class.forName("net.minecraftforge.fluids.FluidStack");
-	                }
-	                fluidIdField = fluidStackClass.getDeclaredField("fluidID");
-	            }
-	            return fluidIdField.getInt(stack);
-	        }
-	    }
-	    catch (Exception e)
-	    {
-	        e.printStackTrace();
-	    }
-	
-	    return -1;
-	}
 }

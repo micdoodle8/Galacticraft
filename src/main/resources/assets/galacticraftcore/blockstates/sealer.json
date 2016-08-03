@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "galacticraftcore:sealer_model" },
+        "facing=east":  { "model": "galacticraftcore:sealer_model", "y": 90 },
+        "facing=west":  { "model": "galacticraftcore:sealer_model", "y": 270 },
+        "facing=south": { "model": "galacticraftcore:sealer_model", "y": 180 }
+    }
+}

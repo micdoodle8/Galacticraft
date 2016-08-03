@@ -12,12 +12,15 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -70,7 +73,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 	@Override
 	public ItemStack getPickedResult(MovingObjectPosition target)
 	{
-	return new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+	return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
 	}
 
     @Override
@@ -173,7 +176,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         if (this.landing && this.targetVec != null)
         {
-            double modifier = this.posY - this.targetVec.y;
+            double modifier = this.posY - this.targetVec.getY();
             modifier = Math.max(modifier, 1.0);
             x1 *= modifier / 60.0D;
             y1 *= modifier / 60.0D;
@@ -232,20 +235,20 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-        	if (this.targetDimension != this.worldObj.provider.dimensionId)
+        	if (this.targetDimension != this.worldObj.provider.getDimensionId())
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
                 WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                 if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                 {
                 	GCLog.debug("Loaded destination dimension " + this.targetDimension);
-            		this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            		this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
             		Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.worldObj, false, null);
 
             		if (e instanceof EntityCargoRocket)
             		{
                     	GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
-            			e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            			e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
             			((EntityCargoRocket) e).landing = true;
             			if (e != this)
             				this.setDead();
@@ -265,7 +268,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             else
             {
                 GCLog.debug("Cargo rocket going into landing mode in same destination.");
-            	this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                 this.landing = true;
                 return;
             }
@@ -322,7 +325,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         if (this.targetVec != null)
         {
-            this.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
+            this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
             this.landing = true;
         }
         else
@@ -357,42 +360,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItemList)
     {
         super.getItemsDropped(droppedItemList);
-        ItemStack rocket = new ItemStack(MarsItems.spaceship, 1, this.rocketType.getIndex() + 10);
+        ItemStack rocket = new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
         rocket.setTagCompound(new NBTTagCompound());
         rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItemList.add(rocket);
         return droppedItemList;
     }
-
-    //	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-    //	public boolean canLock(IMissile missile)
-    //	{
-    //		return true;
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID = "ICBM|Explosion")
-    //	public Vector3 getPredictedPosition(int ticks)
-    //	{
-    //		return new Vector3(this);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public void destroyCraft()
-    //	{
-    //		this.setDead();
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public int doDamage(int damage)
-    //	{
-    //		return (int) (this.shipDamage += damage);
-    //	}
-    //
-    //	@RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID = "ICBM|Explosion")
-    //	public boolean canBeTargeted(Object entity)
-    //	{
-    //		return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() && this.timeSinceLaunch > 50;
-    //	} TODO Fix ICBM integration
 
     @Override
     public boolean isPlayerRocket()
@@ -403,5 +376,42 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     public double getOnPadYOffset()
     {
     	return 0D;//-0.25D;
+    }
+
+    @Override
+    public ITickable getSoundUpdater() {
+        return null;
+    }
+
+    @Override
+    public ISound setSoundUpdater(EntityPlayerSP player) {
+        return null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
+    }
+
+    @Override
+    public float getRenderOffsetY()
+    {
+        return -0.1F;
     }
 }

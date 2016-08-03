@@ -1,44 +1,46 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc
+public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IBlockShiftDesc, ITileEntityProvider, ISortableBlock
 {
-    public static IIcon thrusterIcon;
+    //public static IIcon thrusterIcon;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     protected BlockSpinThruster(String assetName)
     {
         super(Material.circuits);
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName("stone");
-        this.setBlockName(assetName);
+        this.setStepSound(Block.soundTypeWood);
+        //this.setBlockTextureName("stone");
+        this.setUnlocalizedName(assetName);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
-    private static boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection direction, boolean nope)
+    private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction)
     {
-        return world.getBlock(x, y, z).isSideSolid(world, x, y, z, direction);
+        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, direction);
     }
 
     //	@Override
@@ -63,7 +65,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     //	}
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {
         return null;
     }
@@ -75,7 +77,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     }
 
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean isFullCube()
     {
         return false;
     }
@@ -87,105 +89,84 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     }
 
     @Override
-    public boolean canPlaceBlockAt(World par1World, int x, int y, int z)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true) || BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true);
+        return BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST)
+                || BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST)
+                || BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH)
+                || BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH);
     }
 
     @Override
-    public int onBlockPlaced(World par1World, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        int var10 = par9;
-
-        if (par5 == 2 && BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
-        {
-            var10 = 4;
-        }
-
-        if (par5 == 3 && BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
-        {
-            var10 = 3;
-        }
-
-        if (par5 == 4 && BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
-        {
-            var10 = 2;
-        }
-
-        if (par5 == 5 && BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
-        {
-            var10 = 1;
-        }
-
-        return 0;
+        return getStateFromMeta(facing.getHorizontalIndex());
     }
 
     @Override
-    public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        super.updateTick(par1World, x, y, z, par5Random);
+        super.updateTick(worldIn, pos, state, rand);
 
-        if (par1World.getBlockMetadata(x, y, z) == 0)
+        if (getMetaFromState(state) == 0)
         {
-            this.onBlockAdded(par1World, x, y, z);
+            this.onBlockAdded(worldIn, pos, state);
         }
     }
 
     @Override
-    public void onBlockAdded(World par1World, int x, int y, int z)
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
-        TileEntityThruster tile = (TileEntityThruster) par1World.getTileEntity(x, y, z);
+        int metadata = getMetaFromState(state);
+//        TileEntityThruster tile = (TileEntityThruster) worldIn.getTileEntity(pos);
+//
+//        if (metadata == 0)
+//        {
+//            if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST))
+//            {
+//                metadata = 2;
+//            }
+//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST))
+//            {
+//                metadata = 3;
+//            }
+//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH))
+//            {
+//                metadata = 0;
+//            }
+//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH))
+//            {
+//                metadata = 1;
+//            }
+//
+//            worldIn.setBlockState(pos, getStateFromMeta(metadata), 3);
+//        }
 
-        if (metadata == 0)
-        {
-            if (BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true))
-            {
-                metadata = 1;
-                par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-            }
-            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true))
-            {
-                metadata = 2;
-                par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-            }
-            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true))
-            {
-                metadata = 3;
-                par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-            }
-            else if (BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true))
-            {
-                metadata = 4;
-                par1World.setBlockMetadataWithNotify(x, y, z, metadata, 3);
-            }
-        }
-
-        BlockVec3 baseBlock;
+        BlockPos baseBlock;
         switch (metadata)
         {
         case 1:
-            baseBlock = new BlockVec3(x - 1, y, z);
+            baseBlock = pos.offset(EnumFacing.WEST);
             break;
         case 2:
-            baseBlock = new BlockVec3(x + 1, y, z);
+            baseBlock = pos.offset(EnumFacing.EAST);
             break;
         case 3:
-            baseBlock = new BlockVec3(x, y, z - 1);
+            baseBlock = pos.offset(EnumFacing.NORTH);
             break;
         case 4:
-            baseBlock = new BlockVec3(x, y, z + 1);
+            baseBlock = pos.offset(EnumFacing.SOUTH);
             break;
         default:
-            this.dropTorchIfCantStay(par1World, x, y, z);
+            this.dropTorchIfCantStay(worldIn, pos);
             return;
         }
 
-        if (!par1World.isRemote)
+        if (!worldIn.isRemote)
         {
-            if (par1World.provider instanceof WorldProviderOrbit)
+            if (worldIn.provider instanceof WorldProviderOrbit)
             {
-                ((WorldProviderOrbit) par1World.provider).checkSS(baseBlock, true);
+                ((WorldProviderOrbit) worldIn.provider).checkSS(baseBlock, true);
             }
         }
     }
@@ -196,45 +177,45 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
      * neighbor blockID
      */
     @Override
-    public void onNeighborBlockChange(World par1World, int x, int y, int z, Block par5)
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        if (this.dropTorchIfCantStay(par1World, x, y, z))
+        if (this.dropTorchIfCantStay(worldIn, pos))
         {
-            final int var6 = par1World.getBlockMetadata(x, y, z) & 7;
+            final int var6 = getMetaFromState(state) & 7;
             boolean var7 = false;
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x - 1, y, z, ForgeDirection.EAST, true) && var6 == 1)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST) && var6 == 1)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x + 1, y, z, ForgeDirection.WEST, true) && var6 == 2)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST) && var6 == 2)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z - 1, ForgeDirection.SOUTH, true) && var6 == 3)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH) && var6 == 3)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(par1World, x, y, z + 1, ForgeDirection.NORTH, true) && var6 == 4)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH) && var6 == 4)
             {
                 var7 = true;
             }
 
             if (var7)
             {
-                this.dropBlockAsItem(par1World, x, y, z, par1World.getBlockMetadata(x, y, z), 0);
-                par1World.setBlock(x, y, z, Blocks.air);
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+                worldIn.setBlockToAir(pos);
             }
         }
 
-        if (!par1World.isRemote)
+        if (!worldIn.isRemote)
         {
-            if (par1World.provider instanceof WorldProviderOrbit)
+            if (worldIn.provider instanceof WorldProviderOrbit)
             {
-                ((WorldProviderOrbit) par1World.provider).checkSS(new BlockVec3(x, y, z), true);
+                ((WorldProviderOrbit) worldIn.provider).checkSS(pos, true);
             }
         }
     }
@@ -244,14 +225,14 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
      * item if it is unable to stay. Returns True if it can stay and False if it
      * drops. Args: world, x, y, z
      */
-    private boolean dropTorchIfCantStay(World par1World, int x, int y, int z)
+    private boolean dropTorchIfCantStay(World worldIn, BlockPos pos)
     {
-        if (!this.canPlaceBlockAt(par1World, x, y, z))
+        if (!this.canPlaceBlockAt(worldIn, pos))
         {
-            if (par1World.getBlock(x, y, z) == this)
+            if (worldIn.getBlockState(pos).getBlock() == this)
             {
-                this.dropBlockAsItem(par1World, x, y, z, par1World.getBlockMetadata(x, y, z), 0);
-                par1World.setBlock(x, y, z, Blocks.air);
+                this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
+                worldIn.setBlockToAir(pos);
             }
 
             return false;
@@ -267,29 +248,29 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
      * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
      */
     @Override
-    public MovingObjectPosition collisionRayTrace(World par1World, int x, int y, int z, Vec3 par5Vec3, Vec3 par6Vec3)
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
-        final int var7 = par1World.getBlockMetadata(x, y, z) & 7;
         float var8 = 0.3F;
 
-        if (var7 == 1)
+        EnumFacing facing = worldIn.getBlockState(pos).getValue(BlockMachine.FACING);
+
+        switch (facing)
         {
-            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
-        }
-        else if (var7 == 2)
-        {
-            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
-        }
-        else if (var7 == 3)
-        {
-            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
-        }
-        else if (var7 == 4)
-        {
+        case NORTH:
             this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
+            break;
+        case EAST:
+            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
+            break;
+        case SOUTH:
+            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
+            break;
+        case WEST:
+            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
+            break;
         }
 
-        return super.collisionRayTrace(par1World, x, y, z, par5Vec3, par6Vec3);
+        return super.collisionRayTrace(worldIn, pos, start, end);
     }
 
     @Override
@@ -297,53 +278,63 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
         //Also make small thrust sounds
-        if (par1World.provider instanceof WorldProviderOrbit)
+        if (worldIn.provider instanceof WorldProviderOrbit)
         {
-            if (((WorldProviderOrbit) par1World.provider).thrustersFiring || par5Random.nextInt(80) == 0)
+            if (((WorldProviderOrbit) worldIn.provider).thrustersFiring || rand.nextInt(80) == 0)
             {
-                final int var6 = par1World.getBlockMetadata(x, y, z) & 7;
-                final double var7 = x + 0.5F;
-                final double var9 = y + 0.7F;
-                final double var11 = z + 0.5F;
+                final int var6 = getMetaFromState(state) & 7;
+                final double var7 = pos.getX() + 0.5F;
+                final double var9 = pos.getY() + 0.7F;
+                final double var11 = pos.getZ() + 0.5F;
                 final double var13 = 0.2199999988079071D;
                 final double var15 = 0.27000001072883606D;
 
                 if (var6 == 1)
                 {
-                    par1World.spawnParticle("smoke", var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
                 }
                 else if (var6 == 2)
                 {
-                    par1World.spawnParticle("smoke", var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
                 }
                 else if (var6 == 3)
                 {
-                    par1World.spawnParticle("smoke", var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
                 }
                 else if (var6 == 4)
                 {
-                    par1World.spawnParticle("smoke", var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
                 }
             }
         }
     }
 
     @Override
-    public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = world.getBlockMetadata(x, y, z);
-        final int facing = metadata & 8;
-        final int change = (8 + metadata) & 15;
-        world.setBlockMetadataWithNotify(x, y, z, change, 2);
+        EnumFacing currentFacing = world.getBlockState(pos).getValue(FACING);
+        for (EnumFacing nextFacing = currentFacing.rotateY(); ; nextFacing = nextFacing.rotateY())
+        {
+            if (BlockSpinThruster.isBlockSolidOnSide(world, pos.offset(nextFacing.getOpposite()), nextFacing))
+            {
+                world.setBlockState(pos, getStateFromMeta(nextFacing.getHorizontalIndex()), 2);
+                break;
+            }
+
+            if (nextFacing == currentFacing)
+            {
+                break;
+            }
+        }
 
         if (world.provider instanceof WorldProviderOrbit && !world.isRemote)
         {
             WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
-            worldOrbital.checkSS(new BlockVec3(x, y, z), true);
+            worldOrbital.checkSS(pos, true);
         }
         return true;
     }
@@ -355,16 +346,15 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     }
 
     @Override
-    public void onBlockPreDestroy(World world, int x, int y, int z, int metadata)
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!world.isRemote)
+        if (!worldIn.isRemote)
         {
-            final int facing = metadata & 8;
-            if (world.provider instanceof WorldProviderOrbit)
+            final int facing = getMetaFromState(state) & 8;
+            if (worldIn.provider instanceof WorldProviderOrbit)
             {
-                WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
-                BlockVec3 baseBlock = new BlockVec3(x, y, z);
-                worldOrbital.removeThruster(baseBlock, facing == 0);
+                WorldProviderOrbit worldOrbital = (WorldProviderOrbit) worldIn.provider;
+                worldOrbital.removeThruster(pos, facing == 0);
                 worldOrbital.updateSpinSpeed();
             }
         }
@@ -386,5 +376,27 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
+        return this.getDefaultState().withProperty(FACING, enumfacing);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(FACING)).getHorizontalIndex();
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

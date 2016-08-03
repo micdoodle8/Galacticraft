@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenBaseMoon extends BiomeGenBase
@@ -14,6 +15,11 @@ public class BiomeGenBaseMoon extends BiomeGenBase
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
         this.rainfall = 0F;
+    }
+
+    public BiomeDecorator createBiomeDecorator()
+    {
+        return getModdedBiomeDecorator(new BiomeDecoratorMoon());
     }
 
     @Override

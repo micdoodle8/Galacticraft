@@ -1,9 +1,9 @@
 package codechicken.nei.config;
 
-public class OptionIntegerField extends OptionTextField
-{
+public class OptionIntegerField extends OptionTextField {
     public int min;
     public int max;
+
     public OptionIntegerField(String name, int min, int max) {
         super(name);
         this.min = min;
@@ -16,22 +16,23 @@ public class OptionIntegerField extends OptionTextField
 
     @Override
     public boolean isValidInput(String s) {
-        if(s.length() == 0)
+        if (s.length() == 0) {
             return true;
+        }
 
         try {
             Integer.parseInt(s);
             return true;
-        }
-        catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             return false;
         }
     }
 
     @Override
     public boolean isValidValue(String s) {
-        if(s.length() == 0 || !isValidInput(s))
+        if (s.length() == 0 || !isValidInput(s)) {
             return false;
+        }
 
         int i = Integer.parseInt(s);
         return i >= min && i <= max;

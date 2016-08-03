@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -11,13 +14,13 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemArmorAsteroids extends ItemArmor
+public class ItemArmorAsteroids extends ItemArmor implements ISortableItem
 {
     public ItemArmorAsteroids(int armorIndex, String assetSuffix)
     {
-        super(AsteroidsItems.ARMOR_TITANIUM, GalacticraftCore.proxy.getTitaniumArmorRenderIndex(), armorIndex);
+        super(AsteroidsItems.ARMOR_TITANIUM, 0, armorIndex);
         this.setUnlocalizedName("titanium_" + assetSuffix);
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + "titanium_" + assetSuffix);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "titanium_" + assetSuffix);
     }
 
     @Override
@@ -40,18 +43,24 @@ public class ItemArmorAsteroids extends ItemArmor
         {
             if (stack.getItem() == AsteroidsItems.titaniumHelmet)
             {
-                return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_1.png";
+                return GalacticraftPlanets.TEXTURE_PREFIX + "textures/model/armor/titanium_1.png";
             }
             else if (stack.getItem() == AsteroidsItems.titaniumChestplate || stack.getItem() == AsteroidsItems.titaniumBoots)
             {
-                return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_2.png";
+                return GalacticraftPlanets.TEXTURE_PREFIX + "textures/model/armor/titanium_2.png";
             }
             else if (stack.getItem() == AsteroidsItems.titaniumLeggings)
             {
-                return AsteroidsModule.TEXTURE_PREFIX + "textures/model/armor/titanium_3.png";
+                return GalacticraftPlanets.TEXTURE_PREFIX + "textures/model/armor/titanium_3.png";
             }
         }
 
         return null;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.ARMOR;
     }
 }

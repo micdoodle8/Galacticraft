@@ -1,30 +1,27 @@
-/**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
- * http://www.mod-buildcraft.com
+/** Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team http://www.mod-buildcraft.com
  *
- * BuildCraft is distributed under the terms of the Minecraft Mod Public
- * License 1.0, or MMPL. Please check the contents of the license located in
- * http://www.mod-buildcraft.com/MMPL-1.0.txt
- */
+ * The BuildCraft API is distributed under the terms of the MIT License. Please check the contents of the license, which
+ * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
 package buildcraft.api.gates;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumWorldBlockLayer;
+
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IGateExpansion {
 
-	String getUniqueIdentifier();
+    String getUniqueIdentifier();
 
-	String getDisplayName();
+    String getDisplayName();
 
-	GateExpansionController makeController(TileEntity pipeTile);
+    GateExpansionController makeController(TileEntity pipeTile);
 
-	void registerBlockOverlay(IIconRegister iconRegister);
+    @SideOnly(Side.CLIENT)
+    void textureStitch(TextureMap map);
 
-	void registerItemOverlay(IIconRegister iconRegister);
-
-	IIcon getOverlayBlock();
-
-	IIcon getOverlayItem();
+    @SideOnly(Side.CLIENT)
+    GateExpansionModelKey<?> getRenderModelKey(EnumWorldBlockLayer layer);
 }

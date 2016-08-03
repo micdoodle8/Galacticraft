@@ -1,0 +1,8 @@
+{
+    "parent":"galacticraftcore:block/treasure_chest",
+    "display": {
+		"gui": {
+            "rotation": [ 0, 180, 0 ]
+		}
+    }
+}

@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -23,7 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
@@ -34,7 +35,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 3, getPos().getZ() + 2);
     }
 
     @Override
@@ -45,16 +46,16 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             return false;
         }
 
-        EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.xCoord, this.yCoord, this.zCoord);
+        EnumStatus enumstatus = this.sleepInBedAt(entityPlayer, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 
         switch (enumstatus)
         {
         case OK:
             ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.xCoord, this.yCoord, this.zCoord }), (EntityPlayerMP) entityPlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cantUse", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
+            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
             return false;
         default:
             return false;
@@ -70,7 +71,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EnumStatus.OTHER_PROBLEM;
             }
 
-            if (this.worldObj.getBiomeGenForCoords(par1, par3) == BiomeGenBase.hell)
+            if (this.worldObj.getBiomeGenForCoords(new BlockPos(par1, par2, par3)) == BiomeGenBase.hell)
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
@@ -86,11 +87,11 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             entityPlayer.mountEntity((Entity) null);
         }
 
-        entityPlayer.setPosition(this.xCoord + 0.5F, this.yCoord + 1.9F, this.zCoord + 0.5F);
+        entityPlayer.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() + 1.9F, this.getPos().getZ() + 0.5F);
 
-        entityPlayer.sleeping = true;
-        entityPlayer.sleepTimer = 0;
-        entityPlayer.playerLocation = new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
+//        entityPlayer.sleeping = true;
+//        entityPlayer.sleepTimer = 0; TODO access transformer
+        entityPlayer.playerLocation = new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
         if (!this.worldObj.isRemote)
@@ -101,20 +102,20 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         return EnumStatus.OK;
     }
 
+//    @Override
+//    public boolean canUpdate()
+//    {
+//        return true;
+//    }
+
     @Override
-    public boolean canUpdate()
+    public void update()
     {
-        return true;
+        super.update();
     }
 
     @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-    }
-
-    @Override
-    public void onCreate(BlockVec3 placedPosition)
+    public void onCreate(World world, BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
@@ -122,12 +123,12 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
         for (int y = 0; y < 3; y++)
         {
-            if (placedPosition.y + y > buildHeight) return;
-            final BlockVec3 vecToAdd = new BlockVec3(placedPosition.x, placedPosition.y + y, placedPosition.z);
+            if (placedPosition.getY() + y > buildHeight) return;
+            final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ());
 
             if (!vecToAdd.equals(placedPosition))
             {
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 5);
+                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 5);
             }
         }
     }
@@ -145,7 +146,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 continue;
             }
 
-            if (this.worldObj.getBlock(thisBlock.x, thisBlock.y + y, thisBlock.z) == GCBlocks.fakeBlock)
+            if (this.worldObj.getBlockState(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z)).getBlock() == GCBlocks.fakeBlock)
             {
                 fakeBlockCount++;
             }
@@ -160,9 +161,10 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         {
             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
             {
-                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(thisBlock.x, thisBlock.y + y, thisBlock.z, MarsBlocks.machine, Block.getIdFromBlock(MarsBlocks.machine) >> 12 & 255);
+                BlockPos pos1 = new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z);
+                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos1, worldObj.getBlockState(pos1));
             }
-            this.worldObj.func_147480_a(thisBlock.x, thisBlock.y + y, thisBlock.z, true);
+            this.worldObj.destroyBlock(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z), true);
         }
     }
 

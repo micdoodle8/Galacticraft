@@ -38,7 +38,7 @@ public class SlotRocketBenchResult extends Slot
                 {
                     final ItemStack var4 = new ItemStack(var3.getItem().getContainerItem());
 
-                    if (!var3.getItem().doesContainerItemLeaveCraftingGrid(var3) || !this.thePlayer.inventory.addItemStackToInventory(var4))
+                    if (!this.thePlayer.inventory.addItemStackToInventory(var4))
                     {
                         if (this.craftMatrix.getStackInSlot(var2) == null)
                         {

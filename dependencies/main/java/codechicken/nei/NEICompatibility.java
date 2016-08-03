@@ -1,5 +1,4 @@
 package codechicken.nei;
 
-public class NEICompatibility
-{    
+public class NEICompatibility {
 }

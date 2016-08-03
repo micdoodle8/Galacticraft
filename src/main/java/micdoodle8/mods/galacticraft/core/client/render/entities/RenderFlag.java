@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
@@ -19,6 +20,7 @@ public class RenderFlag extends Render
 
     public RenderFlag()
     {
+        super(FMLClientHandler.instance().getClient().getRenderManager());
         this.shadowSize = 1F;
         this.modelFlag = new ModelFlag();
     }
@@ -37,7 +39,7 @@ public class RenderFlag extends Render
         final float var12 = (((var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         final float var13 = (((var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         final float var14 = (((var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        GL11.glTranslatef(var12, var13, var14);
+        GL11.glTranslatef(var12, var13 + 1.5F, var14);
 
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
         GL11.glRotatef(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);

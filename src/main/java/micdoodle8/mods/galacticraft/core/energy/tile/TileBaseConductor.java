@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
@@ -14,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * This tile entity pre-fabricated for all conductors.
@@ -57,11 +57,11 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     }
 
 
-    @Override
-    public boolean canUpdate()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean canUpdate()
+//    {
+//        return false;
+//    }
 
     @Override
     public IElectricityNetwork getNetwork()
@@ -92,7 +92,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
             this.getNetwork().refresh();
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+            for (EnumFacing side : EnumFacing.values())
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
@@ -120,11 +120,12 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
             BlockVec3 thisVec = new BlockVec3(this);
             for (int i = 0; i < 6; i++)
             {
-                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, i);
+                EnumFacing side = EnumFacing.getFront(i);
+                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
                 if (tileEntity instanceof IConnector)
                 {
-                    if (((IConnector) tileEntity).canConnect(ForgeDirection.getOrientation(i ^ 1), NetworkType.POWER))
+                    if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
                     {
                         this.adjacentConnections[i] = tileEntity;
                     }
@@ -136,7 +137,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         return type == NetworkType.POWER;
     }
@@ -145,7 +146,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
+        return AxisAlignedBB.fromBounds(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1);
     }
 
     @Override

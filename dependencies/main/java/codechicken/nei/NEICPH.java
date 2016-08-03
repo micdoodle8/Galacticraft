@@ -4,51 +4,51 @@ import codechicken.core.ClientUtils;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class NEICPH implements IClientPacketHandler
-{
+public class NEICPH implements IClientPacketHandler {
     public static final String channel = "NEI";
 
     @Override
     public void handlePacket(PacketCustom packet, Minecraft mc, INetHandlerPlayClient netHandler) {
         switch (packet.getType()) {
-            case 1:
-                handleSMPCheck(packet.readUByte(), packet.readString(), mc.theWorld);
-                break;
-            case 10:
-                handleLoginState(packet);
-                break;
-            case 11:
-                handleActionDisabled(packet);
-                break;
-            case 12:
-                handleActionEnabled(packet);
-                break;
-            case 13:
-                ClientHandler.instance().addSMPMagneticItem(packet.readInt(), mc.theWorld);
-                break;
-            case 14:
-                handleGamemode(mc, packet.readUByte());
-                break;
-            case 21:
-                ClientUtils.openSMPGui(packet.readUByte(), new GuiEnchantmentModifier(mc.thePlayer.inventory, mc.theWorld, 0, 0, 0));
-                break;
-            case 23:
-                if (packet.readBoolean())
-                    ClientUtils.openSMPGui(packet.readUByte(), new GuiExtendedCreativeInv(new ContainerCreativeInv(mc.thePlayer, new ExtendedCreativeInv(null, Side.CLIENT))));
-                else
-                    mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
-                break;
-            case 24:
-                ClientUtils.openSMPGui(packet.readUByte(), new GuiPotionCreator(mc.thePlayer.inventory));
-                break;
+        case 1:
+            handleSMPCheck(packet.readUByte(), packet.readString(), mc.theWorld);
+            break;
+        case 10:
+            handleLoginState(packet);
+            break;
+        case 11:
+            handleActionDisabled(packet);
+            break;
+        case 12:
+            handleActionEnabled(packet);
+            break;
+        case 13:
+            ClientHandler.instance().addSMPMagneticItem(packet.readInt(), mc.theWorld);
+            break;
+        case 14:
+            handleGamemode(mc, packet.readUByte());
+            break;
+        case 21:
+            ClientUtils.openSMPGui(packet.readUByte(), new GuiEnchantmentModifier(mc.thePlayer.inventory, mc.theWorld));
+            break;
+        case 23:
+            if (packet.readBoolean()) {
+                ClientUtils.openSMPGui(packet.readUByte(), new GuiExtendedCreativeInv(new ContainerCreativeInv(mc.thePlayer, new ExtendedCreativeInv(null, Side.CLIENT))));
+            } else {
+                mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
+            }
+            break;
+        case 24:
+            ClientUtils.openSMPGui(packet.readUByte(), new GuiPotionCreator(mc.thePlayer.inventory));
+            break;
         }
     }
 
@@ -58,43 +58,50 @@ public class NEICPH implements IClientPacketHandler
 
     private void handleActionEnabled(PacketCustom packet) {
         String name = packet.readString();
-        if (packet.readBoolean())
+        if (packet.readBoolean()) {
             NEIClientConfig.enabledActions.add(name);
-        else
+        } else {
             NEIClientConfig.enabledActions.remove(name);
+        }
     }
 
     private void handleActionDisabled(PacketCustom packet) {
         String name = packet.readString();
-        if (packet.readBoolean())
+        if (packet.readBoolean()) {
             NEIClientConfig.disabledActions.add(name);
-        else
+        } else {
             NEIClientConfig.disabledActions.remove(name);
+        }
     }
 
     private void handleLoginState(PacketCustom packet) {
         NEIClientConfig.permissableActions.clear();
         int num = packet.readUByte();
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             NEIClientConfig.permissableActions.add(packet.readString());
+        }
 
         NEIClientConfig.disabledActions.clear();
         num = packet.readUByte();
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             NEIClientConfig.disabledActions.add(packet.readString());
+        }
 
         NEIClientConfig.enabledActions.clear();
         num = packet.readUByte();
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             NEIClientConfig.enabledActions.add(packet.readString());
+        }
 
         NEIClientConfig.bannedBlocks.clear();
         num = packet.readInt();
-        for(int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             NEIClientConfig.bannedBlocks.add(packet.readItemStack());
+        }
 
-        if (NEIClientUtils.getGuiContainer() != null)
+        if (NEIClientUtils.getGuiContainer() != null) {
             LayoutManager.instance().refresh(NEIClientUtils.getGuiContainer());
+        }
     }
 
     private void handleSMPCheck(int serverprotocol, String worldName, World world) {
@@ -104,7 +111,7 @@ public class NEICPH implements IClientPacketHandler
             NEIClientUtils.printChatMessage(new ChatComponentTranslation("nei.chat.mismatch.server"));
         } else {
             try {
-                ClientHandler.instance().loadWorld(world, true);
+                ClientHandler.instance().loadWorld(world);
                 NEIClientConfig.setHasSMPCounterPart(true);
                 NEIClientConfig.loadWorld(getSaveName(worldName));
                 sendRequestLoginInfo();
@@ -115,15 +122,16 @@ public class NEICPH implements IClientPacketHandler
     }
 
     private static String getSaveName(String worldName) {
-        if (Minecraft.getMinecraft().isSingleplayer())
+        if (Minecraft.getMinecraft().isSingleplayer()) {
             return "local/" + ClientUtils.getWorldSaveName();
+        }
 
         return "remote/" + ClientUtils.getServerIP().replace(':', '~') + "/" + worldName;
     }
 
     public static void sendGiveItem(ItemStack spawnstack, boolean infinite, boolean doSpawn) {
         PacketCustom packet = new PacketCustom(channel, 1);
-        packet.writeItemStack(spawnstack, true);
+        packet.writeItemStack(spawnstack);
         packet.writeBoolean(infinite);
         packet.writeBoolean(doSpawn);
         packet.sendToServer();
@@ -203,9 +211,7 @@ public class NEICPH implements IClientPacketHandler
     }
 
     public static void sendGamemode(int mode) {
-        new PacketCustom(channel, 13)
-                .writeByte(mode)
-                .sendToServer();
+        new PacketCustom(channel, 13).writeByte(mode).sendToServer();
     }
 
     public static void sendCreativeInv(boolean open) {
@@ -235,15 +241,16 @@ public class NEICPH implements IClientPacketHandler
         ItemStack[] potionStore = new ItemStack[9];
         InventoryUtils.readItemStacksFromTag(potionStore, NEIClientConfig.global.nbt.getCompoundTag("potionStore").getTagList("items", 10));
         PacketCustom packet = new PacketCustom(channel, 24);
-        for (ItemStack stack : potionStore)
+        for (ItemStack stack : potionStore) {
             packet.writeItemStack(stack);
+        }
         packet.sendToServer();
     }
 
     public static void sendDummySlotSet(int slotNumber, ItemStack stack) {
         PacketCustom packet = new PacketCustom(channel, 25);
         packet.writeShort(slotNumber);
-        packet.writeItemStack(stack, true);
+        packet.writeItemStack(stack);
         packet.sendToServer();
     }
 }

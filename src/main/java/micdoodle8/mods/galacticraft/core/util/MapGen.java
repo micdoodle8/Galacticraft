@@ -9,8 +9,6 @@ import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 
-import cpw.mods.fml.common.FMLLog;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -79,9 +77,7 @@ public class MapGen
     	this.biomeMapWCM = world.getWorldChunkManager();
   //  	this.biomeMapWorld = new WeakReference<World>(world);
     	try {
-    		Field bil = biomeMapWCM.getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_BIOMEINDEXLAYER));
-    		bil.setAccessible(true);
-    		this.biomeMapGenLayer = (GenLayer) bil.get(biomeMapWCM);
+            this.biomeMapGenLayer = biomeMapWCM.biomeIndexLayer;
     	} catch (Exception e) { }
     	if (this.biomeMapGenLayer == null)
     	{
@@ -351,8 +347,8 @@ public class MapGen
                 	for (int z = -2; z <= 2; ++z)
                     {
                         BiomeGenBase biomegenbase1 = biomesGridHeights[baseIndex + z * 10];
-                        float f3 = biomegenbase1.rootHeight;
-                        float f4 = biomegenbase1.heightVariation;
+                        float f3 = biomegenbase1.minHeight;
+                        float f4 = biomegenbase1.maxHeight;
 
                         if (amplified && f3 > 0.0F)
                         {
@@ -362,7 +358,7 @@ public class MapGen
 
                         float f5 = MapUtil.parabolicField[x + 12 + z * 5] / (f3 + 2.0F);
 
-                        if (biomegenbase1.rootHeight > biomegenbase.rootHeight)
+                        if (biomegenbase1.minHeight > biomegenbase.minHeight)
                         {
                             f5 /= 2.0F;
                         }

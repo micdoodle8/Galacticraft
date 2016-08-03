@@ -1,31 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class ItemBasicMars extends Item
+public class ItemBasicMars extends Item implements ISortableItem
 {
-    public static String[] names = { "rawDesh", "deshStick", "ingotDesh", "reinforcedPlateT2", "slimelingCargo", "compressedDesh", "fluidManip" };
-    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
+    public static String[] names = { "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip" };
+//    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
 
-    public ItemBasicMars()
+    public ItemBasicMars(String name)
     {
         super();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(name);
     }
 
     @SideOnly(Side.CLIENT)
@@ -42,7 +43,7 @@ public class ItemBasicMars extends Item
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -63,7 +64,7 @@ public class ItemBasicMars extends Item
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -78,7 +79,7 @@ public class ItemBasicMars extends Item
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        if (this.icons.length > par1ItemStack.getItemDamage())
+        if (names.length > par1ItemStack.getItemDamage())
         {
             return "item." + ItemBasicMars.names[par1ItemStack.getItemDamage()];
         }
@@ -101,5 +102,19 @@ public class ItemBasicMars extends Item
     public int getMetadata(int par1)
     {
         return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        switch (meta)
+        {
+        case 2:
+            return EnumSortCategoryItem.INGOT;
+        case 3:
+        case 5:
+            return EnumSortCategoryItem.PLATE;
+        }
+        return EnumSortCategoryItem.GENERAL;
     }
 }

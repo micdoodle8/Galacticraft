@@ -9,10 +9,9 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-public abstract class Option
-{
+public abstract class Option {
     public static void playClickSound() {
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
     }
 
     public OptionScrollSlot slot;
@@ -45,16 +44,23 @@ public abstract class Option
         return 20;
     }
 
+    private <T> T assertParentOverride(T elem) {
+        if (elem == null) {
+            throw new IllegalStateException("Option " + fullName() + " does not have a defined parent list. Use OptionList.setOptionList to insert a parent");
+        }
+        return elem;
+    }
+
     public ConfigSet globalConfigSet() {
-        return parent.globalConfigSet();
+        return assertParentOverride(parent.globalConfigSet());
     }
 
     public ConfigSet worldConfigSet() {
-        return parent.worldConfigSet();
+        return assertParentOverride(parent.worldConfigSet());
     }
 
     public OptionList configBase() {
-        return parent.configBase();
+        return assertParentOverride(parent.configBase());
     }
 
     /**
@@ -68,7 +74,8 @@ public abstract class Option
      * @return true if the world config contains a tag with this name
      */
     public boolean worldSpecific(String s) {
-        return worldConfigSet().config.containsTag(s);
+        ConfigTag tag = worldConfigSet().config.getTag(s, false);
+        return tag != null && tag.value != null;
     }
 
     /**
@@ -107,6 +114,20 @@ public abstract class Option
     }
 
     /**
+     * @return The tag currently being used ingame, world if a world override exists, otherwise global
+     */
+    public ConfigTag activeTag() {
+        return activeTag(configName());
+    }
+
+    /**
+     * @return The tag currently being used ingame, world if a world override exists, otherwise global
+     */
+    public ConfigTag activeTag(String s) {
+        return (worldSpecific() ? worldConfigSet() : globalConfigSet()).config.getTag(s);
+    }
+
+    /**
      * @return true if the gui is in world config mode
      */
     public boolean worldConfig() {
@@ -138,15 +159,16 @@ public abstract class Option
      * Deletes a specific named tag from the worldConfig
      */
     public void useGlobal(String s) {
-        if (worldConfig())
+        if (worldConfig()) {
             worldConfigSet().config.removeTag(s);
+        }
     }
 
     /**
      * Called when world specific is activated for this option. Should copy the global value into a world specific override
      */
     public void copyGlobals() {
-        copyGlobal(configName());
+        copyGlobal(configName(), true);
     }
 
     /**
@@ -157,14 +179,17 @@ public abstract class Option
     }
 
     public void copyGlobal(String s, boolean recursive) {
-        if (!worldConfig())
+        if (!worldConfig()) {
             return;
+        }
 
         ConfigTag tag = globalConfigSet().config.getTag(s);
         worldConfigSet().config.getTag(s).setValue(tag.getValue());
-        if(recursive)
-            for(String s2 : tag.childTagMap().keySet())
-                copyGlobal(s+"."+s2);
+        if (recursive) {
+            for (String s2 : tag.childTagMap().keySet()) {
+                copyGlobal(s + "." + s2);
+            }
+        }
     }
 
     public void onAdded(OptionScrollSlot slot) {

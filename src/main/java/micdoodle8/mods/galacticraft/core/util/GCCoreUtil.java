@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class GCCoreUtil
@@ -35,9 +36,9 @@ public class GCCoreUtil
         player.closeContainer();
         int id = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { id, 0, 0 }), player);
-        player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type);
+        player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
         player.openContainer.windowId = id;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 
     public static void openParachestInv(EntityPlayerMP player, EntityLanderBase landerInv)
@@ -46,9 +47,9 @@ public class GCCoreUtil
         player.closeContainer();
         int windowId = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, new Object[] { windowId, 1, landerInv.getEntityId() }), player);
-        player.openContainer = new ContainerParaChest(player.inventory, landerInv);
+        player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
         player.openContainer.windowId = windowId;
-        player.openContainer.addCraftingToCrafters(player);
+        player.openContainer.onCraftGuiOpened(player);
     }
 
     public static int nextInternalID()
@@ -63,8 +64,8 @@ public class GCCoreUtil
         int nextEggID = getNextValidEggID();
         if (nextEggID < 65536)
         {
-	        EntityList.IDtoClassMapping.put(nextEggID, var0);
-	        VersionUtil.putClassToIDMapping(var0, nextEggID);
+            EntityList.idToClassMapping.put(nextEggID, var0);
+            EntityList.classToIDMapping.put(var0, nextEggID);
 	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
         }
     }
@@ -89,7 +90,7 @@ public class GCCoreUtil
     {
     	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+    		LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
 		}
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
@@ -128,7 +129,16 @@ public class GCCoreUtil
     {
         String result = StatCollector.translateToLocal(key);
         int comment = result.indexOf('#');
-        return (comment > 0) ? result.substring(0, comment).trim() : result;
+        String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
+        for (int i = 0; i < key.length(); ++i)
+        {
+            Character c = key.charAt(i);
+            if (Character.isUpperCase(c))
+            {
+                System.err.println(ret);
+            }
+        }
+        return ret;
     }
 
     public static List<String> translateWithSplit(String key)
@@ -143,7 +153,16 @@ public class GCCoreUtil
     {
         String result = StatCollector.translateToLocalFormatted(key, values);
         int comment = result.indexOf('#');
-        return (comment > 0) ? result.substring(0, comment).trim() : result;
+        String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
+        for (int i = 0; i < key.length(); ++i)
+        {
+            Character c = key.charAt(i);
+            if (Character.isUpperCase(c))
+            {
+                System.err.println(ret);
+            }
+        }
+        return ret;
     }
 
 	public static void drawStringRightAligned(String string, int x, int y, int color, FontRenderer fontRendererObj)
@@ -162,4 +181,68 @@ public class GCCoreUtil
 		if (l.getLanguageCode().equals("de_DE")) return string;
 		return GCCoreUtil.translate(string).toLowerCase();
 	}
+
+//    public static void sortBlock(Block block, int meta, StackSorted beforeStack)
+//    {
+//        StackSorted newStack = new StackSorted(Item.getItemFromBlock(block), meta);
+//
+//        // Remove duplicates
+//        for (Iterator<StackSorted> it = GalacticraftCore.itemOrderListBlocks.iterator(); it.hasNext();)
+//        {
+//            StackSorted stack = it.next();
+//            if (stack.equals(newStack))
+//            {
+//                it.remove();
+//            }
+//        }
+//
+//        if (beforeStack == null)
+//        {
+//            GalacticraftCore.itemOrderListBlocks.add(newStack);
+//        }
+//        else
+//        {
+//            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
+//            {
+//                if (GalacticraftCore.itemOrderListBlocks.get(i).equals(beforeStack))
+//                {
+//                    GalacticraftCore.itemOrderListBlocks.add(i + 1, newStack);
+//                    return;
+//                }
+//            }
+//
+//            throw new RuntimeException("Could not find block to insert before: " + beforeStack);
+//        }
+//    }
+//
+//    public static void sortItem(Item item, int meta, StackSorted beforeStack)
+//    {
+//        StackSorted newStack = new StackSorted(item, meta);
+//
+//        // Remove duplicates
+//        for (Iterator<StackSorted> it = GalacticraftCore.itemOrderListBlocks.iterator(); it.hasNext();)
+//        {
+//            StackSorted stack = it.next();
+//            if (stack.equals(newStack))
+//            {
+//                it.remove();
+//            }
+//        }
+//
+//        if (beforeStack == null)
+//        {
+//            GalacticraftCore.itemOrderListItems.add(newStack);
+//        }
+//        else
+//        {
+//            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
+//            {
+//                if (GalacticraftCore.itemOrderListItems.get(i).equals(beforeStack))
+//                {
+//                    GalacticraftCore.itemOrderListItems.add(i + 1, newStack);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 }

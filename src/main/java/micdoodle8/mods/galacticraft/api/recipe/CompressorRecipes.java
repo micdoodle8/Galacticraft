@@ -181,8 +181,8 @@ public class CompressorRecipes
 
         if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
         {
-            int k = itemstack.getItem().getMaxDamage() - itemstack.getItemDamageForDisplay();
-            int l = itemstack.getItem().getMaxDamage() - itemstack1.getItemDamageForDisplay();
+            int k = itemstack.getItem().getMaxDamage() - itemstack.getItemDamage();
+            int l = itemstack.getItem().getMaxDamage() - itemstack1.getItemDamage();
             int i1 = k + l + itemstack.getItem().getMaxDamage() * 5 / 100;
             int j1 = itemstack.getItem().getMaxDamage() - i1;
 

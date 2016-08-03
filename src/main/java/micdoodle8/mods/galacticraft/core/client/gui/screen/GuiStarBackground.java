@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -27,13 +29,14 @@ public abstract class GuiStarBackground extends GuiScreen
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         this.mc.getTextureManager().bindTexture(GuiStarBackground.blackTexture);
-        final Tessellator var3 = Tessellator.instance;
-        var3.startDrawingQuads();
-        var3.addVertexWithUV(0.0D, var7, -90.0D, 0.0D, 1.0D);
-        var3.addVertexWithUV(var6, var7, -90.0D, 1.0D, 1.0D);
-        var3.addVertexWithUV(var6, 0.0D, -90.0D, 1.0D, 0.0D);
-        var3.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
-        var3.draw();
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(0.0D, var7, -90.0D).tex(0.0D, 1.0D).endVertex();
+        worldRenderer.pos(var6, var7, -90.0D).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(var6, 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
+        tess.draw();
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -42,7 +45,8 @@ public abstract class GuiStarBackground extends GuiScreen
 
     private void drawPanorama2(float par1)
     {
-        final Tessellator var4 = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -127,20 +131,19 @@ public abstract class GuiStarBackground extends GuiScreen
                 }
 
                 this.mc.getTextureManager().bindTexture(GuiStarBackground.backgroundTexture);
-                var4.startDrawingQuads();
-                var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
-                var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
-                var4.addVertexWithUV(1.0D, -1.0D, 1.0D, 1.0F - 1, 0.0F + 1);
-                var4.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - 1, 1.0F - 1);
-                var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, 0.0F + 1, 1.0F - 1);
-                var4.draw();
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                tess.draw();
                 GL11.glPopMatrix();
             }
 
             GL11.glPopMatrix();
         }
 
-        var4.setTranslation(0.0D, 0.0D, 0.0D);
+        worldRenderer.setTranslation(0.0D, 0.0D, 0.0D);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPopMatrix();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -153,7 +156,8 @@ public abstract class GuiStarBackground extends GuiScreen
 
     private void drawPanorama(float par1)
     {
-        final Tessellator var4 = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -227,20 +231,19 @@ public abstract class GuiStarBackground extends GuiScreen
                 }
 
                 this.mc.getTextureManager().bindTexture(GuiStarBackground.backgroundTexture);
-                var4.startDrawingQuads();
-                var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
-                var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, 0.0F + 1, 0.0F + 1);
-                var4.addVertexWithUV(1.0D, -1.0D, 1.0D, 1.0F - 1, 0.0F + 1);
-                var4.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - 1, 1.0F - 1);
-                var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, 0.0F + 1, 1.0F - 1);
-                var4.draw();
+                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                worldRenderer.pos(-1.0D, -1.0D, 1.0D).tex(0.0F + 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, -1.0D, 1.0D).tex(1.0F - 1, 0.0F + 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(1.0D, 1.0D, 1.0D).tex(1.0F - 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                worldRenderer.pos(-1.0D, 1.0D, 1.0D).tex(0.0F + 1, 1.0F - 1).color(1.0F, 1.0F, 1.0F, 1.0F / (var6 + 1)).endVertex();
+                tess.draw();
                 GL11.glPopMatrix();
             }
 
             GL11.glPopMatrix();
         }
 
-        var4.setTranslation(0.0D, 0.0D, 0.0D);
+        worldRenderer.setTranslation(0.0D, 0.0D, 0.0D);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPopMatrix();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -272,21 +275,21 @@ public abstract class GuiStarBackground extends GuiScreen
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         this.rotateAndBlurSkybox();
-        final Tessellator var4 = Tessellator.instance;
-        var4.startDrawingQuads();
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         final float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
         final float var6 = this.height * var5 / 256.0F;
         final float var7 = this.width * var5 / 256.0F;
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        var4.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
         final int var8 = this.width;
         final int var9 = this.height;
-        var4.addVertexWithUV(0.0D, var9, this.zLevel, 0.5F - var6, 0.5F + var7);
-        var4.addVertexWithUV(var8, var9, this.zLevel, 0.5F - var6, 0.5F - var7);
-        var4.addVertexWithUV(var8, 0.0D, this.zLevel, 0.5F + var6, 0.5F - var7);
-        var4.addVertexWithUV(0.0D, 0.0D, this.zLevel, 0.5F + var6, 0.5F + var7);
-        var4.draw();
+        worldRenderer.pos(0.0D, var9, this.zLevel).tex(0.5F - var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldRenderer.pos(var8, var9, this.zLevel).tex(0.5F - var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldRenderer.pos(var8, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        worldRenderer.pos(0.0D, 0.0D, this.zLevel).tex(0.5F + var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        tess.draw();
         GL11.glPopMatrix();
     }
 

@@ -5,13 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -27,28 +27,15 @@ import java.util.regex.Pattern;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-public class GuiContainerManager
-{
+public class GuiContainerManager {
     public GuiContainer window;
 
-    public static RenderItem drawItems = new RenderItem();
+    public static RenderItem drawItems = Minecraft.getMinecraft().getRenderItem();
     public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<IContainerTooltipHandler>();
     public static final LinkedList<IContainerInputHandler> inputHandlers = new LinkedList<IContainerInputHandler>();
     public static final LinkedList<IContainerDrawHandler> drawHandlers = new LinkedList<IContainerDrawHandler>();
     public static final LinkedList<IContainerObjectHandler> objectHandlers = new LinkedList<IContainerObjectHandler>();
     public static final LinkedList<IContainerSlotClickHandler> slotClickHandlers = new LinkedList<IContainerSlotClickHandler>();
-
-    // Check the version of LWGJL, if it is 2.9.0, then it solves the multi input problem by itself
-    private static boolean multiInputLWJGL;
-
-    static {
-        try {
-            multiInputLWJGL = "2.9.0".equals(Sys.getVersion());
-        } catch (Throwable t) {
-            System.err.println(String.format("Error getting lwjgl version: %s", t.toString()));
-            multiInputLWJGL = false;
-        }
-    }
 
     static {
         addSlotClickHandler(new DefaultSlotClickHandler());
@@ -112,8 +99,9 @@ public class GuiContainerManager
     public static FontRenderer getFontRenderer(ItemStack stack) {
         if (stack != null && stack.getItem() != null) {
             FontRenderer f = stack.getItem().getFontRenderer(stack);
-            if (f != null)
+            if (f != null) {
                 return f;
+            }
         }
         return fontRenderer;
     }
@@ -130,16 +118,20 @@ public class GuiContainerManager
         List<String> namelist = null;
         try {
             namelist = itemstack.getTooltip(Minecraft.getMinecraft().thePlayer, includeHandlers && Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
-        } catch (Throwable ignored) {}
+        } catch (Throwable ignored) {
+        }
 
-        if (namelist == null)
+        if (namelist == null) {
             namelist = new ArrayList<String>();
+        }
 
-        if (namelist.size() == 0)
+        if (namelist.size() == 0) {
             namelist.add("Unnamed");
+        }
 
-        if (namelist.get(0) == null || namelist.get(0).equals(""))
+        if (namelist.get(0) == null || namelist.get(0).equals("")) {
             namelist.set(0, "Unnamed");
+        }
 
         if (includeHandlers) {
             for (IContainerTooltipHandler handler : tooltipHandlers) {
@@ -148,8 +140,9 @@ public class GuiContainerManager
         }
 
         namelist.set(0, itemstack.getRarity().rarityColor.toString() + namelist.get(0));
-        for (int i = 1; i < namelist.size(); i++)
+        for (int i = 1; i < namelist.size(); i++) {
             namelist.set(i, "\u00a77" + namelist.get(i));
+        }
 
         return namelist;
     }
@@ -197,13 +190,15 @@ public class GuiContainerManager
         enable3DRender();
         float zLevel = drawItems.zLevel += 100F;
         try {
-            drawItems.renderItemAndEffectIntoGUI(fontRenderer, renderEngine, itemstack, i, j);
-            drawItems.renderItemOverlayIntoGUI(fontRenderer, renderEngine, itemstack, i, j);
+            drawItems.renderItemAndEffectIntoGUI(itemstack, i, j);
+            drawItems.renderItemOverlays(fontRenderer, itemstack, i, j);
 
-            if (!checkMatrixStack())
+            if (!checkMatrixStack()) {
                 throw new IllegalStateException("Modelview matrix stack too deep");
-            if (Tessellator.instance.isDrawing)
+            }
+            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
                 throw new IllegalStateException("Still drawing");
+            }
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
@@ -215,11 +210,12 @@ public class GuiContainerManager
             }
 
             restoreMatrixStack();
-            if (Tessellator.instance.isDrawing)
-                Tessellator.instance.draw();
+            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
+                Tessellator.getInstance().draw();
+            }
 
             drawItems.zLevel = zLevel;
-            drawItems.renderItemIntoGUI(fontRenderer, renderEngine, new ItemStack(Blocks.fire), i, j);
+            drawItems.renderItemIntoGUI(new ItemStack(Blocks.fire), i, j);
         }
 
         enable2DRender();
@@ -239,23 +235,25 @@ public class GuiContainerManager
     }
 
     public static void restoreMatrixStack() {
-        if (modelviewDepth >= 0)
-            for (int i = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH); i > modelviewDepth; i--)
-                GL11.glPopMatrix();
+        if (modelviewDepth >= 0) {
+            for (int i = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH); i > modelviewDepth; i--) {
+                GlStateManager.popMatrix();
+            }
+        }
     }
 
-    public static void setColouredItemRender(boolean enable) {
-        drawItems.renderWithColor = !enable;
+    public static void setItemRenderColour(int colour) {
+        //ASM implemented
     }
 
     public static void enable3DRender() {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
     }
 
     public static void enable2DRender() {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
     }
 
     private int clickHandled = 0;
@@ -267,8 +265,9 @@ public class GuiContainerManager
             instanceTooltipHandlers = new LinkedList<IContainerTooltipHandler>();
             instanceTooltipHandlers.add((IContainerTooltipHandler) screen);
             instanceTooltipHandlers.addAll(tooltipHandlers);
-        } else
+        } else {
             instanceTooltipHandlers = tooltipHandlers;
+        }
     }
 
     public static ItemStack getStackMouseOver(GuiContainer window) {
@@ -276,73 +275,86 @@ public class GuiContainerManager
 
         for (IContainerObjectHandler objectHandler : objectHandlers) {
             ItemStack item = objectHandler.getStackUnderMouse(window, mousePos.x, mousePos.y);
-            if (item != null)
+            if (item != null) {
                 return item;
+            }
         }
 
         Slot slot = getSlotMouseOver(window);
-        if (slot != null)
+        if (slot != null) {
             return slot.getStack();
+        }
 
         return null;
     }
 
     public static Slot getSlotMouseOver(GuiContainer window) {
         Point mousePos = getMousePosition();
-        if (getManager(window).objectUnderMouse(mousePos.x, mousePos.y))
+        if (getManager(window).objectUnderMouse(mousePos.x, mousePos.y)) {
             return null;
+        }
 
         return window.getSlotAtPosition(mousePos.x, mousePos.y);
     }
 
     public void load() {
         clickHandled = 0;
-        for (IContainerObjectHandler objectHandler : objectHandlers)
+        for (IContainerObjectHandler objectHandler : objectHandlers) {
             objectHandler.load(window);
+        }
     }
 
     /**
      * Called from updateScreen
      */
     public void updateScreen() {
-        for (IContainerObjectHandler objectHandler : objectHandlers)
+        for (IContainerObjectHandler objectHandler : objectHandlers) {
             objectHandler.guiTick(window);
+        }
     }
 
     /**
      * Override for keyTyped
      */
     public boolean lastKeyTyped(int keyID, char keyChar) {
-        if (keyID == 1)
+        if (keyID == 1) {
             return false;
+        }
 
-        for (IContainerInputHandler inputhander : inputHandlers)
-            if (inputhander.lastKeyTyped(window, keyChar, keyID))
+        for (IContainerInputHandler inputhander : inputHandlers) {
+            if (inputhander.lastKeyTyped(window, keyChar, keyID)) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     public boolean firstKeyTyped(char keyChar, int keyID) {
-        for (IContainerInputHandler inputhander : inputHandlers)
+        for (IContainerInputHandler inputhander : inputHandlers) {
             inputhander.onKeyTyped(window, keyChar, keyID);
+        }
 
-        for (IContainerInputHandler inputhander : inputHandlers)
-            if (inputhander.keyTyped(window, keyChar, keyID))
+        for (IContainerInputHandler inputhander : inputHandlers) {
+            if (inputhander.keyTyped(window, keyChar, keyID)) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     public boolean mouseClicked(int mousex, int mousey, int button) {
-        for (IContainerInputHandler inputhander : inputHandlers)
+        for (IContainerInputHandler inputhander : inputHandlers) {
             inputhander.onMouseClicked(window, mousex, mousey, button);
+        }
 
-        for (IContainerInputHandler inputhander : inputHandlers)
+        for (IContainerInputHandler inputhander : inputHandlers) {
             if (inputhander.mouseClicked(window, mousex, mousey, button)) {
                 clickHandled |= 1 << button;
                 return true;
             }
+        }
 
         return false;
     }
@@ -350,19 +362,23 @@ public class GuiContainerManager
     public void mouseScrolled(int scrolled) {
         Point mousepos = getMousePosition();
 
-        for (IContainerInputHandler inputHandler : inputHandlers)
+        for (IContainerInputHandler inputHandler : inputHandlers) {
             inputHandler.onMouseScrolled(window, mousepos.x, mousepos.y, scrolled);
+        }
 
-        for (IContainerInputHandler inputHandler : inputHandlers)
-            if (inputHandler.mouseScrolled(window, mousepos.x, mousepos.y, scrolled))
+        for (IContainerInputHandler inputHandler : inputHandlers) {
+            if (inputHandler.mouseScrolled(window, mousepos.x, mousepos.y, scrolled)) {
                 return;
+            }
+        }
 
-        if (window instanceof IGuiHandleMouseWheel)
+        if (window instanceof IGuiHandleMouseWheel) {
             ((IGuiHandleMouseWheel) window).mouseScrolled(scrolled);
+        }
     }
 
     /**
-     * Override for mouseMovedOrUp
+     * Override for mouseReleased
      */
     public boolean overrideMouseUp(int mousex, int mousey, int button) {
         if (button >= 0 && (clickHandled & 1 << button) != 0) {
@@ -374,133 +390,136 @@ public class GuiContainerManager
     }
 
     public void mouseUp(int mousex, int mousey, int button) {
-        for (IContainerInputHandler inputhander : inputHandlers)
+        for (IContainerInputHandler inputhander : inputHandlers) {
             inputhander.onMouseUp(window, mousex, mousey, button);
+        }
     }
 
     /**
      * Called from mouseClickMove
      */
     public void mouseDragged(int mousex, int mousey, int button, long heldTime) {
-        for (IContainerInputHandler inputhander : inputHandlers)
+        for (IContainerInputHandler inputhander : inputHandlers) {
             inputhander.onMouseDragged(window, mousex, mousey, button, heldTime);
+        }
     }
 
     /**
      * Called at the start of drawScreen
      */
     public void preDraw() {
-        for (IContainerDrawHandler drawHandler : drawHandlers)
+        for (IContainerDrawHandler drawHandler : drawHandlers) {
             drawHandler.onPreDraw(window);
+        }
     }
 
     public void renderObjects(int mousex, int mousey) {
-        GL11.glTranslatef(-window.guiLeft, -window.guiTop, 200F);
-        for (IContainerDrawHandler drawHandler : drawHandlers)
-            drawHandler.renderObjects(window, mousex, mousey);
+        GlStateManager.translate(-window.guiLeft, -window.guiTop, 200F);
 
-        for (IContainerDrawHandler drawHandler : drawHandlers)
+        for (IContainerDrawHandler drawHandler : drawHandlers) {
+            drawHandler.renderObjects(window, mousex, mousey);
+        }
+
+        for (IContainerDrawHandler drawHandler : drawHandlers) {
             drawHandler.postRenderObjects(window, mousex, mousey);
-        GL11.glTranslatef(window.guiLeft, window.guiTop, -200F);
+        }
+
+        GlStateManager.translate(window.guiLeft, window.guiTop, -200F);
+        enable3DRender();
     }
 
     public void renderToolTips(int mousex, int mousey) {
         List<String> tooltip = new LinkedList<String>();
 
-        for (IContainerTooltipHandler handler : instanceTooltipHandlers)
+        for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
             tooltip = handler.handleTooltip(window, mousex, mousey, tooltip);
+        }
 
         if (tooltip.isEmpty() && shouldShowTooltip(window))//mouseover tip, not holding an item
         {
             ItemStack stack = getStackMouseOver(window);
-            if (stack != null)
+            if (stack != null) {
                 tooltip = itemDisplayNameMultiline(stack, window, true);
+            }
 
-
-            for (IContainerTooltipHandler handler : instanceTooltipHandlers)
+            for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
                 tooltip = handler.handleItemTooltip(window, stack, mousex, mousey, tooltip);
+            }
         }
 
-        if (tooltip.size() > 0)
+        if (tooltip.size() > 0) {
             tooltip.set(0, tooltip.get(0) + GuiDraw.TOOLTIP_LINESPACE);//add space after 'title'
+        }
         drawMultilineTip(mousex + 12, mousey - 12, tooltip);
     }
 
     public static boolean shouldShowTooltip(GuiContainer window) {
-        for (IContainerObjectHandler handler : objectHandlers)
-            if (!handler.shouldShowTooltip(window))
+        for (IContainerObjectHandler handler : objectHandlers) {
+            if (!handler.shouldShowTooltip(window)) {
                 return false;
+            }
+        }
 
         return window.mc.thePlayer.inventory.getItemStack() == null;
     }
 
     public void renderSlotUnderlay(Slot slot) {
-        for (IContainerDrawHandler drawHandler : drawHandlers)
+        for (IContainerDrawHandler drawHandler : drawHandlers) {
             drawHandler.renderSlotUnderlay(window, slot);
+        }
     }
 
     public void renderSlotOverlay(Slot slot) {
-        for (IContainerDrawHandler drawHandler : drawHandlers)
+        for (IContainerDrawHandler drawHandler : drawHandlers) {
             drawHandler.renderSlotOverlay(window, slot);
+        }
+        GlStateManager.enableAlpha();
     }
 
     /**
      * Returns true if there is an object of yours obscuring the slot that the mouse would otherwise be hovering over.
      */
     public boolean objectUnderMouse(int mousex, int mousey) {
-        for (IContainerObjectHandler objectHandler : objectHandlers)
-            if (objectHandler.objectUnderMouse(window, mousex, mousey))
+        for (IContainerObjectHandler objectHandler : objectHandlers) {
+            if (objectHandler.objectUnderMouse(window, mousex, mousey)) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     public void handleMouseClick(Slot slot, int slotIndex, int button, int modifier) {
-        for (IContainerSlotClickHandler handler : slotClickHandlers)
+        for (IContainerSlotClickHandler handler : slotClickHandlers) {
             handler.beforeSlotClick(window, slotIndex, button, slot, modifier);
+        }
 
         boolean eventHandled = false;
-        for (IContainerSlotClickHandler handler : slotClickHandlers)
+        for (IContainerSlotClickHandler handler : slotClickHandlers) {
             eventHandled = handler.handleSlotClick(window, slotIndex, button, slot, modifier, eventHandled);
+        }
 
-        for (IContainerSlotClickHandler handler : slotClickHandlers)
+        for (IContainerSlotClickHandler handler : slotClickHandlers) {
             handler.afterSlotClick(window, slotIndex, button, slot, modifier);
+        }
     }
 
-    // Enable inputting Chinese characters
+    // Support inputting Chinese characters
     public void handleKeyboardInput() {
-        // if it's LWGJL 2.9.0
-        if (multiInputLWJGL) {
-            int k = Keyboard.getEventKey();
-            char c = Keyboard.getEventCharacter();
-            if (k == 0 && Character.isDefined(c) || Keyboard.getEventKeyState())
-                keyTyped(c, k);
+        // Support for LWGJL 2.9.0 or later
+        int k = Keyboard.getEventKey();
+        char c = Keyboard.getEventCharacter();
+        if (Keyboard.getEventKeyState() || (k == 0 && Character.isDefined(c))) {
+            keyTyped(c, k);
         }
-        // if it isn't LWJGL 2.9.0, then make the Chinese input method to split the characters
-        else if (Keyboard.getEventKeyState()) {
-            int k = Keyboard.getEventKey();
-            char c = Keyboard.getEventCharacter();
 
-            if (c > 0x7F && c <= 0xFF && Keyboard.next()) {
-                int k2 = Keyboard.getEventKey();
-                char c2 = Keyboard.getEventCharacter();
-                try {
-                    c2 = new String(new byte[]{(byte) c, (byte) c2}).charAt(0);
-                    keyTyped(c2, k);
-                } catch (Throwable t) {
-                    keyTyped(c, k);
-                    keyTyped(c2, k2);
-                }
-            } else {
-                keyTyped(c, k);
-            }
-        }
+        window.mc.dispatchKeypresses();
     }
-
 
     public void keyTyped(char c, int k) {
-        if (firstKeyTyped(c, k))
+        if (firstKeyTyped(c, k)) {
             return;
+        }
 
         callKeyTyped(window, c, k);
     }
@@ -513,11 +532,11 @@ public class GuiContainerManager
      * Delegate for changing item rendering for certain slots. Eg. Shrinking text for large itemstacks
      */
     public void drawSlotItem(Slot slot, ItemStack stack, int x, int y, String quantity) {
-        if(window instanceof IGuiSlotDraw)
-            ((IGuiSlotDraw)window).drawSlotItem(slot, stack, x, y, quantity);
-        else {
-            drawItems.renderItemAndEffectIntoGUI(fontRenderer, window.mc.getTextureManager(), stack, x, y);
-            drawItems.renderItemOverlayIntoGUI(fontRenderer, window.mc.getTextureManager(), stack, x, y, quantity);
+        if (window instanceof IGuiSlotDraw) {
+            ((IGuiSlotDraw) window).drawSlotItem(slot, stack, x, y, quantity);
+        } else {
+            drawItems.renderItemAndEffectIntoGUI(stack, x, y);
+            drawItems.renderItemOverlayIntoGUI(fontRenderer, stack, x, y, quantity);
         }
     }
 
@@ -525,13 +544,16 @@ public class GuiContainerManager
      * Implementation for handleMouseClick
      */
     public void handleSlotClick(int slotIndex, int button, int modifiers) {
-        if (slotIndex == -1)
+        if (slotIndex == -1) {
             return;
+        }
 
         if (window instanceof IGuiClientSide)//send the calls directly to the container bypassing the MPController window send
+        {
             window.mc.thePlayer.openContainer.slotClick(slotIndex, button, modifiers, window.mc.thePlayer);
-        else
+        } else {
             window.mc.playerController.windowClick(window.inventorySlots.windowId, slotIndex, button, modifiers, window.mc.thePlayer);
+        }
     }
 
     /**
@@ -539,7 +561,8 @@ public class GuiContainerManager
      */
     public void handleMouseWheel() {
         int i = Mouse.getEventDWheel();
-        if (i != 0)
+        if (i != 0) {
             mouseScrolled(i > 0 ? 1 : -1);
+        }
     }
 }

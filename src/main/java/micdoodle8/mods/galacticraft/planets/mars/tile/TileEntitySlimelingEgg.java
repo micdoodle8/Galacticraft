@@ -1,23 +1,23 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import micdoodle8.mods.galacticraft.core.util.VersionUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public class TileEntitySlimelingEgg extends TileEntity
+public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 {
     public int timeToHatch = -1;
     public String lastTouchedPlayerUUID = "";
     public String lastTouchedPlayerName = "";
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
-
         if (!this.worldObj.isRemote)
         {
             if (this.timeToHatch > 0)
@@ -26,7 +26,8 @@ public class TileEntitySlimelingEgg extends TileEntity
             }
             else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
             {
-                int metadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) % 3;
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                int metadata = state.getBlock().getMetaFromState(state) % 3;
 
                 float colorRed = 0.0F;
                 float colorGreen = 0.0F;
@@ -48,8 +49,8 @@ public class TileEntitySlimelingEgg extends TileEntity
 
                 EntitySlimeling slimeling = new EntitySlimeling(this.worldObj, colorRed, colorGreen, colorBlue);
 
-                slimeling.setPosition(this.xCoord + 0.5, this.yCoord + 1.0, this.zCoord + 0.5);
-                VersionUtil.setSlimelingOwner(slimeling, this.lastTouchedPlayerUUID);
+                slimeling.setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
+                slimeling.setOwnerId(this.lastTouchedPlayerUUID);
                 slimeling.setOwnerUsername(this.lastTouchedPlayerName);
 
                 if (!this.worldObj.isRemote)
@@ -58,11 +59,11 @@ public class TileEntitySlimelingEgg extends TileEntity
                 }
 
                 slimeling.setTamed(true);
-                slimeling.setPathToEntity((PathEntity) null);
+                slimeling.getNavigator().clearPathEntity();
                 slimeling.setAttackTarget((EntityLivingBase) null);
                 slimeling.setHealth(20.0F);
 
-                this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+                this.worldObj.setBlockToAir(this.getPos());
             }
         }
     }
@@ -72,7 +73,22 @@ public class TileEntitySlimelingEgg extends TileEntity
     {
         super.readFromNBT(nbt);
         this.timeToHatch = nbt.getInteger("TimeToHatch");
-        VersionUtil.readSlimelingEggFromNBT(this, nbt);
+
+        String uuid;
+        if (nbt.hasKey("OwnerUUID", 8))
+        {
+            uuid = nbt.getString("OwnerUUID");
+        }
+        else
+        {
+            uuid = PreYggdrasilConverter.getStringUUIDFromName(nbt.getString("Owner"));
+        }
+
+        if (uuid.length() > 0)
+        {
+            lastTouchedPlayerUUID = uuid;
+        }
+
         this.lastTouchedPlayerName = nbt.getString("OwnerUsername");
     }
 

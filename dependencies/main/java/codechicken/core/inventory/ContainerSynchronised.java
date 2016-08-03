@@ -1,31 +1,26 @@
 package codechicken.core.inventory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 
-import codechicken.lib.packet.PacketCustom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public abstract class ContainerSynchronised extends ContainerExtended
-{
+public abstract class ContainerSynchronised extends ContainerExtended {
     private ArrayList<IContainerSyncVar> syncVars = new ArrayList<IContainerSyncVar>();
-    
+
     public abstract PacketCustom createSyncPacket();
-    
+
     @Override
-    public final void detectAndSendChanges()
-    {
+    public final void detectAndSendChanges() {
         super.detectAndSendChanges();
-        
-        for(int i = 0; i < syncVars.size(); i++)
-        {
+
+        for (int i = 0; i < syncVars.size(); i++) {
             IContainerSyncVar var = syncVars.get(i);
-            if(var.changed())
-            {
+            if (var.changed()) {
                 PacketCustom packet = createSyncPacket();
                 packet.writeByte(i);
                 var.writeChange(packet);
@@ -34,36 +29,32 @@ public abstract class ContainerSynchronised extends ContainerExtended
             }
         }
     }
-    
+
     @Override
-    public void sendContainerAndContentsToPlayer(Container container, List<ItemStack> list, List<EntityPlayerMP> playerCrafters)
-    {
+    public void sendContainerAndContentsToPlayer(Container container, List<ItemStack> list, List<EntityPlayerMP> playerCrafters) {
         super.sendContainerAndContentsToPlayer(container, list, playerCrafters);
-        for(int i = 0; i < syncVars.size(); i++)
-        {
+        for (int i = 0; i < syncVars.size(); i++) {
             IContainerSyncVar var = syncVars.get(i);
             PacketCustom packet = createSyncPacket();
             packet.writeByte(i);
             var.writeChange(packet);
             var.reset();
-            for(EntityPlayerMP player : playerCrafters)
+            for (EntityPlayerMP player : playerCrafters) {
                 packet.sendToPlayer(player);
+            }
         }
     }
-    
-    public void addSyncVar(IContainerSyncVar var)
-    {
+
+    public void addSyncVar(IContainerSyncVar var) {
         syncVars.add(var);
     }
-    
+
     @Override
-    public final void handleOutputPacket(PacketCustom packet)
-    {
+    public final void handleOutputPacket(PacketCustom packet) {
         syncVars.get(packet.readUByte()).readChange(packet);
     }
-    
-    public List<IContainerSyncVar> getSyncedVars()
-    {
+
+    public List<IContainerSyncVar> getSyncedVars() {
         return Collections.unmodifiableList(syncVars);
     }
 }

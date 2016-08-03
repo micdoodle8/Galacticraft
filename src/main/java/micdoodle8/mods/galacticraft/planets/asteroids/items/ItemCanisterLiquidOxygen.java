@@ -1,32 +1,31 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply
+public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortableItem
 {
-    protected IIcon[] icons = new IIcon[7];
+//    protected IIcon[] icons = new IIcon[7];
     private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
 
     public ItemCanisterLiquidOxygen(String assetName)
     {
         super(assetName);
         this.setAllowedFluid("liquidoxygen");
-        this.setTextureName(AsteroidsModule.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
@@ -34,25 +33,25 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
         {
             this.icons[i] = iconRegister.registerIcon(this.getIconString() + "_" + i);
         }
-    }
+    }*/
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
         if (ItemCanisterGeneric.EMPTY - itemStack.getItemDamage() == 0)
         {
-            return "item.emptyGasCanister";
+            return "item.empty_gas_canister";
         }
 
         if (itemStack.getItemDamage() == 1)
         {
-            return "item.canister.LOX.full";
+            return "item.canister.lox.full";
         }
 
-        return "item.canister.LOX.partial";
+        return "item.canister.lox.partial";
     }
 
-    @Override
+    /*@Override
     public IIcon getIconFromDamage(int par1)
     {
         final int damage = 6 * par1 / ItemCanisterGeneric.EMPTY;
@@ -63,7 +62,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
         }
 
         return super.getIconFromDamage(damage);
-    }
+    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -72,7 +71,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     {
         if (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage() > 0)
         {
-            par3List.add(GCCoreUtil.translate("item.canister.LOX.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage()));
+            par3List.add(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage()));
         }
     }
 
@@ -112,4 +111,10 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 	{
 		return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
 	}
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.CANISTER;
+    }
 }

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.Gui;
@@ -31,13 +31,13 @@ public class GuiMissingCore extends GuiScreen
     {
         this.drawDefaultBackground();
         int offset = this.height / 2 - 50;
-        this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missingCore.name.0"), this.width / 2, offset, 0xFF5555);
+        this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missing_core.name.0"), this.width / 2, offset, 0xFF5555);
         offset += 25;
-        this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missingCore.name.1"), this.width / 2, offset, 0xFF5555);
+        this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missing_core.name.1"), this.width / 2, offset, 0xFF5555);
         offset += 20;
-        this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missingCore.name.2"), this.width / 2, offset, 0x999999);
+        this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missing_core.name.2"), this.width / 2, offset, 0x999999);
         offset += 20;
-        String s = EnumChatFormatting.UNDERLINE + GCCoreUtil.translate("gui.missingCore.name.3");
+        String s = EnumChatFormatting.UNDERLINE + GCCoreUtil.translate("gui.missing_core.name.3");
         this.urlX = this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2 - 10;
         this.urlY = offset - 2;
         this.urlWidth = this.fontRendererObj.getStringWidth(s) + 20;

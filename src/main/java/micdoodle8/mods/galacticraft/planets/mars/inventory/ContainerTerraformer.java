@@ -23,7 +23,7 @@ public class ContainerTerraformer extends Container
     private final TileEntityTerraformer tileEntity;
     private static LinkedList<ItemStack> saplingList = null;
 
-    public ContainerTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer tileEntity)
+    public ContainerTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer tileEntity, EntityPlayer player)
     {
         this.tileEntity = tileEntity;
 
@@ -75,14 +75,14 @@ public class ContainerTerraformer extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 213));
         }
 
-        tileEntity.openInventory();
+        tileEntity.openInventory(player);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory();
+        this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override
@@ -201,11 +201,12 @@ public class ContainerTerraformer extends Container
     private static void initSaplingList()
     {
     	ContainerTerraformer.saplingList = new LinkedList();
-        Iterator iterator = Block.blockRegistry.getKeys().iterator();
+        Iterator iterator = Block.blockRegistry.iterator();
     
         while (iterator.hasNext())
         {
-            Block b = (Block) Block.blockRegistry.getObject((String)iterator.next());
+            Block b = (Block) iterator.next();
+
             if (b instanceof BlockBush)
             {
                 try 

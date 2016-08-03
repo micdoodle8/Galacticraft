@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -63,9 +63,9 @@ public class DrawGameScreen extends IScreenManager
 
     private void makeMap()
     {
-    	if (this.mapDone || this.reusableMap == null || this.driver.getWorldObj().provider.dimensionId != 0) return;
+    	if (this.mapDone || this.reusableMap == null || this.driver.getWorld().provider.getDimensionId() != 0) return;
     	this.localMap = new int[MapUtil.SIZE_STD2 * MapUtil.SIZE_STD2];
-		boolean result = MapUtil.getMap(this.localMap, this.driver.getWorldObj(), this.driver.xCoord, this.driver.zCoord);
+		boolean result = MapUtil.getMap(this.localMap, this.driver.getWorld(), this.driver.getPos());
 		if (result)
 		{
 			TextureUtil.uploadTexture(reusableMap.getGlTextureId(), this.localMap, MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
@@ -192,8 +192,18 @@ public class DrawGameScreen extends IScreenManager
 	public WorldProvider getWorldProvider()
 	{
 		if (this.driver != null)
-			return driver.getWorldObj().provider;
+			return driver.getWorld().provider;
 		
 		return null;
-	}    
+	}
+
+    public float getScaleZ()
+    {
+        return scaleZ;
+    }
+
+    public float getScaleX()
+    {
+        return scaleX;
+    }
 }

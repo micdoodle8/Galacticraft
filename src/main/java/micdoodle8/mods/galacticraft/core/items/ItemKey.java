@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -12,10 +13,8 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemKey extends Item implements IKeyItem
+public class ItemKey extends Item implements IKeyItem, ISortableItem
 {
-    public static String[] keyTypes = new String[] { "T1" };
-
     public ItemKey(String assetName)
     {
         super();
@@ -23,7 +22,7 @@ public class ItemKey extends Item implements IKeyItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        this.setTextureName("arrow");
+        //this.setTextureName("arrow");
     }
 
     @Override
@@ -35,7 +34,7 @@ public class ItemKey extends Item implements IKeyItem
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return this.getUnlocalizedName() + "." + ItemKey.keyTypes[itemStack.getItemDamage()];
+        return this.getUnlocalizedName() + ".t1";
     }
 
     @Override
@@ -45,14 +44,10 @@ public class ItemKey extends Item implements IKeyItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
-        for (int i = 0; i < ItemKey.keyTypes.length; i++)
-        {
-            par3List.add(new ItemStack(par1, 1, i));
-        }
+        par3List.add(new ItemStack(par1, 1, 0));
     }
 
     @Override
@@ -65,5 +60,11 @@ public class ItemKey extends Item implements IKeyItem
     public int getTier(ItemStack keyStack)
     {
         return 1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
     }
 }

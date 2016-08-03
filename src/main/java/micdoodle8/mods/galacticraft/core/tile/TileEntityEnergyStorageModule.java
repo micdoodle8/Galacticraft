@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
@@ -13,7 +16,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -62,17 +66,17 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (!this.initialised)
         {
             int metadata = this.getBlockMetadata();
 
             //for version update compatibility
-            Block b = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
+            Block b = this.worldObj.getBlockState(this.getPos()).getBlock();
             if (b == GCBlocks.machineBase)
             {
-                this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, GCBlocks.machineTiered, 0, 2);
+                this.worldObj.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState(), 2);
             }
             else if (metadata >= 8)
             {
@@ -92,13 +96,13 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
         this.lastEnergy = energy;
 
-        super.updateEntity();
+        super.update();
 
         this.scaledEnergyLevel = (int) Math.floor((this.getEnergyStoredGC() + 49) * 16 / this.getMaxEnergyStoredGC());
 
         if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
         {
-            this.worldObj.func_147479_m(this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.notifyLightSet(this.getPos());
         }
 
         if (!this.worldObj.isRemote)
@@ -116,12 +120,12 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer player)
     {
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer player)
     {
     }
 
@@ -225,7 +229,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack removeStackFromSlot(int par1)
     {
         if (this.containingItems[par1] != null)
         {
@@ -251,7 +255,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return GCCoreUtil.translate(this.tierGC == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
     }
@@ -265,13 +269,49 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+    }
+
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
+
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return new int[0];
     }
 
     @Override
-    public boolean hasCustomInventoryName()
-    {
-        return true;
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 
     @Override
@@ -280,14 +320,14 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         return ItemElectricBase.isElectricItem(itemstack.getItem());
     }
 
-    @Override
-    public int[] getAccessibleSlotsFromSide(int slotID)
-    {
-        return new int[] { 0, 1 };
-    }
+//    @Override
+//    public int[] getAccessibleSlotsFromSide(int slotID)
+//    {
+//        return new int[] { 0, 1 };
+//    }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (itemstack.getItem() instanceof ItemElectricBase)
         {
@@ -304,7 +344,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (itemstack.getItem() instanceof ItemElectricBase)
         {
@@ -322,34 +362,42 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
     }
 
-    @Override
-    public EnumSet<ForgeDirection> getElectricalInputDirections()
+    public EnumFacing getFront()
     {
-        return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2).getOpposite(), ForgeDirection.UNKNOWN);
+        if (getBlockType() instanceof BlockMachine) {
+            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
+        } else if (getBlockType() instanceof BlockMachineTiered) {
+            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override
-    public EnumSet<ForgeDirection> getElectricalOutputDirections()
+    public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.of(ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2), ForgeDirection.UNKNOWN);
+        return EnumSet.of(getFront().rotateY().getOpposite());
     }
 
     @Override
-    public ForgeDirection getElectricalOutputDirectionMain()
+    public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return ForgeDirection.getOrientation((this.getBlockMetadata() & 3) + 2);
+        return EnumSet.of(getFront().rotateY());
     }
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public EnumFacing getElectricalOutputDirectionMain()
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN) || type != NetworkType.POWER)
+        return getFront().rotateY();
+    }
+
+    @Override
+    public boolean canConnect(EnumFacing direction, NetworkType type)
+    {
+        if (direction == null || type != NetworkType.POWER)
         {
             return false;
         }
 
-        int metadata = this.getBlockMetadata() & 3;
-
-        return direction == ForgeDirection.getOrientation(metadata + 2) || direction == ForgeDirection.getOrientation((metadata + 2) ^ 1);
+        return getElectricalInputDirections().contains(direction) || getElectricalOutputDirections().contains(direction);
     }
 }

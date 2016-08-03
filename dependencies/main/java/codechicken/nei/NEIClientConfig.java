@@ -9,6 +9,7 @@ import codechicken.nei.config.*;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.obfuscator.ObfuscationRun;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,16 +27,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-public class NEIClientConfig
-{
+public class NEIClientConfig {
     private static boolean configLoaded;
     private static boolean enabledOverride;
 
     public static Logger logger = LogManager.getLogger("NotEnoughItems");
     public static File configDir = new File(CommonUtils.getMinecraftDir(), "config/NEI/");
-    public static ConfigSet global = new ConfigSet(
-            new File("saves/NEI/client.dat"),
-            new ConfigFile(new File(configDir, "client.cfg")));
+    public static ConfigSet global = new ConfigSet(new File("saves/NEI/client.dat"), new ConfigFile(new File(configDir, "client.cfg")));
     public static ConfigSet world;
 
     public static ItemStack creativeInv[];
@@ -49,8 +47,9 @@ public class NEIClientConfig
     public static ItemStackSet bannedBlocks = new ItemStackSet();
 
     static {
-        if (global.config.getTag("checkUpdates").getBooleanValue(true))
+        if (global.config.getTag("checkUpdates").getBooleanValue(true)) {
             CCUpdateChecker.updateCheck("NotEnoughItems");
+        }
         linkOptionList();
         setDefaults();
     }
@@ -68,8 +67,7 @@ public class NEIClientConfig
         tag.getTag("inventory.hidden").getBooleanValue(false);
         tag.getTag("inventory.cheatmode").getIntValue(2);
         tag.getTag("inventory.lockmode").setComment("For those who can't help themselves.\nSet this to a mode and you will be unable to change it ingame").getIntValue(-1);
-        API.addOption(new OptionCycled("inventory.cheatmode", 3)
-        {
+        API.addOption(new OptionCycled("inventory.cheatmode", 3) {
             @Override
             public boolean optionValid(int index) {
                 return getLockedMode() == -1 || getLockedMode() == index && NEIInfo.isValidMode(index);
@@ -84,8 +82,7 @@ public class NEIClientConfig
         API.addOption(new OptionGamemodes("inventory.gamemodes"));
 
         tag.getTag("inventory.layoutstyle").getIntValue(0);
-        API.addOption(new OptionCycled("inventory.layoutstyle", 0)
-        {
+        API.addOption(new OptionCycled("inventory.layoutstyle", 0) {
             @Override
             public String getPrefix() {
                 return translateN(name);
@@ -93,21 +90,23 @@ public class NEIClientConfig
 
             @Override
             public String getButtonText() {
-                return NEIClientUtils.translate("layoutstyle." +
-                        LayoutManager.getLayoutStyle(renderTag().getIntValue()).getName());
+                return NEIClientUtils.translate("layoutstyle." + LayoutManager.getLayoutStyle(renderTag().getIntValue()).getName());
             }
 
             @Override
             public boolean cycle() {
                 LinkedList<Integer> list = new LinkedList<Integer>();
-                for (Entry<Integer, LayoutStyle> entry : LayoutManager.layoutStyles.entrySet())
+                for (Entry<Integer, LayoutStyle> entry : LayoutManager.layoutStyles.entrySet()) {
                     list.add(entry.getKey());
+                }
 
                 Collections.sort(list);
 
-                int nextLayout = getTag().getIntValue();
+                int nextLayout = renderTag().getIntValue();
                 if (nextLayout == list.getLast())//loop list
+                {
                     nextLayout = -1;
+                }
                 for (Integer i : list) {
                     if (i > nextLayout) {
                         nextLayout = i;
@@ -151,16 +150,25 @@ public class NEIClientConfig
     }
 
     private static void linkOptionList() {
-        getOptionList().bindConfig(new IConfigSetHolder()
-        {
+        OptionList.setOptionList(new OptionList("nei.options") {
+            @Override
+            public ConfigSet globalConfigSet() {
+                return global;
+            }
+
             @Override
             public ConfigSet worldConfigSet() {
                 return world;
             }
 
             @Override
-            public ConfigSet globalConfigSet() {
-                return global;
+            public OptionList configBase() {
+                return this;
+            }
+
+            @Override
+            public GuiOptionList getGui(GuiScreen parent, OptionList list, boolean world) {
+                return new GuiNEIOptionList(parent, list, world);
             }
         });
     }
@@ -193,13 +201,14 @@ public class NEIClientConfig
 
     public static void loadWorld(String saveName) {
         setInternalEnabled(true);
-        logger.debug("Loading "+(Minecraft.getMinecraft().isSingleplayer() ? "Local" : "Remote")+" World");
+        logger.debug("Loading " + (Minecraft.getMinecraft().isSingleplayer() ? "Local" : "Remote") + " World");
         bootNEI(ClientUtils.getWorld());
 
         File saveDir = new File(CommonUtils.getMinecraftDir(), "saves/NEI/" + saveName);
         boolean newWorld = !saveDir.exists();
-        if (newWorld)
+        if (newWorld) {
             saveDir.mkdirs();
+        }
 
         world = new ConfigSet(new File(saveDir, "NEI.dat"), new ConfigFile(new File(saveDir, "NEI.cfg")));
         onWorldLoad(newWorld);
@@ -214,17 +223,24 @@ public class NEIClientConfig
         LayoutManager.quantity.setText(Integer.toString(getItemQuantity()));
         SubsetWidget.loadHidden();
 
-        if (newWorld && Minecraft.getMinecraft().isSingleplayer())
-            world.config.getTag("inventory.cheatmode").setIntValue(NEIClientUtils.mc().playerController.isInCreativeMode() ? 2 : 0);
+        if (newWorld && Minecraft.getMinecraft().isSingleplayer()) {
+            world.config.getTag("inventory.cheatmode").setIntValue(Minecraft.getMinecraft().playerController.isInCreativeMode() ? 2 : 0);
+        }
 
         NEIInfo.load(ClientUtils.getWorld());
     }
 
     private static void setWorldDefaults() {
         NBTTagCompound nbt = world.nbt;
-        if (!nbt.hasKey("search")) nbt.setString("search", "");
-        if (!nbt.hasKey("quantity")) nbt.setInteger("quantity", 0);
-        if (!nbt.hasKey("validateenchantments")) nbt.setBoolean("validateenchantments", false);
+        if (!nbt.hasKey("search")) {
+            nbt.setString("search", "");
+        }
+        if (!nbt.hasKey("quantity")) {
+            nbt.setInteger("quantity", 0);
+        }
+        if (!nbt.hasKey("validateenchantments")) {
+            nbt.setBoolean("validateenchantments", false);
+        }
 
         world.saveNBT();
     }
@@ -238,8 +254,9 @@ public class NEIClientConfig
     }
 
     public static void bootNEI(World world) {
-        if (configLoaded)
+        if (configLoaded) {
             return;
+        }
 
         loadStates();
         //ItemVisibilityHash.loadStates();
@@ -252,8 +269,7 @@ public class NEIClientConfig
 
         configLoaded = true;
 
-        ClassDiscoverer classDiscoverer = new ClassDiscoverer(new IStringMatcher()
-        {
+        ClassDiscoverer classDiscoverer = new ClassDiscoverer(new IStringMatcher() {
             public boolean matches(String test) {
                 return test.startsWith("NEI") && test.endsWith("Config.class");
             }
@@ -276,12 +292,17 @@ public class NEIClientConfig
     }
 
     public static void loadStates() {
-        for (int state = 0; state < 7; state++)
+        for (int state = 0; state < 7; state++) {
             statesSaved[state] = !global.nbt.getCompoundTag("save" + state).hasNoTags();
+        }
     }
 
     public static boolean isWorldSpecific(String setting) {
-        return world != null && world.config.containsTag(setting);
+        if (world == null) {
+            return false;
+        }
+        ConfigTag tag = world.config.getTag(setting, false);
+        return tag != null && tag.value != null;
     }
 
     public static boolean isStateSaved(int i) {
@@ -317,8 +338,9 @@ public class NEIClientConfig
     }
 
     private static void checkCheatMode() {
-        if (getLockedMode() != -1)
+        if (getLockedMode() != -1) {
             setIntSetting("inventory.cheatmode", getLockedMode());
+        }
     }
 
     public static int getLockedMode() {
@@ -391,17 +413,19 @@ public class NEIClientConfig
         NBTTagCompound statesave = global.nbt.getCompoundTag("save" + state);
         GuiContainer currentContainer = NEIClientUtils.getGuiContainer();
         LinkedList<TaggedInventoryArea> saveAreas = new LinkedList<TaggedInventoryArea>();
-        saveAreas.add(new TaggedInventoryArea(NEIClientUtils.mc().thePlayer.inventory));
+        saveAreas.add(new TaggedInventoryArea(Minecraft.getMinecraft().thePlayer.inventory));
 
         for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             List<TaggedInventoryArea> areaList = handler.getInventoryAreas(currentContainer);
-            if (areaList != null)
+            if (areaList != null) {
                 saveAreas.addAll(areaList);
+            }
         }
 
         for (TaggedInventoryArea area : saveAreas) {
-            if (!statesave.hasKey(area.tagName))
+            if (!statesave.hasKey(area.tagName)) {
                 continue;
+            }
 
             for (int slot : area.slots) {
                 NEIClientUtils.setSlotContents(slot, null, area.isContainer());
@@ -411,8 +435,9 @@ public class NEIClientConfig
             for (int i = 0; i < areaTag.tagCount(); i++) {
                 NBTTagCompound stacksave = areaTag.getCompoundTagAt(i);
                 int slot = stacksave.getByte("Slot") & 0xFF;
-                if (!area.slots.contains(slot))
+                if (!area.slots.contains(slot)) {
                     continue;
+                }
 
                 NEIClientUtils.setSlotContents(slot, ItemStack.loadItemStackFromNBT(stacksave), area.isContainer());
             }
@@ -423,12 +448,13 @@ public class NEIClientConfig
         NBTTagCompound statesave = global.nbt.getCompoundTag("save" + state);
         GuiContainer currentContainer = NEIClientUtils.getGuiContainer();
         LinkedList<TaggedInventoryArea> saveAreas = new LinkedList<TaggedInventoryArea>();
-        saveAreas.add(new TaggedInventoryArea(NEIClientUtils.mc().thePlayer.inventory));
+        saveAreas.add(new TaggedInventoryArea(Minecraft.getMinecraft().thePlayer.inventory));
 
         for (INEIGuiHandler handler : GuiInfo.guiHandlers) {
             List<TaggedInventoryArea> areaList = handler.getInventoryAreas(currentContainer);
-            if (areaList != null)
+            if (areaList != null) {
                 saveAreas.addAll(areaList);
+            }
         }
 
         for (TaggedInventoryArea area : saveAreas) {
@@ -436,8 +462,9 @@ public class NEIClientConfig
 
             for (int i : area.slots) {
                 ItemStack stack = area.getStackInSlot(i);
-                if (stack == null)
+                if (stack == null) {
                     continue;
+                }
                 NBTTagCompound stacksave = new NBTTagCompound();
                 stacksave.setByte("Slot", (byte) i);
                 stack.writeToNBT(stacksave);
@@ -468,34 +495,45 @@ public class NEIClientConfig
     }
 
     public static boolean canPerformAction(String name) {
-        if (!isEnabled())
+        if (!isEnabled()) {
             return false;
+        }
 
-        if (!modePermitsAction(name))
+        if (!modePermitsAction(name)) {
             return false;
+        }
 
         String base = NEIActions.base(name);
-        if (hasSMPCounterpart)
+        if (hasSMPCounterpart) {
             return permissableActions.contains(base);
+        }
 
-        if (NEIActions.smpRequired(name))
+        if (NEIActions.smpRequired(name)) {
             return false;
+        }
 
         String cmd = getStringSetting("command." + base);
-        if (cmd == null || !cmd.startsWith("/"))
+        if (cmd == null || !cmd.startsWith("/")) {
             return false;
+        }
 
         return true;
     }
 
     private static boolean modePermitsAction(String name) {
-        if (getCheatMode() == 0) return false;
-        if (getCheatMode() == 2) return true;
+        if (getCheatMode() == 0) {
+            return false;
+        }
+        if (getCheatMode() == 2) {
+            return true;
+        }
 
         String[] actions = getStringArrSetting("inventory.utilities");
-        for (String action : actions)
-            if (action.equalsIgnoreCase(name))
+        for (String action : actions) {
+            if (action.equalsIgnoreCase(name)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -510,8 +548,9 @@ public class NEIClientConfig
 
     public static void reloadSaves() {
         File saveDir = new File(CommonUtils.getMinecraftDir(), "saves/NEI/local");
-        if (!saveDir.exists())
+        if (!saveDir.exists()) {
             return;
+        }
 
         List<SaveFormatComparator> saves;
         try {
@@ -521,11 +560,14 @@ public class NEIClientConfig
             return;
         }
         HashSet<String> saveFileNames = new HashSet<String>();
-        for (SaveFormatComparator save : saves)
+        for (SaveFormatComparator save : saves) {
             saveFileNames.add(save.getFileName());
+        }
 
-        for (File file : saveDir.listFiles())
-            if (file.isDirectory() && !saveFileNames.contains(file.getName()))
+        for (File file : saveDir.listFiles()) {
+            if (file.isDirectory() && !saveFileNames.contains(file.getName())) {
                 ObfuscationRun.deleteDir(file, true);
+            }
+        }
     }
 }

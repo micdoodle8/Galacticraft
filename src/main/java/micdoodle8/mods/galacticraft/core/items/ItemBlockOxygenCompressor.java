@@ -33,12 +33,12 @@ public class ItemBlockOxygenCompressor extends ItemBlockDesc
             metadata = 0;
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + metadata;
+        return this.getBlock().getUnlocalizedName() + "." + metadata;
     }
 
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 }

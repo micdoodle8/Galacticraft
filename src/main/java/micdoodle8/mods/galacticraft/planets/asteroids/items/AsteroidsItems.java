@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
@@ -34,22 +38,22 @@ public class AsteroidsItems
     public static Item titaniumSword;
 
     public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 3, 520, 8.0F, 3.0F, 10);
-    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", 26, new int[] { 5, 10, 7, 5 }, 10);
+    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 10, 7, 5 }, 10);
 
     public static void initItems()
     {
         AsteroidsItems.grapple = new ItemGrappleHook("grapple");
-        AsteroidsItems.tier3Rocket = new ItemTier3Rocket("itemTier3Rocket");
-        AsteroidsItems.astroMiner = new ItemAstroMiner("itemAstroMiner");
-        AsteroidsItems.thermalPadding = new ItemThermalPadding("thermalPadding");
-        AsteroidsItems.basicItem = new ItemBasicAsteroids();
-        AsteroidsItems.methaneCanister = new ItemCanisterMethane("methaneCanisterPartial");
-        AsteroidsItems.canisterLOX = new ItemCanisterLiquidOxygen("canisterPartialLOX");
-        AsteroidsItems.canisterLN2 = new ItemCanisterLiquidNitrogen("canisterPartialLN2");
+        AsteroidsItems.tier3Rocket = new ItemTier3Rocket("rocket_t3");
+        AsteroidsItems.astroMiner = new ItemAstroMiner("astro_miner");
+        AsteroidsItems.thermalPadding = new ItemThermalPadding("thermal_padding");
+        AsteroidsItems.basicItem = new ItemBasicAsteroids("item_basic_asteroids");
+        AsteroidsItems.methaneCanister = new ItemCanisterMethane("methane_canister_partial");
+        AsteroidsItems.canisterLOX = new ItemCanisterLiquidOxygen("canister_partial_lox");
+        AsteroidsItems.canisterLN2 = new ItemCanisterLiquidNitrogen("canister_partial_ln2");
         //AsteroidsItems.canisterLAr = new ItemCanisterLiquidArgon("canisterPartialLAr");
-        AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmosphericValve");
-        AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavyNoseCone");
-        AsteroidsItems.orionDrive = new ItemOrionDrive("orionDrive");
+        AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmospheric_valve");
+        AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavy_nose_cone");
+        AsteroidsItems.orionDrive = new ItemOrionDrive("orion_drive");
         AsteroidsItems.titaniumHelmet = new ItemArmorAsteroids(0, "helmet");
         AsteroidsItems.titaniumChestplate = new ItemArmorAsteroids(1, "chestplate");
         AsteroidsItems.titaniumLeggings = new ItemArmorAsteroids(2, "leggings");
@@ -100,16 +104,14 @@ public class AsteroidsItems
         registerItem(AsteroidsItems.titaniumSpade);
         registerItem(AsteroidsItems.titaniumHoe);
         registerItem(AsteroidsItems.titaniumSword);
-        
-        //These exact names are important, ItemCanisterGeneric searches for "CanisterFull"
-        GCCoreUtil.registerGalacticraftItem("LOXCanisterFull", AsteroidsItems.canisterLOX, 1);
-        GCCoreUtil.registerGalacticraftItem("LN2CanisterFull", AsteroidsItems.canisterLN2, 1);
-        GCCoreUtil.registerGalacticraftItem("methaneCanisterFull", AsteroidsItems.methaneCanister, 1);
     }
 
-    private static void registerItem(Item item)
+    public static void registerItem(Item item)
     {
-        GameRegistry.registerItem(item, item.getUnlocalizedName(), Constants.MOD_ID_PLANETS);
-        
+        String name = item.getUnlocalizedName().substring(5);
+        GCCoreUtil.registerGalacticraftItem(name, item);
+        GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+        GalacticraftPlanets.proxy.postRegisterItem(item);
+        GCItems.registerSorted(item);
     }
 }

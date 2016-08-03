@@ -5,7 +5,8 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonRoom;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
@@ -15,7 +16,7 @@ public class RoomEmptyMars extends DungeonRoom
     int sizeY;
     int sizeZ;
 
-    public RoomEmptyMars(MapGenDungeon dungeon, int posX, int posY, int posZ, ForgeDirection entranceDir)
+    public RoomEmptyMars(MapGenDungeon dungeon, int posX, int posY, int posZ, EnumFacing entranceDir)
     {
         super(dungeon, posX, posY, posZ, entranceDir);
         if (this.worldObj != null)
@@ -28,7 +29,7 @@ public class RoomEmptyMars extends DungeonRoom
     }
 
     @Override
-    public void generate(Block[] chunk, byte[] meta, int cx, int cz)
+    public void generate(ChunkPrimer primer, int cx, int cz)
     {
         for (int i = this.posX - 1; i <= this.posX + this.sizeX; i++)
         {
@@ -38,11 +39,11 @@ public class RoomEmptyMars extends DungeonRoom
                 {
                     if (i == this.posX - 1 || i == this.posX + this.sizeX || j == this.posY - 1 || j == this.posY + this.sizeY || k == this.posZ - 1 || k == this.posZ + this.sizeZ)
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
+                        this.placeBlock(primer, i, j, k, cx, cz, this.dungeonInstance.DUNGEON_WALL_ID, this.dungeonInstance.DUNGEON_WALL_META);
                     }
                     else
                     {
-                        this.placeBlock(chunk, meta, i, j, k, cx, cz, Blocks.air, 0);
+                        this.placeBlock(primer, i, j, k, cx, cz, Blocks.air, 0);
                     }
                 }
             }
@@ -50,13 +51,13 @@ public class RoomEmptyMars extends DungeonRoom
     }
 
     @Override
-    public DungeonBoundingBox getBoundingBox()
+    public DungeonBoundingBox getCollisionBoundingBox()
     {
         return new DungeonBoundingBox(this.posX, this.posZ, this.posX + this.sizeX, this.posZ + this.sizeZ);
     }
 
     @Override
-    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, ForgeDirection dir)
+    protected DungeonRoom makeRoom(MapGenDungeon dungeon, int x, int y, int z, EnumFacing dir)
     {
         return new RoomEmptyMars(dungeon, x, y, z, dir);
     }

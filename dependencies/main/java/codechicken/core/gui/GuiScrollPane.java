@@ -5,8 +5,7 @@ import codechicken.lib.vec.Rectangle4i;
 
 import java.awt.*;
 
-public abstract class GuiScrollPane extends GuiWidget
-{
+public abstract class GuiScrollPane extends GuiWidget {
     protected int scrollclicky = -1;
     protected float scrollpercent;
     protected int scrollmousey;
@@ -29,7 +28,7 @@ public abstract class GuiScrollPane extends GuiWidget
     }
 
     public Rectangle windowBounds() {
-        return new Rectangle(x+marginleft, y+margintop, width-marginleft-marginright, height-margintop-marginbottom);
+        return new Rectangle(x + marginleft, y + margintop, width - marginleft - marginright, height - margintop - marginbottom);
     }
 
     public abstract int contentHeight();
@@ -41,9 +40,7 @@ public abstract class GuiScrollPane extends GuiWidget
 
     public Rectangle scrollbarBounds() {
         Dimension dim = scrollbarDim();
-        return new Rectangle(
-                x + width - dim.width, y + (int) ((height - dim.height) * percentscrolled + 0.4999),
-                dim.width, dim.height);
+        return new Rectangle(x + width - dim.width, y + (int) ((height - dim.height) * percentscrolled + 0.4999), dim.width, dim.height);
     }
 
     public void scrollUp() {
@@ -55,7 +52,7 @@ public abstract class GuiScrollPane extends GuiWidget
     }
 
     public void scroll(int i) {
-        percentscrolled += i * height / (float)(2*contentHeight());
+        percentscrolled += i * height / (float) (2 * contentHeight());
         calculatePercentScrolled();
     }
 
@@ -110,7 +107,7 @@ public abstract class GuiScrollPane extends GuiWidget
             if (my < sbar.y) {
                 percentscrolled = (my - y) / (float) barempty;
                 calculatePercentScrolled();
-            } else if (my > sbar.y+sbar.height) {
+            } else if (my > sbar.y + sbar.height) {
                 percentscrolled = (my - y - sbar.height + 1) / (float) barempty;
                 calculatePercentScrolled();
             } else {
@@ -118,29 +115,34 @@ public abstract class GuiScrollPane extends GuiWidget
                 scrollpercent = percentscrolled;
                 scrollmousey = my;
             }
-        } else if (w.contains(mx, my))
+        } else if (w.contains(mx, my)) {
             slotDown(mx - w.x, my - w.y + scrolledPixels(), button);
+        }
     }
 
     /**
      * Mouse down on slot area
      * Coordinates relative to slot content area
      */
-    public void slotDown(int mx, int my, int button) {}
+    public void slotDown(int mx, int my, int button) {
+    }
 
     /**
      * Mouse up on slot area
      * Coordinates relative to slot content area
      */
-    public void slotUp(int mx, int my, int button) {}
+    public void slotUp(int mx, int my, int button) {
+    }
 
     @Override
-    public void mouseMovedOrUp(int mx, int my, int button) {
+    public void mouseReleased(int mx, int my, int button) {
         Rectangle w = windowBounds();
         if (isScrolling() && button == 0)//we were scrolling and we released mouse
+        {
             scrollclicky = -1;
-        else if (w.contains(mx, my))
+        } else if (w.contains(mx, my)) {
             slotUp(mx - w.x, my - w.y + scrolledPixels(), button);
+        }
     }
 
     @Override
@@ -151,12 +153,13 @@ public abstract class GuiScrollPane extends GuiWidget
             int barupallowed = (int) ((height - sbarh) * scrollpercent + 0.5);
             int bardownallowed = (height - sbarh) - barupallowed;
 
-            if (-scrolldiff > barupallowed)
+            if (-scrolldiff > barupallowed) {
                 scrollmousey = scrollclicky - barupallowed;
-            else if (scrolldiff > bardownallowed)
+            } else if (scrolldiff > bardownallowed) {
                 scrollmousey = scrollclicky + bardownallowed;
-            else
+            } else {
                 scrollmousey = mousey;
+            }
 
             calculatePercentScrolled();
         }
@@ -164,7 +167,9 @@ public abstract class GuiScrollPane extends GuiWidget
 
     public int scrolledPixels() {
         int scrolled = (int) ((contentHeight() - windowBounds().height) * percentscrolled + 0.5);
-        if (scrolled < 0) scrolled = 0;
+        if (scrolled < 0) {
+            scrolled = 0;
+        }
         return scrolled;
     }
 
@@ -180,7 +185,7 @@ public abstract class GuiScrollPane extends GuiWidget
     public void draw(int mx, int my, float frame) {
         Rectangle w = windowBounds();
         drawBackground(frame);
-        drawContent(mx-w.x, my+scrolledPixels()-w.y, frame);
+        drawContent(mx - w.x, my + scrolledPixels() - w.y, frame);
         drawOverlay(frame);
         drawScrollbar(frame);
     }
@@ -208,8 +213,9 @@ public abstract class GuiScrollPane extends GuiWidget
         drawRect(r.x + 1, r.y + 1, r.x + r.width - 1, r.y + r.height - 1, 0xFFC6C6C6);//scrollbar
 
         int algn = scrollbarGuideAlignment();
-        if (algn != 0)
+        if (algn != 0) {
             drawRect(algn > 0 ? r.x + r.width : r.x - 1, y, r.x, y + height, 0xFF808080);//lineguide
+        }
     }
 
 }

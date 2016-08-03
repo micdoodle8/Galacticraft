@@ -1,6 +1,6 @@
 package ic2.api.tile;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Interface implemented by the tile entity of energy storage blocks.
@@ -16,8 +16,7 @@ public interface IEnergyStorage {
 	/**
 	 * Set the amount of energy currently stored in the block.
 	 * 
-	 * @param energy
-	 *            stored energy
+	 * @param energy stored energy
 	 */
 	public void setStored(int energy);
 
@@ -26,8 +25,7 @@ public interface IEnergyStorage {
 	 * 
 	 * Use negative values to decrease.
 	 * 
-	 * @param amount
-	 *            of energy to add
+	 * @param amount of energy to add
 	 * @return Energy stored in the block after adding the specified amount
 	 */
 	public int addEnergy(int amount);
@@ -54,12 +52,10 @@ public interface IEnergyStorage {
 	public double getOutputEnergyUnitsPerTick();
 
 	/**
-	 * Get whether this block can have its energy used by an adjacent
-	 * teleporter.
+	 * Get whether this block can have its energy used by an adjacent teleporter.
 	 * 
-	 * @param side
-	 *            side the teleporter is draining energy from
+	 * @param side side the teleporter is draining energy from
 	 * @return Whether the block is teleporter compatible
 	 */
-	public boolean isTeleporterCompatible(ForgeDirection side);
+	public boolean isTeleporterCompatible(EnumFacing side);
 }

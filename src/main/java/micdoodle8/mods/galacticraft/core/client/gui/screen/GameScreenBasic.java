@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -104,15 +106,15 @@ public class GameScreenBasic implements IGameScreen
 
     private void draw2DTexture()
     {
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        tess.setColorRGBA(255, 255, 255, 255);
-        tess.startDrawingQuads();
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-        tess.addVertexWithUV(frameA, frameBy, 0F, textureAx, textureBy);
-        tess.addVertexWithUV(frameBx, frameBy, 0F, textureBx, textureBy);
-        tess.addVertexWithUV(frameBx, frameA, 0F, textureBx, textureAy);
-        tess.addVertexWithUV(frameA, frameA, 0F, textureAx, textureAy);
+        worldRenderer.pos(frameA, frameBy, 0F).tex(textureAx, textureBy).endVertex();
+        worldRenderer.pos(frameBx, frameBy, 0F).tex(textureBx, textureBy).endVertex();
+        worldRenderer.pos(frameBx, frameA, 0F).tex(textureBx, textureAy).endVertex();
+        worldRenderer.pos(frameA, frameA, 0F).tex(textureAx, textureAy).endVertex();
         tess.draw();   	
     }
 
@@ -120,14 +122,15 @@ public class GameScreenBasic implements IGameScreen
     {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        final Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tess.getWorldRenderer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        tess.startDrawingQuads();
-        
-        tess.addVertex(frameA, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameBy, 0.005F);
-        tess.addVertex(frameBx, frameA, 0.005F);
-        tess.addVertex(frameA, frameA, 0.005F);
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+
+        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
+        worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
+        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
         tess.draw();   	
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

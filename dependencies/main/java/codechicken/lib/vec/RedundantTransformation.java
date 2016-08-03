@@ -1,48 +1,48 @@
 package codechicken.lib.vec;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class RedundantTransformation extends Transformation
-{
+public class RedundantTransformation extends Transformation {
     @Override
-    public void apply(Vector3 vec){}
+    public void apply(Vector3 vec) {
+    }
 
     @Override
-    public void apply(Matrix4 mat){}
-    
+    public void apply(Matrix4 mat) {
+    }
+
     @Override
-    public void applyN(Vector3 normal){}
-    
+    public void applyN(Vector3 normal) {
+    }
+
     @Override
-    public Transformation at(Vector3 point)
-    {
+    public Transformation at(Vector3 point) {
         return this;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-    public void glApply(){}
-    
+    public void glApply() {
+    }
+
     @Override
-    public Transformation inverse()
-    {
+    public Transformation inverse() {
         return this;
     }
-    
+
     @Override
     public Transformation merge(Transformation next) {
         return next;
     }
-    
+
     @Override
     public boolean isRedundant() {
         return true;
     }
-    
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Nothing()";
     }
 }

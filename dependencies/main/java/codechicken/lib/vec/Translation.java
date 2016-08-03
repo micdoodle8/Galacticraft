@@ -1,8 +1,8 @@
 package codechicken.lib.vec;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -41,7 +41,7 @@ public class Translation extends Transformation {
     @Override
     @SideOnly(Side.CLIENT)
     public void glApply() {
-        GL11.glTranslated(vec.x, vec.y, vec.z);
+        GlStateManager.translate(vec.x, vec.y, vec.z);
     }
 
     @Override
@@ -51,8 +51,9 @@ public class Translation extends Transformation {
 
     @Override
     public Transformation merge(Transformation next) {
-        if (next instanceof Translation)
+        if (next instanceof Translation) {
             return new Translation(vec.copy().add(((Translation) next).vec));
+        }
 
         return null;
     }

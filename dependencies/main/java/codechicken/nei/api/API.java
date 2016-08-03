@@ -23,8 +23,7 @@ import java.util.Comparator;
  * WARNING: DO NOT access this class until the world has been loaded
  * These methods should be called from INEIConfig implementors
  */
-public class API
-{
+public class API {
     /**
      * Register a new Crafting Recipe handler;
      *
@@ -105,7 +104,7 @@ public class API
 
     /**
      * Hide an item from the item panel
-     * Damage values of OreDictionary.WILDCARD_VALUE and null NBT tags function as wildcards for their respective variables
+     * Damage values of OreDictionary.WILDCARD_VALUE and ItemStackMap.WILDCARD_TAG tags function as wildcards for their respective variables
      */
     public static void hideItem(ItemStack item) {
         ItemInfo.hiddenItems.add(item);
@@ -120,6 +119,7 @@ public class API
 
     /**
      * Adds an item to the item panel. Any items added using this function will override the default search pattern.
+     *
      * @param item an item with data
      */
     public static void addItemListEntry(ItemStack item) {
@@ -130,13 +130,15 @@ public class API
      * Sets the item variants to appear in the item panel, overriding the default search pattern for a given item
      */
     public static void setItemListEntries(Item item, Iterable<ItemStack> items) {
-        if(items == null)
+        if (items == null) {
             items = Collections.emptyList();
+        }
         ItemInfo.itemOverrides.replaceValues(item, items);
     }
 
     /**
      * Add a custom KeyBinding to be configured in the Controls menu.
+     *
      * @param ident      An identifier for your key, eg "shoot"
      * @param defaultKey The default value, commonly obtained from {@link Keyboard}
      */
@@ -152,6 +154,7 @@ public class API
 
     /**
      * Add a new Layout Style for the NEI interface
+     *
      * @param styleID The Unique ID to be used for storing your style in the config and cycling through avaliable styles
      * @param style   The style to add.
      */
@@ -161,6 +164,7 @@ public class API
 
     /**
      * Registers a new Infinite Item Handler.
+     *
      * @param handler The handler to be registered.
      */
     public static void addInfiniteItemHandler(IInfiniteItemHandler handler) {
@@ -169,6 +173,7 @@ public class API
 
     /**
      * Registers a new Infinite Item Handler.
+     *
      * @param block   The block to handle, null for all.
      * @param handler The handler to be registered.
      */
@@ -178,6 +183,7 @@ public class API
 
     /**
      * Tells NEI not to perform any Fast Transfer operations on slots of a particular class
+     *
      * @param slotClass The class of slot to be exempted
      */
     public static void addFastTransferExemptSlot(Class<? extends Slot> slotClass) {
@@ -186,6 +192,7 @@ public class API
 
     /**
      * Register a new text handler for the block highlight tooltip with a layout specification (HEADER, BODY or FOOTER).
+     *
      * @param handler The handler to be registered.
      * @param layout  A HUDAugmenterRegistry.Layout entry. HEADER is displayed before BODY which is displayed before FOOTER.
      */
@@ -195,6 +202,7 @@ public class API
 
     /**
      * Register a mode handler for overriding NEI recipe/utility/cheat mode settings.
+     *
      * @param handler The handler to be registered.
      */
     public static void registerModeHandler(INEIModeHandler handler) {
@@ -203,6 +211,7 @@ public class API
 
     /**
      * Register a filter provider for the item panel.
+     *
      * @param filterProvider The filter provider to be registered.
      */
     public static void addItemFilter(ItemFilterProvider filterProvider) {
@@ -213,7 +222,8 @@ public class API
 
     /**
      * Adds a new tag to the item subset dropdown.
-     * @param name The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
+     *
+     * @param name   The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
      * @param filter A filter for matching items that fit in this subset
      */
     public static void addSubset(String name, ItemFilter filter) {
@@ -222,13 +232,15 @@ public class API
 
     /**
      * Adds a new tag to the item subset dropdown.
-     * @param name The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
+     *
+     * @param name  The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
      * @param items An iterable of itemstacks to be added as a subset
      */
     public static void addSubset(String name, Iterable<ItemStack> items) {
         ItemStackSet filter = new ItemStackSet();
-        for(ItemStack item : items)
+        for (ItemStack item : items) {
             filter.add(item);
+        }
         addSubset(new SubsetTag(name, filter));
     }
 
@@ -248,9 +260,20 @@ public class API
 
     /**
      * Adds a new sorting option to the item panel sort menu
+     *
      * @param name A unique id for this sort option. Will be used in the config for saving and translated in the options gui. Note that if the translation key name.tip exists, it will be used for a tooltip
      */
     public static void addSortOption(String name, Comparator<ItemStack> comparator) {
         ItemSorter.add(name, comparator);
+    }
+
+    /**
+     * Adds an additional item list entry for an item, sorted after the rest of the items are found through the normal process
+     *
+     * @param item    The item to add the variant for
+     * @param variant The stack to appear in the item panel
+     */
+    public static void addItemVariant(Item item, ItemStack variant) {
+        ItemInfo.itemVariants.put(item, variant);
     }
 }

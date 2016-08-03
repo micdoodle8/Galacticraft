@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 public interface IMultiBlock
 {
@@ -16,7 +18,7 @@ public interface IMultiBlock
      *
      * @param placedPosition - The position the block was placed at
      */
-    public void onCreate(BlockVec3 placedPosition);
+    public void onCreate(World world, BlockPos placedPosition);
 
     /**
      * Called when one of the multiblocks of this block is destroyed

@@ -12,7 +12,7 @@ import net.minecraft.entity.EntityLiving;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner
+public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner<EntityCreeperBoss>
 {
     public TileEntityDungeonSpawnerMars()
     {

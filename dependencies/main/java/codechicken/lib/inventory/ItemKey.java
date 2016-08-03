@@ -11,8 +11,7 @@ import static codechicken.lib.inventory.InventoryUtils.actualDamage;
 /**
  * Comparable ItemStack with a hashCode implementation.
  */
-public class ItemKey implements Comparable<ItemKey>
-{
+public class ItemKey implements Comparable<ItemKey> {
     public ItemStack stack;
     private int hashcode = 0;
 
@@ -35,18 +34,19 @@ public class ItemKey implements Comparable<ItemKey>
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ItemKey))
+        if (!(obj instanceof ItemKey)) {
             return false;
+        }
 
         ItemKey k = (ItemKey) obj;
         return stack.getItem() == k.stack.getItem() &&
                 actualDamage(stack) == actualDamage(k.stack) &&
-                Objects.equal(stack.stackTagCompound, k.stack.stackTagCompound);
+                Objects.equal(stack.getTagCompound(), k.stack.getTagCompound());
     }
 
     @Override
     public int hashCode() {
-        return hashcode != 0 ? hashcode : (hashcode = Objects.hashCode(stack.getItem(), actualDamage(stack), stack.stackTagCompound));
+        return hashcode != 0 ? hashcode : (hashcode = Objects.hashCode(stack.getItem(), actualDamage(stack), stack.getTagCompound()));
     }
 
     public int compareInt(int a, int b) {
@@ -55,10 +55,12 @@ public class ItemKey implements Comparable<ItemKey>
 
     @Override
     public int compareTo(ItemKey o) {
-        if (stack.getItem() != o.stack.getItem())
+        if (stack.getItem() != o.stack.getItem()) {
             return compareInt(Item.getIdFromItem(stack.getItem()), Item.getIdFromItem(o.stack.getItem()));
-        if (actualDamage(stack) != actualDamage(o.stack))
+        }
+        if (actualDamage(stack) != actualDamage(o.stack)) {
             return compareInt(actualDamage(stack), actualDamage(o.stack));
+        }
         return 0;
     }
 }

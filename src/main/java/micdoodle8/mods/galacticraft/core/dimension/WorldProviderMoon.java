@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -70,7 +70,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //    @Override
 //	public void setDimension(int var1)
 //	{
-//		this.dimensionId = var1;
+//		this.getDimensionId() = var1;
 //		super.setDimension(var1);
 //	}
 
@@ -335,4 +335,11 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     {
         return 0;
     }
+
+    @Override
+    public String getInternalNameSuffix() {
+        return "_moon";
+    }
+
+
 }

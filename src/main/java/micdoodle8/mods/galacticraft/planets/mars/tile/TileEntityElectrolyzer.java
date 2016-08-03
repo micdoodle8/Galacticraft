@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import cpw.mods.fml.relauncher.Side;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
@@ -21,16 +19,19 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenStorage, IOxygenReceiver
 {
@@ -55,9 +56,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -103,8 +104,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                 this.processTicks = 0;
             }
             
-            this.produceOxygen(ForgeDirection.getOrientation(this.getOxygenOutputDirection()));
-            this.produceHydrogen(ForgeDirection.getOrientation(this.getHydrogenOutputDirection()));
+            this.produceOxygen(this.getOxygenOutputDirection());
+            this.produceHydrogen(this.getHydrogenOutputDirection());
         }
     }
 
@@ -220,27 +221,27 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
-        return GCCoreUtil.translate("tile.marsMachine.6.name");
+        return GCCoreUtil.translate("tile.mars_machine.6.name");
     }
 
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0, 1 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -258,7 +259,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -303,13 +304,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public ForgeDirection getElectricInputDirection()
+    public EnumFacing getElectricInputDirection()
     {
-        return ForgeDirection.DOWN;
+        return EnumFacing.DOWN;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -324,7 +325,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -345,7 +346,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -364,7 +365,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
         if (from.ordinal() == this.getBlockMetadata() + 2)
         {
@@ -376,7 +377,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -389,7 +390,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
         int metaside = this.getBlockMetadata() + 2;
@@ -414,28 +415,23 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public int getBlockMetadata()
     {
-        if (this.blockMetadata == -1)
-        {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-        }
-
-        return this.blockMetadata & 3;
+        return getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
         return 0;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(ForgeDirection side, GasStack stack)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack)
     {
         return 0;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection from, int amount, boolean doTransfer)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -454,20 +450,20 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return null;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(ForgeDirection from, int amount)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing from, int amount)
     {
     	return this.drawGas(from, amount, true);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(ForgeDirection side, Gas type)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(EnumFacing side, Gas type)
     {
     	return false;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(ForgeDirection from, Gas type)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(EnumFacing from, Gas type)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -482,8 +478,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(ForgeDirection from)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(EnumFacing from)
     {
         int metaside = this.getBlockMetadata() + 2;
         int side = from.ordinal();
@@ -517,20 +513,18 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 	public float getMaxOxygenStored() {
 		return this.liquidTank.getCapacity();
 	}
-	
-	private int getOxygenOutputDirection()
+
+	private EnumFacing getOxygenOutputDirection()
 	{
-        int metaside = this.getBlockMetadata() + 2;
-        return (7 - (metaside ^ (metaside > 3 ? 0 : 1)) ^ 1);
+	    return this.getFront().getOpposite();
+	}
+
+	private EnumFacing getHydrogenOutputDirection()
+	{
+	    return this.getFront().rotateY().getOpposite();
 	}
 	
-	private int getHydrogenOutputDirection()
-	{
-        int metaside = this.getBlockMetadata() + 2;
-        return (metaside ^ 1);
-	}
-	
-    private boolean produceOxygen(ForgeDirection outputDirection)
+    private boolean produceOxygen(EnumFacing outputDirection)
     {
         float provide = this.getOxygenProvide(outputDirection);
 
@@ -564,29 +558,29 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     return true;
                 }
             }
-            else if (EnergyConfigHandler.isMekanismLoaded())
-            {
-                //TODO Oxygen item handling - internal tank (IGasItem)
-                //int acceptedOxygen = GasTransmission.addGas(itemStack, type, amount);
-                //this.provideOxygen(acceptedOxygen, true);
-
-                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
-                {
-                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
-                    int acceptedOxygen = 0;
-                    try {
-                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
-                    } catch (Exception e) { }
-                    this.provideOxygen(acceptedOxygen, true);
-                    return true;
-                }
-            }
+//            else if (EnergyConfigHandler.isMekanismLoaded())
+//            {
+//                //TODO Oxygen item handling - internal tank (IGasItem)
+//                //int acceptedOxygen = GasTransmission.addGas(itemStack, type, amount);
+//                //this.provideOxygen(acceptedOxygen, true);
+//
+//                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasOxygen))
+//                {
+//                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(Math.min(this.getOxygenStored(), provide)));
+//                    int acceptedOxygen = 0;
+//                    try {
+//                    	acceptedOxygen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+//                    } catch (Exception e) { }
+//                    this.provideOxygen(acceptedOxygen, true);
+//                    return true;
+//                }
+//            }
         }
 
         return false;
     }
 
-    private boolean produceHydrogen(ForgeDirection outputDirection)
+    private boolean produceHydrogen(EnumFacing outputDirection)
     {
         float provide = this.getHydrogenProvide(outputDirection);
 
@@ -620,32 +614,32 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     return true;
                 }
             }
-            else if (EnergyConfigHandler.isMekanismLoaded())
-            {
-                //TODO Gas item handling - internal tank (IGasItem)
-                //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
-                //this.provideHydrogen(acceptedHydrogen, true);
-
-                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
-                {
-                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
-                    int acceptedHydrogen = 0;
-                    try {
-                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
-                    } catch (Exception e) { }
-                    this.provideHydrogen(acceptedHydrogen, true);
-                    return true;
-                }
-            }
+//            else if (EnergyConfigHandler.isMekanismLoaded())
+//            {
+//                //TODO Gas item handling - internal tank (IGasItem)
+//                //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
+//                //this.provideHydrogen(acceptedHydrogen, true);
+//
+//                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
+//                {
+//                    GasStack toSend = new GasStack((Gas) EnergyConfigHandler.gasHydrogen, (int) Math.floor(Math.min(this.getHydrogenStored(), provide)));
+//                    int acceptedHydrogen = 0;
+//                    try {
+//                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
+//                    } catch (Exception e) { }
+//                    this.provideHydrogen(acceptedHydrogen, true);
+//                    return true;
+//                }
+//            }
         }
 
         return false;
     }
 
     @Override
-    public float provideOxygen(ForgeDirection from, float request, boolean doProvide)
+    public float provideOxygen(EnumFacing from, float request, boolean doProvide)
     {
-        if (this.getOxygenOutputDirection() == from.ordinal())
+        if (this.getOxygenOutputDirection() == from)
         {
             return this.provideOxygen(request, doProvide);
         }
@@ -689,14 +683,14 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public float getOxygenProvide(ForgeDirection direction)
+    public float getOxygenProvide(EnumFacing direction)
     {
-        return this.getOxygenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+        return this.getOxygenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
     }
 
-    public float getHydrogenProvide(ForgeDirection direction)
+    public float getHydrogenProvide(EnumFacing direction)
     {
-        return this.getHydrogenOutputDirection() == direction.ordinal() ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0.0F;
+        return this.getHydrogenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0.0F;
     }
 
 	@Override
@@ -705,32 +699,32 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 	}
 
 	@Override
-	public float receiveOxygen(ForgeDirection from, float receive,
+	public float receiveOxygen(EnumFacing from, float receive,
 			boolean doReceive) {
 		return 0;
 	}
 
 	@Override
-	public float getOxygenRequest(ForgeDirection direction) {
+	public float getOxygenRequest(EnumFacing direction) {
 		return 0;
 	}
 
     @Override
-    public boolean canConnect(ForgeDirection direction, NetworkType type)
+    public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || direction.equals(ForgeDirection.UNKNOWN))
+        if (direction == null)
         {
             return false;
         }
 
         if (type == NetworkType.OXYGEN)
         {
-            return this.getOxygenOutputDirection() == direction.ordinal();
+            return this.getOxygenOutputDirection() == direction;
         }
 
         if (type == NetworkType.HYDROGEN)
         {
-            return this.getHydrogenOutputDirection() == direction.ordinal();
+            return this.getHydrogenOutputDirection() == direction;
         }
 
         if (type == NetworkType.POWER)
@@ -739,5 +733,15 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         }
         
         return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
+    }
+
+    public EnumFacing getFront()
+    {
+        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }
 }

@@ -1,16 +1,15 @@
 package codechicken.nei.config;
 
 import codechicken.nei.LayoutManager;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-public abstract class OptionButton extends Option
-{
+public abstract class OptionButton extends Option {
     protected static ResourceLocation guiTex = new ResourceLocation("textures/gui/widgets.png");
 
     public final String prefix;
@@ -44,23 +43,28 @@ public abstract class OptionButton extends Option
     @Override
     public void draw(int mx, int my, float frame) {
         changeTexture(guiTex);
-        GL11.glColor4f(1, 1, 1, 1);
+        GlStateManager.color(1, 1, 1, 1);
         drawPrefix();
         drawButton(mx, my);
     }
 
     public Rectangle buttonSize() {
-        if (getPrefix() == null)
+        if (getPrefix() == null) {
             return new Rectangle(0, 0, slot.slotWidth(), 20);
+        }
 
         int width = Math.max(60, getStringWidth(getButtonText()));
         return new Rectangle(slot.slotWidth() - width, 0, width, 20);
     }
 
     public String getPrefix() {
-        if (prefix == null) return null;
+        if (prefix == null) {
+            return null;
+        }
         String s = translateN(prefix);
-        if (s.equals(namespaced(prefix))) return null;
+        if (s.equals(namespaced(prefix))) {
+            return null;
+        }
         return s;
     }
 
@@ -69,15 +73,20 @@ public abstract class OptionButton extends Option
     }
 
     public String getTooltip() {
-        if (tooltip == null) return null;
+        if (tooltip == null) {
+            return null;
+        }
         String s = translateN(tooltip);
-        if (s.equals(namespaced(tooltip))) return null;
+        if (s.equals(namespaced(tooltip))) {
+            return null;
+        }
         return s;
     }
 
     public void drawPrefix() {
-        if (getPrefix() != null)
+        if (getPrefix() != null) {
             drawString(getPrefix(), 10, 6, -1);
+        }
     }
 
     public void drawButton(int mx, int my) {
@@ -100,9 +109,11 @@ public abstract class OptionButton extends Option
 
     @Override
     public void mouseClicked(int x, int y, int button) {
-        if (pointInside(x, y))
-            if (onClick(button))
+        if (pointInside(x, y)) {
+            if (onClick(button)) {
                 playClickSound();
+            }
+        }
     }
 
     public boolean onClick(int button) {
@@ -111,8 +122,9 @@ public abstract class OptionButton extends Option
 
     @Override
     public List<String> handleTooltip(int mx, int my, List<String> currenttip) {
-        if (getTooltip() != null)
+        if (getTooltip() != null) {
             currenttip.add(getTooltip());
+        }
         return currenttip;
     }
 }

@@ -1,14 +1,18 @@
 package codechicken.core.asm;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.Map.Entry;
-
-import codechicken.lib.asm.ASMInit;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import codechicken.lib.asm.ASMHelper;
+import codechicken.lib.asm.CC_ClassWriter;
+import codechicken.lib.asm.ObfMapping;
+import codechicken.obfuscator.IHeirachyEvaluator;
+import codechicken.obfuscator.ObfuscationMap.ObfuscationEntry;
+import codechicken.obfuscator.ObfuscationRun;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.launchwrapper.LaunchClassLoader;
+import net.minecraftforge.fml.common.asm.transformers.AccessTransformer;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -16,31 +20,13 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.Map.Entry;
 
-import codechicken.core.launch.CodeChickenCorePlugin;
-import codechicken.lib.asm.ASMHelper;
-import codechicken.lib.asm.CC_ClassWriter;
-import codechicken.lib.asm.ObfMapping;
-import codechicken.lib.config.ConfigFile;
-import codechicken.obfuscator.IHeirachyEvaluator;
-import codechicken.obfuscator.ObfuscationRun;
-import codechicken.obfuscator.ObfuscationMap.ObfuscationEntry;
-import cpw.mods.fml.common.asm.transformers.AccessTransformer;
-import cpw.mods.fml.common.asm.transformers.DeobfuscationTransformer;
-
-import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.LaunchClassLoader;
-
-public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, IHeirachyEvaluator
-{
-    static {
-        ASMInit.init();
-    }
-
-    public static class LoadPlugin implements IFMLLoadingPlugin
-    {
+public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, IHeirachyEvaluator {
+    public static class LoadPlugin implements IFMLLoadingPlugin {
         @Override
         public String[] getASMTransformerClass() {
             return new String[0];
@@ -118,18 +104,12 @@ public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, 
 
     public static void load() {
         CodeChickenCoreModContainer.loadConfig();
-        ConfigFile config = CodeChickenCoreModContainer.config;
-        File mcDir = CodeChickenCorePlugin.minecraftDir;
 
-        if (config.getTag("dev.deobfuscate")
-                .setComment("set to true to completely deobfuscate mcp names")
-                .getBooleanValue(!ObfMapping.obfuscated)) {
-            run = new ObfuscationRun(false, ObfMapping.MCPRemapper.getConfFiles(),
-                    ObfuscationRun.fillDefaults(new HashMap<String, String>()));
+        if (CodeChickenCoreModContainer.config.getTag("dev.deobfuscate").setComment("set to true to completely deobfuscate mcp names").getBooleanValue(!ObfMapping.obfuscated)) {
+            run = new ObfuscationRun(false, ObfMapping.MCPRemapper.getConfFiles(), ObfuscationRun.fillDefaults(new HashMap<String, String>()));
             run.obf.setHeirachyEvaluator(instance);
             run.setQuiet().parseMappings();
-            for (String pkg : run.config.get("excludedPackages").split(";"))
-                excludedPackages.add(pkg);
+            Collections.addAll(excludedPackages, run.config.get("excludedPackages").split(";"));
 
             if (ObfMapping.obfuscated) {
                 ObfMapping.loadMCPRemapper();
@@ -143,13 +123,14 @@ public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, 
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
-        if (name.equals("cpw.mods.fml.common.Loader")) {
+        if (name.equals("net.minecraftforge.fml.common.Loader")) {
             bytes = injectCallback(bytes);
             activated = true;
         }
 
-        if (!activated || bytes == null)
+        if (!activated || bytes == null) {
             return bytes;
+        }
 
         ClassNode cnode = ASMHelper.createClassNode(bytes, ClassReader.EXPAND_FRAMES);
         ClassWriter cw = new CC_ClassWriter(0, true);
@@ -168,17 +149,15 @@ public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, 
         if (ObfMapping.obfuscated) {
             //move ourselves to the end
             List<IClassTransformer> transformers = getTransformers();
-            for (Iterator<IClassTransformer> iterator = transformers.iterator(); iterator.hasNext(); ) {
-                IClassTransformer t = iterator.next();
-                if (t == instance || t instanceof DeobfuscationTransformer)
-                    iterator.remove();
-            }
+            transformers.remove(instance);
             transformers.add(instance);
         } else {
             //remap access transformers
-            for (IClassTransformer t : getTransformers())
-                if (t instanceof AccessTransformer)
+            for (IClassTransformer t : getTransformers()) {
+                if (t instanceof AccessTransformer) {
                     remapAccessTransformer(t);
+                }
+            }
         }
     }
 
@@ -218,8 +197,9 @@ public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, 
             String name = ObfMapping.obfuscated ? desc.obf.s_owner : desc.mcp.s_owner;
             name = name.replace('/', '.');
             byte[] bytes = Launch.classLoader.getClassBytes(name);
-            if (bytes != null)
+            if (bytes != null) {
                 return ObfuscationRun.getParents(ASMHelper.createClassNode(bytes));
+            }
         } catch (IOException e) {
         }
         return null;
@@ -228,19 +208,23 @@ public class MCPDeobfuscationTransformer implements IClassTransformer, Opcodes, 
     @Override
     public boolean isLibClass(ObfuscationEntry desc) {
         String name = desc.srg.s_owner;
-        for (String p : excludedPackages)
-            if (name.startsWith(p))
+        for (String p : excludedPackages) {
+            if (name.startsWith(p)) {
                 return true;
+            }
+        }
 
         return false;
     }
 
     public static String unmap(String name) {
-        if (run == null)
+        if (run == null) {
             return null;
+        }
         ObfuscationEntry e = run.obf.lookupMcpClass(name);
-        if (e == null)
+        if (e == null) {
             return null;
+        }
         return e.obf.s_owner;
     }
 

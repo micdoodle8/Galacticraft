@@ -1,32 +1,27 @@
 package codechicken.core.fluid;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TankAccess
-{
+public class TankAccess {
     public IFluidHandler tank;
-    public ForgeDirection side;
-    
-    public TankAccess(IFluidHandler tank, ForgeDirection side)
-    {
+    public EnumFacing face;
+
+    public TankAccess(IFluidHandler tank, EnumFacing face) {
         this.tank = tank;
-        this.side = side;
-    }
-    
-    public TankAccess(IFluidHandler tank, int side)
-    {
-        this(tank, ForgeDirection.getOrientation(side));
+        this.face = face;
     }
 
-    public int fill(FluidStack resource, boolean doFill)
-    {
-        return tank.fill(side, resource, doFill);
+    public TankAccess(IFluidHandler tank, int side) {
+        this(tank, EnumFacing.values()[side]);
     }
-    
-    public FluidStack drain(int maxDrain, boolean doDrain)
-    {
-        return tank.drain(side, maxDrain, doDrain);
+
+    public int fill(FluidStack resource, boolean doFill) {
+        return tank.fill(face, resource, doFill);
+    }
+
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        return tank.drain(face, maxDrain, doDrain);
     }
 }

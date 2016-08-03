@@ -31,7 +31,6 @@ import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
-import micdoodle8.mods.galacticraft.core.entities.EntityArrowGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -42,7 +41,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -60,6 +59,8 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -73,15 +74,15 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.Lists;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.ArrayUtils;
 
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 
@@ -103,7 +104,7 @@ public class WorldUtil
     {
         if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.boundingBox)) 
+        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getCollisionBoundingBox()))
         	{
         		return 0.08D;
         	}
@@ -210,7 +211,7 @@ public class WorldUtil
     {
         if (entity.worldObj == null || !(entity.worldObj.provider instanceof IGalacticraftWorldProvider)) return entity.isBurning();
 
-    	if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow) && !(entity instanceof EntityArrowGC))
+    	if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow))
         {
     		return entity.isBurning();
         }
@@ -218,7 +219,7 @@ public class WorldUtil
     	if (entity.isBurning())
     	{
 	        if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
-	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.boundingBox);
+	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getCollisionBoundingBox());
 	        else
 	        	return true;
 	        //Disable fire on Galacticraft worlds with no oxygen
@@ -274,7 +275,7 @@ public class WorldUtil
 
     public static Vec3 getFogColorHook(World world)
     {
-    	EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+    	EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
     	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld)
         {
             float var20 = ((float) (player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
@@ -283,7 +284,7 @@ public class WorldUtil
 
             Vec3 vec = world.getFogColor(1.0F);
 
-            return Vec3.createVectorHelper(vec.xCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.yCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.zCoord * Math.max(1.0F - var20 * 1.29F, 0.0F));
+            return new Vec3(vec.xCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.yCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.zCoord * Math.max(1.0F - var20 * 1.29F, 0.0F));
         }
 
         return world.getFogColor(1.0F);
@@ -291,7 +292,7 @@ public class WorldUtil
 
     public static Vec3 getSkyColorHook(World world)
     {
-    	EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+        EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
     	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || ( player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.ridingEntity instanceof EntitySpaceshipBase))
         {
             float f1 = world.getCelestialAngle(1.0F);
@@ -310,7 +311,8 @@ public class WorldUtil
             int i = MathHelper.floor_double(player.posX);
             int j = MathHelper.floor_double(player.posY);
             int k = MathHelper.floor_double(player.posZ);
-            int l = ForgeHooksClient.getSkyBlendColour(world, i, j, k);
+            BlockPos pos = new BlockPos(i, j, k);
+            int l = ForgeHooksClient.getSkyBlendColour(world, pos);
             float f4 = (float)(l >> 16 & 255) / 255.0F;
             float f5 = (float)(l >> 8 & 255) / 255.0F;
             float f6 = (float)(l & 255) / 255.0F;
@@ -320,10 +322,10 @@ public class WorldUtil
 
             if (player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
             {
-	            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+	            Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
 	            double blend = (player.posY - Constants.OVERWORLD_CLOUD_HEIGHT) / (Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - Constants.OVERWORLD_CLOUD_HEIGHT);
 	            double ablend = 1 - blend;
-	            return Vec3.createVectorHelper(f4 * blend + vec.xCoord * ablend, f5 * blend + vec.yCoord * ablend, f6 * blend + vec.zCoord * ablend);
+	            return new Vec3(f4 * blend + vec.xCoord * ablend, f5 * blend + vec.yCoord * ablend, f6 * blend + vec.zCoord * ablend);
             }
             else
             {
@@ -333,11 +335,11 @@ public class WorldUtil
 	            double blend = Math.min(1.0D, (player.posY - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 300.0D);
 	            double ablend = 1.0D - blend;
 	            blend /= 255.0D;
-	            return Vec3.createVectorHelper(f4 * ablend + blend * 31.0D, f5 * ablend + blend * 8.0D, f6 * ablend + blend * 99.0D);
+	            return new Vec3(f4 * ablend + blend * 31.0D, f5 * ablend + blend * 8.0D, f6 * ablend + blend * 99.0D);
             }
         }
 
-        return world.getSkyColor(FMLClientHandler.instance().getClient().renderViewEntity, 1.0F);
+        return world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
     }
 
     public static WorldProvider getProviderForNameServer(String par1String)
@@ -440,7 +442,7 @@ public class WorldUtil
         {
             final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, element, null);
 
-            if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || VersionUtil.isPlayerOpped(playerBase))
+            if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(playerBase.getGameProfile().getName()) || ArrayUtils.contains(playerBase.mcServer.getConfigurationManager().getOppedPlayerNames(), playerBase.getName()))
             {
             	//Satellites always reachable from their own homeworld or from its other satellites
             	if (playerBase != null)
@@ -553,7 +555,7 @@ public class WorldUtil
     public static WorldProvider getProviderForDimensionClient(int id)
     {
     	World ws = ClientProxyCore.mc.theWorld;
-    	if (ws != null && ws.provider.dimensionId == id)
+    	if (ws != null && ws.provider.getDimensionId() == id)
     	{
     		return ws.provider;
     	}
@@ -599,9 +601,9 @@ public class WorldUtil
 	            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
 	            	if (celestialBody != null && provider != null)
 	            	{
-	            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.dimensionId == 0)
+	            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.getDimensionId() == 0)
 	            		{
-	            			map.put(celestialBody.getName(), provider.dimensionId);
+	            			map.put(celestialBody.getName(), provider.getDimensionId());
 	            		}
 	            	}
             	}
@@ -988,7 +990,7 @@ public class WorldUtil
         entity.worldObj.updateEntityWithOptionalForce(entity, false);
         EntityPlayerMP player = null;
         Vector3 spawnPos = null;
-        int oldDimID = entity.worldObj.provider.dimensionId;
+        int oldDimID = entity.worldObj.provider.getDimensionId();
 
         if (ridingRocket != null)
         {
@@ -998,7 +1000,7 @@ public class WorldUtil
             ridingRocket.riddenByEntity = null;
             ridingRocket.writeToNBTOptional(nbt);
 
-            ((WorldServer) ridingRocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(ridingRocket);
+            ((WorldServer) ridingRocket.worldObj).getEntityTracker().untrackEntity(ridingRocket);
             ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
             ridingRocket.worldObj.onEntityRemoved(ridingRocket);
 
@@ -1045,7 +1047,7 @@ public class WorldUtil
                 {
                     GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
                 }
-                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
                 if (worldNew.provider instanceof WorldProviderOrbit) {
                     if (WorldUtil.registeredSpaceStations.containsKey(dimID))
@@ -1063,7 +1065,7 @@ public class WorldUtil
                 {
                     Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
                     chunkOld.removeEntity(player);
-                    chunkOld.isModified = true;
+                    chunkOld.setChunkModified();
                 }
                 worldOld.loadedEntityList.remove(player);
                 worldOld.onEntityRemoved(player);
@@ -1083,11 +1085,11 @@ public class WorldUtil
                 worldNew.updateEntityWithOptionalForce(entity, false);
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
-                player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) worldNew);
+                player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldNew);
                 player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 //worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.getDimensionId());
 
                 player.theItemInWorldManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
@@ -1158,7 +1160,7 @@ public class WorldUtil
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.getDimensionId());
             }
 
             //Cargo rocket does not needs its location setting here, it will do that itself
@@ -1276,7 +1278,7 @@ public class WorldUtil
             if (var1.addedToChunk && var0.getChunkProvider().chunkExists(var3, var4))
             {
                 var0.getChunkFromChunkCoords(var3, var4).removeEntity(var1);
-                var0.getChunkFromChunkCoords(var3, var4).isModified = true;
+                var0.getChunkFromChunkCoords(var3, var4).setChunkModified();
             }
 
             if (directlyRemove)
@@ -1368,11 +1370,11 @@ public class WorldUtil
             {
             	GCLog.debug("GC clientside planet dimensions registered: "+ids);
             	WorldProvider dimMoon = WorldUtil.getProviderForNameClient("moon.moon");
-            	if (dimMoon != null) GCLog.debug("Crosscheck: Moon is "+dimMoon.dimensionId);
+            	if (dimMoon != null) GCLog.debug("Crosscheck: Moon is "+dimMoon.getDimensionId());
             	WorldProvider dimMars = WorldUtil.getProviderForNameClient("planet.mars");
-            	if (dimMars != null) GCLog.debug("Crosscheck: Mars is "+dimMars.dimensionId);
+            	if (dimMars != null) GCLog.debug("Crosscheck: Mars is "+dimMars.getDimensionId());
             	WorldProvider dimAst = WorldUtil.getProviderForNameClient("planet.asteroids");
-            	if (dimAst != null) GCLog.debug("Crosscheck: Asteroids is "+dimAst.dimensionId);
+            	if (dimAst != null) GCLog.debug("Crosscheck: Asteroids is "+dimAst.getDimensionId());
             }
         }
         catch (final Exception e)
@@ -1630,8 +1632,8 @@ public class WorldUtil
 
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), dimensionList }), player);
         stats.usingPlanetSelectionGui = true;
-        stats.savedPlanetList = new String(dimensionList);
-        Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ, 0.0F);
+        stats.savedPlanetList = dimensionList;
+        Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);
         player.worldObj.spawnEntityInWorld(fakeEntity);
         player.mountEntity(fakeEntity);
     }
@@ -1644,27 +1646,28 @@ public class WorldUtil
         int mainPosX = position.intX();
         int mainPosY = position.intY();
         int mainPosZ = position.intZ();
+        BlockPos posMain = new BlockPos(mainPosX, mainPosY, mainPosZ);
 
         // If the footprint is hovering over air...
-        Block b1 = world.getBlock(mainPosX, mainPosY, mainPosZ);
-        if (b1 != null && b1.isAir(world, mainPosX, mainPosY, mainPosZ))
+        if (world.getBlockState(posMain).getBlock().isAir(world, posMain))
         {
             position.x += (playerCenter.x - mainPosX);
             position.z += (playerCenter.z - mainPosZ);
 
+            BlockPos pos1 = new BlockPos(position.intX(), position.intY(), position.intZ());
             // If the footprint is still over air....
-            Block b2 = world.getBlock(position.intX(), position.intY(), position.intZ());
-            if (b2 != null && b2.isAir(world, position.intX(), position.intY(), position.intZ()))
+            Block b2 = world.getBlockState(pos1).getBlock();
+            if (b2 != null && b2.isAir(world, pos1))
             {
-                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+                for (EnumFacing direction : EnumFacing.values())
                 {
-                    if (direction != ForgeDirection.DOWN && direction != ForgeDirection.UP)
+                    BlockPos offsetPos = posMain.offset(direction);
+                    if (direction != EnumFacing.DOWN && direction != EnumFacing.UP)
                     {
-                    	Block b3 = world.getBlock(mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ);
-                        if (b3 != null && !b3.isAir(world, mainPosX + direction.offsetX, mainPosY, mainPosZ + direction.offsetZ))
+                        if (!world.getBlockState(offsetPos).getBlock().isAir(world, offsetPos))
                         {
-                            position.x += direction.offsetX;
-                            position.z += direction.offsetZ;
+                            position.x += direction.getFrontOffsetX();
+                            position.z += direction.getFrontOffsetZ();
                             break;
                         }
                     }
@@ -1754,7 +1757,7 @@ public class WorldUtil
 				return cb.getUnlocalizedName();
 		}
 		
-		if (wp.dimensionId == ConfigManagerCore.idDimensionOverworld)
+		if (wp.getDimensionId() == ConfigManagerCore.idDimensionOverworld)
 			return "Overworld";
 
 		return wp.getDimensionName();

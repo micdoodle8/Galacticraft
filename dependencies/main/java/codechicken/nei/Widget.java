@@ -5,8 +5,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public abstract class Widget
-{
+public abstract class Widget {
     public Widget() {
     }
 

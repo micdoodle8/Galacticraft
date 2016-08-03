@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -17,17 +19,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class EntityGrapple extends Entity implements IProjectile
 {
-    private BlockVec3 hitVec;
+    private BlockPos hitVec;
     private Block hitBlock;
     private int inData;
     private boolean inGround;
@@ -45,7 +43,7 @@ public class EntityGrapple extends Entity implements IProjectile
         super(par1World);
         this.renderDistanceWeight = 10.0D;
         this.ignoreFrustumCheck = false;
-        this.yOffset = -1.5F;
+//        this.yOffset = -1.5F;
         this.setSize(0.75F, 0.75F);
     }
 
@@ -68,9 +66,15 @@ public class EntityGrapple extends Entity implements IProjectile
         this.posX += this.motionX;
         this.posY += this.motionY;
         this.posZ += this.motionZ;
-        this.yOffset = -1.5F;
+//        this.yOffset = -1.5F;
         this.setPosition(this.posX, this.posY, this.posZ);
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
+    }
+
+    @Override
+    public double getYOffset()
+    {
+        return -1.5F;
     }
 
     @Override
@@ -104,10 +108,10 @@ public class EntityGrapple extends Entity implements IProjectile
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
-        this.setPosition(par1, par3, par5);
-        this.setRotation(par7, par8);
+        this.setPosition(x, y, z);
+        this.setRotation(yaw, pitch);
     }
 
     public void setPosition(double x, double y, double z)
@@ -194,14 +198,14 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (this.hitVec != null)
         {
-            Block block = this.worldObj.getBlock(this.hitVec.x, this.hitVec.y, this.hitVec.z);
+            Block block = this.worldObj.getBlockState(this.hitVec).getBlock();
 
             if (block.getMaterial() != Material.air)
             {
-                block.setBlockBoundsBasedOnState(this.worldObj, this.hitVec.x, this.hitVec.y, this.hitVec.z);
-                AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.hitVec.x, this.hitVec.y, this.hitVec.z);
+                block.setBlockBoundsBasedOnState(this.worldObj, this.hitVec);
+                AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, this.hitVec, this.worldObj.getBlockState(this.hitVec));
 
-                if (axisalignedbb != null && axisalignedbb.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
+                if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3(this.posX, this.posY, this.posZ)))
                 {
                     this.inGround = true;
                 }
@@ -217,8 +221,9 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             if (this.hitVec != null)
             {
-                Block block = this.worldObj.getBlock(this.hitVec.x, this.hitVec.y, this.hitVec.z);
-                int j = this.worldObj.getBlockMetadata(this.hitVec.x, this.hitVec.y, this.hitVec.z);
+                IBlockState state = this.worldObj.getBlockState(this.hitVec);
+                Block block = state.getBlock();
+                int j = block.getMetaFromState(state);
 
                 if (block == this.hitBlock && j == this.inData)
                 {
@@ -267,19 +272,19 @@ public class EntityGrapple extends Entity implements IProjectile
                 this.setDead();
             }
 
-            Vec3 vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            Vec3 vec3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.func_147447_a(vec31, vec3, false, true, false);
-            vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            vec3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 vec31 = new Vec3(this.posX, this.posY, this.posZ);
+            Vec3 vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3, false, true, false);
+            vec31 = new Vec3(this.posX, this.posY, this.posZ);
+            vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (movingobjectposition != null)
             {
-                vec3 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                vec3 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
-            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int i;
             float f1;
@@ -291,7 +296,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f1 = 0.3F;
-                    AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(f1, f1, f1);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
@@ -328,9 +333,10 @@ public class EntityGrapple extends Entity implements IProjectile
             {
                 if (movingobjectposition.entityHit == null)
                 {
-                    this.hitVec = new BlockVec3(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
-                    this.hitBlock = this.worldObj.getBlock(this.hitVec.x, this.hitVec.y, this.hitVec.z);
-                    this.inData = this.worldObj.getBlockMetadata(this.hitVec.x, this.hitVec.y, this.hitVec.z);
+                    this.hitVec = movingobjectposition.getBlockPos();
+                    IBlockState state = this.worldObj.getBlockState(this.hitVec);
+                    this.hitBlock = state.getBlock();
+                    this.inData = state.getBlock().getMetaFromState(state);
                     this.motionX = (float) (movingobjectposition.hitVec.xCoord - this.posX);
                     this.motionY = (float) (movingobjectposition.hitVec.yCoord - this.posY);
                     this.motionZ = (float) (movingobjectposition.hitVec.zCoord - this.posZ);
@@ -344,7 +350,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
                     if (this.hitBlock.getMaterial() != Material.air)
                     {
-                        this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.hitVec.x, this.hitVec.y, this.hitVec.z, this);
+                        this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.hitVec, this);
                     }
                 }
             }
@@ -386,7 +392,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 float f4 = 0.25F;
                 for (int l = 0; l < 4; ++l)
                 {
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * f4, this.posY - this.motionY * f4, this.posZ - this.motionZ * f4, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * f4, this.posY - this.motionY * f4, this.posZ - this.motionZ * f4, this.motionX, this.motionY, this.motionZ);
                 }
 
                 f3 = 0.8F;
@@ -398,12 +404,12 @@ public class EntityGrapple extends Entity implements IProjectile
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);
-            this.func_145775_I();
+            this.doBlockCollisions();
         }
 
         if (!this.worldObj.isRemote && (this.ticksInGround - 1) % 10 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, 150));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 150));
         }
     }
 
@@ -412,9 +418,9 @@ public class EntityGrapple extends Entity implements IProjectile
     {
         if (this.hitVec != null)
         {
-	    	par1NBTTagCompound.setShort("xTile", (short) this.hitVec.x);
-	        par1NBTTagCompound.setShort("yTile", (short) this.hitVec.y);
-	        par1NBTTagCompound.setShort("zTile", (short) this.hitVec.z);
+	    	par1NBTTagCompound.setShort("xTile", (short) this.hitVec.getX());
+	        par1NBTTagCompound.setShort("yTile", (short) this.hitVec.getY());
+	        par1NBTTagCompound.setShort("zTile", (short) this.hitVec.getZ());
         }
         par1NBTTagCompound.setShort("life", (short) this.ticksInGround);
         par1NBTTagCompound.setByte("inTile", (byte) Block.getIdFromBlock(this.hitBlock));
@@ -427,7 +433,7 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.hasKey("xTile")) this.hitVec = new BlockVec3(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
+        if (par1NBTTagCompound.hasKey("xTile")) this.hitVec = new BlockPos(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
 
         this.ticksInGround = par1NBTTagCompound.getShort("life");
         this.hitBlock = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);
@@ -472,12 +478,12 @@ public class EntityGrapple extends Entity implements IProjectile
         return false;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public float getShadowSize()
-    {
-        return 0.0F;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public float getShadowSize()
+//    {
+//        return 0.0F;
+//    }
 
     @Override
     public boolean canAttackWithItem()

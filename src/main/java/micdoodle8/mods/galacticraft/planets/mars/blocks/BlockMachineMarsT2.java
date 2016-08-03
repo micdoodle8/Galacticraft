@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -15,28 +15,65 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityElectrolyzer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
 
-public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc
+public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     public static final int GAS_LIQUEFIER = 0;
     public static final int METHANE_SYNTHESIZER = 4;
     public static final int ELECTROLYZER = 8;
 
-    private IIcon iconMachineSide;
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineType.class);
+
+    public enum EnumMachineType implements IStringSerializable
+    {
+        GAS_LIQUEFIER(0, "gas_liquefier"),
+        METHANE_SYNTHESIZER(1, "methane_synthesizer"),
+        ELECTROLYZER(2, "electrolyzer");
+
+        private final int meta;
+        private final String name;
+
+        private EnumMachineType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumMachineType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    /*private IIcon iconMachineSide;
     private IIcon iconInput;
     private IIcon iconGasInput;
     private IIcon iconGasOutput;
@@ -44,15 +81,16 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
 
     private IIcon iconGasLiquefier;
     private IIcon iconMethaneSynthesizer;
-    private IIcon iconElectrolyzer;
+    private IIcon iconElectrolyzer;*/
 
-    public BlockMachineMarsT2()
+    public BlockMachineMarsT2(String assetName)
     {
         super(GCBlocks.machine);
         this.setStepSound(Block.soundTypeMetal);
+        this.setUnlocalizedName(assetName);
     }
 
-    @Override
+    /*@Override
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("galacticraftasteroids:machine");
@@ -65,7 +103,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         this.iconGasLiquefier = par1IconRegister.registerIcon("galacticraftasteroids:gasLiquefier");
         this.iconMethaneSynthesizer = par1IconRegister.registerIcon("galacticraftasteroids:methaneSynthesizer");
         this.iconElectrolyzer = par1IconRegister.registerIcon("galacticraftasteroids:electrolyzer");
-    }
+    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -74,13 +112,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftPlanets.getBlockRenderID(this);
-    }
-
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         if (side == 0)
@@ -149,69 +181,36 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         }
 
         return this.iconMachineSide;
-    }
+    }*/
 
     /**
      * Called when the block is placed in the world.
      */
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        int metadata = state.getBlock().getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = 0;
+        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = par1World.getBlockMetadata(x, y, z);
-        int original = metadata & 3;
-        int change = 0;
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        // Re-orient the block
-        switch (original)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
-        TileEntity te = par1World.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        par1World.setBlockMetadataWithNotify(x, y, z, (metadata & 12) + change, 3);
         return true;
     }
 
@@ -219,17 +218,16 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
-
-        par5EntityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, world, x, y, z);
+        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
+        int metadata = state.getBlock().getMetaFromState(state);
         metadata &= 12;
 
         if (metadata == BlockMachineMarsT2.GAS_LIQUEFIER)
@@ -258,24 +256,24 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
-        return metadata & 12;
+        return state.getBlock().getMetaFromState(state) & 12;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = this.getDamageValue(world, x, y, z);
+        int metadata = this.getDamageValue(world, pos);
 
         return new ItemStack(this, 1, metadata);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random rand)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        final TileEntity te = par1World.getTileEntity(par2, par3, par4);
+        final TileEntity te = worldIn.getTileEntity(pos);
 
         if (te instanceof TileEntityGasLiquefier)
         {
@@ -283,9 +281,9 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
 
             if (tileEntity.processTicks > 0)
             {
-                final float x = par2 + 0.5F;
-                final float y = par3 + 0.8F + 0.05F * rand.nextInt(3);
-                final float z = par4 + 0.5F;
+                final float x = pos.getX() + 0.5F;
+                final float y = pos.getY() + 0.8F + 0.05F * rand.nextInt(3);
+                final float z = pos.getZ() + 0.5F;
 
                 for (float i = -0.41F + 0.16F * rand.nextFloat(); i < 0.5F; i += 0.167F)
                 {
@@ -318,9 +316,9 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
         case ELECTROLYZER:
             return GCCoreUtil.translate("tile.electrolyzer.description");
         case GAS_LIQUEFIER:
-            return GCCoreUtil.translate("tile.gasLiquefier.description");
+            return GCCoreUtil.translate("tile.gas_liquefier.description");
         case METHANE_SYNTHESIZER:
-            return GCCoreUtil.translate("tile.methaneSynthesizer.description");
+            return GCCoreUtil.translate("tile.methane_synthesizer.description");
         }
         return "";
     }
@@ -329,5 +327,31 @@ public class BlockMachineMarsT2 extends BlockTileGC implements ItemBlockDesc.IBl
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumMachineType type = EnumMachineType.byMetadata((int)Math.floor(meta / 4.0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

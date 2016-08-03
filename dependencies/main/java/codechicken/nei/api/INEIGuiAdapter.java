@@ -10,11 +10,9 @@ import java.util.List;
 /**
  * Lets you just override those things you want to
  */
-public class INEIGuiAdapter implements INEIGuiHandler
-{
+public class INEIGuiAdapter implements INEIGuiHandler {
     @Override
-    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility)
-    {
+    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) {
         return currentVisibility;
     }
 
@@ -24,20 +22,17 @@ public class INEIGuiAdapter implements INEIGuiHandler
     }
 
     @Override
-    public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
-    {
+    public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui) {
         return null;
     }
 
     @Override
-    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button)
-    {
+    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button) {
         return false;
     }
-    
+
     @Override
-    public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h)
-    {
-    	return false;
+    public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h) {
+        return false;
     }
 }

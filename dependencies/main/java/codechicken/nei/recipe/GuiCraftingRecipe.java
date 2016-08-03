@@ -1,16 +1,14 @@
 package codechicken.nei.recipe;
 
 import codechicken.core.TaskProfiler;
-import codechicken.nei.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 import java.util.ArrayList;
 
-public class GuiCraftingRecipe extends GuiRecipe
-{
+public class GuiCraftingRecipe extends GuiRecipe {
     public static boolean openRecipeGui(String outputId, Object... results) {
-        Minecraft mc = NEIClientUtils.mc();
+        Minecraft mc = Minecraft.getMinecraft();
         GuiContainer prevscreen = mc.currentScreen instanceof GuiContainer ? (GuiContainer) mc.currentScreen : null;
 
         TaskProfiler profiler = ProfilerRecipeHandler.getProfiler();
@@ -18,12 +16,14 @@ public class GuiCraftingRecipe extends GuiRecipe
         for (ICraftingHandler craftinghandler : craftinghandlers) {
             profiler.start(craftinghandler.getRecipeName());
             ICraftingHandler handler = craftinghandler.getRecipeHandler(outputId, results);
-            if (handler.numRecipes() > 0)
+            if (handler.numRecipes() > 0) {
                 handlers.add(handler);
+            }
         }
         profiler.end();
-        if (handlers.isEmpty())
+        if (handlers.isEmpty()) {
             return false;
+        }
 
         mc.displayGuiScreen(new GuiCraftingRecipe(prevscreen, handlers));
         return true;
@@ -35,9 +35,11 @@ public class GuiCraftingRecipe extends GuiRecipe
     }
 
     public static void registerRecipeHandler(ICraftingHandler handler) {
-        for (ICraftingHandler handler1 : craftinghandlers)
-            if (handler1.getClass() == handler.getClass())
+        for (ICraftingHandler handler1 : craftinghandlers) {
+            if (handler1.getClass() == handler.getClass()) {
                 return;
+            }
+        }
 
         craftinghandlers.add(handler);
     }

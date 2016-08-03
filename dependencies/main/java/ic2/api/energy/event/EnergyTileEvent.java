@@ -1,23 +1,24 @@
 package ic2.api.energy.event;
 
-import net.minecraft.tileentity.TileEntity;
-
 import net.minecraftforge.event.world.WorldEvent;
 
+import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyTile;
 
 /**
  * Base class for energy net events, don't use it directly.
- * 
- * See ic2/api/energy/usage.txt for an overall description of the energy net
- * api.
+ *
+ * See ic2/api/energy/usage.txt for an overall description of the energy net api.
  */
 public class EnergyTileEvent extends WorldEvent {
-	public final IEnergyTile energyTile;
+	public EnergyTileEvent(IEnergyTile tile) {
+		super(EnergyNet.instance.getWorld(tile));
 
-	public EnergyTileEvent(IEnergyTile energyTile1) {
-		super(((TileEntity) energyTile1).getWorldObj());
+		if (world == null) throw new NullPointerException("world is null");
 
-		this.energyTile = energyTile1;
+		this.tile = tile;
 	}
+
+	public final IEnergyTile tile;
 }
+

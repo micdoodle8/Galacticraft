@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicBuggy;
@@ -35,14 +36,14 @@ public class SchematicMoonBuggy extends SchematicPage
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiScreen getResultScreen(EntityPlayer player, int x, int y, int z)
+    public GuiScreen getResultScreen(EntityPlayer player, BlockPos pos)
     {
-        return new GuiSchematicBuggy(player.inventory);
+        return new GuiSchematicBuggy(player.inventory, pos);
     }
 
     @Override
-    public Container getResultContainer(EntityPlayer player, int x, int y, int z)
+    public Container getResultContainer(EntityPlayer player, BlockPos pos)
     {
-        return new ContainerBuggyBench(player.inventory, x, y, z);
+        return new ContainerBuggyBench(player.inventory, pos, player);
     }
 }

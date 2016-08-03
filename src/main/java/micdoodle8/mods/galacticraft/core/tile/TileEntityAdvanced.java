@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
+public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, ITickable
 {
     public long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
@@ -28,7 +29,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     private boolean networkDataChanged = false;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (this.ticks == 0)
         {
@@ -70,7 +71,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                 PacketDynamic packet = new PacketDynamic(this);
 //                if (networkDataChanged)
                 {
-                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, this.getPacketRange()));
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
                 }
             }
         }
@@ -107,12 +108,10 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-
     }
 
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-
     }
 
     public void initiate()
@@ -206,6 +205,11 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             {
                 e.printStackTrace();
             }
+        }
+
+        if (this.worldObj == null)
+        {
+            throw new RuntimeException("World is NULL! Connot decode packet data!");
         }
 
         if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)

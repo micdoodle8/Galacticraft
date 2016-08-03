@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -34,7 +34,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
         int index = 0;
         int typenum = itemstack.getItemDamage() & 12;
 
-        if (this.field_150939_a == MarsBlocks.machine)
+        if (this.getBlock() == MarsBlocks.machine)
         {
             if (typenum == BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
             {
@@ -45,23 +45,23 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
                 index = 1;
             }
         }
-        else if (this.field_150939_a == MarsBlocks.machineT2)
+        else if (this.getBlock() == MarsBlocks.machineT2)
         {
             if (typenum == BlockMachineMarsT2.GAS_LIQUEFIER)
             {
-                return "tile.marsMachine.4";
+                return "tile.mars_machine.4";
             }
             else if (typenum == BlockMachineMarsT2.METHANE_SYNTHESIZER)
             {
-                return "tile.marsMachine.5";
+                return "tile.mars_machine.5";
             }
             else if (typenum == BlockMachineMarsT2.ELECTROLYZER)
             {
-                return "tile.marsMachine.6";
+                return "tile.mars_machine.6";
             }
         }
 
-        return this.field_150939_a.getUnlocalizedName() + "." + index;
+        return this.getBlock().getUnlocalizedName() + "." + index;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     @Override
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName() + ".0";
+        return this.getBlock().getUnlocalizedName() + ".0";
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
 
-        return currentStack != null && this.field_150939_a == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 
@@ -91,7 +91,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
 
-        return currentStack != null && this.field_150939_a == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 

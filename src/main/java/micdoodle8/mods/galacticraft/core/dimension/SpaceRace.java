@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 
 public class SpaceRace
 {
-    public static final String DEFAULT_NAME = "gui.spaceRace.unnamed";
+    public static final String DEFAULT_NAME = "gui.space_race.unnamed";
     private static int lastSpaceRaceID = 0;
     private int spaceRaceID;
     private List<String> playerNames = Lists.newArrayList();

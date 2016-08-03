@@ -1,37 +1,80 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc
+public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
-    private IIcon iconMachineSide;
+    /*private IIcon iconMachineSide;
     private IIcon iconInput;
     private IIcon iconFrontLoader;
     private IIcon iconFrontUnloader;
     private IIcon iconItemInput;
-    private IIcon iconItemOutput;
+    private IIcon iconItemOutput;*/
+
+    private enum EnumLoaderType implements IStringSerializable
+    {
+        CARGO_LOADER(0, "cargo_loader"),
+        CARGO_UNLOADER(1, "cargo_unloader");
+
+        private final int meta;
+        private final String name;
+
+        private EnumLoaderType(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return this.meta;
+        }
+
+        public static EnumLoaderType byMetadata(int meta)
+        {
+            return values()[meta];
+        }
+
+        public static EnumLoaderType byIndex(int index)
+        {
+            return values()[index];
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumLoaderType.class);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public static final int METADATA_CARGO_LOADER = 0;
     public static final int METADATA_CARGO_UNLOADER = 4;
@@ -41,8 +84,8 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
-        this.setBlockName(assetName);
+        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -51,10 +94,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         return GalacticraftCore.proxy.getBlockRender(this);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, BlockCargoLoader.METADATA_CARGO_LOADER));
         par3List.add(new ItemStack(par1, 1, BlockCargoLoader.METADATA_CARGO_UNLOADER));
@@ -67,11 +109,11 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     }
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z)
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        super.onBlockAdded(world, x, y, z);
+        super.onBlockAdded(worldIn, pos, state);
 
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
 
         if (tileEntity != null)
         {
@@ -86,7 +128,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         }
     }
 
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
@@ -96,16 +138,16 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargounloader");
         this.iconItemInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_input");
         this.iconItemOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_output");
-    }
+    }*/
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, -1, world, x, y, z);
+        playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int metadata)
     {
         int shiftedMeta = metadata;
@@ -151,12 +193,12 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         }
 
         return this.iconMachineSide;
-    }
+    }*/
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        if (metadata < BlockCargoLoader.METADATA_CARGO_UNLOADER)
+        if (getMetaFromState(state) < BlockCargoLoader.METADATA_CARGO_UNLOADER)
         {
             return new TileEntityCargoLoader();
         }
@@ -167,131 +209,77 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     }
 
     @Override
-    public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final int metadata = world.getBlockMetadata(x, y, z);
-        int shiftedMeta = metadata;
-        int baseMeta = 0;
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
-        {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_UNLOADER;
-        }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
-        {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_LOADER;
-        }
+        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
 
-        shiftedMeta -= baseMeta;
-        int change = 0;
-
-        // Re-orient the block
-        switch (shiftedMeta)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 3:
-            change = 1;
-            break;
-        case 1:
-            change = 2;
-            break;
-        case 2:
-            change = 0;
-            break;
-        }
-
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileBaseUniversalElectrical)
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
 
-        return world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
+        return true;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        final int metadata = world.getBlockMetadata(x, y, z);
-        int change = 0;
-        int baseMeta = 0;
+        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
+        if (stack.getItemDamage() >= METADATA_CARGO_UNLOADER)
         {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_UNLOADER;
+            change += METADATA_CARGO_UNLOADER;
         }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
+        else if (stack.getItemDamage() >= METADATA_CARGO_LOADER)
         {
-            baseMeta = BlockCargoLoader.METADATA_CARGO_LOADER;
+            change += METADATA_CARGO_LOADER;
         }
 
-        switch (angle)
-        {
-        case 0:
-            change = 3;
-            break;
-        case 1:
-            change = 1;
-            break;
-        case 2:
-            change = 2;
-            break;
-        case 3:
-            change = 0;
-            break;
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, baseMeta + change, 3);
+        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
 
         for (int dX = -2; dX < 3; dX++)
         {
             for (int dZ = -2; dZ < 3; dZ++)
             {
-                final Block block = world.getBlock(x + dX, y, z + dZ);
+                final Block block = worldIn.getBlockState(pos.add(dX, 0, dZ)).getBlock();
 
                 if (block == GCBlocks.landingPadFull)
                 {
-                    world.markBlockForUpdate(x + dX, y, z + dZ);
+                    worldIn.markBlockForUpdate(pos.add(dX, 0, dZ));
                 }
             }
         }
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5)
+    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
     {
-        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+        super.onBlockDestroyedByPlayer(worldIn, pos, state);
 
         for (int dX = -2; dX < 3; dX++)
         {
             for (int dZ = -2; dZ < 3; dZ++)
             {
-                final Block block = world.getBlock(x + dX, y, z + dZ);
+                BlockPos newPos = new BlockPos(pos.getX() + dX, pos.getY(), pos.getZ() + dZ);
+                final Block block = worldIn.getBlockState(newPos).getBlock();
 
                 if (block == GCBlocks.landingPadFull)
                 {
-                    world.markBlockForUpdate(x + dX, y, z + dZ);
+                    worldIn.markBlockForUpdate(newPos);
                 }
             }
         }
     }
 
     @Override
-    public int damageDropped(int metadata)
+    public int damageDropped(IBlockState state)
     {
-        if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
-        {
-            return BlockCargoLoader.METADATA_CARGO_UNLOADER;
-        }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
-        {
-            return BlockCargoLoader.METADATA_CARGO_LOADER;
-        }
-
-        return 0;
+        return getMetaFromState(state);
     }
 
     @Override
@@ -300,9 +288,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         switch (meta)
         {
         case METADATA_CARGO_LOADER:
-            return GCCoreUtil.translate("tile.cargoLoader.description");
+            return GCCoreUtil.translate("tile.cargo_loader.description");
         case METADATA_CARGO_UNLOADER:
-            return GCCoreUtil.translate("tile.cargoUnloader.description");
+            return GCCoreUtil.translate("tile.cargo_unloader.description");
         }
         return "";
     }
@@ -311,5 +299,29 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     public boolean showDescription(int meta)
     {
         return true;
+    }
+
+    public IBlockState getStateFromMeta(int meta)
+    {
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        EnumLoaderType type = EnumLoaderType.byMetadata((int)Math.floor(meta / 4.0));
+
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType)state.getValue(TYPE)).getMeta() * 4;
+    }
+
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, FACING, TYPE);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.MACHINE;
     }
 }

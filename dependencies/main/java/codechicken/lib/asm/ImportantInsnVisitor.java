@@ -5,10 +5,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
-public class ImportantInsnVisitor extends ClassVisitor
-{
-    public class ImportantInsnMethodVisitor extends MethodVisitor
-    {
+public class ImportantInsnVisitor extends ClassVisitor {
+    public class ImportantInsnMethodVisitor extends MethodVisitor {
         MethodVisitor delegate;
 
         public ImportantInsnMethodVisitor(int access, String name, String desc, String signature, String[] exceptions) {
@@ -19,7 +17,7 @@ public class ImportantInsnVisitor extends ClassVisitor
         @Override
         public void visitEnd() {
             super.visitEnd();
-            MethodNode mnode = (MethodNode)mv;
+            MethodNode mnode = (MethodNode) mv;
             mnode.instructions = InsnComparator.getImportantList(mnode.instructions);
             mnode.accept(delegate);
         }

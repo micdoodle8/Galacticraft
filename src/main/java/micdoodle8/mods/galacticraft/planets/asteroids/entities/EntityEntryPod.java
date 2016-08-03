@@ -20,7 +20,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
 {
     public EntityEntryPod(World var1)
     {
-        super(var1, 0.0F);
+        super(var1);
         this.setSize(1.5F, 3.0F);
     }
 
@@ -121,13 +121,13 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
-        return GCCoreUtil.translate("container.entryPod.name");
+        return GCCoreUtil.translate("container.entry_pod.name");
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -139,7 +139,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getCollisionBoundingBox()
     {
         return null;
     }
@@ -205,5 +205,25 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     public boolean shouldIgnoreShiftExit()
     {
         return !this.onGround;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }
