@@ -97,10 +97,10 @@ public class CommandGCEnergyUnits extends CommandBase
 
             }
 
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalidUnits", this.getCommandUsage(sender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalid_units", this.getCommandUsage(sender)), new Object[0]);
         }
 
-        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.noUnits", this.getCommandUsage(sender)), new Object[0]);
+        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.no_units", this.getCommandUsage(sender)), new Object[0]);
     }
 
 

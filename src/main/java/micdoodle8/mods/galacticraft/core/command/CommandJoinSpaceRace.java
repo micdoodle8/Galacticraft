@@ -68,7 +68,7 @@ public class CommandJoinSpaceRace extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.joinrace.noTeam", this.getCommandUsage(sender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.joinrace.no_team", this.getCommandUsage(sender)), new Object[0]);
         }
     }
 }

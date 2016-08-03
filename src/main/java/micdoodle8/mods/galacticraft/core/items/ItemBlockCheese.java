@@ -17,13 +17,6 @@ public class ItemBlockCheese extends ItemBlockDesc
         this.setMaxStackSize(1);
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        this.itemIcon = iconRegister.registerIcon("galacticraftmoon:cheese_block");
-    }*/
-
     @Override
     public CreativeTabs getCreativeTab()
     {

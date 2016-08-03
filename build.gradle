@@ -61,7 +61,6 @@ ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
 					
 // Keep a list of core files/directories for easy jar packing
 ext.coreFiles = ['micdoodle8/mods/galacticraft/core/**',
-					'tconstruct/**',
 					'assets/minecraft/**',
 					'assets/galacticraftcore/**',
 					'**/dependenciesGC.info']

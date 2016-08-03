@@ -60,18 +60,18 @@ public class CommandSpaceStationChangeOwner extends CommandBase
             }
             catch (final Exception var6)
             {
-            	throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrongUsage", this.getCommandUsage(icommandsender)), new Object[0]);
+            	throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
             }
             
             if (stationID < 2)
-            	throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrongUsage", this.getCommandUsage(icommandsender)), new Object[0]);
+            	throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
             
             try
             {          	
                 SpaceStationWorldData stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
                 if (stationData == null)
             	{
-            		throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrongUsage", this.getCommandUsage(icommandsender)), new Object[0]);
+            		throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
             	}
                 
                 oldOwner = stationData.getOwner();
@@ -103,7 +103,7 @@ public class CommandSpaceStationChangeOwner extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrongUsage", this.getCommandUsage(icommandsender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
         }
 
         if (playerAdmin != null)
