@@ -1021,7 +1021,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (wayBarred)
 		{
 			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1A.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
 			this.motionX = 0;
 			this.motionY = 0;
 			this.motionZ = 0;

@@ -98,9 +98,9 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
         if (this.fillAtmos)
         {
             String gasname = GCCoreUtil.translate("gas.carbondioxide.name");
-            String text1 = " * " + GCCoreUtil.translate("gui.message.withAtmosphere0.name");
+            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
             String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
-            String text3 = GCCoreUtil.translate("gui.message.withAtmosphere1.name");
+            String text3 = GCCoreUtil.translate("gui.message.with_atmosphere1.name");
             this.fontRendererObj.drawString(text1, 4, 85, 4210752);
             this.fontRendererObj.drawString(text2, 18, 95, 4210752);
             this.fontRendererObj.drawString(text3, 18, 105, 4210752);
