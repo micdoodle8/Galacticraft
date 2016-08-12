@@ -28,7 +28,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     private float ySize_lo_2;
 
 	private int potionOffsetLast;
-    private static float rotation;
+    private static float rotation = 150.0F;
 
 	private boolean initWithPotion;
 

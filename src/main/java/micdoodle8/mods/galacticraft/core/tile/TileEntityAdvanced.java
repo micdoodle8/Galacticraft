@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
@@ -195,6 +196,12 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
+        if (this.worldObj == null)
+        {
+            GCLog.severe("World is NULL! Connot decode packet data!");
+            return;
+        }
+
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
             try
@@ -205,11 +212,6 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             {
                 e.printStackTrace();
             }
-        }
-
-        if (this.worldObj == null)
-        {
-            throw new RuntimeException("World is NULL! Connot decode packet data!");
         }
 
         if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)

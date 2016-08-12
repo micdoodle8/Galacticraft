@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
@@ -158,7 +159,7 @@ public class PlayerClient implements IPlayerClient
             player.fallDistance = 0.0F;
         }
 
-        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
+        PlayerGearData gearData = ModelPlayerGC.getGearData(player);
 
         stats.usingParachute = false;
 

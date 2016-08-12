@@ -4,6 +4,10 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerOxygenGear;
+import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerOxygenMask;
+import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerOxygenParachute;
+import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerOxygenTanks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
@@ -55,9 +59,10 @@ public class RenderPlayerGC extends RenderPlayer
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
         this.mainModel = new ModelPlayerGC(0.0F, smallArms);
-//        this.modelBipedMain = (ModelPlayerGC) this.mainModel;
-//        this.modelArmorChestplate = new ModelPlayerGC(1.0F);
-//        this.modelArmor = new ModelPlayerGC(0.5F);
+        this.addLayer(new LayerOxygenTanks(this));
+        this.addLayer(new LayerOxygenGear(this));
+        this.addLayer(new LayerOxygenMask(this));
+        this.addLayer(new LayerOxygenParachute(this));
 
         if (GalacticraftCore.isPlanetsLoaded)
         {
@@ -79,7 +84,7 @@ public class RenderPlayerGC extends RenderPlayer
 
             if (RenderPlayerGC.thermalPaddingTexture0 != null && !isSmartRenderLoaded)
             {
-                PlayerGearData gearData = ClientProxyCore.playerItemData.get(par1EntityLivingBase.getName());
+                PlayerGearData gearData = ModelPlayerGC.getGearData((EntityPlayer) par1EntityLivingBase);
 
                 if (gearData != null && !RenderPlayerGC.flagThermalOverride)
                 {
