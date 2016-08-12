@@ -16,7 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
@@ -70,7 +70,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 
     public BlockBasicAsteroids(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
     }
@@ -211,7 +211,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         IBlockState state = world.getBlockState(pos);
         if (getMetaFromState(state) == 4)
@@ -232,9 +232,9 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, BASIC_TYPE);
+        return new BlockStateContainer(this, BASIC_TYPE);
     }
 
     @Override

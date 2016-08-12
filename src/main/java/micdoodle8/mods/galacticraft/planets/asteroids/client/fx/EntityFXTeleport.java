@@ -6,14 +6,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
 import java.lang.ref.WeakReference;
 
 @SideOnly(Side.CLIENT)
-public class EntityFXTeleport extends EntityFX
+public class ParticleTeleport extends Particle
 {
     private float portalParticleScale;
     private double portalPosX;
@@ -22,7 +22,7 @@ public class EntityFXTeleport extends EntityFX
     private WeakReference<TileEntityShortRangeTelepad> telepad;
     private boolean direction;
 
-    public EntityFXTeleport(World par1World, Vector3 position, Vector3 motion, TileEntityShortRangeTelepad telepad, boolean direction)
+    public ParticleTeleport(World par1World, Vector3 position, Vector3 motion, TileEntityShortRangeTelepad telepad, boolean direction)
     {
         super(par1World, position.x, position.y, position.z, motion.x, motion.y, motion.z);
         this.motionX = motion.x;

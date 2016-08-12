@@ -197,7 +197,7 @@ public abstract class GuiStarBackground extends GuiScreen
 
             this.doCustomTranslation(1, var7, var8, var9, mX, mY);
 
-            GL11.glRotatef(MathHelper.sin(par1 / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef((float)Math.sin(par1 / 1000.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-par1 * 0.005F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(41, 0, 0, 1);
 

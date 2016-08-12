@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
@@ -300,7 +300,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             if (this.targetVec != null)
             {
-                if (this.targetDimension != this.worldObj.provider.getDimensionId())
+                if (this.targetDimension != this.worldObj.provider.getDimension())
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                     if (targetDim != null && targetDim.worldObj instanceof WorldServer)

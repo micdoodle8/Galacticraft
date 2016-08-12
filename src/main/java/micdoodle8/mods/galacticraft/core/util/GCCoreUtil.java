@@ -20,7 +20,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.I18n;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -127,7 +127,7 @@ public class GCCoreUtil
 
     public static String translate(String key)
     {
-        String result = StatCollector.translateToLocal(key);
+        String result = I18n.translateToLocal(key);
         int comment = result.indexOf('#');
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)
@@ -151,7 +151,7 @@ public class GCCoreUtil
 
     public static String translateWithFormat(String key, Object... values)
     {
-        String result = StatCollector.translateToLocalFormatted(key, values);
+        String result = I18n.translateToLocalFormatted(key, values);
         int comment = result.indexOf('#');
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)

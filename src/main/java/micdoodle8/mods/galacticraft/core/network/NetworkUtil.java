@@ -7,7 +7,7 @@ import io.netty.handler.codec.EncoderException;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTSizeTracker;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;

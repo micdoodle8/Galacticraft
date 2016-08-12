@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -117,12 +117,12 @@ public class MapGenCavernMars extends MapGenBaseMeta
 
                 if (xPos >= var19 - 16.0D - caveWidth * 2.0D && zPos >= var21 - 16.0D - caveWidth * 2.0D && xPos <= var19 + 16.0D + caveWidth * 2.0D && zPos <= var21 + 16.0D + caveWidth * 2.0D) // CHECKED
                 {
-                    int caveMinX = MathHelper.floor_double(xPos - caveWidth) - origXChunkCoord * 16 - 1;
-                    int caveMaxX = MathHelper.floor_double(xPos + caveWidth) - origXChunkCoord * 16 + 1;
-                    int caveMinY = MathHelper.floor_double(yPos - caveHeight) - 1;
-                    int caveMaxY = MathHelper.floor_double(yPos + caveHeight) + 1;
-                    int caveMinZ = MathHelper.floor_double(zPos - caveWidth) - origZChunkCoord * 16 - 1;
-                    int caveMaxZ = MathHelper.floor_double(zPos + caveWidth) - origZChunkCoord * 16 + 1;
+                    int caveMinX = (int)Math.floor(xPos - caveWidth) - origXChunkCoord * 16 - 1;
+                    int caveMaxX = (int)Math.floor(xPos + caveWidth) - origXChunkCoord * 16 + 1;
+                    int caveMinY = (int)Math.floor(yPos - caveHeight) - 1;
+                    int caveMaxY = (int)Math.floor(yPos + caveHeight) + 1;
+                    int caveMinZ = (int)Math.floor(zPos - caveWidth) - origZChunkCoord * 16 - 1;
+                    int caveMaxZ = (int)Math.floor(zPos + caveWidth) - origZChunkCoord * 16 + 1;
 
                     if (caveMinX < 0)
                     {

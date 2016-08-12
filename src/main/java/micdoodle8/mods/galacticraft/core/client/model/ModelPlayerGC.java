@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -365,20 +365,20 @@ public class ModelPlayerGC extends ModelPlayer
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.getRidingEntity() == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
             float speedModifier = 0.1162F * 2;
 
-            float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
+            float angularSwingArm = (float)Math.cos(par1 * (speedModifier / 2));
             float rightMod = this.heldItemRight != 0 ? 1 : 2;
-            this.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * rightMod * par2 * 0.5F;
-            this.bipedLeftArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+            this.bipedRightArm.rotateAngleX -= (float)Math.cos(par1 * 0.6662F + (float)Math.PI) * rightMod * par2 * 0.5F;
+            this.bipedLeftArm.rotateAngleX -= (float)Math.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
             this.bipedRightArm.rotateAngleX += -angularSwingArm * 4.0F * par2 * 0.5F;
             this.bipedLeftArm.rotateAngleX += angularSwingArm * 4.0F * par2 * 0.5F;
-            this.bipedLeftLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
-            this.bipedLeftLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
-            this.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-            this.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
+            this.bipedLeftLeg.rotateAngleX -= (float)Math.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+            this.bipedLeftLeg.rotateAngleX += (float)Math.cos(par1 * 0.1162F * 2 + (float)Math.PI) * 1.4F * par2;
+            this.bipedRightLeg.rotateAngleX -= (float)Math.cos(par1 * 0.6662F) * 1.4F * par2;
+            this.bipedRightLeg.rotateAngleX += (float)Math.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
 
         if (usingParachute)
@@ -468,7 +468,7 @@ public class ModelPlayerGC extends ModelPlayer
 
                 if (ship.riddenByEntity != null && !(ship.riddenByEntity).equals(player) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
                 {
-                    this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
+                    this.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + (float)Math.sin(par3 * 0.9F) * 0.2F;
                     this.bipedRightArm.rotateAngleX = (float) Math.PI;
                     break;
                 }

@@ -14,7 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -390,11 +390,11 @@ public class ThreadFindSeal
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlock(world), metadata, 3));
             }
 
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
+            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimensionId(), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimension(), this.torchesToUpdate);
         }
 	}
 
@@ -411,11 +411,11 @@ public class ThreadFindSeal
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0, 2));
             }
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
+            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimensionId(), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimension(), this.torchesToUpdate);
         }
     }
 
@@ -1022,7 +1022,7 @@ public class ThreadFindSeal
         }
 
         //Easy case: airblock, return without checking other sides
-        if (block.getMaterial() == Material.air)
+        if (block.getMaterial() == Material.AIR)
         {
             return true;
         }

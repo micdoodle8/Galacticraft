@@ -4,11 +4,13 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -19,54 +21,31 @@ import java.util.Random;
 
 public class BlockAirLockWall extends BlockBreakable implements IPartialSealableBlock, ISortableBlock
 {
+    protected static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB AABB_X = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+    protected static final AxisAlignedBB AABB_FLAT = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
+
     public BlockAirLockWall(String assetName)
     {
-        super(/*GalacticraftCore.TEXTURE_PREFIX + "oxygentile_3", */Material.iron, false);
+        super(Material.IRON, false);
         this.setTickRandomly(true);
         this.setHardness(1000.0F);
-        this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-    }*/
-
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        float var5;
-        float var6;
-
         Block frameID = GCBlocks.airLockFrame;
         Block sealID = GCBlocks.airLockSeal;
 
-        Block idXMin = worldIn.getBlockState(pos.offset(EnumFacing.WEST)).getBlock();
-        Block idXMax = worldIn.getBlockState(pos.offset(EnumFacing.WEST)).getBlock();
+        Block idXMin = source.getBlockState(pos.offset(EnumFacing.WEST)).getBlock();
+        Block idXMax = source.getBlockState(pos.offset(EnumFacing.WEST)).getBlock();
 
         if (idXMin != frameID && idXMax != frameID && idXMin != sealID && idXMax != sealID)
         {
-            var5 = 0.25F;
-            var6 = 0.5F;
-            this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
+            return AABB_Z;
         }
         else
         {
@@ -76,7 +55,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
             {
                 if (dir != EnumFacing.UP && dir != EnumFacing.DOWN)
                 {
-                    Block blockID = worldIn.getBlockState(pos.offset(dir)).getBlock();
+                    Block blockID = source.getBlockState(pos.offset(dir)).getBlock();
 
                     if (blockID == GCBlocks.airLockFrame || blockID == GCBlocks.airLockSeal)
                     {
@@ -87,31 +66,30 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
 
             if (adjacentCount == 4)
             {
-                this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 0.75F, 1.0F);
+                return AABB_FLAT;
             }
             else
             {
-                var5 = 0.5F;
-                var6 = 0.25F;
-                this.setBlockBounds(0.5F - var5, 0.0F, 0.5F - var6, 0.5F + var5, 1.0F, 0.5F + var6);
+                return AABB_X;
             }
         }
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
-    public boolean isFullCube()
+    @Override
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return true;
     }
@@ -127,9 +105,9 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     {
         return true;
     }
-    
+
     @Override
-    public Item getItem(World world, BlockPos pos)
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
 		return null;
     }

@@ -210,7 +210,7 @@ public class SkyProviderOverworld extends IRenderHandler
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef((float)Math.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
             z = costh[0] * sunsetModInv;
             var9 = costh[1] * sunsetModInv;
@@ -235,8 +235,8 @@ public class SkyProviderOverworld extends IRenderHandler
             for (int var27 = 0; var27 <= phi; ++var27)
             {
                 rand3 = var27 * (float) Math.PI * 2.0F / phi;
-                final float xx = MathHelper.sin(rand3);
-                final float rand5 = MathHelper.cos(rand3);
+                final float xx = (float)Math.sin(rand3);
+                final float rand5 = (float)Math.cos(rand3);
                 worldRenderer.pos(xx * 120.0F, rand5 * 120.0F, -rand5 * 40.0F * costh[3]).color(costh[0] * sunsetModInv, costh[1] * sunsetModInv, costh[2] * sunsetModInv, 0.0F).endVertex();
             }
 

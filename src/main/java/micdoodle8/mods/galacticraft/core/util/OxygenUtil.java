@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
@@ -30,7 +30,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -114,12 +114,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX);
-        int j = MathHelper.floor_double(bb.maxX);
-        int k = MathHelper.floor_double(bb.minY);
-        int l = MathHelper.floor_double(bb.maxY);
-        int i1 = MathHelper.floor_double(bb.minZ);
-        int j1 = MathHelper.floor_double(bb.maxZ);
+        int i = (int)Math.floor(bb.minX);
+        int j = (int)Math.floor(bb.maxX);
+        int k = (int)Math.floor(bb.minY);
+        int l = (int)Math.floor(bb.maxY);
+        int i1 = (int)Math.floor(bb.minZ);
+        int j1 = (int)Math.floor(bb.maxZ);
 
         OxygenUtil.checked = new HashSet();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
@@ -146,12 +146,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenAndThermalBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX);
-        int j = MathHelper.floor_double(bb.maxX);
-        int k = MathHelper.floor_double(bb.minY);
-        int l = MathHelper.floor_double(bb.maxY);
-        int i1 = MathHelper.floor_double(bb.minZ);
-        int j1 = MathHelper.floor_double(bb.maxZ);
+        int i = (int)Math.floor(bb.minX);
+        int j = (int)Math.floor(bb.maxX);
+        int k = (int)Math.floor(bb.minY);
+        int l = (int)Math.floor(bb.maxY);
+        int i1 = (int)Math.floor(bb.minZ);
+        int j1 = (int)Math.floor(bb.maxZ);
 
         OxygenUtil.checked = new HashSet();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
@@ -214,7 +214,7 @@ public class OxygenUtil
             return block.getMetaFromState(world.getBlockState(pos));
         }
 
-        if (block == null || block.getMaterial() == Material.air)
+        if (block == null || block.getMaterial() == Material.AIR)
         {
             return -1;
         }
@@ -491,7 +491,7 @@ public class OxygenUtil
 	{
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
-            if (blockVec != null && blockVec.dim == worldObj.provider.getDimensionId())
+            if (blockVec != null && blockVec.dim == worldObj.provider.getDimension())
             {
             	TileEntity tile = blockVec.getTileEntity();
             	if (tile instanceof TileEntityOxygenDistributor)

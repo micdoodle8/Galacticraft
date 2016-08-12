@@ -76,7 +76,7 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
         super(Material.vine);
         this.setLightLevel(1.0F);
         this.setTickRandomly(true);
-        this.setStepSound(soundTypeGrass);
+        this.setSoundType(soundTypeGrass);
         this.setUnlocalizedName(assetName);
     }
 
@@ -172,19 +172,19 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
@@ -325,9 +325,9 @@ public class BlockCavernousVine extends Block implements IShearable, ItemBlockDe
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, VINE_TYPE);
+        return new BlockStateContainer(this, VINE_TYPE);
     }
 
     @Override

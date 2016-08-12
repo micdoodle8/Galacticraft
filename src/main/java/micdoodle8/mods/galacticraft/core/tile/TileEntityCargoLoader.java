@@ -122,7 +122,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
@@ -145,8 +145,8 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public IChatComponent getDisplayName() {
-        return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+    public ITextComponent getDisplayName() {
+        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
     // ISidedInventory Implementation:

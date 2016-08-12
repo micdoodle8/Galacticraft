@@ -72,9 +72,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
 
     public BlockOxygenCompressor(boolean isActive, String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -205,7 +205,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         if (stack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
@@ -246,7 +246,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
         return new ItemStack(this, 1, metadata);
@@ -283,9 +283,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements ItemBloc
         return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumCompressorType)state.getValue(TYPE)).getMeta() * 4;
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

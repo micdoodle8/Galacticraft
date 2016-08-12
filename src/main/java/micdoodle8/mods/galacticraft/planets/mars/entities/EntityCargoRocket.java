@@ -108,7 +108,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                 }
             }
 
-            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
+            if (this.timeSinceLaunch % (int)Math.floor(3 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
 				if (!this.hasValidFuel())
@@ -235,7 +235,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-        	if (this.targetDimension != this.worldObj.provider.getDimensionId())
+        	if (this.targetDimension != this.worldObj.provider.getDimension())
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
                 WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               

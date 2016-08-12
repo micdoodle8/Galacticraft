@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.chunk.ChunkPrimer;
 

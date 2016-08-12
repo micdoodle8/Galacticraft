@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

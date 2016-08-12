@@ -42,7 +42,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -577,7 +577,7 @@ public class MapUtil
     		return false;            	
         }
 
-        int dim = world.provider.getDimensionId();
+        int dim = world.provider.getDimension();
         boolean result = true;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, result)) result = false;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz, 0, SIZE_STD, xCoord, zCoord, dim, result)) result = false;
@@ -702,7 +702,7 @@ public class MapUtil
     	//desert = Desert(2) colour(16421912) "Desert"
     	MapUtil.biomeColours.add(new BlockVec3(0xd4cd98, Material.cactus.getMaterialMapColor().colorValue, 3));
     	//extremeHills = Hills(3, false) colour(6316128) "Extreme Hills"
-    	MapUtil.biomeColours.add(new BlockVec3(0x4d654c, Material.rock.getMaterialMapColor().colorValue, 15));
+    	MapUtil.biomeColours.add(new BlockVec3(0x4d654c, Material.ROCK.getMaterialMapColor().colorValue, 15));
     	//forest = Forest(4, 0) colour(353825) "Forest"
     	MapUtil.biomeColours.add(new BlockVec3(0x3c7521, 0x295416, 45));
     	//taiga = Taiga(5, 0) colour(747097) "Taiga"
@@ -744,7 +744,7 @@ public class MapUtil
     	//deepOcean = Ocean(24) colour(48) "Deep Ocean"
     	MapUtil.biomeColours.add(new BlockVec3(0x2f2fd4, 0, 0));
     	//stoneBeach = StoneBeach(25) colour(10658436) "Stone Beach"
-    	MapUtil.biomeColours.add(new BlockVec3(Material.rock.getMaterialMapColor().colorValue, 0, 0));
+    	MapUtil.biomeColours.add(new BlockVec3(Material.ROCK.getMaterialMapColor().colorValue, 0, 0));
     	//coldBeach = Beach(26) colour(16445632) "Cold Beach"
     	MapUtil.biomeColours.add(new BlockVec3(Material.sand.getMaterialMapColor().colorValue, Material.snow.getMaterialMapColor().colorValue, 75));
     	//birchForest = Forest(27, 2)) colour(3175492) "Birch Forest"

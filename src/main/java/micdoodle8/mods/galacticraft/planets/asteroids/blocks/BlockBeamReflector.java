@@ -16,8 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,10 +30,10 @@ public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBl
 {
     public BlockBeamReflector(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName("stone");
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
     }
 
     @SideOnly(Side.CLIENT)
@@ -44,13 +44,13 @@ public class BlockBeamReflector extends BlockTileGC implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }

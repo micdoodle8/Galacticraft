@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;

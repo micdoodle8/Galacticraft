@@ -23,10 +23,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -110,7 +110,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                         if (block != GCBlocks.landingPadFull)
                         {
                             this.connectedPads.remove(i);
-                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.getX() >> 4, coords.getZ() >> 4));
+                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkPos(coords.getX() >> 4, coords.getZ() >> 4));
                         }
                     }
                 }
@@ -463,7 +463,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

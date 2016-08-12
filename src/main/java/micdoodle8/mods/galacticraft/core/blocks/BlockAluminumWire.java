@@ -22,7 +22,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.IStringSerializable;
@@ -75,7 +75,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     public BlockAluminumWire(String assetName)
     {
         super(Material.cloth);
-        this.setStepSound(Block.soundTypeCloth);
+        this.setSoundType(Block.soundTypeCloth);
         this.setResistance(0.2F);
         this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
         this.setHardness(0.075F);
@@ -121,13 +121,13 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }*/
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -209,9 +209,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         return ((EnumWireType)state.getValue(WIRE_TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        return new BlockStateContainer(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Override

@@ -5,14 +5,14 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -67,7 +67,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
         this.riddenByEntity = player;
-        player.ridingEntity = this;
+        player.getRidingEntity() = this;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             {
                 final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
 
-                if (player != null && player.ridingEntity == null)
+                if (player != null && player.getRidingEntity() == null)
                 {
                     player.mountEntity(this);
                 }
@@ -106,7 +106,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
     private void pushEntityAway(Entity entityToPush)
     {
-        if (this.riddenByEntity != entityToPush && this.ridingEntity != entityToPush)
+        if (this.riddenByEntity != entityToPush && this.getRidingEntity() != entityToPush)
         {
             double d0 = this.posX - entityToPush.posX;
             double d1 = this.posZ - entityToPush.posZ;
@@ -340,7 +340,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 	}
 
 	@Override
-	public EntityFX getParticle(Random rand, double x, double y, double z,
+	public Particle getParticle(Random rand, double x, double y, double z,
 			double motX, double motY, double motZ) {
 		return null;
 	}

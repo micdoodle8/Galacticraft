@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -219,7 +219,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
@@ -477,7 +477,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

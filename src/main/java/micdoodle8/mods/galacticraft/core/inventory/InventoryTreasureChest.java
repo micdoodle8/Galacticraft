@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 public class InventoryTreasureChest implements IInventory
 {
@@ -148,8 +148,8 @@ public class InventoryTreasureChest implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
-        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (ITextComponent)(this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 }

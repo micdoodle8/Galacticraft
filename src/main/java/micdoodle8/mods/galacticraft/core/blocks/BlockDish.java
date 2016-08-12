@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,10 +15,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftDesc, IPartialSealableBlock, ISortableBlock
@@ -27,9 +25,9 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
 
     public BlockDish(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -69,9 +67,10 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
                 for (int z = -1; z <= 1; z++)
                 {
                     BlockPos pos1 = pos.add((y == 2 ? x : 0), y, (y == 2 ? z : 0));
-                    Block block = world.getBlockState(pos1).getBlock();
+                    IBlockState stateAt = world.getBlockState(pos1);
+                    Block block = stateAt.getBlock();
 
-                    if (block.getMaterial() != Material.air && !block.isReplaceable(world, pos1))
+                    if (block.getMaterial(stateAt) != Material.AIR && !block.isReplaceable(world, pos1))
                     {
                         return false;
                     }
@@ -88,7 +87,7 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     {
         int metadata = state.getBlock().getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)
@@ -155,21 +154,13 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
-    {
-        int metadata = this.getDamageValue(world, pos);
-
-        return new ItemStack(this, 1, metadata);
-    }
-
-    @Override
     public TileEntity createTileEntity(World world, IBlockState metadata)
     {
     	return new TileEntityDish();
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -187,7 +178,7 @@ public class BlockDish extends BlockTileGC implements ItemBlockDesc.IBlockShiftD
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }

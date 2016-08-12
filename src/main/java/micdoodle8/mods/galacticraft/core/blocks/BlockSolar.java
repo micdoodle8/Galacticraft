@@ -70,9 +70,9 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 
     public BlockSolar(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -165,7 +165,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
                     BlockPos posAt = pos.add(y == 2 ? x : 0, y, y == 2 ? z : 0);
                     Block block = worldIn.getBlockState(posAt).getBlock();
 
-                    if (block.getMaterial() != Material.air && !block.isReplaceable(worldIn, posAt))
+                    if (block.getMaterial() != Material.AIR && !block.isReplaceable(worldIn, posAt))
                     {
                         return false;
                     }
@@ -194,7 +194,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         if (stack.getItemDamage() >= ADVANCED_METADATA)
@@ -210,7 +210,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
 
 //        int metadata = getMetaFromState(state);
 //
-//        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+//        int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 //        int change = 0;
 //
 //        switch (angle)
@@ -297,7 +297,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
 
@@ -318,7 +318,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -343,7 +343,7 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -366,9 +366,9 @@ public class BlockSolar extends BlockTileGC implements ItemBlockDesc.IBlockShift
         return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumSolarType)state.getValue(TYPE)).getMeta() * 4;
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
@@ -122,7 +122,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
@@ -147,7 +147,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

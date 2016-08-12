@@ -24,7 +24,7 @@ import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 
 import java.util.EnumSet;
@@ -52,7 +52,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public void validate()
     {
     	super.validate();
-//        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimensionId()));
+//        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimension()));
     }
 
     @Override
@@ -227,7 +227,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             if (this.ticks % (this.active ? 20 : 4) == 0)
 	        {
                 double size = bubbleSize;
-                int bubbleR = MathHelper.floor_double(size) + 4;
+                int bubbleR = (int)Math.floor(size) + 4;
                 int bubbleR2 = (int) (size * size);
             	for (int x = this.getPos().getX() - bubbleR; x <= this.getPos().getX() + bubbleR; x++)
                 {
@@ -291,7 +291,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -571,7 +571,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

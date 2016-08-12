@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityCryoFX extends EntityFX
+public class EntityCryoFX extends Particle
 {
     float field_70569_a;
 

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,7 +41,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -229,7 +229,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     public float getStarBrightness(float par1)
     {
         final float var2 = this.worldObj.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+        float var3 = 1.0F - ((float)Math.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
         {
@@ -320,13 +320,13 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                             //Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
                             //If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
                             //Note: breatheable air here means the entity is definitely not in freefall
-                            int xmx = MathHelper.floor_double(e.getEntityBoundingBox().maxX + 0.2D);
-                            int ym = MathHelper.floor_double(e.getEntityBoundingBox().minY - 0.1D);
-                            int yy = MathHelper.floor_double(e.getEntityBoundingBox().maxY + 0.1D);
-                            int zm = MathHelper.floor_double(e.getEntityBoundingBox().minZ - 0.2D);
-                            int zz = MathHelper.floor_double(e.getEntityBoundingBox().maxZ + 0.2D);
+                            int xmx = (int)Math.floor(e.getEntityBoundingBox().maxX + 0.2D);
+                            int ym = (int)Math.floor(e.getEntityBoundingBox().minY - 0.1D);
+                            int yy = (int)Math.floor(e.getEntityBoundingBox().maxY + 0.1D);
+                            int zm = (int)Math.floor(e.getEntityBoundingBox().minZ - 0.2D);
+                            int zz = (int)Math.floor(e.getEntityBoundingBox().maxZ + 0.2D);
                             BLOCKCHECK:
-                            for (int x = MathHelper.floor_double(e.getEntityBoundingBox().minX - 0.2D); x <= xmx; x++)
+                            for (int x = (int)Math.floor(e.getEntityBoundingBox().minX - 0.2D); x <= xmx; x++)
                             {
                                 for (int y = ym; y <= yy; y++)
                                 {
@@ -366,15 +366,15 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                                 }
                                 angle += this.angularVelocityRadians / 3F;
                                 arc = arc * this.angularVelocityRadians;
-                                final double offsetX = -arc * MathHelper.sin(angle);
-                                final double offsetZ = arc * MathHelper.cos(angle);
+                                final double offsetX = -arc * (float)Math.sin(angle);
+                                final double offsetZ = arc * (float)Math.cos(angle);
                                 e.posX += offsetX;
                                 e.posZ += offsetZ;
                                 e.lastTickPosX += offsetX;
                                 e.lastTickPosZ += offsetZ;
 
                                 //Rotated into an unloaded chunk (probably also drifted out to there): byebye
-                                if (!this.worldObj.isBlockLoaded(new BlockPos(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
+                                if (!this.worldObj.isBlockLoaded(new BlockPos((int)Math.floor(e.posX), 64, (int)Math.floor(e.posZ))))
                                 {
                                     e.setDead();
                                 }
@@ -632,8 +632,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 }
                 angle += this.angularVelocityRadians / 3F;
                 arc = arc * this.angularVelocityRadians;
-                double offsetX = -arc * MathHelper.sin(angle);
-                double offsetZ = arc * MathHelper.cos(angle);
+                double offsetX = -arc * (float)Math.sin(angle);
+                double offsetZ = arc * (float)Math.cos(angle);
 
                 //Check for block collisions here - if so move the player appropriately
                 //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
@@ -863,9 +863,9 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             return false;
         }
         
-        if (p.ridingEntity != null)
+        if (p.getRidingEntity() != null)
         {
-        	Entity e = p.ridingEntity;
+        	Entity e = p.getRidingEntity();
         	if (e instanceof EntitySpaceshipBase)
         		return ((EntitySpaceshipBase)e).getLaunched();
         	if (e instanceof EntityLanderBase)
@@ -896,12 +896,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 	        	//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
 	            //If so, it's assumed the player has something close enough to grab onto, so is not in freefall
 	            //Note: breatheable air here means the player is definitely not in freefall
-	        	int xm = MathHelper.floor_double(playerReach.minX);
-	        	int xx = MathHelper.floor_double(playerReach.maxX);
-	            int ym = MathHelper.floor_double(playerReach.minY);
-	            int yy = MathHelper.floor_double(playerReach.maxY);
-	            int zm = MathHelper.floor_double(playerReach.minZ);
-	            int zz = MathHelper.floor_double(playerReach.maxZ);
+	        	int xm = (int)Math.floor(playerReach.minX);
+	        	int xx = (int)Math.floor(playerReach.maxX);
+	            int ym = (int)Math.floor(playerReach.minY);
+	            int yy = (int)Math.floor(playerReach.maxY);
+	            int zm = (int)Math.floor(playerReach.minZ);
+	            int zz = (int)Math.floor(playerReach.maxZ);
 	            for (int x = xm; x <= xx; x++)
 	            {
 	                for (int y = ym; y <= yy; y++)
@@ -942,36 +942,36 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 				} else
 					quadrant = (zd<0) ? 3 : 1;
 			
-			int ymin = MathHelper.floor_double(p.boundingBox.minY)-1;
-			int ymax = MathHelper.floor_double(p.boundingBox.maxY);
+			int ymin = (int)Math.floor(p.boundingBox.minY)-1;
+			int ymax = (int)Math.floor(p.boundingBox.maxY);
 			int xmin, xmax, zmin, zmax;
 
 			switch (quadrant)
 			{
 			case 0:
-				xmin = MathHelper.floor_double(p.boundingBox.maxX);
+				xmin = (int)Math.floor(p.boundingBox.maxX);
 				xmax = this.ssBoundsMaxX - 1;
-				zmin = MathHelper.floor_double(p.boundingBox.minZ)-1;
-				zmax = MathHelper.floor_double(p.boundingBox.maxZ)+1;
+				zmin = (int)Math.floor(p.boundingBox.minZ)-1;
+				zmax = (int)Math.floor(p.boundingBox.maxZ)+1;
 				break;
 			case 1:
-				xmin = MathHelper.floor_double(p.boundingBox.minX)-1;
-				xmax = MathHelper.floor_double(p.boundingBox.maxX)+1;
-				zmin = MathHelper.floor_double(p.boundingBox.maxZ);
+				xmin = (int)Math.floor(p.boundingBox.minX)-1;
+				xmax = (int)Math.floor(p.boundingBox.maxX)+1;
+				zmin = (int)Math.floor(p.boundingBox.maxZ);
 				zmax = this.ssBoundsMaxZ - 1;
 				break;
 			case 2:
-				zmin = MathHelper.floor_double(p.boundingBox.minZ)-1;
-				zmax = MathHelper.floor_double(p.boundingBox.maxZ)+1;
+				zmin = (int)Math.floor(p.boundingBox.minZ)-1;
+				zmax = (int)Math.floor(p.boundingBox.maxZ)+1;
 				xmin = this.ssBoundsMinX;
-				xmax = MathHelper.floor_double(p.boundingBox.minX);
+				xmax = (int)Math.floor(p.boundingBox.minX);
 				break;
 			case 3:
 			default:
-				xmin = MathHelper.floor_double(p.boundingBox.minX)-1;
-				xmax = MathHelper.floor_double(p.boundingBox.maxX)+1;
+				xmin = (int)Math.floor(p.boundingBox.minX)-1;
+				xmax = (int)Math.floor(p.boundingBox.maxX)+1;
 				zmin = this.ssBoundsMinZ;
-				zmax = MathHelper.floor_double(p.boundingBox.minZ);
+				zmax = (int)Math.floor(p.boundingBox.minZ);
 				break;
 			}
 			
@@ -1249,7 +1249,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             if (!this.oneSSBlock.equals(baseBlock))
             {
                 this.oneSSBlock = baseBlock;
-                if (this.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.air)
+                if (this.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.AIR)
                 {
                     return this.checkSS(baseBlock, true);
                 }

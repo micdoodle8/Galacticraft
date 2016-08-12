@@ -63,7 +63,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -857,9 +857,9 @@ public class ClientProxyCore extends CommonProxyCore
     public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
     {
         double d0 = entity.posY + entity.getEyeHeight();
-        int i = MathHelper.floor_double(entity.posX);
-        int j = MathHelper.floor_float(MathHelper.floor_double(d0));
-        int k = MathHelper.floor_double(entity.posZ);
+        int i = (int)Math.floor(entity.posX);
+        int j = MathHelper.floor_float((int)Math.floor(d0));
+        int k = (int)Math.floor(entity.posZ);
         BlockPos pos = new BlockPos(i, j, k);
         Block block = entity.worldObj.getBlockState(pos).getBlock();
 
@@ -903,7 +903,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         World world = ClientProxyCore.mc.theWorld;
 
-        if (world != null && world.provider.getDimensionId() == dimensionID)
+        if (world != null && world.provider.getDimension() == dimensionID)
         {
             return world;
         }
@@ -918,10 +918,10 @@ public class ClientProxyCore extends CommonProxyCore
 
         final EntityPlayer player = event.entityPlayer;
 
-        if (player.ridingEntity instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
+        if (player.getRidingEntity() instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
         		&& Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
+            EntityTieredRocket entity = (EntityTieredRocket) player.getRidingEntity();
             GL11.glTranslatef(0, -entity.getRotateOffset() - PLAYER_Y_OFFSET, 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
             float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
@@ -942,7 +942,7 @@ public class ClientProxyCore extends CommonProxyCore
     @SubscribeEvent
     public void onRenderPlayerEquipped(RenderPlayerEvent.Specials.Pre event)
     {
-        final Entity ridden = event.entityPlayer.ridingEntity;
+        final Entity ridden = event.entityPlayer.getRidingEntity();
         if (ridden instanceof EntityAutoRocket || ridden instanceof EntityLanderBase)
         {
             event.setCanceled(true);
@@ -1033,8 +1033,8 @@ public class ClientProxyCore extends CommonProxyCore
 //                double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * event.partialRenderTick - (player.prevPosY + (player.posY - player.prevPosY) * event.partialRenderTick);
 //                double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * event.partialRenderTick - (player.prevPosZ + (player.posZ - player.prevPosZ) * event.partialRenderTick);
 //                f4 = (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick) / 57.29578F;
-//                double d1 = MathHelper.sin(f4);
-//                double d2 = -MathHelper.cos(f4);
+//                double d1 = (float)Math.sin(f4);
+//                double d2 = -(float)Math.cos(f4);
 //                float f5 = (float) d4 * 10.0F;
 //
 //                if (f5 < -6.0F)
@@ -1056,7 +1056,7 @@ public class ClientProxyCore extends CommonProxyCore
 //                }
 //
 //                float f8 = player.prevCameraYaw + (player.cameraYaw - player.prevCameraYaw) * event.partialRenderTick;
-//                f5 += MathHelper.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * event.partialRenderTick) * 6.0F) * 32.0F * f8;
+//                f5 += (float)Math.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * event.partialRenderTick) * 6.0F) * 32.0F * f8;
 //
 //                if (player.isSneaking())
 //                {
@@ -1081,16 +1081,16 @@ public class ClientProxyCore extends CommonProxyCore
         if (ClientProxyCore.smallMoonActive && (offsetX != 0.0D || offsetY != 0.0D || offsetZ != 0.0D))
         {
             final EntityPlayerSP player = ClientProxyCore.mc.thePlayer;
-            if (player.posY > ClientProxyCore.terrainHeight + 8F && player.ridingEntity != entity && player != entity)
+            if (player.posY > ClientProxyCore.terrainHeight + 8F && player.getRidingEntity() != entity && player != entity)
             {
                 double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
 
-                int pX = MathHelper.floor_double(player.posX / 16D) << 4;
-                int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
+                int pX = (int)Math.floor(player.posX / 16D) << 4;
+                int pZ = (int)Math.floor(player.posZ / 16D) << 4;
 
-                int eX = MathHelper.floor_double(entity.posX / 16D) << 4;
-                int eY = MathHelper.floor_double(entity.posY / 16D) << 4;
-                int eZ = MathHelper.floor_double(entity.posZ / 16D) << 4;
+                int eX = (int)Math.floor(entity.posX / 16D) << 4;
+                int eY = (int)Math.floor(entity.posY / 16D) << 4;
+                int eZ = (int)Math.floor(entity.posZ / 16D) << 4;
 
                 float dX = eX - pX;
                 float dZ = eZ - pZ;
@@ -1171,8 +1171,8 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                     double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
 
-                    int pX = MathHelper.floor_double(player.posX / 16D) << 4;
-                    int pZ = MathHelper.floor_double(player.posZ / 16D) << 4;
+                    int pX = (int)Math.floor(player.posX / 16D) << 4;
+                    int pZ = (int)Math.floor(player.posZ / 16D) << 4;
 
                     int eX = tile.getPos().getX() / 16 << 4;
                     int eY = tile.getPos().getY() / 16 << 4;
@@ -1251,9 +1251,9 @@ public class ClientProxyCore extends CommonProxyCore
 
         EntityLivingBase entityLivingBase = ClientProxyCore.mc.getRenderViewEntity();
 
-        if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
+        if (player.getRidingEntity() instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
+            EntityTieredRocket entity = (EntityTieredRocket) player.getRidingEntity();
             float offset = entity.getRotateOffset() + PLAYER_Y_OFFSET;
             GL11.glTranslatef(0, -offset, 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
@@ -1334,8 +1334,8 @@ public class ClientProxyCore extends CommonProxyCore
                     double globalArc = ClientProxyCore.globalRadius / 57.2957795D;
                     float globeRadius = ClientProxyCore.globalRadius - ClientProxyCore.terrainHeight;
 
-                    int pX = MathHelper.floor_double(entitylivingbase.posX / 16D) << 4;
-                    int pZ = MathHelper.floor_double(entitylivingbase.posZ / 16D) << 4;
+                    int pX = (int)Math.floor(entitylivingbase.posX / 16D) << 4;
+                    int pZ = (int)Math.floor(entitylivingbase.posZ / 16D) << 4;
 
                     float dX = rend.posX - pX;
                     float dZ = rend.posZ - pZ;

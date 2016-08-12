@@ -114,8 +114,8 @@ public class GCBlocks
         GCBlocks.spinThruster = new BlockSpinThruster("spin_thruster");
         GCBlocks.screen = new BlockScreen("view_screen");
         GCBlocks.telemetry = new BlockTelemetry("telemetry");
-        /*GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock);
-        GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock);
+        /*GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.ROCK);
+        GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.ROCK);
         GCBlocks.tinStairs1 = new BlockStairsGC("tinStairs1", blockMoon, BlockStairsGC.StairsCategoryGC.TIN1).setHardness(2.0F);
         GCBlocks.tinStairs2 = new BlockStairsGC("tinStairs2", blockMoon, BlockStairsGC.StairsCategoryGC.TIN2).setHardness(2.0F);
         GCBlocks.moonStoneStairs = new BlockStairsGC("moonStoneStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_STONE).setHardness(1.5F);

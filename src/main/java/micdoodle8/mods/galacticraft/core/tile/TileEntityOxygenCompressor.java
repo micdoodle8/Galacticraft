@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
@@ -14,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.EnumSet;
 
@@ -89,7 +88,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
 
@@ -107,6 +106,8 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         }
 
         par1NBTTagCompound.setTag("Items", list);
+
+        return par1NBTTagCompound;
     }
 
     @Override
@@ -334,7 +335,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

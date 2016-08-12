@@ -12,7 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -37,7 +37,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }*/
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -50,7 +50,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -69,7 +69,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements ItemBlockDesc.IBl
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return null;
     }

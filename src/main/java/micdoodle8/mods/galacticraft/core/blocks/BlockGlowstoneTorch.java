@@ -38,7 +38,7 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setLightLevel(0.85F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(Block.soundTypeWood);
     }
 
     @Override
@@ -48,19 +48,19 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -296,9 +296,9 @@ public class BlockGlowstoneTorch extends Block implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 
     @Override

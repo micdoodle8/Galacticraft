@@ -11,8 +11,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         String var3 = null;
         EntityPlayerMP playerBase = null;
@@ -100,13 +100,13 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
+            playerBase.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
         }
     }
 
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)
     {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers(sender)) : null;
     }

@@ -152,9 +152,9 @@ public class ModelCreeperBoss extends ModelBase
         this.headMain.rotateAngleX = f4 / (180F / (float) Math.PI);
         this.oxygenTank.rotateAngleY = f3 / (180F / (float) Math.PI);
         this.oxygenTank.rotateAngleX = f4 / (180F / (float) Math.PI);
-        this.rightLegFront.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        this.leftLegFront.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;
-        this.leftLeg.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;
-        this.rightLeg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2F * f1;
+        this.rightLegFront.rotateAngleX = (float)Math.cos(f * 0.6662F) * 1.4F * f1;
+        this.leftLegFront.rotateAngleX = (float)Math.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;
+        this.leftLeg.rotateAngleX = (float)Math.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;
+        this.rightLeg.rotateAngleX = (float)Math.cos(f * 0.6662F) * 2F * f1;
     }
 }

@@ -19,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
@@ -81,9 +81,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
 
     public BlockCargoLoader(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -228,7 +228,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         if (stack.getItemDamage() >= METADATA_CARGO_UNLOADER)
@@ -314,9 +314,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements ItemBlockDesc
         return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType)state.getValue(TYPE)).getMeta() * 4;
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
@@ -16,8 +16,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -71,12 +71,12 @@ public class ItemFlag extends Item implements IHoldableItem, ISortableItem
                     par2World.spawnEntityInWorld(flag);
                     flag.setType(par1ItemStack.getItemDamage());
                     flag.setOwner(par3EntityPlayer.getGameProfile().getName());
-                    par2World.playSoundEffect(pos.getX(), pos.getY(), pos.getZ(), Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getFrequency() + 2.0F);
+                    par2World.playSoundEffect(pos.getX(), pos.getY(), pos.getZ(), SoundType.METAL.getBreakSound(), SoundType.METAL.getVolume(), SoundType.METAL.getFrequency() + 2.0F);
                     placed = true;
                 }
                 else
                 {
-                    par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.flag.already_placed")));
+                    par3EntityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.flag.already_placed")));
                 }
             }
 

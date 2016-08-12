@@ -120,7 +120,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public float getStarBrightness(float par1)
     {
         float f1 = this.worldObj.getCelestialAngle(par1);
-        float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+        float f2 = 1.0F - ((float)Math.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (f2 < 0.0F)
         {

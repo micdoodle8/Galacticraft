@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * This tile entity pre-fabricated for all conductors.

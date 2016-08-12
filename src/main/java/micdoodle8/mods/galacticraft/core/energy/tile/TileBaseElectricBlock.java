@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy.tile;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -137,11 +137,12 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
     
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
         nbt.setBoolean("isDisabled", this.getDisabled(0));
+        return nbt;
     }
 
     @Override
@@ -192,7 +193,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();
-        drops.add(this.getBlockType().getPickBlock(null, this.worldObj, this.getPos()));
+        drops.add(this.getBlockType().getPickBlock(state, null, this.worldObj, this.getPos(), player));
         return drops;
     }
 

@@ -60,9 +60,9 @@ public class EntityGrapple extends Entity implements IProjectile
             this.setLocationAndAngles(shootingEntity.posX, shootingEntity.posY + shootingEntity.getEyeHeight(), shootingEntity.posZ, shootingEntity.rotationYaw, shootingEntity.rotationPitch);
         }
 
-        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
-        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
-        this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionX = -(float)Math.sin(this.rotationYaw / 180.0F * (float) Math.PI) * (float)Math.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionZ = (float)Math.cos(this.rotationYaw / 180.0F * (float) Math.PI) * (float)Math.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionY = -(float)Math.sin(this.rotationPitch / 180.0F * (float) Math.PI);
         this.posX += this.motionX;
         this.posY += this.motionY;
         this.posZ += this.motionZ;
@@ -200,7 +200,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             Block block = this.worldObj.getBlockState(this.hitVec).getBlock();
 
-            if (block.getMaterial() != Material.air)
+            if (block.getMaterial() != Material.AIR)
             {
                 block.setBlockBoundsBasedOnState(this.worldObj, this.hitVec);
                 AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, this.hitVec, this.worldObj.getBlockState(this.hitVec));
@@ -348,7 +348,7 @@ public class EntityGrapple extends Entity implements IProjectile
                     this.inGround = true;
                     this.arrowShake = 7;
 
-                    if (this.hitBlock.getMaterial() != Material.air)
+                    if (this.hitBlock.getMaterial() != Material.AIR)
                     {
                         this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.hitVec, this);
                     }
@@ -409,7 +409,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (!this.worldObj.isRemote && (this.ticksInGround - 1) % 10 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 150));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 150));
         }
     }
 

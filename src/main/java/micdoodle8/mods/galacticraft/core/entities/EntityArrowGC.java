@@ -105,14 +105,14 @@
 //
 //        this.setSize(0.5F, 0.5F);
 //        this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
-//        this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+//        this.posX -= (float)Math.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 //        this.posY -= 0.10000000149011612D;
-//        this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+//        this.posZ -= (float)Math.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 //        this.setPosition(this.posX, this.posY, this.posZ);
 //        this.yOffset = 0.0F;
-//        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
-//        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
-//        this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI);
+//        this.motionX = -(float)Math.sin(this.rotationYaw / 180.0F * (float) Math.PI) * (float)Math.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+//        this.motionZ = (float)Math.cos(this.rotationYaw / 180.0F * (float) Math.PI) * (float)Math.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+//        this.motionY = -(float)Math.sin(this.rotationPitch / 180.0F * (float) Math.PI);
 //        this.setArrowHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
 //    }
 //
@@ -200,7 +200,7 @@
 //
 //        Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 //
-//        if (block.getMaterial() != Material.air)
+//        if (block.getMaterial() != Material.AIR)
 //        {
 //            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
 //            AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);

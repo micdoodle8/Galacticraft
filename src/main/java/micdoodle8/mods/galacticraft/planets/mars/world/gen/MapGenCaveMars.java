@@ -46,13 +46,13 @@ public class MapGenCaveMars extends MapGenBaseMeta
 
         for (final boolean flag1 = random.nextInt(6) == 0; par15 < par16; ++par15)
         {
-            final double d6 = 1.5D + MathHelper.sin(par15 * (float) Math.PI / par16) * par12 * 1.0F;
+            final double d6 = 1.5D + (float)Math.sin(par15 * (float) Math.PI / par16) * par12 * 1.0F;
             final double d7 = d6 * par17;
-            final float f5 = MathHelper.cos(par14);
-            final float f6 = MathHelper.sin(par14);
-            par6 += MathHelper.cos(par13) * f5;
+            final float f5 = (float)Math.cos(par14);
+            final float f6 = (float)Math.sin(par14);
+            par6 += (float)Math.cos(par13) * f5;
             par8 += f6;
-            par10 += MathHelper.sin(par13) * f5;
+            par10 += (float)Math.sin(par13) * f5;
 
             if (flag1)
             {
@@ -91,12 +91,12 @@ public class MapGenCaveMars extends MapGenBaseMeta
 
                 if (par6 >= d4 - 16.0D - d6 * 2.0D && par10 >= d5 - 16.0D - d6 * 2.0D && par6 <= d4 + 16.0D + d6 * 2.0D && par10 <= d5 + 16.0D + d6 * 2.0D)
                 {
-                    int l1 = MathHelper.floor_double(par6 - d6) - par3 * 16 - 1;
-                    int i2 = MathHelper.floor_double(par6 + d6) - par3 * 16 + 1;
-                    int j2 = MathHelper.floor_double(par8 - d7) - 1;
-                    int k2 = MathHelper.floor_double(par8 + d7) + 1;
-                    int l2 = MathHelper.floor_double(par10 - d6) - par4 * 16 - 1;
-                    int i3 = MathHelper.floor_double(par10 + d6) - par4 * 16 + 1;
+                    int l1 = (int)Math.floor(par6 - d6) - par3 * 16 - 1;
+                    int i2 = (int)Math.floor(par6 + d6) - par3 * 16 + 1;
+                    int j2 = (int)Math.floor(par8 - d7) - 1;
+                    int k2 = (int)Math.floor(par8 + d7) + 1;
+                    int l2 = (int)Math.floor(par10 - d6) - par4 * 16 - 1;
+                    int i3 = (int)Math.floor(par10 + d6) - par4 * 16 + 1;
 
                     if (l1 < 0)
                     {

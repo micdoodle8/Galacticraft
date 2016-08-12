@@ -13,7 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
@@ -26,12 +26,12 @@ public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockS
 {
     public BlockMinerBase(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
         this.setCreativeTab(CreativeTabs.tabBlock);
-        this.setStepSound(soundTypeMetal);
+        this.setSoundType(soundTypeMetal);
     }
 
     /*@Override
@@ -74,7 +74,7 @@ public class BlockMinerBase extends BlockTileGC implements ItemBlockDesc.IBlockS
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }

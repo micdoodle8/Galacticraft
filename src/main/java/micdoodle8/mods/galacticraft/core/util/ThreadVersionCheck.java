@@ -4,7 +4,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,7 +77,7 @@ public class ThreadVersionCheck extends Thread
 
                             if (sideToCheck.equals(Side.CLIENT))
                             {
-                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
+                                FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new TextComponentString(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
                             }
                             else if (sideToCheck.equals(Side.SERVER))
                             {

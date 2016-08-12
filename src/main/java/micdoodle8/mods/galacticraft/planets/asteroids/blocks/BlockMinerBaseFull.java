@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
@@ -31,11 +31,11 @@ public class BlockMinerBaseFull extends BlockTileGC
 
     public BlockMinerBaseFull(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
-        this.setStepSound(soundTypeMetal);
+        this.setSoundType(soundTypeMetal);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -127,7 +127,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Item.getItemFromBlock(AsteroidBlocks.blockMinerBase), 1, 0);
     }

@@ -25,7 +25,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -89,7 +89,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
                     {
                         Block blockAbove = this.worldObj.getBlockState(this.getPos().up()).getBlock();
-                        if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+                        if (blockAbove != null && blockAbove.getMaterial() == Material.AIR && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
                             if (!OxygenUtil.inOxygenBubble(this.worldObj, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
@@ -472,7 +472,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

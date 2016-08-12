@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityOxygenDetector extends TileEntityAdvanced
 {

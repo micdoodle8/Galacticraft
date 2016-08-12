@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
@@ -125,7 +125,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 						this.pulseRate--;
 						if (eLiving.hurtTime > this.lastHurttime) this.pulseRate += 100;
 						this.lastHurttime = eLiving.hurtTime;
-						if (eLiving.ridingEntity != null) data[2] /= 4;  //reduced pulse effect if riding a vehicle
+						if (eLiving.getRidingEntity() != null) data[2] /= 4;  //reduced pulse effect if riding a vehicle
 						else if (data[2] > 1) this.pulseRate+=2;
 						this.pulseRate += Math.max(data[2] - pulseRate, 0) / 4;
 						if (this.pulseRate > 2000) this.pulseRate = 2000;
@@ -181,7 +181,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 			{
 				name = "";
 			}
-			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), name, data[0], data[1], data[2], data[3], data[4], strUUID } ), new TargetPoint(this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+			GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), name, data[0], data[1], data[2], data[3], data[4], strUUID } ), new TargetPoint(this.worldObj.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
 		}
 	}
 	
@@ -195,7 +195,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     }
     
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         if (this.linkedEntity != null && !this.linkedEntity.isDead)
@@ -244,7 +244,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 		
 		int distSq = 1025;
 		BlockVec3Dim nearest = null;
-		int dim = te.getWorld().provider.getDimensionId();
+		int dim = te.getWorld().provider.getDimension();
 		for (BlockVec3Dim telemeter : loadedList)
 		{
 			if (telemeter.dim != dim) continue;

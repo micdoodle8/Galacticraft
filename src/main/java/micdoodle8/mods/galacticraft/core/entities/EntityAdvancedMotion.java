@@ -12,12 +12,12 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -203,7 +203,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     public abstract Map<Vector3, Vector3> getParticleMap();
 
     @SideOnly(Side.CLIENT)
-    public abstract EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
+    public abstract Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
 
     public abstract void tickInAir();
 
@@ -365,13 +365,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
             if (!this.worldObj.isRemote && this.ticks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 50.0D));
             }
         }
 
         if (!this.worldObj.isRemote && this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 50.0D));
         }
 
         if (this.worldObj.isRemote && this.ticks % 5 == 0)
@@ -415,7 +415,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     }
 
     @SideOnly(Side.CLIENT)
-    public void spawnParticle(EntityFX fx)
+    public void spawnParticle(Particle fx)
     {
         final Minecraft mc = FMLClientHandler.instance().getClient();
 

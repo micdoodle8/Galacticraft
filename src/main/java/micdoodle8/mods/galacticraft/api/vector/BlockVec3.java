@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ReportedException;
@@ -103,7 +103,7 @@ public class BlockVec3 implements Cloneable
         {
             // In a typical inner loop, 80% of the time consecutive calls to
             // this will be within the same chunk
-            if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+            if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
             {
                 return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
             }
@@ -112,7 +112,7 @@ public class BlockVec3 implements Cloneable
                 Chunk chunk = null;
                 chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                 BlockVec3.chunkCached = chunk;
-                BlockVec3.chunkCacheDim = world.provider.getDimensionId();
+                BlockVec3.chunkCacheDim = world.provider.getDimension();
                 BlockVec3.chunkCacheX = chunkx;
                 BlockVec3.chunkCacheZ = chunkz;
                 return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -151,7 +151,7 @@ public class BlockVec3 implements Cloneable
             {
                 // In a typical inner loop, 80% of the time consecutive calls to
                 // this will be within the same chunk
-                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
                 {
                     return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
                 }
@@ -160,7 +160,7 @@ public class BlockVec3 implements Cloneable
                     Chunk chunk = null;
                     chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3.chunkCached = chunk;
-                    BlockVec3.chunkCacheDim = world.provider.getDimensionId();
+                    BlockVec3.chunkCacheDim = world.provider.getDimension();
                     BlockVec3.chunkCacheX = chunkx;
                     BlockVec3.chunkCacheZ = chunkz;
                     return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -208,7 +208,7 @@ public class BlockVec3 implements Cloneable
             {
                 // In a typical inner loop, 80% of the time consecutive calls to
                 // this will be within the same chunk
-                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
                 {
                     return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
                 }
@@ -217,7 +217,7 @@ public class BlockVec3 implements Cloneable
                     Chunk chunk = null;
                     chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3.chunkCached = chunk;
-                    BlockVec3.chunkCacheDim = world.provider.getDimensionId();
+                    BlockVec3.chunkCacheDim = world.provider.getDimension();
                     BlockVec3.chunkCacheX = chunkx;
                     BlockVec3.chunkCacheZ = chunkz;
                     return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -552,7 +552,7 @@ public class BlockVec3 implements Cloneable
         int var2 = vector.x - this.x;
         int var4 = vector.y - this.y;
         int var6 = vector.z - this.z;
-        return MathHelper.floor_double(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
+        return (int)Math.floor(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
     }
 
     public int distanceSquared(BlockVec3 vector)

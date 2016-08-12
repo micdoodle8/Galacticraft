@@ -34,7 +34,7 @@ public class CommandJoinSpaceRace extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 

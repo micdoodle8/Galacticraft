@@ -32,7 +32,7 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     {
         super(Material.circuits);
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(Block.soundTypeWood);
         //this.setBlockTextureName("stone");
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -65,19 +65,19 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     //	}
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -389,9 +389,9 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         return (state.getValue(FACING)).getHorizontalIndex();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

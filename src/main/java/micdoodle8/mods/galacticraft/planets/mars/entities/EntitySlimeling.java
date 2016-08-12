@@ -31,7 +31,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MathHelper;
@@ -266,20 +266,20 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
 		this.playSound("mob.slime.small", this.getSoundVolume(), 1.1F);
 		return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
         return null;
@@ -439,7 +439,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                             GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                             if (stats.chatCooldown == 0)
                             {
-                                par1EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.slimeling.chat.wrong_player")));
+                                par1EntityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.slimeling.chat.wrong_player")));
                                 stats.chatCooldown = 100;
                             }
                         }
@@ -797,8 +797,8 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         if (this.isSprinting())
         {
             float f = this.rotationYaw * 0.017453292F;
-            this.motionX -= MathHelper.sin(f) * 0.2F;
-            this.motionZ += MathHelper.cos(f) * 0.2F;
+            this.motionX -= (float)Math.sin(f) * 0.2F;
+            this.motionZ += (float)Math.cos(f) * 0.2F;
         }
 
         this.isAirBorne = true;

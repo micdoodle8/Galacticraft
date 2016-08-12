@@ -40,7 +40,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
         super(Material.circuits);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeGlass);
+        this.setSoundType(Block.soundTypeGlass);
         //this.setBlockTextureName("glass");
         this.setUnlocalizedName(assetName);
     }
@@ -59,13 +59,13 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -98,7 +98,7 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getIndex();
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
@@ -209,9 +209,9 @@ public class BlockScreen extends BlockAdvanced implements ItemBlockDesc.IBlockSh
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, LEFT, RIGHT, UP, DOWN);
+        return new BlockStateContainer(this, FACING, LEFT, RIGHT, UP, DOWN);
     }
 
     @Override

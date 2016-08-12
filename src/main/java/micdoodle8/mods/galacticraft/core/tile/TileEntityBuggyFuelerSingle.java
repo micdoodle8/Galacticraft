@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 
 import java.util.ArrayList;

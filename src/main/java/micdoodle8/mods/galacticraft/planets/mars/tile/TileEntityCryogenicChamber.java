@@ -22,9 +22,9 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
@@ -51,11 +51,11 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         switch (enumstatus)
         {
         case OK:
-            ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+            ((EntityPlayerMP) entityPlayer).connection.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
             GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
+            entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
             return false;
         default:
             return false;

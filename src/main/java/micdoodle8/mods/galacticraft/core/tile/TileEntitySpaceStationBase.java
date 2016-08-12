@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
@@ -21,7 +21,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setString("ownerUsername", this.ownerUsername);

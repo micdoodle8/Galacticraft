@@ -53,7 +53,7 @@ public class FootprintRenderer
         {
             for (Footprint footprint : footprintList)
             {
-                if (footprint.dimension == player.worldObj.provider.getDimensionId())
+                if (footprint.dimension == player.worldObj.provider.getDimension())
                 {
                     GL11.glPushMatrix();
                     float ageScale = footprint.age / (float) Footprint.MAX_AGE;

@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyEmitter;
-import ic2.api.energy.tile.IEnergySource;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -12,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.lang.reflect.Constructor;

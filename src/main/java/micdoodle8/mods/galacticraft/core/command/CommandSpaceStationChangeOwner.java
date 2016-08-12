@@ -14,7 +14,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 public class CommandSpaceStationChangeOwner extends CommandBase
 {
@@ -108,7 +108,7 @@ public class CommandSpaceStationChangeOwner extends CommandBase
 
         if (playerAdmin != null)
         {
-            playerAdmin.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
+            playerAdmin.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
         }
         else
         	//Console

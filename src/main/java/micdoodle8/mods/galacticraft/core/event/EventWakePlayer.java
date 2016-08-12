@@ -1,15 +1,14 @@
 package micdoodle8.mods.galacticraft.core.event;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 @Cancelable
 public class EventWakePlayer extends PlayerEvent
 {
-    public EnumStatus result = null;
+    public EntityPlayer.SleepResult result = null;
     public final BlockPos pos;
     public final boolean flag1;
     public final boolean flag2;

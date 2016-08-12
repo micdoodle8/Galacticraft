@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
@@ -66,10 +66,10 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
 
     public BlockAirLockFrame(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AIR_LOCK_TYPE, EnumAirLockType.AIR_LOCK_FRAME));
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -337,7 +337,7 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -385,9 +385,9 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements ItemBlockDes
         return ((EnumAirLockType)state.getValue(AIR_LOCK_TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, AIR_LOCK_TYPE);
+        return new BlockStateContainer(this, AIR_LOCK_TYPE);
     }
 
     @Override

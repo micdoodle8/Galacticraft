@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.EntityRegistry;

@@ -17,8 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -48,7 +48,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         boolean initialLight = false;
         if (this.updateClientFlag)
         {
-        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimensionId());
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimension());
         	this.updateClientFlag = false;
         }
 
@@ -340,7 +340,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -366,7 +366,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing } ), this.worldObj.provider.getDimension());
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();

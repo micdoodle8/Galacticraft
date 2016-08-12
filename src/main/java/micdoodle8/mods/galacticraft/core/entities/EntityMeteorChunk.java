@@ -97,13 +97,13 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
         this.setSize(0.5F, 0.5F);
         this.setLocationAndAngles(par2EntityLivingBase.posX, par2EntityLivingBase.posY + par2EntityLivingBase.getEyeHeight(), par2EntityLivingBase.posZ, par2EntityLivingBase.rotationYaw, par2EntityLivingBase.rotationPitch);
-        this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+        this.posX -= (float)Math.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.posY -= 0.10000000149011612D;
-        this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+        this.posZ -= (float)Math.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
-        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
-        this.motionY = -MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionX = -(float)Math.sin(this.rotationYaw / 180.0F * (float) Math.PI) * (float)Math.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionZ = (float)Math.cos(this.rotationYaw / 180.0F * (float) Math.PI) * (float)Math.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+        this.motionY = -(float)Math.sin(this.rotationPitch / 180.0F * (float) Math.PI);
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, speed * 1.5F, 1.0F);
     }
 
@@ -329,7 +329,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
                             if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
                             {
-                                ((EntityPlayerMP) this.shootingEntity).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
+                                ((EntityPlayerMP) this.shootingEntity).connection.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
                             }
                         }
 

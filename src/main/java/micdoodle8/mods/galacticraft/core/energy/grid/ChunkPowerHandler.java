@@ -54,7 +54,7 @@ public class ChunkPowerHandler
                 e.printStackTrace();
             }
             
-            if (ConfigManagerCore.retrogenOil && event.world.provider.getDimensionId() == 0)
+            if (ConfigManagerCore.retrogenOil && event.world.provider.getDimension() == 0)
             {
             	EventHandlerGC.retrogenOil(event.world, event.getChunk());
             }

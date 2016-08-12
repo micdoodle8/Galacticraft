@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -75,7 +75,7 @@ public class OxygenPressureProtocol
     {
         if (ConfigManagerCore.enableSealerEdgeChecks)
         {
-            TickHandlerServer.scheduleNewEdgeCheck(world.provider.getDimensionId(), vec);
+            TickHandlerServer.scheduleNewEdgeCheck(world.provider.getDimension(), vec);
         }
     }
 

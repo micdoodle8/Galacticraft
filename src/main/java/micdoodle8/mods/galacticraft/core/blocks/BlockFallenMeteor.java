@@ -18,7 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
@@ -30,10 +30,10 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
 {
     public BlockFallenMeteor(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         this.setHardness(50.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -57,13 +57,13 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
     
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -169,7 +169,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
     {
         final Block var4 = worldIn.getBlockState(pos).getBlock();
 
-        if (var4.getMaterial() == Material.air)
+        if (var4.getMaterial() == Material.AIR)
         {
             return true;
         }

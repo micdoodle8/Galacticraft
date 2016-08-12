@@ -5,7 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,7 +20,7 @@ public class BlockBrightAir extends BlockAir
         this.setHardness(0.0F);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(new SoundType("sand", 0.0F, 1.0F));
+        this.setSoundType(new SoundType("sand", 0.0F, 1.0F));
         this.setLightLevel(1.0F);
     }
 
@@ -55,7 +55,7 @@ public class BlockBrightAir extends BlockAir
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return false;
     }

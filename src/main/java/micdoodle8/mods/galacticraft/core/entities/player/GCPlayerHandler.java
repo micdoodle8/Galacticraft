@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,13 +49,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -63,7 +59,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -110,9 +105,9 @@ public class GCPlayerHandler
     @SubscribeEvent
     public void onEntityConstructing(EntityEvent.EntityConstructing event)
     {
-        if (event.entity instanceof EntityPlayerMP && GCPlayerStats.get((EntityPlayerMP) event.entity) == null)
+        if (event.getEntity() instanceof EntityPlayerMP && GCPlayerStats.get((EntityPlayerMP) event.getEntity()) == null)
         {
-            GCPlayerStats.register((EntityPlayerMP) event.entity);
+            GCPlayerStats.register((EntityPlayerMP) event.getEntity());
         }
 
         if (isClient)
@@ -124,11 +119,11 @@ public class GCPlayerHandler
     @SideOnly(Side.CLIENT)
     public void onEntityConstructingClient(EntityEvent.EntityConstructing event)
     {
-    	if (event.entity instanceof EntityPlayerSP)
+    	if (event.getEntity() instanceof EntityPlayerSP)
     	{
-    		if (GCPlayerStatsClient.get((EntityPlayerSP) event.entity) == null)
+    		if (GCPlayerStatsClient.get((EntityPlayerSP) event.getEntity()) == null)
     		{
-    			GCPlayerStatsClient.register((EntityPlayerSP) event.entity);
+    			GCPlayerStatsClient.register((EntityPlayerSP) event.getEntity());
     		}
 
     		Minecraft.getMinecraft().gameSettings.sendSettingsToServer();
@@ -477,8 +472,8 @@ public class GCPlayerHandler
             
             if (absThermalLevelMod > 0D)
             {
-                int thermalLevelCooldownBase = Math.abs(MathHelper.floor_double(200 / thermalLevelMod));
-                int normaliseCooldown = Math.abs(MathHelper.floor_double(150 / lowestThermalStrength));
+                int thermalLevelCooldownBase = Math.abs((int)Math.floor(200 / thermalLevelMod));
+                int normaliseCooldown = Math.abs((int)Math.floor(150 / lowestThermalStrength));
                 int thermalLevelTickCooldown = thermalLevelCooldownBase;
                 if (thermalLevelTickCooldown < 1) thermalLevelTickCooldown = 1;   //Prevent divide by zero errors
 
@@ -486,7 +481,7 @@ public class GCPlayerHandler
                 {
                     thermalLevelMod /= Math.max(1.0F, lowestThermalStrength / 2.0F);
                     absThermalLevelMod = Math.abs(thermalLevelMod);
-                    normaliseCooldown = MathHelper.floor_double(normaliseCooldown / absThermalLevelMod);
+                    normaliseCooldown = (int)Math.floor(normaliseCooldown / absThermalLevelMod);
                     if (normaliseCooldown < 1) normaliseCooldown = 1;   //Prevent divide by zero errors
                     // Player is wearing all required thermal padding items
                     if ((player.ticksExisted - 1) % normaliseCooldown == 0)
@@ -523,7 +518,7 @@ public class GCPlayerHandler
 
                 // Instead of increasing/decreasing the thermal level by a large amount every ~200 ticks, increase/decrease
                 //      by a small amount each time (still the same average increase/decrease)
-                int thermalLevelTickCooldownSingle = MathHelper.floor_double(thermalLevelTickCooldown / absThermalLevelMod);
+                int thermalLevelTickCooldownSingle = (int) Math.floor(thermalLevelTickCooldown / absThermalLevelMod);
                 if (thermalLevelTickCooldownSingle < 1) thermalLevelTickCooldownSingle = 1;   //Prevent divide by zero errors
 
                 if ((player.ticksExisted - 1) % thermalLevelTickCooldownSingle == 0)
@@ -556,12 +551,12 @@ public class GCPlayerHandler
 
                     if (playerStats.thermalLevel < -15)
                     {
-                        player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 5, 2, true, true));
+                        player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5, 2, true, true));
                     }
 
                     if (playerStats.thermalLevel > 15)
                     {
-                        player.addPotionEffect(new PotionEffect(Potion.confusion.id, 5, 2, true, true));
+                        player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 5, 2, true, true));
                     }
                 }
             }
@@ -601,7 +596,7 @@ public class GCPlayerHandler
 
 	protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket) && !(player.ridingEntity instanceof EntityCelestialFake))
+        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.getRidingEntity() instanceof EntityLanderBase) && !(player.getRidingEntity() instanceof EntityAutoRocket) && !(player.getRidingEntity() instanceof EntityCelestialFake))
         {
             final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
             final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
@@ -859,9 +854,9 @@ public class GCPlayerHandler
         double motionSqrd = motionX * motionX + motionZ * motionZ;
         if (motionSqrd > 0.001D && !player.capabilities.isFlying)
         {
-            int iPosX = MathHelper.floor_double(player.posX);
-            int iPosY = MathHelper.floor_double(player.posY) - 1;
-            int iPosZ = MathHelper.floor_double(player.posZ);
+            int iPosX = (int)Math.floor(player.posX);
+            int iPosY = (int)Math.floor(player.posY) - 1;
+            int iPosZ = (int)Math.floor(player.posZ);
 
             // If the block below is the moon block
             IBlockState state = player.worldObj.getBlockState(new BlockPos(iPosX, iPosY, iPosZ));
@@ -876,26 +871,26 @@ public class GCPlayerHandler
                     {
                         Vector3 pos = new Vector3(player);
                         // Set the footprint position to the block below and add random number to stop z-fighting
-                        pos.y = MathHelper.floor_double(player.posY - 1D) + player.worldObj.rand.nextFloat() / 100.0F;
+                        pos.y = (int)Math.floor(player.posY - 1D) + player.worldObj.rand.nextFloat() / 100.0F;
 
                         // Adjust footprint to left or right depending on step count
                         switch (playerStats.lastStep)
                         {
                         case 0:
                             float a = (-player.rotationYaw + 90F) / 57.295779513F;
-                            pos.translate(new Vector3(MathHelper.sin(a) * 0.25F, 0, MathHelper.cos(a) * 0.25F));
+                            pos.translate(new Vector3((float)Math.sin(a) * 0.25F, 0, (float)Math.cos(a) * 0.25F));
                             break;
                         case 1:
                             a = (-player.rotationYaw - 90F) / 57.295779513F;
-                            pos.translate(new Vector3(MathHelper.sin(a) * 0.25, 0, MathHelper.cos(a) * 0.25));
+                            pos.translate(new Vector3((float)Math.sin(a) * 0.25, 0, (float)Math.cos(a) * 0.25));
                             break;
                         }
 
                         float rotation = player.rotationYaw - 180;
                         pos = WorldUtil.getFootprintPosition(player.worldObj, rotation, pos, new BlockVec3(player));
 
-                        long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.getDimensionId(), pos, rotation, player.getName()), player.worldObj.provider.getDimensionId());
+                        long chunkKey = ChunkPos.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
+                        TickHandlerServer.addFootprint(chunkKey, new Footprint(player.worldObj.provider.getDimension(), pos, rotation, player.getName()), player.worldObj.provider.getDimension());
 
                         // Increment and cap step counter at 1
                         playerStats.lastStep++;
@@ -918,7 +913,7 @@ public class GCPlayerHandler
 
         Collections.sort(playerStats.unlockedSchematics);
 
-        if (player.playerNetServerHandler != null && (playerStats.unlockedSchematics.size() != playerStats.lastUnlockedSchematics.size() || (player.ticksExisted - 1) % 100 == 0))
+        if (player.connection != null && (playerStats.unlockedSchematics.size() != playerStats.lastUnlockedSchematics.size() || (player.ticksExisted - 1) % 100 == 0))
         {
             Integer[] iArray = new Integer[playerStats.unlockedSchematics.size()];
 
@@ -1005,7 +1000,7 @@ public class GCPlayerHandler
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.getDimension(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
@@ -1014,7 +1009,7 @@ public class GCPlayerHandler
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.getDimension(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
@@ -1076,10 +1071,10 @@ public class GCPlayerHandler
                 }
 
                 WorldServer worldNew = WorldUtil.getStartWorld(worldOld);
-                int dimID = worldNew.provider.getDimensionId();
+                int dimID = worldNew.provider.getDimension();
                 player.dimension = dimID;
                 GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
-                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+                player.connection.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
                 if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
                 worldNew.spawnEntityInWorld(player);
@@ -1089,13 +1084,13 @@ public class GCPlayerHandler
         	//This is a mini version of the code at WorldUtil.teleportEntity
             final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.worldObj.provider.getClass());
             Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.worldObj, player);
-            ChunkCoordIntPair pair = player.worldObj.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
+            ChunkPos pair = player.worldObj.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkPos();
             GCLog.debug("Loading first chunk in new dimension.");
             ((WorldServer)player.worldObj).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
             player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
             type.setupAdventureSpawn(player);
             type.onSpaceDimensionChanged(player.worldObj, player, false);
-            player.setSpawnChunk(new BlockPos(spawnPos.intX(), spawnPos.intY(), spawnPos.intZ()), true, player.worldObj.provider.getDimensionId());
+            player.setSpawnChunk(new BlockPos(spawnPos.intX(), spawnPos.intY(), spawnPos.intZ()), true, player.worldObj.provider.getDimension());
             GCPlayer.newAdventureSpawn = true;
         }
         final boolean isInGCDimension = player.worldObj.provider instanceof IGalacticraftWorldProvider;
@@ -1174,7 +1169,7 @@ public class GCPlayerHandler
 
 		/*		if (isInGCDimension || player.usingPlanetSelectionGui)
                 {
-					player.playerNetServerHandler.ticksForFloatKick = 0;
+					player.connection.ticksForFloatKick = 0;
 				}	
 		*/
         if (GCPlayer.damageCounter > 0)
@@ -1190,7 +1185,7 @@ public class GCPlayerHandler
                 this.sendThermalLevelPacket(player, GCPlayer);
             }
 
-            if (player.ridingEntity instanceof EntityLanderBase)
+            if (player.getRidingEntity() instanceof EntityLanderBase)
             {
                 GCPlayer.inLander = true;
                 GCPlayer.justLanded = false;
@@ -1209,14 +1204,14 @@ public class GCPlayerHandler
                 GCPlayer.justLanded = false;
 
                 //Set spawn point here if just descended from a lander for the first time
-                if (player.getBedLocation(player.worldObj.provider.getDimensionId()) == null || GCPlayer.newAdventureSpawn)
+                if (player.getBedLocation(player.worldObj.provider.getDimension()) == null || GCPlayer.newAdventureSpawn)
                 {
                     int i = 30000000;
-                    int j = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posX + 0.5D)));
-                    int k = Math.min(256, Math.max(0, MathHelper.floor_double(player.posY + 1.5D)));
-                    int l = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posZ + 0.5D)));
+                    int j = Math.min(i, Math.max(-i, (int)Math.floor(player.posX + 0.5D)));
+                    int k = Math.min(256, Math.max(0, (int)Math.floor(player.posY + 1.5D)));
+                    int l = Math.min(i, Math.max(-i, (int)Math.floor(player.posZ + 0.5D)));
                     BlockPos coords = new BlockPos(j, k, l);
-                    player.setSpawnChunk(coords, true, player.worldObj.provider.getDimensionId());
+                    player.setSpawnChunk(coords, true, player.worldObj.provider.getDimension());
                     GCPlayer.newAdventureSpawn = false;
                 }
 
@@ -1227,7 +1222,7 @@ public class GCPlayerHandler
             {
                 player.fallDistance = 0.0F;
                 //Prevent kicks for flying
-                player.playerNetServerHandler.floatingTickCount = 0;
+                player.connection.floatingTickCount = 0;
                 if (GCPlayer.newInOrbit)
                 {
                 	((WorldProviderOrbit) player.worldObj.provider).sendPacketsToClient(player);
@@ -1242,7 +1237,7 @@ public class GCPlayerHandler
                 {
                     player.fallDistance = 0.0F;
                     //Prevent kicks for flying
-                    player.playerNetServerHandler.floatingTickCount = 0;
+                    player.connection.floatingTickCount = 0;
                 }
             }
         }
@@ -1275,7 +1270,7 @@ public class GCPlayerHandler
 
         //
 
-        if (GCPlayer.launchAttempts > 0 && player.ridingEntity == null)
+        if (GCPlayer.launchAttempts > 0 && player.getRidingEntity() == null)
         {
             GCPlayer.launchAttempts = 0;
         }
@@ -1300,7 +1295,7 @@ public class GCPlayerHandler
         	{
         		sb.append(" " + EnumColor.YELLOW + string2[i]);
         	}
-            player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + sb.toString()));
+            player.addChatMessage(new TextComponentString(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + sb.toString()));
             GCPlayer.receivedSoundWarning = true;
         }
 

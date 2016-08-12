@@ -174,7 +174,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
     }
 
-    public void writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
         compound.setBoolean("isLocked", this.locked);
@@ -387,9 +387,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
-        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (ITextComponent)(this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

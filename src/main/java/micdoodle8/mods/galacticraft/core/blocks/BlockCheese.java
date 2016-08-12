@@ -13,8 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
@@ -36,7 +36,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
         this.disableStats();
         this.setHardness(0.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
-        this.setStepSound(Block.soundTypeCloth);
+        this.setSoundType(Block.soundTypeCloth);
         this.setUnlocalizedName(assetName);
     }
 
@@ -78,7 +78,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
      * box can change after the pool has been cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         float f = 0.0625F;
         float f1 = (float)(1 + ((Integer)state.getValue(BITES)).intValue() * 2) / 16.0F;
@@ -91,7 +91,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
     /**
      * Returns the bounding box of the wired rectangular prism to render.
      */
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
     }
@@ -111,7 +111,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
      * (examples: signs, buttons, stairs, etc)
      */
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -122,7 +122,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
      * the player can attach torches, redstone wire, etc to this block.
      */
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -216,7 +216,7 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
 
 //	@Override
 //	@SideOnly(Side.CLIENT)
-//	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+//	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 //	{
 //		return new ItemStack(GCItems.cheeseBlock);
 //	}
@@ -255,9 +255,9 @@ public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc,
         return ((Integer)state.getValue(BITES)).intValue();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {BITES});
+        return new BlockStateContainer(this, new IProperty[] {BITES});
     }
 
     public int getComparatorInputOverride(World worldIn, BlockPos pos)

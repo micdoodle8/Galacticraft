@@ -22,8 +22,8 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
@@ -43,7 +43,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     {
         super(Material.glass);
         this.setHardness(0.3F);
-        this.setStepSound(Block.soundTypeGlass);
+        this.setSoundType(Block.soundTypeGlass);
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
@@ -192,19 +192,19 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     }*/
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return true;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -217,7 +217,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 
     @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
     }
@@ -234,9 +234,9 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        return new BlockStateContainer(this, COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Override

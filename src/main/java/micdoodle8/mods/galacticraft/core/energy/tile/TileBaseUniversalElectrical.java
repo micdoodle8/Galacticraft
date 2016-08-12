@@ -165,9 +165,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(nbt);
+        return super.writeToNBT(nbt);
         //		nbt.setFloat("energyStored", this.energyStored);
     }
 
@@ -186,36 +186,36 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //            {
 //                this.storage.receiveEnergyGC(((IEnergyContainerItem)item).extractEnergy(itemStack, (int) (energyToDischarge / EnergyConfigHandler.RF_RATIO), false) * EnergyConfigHandler.RF_RATIO);
 //            }
-            else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canSend(itemStack))
-            {
-                this.storage.receiveEnergyGC((float) EnergizedItemManager.discharge(itemStack, energyToDischarge / EnergyConfigHandler.MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO);
-            }
-            else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-            {
-                if (item instanceof ISpecialElectricItem)
-                {
-                    ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
-                    if (electricItem.canProvideEnergy(itemStack))
-                    {
-                        double energyDischargeIC2 = energyToDischarge / EnergyConfigHandler.IC2_RATIO;
-                        double result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false);
-                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
-                        this.storage.receiveEnergyGC(energyDischarged);
-                    }
-                }
-                else if (item instanceof IElectricItem)
-                {
-                    IElectricItem electricItem = (IElectricItem) item;
-                    if (electricItem.canProvideEnergy(itemStack))
-                    {
-                        double energyDischargeIC2 = energyToDischarge / EnergyConfigHandler.IC2_RATIO;
-                        double result = ElectricItem.manager.discharge(itemStack, energyDischargeIC2, 4, false, false, false);
-                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
-                        this.storage.receiveEnergyGC(energyDischarged);
-                    }
-                }
-
-            }
+//            else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canSend(itemStack))
+//            {
+//                this.storage.receiveEnergyGC((float) EnergizedItemManager.discharge(itemStack, energyToDischarge / EnergyConfigHandler.MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO);
+//            }
+//            else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+//            {
+//                if (item instanceof ISpecialElectricItem)
+//                {
+//                    ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+//                    if (electricItem.canProvideEnergy(itemStack))
+//                    {
+//                        double energyDischargeIC2 = energyToDischarge / EnergyConfigHandler.IC2_RATIO;
+//                        double result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false);
+//                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
+//                        this.storage.receiveEnergyGC(energyDischarged);
+//                    }
+//                }
+//                else if (item instanceof IElectricItem)
+//                {
+//                    IElectricItem electricItem = (IElectricItem) item;
+//                    if (electricItem.canProvideEnergy(itemStack))
+//                    {
+//                        double energyDischargeIC2 = energyToDischarge / EnergyConfigHandler.IC2_RATIO;
+//                        double result = ElectricItem.manager.discharge(itemStack, energyDischargeIC2, 4, false, false, false);
+//                        float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
+//                        this.storage.receiveEnergyGC(energyDischarged);
+//                    }
+//                }
+//
+//            }
             //			else if (GCCoreCompatibilityManager.isTELoaded() && itemStack.getItem() instanceof IEnergyContainerItem)
             //			{
             //				float given = ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, (int) Math.floor(this.getRequest(EnumFacing.UNKNOWN) * EnergyConfigHandler.TO_TE_RATIO), false);

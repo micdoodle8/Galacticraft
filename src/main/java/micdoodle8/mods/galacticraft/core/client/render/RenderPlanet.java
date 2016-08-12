@@ -78,8 +78,8 @@ public class RenderPlanet
     	for (int ysect = 0; ysect < 6; ysect ++)
     	{
 //    		drawTexturedRectUVSixth(x, y, width, height, (ticks / 600F) % 1F, ysect / 6F);
-    		// - 80F * MathHelper.sin(angle)
-    		float factor = 1F + MathHelper.cos((7.5F + 10F * ysect) / 62F);
+    		// - 80F * (float)Math.sin(angle)
+    		float factor = 1F + (float)Math.cos((7.5F + 10F * ysect) / 62F);
     		drawTexturedRectUVSixth(x, y, width, height, (ticks / 1100F) % 1F - (1F - factor) * 0.15F, ysect / 6F, 0.16F * factor);
     	}
     }    	

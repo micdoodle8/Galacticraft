@@ -10,7 +10,7 @@
 //import net.minecraft.entity.player.EntityPlayer;
 //import net.minecraft.nbt.NBTTagCompound;
 //import net.minecraft.tileentity.TileEntity;
-//import net.minecraft.util.AxisAlignedBB;
+//import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.MathHelper;
 //import net.minecraft.world.World;
 //
@@ -84,7 +84,7 @@
 //
 //        super.onUpdate();
 //
-//        final TileEntity tileAt = this.worldObj.getTileEntity(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1.0), MathHelper.floor_double(this.posZ));
+//        final TileEntity tileAt = this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)Math.floor(this.posY - 1.0), (int)Math.floor(this.posZ));
 //
 //        if (tileAt instanceof TileEntityTerraformer)
 //        {

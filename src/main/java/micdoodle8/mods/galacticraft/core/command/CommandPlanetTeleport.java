@@ -11,7 +11,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 
 public class CommandPlanetTeleport extends CommandBase
@@ -29,7 +29,7 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
@@ -49,7 +49,7 @@ public class CommandPlanetTeleport extends CommandBase
                 if (playerBase != null)
                 {
                     MinecraftServer server = MinecraftServer.getServer();
-                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimensionId());
+                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimension());
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.rocketStacks = new ItemStack[2];

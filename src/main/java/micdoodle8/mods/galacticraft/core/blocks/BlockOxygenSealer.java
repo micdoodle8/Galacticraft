@@ -16,7 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -32,9 +32,9 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements ItemBlockDes
 
     public BlockOxygenSealer(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -109,7 +109,7 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements ItemBlockDes
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         worldIn.setBlockState(pos, getStateFromMeta(EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex()), 3);
     }
 
@@ -168,9 +168,9 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements ItemBlockDes
         return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

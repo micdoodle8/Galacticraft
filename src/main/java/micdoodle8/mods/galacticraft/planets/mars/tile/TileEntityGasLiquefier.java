@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
@@ -130,7 +130,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                     if (this.gasTankType == -1 || (this.gasTankType == TankGases.AIR.index && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
                     {
                         Block blockAbove = this.worldObj.getBlockState(getPos().up()).getBlock();
-                        if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+                        if (blockAbove != null && blockAbove.getMaterial() == Material.AIR && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
                         {
                             FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
                             this.gasTank.fill(gcAtmosphere, true);
@@ -775,7 +775,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

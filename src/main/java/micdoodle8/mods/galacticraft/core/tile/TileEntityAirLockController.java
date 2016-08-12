@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,7 +236,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
         int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
 
-        if (this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().getMaterial() != Material.air)
+        if (this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().getMaterial() != Material.AIR)
         {
             this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "player.closeairlock", 1.0F, 1.0F);
         }
@@ -311,7 +311,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setString("OwnerName", this.ownerName);

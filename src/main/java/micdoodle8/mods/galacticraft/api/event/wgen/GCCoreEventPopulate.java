@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.event.wgen;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
 

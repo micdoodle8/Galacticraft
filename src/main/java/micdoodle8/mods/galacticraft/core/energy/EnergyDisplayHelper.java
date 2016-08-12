@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.I18n;
 
 import java.util.List;
 

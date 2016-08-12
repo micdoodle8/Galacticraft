@@ -46,7 +46,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         this.lit = lit;
         this.setLightLevel(lit ? 0.9375F : 0.2F);
         this.setHardness(0.0F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(Block.soundTypeWood);
 //        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
@@ -77,19 +77,19 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -420,8 +420,8 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 }

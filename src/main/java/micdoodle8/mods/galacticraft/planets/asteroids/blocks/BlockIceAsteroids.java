@@ -15,7 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
@@ -37,7 +37,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setHardness(0.5F);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(soundTypeGlass);
+        this.setSoundType(soundTypeGlass);
     }
 
     @SideOnly(Side.CLIENT)
@@ -78,7 +78,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
         }
         else
         {
-            if (worldIn.provider.getDimensionId() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
                 worldIn.setBlockToAir(pos);
                 return;
@@ -108,7 +108,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
     {
         if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - this.getLightOpacity())
         {
-            if (worldIn.provider.getDimensionId() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
                 worldIn.setBlockToAir(pos);
                 return;

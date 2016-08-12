@@ -17,8 +17,8 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,7 +48,7 @@ public abstract class BlockTransmitter extends Block
         TileEntity tile = worldIn.getTileEntity(pos);
 
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, new Object[] { pos.getX(), pos.getY(), pos.getZ() }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, new Object[] { pos.getX(), pos.getY(), pos.getZ() }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
 
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -66,17 +66,17 @@ public abstract class BlockTransmitter extends Block
      * box can change after the pool has been cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
+        return super.getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
+        return super.getSelectedBoundingBox(state, worldIn, pos);
     }
 
     /**

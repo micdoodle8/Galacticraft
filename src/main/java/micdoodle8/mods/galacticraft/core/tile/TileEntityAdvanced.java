@@ -71,7 +71,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                 PacketDynamic packet = new PacketDynamic(this);
 //                if (networkDataChanged)
                 {
-                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
                 }
             }
         }

@@ -11,8 +11,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -57,7 +57,7 @@ public class EntityFlag extends Entity
             {
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
-                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getFrequency() + 1.0F);
+                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, SoundType.METAL.getBreakSound(), SoundType.METAL.getVolume(), SoundType.METAL.getFrequency() + 1.0F);
 
                 if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {

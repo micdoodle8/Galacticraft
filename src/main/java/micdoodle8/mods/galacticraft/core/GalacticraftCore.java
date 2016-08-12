@@ -64,6 +64,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.event.SoundEventsGC;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
@@ -195,7 +196,7 @@ public class GalacticraftCore
     public static Fluid fluidFuel;
     public static Fluid fluidOxygenGas;
     public static Fluid fluidHydrogenGas;
-	public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
+	public static Material materialOil = new MaterialOleaginous(MapColor.BROWN);
 
     public static HashMap<String, ItemStack> itemList = new HashMap<String, ItemStack>();
     public static HashMap<String, ItemStack> blocksList = new HashMap<String, ItemStack>();
@@ -250,6 +251,7 @@ public class GalacticraftCore
 
         GCBlocks.initBlocks();
         GCItems.initItems();
+        SoundEventsGC.registerSounds();
 
         proxy.registerVariants();
 
@@ -451,12 +453,12 @@ public class GalacticraftCore
             GCBlocks.crudeOil = fluidOil.getBlock();
         }
 
-        if (GCBlocks.crudeOil != null && Item.itemRegistry.getObject(new ResourceLocation("buildcraftenergy:items/bucketOil")) == null)
+        if (GCBlocks.crudeOil != null && Item.REGISTRY.getObject(new ResourceLocation("buildcraftenergy:items/bucketOil")) == null)
         {
             GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil);
             GCItems.bucketOil.setUnlocalizedName("bucket_oil");
             GCItems.registerItem(GCItems.bucketOil);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.BUCKET));
         }
 
         EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
@@ -489,12 +491,12 @@ public class GalacticraftCore
             GCBlocks.fuel = fluidFuel.getBlock();
         }
 
-        if (GCBlocks.fuel != null && Item.itemRegistry.getObject(new ResourceLocation("buildcraftenergy:items/bucketFuel")) == null)
+        if (GCBlocks.fuel != null && Item.REGISTRY.getObject(new ResourceLocation("buildcraftenergy:items/bucketFuel")) == null)
         {
             GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel);
             GCItems.bucketFuel.setUnlocalizedName("bucket_fuel");
             GCItems.registerItem(GCItems.bucketFuel);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.BUCKET));
         }
 
         EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +13,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBlock
 {

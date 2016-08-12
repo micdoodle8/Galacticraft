@@ -15,7 +15,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -184,7 +184,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
@@ -394,7 +394,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

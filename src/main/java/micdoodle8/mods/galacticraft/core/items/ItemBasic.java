@@ -13,7 +13,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -217,7 +217,7 @@ public class ItemBasic extends Item implements ISortableItem
    			itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
    			itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
 
-    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.tracking.message")));
+    		player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.tracking.message")));
     		return true;
     	}
     	return false;

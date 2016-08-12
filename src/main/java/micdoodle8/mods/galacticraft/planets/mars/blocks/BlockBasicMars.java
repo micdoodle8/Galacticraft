@@ -94,7 +94,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
     public BlockBasicMars(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setUnlocalizedName(assetName);
     }
 
@@ -114,19 +114,19 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
         {
             return null;
         }
 
-        return super.getCollisionBoundingBox(worldIn, pos, state);
+        return super.getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         IBlockState state = worldIn.getBlockState(pos);
         if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
@@ -134,7 +134,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D, pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D);
         }
 
-        return super.getSelectedBoundingBox(worldIn, pos);
+        return super.getSelectedBoundingBox(state, worldIn, pos);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         IBlockState state = worldIn.getBlockState(pos);
 
@@ -387,7 +387,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         IBlockState state = world.getBlockState(pos);
         int metadata = state.getBlock().getMetaFromState(state);
@@ -431,9 +431,9 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, BASIC_TYPE);
+        return new BlockStateContainer(this, BASIC_TYPE);
     }
 
     @Override

@@ -3,15 +3,15 @@ package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.util.BlockPos;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityBacterialDripFX extends EntityFX
+public class EntityBacterialDripFX extends Particle
 {
 	private int bobTimer;
 
@@ -80,7 +80,7 @@ public class EntityBacterialDripFX extends EntityFX
 				d0 = BlockLiquid.getLiquidHeightPercent(((Integer)state.getValue(BlockLiquid.LEVEL)).intValue());
 			}
 
-			double d1 = MathHelper.floor_double(this.posY) + 1 - d0;
+			double d1 = (int)Math.floor(this.posY) + 1 - d0;
 
 			if (this.posY < d1)
 			{

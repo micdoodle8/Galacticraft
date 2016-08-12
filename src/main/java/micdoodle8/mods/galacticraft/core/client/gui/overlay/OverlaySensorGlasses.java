@@ -41,7 +41,7 @@ public class OverlaySensorGlasses extends Overlay
     {
     	OverlaySensorGlasses.zoom++;
 
-        final float f = MathHelper.sin(OverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;
+        final float f = (float)Math.sin(OverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;
 
         final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
         final int i = scaledresolution.getScaledWidth();

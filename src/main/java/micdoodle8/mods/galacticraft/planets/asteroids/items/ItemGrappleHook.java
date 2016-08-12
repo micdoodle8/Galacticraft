@@ -14,7 +14,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class ItemGrappleHook extends ItemBow implements ISortableItem
@@ -66,7 +66,7 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
             }
         }
         else if (par2World.isRemote)
-           	par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.grapple.fail")));
+           	par3EntityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.grapple.fail")));
     }
 
     @Override

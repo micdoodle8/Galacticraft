@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import com.google.common.base.Predicate;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
@@ -15,9 +17,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.village.Village;
@@ -39,7 +40,6 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
         super(par1World);
         this.setSize(0.6F, 1.8F);
         ((PathNavigateGround)this.getNavigator()).setBreakDoors(true);
-        ((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
@@ -56,7 +56,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
     }
 
     /**
@@ -69,17 +69,9 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
 //    }
 
     @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataWatcher.addObject(16, Integer.valueOf(0));
-    }
-
-    @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("Profession", this.getProfession());
         par1NBTTagCompound.setInteger("Riches", this.wealth);
 
         if (this.buyingList != null)
@@ -92,14 +84,6 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.setProfession(par1NBTTagCompound.getInteger("Profession"));
-        this.wealth = par1NBTTagCompound.getInteger("Riches");
-
-        if (par1NBTTagCompound.hasKey("Offers"))
-        {
-            final NBTTagCompound nbttagcompound1 = par1NBTTagCompound.getCompoundTag("Offers");
-            this.buyingList = new MerchantRecipeList(nbttagcompound1);
-        }
     }
 
     /**
@@ -115,37 +99,27 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
      * Returns the sound this mob makes while it's alive.
      */
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return "mob.villager.idle";
+        return SoundEvents.ENTITY_VILLAGER_AMBIENT;
     }
 
     /**
      * Returns the sound this mob makes when it is hurt.
      */
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return "mob.villager.hit";
+        return SoundEvents.ENTITY_VILLAGER_HURT;
     }
 
     /**
      * Returns the sound this mob makes on death.
      */
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return "mob.villager.death";
-    }
-
-    public void setProfession(int par1)
-    {
-        this.dataWatcher.updateObject(16, Integer.valueOf(par1));
-    }
-
-    public int getProfession()
-    {
-        return this.dataWatcher.getWatchableObjectInt(16);
+        return SoundEvents.ENTITY_VILLAGER_DEATH;
     }
 
     public boolean isMating()
@@ -186,7 +160,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
                     b0 = -3;
                 }
 
-                this.villageObj.setReputationForPlayer(((EntityPlayer) par1EntityLiving).getName(), b0);
+                this.villageObj.modifyPlayerReputation(par1EntityLiving.getName(), b0);
 
                 if (this.isEntityAlive())
                 {
@@ -210,7 +184,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
             {
                 if (entity instanceof EntityPlayer)
                 {
-                    this.villageObj.setReputationForPlayer(((EntityPlayer) entity).getName(), -2);
+                    this.villageObj.modifyPlayerReputation(entity.getName(), -2);
                 }
                 else if (entity instanceof IMob)
                 {
@@ -250,7 +224,7 @@ public class EntityAlienVillager extends EntityAgeable implements IEntityBreatha
     {
         par1MerchantRecipe.incrementToolUses();
 
-        if (par1MerchantRecipe.getItemToBuy().getItem() == Items.emerald)
+        if (par1MerchantRecipe.getItemToBuy().getItem() == Items.EMERALD)
         {
             this.wealth += par1MerchantRecipe.getItemToBuy().stackSize;
         }

@@ -20,8 +20,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
@@ -39,7 +39,7 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
     {
         super(Material.glass);
         this.setHardness(0.3F);
-        this.setStepSound(Block.soundTypeGlass);
+        this.setSoundType(Block.soundTypeGlass);
         this.setUnlocalizedName(assetName);
     }
 
@@ -93,19 +93,19 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
     }*/
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return true;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -118,7 +118,7 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
 
     @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
     }
@@ -141,9 +141,9 @@ public class BlockHydrogenPipe extends BlockTransmitter implements ITileEntityPr
         return true;
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        return new BlockStateContainer(this, UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Override

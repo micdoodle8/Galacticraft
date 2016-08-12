@@ -17,9 +17,9 @@ public class Overlay
      */
     protected static int getPlayerPositionY(EntityPlayer player)
     {
-        if (player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
+        if (player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityTier1Rocket)
         {
-            return (int) Math.floor(((EntityTier1Rocket) player.ridingEntity).posY);
+            return (int) Math.floor(((EntityTier1Rocket) player.getRidingEntity()).posY);
         }
 
         return (int) Math.floor(player.posY);

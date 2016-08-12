@@ -101,7 +101,7 @@
 //        boolean active = ais > EntityAstroMiner.AISTATE_ATBASE;
 //
 //        float time = astroMiner.ticksExisted + partialTickTime;
-//        float sinOfTheTime = (MathHelper.sin(time / 4) + 1F)/4F + 0.5F;
+//        float sinOfTheTime = ((float)Math.sin(time / 4) + 1F)/4F + 0.5F;
 //        float wx = active ? this.wobbleX.getNoise(time) + this.wobbleXX.getNoise(time) : 0F;
 //        float wy = active ? this.wobbleY.getNoise(time) + this.wobbleYY.getNoise(time) : 0F;
 //        float wz = active ? this.wobbleZ.getNoise(time) + this.wobbleZZ.getNoise(time) : 0F;
@@ -370,9 +370,9 @@
 //        float cc = 0.4F;
 //        float radiansYaw = entity.rotationYaw * 0.017453292F;
 //        float radiansPitch = entity.rotationPitch * 0.017453292F / 4F;
-//        float mainLaserX = bb * MathHelper.sin(radiansYaw) * MathHelper.cos(radiansPitch);
-//        float mainLaserY = cc + bb * MathHelper.sin(radiansPitch);
-//        float mainLaserZ = bb * MathHelper.cos(radiansYaw) * MathHelper.cos(radiansPitch);
+//        float mainLaserX = bb * (float)Math.sin(radiansYaw) * (float)Math.cos(radiansPitch);
+//        float mainLaserY = cc + bb * (float)Math.sin(radiansPitch);
+//        float mainLaserZ = bb * (float)Math.cos(radiansYaw) * (float)Math.cos(radiansPitch);
 //
 //        mainLaserX += entity.posX - blockLaser.x;
 //        mainLaserY += entity.posY - blockLaser.y;

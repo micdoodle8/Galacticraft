@@ -22,7 +22,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -432,7 +432,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
-            if (d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+            if (d != 0 && this.ticks % (int)Math.floor(2 / d) == 0)
             {
                 this.removeFuel(1);
             }
@@ -448,8 +448,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else if (this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 50.0D));
         }
     }
 
@@ -638,10 +638,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             if (this.riddenByEntity == null)
             {
-                var1.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
-                var1.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
-                var1.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
-                var1.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
+                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
+                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
+                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
+                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
             }
 
             return true;

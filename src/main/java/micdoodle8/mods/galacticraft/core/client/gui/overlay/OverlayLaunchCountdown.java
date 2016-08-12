@@ -19,7 +19,7 @@ public class OverlayLaunchCountdown extends Overlay
     public static void renderCountdownOverlay()
     {
         GlStateManager.disableLighting();
-        int count = ((EntitySpaceshipBase) OverlayLaunchCountdown.minecraft.thePlayer.ridingEntity).timeUntilLaunch / 2;
+        int count = ((EntitySpaceshipBase) OverlayLaunchCountdown.minecraft.thePlayer.getRidingEntity()).timeUntilLaunch / 2;
 
         count = (int)Math.floor(count / 10.0F);
 

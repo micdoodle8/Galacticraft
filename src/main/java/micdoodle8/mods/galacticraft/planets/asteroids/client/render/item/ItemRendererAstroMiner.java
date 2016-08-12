@@ -63,7 +63,7 @@
 //            GL11.glTranslatef(0.6F + 0.5F, -1.2F -0.2F, 1.4F -1.08F);
 //            GL11.glScalef(4.6F, 4.6F, 4.6F);
 //
-//            if (player != null && player.ridingEntity != null && (player.ridingEntity instanceof EntityAutoRocket || player.ridingEntity instanceof EntityLanderBase))
+//            if (player != null && player.getRidingEntity() != null && (player.getRidingEntity() instanceof EntityAutoRocket || player.getRidingEntity() instanceof EntityLanderBase))
 //            {
 //                GL11.glScalef(0.0F, 0.0F, 0.0F);
 //            }
@@ -75,7 +75,7 @@
 //            GL11.glRotatef(30F, 0F, 1.0F, 0F);
 //            GL11.glScalef(5.2F, 5.2F, 5.2F);
 //
-//            if (player != null && player.ridingEntity != null && (player.ridingEntity instanceof EntityAutoRocket || player.ridingEntity instanceof EntityLanderBase))
+//            if (player != null && player.getRidingEntity() != null && (player.getRidingEntity() instanceof EntityAutoRocket || player.getRidingEntity() instanceof EntityLanderBase))
 //            {
 //                GL11.glScalef(0.0F, 0.0F, 0.0F);
 //            }

@@ -60,10 +60,10 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 
     public BlockLandingPadFull(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.maxY = 0.25F;
@@ -101,7 +101,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         switch (getMetaFromState(state))
         {
@@ -119,7 +119,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         switch (getMetaFromState(worldIn.getBlockState(pos)))
         {
@@ -214,20 +214,20 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
     
     @SideOnly(Side.CLIENT)
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
 	{
 		return true;
 	}
@@ -239,7 +239,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
         return new ItemStack(Item.getItemFromBlock(GCBlocks.landingPad), 1, metadata);
@@ -255,8 +255,8 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         return ((EnumLandingPadFullType)state.getValue(PAD_TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, PAD_TYPE);
+        return new BlockStateContainer(this, PAD_TYPE);
     }
 }

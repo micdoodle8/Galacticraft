@@ -94,7 +94,7 @@ public class SkyProviderOrbit extends IRenderHandler
     {
         final float var20 = 400.0F + (float) this.minecraft.thePlayer.posY / 2F;
 
-        // if (this.minecraft.thePlayer.ridingEntity != null)
+        // if (this.minecraft.thePlayer.getRidingEntity() != null)
         {
             // var20 = (float) (this.minecraft.thePlayer.posY - 200.0F);
         }
@@ -140,7 +140,7 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef((float)Math.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
             var8 = var24[0];
             var9 = var24[1];
@@ -165,8 +165,8 @@ public class SkyProviderOrbit extends IRenderHandler
             for (int var27 = 0; var27 <= var26; ++var27)
             {
                 var13 = var27 * (float) Math.PI * 2.0F / var26;
-                final float var14 = MathHelper.sin(var13);
-                final float var15 = MathHelper.cos(var13);
+                final float var14 = (float)Math.sin(var13);
+                final float var15 = (float)Math.cos(var13);
                 worldRenderer.pos(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]).color(var24[0], var24[1], var24[2], 0.0F).endVertex();
             }
 
@@ -310,7 +310,7 @@ public class SkyProviderOrbit extends IRenderHandler
 		/* This all does nothing!
         double var25 = 0.0D;
 
-		// if (this.minecraft.thePlayer.ridingEntity != null)
+		// if (this.minecraft.thePlayer.getRidingEntity() != null)
 		{
 			var25 = this.minecraft.thePlayer.posY - 64;
 

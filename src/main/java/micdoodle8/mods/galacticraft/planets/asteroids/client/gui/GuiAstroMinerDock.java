@@ -118,9 +118,9 @@ public class GuiAstroMinerDock extends GuiContainerGC
     {
         this.fontRendererObj.drawString(this.tile.getName(), 7, 6, 4210752);
         this.fontRendererObj.drawString(this.getStatus(), 177, 141, 4210752);
-        if (this.extraLines) this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posX) - this.tile.getPos().getX() - 1)), 186, 152, 2536735);
-        if (this.extraLines) this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posY) - this.tile.getPos().getY())), 186, 162, 2536735);
-        if (this.extraLines) this.fontRendererObj.drawString("\u0394z: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posZ) - this.tile.getPos().getZ() - 1)), 186, 172, 2536735);
+        if (this.extraLines) this.fontRendererObj.drawString("\u0394x: " + getDeltaString(((int)Math.floor(this.tile.linkedMiner.posX) - this.tile.getPos().getX() - 1)), 186, 152, 2536735);
+        if (this.extraLines) this.fontRendererObj.drawString("\u0394y: " + getDeltaString(((int)Math.floor(this.tile.linkedMiner.posY) - this.tile.getPos().getY())), 186, 162, 2536735);
+        if (this.extraLines) this.fontRendererObj.drawString("\u0394z: " + getDeltaString(((int)Math.floor(this.tile.linkedMiner.posZ) - this.tile.getPos().getZ() - 1)), 186, 172, 2536735);
         if (this.extraLines) this.fontRendererObj.drawString(GCCoreUtil.translate("gui.miner.mined")+ ": " + this.tile.linkedMiner.mineCount, 177, 183, 2536735);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 7, this.ySize - 92, 4210752);
     }

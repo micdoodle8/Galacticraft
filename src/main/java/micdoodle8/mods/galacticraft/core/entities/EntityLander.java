@@ -5,15 +5,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
+import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -175,9 +175,9 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
-        return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase)this.riddenByEntity : null);
+        return new ParticleLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase)this.riddenByEntity : null);
     }
 
     @Override

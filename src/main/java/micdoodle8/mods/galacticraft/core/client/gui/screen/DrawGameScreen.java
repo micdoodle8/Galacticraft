@@ -63,7 +63,7 @@ public class DrawGameScreen extends IScreenManager
 
     private void makeMap()
     {
-    	if (this.mapDone || this.reusableMap == null || this.driver.getWorld().provider.getDimensionId() != 0) return;
+    	if (this.mapDone || this.reusableMap == null || this.driver.getWorld().provider.getDimension() != 0) return;
     	this.localMap = new int[MapUtil.SIZE_STD2 * MapUtil.SIZE_STD2];
 		boolean result = MapUtil.getMap(this.localMap, this.driver.getWorld(), this.driver.getPos());
 		if (result)

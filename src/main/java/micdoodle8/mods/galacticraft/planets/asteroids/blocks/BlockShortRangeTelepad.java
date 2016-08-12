@@ -22,9 +22,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,11 +38,11 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
 {
     protected BlockShortRangeTelepad(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName("stone");
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
     }
 
     @SideOnly(Side.CLIENT)
@@ -59,13 +59,13 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
     
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
 		return false;
     }
@@ -126,7 +126,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements ItemBlockDesc
             {
                 if (!worldIn.isRemote)
                 {
-                    ((EntityPlayer) placer).addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                    ((EntityPlayer) placer).addChatMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                 }
                 ((EntityPlayer) placer).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(this), 1, 0));
             }

@@ -18,8 +18,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -35,15 +35,15 @@ public class GuiHandler implements IGuiHandler
 
         if (playerBase == null)
         {
-            player.addChatMessage(new ChatComponentText("Galacticraft player instance null server-side. This is a bug."));
+            player.addChatMessage(new TextComponentString("Galacticraft player instance null server-side. This is a bug."));
             return null;
         }
         
         GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
-        if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
+        if (ID == GuiIdsCore.ROCKET_INVENTORY && player.getRidingEntity() instanceof EntityTieredRocket)
         {
-            return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType(), player);
+            return new ContainerRocketInventory(player.inventory, (EntityTieredRocket) player.getRidingEntity(), ((EntityTieredRocket) player.getRidingEntity()).getType(), player);
         }
         else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
         {
@@ -160,9 +160,9 @@ public class GuiHandler implements IGuiHandler
         {
             return new GuiCelestialSelection(true, null);
         }
-        else if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
+        else if (ID == GuiIdsCore.ROCKET_INVENTORY && player.getRidingEntity() instanceof EntityTieredRocket)
         {
-            return new GuiRocketInventory(player.inventory, (EntityTieredRocket) player.ridingEntity, ((EntityTieredRocket) player.ridingEntity).getType());
+            return new GuiRocketInventory(player.inventory, (EntityTieredRocket) player.getRidingEntity(), ((EntityTieredRocket) player.getRidingEntity()).getType());
         }
         else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
         {

@@ -38,7 +38,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
         super(Material.glass);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ACTIVE, true));
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(Block.soundTypeWood);
         //this.setBlockTextureName("stone");
         this.setUnlocalizedName(assetName);
         this.setLightLevel(1.0F);
@@ -65,7 +65,7 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         double boundsMin = 0.2D;
         double boundsMax = 0.8D;
@@ -73,13 +73,13 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -236,9 +236,9 @@ public class BlockBrightLamp extends BlockAdvanced implements ItemBlockDesc.IBlo
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, ACTIVE});
+        return new BlockStateContainer(this, new IProperty[] {FACING, ACTIVE});
     }
 
     @Override

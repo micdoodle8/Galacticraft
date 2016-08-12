@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -40,7 +40,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -222,7 +222,7 @@ public class TickHandlerServer
                 {
                     final GCPlayerStats stats = GCPlayerStats.get(change.getPlayer());
                     final WorldProvider provider = WorldUtil.getProviderForNameServer(change.getDimensionName());
-                    final Integer dim = provider.getDimensionId();
+                    final Integer dim = provider.getDimension();
                     GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
 
                     if (change.getPlayer().worldObj instanceof WorldServer)
@@ -270,7 +270,7 @@ public class TickHandlerServer
                     WorldServer world = worlds[i];
                     ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
 
-                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimensionId());
+                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimension());
 
                     if (footprintMap != null)
                     {
@@ -283,7 +283,7 @@ public class TickHandlerServer
                             while (iterator.hasNext())
                             {
                                 Chunk chunk = (Chunk) iterator.next();
-                                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
+                                long chunkKey = ChunkPos.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
 
                                 List<Footprint> footprints = footprintMap.get(chunkKey);
 
@@ -309,14 +309,14 @@ public class TickHandlerServer
                                     footprintMap.put(chunkKey, footprints);
                                     mapChanged = true;
 
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimensionId());
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimension());
                                 }
                             }
                         }
 
                         if (mapChanged)
                         {
-                            TickHandlerServer.serverFootprintMap.put(world.provider.getDimensionId(), footprintMap);
+                            TickHandlerServer.serverFootprintMap.put(world.provider.getDimension(), footprintMap);
                         }
                     }
                 }
@@ -332,9 +332,9 @@ public class TickHandlerServer
                     {
                         WorldServer world = worlds[i];
 
-                        if (world.provider.getDimensionId() == targetPoint.dim)
+                        if (world.provider.getDimension() == targetPoint.dim)
                         {
-                            long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
+                            long chunkKey = ChunkPos.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
                             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
 
 
@@ -465,7 +465,7 @@ public class TickHandlerServer
         {
             final WorldServer world = (WorldServer) event.world;
 
-            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(world.provider.getDimensionId());
+            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(world.provider.getDimension());
 
             if (changeList != null && !changeList.isEmpty())
             {
@@ -495,11 +495,11 @@ public class TickHandlerServer
                 }
 
                 changeList.clear();
-                TickHandlerServer.scheduledBlockChanges.remove(world.provider.getDimensionId());
-                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.getDimensionId(), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
+                TickHandlerServer.scheduledBlockChanges.remove(world.provider.getDimension());
+                if (newList.size() > 0) TickHandlerServer.scheduledBlockChanges.put(world.provider.getDimension(), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
             }
 
-            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.getDimensionId());
+            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(world.provider.getDimension());
 
             if (torchList != null && !torchList.isEmpty())
             {
@@ -517,7 +517,7 @@ public class TickHandlerServer
                 }
 
                 torchList.clear();
-                TickHandlerServer.scheduledTorchUpdates.remove(world.provider.getDimensionId());
+                TickHandlerServer.scheduledTorchUpdates.remove(world.provider.getDimension());
             }
 
             if (world.provider instanceof IOrbitDimension)
@@ -552,7 +552,7 @@ public class TickHandlerServer
         {
             final WorldServer world = (WorldServer) event.world;
 
-            List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(world.provider.getDimensionId());
+            List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(world.provider.getDimension());
             final HashSet<BlockVec3> checkedThisTick = new HashSet();
 
             if (edgesList != null && !edgesList.isEmpty())
@@ -563,7 +563,7 @@ public class TickHandlerServer
                 {
                     if (edgeBlock != null && !checkedThisTick.contains(edgeBlock))
                     {
-                        if (TickHandlerServer.scheduledForChange(world.provider.getDimensionId(), edgeBlock))
+                        if (TickHandlerServer.scheduledForChange(world.provider.getDimension(), edgeBlock))
                         {
                             continue;
                         }
@@ -573,7 +573,7 @@ public class TickHandlerServer
                     }
                 }
 
-                TickHandlerServer.edgeChecks.remove(world.provider.getDimensionId());
+                TickHandlerServer.edgeChecks.remove(world.provider.getDimension());
             }
         }
     }

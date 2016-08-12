@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -44,7 +44,7 @@ import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.FluidTexturesGC;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.EntityFXTeleport;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.ParticleTeleport;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity.RenderGrapple;
@@ -56,7 +56,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandle
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.craftguide.CraftGuideIntegration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -273,14 +273,14 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             double dX = mc.getRenderViewEntity().posX - position.x;
             double dY = mc.getRenderViewEntity().posY - position.y;
             double dZ = mc.getRenderViewEntity().posZ - position.z;
-            EntityFX particle = null;
+            Particle particle = null;
             double viewDistance = 64.0D;
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
                 if (particleID.equals("portalBlue"))
                 {
-                    particle = new EntityFXTeleport(mc.theWorld, position, motion, (TileEntityShortRangeTelepad) extraData[0], (Boolean) extraData[1]);
+                    particle = new ParticleTeleport(mc.theWorld, position, motion, (TileEntityShortRangeTelepad) extraData[0], (Boolean) extraData[1]);
                 }
                 else if (particleID.equals("cryoFreeze"))
                 {

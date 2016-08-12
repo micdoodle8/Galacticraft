@@ -24,9 +24,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -42,9 +42,9 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
 
     public BlockBeamReceiver(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
     }
 
     @SideOnly(Side.CLIENT)
@@ -200,17 +200,17 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     @SideOnly(Side.CLIENT)
     private void sendIncorrectSideMessage()
     {
-        FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
+        FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -280,9 +280,9 @@ public class BlockBeamReceiver extends BlockTileGC implements ItemBlockDesc.IBlo
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

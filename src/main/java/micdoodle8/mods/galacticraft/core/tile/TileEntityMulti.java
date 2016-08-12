@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -80,7 +80,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 

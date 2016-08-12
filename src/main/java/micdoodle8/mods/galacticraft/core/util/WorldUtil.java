@@ -51,6 +51,9 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,11 +62,11 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -99,6 +102,22 @@ public class WorldUtil
     private static IWorldGenerator generatorAE2meteors = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
+    public static final List<WeightedRandomChestContent> CHESTCONTENT = Lists.newArrayList(
+        new WeightedRandomChestContent(Items.SADDLE, 0, 1, 1, 10),
+            new WeightedRandomChestContent(Items.IRON_INGOT, 0, 1, 4, 10),
+            new WeightedRandomChestContent(Items.BREAD, 0, 1, 1, 10),
+            new WeightedRandomChestContent(Items.WHEAT, 0, 1, 4, 10),
+            new WeightedRandomChestContent(Items.GUNPOWDER, 0, 1, 4, 10),
+            new WeightedRandomChestContent(Items.STRING, 0, 1, 4, 10),
+            new WeightedRandomChestContent(Items.BUCKET, 0, 1, 1, 10),
+            new WeightedRandomChestContent(Items.GOLDEN_APPLE, 0, 1, 1, 1),
+            new WeightedRandomChestContent(Items.REDSTONE, 0, 1, 4, 10),
+            new WeightedRandomChestContent(Items.RECORD_13, 0, 1, 1, 4),
+            new WeightedRandomChestContent(Items.RECORD_CAT, 0, 1, 1, 4),
+            new WeightedRandomChestContent(Items.NAME_TAG, 0, 1, 1, 10),
+            new WeightedRandomChestContent(Items.GOLDEN_HORSE_ARMOR, 0, 1, 1, 2),
+            new WeightedRandomChestContent(Items.IRON_HORSE_ARMOR, 0, 1, 1, 5),
+            new WeightedRandomChestContent(Items.DIAMOND_HORSE_ARMOR, 0, 1, 1, 1));
 	
     public static double getGravityForEntity(Entity entity)
     {
@@ -239,7 +258,7 @@ public class WorldUtil
         if (world.provider instanceof WorldProviderMoon)
         {
             float f1 = world.getCelestialAngle(1.0F);
-            float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
+            float f2 = 1.0F - ((float)Math.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
 
             if (f2 < 0.0F)
             {
@@ -293,10 +312,10 @@ public class WorldUtil
     public static Vec3 getSkyColorHook(World world)
     {
         EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
-    	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || ( player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.ridingEntity instanceof EntitySpaceshipBase))
+    	if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || ( player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.getRidingEntity() instanceof EntitySpaceshipBase))
         {
             float f1 = world.getCelestialAngle(1.0F);
-            float f2 = MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
+            float f2 = (float)Math.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
 
             if (f2 < 0.0F)
             {
@@ -308,9 +327,9 @@ public class WorldUtil
                 f2 = 1.0F;
             }
 
-            int i = MathHelper.floor_double(player.posX);
-            int j = MathHelper.floor_double(player.posY);
-            int k = MathHelper.floor_double(player.posZ);
+            int i = (int)Math.floor(player.posX);
+            int j = (int)Math.floor(player.posY);
+            int k = (int)Math.floor(player.posZ);
             BlockPos pos = new BlockPos(i, j, k);
             int l = ForgeHooksClient.getSkyBlendColour(world, pos);
             float f4 = (float)(l >> 16 & 255) / 255.0F;
@@ -555,7 +574,7 @@ public class WorldUtil
     public static WorldProvider getProviderForDimensionClient(int id)
     {
     	World ws = ClientProxyCore.mc.theWorld;
-    	if (ws != null && ws.provider.getDimensionId() == id)
+    	if (ws != null && ws.provider.getDimension() == id)
     	{
     		return ws.provider;
     	}
@@ -601,9 +620,9 @@ public class WorldUtil
 	            	WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
 	            	if (celestialBody != null && provider != null)
 	            	{
-	            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.getDimensionId() == 0)
+	            		if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.getDimension() == 0)
 	            		{
-	            			map.put(celestialBody.getName(), provider.getDimensionId());
+	            			map.put(celestialBody.getName(), provider.getDimension());
 	            		}
 	            	}
             	}
@@ -975,13 +994,13 @@ public class WorldUtil
 
     private static Entity teleportEntity(World worldNew, Entity entity, int dimID, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
-        if (entity.ridingEntity != null)
+        if (entity.getRidingEntity() != null)
         {
-        	if (entity.ridingEntity instanceof EntitySpaceshipBase)
-        		entity.mountEntity(entity.ridingEntity);
-        	else if (entity.ridingEntity instanceof EntityCelestialFake)
+        	if (entity.getRidingEntity() instanceof EntitySpaceshipBase)
+        		entity.mountEntity(entity.getRidingEntity());
+        	else if (entity.getRidingEntity() instanceof EntityCelestialFake)
         	{
-        		entity.ridingEntity.setDead();
+        		entity.getRidingEntity().setDead();
         		entity.mountEntity(null);
         	}
         }
@@ -990,7 +1009,7 @@ public class WorldUtil
         entity.worldObj.updateEntityWithOptionalForce(entity, false);
         EntityPlayerMP player = null;
         Vector3 spawnPos = null;
-        int oldDimID = entity.worldObj.provider.getDimensionId();
+        int oldDimID = entity.worldObj.provider.getDimension();
 
         if (ridingRocket != null)
         {
@@ -1047,7 +1066,7 @@ public class WorldUtil
                 {
                     GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
                 }
-                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+                player.connection.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
                 if (worldNew.provider instanceof WorldProviderOrbit) {
                     if (WorldUtil.registeredSpaceStations.containsKey(dimID))
@@ -1075,7 +1094,7 @@ public class WorldUtil
                 entity.setWorld(worldNew);
 
                 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
-                ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
+                ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkPos();
                 if (ConfigManagerCore.enableDebug)
                 {
                     GCLog.info("DEBUG: Loading first chunk in new dimension.");
@@ -1086,10 +1105,10 @@ public class WorldUtil
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
 
                 player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldNew);
-                player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+                player.connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 //worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.getDimensionId());
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.getDimension());
 
                 player.theItemInWorldManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
@@ -1098,10 +1117,10 @@ public class WorldUtil
                 for (Object o : player.getActivePotionEffects())
                 {
                     PotionEffect var10 = (PotionEffect) o;
-                    player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
+                    player.connection.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
                 }
 
-                player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
+                player.connection.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
             }
             else
             //Non-player entity transfer i.e. it's an EntityCargoRocket
@@ -1156,11 +1175,11 @@ public class WorldUtil
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
                 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-                player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+                player.connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.getDimensionId());
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.getDimension());
             }
 
             //Cargo rocket does not needs its location setting here, it will do that itself

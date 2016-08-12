@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 

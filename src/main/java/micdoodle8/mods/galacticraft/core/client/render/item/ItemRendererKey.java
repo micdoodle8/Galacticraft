@@ -36,7 +36,7 @@
 //        if (type == ItemRenderType.INVENTORY)
 //        {
 //            GL11.glTranslatef(8.0F, 8.0F, 0F);
-//            GL11.glRotatef((MathHelper.sin(Sys.getTime() / 90F / 20.0F) - 55.0F) * 50.0F, 0, 0, 1);
+//            GL11.glRotatef(((float)Math.sin(Sys.getTime() / 90F / 20.0F) - 55.0F) * 50.0F, 0, 0, 1);
 //            GL11.glScalef(5.0F, 5.0F, 5.0F);
 //            GL11.glScalef(1.5F, 1.5F, 1.5F);
 //        }
@@ -64,7 +64,7 @@
 //
 //        if (entityItem != null)
 //        {
-//            final float f2 = MathHelper.sin(((float) entityItem.age + 1) / 10.0F + entityItem.hoverStart) * 0.1F + 0.1F;
+//            final float f2 = (float)Math.sin(((float) entityItem.age + 1) / 10.0F + entityItem.hoverStart) * 0.1F + 0.1F;
 //            GL11.glRotatef(f2 * 90F - 45F, 0, 0, 1);
 //            GL11.glRotatef((float) (Math.sin((entityItem.age + 1) / 100.0F) * 180.0F), 0, 1, 0);
 //        }

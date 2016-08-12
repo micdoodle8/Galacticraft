@@ -466,7 +466,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		{
     			if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
     			{
-    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner"+FAIL_BASEDESTROYED+".fail")));
+    				this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner"+FAIL_BASEDESTROYED+".fail")));
     				this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
     				//Continue mining even though base was destroyed - maybe it will be replaced
     			}
@@ -484,7 +484,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	this.motionX = 0;
         	this.motionY = 0;
         	this.motionZ = 0;
-        	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
+        	GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
             return;
         }
 
@@ -576,7 +576,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     		break;
     	}
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
     	
         this.posX += this.motionX;
         this.posY += this.motionY;
@@ -614,7 +614,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		this.motionZ = 0;
 		if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
 		{
-			this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner"+i+".fail")));
+			this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner"+i+".fail")));
 			this.givenFailMessage += (1 << i);
 		}
 	}
@@ -727,7 +727,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			{
     			if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
     			{
-    				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
+    				this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
     				this.givenFailMessage += 64;
     			}
 			}
@@ -828,7 +828,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Still some areas left to mine from last visit (maybe it was full or out of power?)
 		if (this.minePoints.size() > 0) return;
 		
-		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		BlockVec3 inFront = new BlockVec3((int)Math.floor(this.posX + 0.5D), (int)Math.floor(this.posY + 1.5D), (int)Math.floor(this.posZ + 0.5D));
 		int otherEnd = (this.worldObj.provider instanceof WorldProviderAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
 		if (this.baseFacing == EnumFacing.NORTH || this.baseFacing == EnumFacing.WEST) otherEnd = -otherEnd;
 		switch (this.baseFacing)
@@ -938,7 +938,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 			this.mineCountDown--;
 			return false;
 		}
-		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		BlockVec3 inFront = new BlockVec3((int)Math.floor(this.posX + 0.5D), (int)Math.floor(this.posY + 1.5D), (int)Math.floor(this.posZ + 0.5D));
 		if (dist == 2) inFront.add(headings2[this.facingAI.getIndex()]);
 		else
 		{	
@@ -1021,7 +1021,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		if (wayBarred)
 		{
 			if (this.playerMP != null)
-				this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+				this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
 			this.motionX = 0;
 			this.motionY = 0;
 			this.motionZ = 0;
@@ -1055,7 +1055,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
 	private boolean prepareMoveClient(int limit, int dist)
 	{
-		BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+		BlockVec3 inFront = new BlockVec3((int)Math.floor(this.posX + 0.5D), (int)Math.floor(this.posY + 1.5D), (int)Math.floor(this.posZ + 0.5D));
 		if (dist == 2) inFront.add(headings2[this.facing.getIndex()]);
 		else
 		{	
@@ -1145,7 +1145,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Can move through liquids including flowing lava
         IBlockState state = this.worldObj.getBlockState(pos);
 		Block b = state.getBlock();
-		if (b.getMaterial() == Material.air) return false;
+		if (b.getMaterial() == Material.AIR) return false;
 		if (noMineList.contains(b))
 		{
 			blockingBlock.block = b;
@@ -1237,7 +1237,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 		//Add minable blocks to the laser fx list
         IBlockState state = this.worldObj.getBlockState(pos);
 		Block b = state.getBlock();
-		if (b.getMaterial() == Material.air) return false;
+		if (b.getMaterial() == Material.AIR) return false;
 		if (noMineList.contains(b)) return true;
 		if (b instanceof BlockLiquid) return false;
 		if (b instanceof IFluidBlock) return false;
@@ -1680,7 +1680,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         	if (e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)
         	{
                 if (this.playerMP == null && !this.spawnedInCreative)
-                	((EntityPlayer)e).addChatMessage(new ChatComponentText("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
+                	((EntityPlayer)e).addChatMessage(new TextComponentString("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
         		this.kill();
                 return true;
         	}

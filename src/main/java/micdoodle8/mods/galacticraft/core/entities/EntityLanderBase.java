@@ -15,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -114,7 +114,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             {
                 final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
 
-                if (player != null && player.ridingEntity == null)
+                if (player != null && player.getRidingEntity() == null)
                 {
                     player.mountEntity(this);
                 }
@@ -150,7 +150,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     private void pushEntityAway(Entity entityToPush)
     {
-        if (this.riddenByEntity != entityToPush && this.ridingEntity != entityToPush)
+        if (this.riddenByEntity != entityToPush && this.getRidingEntity() != entityToPush)
         {
             double d0 = this.posX - entityToPush.posX;
             double d1 = this.posZ - entityToPush.posZ;

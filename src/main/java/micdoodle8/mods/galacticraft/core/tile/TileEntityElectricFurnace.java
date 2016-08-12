@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -213,7 +213,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         	this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
@@ -281,7 +281,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

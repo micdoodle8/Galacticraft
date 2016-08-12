@@ -5,8 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -94,7 +94,7 @@ public class ChunkLoadingCallback implements LoadingCallback
             ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         }
 
-        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimensionId());
+        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimension());
 
         if (chunkLoaders == null)
         {
@@ -102,14 +102,14 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
 
         chunkLoaders.add(new BlockPos(x, y, z));
-        dimensionMap.put(world.provider.getDimensionId(), chunkLoaders);
+        dimensionMap.put(world.provider.getDimension(), chunkLoaders);
         ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
     }
 
     public static void forceChunk(Ticket ticket, World world, int x, int y, int z, String playerName)
     {
         ChunkLoadingCallback.addToList(world, x, y, z, playerName);
-        ChunkCoordIntPair chunkPos = new ChunkCoordIntPair(x >> 4, z >> 4);
+        ChunkPos chunkPos = new ChunkPos(x >> 4, z >> 4);
         ForgeChunkManager.forceChunk(ticket, chunkPos);
         //
         // TileEntity tile = world.getTileEntity(x, y, z);
@@ -117,7 +117,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // if (tile instanceof IChunkLoader)
         // {
         // IChunkLoader chunkLoader = (IChunkLoader) tile;
-        // int dimID = world.provider.getDimensionId();
+        // int dimID = world.provider.getDimension();
         //
         // HashSet<IChunkLoader> chunkList = loadedChunks.get(dimID);
         //
@@ -382,7 +382,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // if (!foundOtherLoader)
         // {
         // ForgeChunkManager.unforceChunk(loader.getTicket(), new
-        // ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+        // ChunkPos(coords.posX >> 4, coords.posZ >> 4));
         // dimEntry.getValue().remove(loader);
         // }
         // }

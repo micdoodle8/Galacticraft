@@ -88,7 +88,7 @@ public class KeyHandlerClient extends KeyHandler
             }
             else if (kb.getKeyCode() == KeyHandlerClient.openFuelGui.getKeyCode())
             {
-                if (playerBase.ridingEntity instanceof EntitySpaceshipBase || playerBase.ridingEntity instanceof EntityBuggy)
+                if (playerBase.getRidingEntity() instanceof EntitySpaceshipBase || playerBase.getRidingEntity() instanceof EntityBuggy)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, new Object[] { playerBase.getGameProfile().getName() }));
                 }
@@ -131,7 +131,7 @@ public class KeyHandlerClient extends KeyHandler
                 keyNum = 5;
             }
 
-            Entity entityTest = KeyHandlerClient.mc.thePlayer.ridingEntity;
+            Entity entityTest = KeyHandlerClient.mc.thePlayer.getRidingEntity();
             if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
             {
                 IControllableEntity entity = (IControllableEntity) entityTest;

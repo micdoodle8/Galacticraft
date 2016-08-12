@@ -19,8 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -40,7 +40,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     public BlockTelepadFake(String assetName)
     {
         super(GCBlocks.machine);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
 //        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
@@ -48,7 +48,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -88,18 +88,18 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
+        return super.getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
+        return super.getSelectedBoundingBox(state, worldIn, pos);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -172,7 +172,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -189,7 +189,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
@@ -277,9 +277,9 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         return super.addDestroyEffects(world, pos, effectRenderer);
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, TOP, CONNECTABLE);
+        return new BlockStateContainer(this, TOP, CONNECTABLE);
     }
 
     @Override

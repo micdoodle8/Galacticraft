@@ -21,7 +21,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
@@ -119,7 +119,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         super(Material.clay);
         this.setResistance(0.2F);
         this.setHardness(0.4f);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(Block.soundTypeStone);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -465,9 +465,9 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         return ((EnumEnclosedBlockType)state.getValue(TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, TYPE);
+        return new BlockStateContainer(this, TYPE);
     }
 
     @Override

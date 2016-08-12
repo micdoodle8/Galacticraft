@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;

@@ -50,7 +50,7 @@
 ////        float celestialAngle2 = dish.getWorldObj().getCelestialAngle(1.0F) * 360.0F;
 //
 //        GL11.glTranslatef(0.0F, 2.3F, 0.0F);
-//        GL11.glRotatef((MathHelper.sin(time / 144) + 1.0F) * 22.5F, 1.0F, 0.0F, 0.0F);
+//        GL11.glRotatef(((float)Math.sin(time / 144) + 1.0F) * 22.5F, 1.0F, 0.0F, 0.0F);
 //        GL11.glTranslatef(0.0F, -2.3F, 0.0F);
 //
 //        this.renderEngine.bindTexture(textureDish);

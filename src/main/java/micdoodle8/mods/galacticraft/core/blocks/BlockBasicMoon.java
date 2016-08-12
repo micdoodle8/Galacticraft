@@ -17,7 +17,6 @@ import net.minecraft.block.BlockFlower;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -27,11 +26,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -104,7 +105,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
     public BlockBasicMoon(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 1.5F;
         this.blockResistance = 2.5F;
         this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
@@ -113,29 +114,29 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        if (getMetaFromState(state) == 15)
+        if (getMetaFromState(blockState) == 15)
         {
             return AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
         }
 
-        return super.getCollisionBoundingBox(worldIn, pos, state);
+        return super.getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
-        if (getMetaFromState(world.getBlockState(pos)) == 15)
+        if (getMetaFromState(worldIn.getBlockState(pos)) == 15)
         {
             return AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
         }
 
-        return super.getSelectedBoundingBox(world, pos);
+        return super.getSelectedBoundingBox(state, worldIn, pos);
     }
 
     @Override
-    public boolean isNormalCube(IBlockAccess world, BlockPos pos)
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         if (getMetaFromState(world.getBlockState(pos)) == 15)
         {
@@ -143,7 +144,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         }
         else
         {
-            return super.isNormalCube(world, pos);
+            return super.isNormalCube(state, world, pos);
         }
     }
 
@@ -204,7 +205,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         final int meta = getMetaFromState(worldIn.getBlockState(pos));
 
@@ -321,7 +322,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         case 2:
             return GCItems.cheeseCurd;
         case 15:
-            return Item.getItemFromBlock(Blocks.air);
+            return Item.getItemFromBlock(Blocks.AIR);
         default:
             return Item.getItemFromBlock(this);
         }
@@ -407,7 +408,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
     {
         final int metadata = getMetaFromState(world.getBlockState(pos));
 
@@ -449,7 +450,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
         if (metadata == 2)
@@ -461,7 +462,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
             return null;
         }
 
-        return super.getPickBlock(target, world, pos);
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override
@@ -471,11 +472,11 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
         if (!worldIn.isRemote && getMetaFromState(state) == 5)
         {
-            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(worldIn.provider.getDimensionId());
+            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(worldIn.provider.getDimension());
 
             if (footprintChunkMap != null)
             {
-                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.getX() >> 4, pos.getZ() >> 4);
+                long chunkKey = ChunkPos.chunkXZ2Int(pos.getX() >> 4, pos.getZ() >> 4);
                 List<Footprint> footprintList = footprintChunkMap.get(chunkKey);
 
                 if (footprintList != null && !footprintList.isEmpty())
@@ -499,7 +500,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
                 }
             }
 
-            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, worldIn.provider.getDimensionId()));
+            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, worldIn.provider.getDimension()));
         }
     }
     
@@ -521,9 +522,9 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         return ((EnumBlockBasicMoon)state.getValue(BASIC_TYPE_MOON)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, BASIC_TYPE_MOON);
+        return new BlockStateContainer(this, BASIC_TYPE_MOON);
     }
 
     @Override

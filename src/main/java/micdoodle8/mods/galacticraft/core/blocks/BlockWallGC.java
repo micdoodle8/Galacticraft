@@ -15,8 +15,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
@@ -35,7 +35,7 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
 
 	public BlockWallGC(String name)
 	{
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(1.5F);
 		this.setResistance(2.5F);
 		this.setDefaultState(this.getDefaultState().withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(VARIANT, BlockType.tin_1_wall));
@@ -43,7 +43,7 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
 	}
 
 	@Override
-	public boolean isFullCube()
+	public boolean isFullCube(IBlockState state)
 	{
 		return false;
 	}
@@ -55,7 +55,7 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isFullyOpaque(IBlockState state)
 	{
 		return false;
 	}
@@ -183,9 +183,9 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
 	}
 
 	@Override
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
-		return new BlockState(this, new IProperty[] {UP, NORTH, EAST, WEST, SOUTH, VARIANT});
+		return new BlockStateContainer(this, new IProperty[] {UP, NORTH, EAST, WEST, SOUTH, VARIANT});
 	}
 
 	public static enum BlockType implements IStringSerializable

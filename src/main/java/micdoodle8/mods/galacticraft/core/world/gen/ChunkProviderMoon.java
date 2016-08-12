@@ -14,9 +14,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
@@ -376,7 +376,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 //
 //        if (!ConfigManagerCore.disableMoonVillageGen)
 //        {
-//            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(par2, par3));
+//            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(par2, par3));
 //        }
 //
 //        biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(par2, 0, par3));
@@ -398,7 +398,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
         if (!ConfigManagerCore.disableMoonVillageGen)
         {
-            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
+            this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(x, z));
         }
 
         biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(i, 0, j));

@@ -25,8 +25,8 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -57,12 +57,12 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -121,7 +121,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(MathHelper.floor_double((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite();
+        EnumFacing enumfacing = EnumFacing.getHorizontal((int)Math.floor((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite();
         state = state.withProperty(FACING, enumfacing);
         BlockPos blockpos1 = pos.north();
         BlockPos blockpos2 = pos.south();
@@ -526,9 +526,9 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
         return (state.getValue(FACING)).getIndex();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.network;
 
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

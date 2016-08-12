@@ -160,8 +160,8 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         if (this.isSprinting())
         {
             float f = this.rotationYaw * 0.017453292F;
-            this.motionX -= MathHelper.sin(f) * 0.2F;
-            this.motionZ += MathHelper.cos(f) * 0.2F;
+            this.motionX -= (float)Math.sin(f) * 0.2F;
+            this.motionZ += (float)Math.cos(f) * 0.2F;
         }
 
         this.isAirBorne = true;

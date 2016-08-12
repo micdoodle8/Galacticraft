@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -112,9 +112,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    final int x = MathHelper.floor_double(this.posX);
-                    final int y = MathHelper.floor_double(this.posY);
-                    final int z = MathHelper.floor_double(this.posZ);
+                    final int x = (int)Math.floor(this.posX);
+                    final int y = (int)Math.floor(this.posY);
+                    final int z = (int)Math.floor(this.posZ);
 
                     BlockPos pos = new BlockPos(x, y + i, z);
                     Block block = this.worldObj.getBlockState(pos).getBlock();
@@ -158,7 +158,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
 
         if (!this.worldObj.isRemote && this.ticksExisted % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 64.0));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0));
         }
     }
 

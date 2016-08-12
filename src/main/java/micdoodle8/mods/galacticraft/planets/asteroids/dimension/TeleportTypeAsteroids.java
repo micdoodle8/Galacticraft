@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import net.minecraft.entity.EntityList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
@@ -44,8 +44,8 @@ public class TeleportTypeAsteroids implements ITeleportType
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            int x = MathHelper.floor_double(stats.coordsTeleportedFromX);
-            int z = MathHelper.floor_double(stats.coordsTeleportedFromZ);
+            int x = (int)Math.floor(stats.coordsTeleportedFromX);
+            int z = (int)Math.floor(stats.coordsTeleportedFromZ);
 
             int attemptCount = 0;
 

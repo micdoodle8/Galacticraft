@@ -87,7 +87,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
             {
                 Entity entity = damageSource.getEntity();
 
-                if (this.riddenByEntity != entity && this.ridingEntity != entity)
+                if (this.riddenByEntity != entity && this.getRidingEntity() != entity)
                 {
                     if (entity != this && entity instanceof EntityLivingBase)
                     {
@@ -142,20 +142,20 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }
@@ -183,8 +183,8 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, new Object[] { }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
-                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimensionId(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, new Object[] { }), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 40.0D));
+                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimension(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -201,8 +201,8 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, new Object[] {}), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
-                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimensionId(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, new Object[] {}), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 40.0D));
+                //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimension(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
             }
         }
 
@@ -334,7 +334,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeleton_boss.message")));
+                    p.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
                 this.setDead();
@@ -495,7 +495,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         else
         {
             float f = (this.renderYawOffset + 180 * (par1 - 1)) / 180.0F * (float) Math.PI;
-            float f1 = MathHelper.cos(f);
+            float f1 = (float)Math.cos(f);
             return this.posX + f1 * 1.3D;
         }
     }
@@ -514,7 +514,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         else
         {
             float f = (this.renderYawOffset + 180 * (par1 - 1)) / 180.0F * (float) Math.PI;
-            float f1 = MathHelper.sin(f);
+            float f1 = (float)Math.sin(f);
             return this.posZ + f1 * 1.3D;
         }
     }

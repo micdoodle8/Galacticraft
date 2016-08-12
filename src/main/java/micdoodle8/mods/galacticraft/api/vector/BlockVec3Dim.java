@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
@@ -73,7 +73,7 @@ public class BlockVec3Dim implements Cloneable
         this.x = par1.getPos().getX();
         this.y = par1.getPos().getY();
         this.z = par1.getPos().getZ();
-        this.dim = par1.getWorld().provider.getDimensionId();
+        this.dim = par1.getWorld().provider.getDimension();
     }
 
     public BlockVec3Dim(BlockPos pos, int dimensionId)
@@ -113,7 +113,7 @@ public class BlockVec3Dim implements Cloneable
         {
             // In a typical inner loop, 80% of the time consecutive calls to
             // this will be within the same chunk
-            if (BlockVec3Dim.chunkCacheX == chunkx && BlockVec3Dim.chunkCacheZ == chunkz && BlockVec3Dim.chunkCacheDim == world.provider.getDimensionId() && BlockVec3Dim.chunkCached.isLoaded())
+            if (BlockVec3Dim.chunkCacheX == chunkx && BlockVec3Dim.chunkCacheZ == chunkz && BlockVec3Dim.chunkCacheDim == world.provider.getDimension() && BlockVec3Dim.chunkCached.isLoaded())
             {
                 return BlockVec3Dim.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
             }
@@ -122,7 +122,7 @@ public class BlockVec3Dim implements Cloneable
                 Chunk chunk = null;
                 chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                 BlockVec3Dim.chunkCached = chunk;
-                BlockVec3Dim.chunkCacheDim = world.provider.getDimensionId();
+                BlockVec3Dim.chunkCacheDim = world.provider.getDimension();
                 BlockVec3Dim.chunkCacheX = chunkx;
                 BlockVec3Dim.chunkCacheZ = chunkz;
                 return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -163,7 +163,7 @@ public class BlockVec3Dim implements Cloneable
             {
                 // In a typical inner loop, 80% of the time consecutive calls to
                 // this will be within the same chunk
-                if (BlockVec3Dim.chunkCacheX == chunkx && BlockVec3Dim.chunkCacheZ == chunkz && BlockVec3Dim.chunkCacheDim == world.provider.getDimensionId() && BlockVec3Dim.chunkCached.isLoaded())
+                if (BlockVec3Dim.chunkCacheX == chunkx && BlockVec3Dim.chunkCacheZ == chunkz && BlockVec3Dim.chunkCacheDim == world.provider.getDimension() && BlockVec3Dim.chunkCached.isLoaded())
                 {
                     return BlockVec3Dim.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
                 }
@@ -172,7 +172,7 @@ public class BlockVec3Dim implements Cloneable
                     Chunk chunk = null;
                     chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3Dim.chunkCached = chunk;
-                    BlockVec3Dim.chunkCacheDim = world.provider.getDimensionId();
+                    BlockVec3Dim.chunkCacheDim = world.provider.getDimension();
                     BlockVec3Dim.chunkCacheX = chunkx;
                     BlockVec3Dim.chunkCacheZ = chunkz;
                     return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -385,7 +385,7 @@ public class BlockVec3Dim implements Cloneable
     {
         World world = FMLClientHandler.instance().getClient().theWorld;
 
-        if (world != null && world.provider.getDimensionId() == dimensionID)
+        if (world != null && world.provider.getDimension() == dimensionID)
         {
             return world;
         }

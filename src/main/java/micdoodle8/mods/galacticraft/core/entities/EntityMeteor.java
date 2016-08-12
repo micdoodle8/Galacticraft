@@ -153,7 +153,7 @@ public class EntityMeteor extends Entity
     {
         if (par1Entity != null && par1Entity instanceof EntityPlayer)
         {
-            StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).getGameProfile().getName() + " was hit by a meteor! That's gotta hurt!");
+            I18n.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).getGameProfile().getName() + " was hit by a meteor! That's gotta hurt!");
         }
         return new EntityDamageSourceIndirect("explosion", par0EntityMeteor, par1Entity).setProjectile();
     }

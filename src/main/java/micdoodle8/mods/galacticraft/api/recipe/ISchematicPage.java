@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;

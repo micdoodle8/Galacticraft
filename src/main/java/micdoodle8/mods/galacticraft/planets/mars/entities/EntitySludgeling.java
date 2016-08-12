@@ -15,7 +15,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -58,19 +58,19 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return "mob.silverfish.say";
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return "mob.silverfish.hit";
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return "mob.silverfish.kill";
     }

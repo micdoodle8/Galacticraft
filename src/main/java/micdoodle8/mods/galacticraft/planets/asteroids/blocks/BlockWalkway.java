@@ -73,11 +73,11 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     protected BlockWalkway(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(1.0F);
 //        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "walkway");
         this.setUnlocalizedName(assetName);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.isBlockContainer = true;
         this.setDefaultState(this.blockState.getBaseState().withProperty(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
     }
@@ -96,7 +96,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return true;
     }
@@ -109,13 +109,13 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -300,9 +300,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
+        return new BlockStateContainer(this, WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
     }
 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)

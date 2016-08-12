@@ -36,10 +36,10 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 
     public BlockNasaWorkbench(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
         this.setHardness(2.5F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
@@ -65,20 +65,20 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return AxisAlignedBB.fromBounds((double) pos.getX() + -0.0F, (double) pos.getY() + 0.0F, (double) pos.getZ() + -0.0F, (double) pos.getX() + 1.0F, (double) pos.getY() + 1.4F, (double) pos.getZ() + 1.0F);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
     }
@@ -155,7 +155,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
             if (!worldIn.isRemote && placer instanceof EntityPlayerMP)
             {
                 EntityPlayerMP player = (EntityPlayerMP) placer;
-                player.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                player.addChatMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                 if (!player.capabilities.isCreativeMode)
                 {
                     final ItemStack nasaWorkbench = new ItemStack(this, 1, 0);
@@ -261,7 +261,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }

@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
@@ -71,7 +71,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
 
     public BlockSlimelingEgg(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.625F, 0.75F);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
@@ -92,7 +92,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     }*/
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -201,7 +201,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -241,7 +241,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         IBlockState state = world.getBlockState(pos);
         int metadata = state.getBlock().getMetaFromState(state);
@@ -286,9 +286,9 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, Ite
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, EGG_COLOR, BROKEN);
+        return new BlockStateContainer(this, EGG_COLOR, BROKEN);
     }
 
     @Override

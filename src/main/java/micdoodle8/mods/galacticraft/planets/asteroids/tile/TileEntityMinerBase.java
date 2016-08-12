@@ -23,10 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -536,7 +536,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     	}
     	int link = (this.linkedMinerID != null) ? 1:0;
         System.err.println(x + " " + y + " " + z + " " + this.mainBlockPosition);
-    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing, x, y, z, link} ), this.worldObj.provider.getDimensionId());
+    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing, x, y, z, link} ), this.worldObj.provider.getDimension());
     }
     
     @Override
@@ -813,7 +813,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
   	}
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

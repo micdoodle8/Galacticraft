@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -147,7 +147,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("itemCookTime", this.itemCookTime);
@@ -314,7 +314,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 

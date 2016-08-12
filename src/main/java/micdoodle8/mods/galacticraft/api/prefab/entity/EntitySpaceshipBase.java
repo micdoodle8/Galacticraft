@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -358,10 +358,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
-            // this.worldObj.provider.getDimensionId());
+            // this.worldObj.provider.getDimension());
         }
     }
 

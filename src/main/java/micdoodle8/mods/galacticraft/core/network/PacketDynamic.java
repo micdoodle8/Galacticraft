@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,7 +32,7 @@ public class PacketDynamic implements IPacket
     {
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
-        this.dimID = entity.worldObj.provider.getDimensionId();
+        this.dimID = entity.worldObj.provider.getDimension();
         this.data = new Object[] { entity.getEntityId() };
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) entity).getNetworkedData(this.sendData);
@@ -42,7 +42,7 @@ public class PacketDynamic implements IPacket
     {
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
-        this.dimID = tile.getWorld().provider.getDimensionId();
+        this.dimID = tile.getWorld().provider.getDimension();
         this.data = new Object[] { tile.getPos() };
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) tile).getNetworkedData(this.sendData);

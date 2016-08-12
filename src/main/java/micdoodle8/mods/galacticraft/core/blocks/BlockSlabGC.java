@@ -15,7 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -78,7 +78,7 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-	public float getBlockHardness(World world, BlockPos pos)
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
 	{
 		Block block = world.getBlockState(pos).getBlock();
 
@@ -104,7 +104,7 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 	{
 		return new ItemStack(this, 1, this.getMetaFromState(world.getBlockState(pos)) & 7);
 	}
@@ -159,7 +159,7 @@ public class BlockSlabGC extends BlockSlab
 	}
 
 	@Override
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
 		return this.isDouble() ? new BlockState(this, new IProperty[] {VARIANT}): new BlockState(this, new IProperty[] {HALF, VARIANT});
 	}

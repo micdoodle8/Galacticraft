@@ -47,7 +47,7 @@ public class RenderEvolvedCreeper extends RenderCreeper
     protected void updateCreeperScale(EntityCreeper par1GCEntityCreeper, float par2)
     {
         float var4 = par1GCEntityCreeper.getCreeperFlashIntensity(par2);
-        final float var5 = 1.0F + MathHelper.sin(var4 * 100.0F) * var4 * 0.01F;
+        final float var5 = 1.0F + (float)Math.sin(var4 * 100.0F) * var4 * 0.01F;
 
         if (var4 < 0.0F)
         {

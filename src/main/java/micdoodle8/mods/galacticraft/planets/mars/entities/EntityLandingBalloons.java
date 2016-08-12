@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -191,7 +191,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
         return null;
     }

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -18,7 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidStack;
 

@@ -5,10 +5,16 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import micdoodle8.mods.galacticraft.core.event.SoundEventsGC;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,7 +35,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
+import micdoodle8.mods.galacticraft.core.client.fx.ParticleSparks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
@@ -61,7 +67,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -74,12 +79,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -363,9 +365,9 @@ public class PacketSimple implements IPacket, Packet
 
             for (int i = 0; i < 4; i++)
             {
-                if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null && mc.theWorld != null)
+                if (mc.effectRenderer != null && mc.theWorld != null)
                 {
-                    final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
+                    final Particle fx = new ParticleSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
 
                     if (fx != null)
                     {
@@ -376,13 +378,12 @@ public class PacketSimple implements IPacket, Packet
             break;
         case C_UPDATE_GEAR_SLOT:
             int subtype = (Integer) this.data.get(2);
-            EntityPlayer gearDataPlayer = null;
-            MinecraftServer server = MinecraftServer.getServer();
-            String gearName = (String) this.data.get(0); 
+            EntityPlayer gearDataPlayer;
+            String gearName = (String) this.data.get(0);
 
-            if (server != null)
+            if (player.getServer() != null)
             {
-                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, gearName);
+                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(player.getServer(), gearName);
             }
             else
             {
@@ -542,16 +543,16 @@ public class PacketSimple implements IPacket, Packet
             }
             break;
         case C_PLAY_SOUND_BOSS_DEATH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
+            player.playSound(SoundEventsGC.BOSS_DEATH, 10.0F, 0.8F);
             break;
         case C_PLAY_SOUND_EXPLODE:
-            player.playSound("random.explode", 10.0F, 0.7F);
+            player.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 10.0F, 0.7F);
             break;
         case C_PLAY_SOUND_BOSS_LAUGH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
+            player.playSound(SoundEventsGC.BOSS_LAUGH, 10.0F, 0.2F);
             break;
         case C_PLAY_SOUND_BOW:
-            player.playSound("random.bow", 10.0F, 0.2F);
+            player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 10.0F, 0.2F);
             break;
         case C_UPDATE_OXYGEN_VALIDITY:
             stats.oxygenSetupValid = (Boolean) this.data.get(0);
@@ -560,9 +561,9 @@ public class PacketSimple implements IPacket, Packet
             switch ((Integer) this.data.get(1))
             {
             case 0:
-                if (player.ridingEntity instanceof EntityBuggy)
+                if (player.getRidingEntity() instanceof EntityBuggy)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GuiBuggy(player.inventory, (EntityBuggy) player.ridingEntity, ((EntityBuggy) player.ridingEntity).getType()));
+                    FMLClientHandler.instance().getClient().displayGuiScreen(new GuiBuggy(player.inventory, (EntityBuggy) player.getRidingEntity(), ((EntityBuggy) player.getRidingEntity()).getType()));
                     player.openContainer.windowId = (Integer) this.data.get(0);
                 }
                 break;
@@ -681,10 +682,10 @@ public class PacketSimple implements IPacket, Packet
             stats.thermalLevelNormalising = (Boolean) this.data.get(1);
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
-            player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
-            player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.turn.name")));
-            player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.updown.name")));
-            player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.rocket.inv.name")));
+            player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
+            player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.turn.name")));
+            player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.updown.name")));
+            player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.rocket.inv.name")));
             break;
         case C_GET_CELESTIAL_BODY_LIST:
             String str = "";
@@ -716,7 +717,7 @@ public class PacketSimple implements IPacket, Packet
             break;
         case C_RESPAWN_PLAYER:
             final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
-            final int dimID = provider.getDimensionId();
+            final int dimID = provider.getDimension();
             if (ConfigManagerCore.enableDebug)
             {
                 GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
@@ -778,7 +779,7 @@ public class PacketSimple implements IPacket, Packet
         			((TileEntityTelemetry)tile).clientGameProfile = profile;
         		}
         		else
-        			((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(name);
+        			((TileEntityTelemetry)tile).clientClass = (Class) EntityList.NAME_TO_CLASS.get(name);
         		((TileEntityTelemetry)tile).clientData = new int[5];
         		for (int i = 4; i < 9; i++)
                 {
@@ -847,15 +848,15 @@ public class PacketSimple implements IPacket, Packet
         switch (this.type)
         {
         case S_RESPAWN_PLAYER:
-            playerBase.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), playerBase.theItemInWorldManager.getGameType()));
+            playerBase.connection.sendPacket(new SPacketRespawn(player.dimension, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), playerBase.interactionManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
             TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, (String) PacketSimple.this.data.get(0)));
             break;
         case S_IGNITE_ROCKET:
-            if (!player.worldObj.isRemote && !player.isDead && player.ridingEntity != null && !player.ridingEntity.isDead && player.ridingEntity instanceof EntityTieredRocket)
+            if (!player.worldObj.isRemote && !player.isDead && player.getRidingEntity() != null && !player.getRidingEntity().isDead && player.getRidingEntity() instanceof EntityTieredRocket)
             {
-                final EntityTieredRocket ship = (EntityTieredRocket) player.ridingEntity;
+                final EntityTieredRocket ship = (EntityTieredRocket) player.getRidingEntity();
 
                 if (!ship.landing)
                 {
@@ -871,14 +872,14 @@ public class PacketSimple implements IPacket, Packet
                         }
                         else if (stats.chatCooldown == 0 && stats.launchAttempts == 0)
                         {
-                            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
+                            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
                             stats.chatCooldown = 250;
                             stats.launchAttempts = 1;
                         }
                     }
                     else if (stats.chatCooldown == 0)
                     {
-                        player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nofuel")));
+                        player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.nofuel")));
                         stats.chatCooldown = 250;
                     }
                 }
@@ -893,19 +894,19 @@ public class PacketSimple implements IPacket, Packet
             }
             break;
         case S_OPEN_FUEL_GUI:
-            if (player.ridingEntity instanceof EntityBuggy)
+            if (player.getRidingEntity() instanceof EntityBuggy)
             {
-                GCCoreUtil.openBuggyInv(playerBase, (EntityBuggy) player.ridingEntity, ((EntityBuggy) player.ridingEntity).getType());
+                GCCoreUtil.openBuggyInv(playerBase, (EntityBuggy) player.getRidingEntity(), ((EntityBuggy) player.getRidingEntity()).getType());
             }
-            else if (player.ridingEntity instanceof EntitySpaceshipBase)
+            else if (player.getRidingEntity() instanceof EntitySpaceshipBase)
             {
                 player.openGui(GalacticraftCore.instance, GuiIdsCore.ROCKET_INVENTORY, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
             }
             break;
         case S_UPDATE_SHIP_YAW:
-            if (player.ridingEntity instanceof EntitySpaceshipBase)
+            if (player.getRidingEntity() instanceof EntitySpaceshipBase)
             {
-                final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
+                final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.getRidingEntity();
 
                 if (ship != null)
                 {
@@ -914,9 +915,9 @@ public class PacketSimple implements IPacket, Packet
             }
             break;
         case S_UPDATE_SHIP_PITCH:
-            if (player.ridingEntity instanceof EntitySpaceshipBase)
+            if (player.getRidingEntity() instanceof EntitySpaceshipBase)
             {
-                final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
+                final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.getRidingEntity();
 
                 if (ship != null)
                 {
@@ -986,7 +987,7 @@ public class PacketSimple implements IPacket, Packet
         case S_ON_FAILED_CHEST_UNLOCK:
             if (stats.chatCooldown == 0)
             {
-                player.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.chest.warning.wrongkey", this.data.get(0))));
+                player.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.chest.warning.wrongkey", this.data.get(0))));
                 stats.chatCooldown = 100;
             }
             break;
@@ -1140,7 +1141,7 @@ public class PacketSimple implements IPacket, Packet
                     {
                         teamNameTotal = teamNameTotal.concat(dB + teamNamePart + " ");
                     }
-                    playerInvited.addChatMessage(new ChatComponentText(dA + GCCoreUtil.translateWithFormat("gui.space_race.chat.invite_received", bG + player.getGameProfile().getName() + dA) + "  " + GCCoreUtil.translateWithFormat("gui.space_race.chat.to_join", teamNameTotal, EnumColor.AQUA + "/joinrace" + dA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                    playerInvited.addChatMessage(new TextComponentString(dA + GCCoreUtil.translateWithFormat("gui.space_race.chat.invite_received", bG + player.getGameProfile().getName() + dA) + "  " + GCCoreUtil.translateWithFormat("gui.space_race.chat.to_join", teamNameTotal, EnumColor.AQUA + "/joinrace" + dA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
                 }
             }
             break;
@@ -1154,7 +1155,7 @@ public class PacketSimple implements IPacket, Packet
 
                 if (!race.getPlayerNames().remove(playerToRemove))
                 {
-                    player.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.space_race.chat.not_found", playerToRemove)));
+                    player.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.space_race.chat.not_found", playerToRemove)));
                 }
                 else
                 {
@@ -1172,7 +1173,7 @@ public class PacketSimple implements IPacket, Packet
 
                 if (!spaceRaceToAddPlayer.getPlayerNames().contains(playerToAdd))
                 {
-                    SpaceRace oldRace = null;
+                    SpaceRace oldRace;
                     while ((oldRace = SpaceRaceManager.getSpaceRaceFromPlayer(playerToAdd)) != null)
                     {
                         SpaceRaceManager.removeSpaceRace(oldRace);
@@ -1183,17 +1184,21 @@ public class PacketSimple implements IPacket, Packet
 
                     for (String member : spaceRaceToAddPlayer.getPlayerNames())
                     {
-                        EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(MinecraftServer.getServer(), member);
+                        EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(player.getServer(), member);
 
                         if (memberObj != null)
                         {
-                            memberObj.addChatMessage(new ChatComponentText(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.add_success", EnumColor.BRIGHT_GREEN + playerToAdd + EnumColor.DARK_AQUA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                            TextComponentString textComponent = new TextComponentString(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.add_success", EnumColor.BRIGHT_GREEN + playerToAdd + EnumColor.DARK_AQUA));
+                            textComponent.getStyle().setColor(TextFormatting.DARK_AQUA);
+                            memberObj.addChatMessage(textComponent);
                         }
                     }
                 }
                 else
                 {
-                    player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.space_race.chat.already_part")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+                    TextComponentString textComponent = new TextComponentString(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.already_part", EnumColor.BRIGHT_GREEN + playerToAdd + EnumColor.DARK_AQUA));
+                    textComponent.getStyle().setColor(TextFormatting.DARK_RED);
+                    player.addChatMessage(textComponent);
                 }
             }
             break;
@@ -1233,7 +1238,7 @@ public class PacketSimple implements IPacket, Packet
 
             if (missingObjects.length() > 0)
             {
-                playerBase.playerNetServerHandler.kickPlayerFromServer("Missing Galacticraft Celestial Objects:\n\n " + missingObjects);
+                playerBase.connection.kickPlayerFromServer("Missing Galacticraft Celestial Objects:\n\n " + missingObjects);
             }
 
             break;
@@ -1267,7 +1272,7 @@ public class PacketSimple implements IPacket, Packet
         	MapUtil.sendOverworldToClient(playerBase);
 //        	if (GalacticraftCore.enableJPEG)
 //        	{
-//            ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
+//            ChunkPos chunkCoordIntPair = new ChunkPos((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
 //            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
 //            if (!baseFolder.exists())
 //            {

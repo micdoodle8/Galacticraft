@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 public class SlotBuggyBench extends Slot
 {
@@ -34,7 +34,7 @@ public class SlotBuggyBench extends Slot
             {
                 final EntityPlayerMP var13 = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
 
-                if (var13.dimension == this.player.worldObj.provider.getDimensionId())
+                if (var13.dimension == this.player.worldObj.provider.getDimension())
                 {
                     final double var14 = this.pos.getX() - var13.posX;
                     final double var16 = this.pos.getY() - var13.posY;

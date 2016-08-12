@@ -86,7 +86,7 @@
 //                    var14b = 1.0F;
 //                }
 //
-//                GL11.glRotatef(MathHelper.sin((var13b - 0.1F) * 0.3F) * 0.01F * (var14b - 0.1F) * 60, 1F, 0F, 0F);
+//                GL11.glRotatef((float)Math.sin((var13b - 0.1F) * 0.3F) * 0.01F * (var14b - 0.1F) * 60, 1F, 0F, 0F);
 //
 //                GL11.glRotatef(var14b * 60F, 1F, 0F, 1F);
 //                GL11.glTranslatef(0F, -(var14b * 0.2F), 0F);

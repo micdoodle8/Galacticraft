@@ -25,8 +25,8 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -44,7 +44,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     {
         super(Material.wood);
         this.setHardness(3.0F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(Block.soundTypeWood);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
@@ -64,13 +64,13 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -254,9 +254,9 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         return (state.getValue(FACING)).getIndex();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, COLOR, FACING);
+        return new BlockStateContainer(this, COLOR, FACING);
     }
 
     @Override

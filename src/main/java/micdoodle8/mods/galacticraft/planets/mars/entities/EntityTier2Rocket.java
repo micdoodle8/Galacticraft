@@ -135,7 +135,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
                 }
             }
 
-            if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
+            if (this.timeSinceLaunch % (int)Math.floor(2 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
 				if (!this.hasValidFuel())

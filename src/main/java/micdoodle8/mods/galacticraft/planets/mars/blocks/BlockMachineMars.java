@@ -93,7 +93,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     public BlockMachineMars(String assetName)
     {
         super(GCBlocks.machine);
-		this.setStepSound(soundTypeMetal);
+		this.setSoundType(soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
 
@@ -184,7 +184,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     {
         int metadata = getMetaFromState(state);
 
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = (int)Math.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
@@ -264,13 +264,13 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -458,7 +458,7 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return true;
     }
@@ -478,9 +478,9 @@ public class BlockMachineMars extends BlockTileGC implements ItemBlockDesc.IBloc
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

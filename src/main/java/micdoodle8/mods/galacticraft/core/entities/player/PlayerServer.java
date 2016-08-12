@@ -15,7 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,7 +49,7 @@ public class PlayerServer implements IPlayerServer
     @Override
     public boolean mountEntity(EntityPlayerMP player, Entity par1Entity)
     {
-        if (updatingRidden && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
+        if (updatingRidden && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit())
         {
             return true;
         }
@@ -61,7 +61,7 @@ public class PlayerServer implements IPlayerServer
     public void moveEntity(EntityPlayerMP player, double par1, double par3, double par5)
     {
         // If the player is on the moon, not airbourne and not riding anything
-        if (player.worldObj.provider instanceof WorldProviderMoon && !player.worldObj.isRemote && player.ridingEntity == null)
+        if (player.worldObj.provider instanceof WorldProviderMoon && !player.worldObj.isRemote && player.getRidingEntity() == null)
         {
             GCPlayerHandler.updateFeet(player, par1, par5);
         }
@@ -77,7 +77,7 @@ public class PlayerServer implements IPlayerServer
     public float attackEntityFrom(EntityPlayerMP player, DamageSource par1DamageSource, float par2)
     {
         //No damage while in Celestial Selection screen
-    	if (player.ridingEntity instanceof EntityCelestialFake)
+    	if (player.getRidingEntity() instanceof EntityCelestialFake)
         	return -1;
     	
     	if (GalacticraftCore.isPlanetsLoaded)

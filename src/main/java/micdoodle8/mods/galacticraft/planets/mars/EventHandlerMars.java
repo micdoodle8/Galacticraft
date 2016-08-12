@@ -32,7 +32,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
@@ -158,9 +158,9 @@ public class EventHandlerMars
 
         if (entity != null)
         {
-            int x = MathHelper.floor_double(entity.posX);
-            int y = MathHelper.floor_double(entity.posY);
-            int z = MathHelper.floor_double(entity.posZ);
+            int x = (int)Math.floor(entity.posX);
+            int y = (int)Math.floor(entity.posY);
+            int z = (int)Math.floor(entity.posZ);
             TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y - 1, z));
 
             if (tile instanceof TileEntityMulti)

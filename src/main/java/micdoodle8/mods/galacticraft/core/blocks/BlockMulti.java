@@ -72,13 +72,13 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
         this.setResistance(1000000000000000.0F);
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isFullyOpaque(IBlockState state)
     {
         return false;
     }
@@ -130,17 +130,17 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
+        return super.getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
+        return super.getSelectedBoundingBox(state, worldIn, pos);
     }
 
     @Override
@@ -157,7 +157,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -243,7 +243,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -255,7 +255,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -362,9 +362,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         return ((EnumBlockMultiType)state.getValue(MULTI_TYPE)).getMeta();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, MULTI_TYPE, RENDER_TYPE);
+        return new BlockStateContainer(this, MULTI_TYPE, RENDER_TYPE);
     }
 
     @Override

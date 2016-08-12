@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 
 import java.util.ArrayList;

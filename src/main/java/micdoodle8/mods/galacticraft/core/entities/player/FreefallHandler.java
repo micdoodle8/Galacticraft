@@ -7,8 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 
 public class FreefallHandler {
@@ -24,12 +24,12 @@ public class FreefallHandler {
 	{
         //Test whether feet are on a block, also stops the login glitch
         int playerFeetOnY = (int) (player.getEntityBoundingBox().minY - 0.01D);
-        int xx = MathHelper.floor_double(player.posX);
-        int zz = MathHelper.floor_double(player.posZ);
+        int xx = (int)Math.floor(player.posX);
+        int zz = (int)Math.floor(player.posZ);
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
         IBlockState state = player.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
+        if (b.getMaterial() != Material.AIR && !(b instanceof BlockLiquid))
         {
         	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
             if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
@@ -88,8 +88,8 @@ public class FreefallHandler {
         	if (dX < 0.01D && dZ < 0.01D)
         	{
         		float pitch = p.rotationPitch / 57.29578F;
-       			jetpackBoost = (float) dY * MathHelper.cos(pitch) * 0.1F;
-        		float factor = 1 + MathHelper.sin(pitch) / 5;
+       			jetpackBoost = (float) dY * (float)Math.cos(pitch) * 0.1F;
+        		float factor = 1 + (float)Math.sin(pitch) / 5;
         		p.motionY -= dY * factor;
         		jetpackUsed = true;
         	}
@@ -105,14 +105,14 @@ public class FreefallHandler {
 
         if (p.movementInput.moveForward != 0)
         {
-            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
-            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
+            p.motionX -= p.movementInput.moveForward * (float)Math.sin(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
+            p.motionZ += p.movementInput.moveForward * (float)Math.cos(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
         }
 
         if (jetpackBoost != 0)
         {
-            p.motionX -= jetpackBoost * MathHelper.sin(p.rotationYaw / 57.29578F);
-            p.motionZ += jetpackBoost * MathHelper.cos(p.rotationYaw / 57.29578F);
+            p.motionX -= jetpackBoost * (float)Math.sin(p.rotationYaw / 57.29578F);
+            p.motionZ += jetpackBoost * (float)Math.cos(p.rotationYaw / 57.29578F);
         }
 
         if (p.movementInput.sneak)

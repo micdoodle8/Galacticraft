@@ -63,7 +63,7 @@ import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -162,7 +162,7 @@ public class EventHandlerGC
         if (event.entityLiving instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            if (player.ridingEntity instanceof EntityAutoRocket || player.ridingEntity instanceof EntityLanderBase)
+            if (player.getRidingEntity() instanceof EntityAutoRocket || player.getRidingEntity() instanceof EntityLanderBase)
             {
                 event.distance = 0.0F;
                 event.setCanceled(true);
@@ -206,7 +206,7 @@ public class EventHandlerGC
            		EventHandlerGC.bedActivated = true;
        			
             	//On planets allow the bed to be used to designate a player spawn point
-            	event.entityPlayer.setSpawnChunk(event.pos, false, event.world.provider.getDimensionId());
+            	event.entityPlayer.setSpawnChunk(event.pos, false, event.world.provider.getDimension());
        		}
        		else
        			EventHandlerGC.bedActivated = false;
@@ -359,7 +359,7 @@ public class EventHandlerGC
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == world.provider.getDimensionId())
+            if (dim == world.provider.getDimension())
             {
                 doGen2 = true;
                 break;
@@ -503,7 +503,7 @@ public class EventHandlerGC
 	private static boolean checkBlock(World w, BlockPos pos)
     {
         Block b = w.getBlockState(pos).getBlock();
-        if (b.getMaterial() == Material.air)
+        if (b.getMaterial() == Material.AIR)
         {
             return true;
         }
@@ -534,7 +534,7 @@ public class EventHandlerGC
             stats.unlockedSchematics.add(event.page);
             Collections.sort(stats.unlockedSchematics);
 
-            if (event.player != null && event.player.playerNetServerHandler != null)
+            if (event.player != null && event.player.connection != null)
             {
                 Integer[] iArray = new Integer[stats.unlockedSchematics.size()];
 
@@ -770,7 +770,7 @@ public class EventHandlerGC
     	{
     		WorldClient worldclient = Minecraft.getMinecraft().theWorld;
 
-    		if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.air && !((IGalacticraftWorldProvider)worldclient.provider).hasBreathableAtmosphere())
+    		if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider)worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.AIR && !((IGalacticraftWorldProvider)worldclient.provider).hasBreathableAtmosphere())
     		{
     			Vec3 vec = worldclient.getFogColor(1.0F);
     			event.red = (float) vec.xCoord;
