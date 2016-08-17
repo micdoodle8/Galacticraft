@@ -728,8 +728,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;
-                    BlockFlower.EnumFlowerType type = BlockFlower.EnumFlowerType.values()[rand.nextInt(BlockFlower.EnumFlowerType.values().length)];
-                    new WorldGenFlowers(this.FLOWER, type).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
+                    BlockFlower.EnumFlowerType[] types = BlockFlower.EnumFlowerType.getTypes(BlockFlower.EnumFlowerColor.RED);
+                    new WorldGenFlowers(this.FLOWER, types[rand.nextInt(types.length)]).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
                 }
                 if(rand.nextInt(ChunkProviderAsteroids.LAVA_CHANCE) == 0)
                 {
