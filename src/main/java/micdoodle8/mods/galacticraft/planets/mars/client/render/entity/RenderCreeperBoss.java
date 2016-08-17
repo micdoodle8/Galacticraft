@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,25 +17,25 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
-public class RenderCreeperBoss extends RenderLiving
+public class RenderCreeperBoss extends RenderLiving<EntityCreeperBoss>
 {
     private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/creeper.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
     private final ModelBase creeperModel = new ModelCreeperBoss(2.0F);
 
-    public RenderCreeperBoss()
+    public RenderCreeperBoss(RenderManager renderManager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelCreeperBoss(), 1.0F);
+        super(renderManager, new ModelCreeperBoss(), 1.0F);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntityCreeperBoss entity)
     {
         return RenderCreeperBoss.creeperTexture;
     }
 
     @Override
-    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityCreeperBoss par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
         BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
 
@@ -78,13 +79,13 @@ public class RenderCreeperBoss extends RenderLiving
 //    }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityCreeperBoss par1EntityLiving, float par2)
     {
         GL11.glScalef(4.0F, 4.0F, 4.0F);
     }
 
     @Override
-    protected int getColorMultiplier(EntityLivingBase par1EntityLivingBase, float par2, float par3)
+    protected int getColorMultiplier(EntityCreeperBoss par1EntityLivingBase, float par2, float par3)
     {
         return super.getColorMultiplier(par1EntityLivingBase, par2, par3);
     }

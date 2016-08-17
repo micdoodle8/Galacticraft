@@ -61,6 +61,11 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
     @Override
     public void renderTileEntityAt(TileEntityMinerBase tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
+        if (!tile.isMaster)
+        {
+            return;
+        }
+
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 
         int i = tile.getWorld().getLightFor(EnumSkyBlock.SKY, tile.getPos().up());
@@ -82,12 +87,12 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
                 GL11.glRotatef(180F, 0, 1F, 0);
                 break;
             case WEST:
+                GL11.glRotatef(90F, 0, 1F, 0);
                 break;
             case NORTH:
-                GL11.glRotatef(270F, 0, 1F, 0);
                 break;
             case EAST:
-                GL11.glRotatef(90F, 0, 1F, 0);
+                GL11.glRotatef(270F, 0, 1F, 0);
                 break;
         }
 

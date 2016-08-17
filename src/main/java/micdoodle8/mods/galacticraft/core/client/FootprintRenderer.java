@@ -18,10 +18,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FootprintRenderer
 {
-    public Map<Long, List<Footprint>> footprints = new HashMap<Long, List<Footprint>>();
+    public Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<Long, List<Footprint>>();
     private static final ResourceLocation footprintTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/footprint.png");
 
     public void renderFootprints(EntityPlayer player, float partialTicks)

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.network;
 
+import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -146,6 +147,7 @@ public class PacketSimpleAsteroids implements IPacket
         	if (tile instanceof TileEntityMinerBase)
         	{
         		((TileEntityMinerBase)tile).facing = EnumFacing.getFront(facingNew);
+//                System.err.println("Setting main c: " + tile.getPos() + "   " + new BlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6)));
         		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
             	int link = (Integer) this.data.get(7);
             	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
@@ -188,11 +190,7 @@ public class PacketSimpleAsteroids implements IPacket
             }
             break;
         case S_REQUEST_MINERBASE_FACING:
-        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
-        	if (tile instanceof TileEntityMinerBase)
-        	{
-            	((TileEntityMinerBase)tile).updateClientFlag = true; 
-        	}
+//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.worldObj.provider.getDimensionId(), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
         	break;
         default:
             break;

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -29,9 +30,9 @@ public class RenderCargoRocket extends Render<EntityCargoRocket>
     private static Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER;
     private ItemModelCargoRocket rocketModel;
 
-    public RenderCargoRocket()
+    public RenderCargoRocket(RenderManager renderManager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(renderManager);
         this.shadowSize = 0.5F;
     }
 

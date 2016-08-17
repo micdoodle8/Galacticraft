@@ -237,7 +237,7 @@ public class PlayerClient implements IPlayerClient
         if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.ridingEntity == null && !player.capabilities.isFlying)
         {
             int iPosX = (int) Math.floor(player.posX);
-            int iPosY = (int) Math.floor(player.posY - 2);
+            int iPosY = (int) Math.floor(player.posY - 1);
             int iPosZ = (int) Math.floor(player.posZ);
             BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
             IBlockState state = player.worldObj.getBlockState(pos1);
@@ -253,7 +253,7 @@ public class PlayerClient implements IPlayerClient
                     {
                         Vector3 pos = new Vector3(player);
                         // Set the footprint position to the block below and add random number to stop z-fighting
-                        pos.y = MathHelper.floor_double(player.posY - 1) + player.getRNG().nextFloat() / 100.0F;
+                        pos.y = MathHelper.floor_double(player.posY) + player.getRNG().nextFloat() / 100.0F;
 
                         // Adjust footprint to left or right depending on step count
                         switch (stats.lastStep)

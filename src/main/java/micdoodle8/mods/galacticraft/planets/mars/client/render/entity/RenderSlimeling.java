@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,35 +20,29 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderSlimeling extends RenderLiving
+public class RenderSlimeling extends RenderLiving<EntitySlimeling>
 {
     private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/slimeling/green.png");
 
-    public RenderSlimeling()
+    public RenderSlimeling(RenderManager renderManager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelSlimeling(16), 0.5F);
+        super(renderManager, new ModelSlimeling(16), 0.5F);
 
 //        this.renderPassModel = new ModelSlimeling(0.0F);
     }
 
-    protected ResourceLocation func_110779_a(EntitySlimeling par1EntityArrow)
+    @Override
+    protected ResourceLocation getEntityTexture(EntitySlimeling par1EntityArrow)
     {
         return RenderSlimeling.landerTexture;
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected void preRenderCallback(EntitySlimeling slimeling, float par2)
     {
-        return this.func_110779_a((EntitySlimeling) par1Entity);
-    }
-
-    @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-        super.preRenderCallback(par1EntityLivingBase, par2);
+        super.preRenderCallback(slimeling, par2);
 
         GL11.glRotatef(180.0F, 0, 1, 0);
-        EntitySlimeling slimeling = (EntitySlimeling) par1EntityLivingBase;
 
         GL11.glColor3f(slimeling.getColorRed(), slimeling.getColorGreen(), slimeling.getColorBlue());
         GL11.glScalef(slimeling.getScale(), slimeling.getScale(), slimeling.getScale());

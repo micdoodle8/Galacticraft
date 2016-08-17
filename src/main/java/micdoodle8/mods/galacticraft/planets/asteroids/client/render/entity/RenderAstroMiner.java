@@ -1,11 +1,8 @@
 //package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 //
 //import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-//import micdoodle8.mods.galacticraft.core.client.objload.AdvancedModelLoader;
-//import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 //import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 //import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-//import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 //import net.minecraft.client.renderer.OpenGlHelper;
 //import net.minecraft.client.renderer.Tessellator;

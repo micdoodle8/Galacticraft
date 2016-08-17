@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,52 +15,30 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class RenderSludgeling extends RenderLiving
+public class RenderSludgeling extends RenderLiving<EntitySludgeling>
 {
     private static final ResourceLocation sludgelingTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/sludgeling.png");
 
-    public RenderSludgeling()
+    public RenderSludgeling(RenderManager renderManager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelSludgeling(), 0.3F);
-    }
-
-    protected ResourceLocation func_110779_a(EntitySludgeling par1EntityArrow)
-    {
-        return RenderSludgeling.sludgelingTexture;
+        super(renderManager, new ModelSludgeling(), 0.3F);
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected float getDeathMaxRotation(EntitySludgeling par1EntityLiving)
     {
-        return this.func_110779_a((EntitySludgeling) par1Entity);
+        return 180.0F;
     }
 
-    public void renderSludgeling(EntitySludgeling sludgeling, double par2, double par4, double par6, float par8, float par9)
+    @Override
+    public void doRender(EntitySludgeling sludgeling, double par2, double par4, double par6, float par8, float par9)
     {
         super.doRender(sludgeling, par2, par4, par6, par8, par9);
     }
 
     @Override
-    protected float getDeathMaxRotation(EntityLivingBase par1EntityLiving)
+    protected ResourceLocation getEntityTexture(EntitySludgeling entity)
     {
-        return 180.0F;
-    }
-
-//    @Override
-//    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-//    {
-//        return -1;
-//    }
-
-    @Override
-    public void doRender(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderSludgeling((EntitySludgeling) par1EntityLiving, par2, par4, par6, par8, par9);
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderSludgeling((EntitySludgeling) par1Entity, par2, par4, par6, par8, par9);
+        return sludgelingTexture;
     }
 }

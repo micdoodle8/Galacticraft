@@ -199,6 +199,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public EntityAstroMiner(World world)
     {
         super(world);
+		this.facing = EnumFacing.NORTH;
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;

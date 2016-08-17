@@ -73,7 +73,7 @@ public class ClientUtil
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
-        return null;
+        return FlagData.DEFAULT;
     }
 
     public static Vector3 updateTeamColor(String playerName, boolean sendPacket)

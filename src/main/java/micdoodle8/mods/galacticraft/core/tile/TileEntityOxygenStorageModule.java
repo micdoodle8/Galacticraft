@@ -4,10 +4,12 @@ import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -201,6 +203,11 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
     public EnumFacing getFront()
     {
+        IBlockState state = this.worldObj.getBlockState(this.getPos());
+        if (state.getBlock() != GCBlocks.machineBase2)
+        {
+            return EnumFacing.NORTH;
+        }
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
     }
 

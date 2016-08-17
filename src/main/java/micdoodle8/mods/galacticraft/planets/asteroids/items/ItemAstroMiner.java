@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -66,6 +68,16 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
         else
         {
             final Block id = worldIn.getBlockState(pos).getBlock();
+
+            if (id == GCBlocks.fakeBlock)
+            {
+                tile = worldIn.getTileEntity(pos);
+
+                if (tile instanceof TileEntityMulti)
+                {
+                    tile = ((TileEntityMulti) tile).getMainBlockTile();
+                }
+            }
 
             if (id == AsteroidBlocks.minerBaseFull)
             {

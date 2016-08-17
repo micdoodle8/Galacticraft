@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,15 +18,16 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderProjectileTNT extends Render
+public class RenderProjectileTNT extends Render<EntityProjectileTNT>
 {
-    public RenderProjectileTNT()
+    public RenderProjectileTNT(RenderManager renderManager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(renderManager);
         this.shadowSize = 0.5F;
     }
 
-    public void renderProjectileTNT(EntityProjectileTNT entity, double x, double y, double z, float par8, float partialTicks)
+    @Override
+    public void doRender(EntityProjectileTNT entity, double x, double y, double z, float par8, float partialTicks)
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x, (float) y + 0.5F, (float) z);
@@ -55,13 +57,7 @@ public class RenderProjectileTNT extends Render
     }
 
     @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderProjectileTNT((EntityProjectileTNT) par1Entity, par2, par4, par6, par8, par9);
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntityProjectileTNT entity)
     {
         return null;
     }

@@ -32,6 +32,8 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +51,7 @@ import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -76,6 +79,37 @@ public class MarsModuleClient implements IPlanetsModuleClient
         addPlanetVariants("mars_machine", "terraformer", "cryogenic_chamber", "launch_controller");
         addPlanetVariants("mars_machine_t2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
         MinecraftForge.EVENT_BUS.register(this);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new IRenderFactory<EntitySludgeling>() {
+            @Override
+            public Render<? super EntitySludgeling> createRenderFor(RenderManager manager) {
+                return new RenderSludgeling(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new IRenderFactory<EntitySlimeling>() {
+            @Override
+            public Render<? super EntitySlimeling> createRenderFor(RenderManager manager) {
+                return new RenderSlimeling(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new IRenderFactory<EntityCreeperBoss>() {
+            @Override
+            public Render<? super EntityCreeperBoss> createRenderFor(RenderManager manager) {
+                return new RenderCreeperBoss(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new IRenderFactory<EntityProjectileTNT>() {
+            @Override
+            public Render<? super EntityProjectileTNT> createRenderFor(RenderManager manager) {
+                return new RenderProjectileTNT(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new IRenderFactory<EntityCargoRocket>() {
+            @Override
+            public Render<? super EntityCargoRocket> createRenderFor(RenderManager manager) {
+                return new RenderCargoRocket(manager);
+            }
+        });
     }
 
     private void addPlanetVariants(String name, String... variants)
@@ -181,15 +215,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer(0.25F, 1.0F, 0.25F));
 //
 //        // Entities
-//        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new RenderSludgeling());
-//        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new RenderSlimeling());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new RenderCreeperBoss());
-            RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, new RenderTier1Rocket(new ModelTier2Rocket(), GalacticraftPlanets.ASSET_PREFIX, "rocketT2"));
-////        RenderingRegistry.registerEntityRenderingHandler(EntityTerraformBubble.class, new RenderBubble(0.25F, 1.0F, 0.25F));
-//        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new RenderProjectileTNT());
 //            RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
 //            RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
-            RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new RenderCargoRocket());
 
         // Add Armor Renderer Prefix
 //        RenderingRegistry.addNewArmourRendererPrefix("desh");
