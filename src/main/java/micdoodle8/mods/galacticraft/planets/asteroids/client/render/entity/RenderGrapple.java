@@ -14,7 +14,8 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderGrapple extends Render
 {
-    public RenderGrapple() {
+    public RenderGrapple()
+    {
         super(FMLClientHandler.instance().getClient().getRenderManager());
     }
 
@@ -62,7 +63,7 @@ public class RenderGrapple extends Render
         GL11.glRotatef(grapple.prevRotationYaw + (grapple.rotationYaw - grapple.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(grapple.prevRotationPitch + (grapple.rotationPitch - grapple.prevRotationPitch) * partialTicks - 180, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(grapple.prevRotationRoll + (grapple.rotationRoll - grapple.prevRotationRoll) * partialTicks, 1.0F, 0.0F, 0.0F);
-        this.bindEntityTexture(grapple);
+//        this.bindEntityTexture(grapple);
 //        ItemRendererGrappleHook.modelGrapple.renderAll(); TODO
 
         GL11.glPopMatrix();

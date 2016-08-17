@@ -183,6 +183,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         registerTexture(event, "rocketT2");
         registerTexture(event, "cargoRocket");
+        registerTexture(event, "landingBalloon");
     }
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
@@ -215,8 +216,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer(0.25F, 1.0F, 0.25F));
 //
 //        // Entities
-//            RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
-//            RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
+        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
 
         // Add Armor Renderer Prefix
 //        RenderingRegistry.addNewArmourRendererPrefix("desh");

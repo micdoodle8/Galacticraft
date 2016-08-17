@@ -209,8 +209,8 @@ public class SkyProviderMars extends IRenderHandler
         worldRenderer1.pos(f10, 100.0D, f10).color(r, g, b, a).endVertex();
         worldRenderer1.pos(0, 100.0D, (double) f10 * 1.5F).color(r, g, b, a).endVertex();
         worldRenderer1.pos(-f10, 100.0D, f10).color(r, g, b, a).endVertex();
-        worldRenderer1.pos((double) -f10 * 1.5F, 100.0D, 0).endVertex();
-        worldRenderer1.pos(-f10, 100.0D, -f10).endVertex();
+        worldRenderer1.pos((double) -f10 * 1.5F, 100.0D, 0).color(r, g, b, a).endVertex();
+        worldRenderer1.pos(-f10, 100.0D, -f10).color(r, g, b, a).endVertex();
 
         tessellator1.draw();
         GL11.glPopMatrix();
