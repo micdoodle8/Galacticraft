@@ -91,6 +91,7 @@ public class GCCoreUtil
     	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
     		LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
 		}
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
