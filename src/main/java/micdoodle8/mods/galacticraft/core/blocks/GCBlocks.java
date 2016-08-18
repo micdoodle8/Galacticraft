@@ -249,13 +249,17 @@ public class GCBlocks
         GCBlocks.registerSorted(block);
     }
 
+    public static boolean registeringSorted = false;
+
     public static void registerSorted(Block block)
     {
         if (block instanceof ISortableBlock)
         {
             ISortableBlock sortableBlock = (ISortableBlock) block;
             List<ItemStack> blocks = Lists.newArrayList();
+            registeringSorted = true;
             block.getSubBlocks(Item.getItemFromBlock(block), null, blocks);
+            registeringSorted = false;
             for (ItemStack stack : blocks)
             {
                 GalacticraftCore.sortMapBlocks.get(sortableBlock.getCategory(stack.getItemDamage())).add(new StackSorted(stack.getItem(), stack.getItemDamage()));

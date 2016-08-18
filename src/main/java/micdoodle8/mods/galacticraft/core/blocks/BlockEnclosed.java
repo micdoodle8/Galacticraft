@@ -132,12 +132,12 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta()));
         par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.OXYGEN_PIPE.getMeta()));
 
-        if (CompatibilityManager.isTELoaded())
+        if (CompatibilityManager.isTELoaded() || GCBlocks.registeringSorted)
         {
             // par3List.add(new ItemStack(par1, 1, 0));
         }
 
-        if (CompatibilityManager.isIc2Loaded())
+        if (CompatibilityManager.isIc2Loaded() || GCBlocks.registeringSorted)
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()));
@@ -146,7 +146,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()));
         }
 
-        if (CompatibilityManager.isBCraftLoaded())
+        if (CompatibilityManager.isBCraftLoaded() || GCBlocks.registeringSorted)
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_ITEM_COBBLESTONEPIPE.getMeta()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta()));
@@ -156,7 +156,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta()));
         }
 
-        if (CompatibilityManager.isAppEngLoaded())
+        if (CompatibilityManager.isAppEngLoaded() || GCBlocks.registeringSorted)
         {
 //            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ME_CABLE.getMetadata()));
         }
