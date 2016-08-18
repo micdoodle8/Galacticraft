@@ -75,12 +75,12 @@ public class AsteroidsModule implements IPlanetsModule
     public static Fluid fluidAtmosphericGases;
     //public static Fluid fluidCO2Gas;
 
-    private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
+    private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous)
     {
         Fluid returnFluid = FluidRegistry.getFluid(fluidName);
     	if (returnFluid == null)
         {
-            ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "fluids/" + fluidTexture);
+            ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/fluids/" + fluidName);
     		FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
     		returnFluid = FluidRegistry.getFluid(fluidName);
         }
@@ -96,17 +96,17 @@ public class AsteroidsModule implements IPlanetsModule
         MinecraftForge.EVENT_BUS.register(eventHandler);
         RecipeSorter.register("galacticraftplanets:canisterRecipe", CanisterRecipes.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
-        registerFluid("methane", 1, 11, 295, true, "MethaneGas");
-        registerFluid("atmosphericgases", 1, 13, 295, true, "AtmosphericGases");
-        registerFluid("liquidmethane", 450, 120, 109, false, "LiquidMethane");
+        registerFluid("methane", 1, 11, 295, true);
+        registerFluid("atmosphericgases", 1, 13, 295, true);
+        registerFluid("liquidmethane", 450, 120, 109, false);
         //Data source for liquid methane: http://science.nasa.gov/science-news/science-at-nasa/2005/25feb_titan2/
-        registerFluid("liquidoxygen", 1141, 140, 90, false, "LiquidOxygen");
-        registerFluid("liquidnitrogen", 808, 130, 90, false, "LiquidNitrogen");
-        registerFluid("nitrogen", 1, 12, 295, true, "NitrogenGas");
-        registerFluid("carbondioxide", 2, 20, 295, true, "CarbonDioxideGas");
-        registerFluid("argon", 1, 4, 295, true, "ArgonGas");
-        registerFluid("liquidargon", 900, 100, 87, false, "LiquidArgon");
-        registerFluid("helium", 1, 1, 295, true, "HeliumGas");
+        registerFluid("liquidoxygen", 1141, 140, 90, false);
+        registerFluid("liquidnitrogen", 808, 130, 90, false);
+        registerFluid("nitrogen", 1, 12, 295, true);
+        registerFluid("carbondioxide", 2, 20, 295, true);
+        registerFluid("argon", 1, 4, 295, true);
+        registerFluid("liquidargon", 900, 100, 87, false);
+        registerFluid("helium", 1, 1, 295, true);
         AsteroidsModule.fluidMethaneGas = FluidRegistry.getFluid("methane");
         AsteroidsModule.fluidAtmosphericGases = FluidRegistry.getFluid("atmosphericgases");
         AsteroidsModule.fluidLiquidMethane = FluidRegistry.getFluid("liquidmethane");

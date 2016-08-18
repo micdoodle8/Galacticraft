@@ -535,7 +535,7 @@ public class NetworkUtil
         FluidTank fluidTank = new FluidTank(capacity);
         int amount = buffer.readInt();
 
-        if (fluidName == "")
+        if (fluidName.equals(""))
         {
             fluidTank.setFluid(null);
         }

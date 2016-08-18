@@ -72,8 +72,8 @@ public class MarsModule implements IPlanetsModule
 
         if (!FluidRegistry.isFluidRegistered("bacterialsludge"))
         {
-            ResourceLocation stillIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/sludge_still");
-            ResourceLocation flowingIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/sludge_flow");
+            ResourceLocation stillIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/fluids/sludge_still");
+            ResourceLocation flowingIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/fluids/sludge_flow");
             sludgeGC = new Fluid("bacterialsludge", stillIcon, flowingIcon).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(sludgeGC);
         }

@@ -140,6 +140,16 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         registerTexture(event, "tier3rocket");
         registerTexture(event, "astroMiner_off");
         registerTexture(event, "spacePod");
+        registerTexture(event, "fluids/argon");
+        registerTexture(event, "fluids/atmosphericgases");
+        registerTexture(event, "fluids/carbondioxide");
+        registerTexture(event, "fluids/helium");
+        registerTexture(event, "fluids/liquidargon");
+        registerTexture(event, "fluids/liquidmethane");
+        registerTexture(event, "fluids/liquidnitrogen");
+        registerTexture(event, "fluids/liquidoxygen");
+        registerTexture(event, "fluids/methane");
+        registerTexture(event, "fluids/nitrogen");
     }
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)

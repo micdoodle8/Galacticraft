@@ -1,0 +1,68 @@
+{
+"textures": {
+    "tank": "galacticraftcore:blocks/tank",
+    "tank_top": "galacticraftcore:blocks/tank_top",
+    "particle": "galacticraftcore:blocks/tank_top"
+},
+"elements": [ 
+{
+    "from": [ 1, 0, 1 ],
+    "to": [ 15, 16, 15 ],
+    "faces": {
+        "down":  { "uv": [ 16, 16, 0, 0 ], "texture": "#tank_top" },
+        "north": { "uv": [ 1, 0, 15, 16 ], "texture": "#tank" },
+        "south": { "uv": [ 1, 0, 15, 16 ], "texture": "#tank" },
+        "west":  { "uv": [ 1, 0, 15, 16 ], "texture": "#tank" },
+        "east":  { "uv": [ 1, 0, 15, 16 ], "texture": "#tank" }
+    }
+},
+{
+    "from": [ 1, 0.25, 1 ],
+    "to": [ 2, 15.75, 2 ],
+    "faces": {
+        "down":  { "uv": [ 15, 2, 14, 1 ], "texture": "#tank" },
+        "up":    { "uv": [ 1, 1, 2, 2 ], "texture": "#tank" },
+        "north": { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" },
+        "south": { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" },
+        "west":  { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" },
+        "east":  { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" }
+    }
+},
+{
+    "from": [ 14, 0.25, 1.0625 ],
+    "to": [ 15, 15.75, 2.0625 ],
+    "faces": {
+        "down":  { "uv": [ 2, 2.0625, 1, 1.0625 ], "texture": "#tank" },
+        "up":    { "uv": [ 14, 1.0625, 15, 2.0625 ], "texture": "#tank" },
+        "north": { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" },
+        "south": { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" },
+        "west":  { "uv": [ 1.0625, 0.25, 2.0625, 15.75 ], "texture": "#tank" },
+        "east":  { "uv": [ 13.9375, 0.25, 14.9375, 15.75 ], "texture": "#tank" }
+    }
+},
+{
+    "from": [ 1, 0.25, 14 ],
+    "to": [ 2, 15.75, 15 ],
+    "faces": {
+        "down":  { "uv": [ 15, 15, 14, 14 ], "texture": "#tank" },
+        "up":    { "uv": [ 1, 14, 2, 15 ], "texture": "#tank" },
+        "north": { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" },
+        "south": { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" },
+        "west":  { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" },
+        "east":  { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" }
+    }
+},
+{
+    "from": [ 14, 0.25, 14 ],
+    "to": [ 15, 15.75, 15 ],
+    "faces": {
+        "down":  { "uv": [ 2, 15, 1, 14 ], "texture": "#tank" },
+        "up":    { "uv": [ 14, 14, 15, 15 ], "texture": "#tank" },
+        "north": { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" },
+        "south": { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" },
+        "west":  { "uv": [ 14, 0.25, 15, 15.75 ], "texture": "#tank" },
+        "east":  { "uv": [ 1, 0.25, 2, 15.75 ], "texture": "#tank" }
+    }
+}
+]
+}

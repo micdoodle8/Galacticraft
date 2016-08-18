@@ -77,44 +77,7 @@ import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFallenMeteor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
-import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
-import micdoodle8.mods.galacticraft.core.tile.TileEntitySpaceStationBase;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
@@ -385,10 +348,10 @@ public class GalacticraftCore
     	//Register now any unregistered "oil", "fuel", "oilgc" and "fuelgc" fluids
     	//This is for legacy compatibility with any 'in the world' tanks and items filled in different GC versions or with different GC config
     	//In those cases, FluidUtil methods (and TileEntityRefinery) will attempt to fresh containers/tanks with the current fuel or oil type
-        ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/oil_flow");
-        ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/fuel_flow");
-        ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/oil_still");
-        ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/fuel_still");
+        ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/oil_flow");
+        ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/fuel_flow");
+        ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/oil_still");
+        ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/fuel_still");
         if (!FluidRegistry.isFluidRegistered("oil"))
         {
             FluidRegistry.registerFluid(new Fluid("oil", stillOil, flowingOil).setDensity(800).setViscosity(1500));
@@ -426,8 +389,8 @@ public class GalacticraftCore
         // Oil:
         if (!FluidRegistry.isFluidRegistered(oilID))
         {
-            ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/oil_flow");
-            ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/oil_still");
+            ResourceLocation flowingOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/oil_flow");
+            ResourceLocation stillOil = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/oil_still");
             Fluid gcFluidOil = new Fluid(oilID, stillOil, flowingOil).setDensity(800).setViscosity(1500);
             FluidRegistry.registerFluid(gcFluidOil);
         }
@@ -464,8 +427,8 @@ public class GalacticraftCore
         // Fuel:
         if (!FluidRegistry.isFluidRegistered(fuelID))
         {
-            ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fuel_flow");
-            ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fuel_still");
+            ResourceLocation flowingFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/fuel_flow");
+            ResourceLocation stillFuel = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/fuel_still");
             Fluid gcFluidFuel = new Fluid(fuelID, stillFuel, flowingFuel).setDensity(400).setViscosity(900);
             FluidRegistry.registerFluid(gcFluidFuel);
         }
@@ -694,6 +657,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityArclamp.class, "Arc Lamp");
         GameRegistry.registerTileEntity(TileEntityScreen.class, "View Screen");
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "Telemetry Unit");
+        GameRegistry.registerTileEntity(TileEntityFluidTank.class, "Galacticraft Fluid Tank");
     }
 
     public void registerCreatures()

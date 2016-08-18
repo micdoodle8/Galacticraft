@@ -48,6 +48,11 @@ public class PacketDynamic implements IPacket
         ((IPacketReceiver) tile).getNetworkedData(this.sendData);
     }
 
+    public boolean isEmpty()
+    {
+        return sendData.isEmpty();
+    }
+
     @Override
     public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
     {

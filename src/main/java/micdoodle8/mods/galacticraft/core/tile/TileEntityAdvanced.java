@@ -59,18 +59,18 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                 }
             }
 
-            if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
+            if (this.worldObj.isRemote)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-//                if (networkDataChanged)
+                if (!packet.isEmpty())
                 {
                     GalacticraftCore.packetPipeline.sendToServer(packet);
                 }
             }
-            else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
+            else
             {
                 PacketDynamic packet = new PacketDynamic(this);
-//                if (networkDataChanged)
+                if (!packet.isEmpty())
                 {
                     GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
                 }
@@ -214,14 +214,14 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             }
         }
 
-        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
-        {
-            return;
-        }
-        else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
-        {
-            return;
-        }
+//        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
+//        {
+//            return;
+//        }
+//        else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
+//        {
+//            return;
+//        }
 
         Set<Field> fieldSet = null;
 
