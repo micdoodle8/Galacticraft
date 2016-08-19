@@ -384,7 +384,7 @@ public class PacketSimple extends PacketBase implements Packet
             MinecraftServer server = MinecraftServer.getServer();
             String gearName = (String) this.data.get(0); 
 
-            if (server != null)
+            if (server != null && server.getConfigurationManager() != null)
             {
                 gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, gearName);
             }
