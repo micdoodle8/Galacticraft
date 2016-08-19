@@ -1,14 +1,19 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.DelayTimer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
@@ -237,11 +242,54 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
 
     @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("net-type", "desc-packet");
+        PacketDynamic packet = new PacketDynamic(this);
+        ByteBuf buf = Unpooled.buffer();
+        packet.encodeInto(buf);
+        byte[] bytes = new byte[buf.readableBytes()];
+        buf.readBytes(bytes);
+        nbt.setByteArray("net-data", bytes);
+        S35PacketUpdateTileEntity tileUpdate = new S35PacketUpdateTileEntity(getPos(), 0, nbt);
+        return tileUpdate;
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+        if (!worldObj.isRemote)
+        {
+            return;
+        }
+        if (pkt.getNbtCompound() == null)
+        {
+            throw new RuntimeException("[GC] Missing NBTTag compound!");
+        }
+        NBTTagCompound nbt = pkt.getNbtCompound();
+        try
+        {
+            if ("desc-packet".equals(nbt.getString("net-type")))
+            {
+                byte[] bytes = nbt.getByteArray("net-data");
+                ByteBuf data = Unpooled.wrappedBuffer(bytes);
+                PacketDynamic packet = new PacketDynamic();
+                packet.decodeInto(data);
+                packet.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
+            }
+        }
+        catch (Throwable t)
+        {
+            throw new RuntimeException("[GC] Failed to read a packet! (" + nbt.getTag("net-type") + ", " + nbt.getTag("net-data"), t);
+        }
+    }
+
+    @Override
     public void addExtraNetworkedData(List<Object> networkedList)
     {
         if (!this.worldObj.isRemote)
         {
-            System.err.println("SEND");
             if (fluidTank == null)
             {
                 networkedList.add(0);
@@ -262,7 +310,6 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     {
         if (this.worldObj.isRemote)
         {
-            System.err.println("REC");
             int capacity = buffer.readInt();
             String fluidName = ByteBufUtils.readUTF8String(buffer);
             FluidTankGC fluidTank = new FluidTankGC(capacity, this);
