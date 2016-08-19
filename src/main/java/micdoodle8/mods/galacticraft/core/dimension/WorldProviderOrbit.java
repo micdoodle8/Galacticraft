@@ -301,7 +301,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     List<Object> objList = new ArrayList<Object>();
                     objList.add(Float.valueOf(this.angularVelocityRadians));
                     objList.add(Boolean.valueOf(this.thrustersFiring));
-                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
+                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, this.spaceStationDimensionID, objList), this.spaceStationDimensionID);
                 }
 
                 //Update entity positions if in freefall
@@ -1310,7 +1310,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         List<Object> objList = new ArrayList<Object>();
         objList.add(Double.valueOf(this.spinCentreX));
         objList.add(Double.valueOf(this.spinCentreZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, objList), this.spaceStationDimensionID);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, this.spaceStationDimensionID, objList), this.spaceStationDimensionID);
 
         objList = new ArrayList<Object>();
         objList.add(Integer.valueOf(this.ssBoundsMinX));
@@ -1319,7 +1319,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         objList.add(Integer.valueOf(this.ssBoundsMaxY));
         objList.add(Integer.valueOf(this.ssBoundsMinZ));
         objList.add(Integer.valueOf(this.ssBoundsMaxZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), this.spaceStationDimensionID);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, this.spaceStationDimensionID, objList), this.spaceStationDimensionID);
 
         this.updateSpinSpeed();
 
@@ -1437,12 +1437,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         List<Object> objList = new ArrayList<Object>();
         objList.add(Float.valueOf(this.angularVelocityRadians));
         objList.add(Boolean.valueOf(this.thrustersFiring));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), this.spaceStationDimensionID);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, this.spaceStationDimensionID, objList), this.spaceStationDimensionID);
 
         objList = new ArrayList<Object>();
         objList.add(Double.valueOf(this.spinCentreX));
         objList.add(Double.valueOf(this.spinCentreZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, objList), this.spaceStationDimensionID);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, this.spaceStationDimensionID, objList), this.spaceStationDimensionID);
 
         objList = new ArrayList<Object>();
         objList.add(Integer.valueOf(this.ssBoundsMinX));
@@ -1451,7 +1451,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         objList.add(Integer.valueOf(this.ssBoundsMaxY));
         objList.add(Integer.valueOf(this.ssBoundsMinZ));
         objList.add(Integer.valueOf(this.ssBoundsMaxZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), this.spaceStationDimensionID);
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, this.spaceStationDimensionID, objList), this.spaceStationDimensionID);
     }
 
     public void writeToNBT(NBTTagCompound nbt)
@@ -1484,12 +1484,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         List<Object> objList = new ArrayList<Object>();
         objList.add(Float.valueOf(this.angularVelocityRadians));
         objList.add(Boolean.valueOf(this.thrustersFiring));
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, objList), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_SPIN, player.worldObj.provider.getDimensionId(), objList), player);
 
         objList = new ArrayList<Object>();
         objList.add(Double.valueOf(this.spinCentreX));
         objList.add(Double.valueOf(this.spinCentreZ));
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, objList), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_DATA, player.worldObj.provider.getDimensionId(), objList), player);
 
         objList = new ArrayList<Object>();
         objList.add(Integer.valueOf(this.ssBoundsMinX));
@@ -1498,7 +1498,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         objList.add(Integer.valueOf(this.ssBoundsMaxY));
         objList.add(Integer.valueOf(this.ssBoundsMinZ));
         objList.add(Integer.valueOf(this.ssBoundsMaxZ));
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, objList), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATION_BOX, player.worldObj.provider.getDimensionId(), objList), player);
     }
 
     @Override

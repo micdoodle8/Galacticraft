@@ -105,10 +105,10 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.terraformer.getPos().getX(), this.terraformer.getPos().getY(), this.terraformer.getPos().getZ(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.terraformer.getPos().getX(), this.terraformer.getPos().getY(), this.terraformer.getPos().getZ(), 0 }));
                 break;
             case 1:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.terraformer.getPos().getX(), this.terraformer.getPos().getY(), this.terraformer.getPos().getZ(), 1 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.terraformer.getPos().getX(), this.terraformer.getPos().getY(), this.terraformer.getPos().getZ(), 1 }));
                 break;
             case 2:
                 break;
@@ -217,7 +217,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.terraformer.shouldRenderBubble = newSelected;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 6, this.terraformer.getPos(), newSelected ? 1 : 0 }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 6, this.terraformer.getPos(), newSelected ? 1 : 0 }));
     }
 
     @Override

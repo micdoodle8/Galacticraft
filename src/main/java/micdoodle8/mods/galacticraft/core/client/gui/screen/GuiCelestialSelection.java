@@ -613,7 +613,7 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         this.mc.gameSettings.thirdPersonView = 0;
                     }
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, new Object[] { dimension }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, mc.theWorld.provider.getDimensionId(), new Object[] { dimension }));
                     //TODO   Some type of clientside "in Space" holding screen here while waiting for the server to do the teleport
                     //(Otherwise the client will be returned to the destination he was in until now, which looks weird)
                     mc.displayGuiScreen(null);
@@ -689,7 +689,7 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         if (recipe.matches(this.mc.thePlayer, false) || this.mc.thePlayer.capabilities.isCreativeMode)
                         {
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, new Object[] { this.selectedBody.getDimensionID() }));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, this.mc.theWorld.provider.getDimensionId(), new Object[] { this.selectedBody.getDimensionID() }));
                             //Zoom in on Overworld to show the new SpaceStation if not already zoomed
                             if (this.selectionCount < 2)
                             {
@@ -753,7 +753,7 @@ public class GuiCelestialSelection extends GuiScreen
                     	{
                             this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(strName).setStationName(this.renamingString);
 //	                    	this.spaceStationNames.put(strName, this.renamingString);
-	                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, new Object[] { this.renamingString, spacestationID }));
+	                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, this.mc.theWorld.provider.getDimensionId(), new Object[] { this.renamingString, spacestationID }));
                     	}
                         this.renamingSpaceStation = false;
                     }

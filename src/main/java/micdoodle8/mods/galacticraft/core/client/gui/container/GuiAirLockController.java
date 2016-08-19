@@ -140,7 +140,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         if (checkbox.equals(this.checkboxRedstoneSignal))
         {
             this.controller.redstoneActivation = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 0, this.controller.getPos(), this.controller.redstoneActivation ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 0, this.controller.getPos(), this.controller.redstoneActivation ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 0,
             // this.controller.xCoord, this.controller.yCoord,
@@ -150,7 +150,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         else if (checkbox.equals(this.checkboxPlayerDistance))
         {
             this.controller.playerDistanceActivation = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 1, this.controller.getPos(), this.controller.playerDistanceActivation ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 1, this.controller.getPos(), this.controller.playerDistanceActivation ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 1,
             // this.controller.xCoord, this.controller.yCoord,
@@ -160,7 +160,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         else if (checkbox.equals(this.checkboxOpenForPlayer))
         {
             this.controller.playerNameMatches = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 3, this.controller.getPos(), this.controller.playerNameMatches ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 3, this.controller.getPos(), this.controller.playerNameMatches ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 3,
             // this.controller.xCoord, this.controller.yCoord,
@@ -170,7 +170,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         else if (checkbox.equals(this.checkboxInvertSelection))
         {
             this.controller.invertSelection = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 4, this.controller.getPos(), this.controller.invertSelection ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 4, this.controller.getPos(), this.controller.invertSelection ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 4,
             // this.controller.xCoord, this.controller.yCoord,
@@ -181,7 +181,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         {
             this.controller.lastHorizontalModeEnabled = this.controller.horizontalModeEnabled;
             this.controller.horizontalModeEnabled = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 5, this.controller.getPos(), this.controller.horizontalModeEnabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 5, this.controller.getPos(), this.controller.horizontalModeEnabled ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 5,
             // this.controller.xCoord, this.controller.yCoord,
@@ -235,7 +235,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         if (dropdown.equals(this.dropdownPlayerDistance))
         {
             this.controller.playerDistanceSelection = selection;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 2, this.controller.getPos(), this.controller.playerDistanceSelection }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 2, this.controller.getPos(), this.controller.playerDistanceSelection }));
         }
     }
 
@@ -257,7 +257,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         if (textBox.equals(this.textBoxPlayerToOpenFor))
         {
             this.controller.playerToOpenFor = newText != null ? newText : "";
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_STRING, new Object[] { 0, this.controller.getPos(), this.controller.playerToOpenFor }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_STRING, mc.theWorld.provider.getDimensionId(), new Object[] { 0, this.controller.getPos(), this.controller.playerToOpenFor }));
         }
     }
 

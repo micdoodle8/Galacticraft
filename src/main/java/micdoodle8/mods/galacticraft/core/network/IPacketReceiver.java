@@ -11,6 +11,4 @@ public interface IPacketReceiver
     public void getNetworkedData(ArrayList<Object> sendData);
 
     public void decodePacketdata(ByteBuf buffer);
-
-    public void handlePacketData(Side side, EntityPlayer player);
 }

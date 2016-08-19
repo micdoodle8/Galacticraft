@@ -409,7 +409,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (!this.worldObj.isRemote && (this.ticksInGround - 1) % 10 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 150));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, this.worldObj.provider.getDimensionId(), new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 150));
         }
     }
 

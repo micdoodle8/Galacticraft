@@ -1,13 +1,16 @@
 package micdoodle8.mods.galacticraft.core.event;
 
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.*;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
@@ -95,6 +98,12 @@ public class EventHandlerGC
     public static boolean bedActivated;
 
     @SubscribeEvent
+    public void playerJoinWorld(EntityJoinWorldEvent event)
+    {
+        TickHandlerServer.markWorldNeedsUpdate(event.world.provider.getDimensionId());
+    }
+
+    @SubscribeEvent
     public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
     {
 //        if (!event.entity.worldObj.isRemote && event.entity.worldObj.provider.dimensionId == 0)
@@ -143,7 +152,7 @@ public class EventHandlerGC
         {
             if (OxygenUtil.noAtmosphericCombustion(event.entityLiving.worldObj.provider))
             {
-    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getCollisionBoundingBox()))
+    	        if (OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, event.entityLiving.getEntityBoundingBox()))
     	        	return;
 
                 if (event.entityLiving.worldObj instanceof WorldServer)
@@ -547,7 +556,7 @@ public class EventHandlerGC
                 List<Object> objList = new ArrayList<Object>();
                 objList.add(iArray);
 
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), event.player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, event.player.worldObj.provider.getDimensionId(), objList), event.player);
             }
         }
     }
@@ -570,7 +579,7 @@ public class EventHandlerGC
 
         if (page != null)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, new Object[] { page.getPageID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { page.getPageID() }));
             FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
         }
     }

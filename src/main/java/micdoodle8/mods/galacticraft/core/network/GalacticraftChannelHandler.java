@@ -38,13 +38,13 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
     @Override
     public void encodeInto(ChannelHandlerContext ctx, IPacket msg, ByteBuf target) throws Exception
     {
-        msg.encodeInto(ctx, target);
+        msg.encodeInto(target);
     }
 
     @Override
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket msg)
     {
-        msg.decodeInto(ctx, source);
+        msg.decodeInto(source);
     }
 
     /**

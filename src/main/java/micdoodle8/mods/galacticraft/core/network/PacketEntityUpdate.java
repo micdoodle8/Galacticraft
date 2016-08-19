@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.UUID;
 
-public class PacketEntityUpdate implements IPacket
+public class PacketEntityUpdate extends PacketBase
 {
     private int entityID;
     private Vector3 position;
@@ -20,10 +20,12 @@ public class PacketEntityUpdate implements IPacket
 
     public PacketEntityUpdate()
     {
+        super();
     }
 
-    public PacketEntityUpdate(int entityID, Vector3 position, Vector2 rotation, Vector3 motion, boolean onGround)
+    public PacketEntityUpdate(int entityID, Vector3 position, Vector2 rotation, Vector3 motion, boolean onGround, int dimID)
     {
+        super(dimID);
         this.entityID = entityID;
         this.position = position;
         this.rotationYaw = (float) rotation.x;
@@ -34,12 +36,13 @@ public class PacketEntityUpdate implements IPacket
 
     public PacketEntityUpdate(Entity entity)
     {
-        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround);
+        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround, entity.worldObj.provider.getDimensionId());
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.entityID);
         buffer.writeDouble(this.position.x);
         buffer.writeDouble(this.position.y);
@@ -53,8 +56,9 @@ public class PacketEntityUpdate implements IPacket
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.entityID = buffer.readInt();
         this.position = new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         this.rotationYaw = buffer.readFloat();

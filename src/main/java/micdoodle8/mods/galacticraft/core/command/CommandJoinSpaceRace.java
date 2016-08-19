@@ -49,7 +49,7 @@ public class CommandJoinSpaceRace extends CommandBase
                     if (stats.spaceRaceInviteTeamID > 0)
                     {
                         SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.spaceRaceInviteTeamID));
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, new Object[] { stats.spaceRaceInviteTeamID }), playerBase);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, playerBase.worldObj.provider.getDimensionId(), new Object[] { stats.spaceRaceInviteTeamID }), playerBase);
                     }
                     else
                     {

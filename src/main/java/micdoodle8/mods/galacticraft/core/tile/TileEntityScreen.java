@@ -64,7 +64,7 @@ public class TileEntityScreen extends TileEntityAdvanced
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, new Object[] { this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()} ));
+			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, this.worldObj.provider.getDimensionId(), new Object[] { this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()} ));
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         if (this.connectedDown) connectedFlags += 4;
         if (this.connectedLeft) connectedFlags += 2;
         if (this.connectedRight) connectedFlags += 1;
-		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.imageType, connectedFlags } ), this.worldObj.provider.getDimensionId());
+		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.imageType, connectedFlags } ), this.worldObj.provider.getDimensionId());
 	}
 
     public EnumFacing getFront()

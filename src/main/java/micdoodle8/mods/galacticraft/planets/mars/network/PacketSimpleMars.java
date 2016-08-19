@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.network;
 
+import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -31,7 +32,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class PacketSimpleMars implements IPacket
+public class PacketSimpleMars extends PacketBase
 {
     public static enum EnumSimplePacketMars
     {
@@ -69,16 +70,18 @@ public class PacketSimpleMars implements IPacket
 
     public PacketSimpleMars()
     {
-
+        super();
     }
 
-    public PacketSimpleMars(EnumSimplePacketMars packetType, Object[] data)
+    public PacketSimpleMars(EnumSimplePacketMars packetType, int dimID, Object[] data)
     {
-        this(packetType, Arrays.asList(data));
+        this(packetType, dimID, Arrays.asList(data));
     }
 
-    public PacketSimpleMars(EnumSimplePacketMars packetType, List<Object> data)
+    public PacketSimpleMars(EnumSimplePacketMars packetType, int dimID, List<Object> data)
     {
+        super(dimID);
+
         if (packetType.getDecodeClasses().length != data.size())
         {
             GCLog.info("Mars Simple Packet found data length different than packet type: " + packetType.name());
@@ -89,8 +92,9 @@ public class PacketSimpleMars implements IPacket
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.type.ordinal());
 
         try
@@ -104,8 +108,9 @@ public class PacketSimpleMars implements IPacket
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.type = EnumSimplePacketMars.values()[buffer.readInt()];
 
         if (this.type.getDecodeClasses().length > 0)

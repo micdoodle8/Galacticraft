@@ -120,7 +120,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, new Object[] { 5, this.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, this.worldObj.provider.getDimensionId(), new Object[] { 5, this.getPos(), 0 }));
             }
         }
     }

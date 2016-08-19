@@ -35,17 +35,17 @@ public class SlotSchematicAstroMiner extends Slot
         {
             for (int var12 = 0; var12 < this.player.worldObj.playerEntities.size(); ++var12)
             {
-                final EntityPlayerMP var13 = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
+                final EntityPlayerMP playerMP = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
 
-                if (var13.dimension == this.player.worldObj.provider.getDimensionId())
+                if (playerMP.dimension == this.player.worldObj.provider.getDimensionId())
                 {
-                    final double var14 = this.pos.getX() - var13.posX;
-                    final double var16 = this.pos.getY() - var13.posY;
-                    final double var18 = this.pos.getZ() - var13.posZ;
+                    final double var14 = this.pos.getX() - playerMP.posX;
+                    final double var16 = this.pos.getY() - playerMP.posY;
+                    final double var18 = this.pos.getZ() - playerMP.posZ;
 
                     if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, new Object[] { this.pos.getX(), this.pos.getY(), this.pos.getZ() }), var13);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, playerMP.worldObj.provider.getDimensionId(), new Object[] { this.pos.getX(), this.pos.getY(), this.pos.getZ() }), playerMP);
                     }
                 }
             }

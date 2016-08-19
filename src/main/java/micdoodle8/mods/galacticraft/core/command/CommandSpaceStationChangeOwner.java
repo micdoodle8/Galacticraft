@@ -87,13 +87,13 @@ public class CommandSpaceStationChangeOwner extends CommandBase
                 {
                 	final GCPlayerStats stats = GCPlayerStats.get(oldPlayer);
                 	SpaceStationWorldData.updateSSOwnership(oldPlayer, oldOwner, stats, stationID, stationData);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), oldPlayer);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), oldPlayer);
                 }
                 if (newPlayer != null)
                 {
                 	final GCPlayerStats stats = GCPlayerStats.get(newPlayer);
                 	SpaceStationWorldData.updateSSOwnership(newPlayer, newOwner.replace(".", ""), stats, stationID, stationData);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), newPlayer);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), newPlayer);
                 }
             }
             catch (final Exception var6)

@@ -14,7 +14,7 @@ import net.minecraft.util.BlockPos;
 
 import java.io.IOException;
 
-public class PacketDynamicInventory implements IPacket
+public class PacketDynamicInventory extends PacketBase
 {
     private int type;
     private Object[] data;
@@ -22,10 +22,12 @@ public class PacketDynamicInventory implements IPacket
 
     public PacketDynamicInventory()
     {
+        super();
     }
 
     public PacketDynamicInventory(Entity entity)
     {
+        super(entity.worldObj.provider.getDimensionId());
         assert entity instanceof IInventory : "Entity does not implement " + IInventory.class.getSimpleName();
         this.type = 0;
         this.data = new Object[] { entity.getEntityId() };
@@ -39,6 +41,7 @@ public class PacketDynamicInventory implements IPacket
 
     public PacketDynamicInventory(TileEntity chest)
     {
+        super(chest.getWorld().provider.getDimensionId());
         assert chest instanceof IInventory : "Tile does not implement " + IInventory.class.getSimpleName();
         this.type = 1;
         this.data = new Object[] { chest.getPos() };
@@ -51,8 +54,9 @@ public class PacketDynamicInventory implements IPacket
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.type);
 
         switch (this.type)
@@ -83,8 +87,9 @@ public class PacketDynamicInventory implements IPacket
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.type = buffer.readInt();
 
         switch (this.type)

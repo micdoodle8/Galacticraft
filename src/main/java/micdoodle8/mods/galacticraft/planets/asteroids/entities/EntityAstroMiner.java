@@ -656,11 +656,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         list.add(this.posBase.y);
         list.add(this.posBase.z);
     }
-
-    @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-    }
     
     public void recall()
     {

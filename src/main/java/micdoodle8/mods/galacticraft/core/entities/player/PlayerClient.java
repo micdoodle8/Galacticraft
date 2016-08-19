@@ -322,7 +322,7 @@ public class PlayerClient implements IPlayerClient
 		if ((flag & 1 << i) > 0) return;
 		flag |= 1 << i;
 		stats.buildFlags = (flag & 511) + (repeatCount << 9);
-		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, new Object[] { stats.buildFlags }));
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, player.worldObj.provider.getDimensionId(), new Object[] { stats.buildFlags }));
 		switch (i) {
 		case 0:
 		case 1:

@@ -434,7 +434,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.worldObj.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
                 par1EntityPlayer.mountEntity(null);
@@ -446,7 +446,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.worldObj.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
                 par1EntityPlayer.mountEntity(this);

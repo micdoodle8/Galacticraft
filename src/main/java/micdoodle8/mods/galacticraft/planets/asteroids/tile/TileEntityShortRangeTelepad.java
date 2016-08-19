@@ -157,7 +157,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         ((EntityPlayerMP)e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimensionId());
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, this.worldObj.provider.getDimensionId(), new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimensionId());
                                 }
 
                                 if (containedEntities.size() > 0)

@@ -59,18 +59,18 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                 }
             }
 
-            if (this.worldObj.isRemote)
+            if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-                if (!packet.isEmpty())
+//                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(packet);
                 }
             }
-            else
+            else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-                if (!packet.isEmpty())
+//                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
                 }
@@ -248,11 +248,5 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
         }
 
         this.readExtraNetworkedData(buffer);
-    }
-
-    @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-
     }
 }

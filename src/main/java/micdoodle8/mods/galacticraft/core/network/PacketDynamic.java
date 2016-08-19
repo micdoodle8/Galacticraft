@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
+import io.netty.buffer.Unpooled;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
@@ -16,23 +17,23 @@ import net.minecraft.world.World;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PacketDynamic implements IPacket
+public class PacketDynamic extends PacketBase
 {
     private int type;
-    private int dimID;
     private Object[] data;
     private ArrayList<Object> sendData;
+    private ByteBuf payloadData;
 
     public PacketDynamic()
     {
-
+        super();
     }
 
     public PacketDynamic(Entity entity)
     {
+        super(entity.worldObj.provider.getDimensionId());
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
-        this.dimID = entity.worldObj.provider.getDimensionId();
         this.data = new Object[] { entity.getEntityId() };
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) entity).getNetworkedData(this.sendData);
@@ -40,9 +41,9 @@ public class PacketDynamic implements IPacket
 
     public PacketDynamic(TileEntity tile)
     {
+        super(tile.getWorld().provider.getDimensionId());
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
-        this.dimID = tile.getWorld().provider.getDimensionId();
         this.data = new Object[] { tile.getPos() };
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) tile).getNetworkedData(this.sendData);
@@ -54,10 +55,10 @@ public class PacketDynamic implements IPacket
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.type);
-        buffer.writeInt(this.dimID);
 
         switch (this.type)
         {
@@ -71,32 +72,38 @@ public class PacketDynamic implements IPacket
             break;
         }
 
+        ByteBuf payloadData = Unpooled.buffer();
+
         try
         {
-            NetworkUtil.encodeData(buffer, this.sendData);
+            NetworkUtil.encodeData(payloadData, this.sendData);
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
+
+        int readableBytes = payloadData.readableBytes();
+        buffer.writeInt(readableBytes);
+        buffer.writeBytes(payloadData);
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.type = buffer.readInt();
-        this.dimID = buffer.readInt();
 
-        World world = GalacticraftCore.proxy.getWorldForID(this.dimID);
+        World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
-            world = MinecraftServer.getServer().worldServerForDimension(this.dimID);
+            world = MinecraftServer.getServer().worldServerForDimension(this.getDimensionID());
         }
 
         if (world == null)
         {
-            FMLLog.severe("Failed to get world for dimension ID: " + this.dimID);
+            FMLLog.severe("Failed to get world for dimension ID: " + this.getDimensionID());
         }
 
         switch (this.type)
@@ -105,30 +112,15 @@ public class PacketDynamic implements IPacket
             this.data = new Object[1];
             this.data[0] = buffer.readInt();
 
-            if (world != null)
-            {
-                Entity entity = world.getEntityByID((Integer) this.data[0]);
-
-                if (entity instanceof IPacketReceiver)
-                {
-                    ((IPacketReceiver) entity).decodePacketdata(buffer);
-                }
-            }
-
+            int length = buffer.readInt();
+            payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
             break;
         case 1:
             this.data = new Object[1];
             this.data[0] = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
 
-            if (world != null)
-            {
-                TileEntity tile = world.getTileEntity((BlockPos) this.data[0]);
-
-                if (tile instanceof IPacketReceiver)
-                {
-                    ((IPacketReceiver) tile).decodePacketdata(buffer);
-                }
-            }
+            length = buffer.readInt();
+            payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
 
             break;
         }
@@ -155,18 +147,20 @@ public class PacketDynamic implements IPacket
 
             if (entity instanceof IPacketReceiver)
             {
-                ((IPacketReceiver) entity).handlePacketData(side, player);
+                ((IPacketReceiver) entity).decodePacketdata(payloadData);
             }
 
             break;
         case 1:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
-
-            if (tile instanceof IPacketReceiver)
+            if (player.worldObj.isBlockLoaded((BlockPos) this.data[0]))
             {
-                ((IPacketReceiver) tile).handlePacketData(side, player);
-            }
+                TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
 
+                if (tile instanceof IPacketReceiver)
+                {
+                    ((IPacketReceiver) tile).decodePacketdata(payloadData);
+                }
+            }
             break;
         }
     }

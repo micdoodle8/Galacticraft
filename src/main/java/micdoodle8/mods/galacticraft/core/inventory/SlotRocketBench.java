@@ -10,6 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class SlotRocketBench extends Slot
 {
@@ -42,7 +43,7 @@ public class SlotRocketBench extends Slot
 
                     if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, new Object[] { this.pos }), var13);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { this.pos }), var13);
                     }
                 }
             }

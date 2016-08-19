@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class PacketRotateRocket implements IPacket
+public class PacketRotateRocket extends PacketBase
 {
     private int entityID;
     private float entityPitch;
@@ -13,26 +13,30 @@ public class PacketRotateRocket implements IPacket
 
     public PacketRotateRocket()
     {
+        super();
     }
 
     public PacketRotateRocket(Entity rotateableEntity)
     {
+        super(rotateableEntity.worldObj.provider.getDimensionId());
         this.entityID = rotateableEntity.getEntityId();
         this.entityPitch = rotateableEntity.rotationPitch;
         this.entityYaw = rotateableEntity.rotationYaw;
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.entityID);
         buffer.writeFloat(this.entityPitch);
         buffer.writeFloat(this.entityYaw);
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.entityID = buffer.readInt();
         this.entityPitch = buffer.readFloat();
         this.entityYaw = buffer.readFloat();

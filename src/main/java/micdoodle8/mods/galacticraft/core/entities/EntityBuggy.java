@@ -476,11 +476,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-    }
-
-    @Override
     protected void readEntityFromNBT(NBTTagCompound var1)
     {
         this.buggyType = var1.getInteger("buggyType");
@@ -666,7 +661,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         if (this.worldObj.isRemote && (key == 6 || key == 8 || key == 9))
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketControllableEntity(key));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketControllableEntity(key, this.worldObj.provider.getDimensionId()));
             return true;
         }
 

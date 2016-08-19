@@ -1495,7 +1495,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             if (!ClientProxyCore.overworldTextureRequestSent)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, mc.theWorld.provider.getDimensionId(), new Object[] {}));
                 ClientProxyCore.overworldTextureRequestSent = true;
             }
 

@@ -206,10 +206,4 @@ public class EntityParachest extends Entity implements IPacketReceiver
             this.color = EnumDyeColor.byDyeDamage(buffer.readInt());
         }
     }
-
-    @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-
-    }
 }

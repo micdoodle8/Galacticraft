@@ -3,11 +3,13 @@ package micdoodle8.mods.galacticraft.core.tick;
 import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockPos;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -88,6 +90,21 @@ public class TickHandlerClient
     private static boolean lastInvKeyPressed;
     private static long tickCount;
     public static boolean spaceRaceGuiScheduled = false;
+    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
+
+    public static void addPacketHandler(GalacticraftPacketHandler handler)
+    {
+        TickHandlerClient.packetHandlers.add(handler);
+    }
+
+    @SubscribeEvent
+    public void worldUnloadEvent(WorldEvent.Unload event)
+    {
+        for (GalacticraftPacketHandler packetHandler : packetHandlers)
+        {
+            packetHandler.unload(event.world);
+        }
+    }
 
     private static ThreadRequirementMissing missingRequirementThread;
     
@@ -375,9 +392,12 @@ public class TickHandlerClient
                     	ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0,1,0));
                     }
                 }
-            	
-            	if (MapUtil.resetClientFlag.getAndSet(false))
-            		MapUtil.resetClientBody();
+
+                if (world != null)
+                {
+                    if (MapUtil.resetClientFlag.getAndSet(false))
+                        MapUtil.resetClientBody();
+                }
             }
 
             if (minecraft.currentScreen instanceof GuiMainMenu)
@@ -531,7 +551,7 @@ public class TickHandlerClient
 
             if (player != null && player.ridingEntity != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, new Object[] { }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, player.worldObj.provider.getDimensionId(), new Object[] { }));
                 ClientProxyCore.lastSpacebarDown = true;
             }
             
@@ -547,6 +567,16 @@ public class TickHandlerClient
                         te.getWorld().markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
                     }
             	}
+            }
+        }
+        else if (event.phase == Phase.END)
+        {
+            if (world != null)
+            {
+                for (GalacticraftPacketHandler handler : packetHandlers)
+                {
+                    handler.tick(world);
+                }
             }
         }
     }

@@ -104,7 +104,7 @@ public class WorldUtil
     {
         if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getCollisionBoundingBox()))
+        	if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getEntityBoundingBox()))
         	{
         		return 0.08D;
         	}
@@ -219,7 +219,7 @@ public class WorldUtil
     	if (entity.isBurning())
     	{
 	        if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
-	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getCollisionBoundingBox());
+	        	return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getEntityBoundingBox());
 	        else
 	        	return true;
 	        //Disable fire on Galacticraft worlds with no oxygen
@@ -908,7 +908,7 @@ public class WorldUtil
         dimNames.put(newID, "Space Station " + newID);
         GCPlayerStats stats = GCPlayerStats.get(player);
         stats.spaceStationDimensionData.put(homePlanetID, newID);
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, player.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), player);
         return data;
     }
 
@@ -934,7 +934,10 @@ public class WorldUtil
             GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + dimID);
         }
 
-        GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, WorldUtil.getSpaceStationList()));
+        for (WorldServer server : MinecraftServer.getServer().worldServers)
+        {
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, server.provider.getDimensionId(), WorldUtil.getSpaceStationList()), server.provider.getDimensionId());
+        }
         return SpaceStationWorldData.getStationData(world, dimID, homePlanetID, dynamicProviderID, staticProviderID, player);
     }
 
@@ -1055,7 +1058,7 @@ public class WorldUtil
                     {
                         NBTTagCompound var2 = new NBTTagCompound();
                         SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, new Object[] { dimID, var2 }), player);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, player.worldObj.provider.getDimensionId(), new Object[] { dimID, var2 }), player);
                     }
                 }
 
@@ -1070,7 +1073,7 @@ public class WorldUtil
                 worldOld.loadedEntityList.remove(player);
                 worldOld.onEntityRemoved(player);
 
-                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] { }), player);
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
 
@@ -1152,7 +1155,7 @@ public class WorldUtil
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.usingPlanetSelectionGui = false;
 
-                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] { }), player);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
                 spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
@@ -1630,7 +1633,7 @@ public class WorldUtil
             count++;
         }
 
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), dimensionList }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), dimensionList }), player);
         stats.usingPlanetSelectionGui = true;
         stats.savedPlanetList = dimensionList;
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);

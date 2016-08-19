@@ -5,28 +5,32 @@ import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class PacketControllableEntity implements IPacket
+public class PacketControllableEntity extends PacketBase
 {
     private int keyPressed;
 
     public PacketControllableEntity()
     {
+        super();
     }
 
-    public PacketControllableEntity(int keyPressed)
+    public PacketControllableEntity(int keyPressed, int dimID)
     {
+        super(dimID);
         this.keyPressed = keyPressed;
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.keyPressed);
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.keyPressed = buffer.readInt();
     }
 

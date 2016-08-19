@@ -248,14 +248,14 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
             }
         }
 
-        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
-        {
-            return;
-        }
-        else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
-        {
-            return;
-        }
+//        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
+//        {
+//            return;
+//        }
+//        else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
+//        {
+//            return;
+//        }
 
         Set<Field> fieldSet = null;
 
@@ -282,11 +282,5 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
         }
 
         this.readExtraNetworkedData(buffer);
-    }
-
-    @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-
     }
 }

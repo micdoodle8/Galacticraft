@@ -88,7 +88,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class PacketSimple implements IPacket, Packet
+public class PacketSimple extends PacketBase implements Packet
 {
     public static enum EnumSimplePacket
     {
@@ -190,15 +190,17 @@ public class PacketSimple implements IPacket, Packet
 
     public PacketSimple()
     {
+        super();
     }
 
-    public PacketSimple(EnumSimplePacket packetType, Object[] data)
+    public PacketSimple(EnumSimplePacket packetType, int dimID, Object[] data)
     {
-        this(packetType, Arrays.asList(data));
+        this(packetType, dimID, Arrays.asList(data));
     }
 
-    public PacketSimple(EnumSimplePacket packetType, List<Object> data)
+    public PacketSimple(EnumSimplePacket packetType, int dimID, List<Object> data)
     {
+        super(dimID);
         if (packetType.getDecodeClasses().length != data.size())
         {
             GCLog.info("Simple Packet Core found data length different than packet type");
@@ -210,8 +212,9 @@ public class PacketSimple implements IPacket, Packet
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.type.ordinal());
 
         try
@@ -225,8 +228,9 @@ public class PacketSimple implements IPacket, Packet
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.type = EnumSimplePacket.values()[buffer.readInt()];
 
         try
@@ -398,7 +402,7 @@ public class PacketSimple implements IPacket, Packet
                     gearData = new PlayerGearData(player);
                     if (!ClientProxyCore.gearDataRequests.contains(gearName))
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { gearName }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, getDimensionID(), new Object[] { gearName }));
                         ClientProxyCore.gearDataRequests.add(gearName);
                     }
                 }
@@ -709,7 +713,7 @@ public class PacketSimple implements IPacket, Packet
                 str = str.concat(solarSystem.getUnlocalizedName() + ";");
             }
 
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_COMPLETE_CBODY_HANDSHAKE, new Object[] { str }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_COMPLETE_CBODY_HANDSHAKE, getDimensionID(), new Object[] { str }));
             break;
         case C_UPDATE_ENERGYUNITS:
             CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0));
@@ -773,7 +777,7 @@ public class PacketSimple implements IPacket, Packet
             				profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
             			}
             			if (!profile.getProperties().containsKey("textures"))
-            				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, new Object[] { strName }));
+            				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, getDimensionID(), new Object[] { strName }));
         			}
         			((TileEntityTelemetry)tile).clientGameProfile = profile;
         		}
@@ -968,7 +972,7 @@ public class PacketSimple implements IPacket, Packet
                         schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
                         schematicContainer.craftMatrix.markDirty();
 
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ADD_NEW_SCHEMATIC, new Object[] { page.getPageID() }), playerBase);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ADD_NEW_SCHEMATIC, getDimensionID(), new Object[] { page.getPageID() }), playerBase);
                     }
                 }
             }
@@ -1327,7 +1331,7 @@ public class PacketSimple implements IPacket, Packet
             {
                 return;
             }
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, new Object[] { strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString() }), playerBase);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, getDimensionID(), new Object[] { strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString() }), playerBase);
         	break;
         default:
             break;
@@ -1345,13 +1349,13 @@ public class PacketSimple implements IPacket, Packet
     @Override
     public void readPacketData(PacketBuffer var1)
     {
-        this.decodeInto(null, var1);
+        this.decodeInto(var1);
     }
 
     @Override
     public void writePacketData(PacketBuffer var1)
     {
-        this.encodeInto(null, var1);
+        this.encodeInto(var1);
     }
 
     @SideOnly(Side.CLIENT)

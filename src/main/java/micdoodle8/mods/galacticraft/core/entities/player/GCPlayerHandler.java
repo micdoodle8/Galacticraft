@@ -145,11 +145,11 @@ public class GCPlayerHandler
 
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_GET_CELESTIAL_BODY_LIST, new Object[] { }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_GET_CELESTIAL_BODY_LIST, player.worldObj.provider.getDimensionId(), new Object[] { }), player);
         int repeatCount = stats.buildFlags >> 9;
         if (repeatCount < 3)
         	stats.buildFlags &= 1536;
-		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { stats.buildFlags }), player);
+		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, player.worldObj.provider.getDimensionId(), new Object[] { stats.buildFlags }), player);
     }
 
     private void onPlayerLogout(EntityPlayerMP player)
@@ -931,7 +931,7 @@ public class GCPlayerHandler
             List<Object> objList = new ArrayList<Object>();
             objList.add(iArray);
 
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, player.worldObj.provider.getDimensionId(), objList), player);
         }
     }
 
@@ -982,7 +982,7 @@ public class GCPlayerHandler
 
         if (!temp.equals(playerStats.savedPlanetList) || (player.ticksExisted % 100 == 0))
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, new Object[] { player.getGameProfile().getName(), temp }), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), temp }), player);
             playerStats.savedPlanetList = new String(temp);
             //GCLog.debug("Sending to " + player.getGameProfile().getName() + ": " + temp);
         }
@@ -992,12 +992,12 @@ public class GCPlayerHandler
     {
         final float f1 = playerStats.tankInSlot1 == null ? 0.0F : playerStats.tankInSlot1.getMaxDamage() / 90.0F;
         final float f2 = playerStats.tankInSlot2 == null ? 0.0F : playerStats.tankInSlot2.getMaxDamage() / 90.0F;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, new Object[] { MathHelper.floor_float(playerStats.airRemaining / f1), MathHelper.floor_float(playerStats.airRemaining2 / f2), player.getGameProfile().getName() }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, player.worldObj.provider.getDimensionId(), new Object[] { MathHelper.floor_float(playerStats.airRemaining / f1), MathHelper.floor_float(playerStats.airRemaining2 / f2), player.getGameProfile().getName() }), player);
     }
 
     protected void sendThermalLevelPacket(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, new Object[] { playerStats.thermalLevel, playerStats.thermalLevelNormalising }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, player.worldObj.provider.getDimensionId(), new Object[] { playerStats.thermalLevel, playerStats.thermalLevelNormalising }), player);
     }
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType)
@@ -1005,7 +1005,7 @@ public class GCPlayerHandler
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
@@ -1014,7 +1014,7 @@ public class GCPlayerHandler
     	MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
     	if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
@@ -1081,7 +1081,7 @@ public class GCPlayerHandler
                 GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
                 player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
-                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] { }), player);
                 worldNew.spawnEntityInWorld(player);
                 player.setWorld(worldNew);
         	}
@@ -1108,14 +1108,14 @@ public class GCPlayerHandler
 
                 if (race == null || race.teamName.equals(SpaceRace.DEFAULT_NAME))
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, new Object[] { }), player);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_SPACE_RACE_GUI, player.worldObj.provider.getDimensionId(), new Object[] { }), player);
                 }
 
                 GCPlayer.openedSpaceRaceManager = true;
             }
             if (!GCPlayer.sentFlags)
             {
-    			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, new Object[] { GCPlayer.buildFlags }), player);
+    			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, player.worldObj.provider.getDimensionId(), new Object[] { GCPlayer.buildFlags }), player);
     			GCPlayer.sentFlags = true;
             }
    		}
@@ -1220,7 +1220,7 @@ public class GCPlayerHandler
                     GCPlayer.newAdventureSpawn = false;
                 }
 
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] { }), player);
             }
 
             if (player.worldObj.provider instanceof WorldProviderOrbit)
@@ -1285,7 +1285,7 @@ public class GCPlayerHandler
 
         if (isInGCDimension && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, new Object[] { GCPlayer.oxygenSetupValid }), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_OXYGEN_VALIDITY, player.worldObj.provider.getDimensionId(), new Object[] { GCPlayer.oxygenSetupValid }), player);
         }
 
         this.throwMeteors(player);

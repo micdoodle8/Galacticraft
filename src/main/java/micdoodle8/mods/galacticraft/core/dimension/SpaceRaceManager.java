@@ -20,6 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.WorldServer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -146,11 +147,14 @@ public class SpaceRaceManager
 
             if (toPlayer != null)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList), toPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, toPlayer.worldObj.provider.getDimensionId(), objList), toPlayer);
             }
             else
             {
-                GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, objList));
+                for (WorldServer server : MinecraftServer.getServer().worldServers)
+                {
+                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, server.provider.getDimensionId(), objList), server.provider.getDimensionId());
+                }
             }
         }
     }

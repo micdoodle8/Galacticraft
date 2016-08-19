@@ -397,11 +397,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
         this.readNetworkedData(buffer);
     }
 
-    @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-    }
-
     @SideOnly(Side.CLIENT)
     public void spawnParticles(Map<Vector3, Vector3> points)
     {

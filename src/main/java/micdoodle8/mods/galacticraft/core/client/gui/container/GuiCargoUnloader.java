@@ -39,7 +39,7 @@ public class GuiCargoUnloader extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.cargoUnloader.getPos().getX(), this.cargoUnloader.getPos().getY(), this.cargoUnloader.getPos().getZ(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.cargoUnloader.getPos().getX(), this.cargoUnloader.getPos().getY(), this.cargoUnloader.getPos().getZ(), 0 }));
             break;
         }
     }

@@ -100,7 +100,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, new Object[] { this.tile.getPos().getX(), this.tile.getPos().getY(), this.tile.getPos().getZ(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.tile.getPos().getX(), this.tile.getPos().getY(), this.tile.getPos().getZ(), 0 }));
                 break;
             default:
                 break;

@@ -95,7 +95,7 @@ public class GameScreenBasic implements IGameScreen
 	            this.renderEngine.bindTexture(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
 	            if (!ClientProxyCore.overworldTextureRequestSent)
 	            {
-	                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
+	                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
 	                ClientProxyCore.overworldTextureRequestSent = true;
 	            }
 		        draw2DTexture();

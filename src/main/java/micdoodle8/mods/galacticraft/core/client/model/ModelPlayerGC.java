@@ -139,7 +139,7 @@ public class ModelPlayerGC extends ModelPlayer
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, new Object[] { id }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, player.worldObj.provider.getDimensionId(), new Object[] { id }));
                 ClientProxyCore.gearDataRequests.add(id);
             }
         }

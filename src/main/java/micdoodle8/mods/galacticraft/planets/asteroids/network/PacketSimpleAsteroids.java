@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.network;
 
+import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.BlockPos;
@@ -28,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class PacketSimpleAsteroids implements IPacket
+public class PacketSimpleAsteroids extends PacketBase
 {
     public static enum EnumSimplePacketAsteroids
     {
@@ -65,16 +66,18 @@ public class PacketSimpleAsteroids implements IPacket
 
     public PacketSimpleAsteroids()
     {
-
+        super();
     }
 
-    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, Object[] data)
+    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, int dimID, Object[] data)
     {
-        this(packetType, Arrays.asList(data));
+        this(packetType, dimID, Arrays.asList(data));
     }
 
-    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, List<Object> data)
+    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, int dimID, List<Object> data)
     {
+        super(dimID);
+
         if (packetType.getDecodeClasses().length != data.size())
         {
             GCLog.info("Asteroids Simple Packet found data length different than packet type: " + packetType.name());
@@ -85,8 +88,9 @@ public class PacketSimpleAsteroids implements IPacket
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void encodeInto(ByteBuf buffer)
     {
+        super.encodeInto(buffer);
         buffer.writeInt(this.type.ordinal());
 
         try
@@ -100,8 +104,9 @@ public class PacketSimpleAsteroids implements IPacket
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer)
     {
+        super.decodeInto(buffer);
         this.type = EnumSimplePacketAsteroids.values()[buffer.readInt()];
 
         if (this.type.getDecodeClasses().length > 0)

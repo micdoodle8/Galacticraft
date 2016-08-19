@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
 import org.apache.commons.io.FileUtils;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -49,11 +51,13 @@ public class MapGen
     private BiomeGenBase[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private BiomeGenBase[] biomesGridHeights = null;
 	private int[] biomeCount = null;
+    private final int dimID;
     
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
     	this.biomeMapCx = cx >> 4;
     	this.biomeMapCz = cz >> 4;
+        this.dimID = world.provider.getDimensionId();
     	if (file.exists())
         {
 //			try {
@@ -117,7 +121,10 @@ public class MapGen
 	{
 		try
 		{
-			GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend } ));
+            for (WorldServer server : MinecraftServer.getServer().worldServers)
+            {
+                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimensionId(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend } ), server.provider.getDimensionId());
+            }
 		}
 		catch (Exception ex)
 		{

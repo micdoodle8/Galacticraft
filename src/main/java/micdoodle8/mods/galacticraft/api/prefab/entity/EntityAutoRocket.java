@@ -708,11 +708,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public void handlePacketData(Side side, EntityPlayer player)
-    {
-    }
-
-    @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
         super.getNetworkedData(list);

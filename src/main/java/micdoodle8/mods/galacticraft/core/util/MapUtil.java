@@ -109,7 +109,7 @@ public class MapUtil
         	for (File f : baseFolder.listFiles())
         	     if (f.isFile()) f.delete();        	
         }
-		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, new Object[] {}));
+		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
 //		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
 //		MapUtil.biomeColours.clear();
 //		setupColours();
@@ -203,12 +203,12 @@ public class MapUtil
 				File file = new File(baseFolder, "Overworld192.bin");
 		        if (file.exists())
 		        {
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { 0, 0, FileUtils.readFileToByteArray(file) } ), client);
+					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimensionId(), new Object[] { 0, 0, FileUtils.readFileToByteArray(file) } ), client);
 		        }
 		        file = new File(baseFolder, "Overworld1536.bin");
 		        if (file.exists())
 		        {
-					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { 0, 0, FileUtils.readFileToByteArray(file) } ), client);
+					GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimensionId(), new Object[] { 0, 0, FileUtils.readFileToByteArray(file) } ), client);
 		        }
 			}
 			catch (Exception ex)
@@ -235,7 +235,7 @@ public class MapUtil
 	        	getBiomeMapForCoords(world, cx, cz, 1, SIZE_STD, SIZE_STD, baseFolder);
 	        	return;            	
 	        }
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx, cz, FileUtils.readFileToByteArray(file) } ), client);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimensionId(), new Object[] { cx, cz, FileUtils.readFileToByteArray(file) } ), client);
 		}
 		catch (Exception ex)
 		{
@@ -602,7 +602,7 @@ public class MapUtil
         	{
         		clientRequests.add(filename.getName());
         		GCLog.debug("Client requested file" + filename.getName());
-        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, new Object[] {dim, cx, cz}));
+        		GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {dim, cx, cz}));
         	}
         	return true;
         }

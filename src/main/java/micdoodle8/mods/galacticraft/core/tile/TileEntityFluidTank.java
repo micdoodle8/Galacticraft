@@ -1,19 +1,24 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.util.DelayTimer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 
 public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHandler
 {
     public FluidTankGC fluidTank = new FluidTankGC(16000, this);
-    private boolean updateClient = false;
+    public boolean updateClient = false;
+    private DelayTimer delayTimer = new DelayTimer(20);
 
     public void onBreak()
     {
@@ -27,14 +32,17 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     public void update()
     {
         super.update();
-        if (this.ticks >= 20)
-        {
-            this.updateClient = false;
-        }
 
         if (fluidTank.getFluid() != null)
         {
             moveFluidDown();
+        }
+
+        if (!this.worldObj.isRemote && updateClient && delayTimer.markTimeIfDelay(this.worldObj))
+        {
+            PacketDynamic packet = new PacketDynamic(this);
+            GalacticraftCore.packetPipeline.sendToAllAround(packet, new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+            this.updateClient = false;
         }
     }
 
@@ -289,6 +297,6 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     @Override
     public boolean isNetworkedTile()
     {
-        return this.updateClient && this.ticks >= 20;
+        return false;
     }
 }

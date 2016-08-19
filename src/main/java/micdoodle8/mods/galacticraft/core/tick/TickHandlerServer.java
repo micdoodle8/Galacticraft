@@ -2,10 +2,15 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -67,7 +72,22 @@ public class TickHandlerServer
 	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
 	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
     private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
-	private final int MAX_BLOCKS_PER_TICK = 50000; 
+	private final int MAX_BLOCKS_PER_TICK = 50000;
+    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
+
+    public static void addPacketHandler(GalacticraftPacketHandler handler)
+    {
+        TickHandlerServer.packetHandlers.add(handler);
+    }
+
+    @SubscribeEvent
+    public void worldUnloadEvent(WorldEvent.Unload event)
+    {
+        for (GalacticraftPacketHandler packetHandler : packetHandlers)
+        {
+            packetHandler.unload(event.world);
+        }
+    }
 	
     public static void restart()
     {
@@ -233,7 +253,7 @@ public class TickHandlerServer
                     }
 
                     stats.teleportCooldown = 10;
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, new Object[] { }), change.getPlayer());
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, change.getPlayer().worldObj.provider.getDimensionId(), new Object[] { }), change.getPlayer());
                 }
                 catch (Exception e)
                 {
@@ -309,7 +329,7 @@ public class TickHandlerServer
                                     footprintMap.put(chunkKey, footprints);
                                     mapChanged = true;
 
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimensionId());
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, worlds[i].provider.getDimensionId(), new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimensionId());
                                 }
                             }
                         }
@@ -335,7 +355,7 @@ public class TickHandlerServer
                         if (world.provider.getDimensionId() == targetPoint.dim)
                         {
                             long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int)targetPoint.x >> 4, (int)targetPoint.z >> 4);
-                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
+                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, world.provider.getDimensionId(), new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
 
 
 //                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
@@ -458,6 +478,13 @@ public class TickHandlerServer
         }
     }
 
+    private static Set<Integer> worldsNeedingUpdate = new HashSet<Integer>();
+
+    public static void markWorldNeedsUpdate(int dimension)
+    {
+        worldsNeedingUpdate.add(dimension);
+    }
+
     @SubscribeEvent
     public void onWorldTick(WorldTickEvent event)
     {
@@ -547,10 +574,29 @@ public class TickHandlerServer
                     }
                 }
             }
+
+            int dimensionID = world.provider.getDimensionId();
+            if (worldsNeedingUpdate.contains(dimensionID))
+            {
+                worldsNeedingUpdate.remove(dimensionID);
+                for (Object obj : event.world.loadedTileEntityList)
+                {
+                    TileEntity tile = (TileEntity) obj;
+                    if (tile instanceof TileEntityFluidTank)
+                    {
+                        ((TileEntityFluidTank) tile).updateClient = true;
+                    }
+                }
+            }
         }
         else if (event.phase == Phase.END)
         {
             final WorldServer world = (WorldServer) event.world;
+
+            for (GalacticraftPacketHandler handler : packetHandlers)
+            {
+                handler.tick(world);
+            }
 
             List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(world.provider.getDimensionId());
             final HashSet<BlockVec3> checkedThisTick = new HashSet();
