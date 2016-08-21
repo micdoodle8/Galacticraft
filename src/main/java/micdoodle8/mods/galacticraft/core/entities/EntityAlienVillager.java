@@ -1,4 +1,4 @@
-package ru.gug2.mods.manysystems.core.entity;
+package micdoodle8.mods.galacticraft.core.entities;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
