@@ -23,7 +23,6 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
         this.addDiscriminator(0, PacketSimple.class);
         this.addDiscriminator(1, PacketRotateRocket.class);
         this.addDiscriminator(2, PacketDynamic.class);
-        this.addDiscriminator(3, PacketControllableEntity.class);
         this.addDiscriminator(4, PacketEntityUpdate.class);
         this.addDiscriminator(5, PacketDynamicInventory.class);
     }

@@ -64,7 +64,7 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     }
 
 	@Override
-	public float discharge(ItemStack itemStack, float amount)
+	public int discharge(ItemStack itemStack, int amount)
 	{
 		return amount;
 	}

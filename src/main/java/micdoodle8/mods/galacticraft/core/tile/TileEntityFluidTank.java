@@ -23,7 +23,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
 {
     public FluidTankGC fluidTank = new FluidTankGC(16000, this);
     public boolean updateClient = false;
-    private DelayTimer delayTimer = new DelayTimer(20);
+    private DelayTimer delayTimer = new DelayTimer(1);
 
     public void onBreak()
     {
@@ -74,7 +74,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
             int used = toFill.fluidTank.fill(copy, doFill);
             if (used > 0)
             {
-                updateClient = true;
+                toFill.updateClient = true;
             }
             copy.amount -= used;
             totalUsed += used;

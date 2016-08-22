@@ -95,14 +95,14 @@ public class GuiOxygenCollector extends GuiContainerGC
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
-            if (this.collector.storedOxygen > 0)
+            if (this.collector.getOxygenStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.collector.storedOxygen) + " / " + (int) Math.floor(this.collector.maxOxygen)));
+            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.collector.getOxygenStored()) + " / " + (int) Math.floor(this.collector.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();

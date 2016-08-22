@@ -4,9 +4,11 @@ import com.google.common.math.DoubleMath;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.handler.codec.EncoderException;
+import micdoodle8.mods.galacticraft.core.tile.FluidTankGC;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTSizeTracker;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -85,6 +87,15 @@ public class NetworkUtil
             else if (dataValue instanceof NBTTagCompound)
             {
                 NetworkUtil.writeNBTTagCompound((NBTTagCompound) dataValue, buffer);
+            }
+            else if (dataValue instanceof FluidTankGC)
+            {
+                FluidTankGC tankGC = (FluidTankGC) dataValue;
+                BlockPos pos = tankGC.getTilePosition();
+                buffer.writeInt(pos.getX());
+                buffer.writeInt(pos.getY());
+                buffer.writeInt(pos.getZ());
+                NetworkUtil.writeFluidTank((FluidTank) dataValue, buffer);
             }
             else if (dataValue instanceof FluidTank)
             {
@@ -377,6 +388,10 @@ public class NetworkUtil
         {
             return NetworkUtil.readNBTTagCompound(buffer);
         }
+        else if (dataValue.equals(FluidTankGC.class))
+        {
+            return NetworkUtil.readFluidTankGC(buffer, world);
+        }
         else if (dataValue.equals(FluidTank.class))
         {
             return NetworkUtil.readFluidTank(buffer);
@@ -528,6 +543,28 @@ public class NetworkUtil
         }
     }
 
+    public static FluidTankGC readFluidTankGC(ByteBuf buffer, World world) throws IOException
+    {
+        BlockPos pos = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+        TileEntity tile = world.getTileEntity(pos);
+        int capacity = buffer.readInt();
+        String fluidName = ByteBufUtils.readUTF8String(buffer);
+        FluidTankGC fluidTank = new FluidTankGC(capacity, tile);
+        int amount = buffer.readInt();
+
+        if (fluidName.equals(""))
+        {
+            fluidTank.setFluid(null);
+        }
+        else
+        {
+            Fluid fluid = FluidRegistry.getFluid(fluidName);
+            fluidTank.setFluid(new FluidStack(fluid, amount));
+        }
+
+        return fluidTank;
+    }
+
     public static FluidTank readFluidTank(ByteBuf buffer) throws IOException
     {
         int capacity = buffer.readInt();
@@ -614,6 +651,12 @@ public class NetworkUtil
             EnergyStorage storage = new EnergyStorage(prevStorage.getCapacityGC(), prevStorage.getMaxReceive(), prevStorage.getMaxExtract());
             storage.setEnergyStored(prevStorage.getEnergyStoredGC());
             return storage;
+        }
+        else if (a instanceof FluidTankGC)
+        {
+            FluidTankGC prevTank = (FluidTankGC)a;
+            FluidTankGC tank = new FluidTankGC(prevTank.getFluid(), prevTank.getCapacity(), prevTank.getTile());
+            return tank;
         }
         else if (a instanceof FluidTank)
         {

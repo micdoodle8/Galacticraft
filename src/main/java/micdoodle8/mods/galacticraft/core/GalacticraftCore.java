@@ -115,7 +115,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:BuildCraft|Core; after:BuildCraft|Energy; after:IC2; after:MekanismAPI|gas", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:IC2; after:MekanismAPI|gas", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
@@ -703,7 +703,7 @@ public class GalacticraftCore
         Fluid returnFluid = FluidRegistry.getFluid(fluidName);
         if (returnFluid == null)
         {
-            ResourceLocation texture = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "fluids/" + fluidTexture);
+            ResourceLocation texture = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "blocks/fluids/" + fluidTexture);
             FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
             returnFluid = FluidRegistry.getFluid(fluidName);
         }

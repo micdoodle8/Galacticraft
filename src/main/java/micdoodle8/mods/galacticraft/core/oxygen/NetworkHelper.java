@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.oxygen;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -107,7 +106,7 @@ public class NetworkHelper
         return null;
     }
 
-    public static IOxygenNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
+    public static LiquidNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
     {
         if (tileEntity != null)
         {
@@ -115,19 +114,19 @@ public class NetworkHelper
             {
                 if (tileEntity instanceof IConnector)
                 {
-                    if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.OXYGEN))
+                    if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.FLUID))
                     {
-                        if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
+                        if (((INetworkProvider) tileEntity).getNetwork() instanceof LiquidNetwork)
                         {
-                            return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+                            return (LiquidNetwork) ((INetworkProvider) tileEntity).getNetwork();
                         }
                     }
                 }
                 else
                 {
-                    if (((INetworkProvider) tileEntity).getNetwork() instanceof IOxygenNetwork)
+                    if (((INetworkProvider) tileEntity).getNetwork() instanceof LiquidNetwork)
                     {
-                        return (IOxygenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+                        return (LiquidNetwork) ((INetworkProvider) tileEntity).getNetwork();
                     }
                 }
             }

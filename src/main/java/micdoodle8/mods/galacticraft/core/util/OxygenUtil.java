@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
@@ -455,9 +456,9 @@ public class OxygenUtil
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
-            if (tileEntity instanceof IConnector)
+            if (tileEntity instanceof IFluidHandler)
             {
-                if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.OXYGEN))
+//                if (((IFluidHandler) tileEntity).)
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }

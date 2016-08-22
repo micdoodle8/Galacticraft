@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -21,6 +22,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
@@ -45,7 +47,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public int getCappedScaledOxygenLevel(int scale)
     {
-        return (int) Math.max(Math.min(Math.floor((double) this.storedOxygen / (double) this.maxOxygen * scale), scale), 0);
+        return (int) Math.max(Math.min(Math.floor((double) this.getOxygenStored() / (double) this.getMaxOxygenStored() * scale), scale), 0);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
         if (!this.worldObj.isRemote)
         {
-            producedLastTick = this.storedOxygen < this.maxOxygen;
+            producedLastTick = this.getOxygenStored() < this.getMaxOxygenStored();
 
             this.produceOxygen();
 
@@ -182,7 +184,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
                     this.lastOxygenCollected = nearbyLeaves / 10F;
 
-                    this.storedOxygen = (int) Math.max(Math.min(this.storedOxygen + nearbyLeaves, this.maxOxygen), 0);
+                    this.tank.setFluid(new FluidStack(GalacticraftCore.fluidOxygenGas, (int) Math.max(Math.min(this.getOxygenStored() + nearbyLeaves, this.getMaxOxygenStored()), 0)));
                 }
                 else
                 {
@@ -390,7 +392,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.storedOxygen > 0F && producedLastTick;
+        return this.getOxygenStored() > 0F && producedLastTick;
     }
 
     public EnumFacing getFront()
@@ -453,8 +455,8 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
 
     @Override
-    public float getOxygenProvide(EnumFacing direction)
+    public int getOxygenProvide(EnumFacing direction)
     {
-        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }
 }

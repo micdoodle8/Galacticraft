@@ -529,7 +529,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        if (direction == null || type == NetworkType.OXYGEN)
+        if (direction == null || type == NetworkType.FLUID)
         {
             return false;
         }

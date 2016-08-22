@@ -50,7 +50,7 @@ public class GuiOxygenCompressor extends GuiContainerGC
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 132, (this.height - this.ySize) / 2 + 70, 18, 18, compressorSlotDesc, this.width, this.height, this));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.compressor.storedOxygen) + " / " + (int) Math.floor(this.compressor.maxOxygen)));
+        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.compressor.getOxygenStored()) + " / " + (int) Math.floor(this.compressor.getMaxOxygenStored())));
         this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
         this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
         this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
@@ -97,7 +97,7 @@ public class GuiOxygenCompressor extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.fulltank.name");
         }
 
-        if (this.compressor.storedOxygen < 1.0D)
+        if (this.compressor.getOxygenStored() < 1.0D)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
@@ -126,14 +126,14 @@ public class GuiOxygenCompressor extends GuiContainerGC
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
-            if (this.compressor.storedOxygen > 0)
+            if (this.compressor.getOxygenStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.compressor.storedOxygen) + " / " + (int) Math.floor(this.compressor.maxOxygen)));
+            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.compressor.getOxygenStored()) + " / " + (int) Math.floor(this.compressor.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();

@@ -98,12 +98,12 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     }
 
     @Override
-    public float discharge(ItemStack itemStack, float amount)
+    public int discharge(ItemStack itemStack, int amount)
 	{
 		int damage = itemStack.getItemDamage();
 		int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
 		this.setNewDamage(itemStack, damage + used);
-		return used / Constants.LOX_GAS_RATIO;
+		return (int) Math.floor(used / Constants.LOX_GAS_RATIO);
 	}
 
 	@Override

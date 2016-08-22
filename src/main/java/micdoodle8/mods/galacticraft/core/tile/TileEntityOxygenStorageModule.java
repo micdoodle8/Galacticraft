@@ -51,10 +51,11 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 	    	ItemStack oxygenItemStack = this.getStackInSlot(0);
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
 	    	{
-	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
-	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
-	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+                IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+                int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
+                this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
+                if (this.getOxygenStored() > this.getMaxOxygenStored())
+                    this.setOxygenStored(this.getOxygenStored());
 	    	}
         }
     	
@@ -196,9 +197,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public float getOxygenProvide(EnumFacing direction)
+    public int getOxygenProvide(EnumFacing direction)
     {
-        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }
 
     public EnumFacing getFront()
@@ -388,57 +389,58 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        return false;
+        return super.canDrain(from, fluid);
     }
 
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        return null;
+        return super.drain(from, resource, doDrain);
     }
 
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        return null;
+        return super.drain(from, maxDrain, doDrain);
     }
 
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.ordinal() == this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2 && GalacticraftCore.isPlanetsLoaded)
-        {
-            //Can fill with LOX only
-            return fluid != null && fluid.getName().equals(AsteroidsModule.fluidLiquidOxygen.getName());
-        }
+//        if (from.ordinal() == this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2 && GalacticraftCore.isPlanetsLoaded)
+//        {
+//            //Can fill with LOX only
+//            return fluid != null && fluid.getName().equals(AsteroidsModule.fluidLiquidOxygen.getName());
+//        }
 
-        return false;
+        return super.canFill(from, fluid);
     }
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
-        int used = 0;
+//        int used = 0;
+//
+//        if (resource != null && this.canFill(from, resource.getFluid()))
+//        {
+//            used = (int) (this.receiveOxygen((int) Math.floor(resource.amount / Constants.LOX_GAS_RATIO), doFill) * Constants.LOX_GAS_RATIO);
+//        }
 
-        if (resource != null && this.canFill(from, resource.getFluid()))
-        {
-            used = (int) (this.receiveOxygen(resource.amount / Constants.LOX_GAS_RATIO, doFill) * Constants.LOX_GAS_RATIO);
-        }
-
-        return used;
+        return super.fill(from, resource, doFill);
     }
 
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
-        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
-        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
-        int side = from.ordinal();
-
-        if (metaside == side && GalacticraftCore.isPlanetsLoaded)
-        {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
-        }
-        return tankInfo;
+//        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
+//        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
+//        int side = from.ordinal();
+//
+//        if (metaside == side && GalacticraftCore.isPlanetsLoaded)
+//        {
+//            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
+//        }
+//        return tankInfo;
+        return super.getTankInfo(from);
     }
 }

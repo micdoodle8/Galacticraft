@@ -225,7 +225,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public NetworkType getNetworkType(IBlockState state)
     {
-        return NetworkType.OXYGEN;
+        return NetworkType.FLUID;
     }
 
     @Override

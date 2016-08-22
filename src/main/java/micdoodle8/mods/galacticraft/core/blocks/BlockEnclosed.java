@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -36,7 +35,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 {
 //    private IIcon[] enclosedIcons;
     public static Item[] pipeItemsBC = new Item[6];
-    public static BlockContainer blockPipeBC = null;
+    public static Block blockPipeBC = null;
     public static Method onBlockNeighbourChangeIC2 = null;
 
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumEnclosedBlockType.class);
@@ -180,7 +179,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         {
             try {
                 Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
-                blockPipeBC = (BlockContainer) clazzBC.getField("genericPipeBlock").get(null);
+                blockPipeBC = (Block) clazzBC.getField("genericPipeBlock").get(null);
                 CompatibilityManager.classBCBlockGenericPipe = blockPipeBC.getClass();
                 for (Method m : CompatibilityManager.classBCBlockGenericPipe.getDeclaredMethods())
                 {
@@ -350,7 +349,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 try
                 {
-                    return blockPipeBC.createNewTileEntity(world, 0);
+                    return blockPipeBC.createTileEntity(world, blockPipeBC.getDefaultState());
                 }
                 catch (Exception e) { e.printStackTrace(); }
             }

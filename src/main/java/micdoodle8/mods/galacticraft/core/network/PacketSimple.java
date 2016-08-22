@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -123,6 +124,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
         S_UPDATE_VIEWSCREEN_REQUEST(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
+        S_CONTROL_ENTITY(Side.SERVER, Integer.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -1333,6 +1335,12 @@ public class PacketSimple extends PacketBase implements Packet
             }
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, getDimensionID(), new Object[] { strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString() }), playerBase);
         	break;
+        case S_CONTROL_ENTITY:
+            if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
+            {
+                ((IControllableEntity) player.ridingEntity).pressKey((Integer) this.data.get(0));
+            }
+            break;
         default:
             break;
         }

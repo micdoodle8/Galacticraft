@@ -4,14 +4,19 @@ import codechicken.nei.api.IHighlightHandler;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 import java.util.List;
 
@@ -20,34 +25,23 @@ public class GCNEIHighlightHandler implements IHighlightHandler
     @Override
     public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, MovingObjectPosition mop, List<String> currenttip, ItemInfo.Layout layout)
     {
-        String name = null;
-        try
+        if (stack.getItem() == Item.getItemFromBlock(GCBlocks.fluidTank))
         {
-            String s = GuiContainerManager.itemDisplayNameShort(stack);
-            if (s != null && !s.endsWith("Unnamed"))
+            if (layout == ItemInfo.Layout.BODY)
             {
-                name = s;
+                TileEntity tile = world.getTileEntity(mop.getBlockPos());
+                if (tile instanceof TileEntityFluidTank)
+                {
+                    TileEntityFluidTank tank = (TileEntityFluidTank) tile;
+                    FluidTankInfo[] infos = tank.getTankInfo(EnumFacing.DOWN);
+                    if (infos.length == 1)
+                    {
+                        FluidTankInfo info = infos[0];
+                        currenttip.add(info.fluid != null ? info.fluid.getLocalizedName() : "Empty");
+                        currenttip.add((info.fluid != null ? info.fluid.amount : 0) + " / " + info.capacity);
+                    }
+                }
             }
-
-            if (name != null)
-            {
-                currenttip.add(name);
-            }
-        }
-        catch (Exception e)
-        {
-        }
-
-        if (stack.getItem() == Items.redstone)
-        {
-            IBlockState state = world.getBlockState(mop.getBlockPos());
-            int md = state.getBlock().getMetaFromState(state);
-            String s = "" + md;
-            if (s.length() < 2)
-            {
-                s = " " + s;
-            }
-            currenttip.set(currenttip.size() - 1, name + " " + s);
         }
 
         return currenttip;

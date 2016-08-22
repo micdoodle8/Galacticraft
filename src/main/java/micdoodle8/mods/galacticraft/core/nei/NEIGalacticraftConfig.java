@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.nei;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.api.ItemInfo;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -66,6 +67,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         API.registerHighlightIdentifier(GCBlocks.basicBlock, new GCNEIHighlightHandler());
         API.registerHighlightIdentifier(GCBlocks.blockMoon, new GCNEIHighlightHandler());
         API.registerHighlightIdentifier(GCBlocks.fakeBlock, new GCNEIHighlightHandler());
+        API.registerHighlightHandler(new GCNEIHighlightHandler(), ItemInfo.Layout.BODY);
     }
 
     @Override

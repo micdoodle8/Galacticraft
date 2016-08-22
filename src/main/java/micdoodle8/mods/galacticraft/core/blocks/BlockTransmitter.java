@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -95,7 +94,7 @@ public abstract class BlockTransmitter extends Block
             TileEntity[] connectable = new TileEntity[6];
             switch (this.getNetworkType(worldIn.getBlockState(pos)))
             {
-            case OXYGEN:
+            case FLUID:
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                 break;
             case HYDROGEN:
@@ -165,7 +164,7 @@ public abstract class BlockTransmitter extends Block
             TileEntity[] connectable;
             switch (this.getNetworkType(state))
             {
-            case OXYGEN:
+            case FLUID:
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                 break;
             case HYDROGEN:
@@ -227,7 +226,7 @@ public abstract class BlockTransmitter extends Block
             TileEntity[] connectable = new TileEntity[6];
             switch (this.getNetworkType(state))
             {
-                case OXYGEN:
+                case FLUID:
                     connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                     break;
                 case HYDROGEN:

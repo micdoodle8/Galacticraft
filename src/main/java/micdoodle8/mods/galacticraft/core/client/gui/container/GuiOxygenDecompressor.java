@@ -46,7 +46,7 @@ public class GuiOxygenDecompressor extends GuiContainerGC
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 132, (this.height - this.ySize) / 2 + 70, 18, 18, compressorSlotDesc, this.width, this.height, this));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.decompressor.storedOxygen) + " / " + (int) Math.floor(this.decompressor.maxOxygen)));
+        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.decompressor.getOxygenStored()) + " / " + (int) Math.floor(this.decompressor.getMaxOxygenStored())));
         this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
         this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
         this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
@@ -117,14 +117,14 @@ public class GuiOxygenDecompressor extends GuiContainerGC
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
-            if (this.decompressor.storedOxygen > 0)
+            if (this.decompressor.getOxygenStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.decompressor.storedOxygen) + " / " + (int) Math.floor(this.decompressor.maxOxygen)));
+            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.decompressor.getOxygenStored()) + " / " + (int) Math.floor(this.decompressor.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();

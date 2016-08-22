@@ -53,7 +53,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 16, (this.height - this.ySize) / 2 + 26, 18, 18, oxygenSlotDesc, this.width, this.height, this));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
+        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.distributor.getOxygenStored()) + " / " + (int) Math.floor(this.distributor.getMaxOxygenStored())));
         this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
         this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
         this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 24;
@@ -92,7 +92,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
     private String getStatus()
     {
-        if (this.distributor.storedOxygen < this.distributor.oxygenPerTick)
+        if (this.distributor.getOxygenStored() < this.distributor.oxygenPerTick)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
@@ -121,14 +121,14 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
                 this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
-            if (this.distributor.storedOxygen > 0)
+            if (this.distributor.getOxygenStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.distributor.storedOxygen) + " / " + (int) Math.floor(this.distributor.maxOxygen)));
+            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.distributor.getOxygenStored()) + " / " + (int) Math.floor(this.distributor.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();

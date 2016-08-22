@@ -19,7 +19,7 @@ public interface IOxygenReceiver extends IConnector
      * @param doReceive If false, the transfer will only be simulated.
      * @return Amount of oxygen that was accepted by the block.
      */
-    public float receiveOxygen(EnumFacing from, float receive, boolean doReceive);
+    public int receiveOxygen(EnumFacing from, int receive, boolean doReceive);
 
     /**
      * Adds oxygen provision to a block. Returns the quantity of oxygen
@@ -31,16 +31,16 @@ public interface IOxygenReceiver extends IConnector
      * @param doProvide If false, the transfer will only be simulated.
      * @return Amount of oxygen that was given out by the block.
      */
-    public float provideOxygen(EnumFacing from, float request, boolean doProvide);
+    public int provideOxygen(EnumFacing from, int request, boolean doProvide);
 
     /**
      * @return How much oxygen does this TileEntity want?
      */
-    public float getOxygenRequest(EnumFacing direction);
+    public int getOxygenRequest(EnumFacing direction);
 
     /**
      * @return How much oxygen does this TileEntity want to provide?
      */
-    public float getOxygenProvide(EnumFacing direction);
+    public int getOxygenProvide(EnumFacing direction);
 
 }

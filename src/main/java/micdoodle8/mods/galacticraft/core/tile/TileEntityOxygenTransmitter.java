@@ -5,20 +5,22 @@ import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenNetwork;
+import micdoodle8.mods.galacticraft.core.oxygen.LiquidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced implements ITransmitter
+public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandler
 {
     private IGridNetwork network;
 
@@ -77,8 +79,9 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
 
     protected void resetNetwork()
     {
-        OxygenNetwork network = new OxygenNetwork();
+        LiquidNetwork network = new LiquidNetwork();
         network.getTransmitters().add(this);
+        network.register();
         this.setNetwork(network);
     }
 
@@ -146,7 +149,7 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        return type == NetworkType.OXYGEN;
+        return type == NetworkType.FLUID;
     }
 
     @Override
@@ -159,7 +162,7 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     @Override
     public NetworkType getNetworkType()
     {
-        return NetworkType.OXYGEN;
+        return NetworkType.FLUID;
     }
 
     @Override
@@ -217,6 +220,6 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
     public boolean canTubeConnect(EnumFacing side)
     {
-        return this.canConnect(side, NetworkType.OXYGEN);
+        return this.canConnect(side, NetworkType.FLUID);
     }
 }

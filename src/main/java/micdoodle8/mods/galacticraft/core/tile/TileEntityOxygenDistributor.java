@@ -186,10 +186,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
 	    	{
-	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
-	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
-	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+                IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+                int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
+                this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
+                if (this.getOxygenStored() > this.getMaxOxygenStored())
+                    this.setOxygenStored(this.getOxygenStored());
 	    	}
         }
 
@@ -197,7 +198,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getEnergyStoredGC() > 0.0F && this.storedOxygen > this.oxygenPerTick)
+            if (this.getEnergyStoredGC() > 0.0F && this.getOxygenStored() > this.oxygenPerTick)
             {
                 this.bubbleSize += 0.01F;
             }
@@ -222,7 +223,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
         if (!this.worldObj.isRemote/* && this.oxygenBubble != null*/)
         {
-            this.active = bubbleSize >= 1 && this.hasEnoughEnergyToRun && this.storedOxygen > this.oxygenPerTick;
+            this.active = bubbleSize >= 1 && this.hasEnoughEnergyToRun && this.getOxygenStored() > this.oxygenPerTick;
 
             if (this.ticks % (this.active ? 20 : 4) == 0)
 	        {
@@ -472,7 +473,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.storedOxygen > this.oxygenPerTick;
+        return this.getOxygenStored() > this.oxygenPerTick;
     }
 
     @Override

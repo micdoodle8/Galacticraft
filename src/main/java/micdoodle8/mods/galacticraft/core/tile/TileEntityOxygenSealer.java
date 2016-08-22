@@ -92,7 +92,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     public int getFindSealChecks()
     {
-        if (!this.active || this.storedOxygen < this.oxygenPerTick || !this.hasEnoughEnergyToRun)
+        if (!this.active || this.getOxygenStored() < this.oxygenPerTick || !this.hasEnoughEnergyToRun)
         {
             return 0;
         }
@@ -121,10 +121,11 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
 	    	{
-	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
-	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
-	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+                IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+                int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
+                this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
+                if (this.getOxygenStored() > this.getMaxOxygenStored())
+                    this.setOxygenStored(this.getOxygenStored());
 	    	}
 
             if (this.thermalControlEnabled())
@@ -158,7 +159,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                 TileEntityOxygenSealer.sealerCheckedThisTick = false;
             }
 
-            this.active = this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
+            this.active = this.getOxygenStored() >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
 
             if (this.stopSealThreadCooldown > 0)
             {
@@ -382,7 +383,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.storedOxygen > this.oxygenPerTick && !this.getDisabled(0);
+        return this.getOxygenStored() > this.oxygenPerTick && !this.getDisabled(0);
     }
 
     @Override

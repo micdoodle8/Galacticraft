@@ -39,10 +39,11 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
 	    	ItemStack oxygenItemStack = this.getStackInSlot(2);
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
 	    	{
-	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
-	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
-	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
+                IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
+                int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
+                this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
+                if (this.getOxygenStored() > this.getMaxOxygenStored())
+                    this.setOxygenStored(this.getOxygenStored());
 	    	}
         }
     	
@@ -51,7 +52,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         if (!this.worldObj.isRemote)
         {
 	    	this.usingEnergy = false;
-            if (this.storedOxygen > 0 && this.hasEnoughEnergyToRun)
+            if (this.getOxygenStored() > 0 && this.hasEnoughEnergyToRun)
             {
                 ItemStack tank0 = this.containingItems[0];
 
@@ -60,7 +61,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
                     if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
                     {
                         tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
-                        this.storedOxygen -= TileEntityOxygenCompressor.TANK_TRANSFER_SPEED;
+                        this.setOxygenStored(this.getOxygenStored() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
                         this.usingEnergy = true;
                     }
                 }

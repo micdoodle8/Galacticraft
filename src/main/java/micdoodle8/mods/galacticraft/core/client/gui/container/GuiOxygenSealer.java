@@ -73,7 +73,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 55, (this.height - this.ySize) / 2 + 26, 18, 18, ambientThermalDesc, this.width, this.height, this));
         List<String> oxygenDesc = new ArrayList<String>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.sealer.storedOxygen) + " / " + (int) Math.floor(this.sealer.maxOxygen)));
+        oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.sealer.getOxygenStored()) + " / " + (int) Math.floor(this.sealer.getMaxOxygenStored())));
         this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
         this.oxygenInfoRegion.xPosition = (this.width - this.xSize) / 2 + 112;
         this.oxygenInfoRegion.yPosition = (this.height - this.ySize) / 2 + 23;
@@ -165,7 +165,7 @@ public class GuiOxygenSealer extends GuiContainerGC
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
         }
 
-        if (this.sealer.storedOxygen < 1)
+        if (this.sealer.getOxygenStored() < 1)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
         }
@@ -220,7 +220,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         {
             List<String> oxygenDesc = new ArrayList<String>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
-            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.sealer.storedOxygen) + " / " + (int) Math.floor(this.sealer.maxOxygen)));
+            oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.sealer.getOxygenStored()) + " / " + (int) Math.floor(this.sealer.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
             List<String> electricityDesc = new ArrayList<String>();
@@ -245,7 +245,7 @@ public class GuiOxygenSealer extends GuiContainerGC
                 this.drawTexturedModalRect(var5 + 99, var6 + 36, 176, 0, 11, 10);
             }
 
-            if (this.sealer.storedOxygen > 0)
+            if (this.sealer.getOxygenStored() > 0)
             {
                 this.drawTexturedModalRect(var5 + 100, var6 + 23, 187, 0, 10, 10);
             }

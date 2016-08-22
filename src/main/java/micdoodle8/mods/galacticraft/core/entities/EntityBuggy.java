@@ -661,7 +661,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         if (this.worldObj.isRemote && (key == 6 || key == 8 || key == 9))
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketControllableEntity(key, this.worldObj.provider.getDimensionId()));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, this.worldObj.provider.getDimensionId(), new Object[] { key }));
             return true;
         }
 

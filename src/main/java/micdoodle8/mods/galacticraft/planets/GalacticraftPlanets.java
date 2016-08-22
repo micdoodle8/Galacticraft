@@ -8,10 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -89,6 +86,12 @@ public class GalacticraftPlanets
     public void serverStarting(FMLServerStartingEvent event)
     {
         GalacticraftPlanets.proxy.serverStarting(event);
+    }
+
+    @EventHandler
+    public void serverInit(FMLServerStartedEvent event)
+    {
+        GalacticraftPlanets.proxy.serverInit(event);
     }
 
     public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)

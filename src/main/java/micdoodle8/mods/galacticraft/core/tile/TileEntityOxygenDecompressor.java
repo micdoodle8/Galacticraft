@@ -308,9 +308,9 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
-    public float getOxygenProvide(EnumFacing direction)
+    public int getOxygenProvide(EnumFacing direction)
     {
-        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenDecompressor.OUTPUT_PER_TICK, this.getOxygenStored()) : 0.0F;
+        return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenDecompressor.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }
 
     @Override

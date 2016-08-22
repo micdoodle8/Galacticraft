@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
+import micdoodle8.mods.galacticraft.core.oxygen.LiquidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.block.state.IBlockState;
@@ -74,6 +76,17 @@ public class TickHandlerServer
     private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
 	private final int MAX_BLOCKS_PER_TICK = 50000;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
+    private static Set<LiquidNetwork> liquidNetworks = Sets.newHashSet();
+
+    public static void addLiquidNetwork(LiquidNetwork network)
+    {
+        liquidNetworks.add(network);
+    }
+
+    public static void removeLiquidNetwork(LiquidNetwork network)
+    {
+        liquidNetworks.remove(network);
+    }
 
     public static void addPacketHandler(GalacticraftPacketHandler handler)
     {
@@ -408,6 +421,11 @@ public class TickHandlerServer
         }
         else if (event.phase == Phase.END)
         {
+            for (LiquidNetwork network : liquidNetworks)
+            {
+                network.tickEnd();
+            }
+
             int maxPasses = 10;
             while (!TickHandlerServer.networkTicks.isEmpty())
             {

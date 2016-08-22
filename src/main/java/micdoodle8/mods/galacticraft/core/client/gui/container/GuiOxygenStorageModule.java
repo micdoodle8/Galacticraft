@@ -46,8 +46,8 @@ public class GuiOxygenStorageModule extends GuiContainerGC
     {
         String guiTitle = GCCoreUtil.translate("tile.machine2.6.name");
         this.fontRendererObj.drawString(guiTitle, this.xSize / 2 - this.fontRendererObj.getStringWidth(guiTitle) / 2, 6, 4210752);
-        String displayJoules = (int) (this.tileEntity.storedOxygen + 0.5F) + " " + GCCoreUtil.translate("gui.message.of.name");
-        String displayMaxJoules = "" + (int) this.tileEntity.maxOxygen;
+        String displayJoules = (int) (this.tileEntity.getOxygenStored() + 0.5F) + " " + GCCoreUtil.translate("gui.message.of.name");
+        String displayMaxJoules = "" + (int) this.tileEntity.getMaxOxygenStored();
         String maxOutputLabel = GCCoreUtil.translate("gui.max_output.desc") + ": " + TileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20 + GCCoreUtil.translate("gui.per_second");
 
         this.fontRendererObj.drawString(displayJoules, 122 - this.fontRendererObj.getStringWidth(displayJoules) / 2 - 35, 30, 4210752);
@@ -71,7 +71,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC
         // Background energy bar
         this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         // Foreground energy bar
-        int scale = (int) ((double) this.tileEntity.storedOxygen / (double) this.tileEntity.maxOxygen * 72);
+        int scale = (int) ((double) this.tileEntity.getOxygenStored() / (double) this.tileEntity.getMaxOxygenStored() * 72);
         this.drawTexturedModalRect(containerWidth + 52, containerHeight + 52, 176, 0, scale, 3);
     }
 }

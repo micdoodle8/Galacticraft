@@ -722,7 +722,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	}
 
 	@Override
-	public float receiveOxygen(EnumFacing from, float receive, boolean doReceive)
+	public int receiveOxygen(EnumFacing from, int receive, boolean doReceive)
 	{
 		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
     	{
@@ -736,19 +736,19 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	}
 
 	@Override
-	public float provideOxygen(EnumFacing from, float request, boolean doProvide)
+	public int provideOxygen(EnumFacing from, int request, boolean doProvide)
 	{
 		return 0;
 	}
 
 	@Override
-	public float getOxygenRequest(EnumFacing direction)
+	public int getOxygenRequest(EnumFacing direction)
 	{
-		return this.receiveOxygen(direction, 1000000F, false);
+		return this.receiveOxygen(direction, 1000000, false);
 	}
 
 	@Override
-	public float getOxygenProvide(EnumFacing direction)
+	public int getOxygenProvide(EnumFacing direction)
 	{
 		return 0;
 	}
@@ -761,7 +761,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             return false;
         }
 
-        if (type == NetworkType.OXYGEN)
+        if (type == NetworkType.FLUID)
         {
             return direction == getFront().rotateY();
         }

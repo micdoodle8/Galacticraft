@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
@@ -13,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -22,7 +20,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -146,7 +143,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
         {
-            return NetworkType.OXYGEN;
+            return NetworkType.FLUID;
         }
 
         if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
@@ -170,7 +167,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             {
                 switch (this.getNetworkType(state))
                 {
-                case OXYGEN:
+                case FLUID:
                     connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                     break;
                 case POWER:
@@ -218,7 +215,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         {
             switch (this.getNetworkType(state))
             {
-            case OXYGEN:
+            case FLUID:
                 connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
                 break;
             case POWER:
