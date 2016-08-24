@@ -5,7 +5,7 @@
 //import micdoodle8.mods.galacticraft.core.client.objload.IModelCustom;
 //import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
-//import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+//import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 //import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 //import net.minecraft.block.state.IBlockState;
 //import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -31,7 +31,7 @@
 //    @Override
 //    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8, int par9)
 //    {
-//        TileEntityOxygenPipe oxygenPipe = (TileEntityOxygenPipe) tile;
+//        TileEntityFluidPipe oxygenPipe = (TileEntityFluidPipe) tile;
 //        // Texture file
 //        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TileEntityOxygenPipeRenderer.pipeTexture);
 //        GL11.glPushMatrix();

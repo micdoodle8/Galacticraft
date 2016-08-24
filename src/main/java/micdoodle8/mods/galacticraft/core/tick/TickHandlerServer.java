@@ -3,15 +3,13 @@ package micdoodle8.mods.galacticraft.core.tick;
 import com.google.common.collect.Lists;
 
 import com.google.common.collect.Sets;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
-import micdoodle8.mods.galacticraft.core.oxygen.LiquidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,9 +30,9 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenTransmitter;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -70,22 +68,22 @@ public class TickHandlerServer
     public static WorldDataSpaceRaces spaceRaceData = null;
     public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
-	public static LinkedList<TileEntityOxygenTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityOxygenTransmitter>();
+	public static LinkedList<TileEntityFluidTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityFluidTransmitter>();
 	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
 	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
     private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
 	private final int MAX_BLOCKS_PER_TICK = 50000;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
-    private static Set<LiquidNetwork> liquidNetworks = Sets.newHashSet();
+    private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
 
-    public static void addLiquidNetwork(LiquidNetwork network)
+    public static void addLiquidNetwork(FluidNetwork network)
     {
-        liquidNetworks.add(network);
+        fluidNetworks.add(network);
     }
 
-    public static void removeLiquidNetwork(LiquidNetwork network)
+    public static void removeLiquidNetwork(FluidNetwork network)
     {
-        liquidNetworks.remove(network);
+        fluidNetworks.remove(network);
     }
 
     public static void addPacketHandler(GalacticraftPacketHandler handler)
@@ -122,6 +120,7 @@ public class TickHandlerServer
 
         TickHandlerServer.spaceRaceData = null;
         TickHandlerServer.tickCount = 0L;
+        TickHandlerServer.fluidNetworks.clear();
         MapUtil.reset();
     }
 
@@ -421,7 +420,7 @@ public class TickHandlerServer
         }
         else if (event.phase == Phase.END)
         {
-            for (LiquidNetwork network : liquidNetworks)
+            for (FluidNetwork network : fluidNetworks)
             {
                 network.tickEnd();
             }
@@ -446,10 +445,10 @@ public class TickHandlerServer
             maxPasses = 10;
             while (!TickHandlerServer.oxygenTransmitterUpdates.isEmpty())
             {
-                LinkedList<TileEntityOxygenTransmitter> pass = new LinkedList();
+                LinkedList<TileEntityFluidTransmitter> pass = new LinkedList();
                 pass.addAll(TickHandlerServer.oxygenTransmitterUpdates);
                 TickHandlerServer.oxygenTransmitterUpdates.clear();
-                for (TileEntityOxygenTransmitter newTile : pass)
+                for (TileEntityFluidTransmitter newTile : pass)
                 {
                     if (!newTile.isInvalid()) newTile.refresh();
                 }            

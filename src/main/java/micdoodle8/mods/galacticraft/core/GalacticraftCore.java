@@ -622,7 +622,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityTreasureChest.class, CompatibilityManager.isAIILoaded() ? "Space Treasure Chest" : "Treasure Chest");
         GameRegistry.registerTileEntity(TileEntityOxygenDistributor.class, "Air Distributor");
         GameRegistry.registerTileEntity(TileEntityOxygenCollector.class, "Air Collector");
-        GameRegistry.registerTileEntity(TileEntityOxygenPipe.class, "Oxygen Pipe");
+        GameRegistry.registerTileEntity(TileEntityFluidPipe.class, "Oxygen Pipe");
         GameRegistry.registerTileEntity(TileEntityAirLock.class, "Air Lock Frame");
         GameRegistry.registerTileEntity(TileEntityRefinery.class, "Refinery");
         GameRegistry.registerTileEntity(TileEntityNasaWorkbench.class, "NASA Workbench");

@@ -5,7 +5,8 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -64,7 +65,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        final TileEntityOxygenPipe tile = (TileEntityOxygenPipe) worldIn.getTileEntity(pos);
+        final TileEntityFluidPipe tile = (TileEntityFluidPipe) worldIn.getTileEntity(pos);
         int pipeColor = state.getValue(COLOR).getDyeDamage();
 
         if (tile != null && pipeColor != 15)
@@ -101,9 +102,9 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         BlockVec3 thisVec = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(par5));
         final Block blockAt = thisVec.getBlock(par1IBlockAccess);
 
-        final TileEntityOxygenPipe tileEntity = (TileEntityOxygenPipe) par1IBlockAccess.getTileEntity(x, y, z);
+        final TileEntityFluidPipe tileEntity = (TileEntityFluidPipe) par1IBlockAccess.getTileEntity(x, y, z);
 
-        if (blockAt == GCBlocks.oxygenPipe && ((TileEntityOxygenPipe) thisVec.getTileEntity(par1IBlockAccess)).getColor() == tileEntity.getColor())
+        if (blockAt == GCBlocks.oxygenPipe && ((TileEntityFluidPipe) thisVec.getTileEntity(par1IBlockAccess)).getColor() == tileEntity.getColor())
         {
             return this.pipeIcons[15];
         }
@@ -112,9 +113,22 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     }*/
 
     @Override
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntityFluidPipe tile = (TileEntityFluidPipe) world.getTileEntity(pos);
+        tile.setMode(TileEntityFluidTransmitter.EnumPipeMode.values()[(tile.getMode().ordinal() + 1) % TileEntityFluidTransmitter.EnumPipeMode.values().length]);
+        return true;
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        final TileEntityOxygenPipe tileEntity = (TileEntityOxygenPipe) worldIn.getTileEntity(pos);
+        final TileEntityFluidPipe tileEntity = (TileEntityFluidPipe) worldIn.getTileEntity(pos);
+
+        if (super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ))
+        {
+            return true;
+        }
 
         if (!worldIn.isRemote)
         {
@@ -163,7 +177,6 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 
                     return true;
                 }
-
             }
 
         }
@@ -212,7 +225,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-    	return new TileEntityOxygenPipe(); 
+    	return new TileEntityFluidPipe();
     }
 
     @SideOnly(Side.CLIENT)

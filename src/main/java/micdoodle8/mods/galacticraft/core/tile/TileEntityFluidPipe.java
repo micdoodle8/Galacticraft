@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.oxygen.LiquidNetwork;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
@@ -16,9 +16,14 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable
+public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
-    private FluidTankGC buffer = new FluidTankGC(1000, this);
+    public FluidTankGC buffer = new FluidTankGC(1000, this);
+
+    public TileEntityFluidPipe()
+    {
+        super(100);
+    }
 
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
@@ -149,10 +154,10 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         IGridNetwork network = this.getNetwork();
-        if (network instanceof LiquidNetwork)
+        if (network instanceof FluidNetwork)
         {
-            LiquidNetwork liquidNetwork = (LiquidNetwork) network;
-            return liquidNetwork.emitToBuffer(resource, doFill);
+            FluidNetwork fluidNetwork = (FluidNetwork) network;
+            return fluidNetwork.emitToBuffer(resource, doFill);
         }
         else
         {

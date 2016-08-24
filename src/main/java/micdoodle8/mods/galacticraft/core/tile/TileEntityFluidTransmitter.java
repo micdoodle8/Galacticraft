@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.IOxygenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.oxygen.LiquidNetwork;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.miccore.Annotations;
@@ -20,11 +20,17 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandler
+public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandler
 {
     private IGridNetwork network;
-
     public TileEntity[] adjacentConnections = null;
+    protected EnumPipeMode mode = EnumPipeMode.NORMAL;
+    private int pullAmount;
+
+    public TileEntityFluidTransmitter(int pullAmount)
+    {
+        this.pullAmount = pullAmount;
+    }
 
     @Override
     public void validate()
@@ -43,8 +49,22 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
         {
             this.getNetwork().split(this);
         }
+        else
+        {
+            this.setNetwork(null);
+        }
 
         super.invalidate();
+    }
+
+    public EnumPipeMode getMode()
+    {
+        return mode;
+    }
+
+    public void setMode(EnumPipeMode mode)
+    {
+        this.mode = mode;
     }
 
     @Override
@@ -72,15 +92,51 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     }
 
     @Override
+    public boolean hasNetwork()
+    {
+        return this.network != null;
+    }
+
+    @Override
     public void onNetworkChanged()
     {
         this.worldObj.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
     }
 
+    @Override
+    public void update()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (this.mode == EnumPipeMode.PULL)
+            {
+                TileEntity[] tiles = OxygenUtil.getAdjacentOxygenConnections(this);
+
+                for (EnumFacing side : EnumFacing.VALUES)
+                {
+                    TileEntity sideTile = tiles[side.ordinal()];
+
+                    if (sideTile != null && !(sideTile instanceof IBufferTransmitter) && sideTile instanceof IFluidHandler)
+                    {
+                        IFluidHandler handler = (IFluidHandler) sideTile;
+                        FluidStack received = handler.drain(side.getOpposite(), this.pullAmount, false);
+
+                        if (received != null && received.amount != 0)
+                        {
+                            handler.drain(side.getOpposite(), this.fill(EnumFacing.DOWN, received, true), true);
+                        }
+                    }
+                }
+            }
+        }
+
+        super.update();
+    }
+
     protected void resetNetwork()
     {
-        LiquidNetwork network = new LiquidNetwork();
-        network.getTransmitters().add(this);
+        FluidNetwork network = new FluidNetwork();
+        network.addTransmitter(this);
         network.register();
         this.setNetwork(network);
     }
@@ -88,7 +144,28 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     @Override
     public void setNetwork(IGridNetwork network)
     {
+        if (this.network == network)
+        {
+            return;
+        }
+
+        if (this.worldObj.isRemote && this.network != null)
+        {
+            FluidNetwork fluidNetwork = (FluidNetwork) this.network;
+            fluidNetwork.removeTransmitter(this);
+
+            if (fluidNetwork.getTransmitters().isEmpty())
+            {
+                fluidNetwork.unregister();
+            }
+        }
+
         this.network = network;
+
+        if (this.worldObj.isRemote && this.network != null)
+        {
+            ((FluidNetwork) this.network).pipes.add(this);
+        }
     }
 
     @Override
@@ -221,5 +298,11 @@ public abstract class TileEntityOxygenTransmitter extends TileEntityAdvanced imp
     public boolean canTubeConnect(EnumFacing side)
     {
         return this.canConnect(side, NetworkType.FLUID);
+    }
+
+    public static enum EnumPipeMode
+    {
+        NORMAL,
+        PULL
     }
 }

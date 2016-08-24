@@ -7,5 +7,7 @@ public interface INetworkProvider
 {
     public IGridNetwork getNetwork();
 
+    public boolean hasNetwork();
+
     public void setNetwork(IGridNetwork network);
 }

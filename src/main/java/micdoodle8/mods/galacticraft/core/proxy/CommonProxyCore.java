@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -72,4 +74,25 @@ public class CommonProxyCore
     public void postRegisterBlock(Block block) { }
 
     public void postRegisterItem(Item item) { }
+
+    public void unregisterNetwork(FluidNetwork fluidNetwork)
+    {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        {
+            TickHandlerServer.removeLiquidNetwork(fluidNetwork);
+        }
+    }
+
+    public void registerNetwork(FluidNetwork fluidNetwork)
+    {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        {
+            TickHandlerServer.addLiquidNetwork(fluidNetwork);
+        }
+    }
+
+    public boolean isPaused()
+    {
+        return false;
+    }
 }

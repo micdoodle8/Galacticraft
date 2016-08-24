@@ -137,6 +137,12 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     }
 
     @Override
+    public boolean hasNetwork()
+    {
+        return this.network != null;
+    }
+
+    @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         return type == NetworkType.POWER;

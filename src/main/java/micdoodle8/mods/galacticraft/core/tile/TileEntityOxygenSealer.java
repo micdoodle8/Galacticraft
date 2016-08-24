@@ -2,12 +2,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
-import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;

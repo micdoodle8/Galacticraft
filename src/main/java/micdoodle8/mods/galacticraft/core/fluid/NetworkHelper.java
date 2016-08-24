@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.oxygen;
+package micdoodle8.mods.galacticraft.core.fluid;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
@@ -106,7 +106,7 @@ public class NetworkHelper
         return null;
     }
 
-    public static LiquidNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
+    public static FluidNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
     {
         if (tileEntity != null)
         {
@@ -116,17 +116,17 @@ public class NetworkHelper
                 {
                     if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.FLUID))
                     {
-                        if (((INetworkProvider) tileEntity).getNetwork() instanceof LiquidNetwork)
+                        if (((INetworkProvider) tileEntity).getNetwork() instanceof FluidNetwork)
                         {
-                            return (LiquidNetwork) ((INetworkProvider) tileEntity).getNetwork();
+                            return (FluidNetwork) ((INetworkProvider) tileEntity).getNetwork();
                         }
                     }
                 }
                 else
                 {
-                    if (((INetworkProvider) tileEntity).getNetwork() instanceof LiquidNetwork)
+                    if (((INetworkProvider) tileEntity).getNetwork() instanceof FluidNetwork)
                     {
-                        return (LiquidNetwork) ((INetworkProvider) tileEntity).getNetwork();
+                        return (FluidNetwork) ((INetworkProvider) tileEntity).getNetwork();
                     }
                 }
             }

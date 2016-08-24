@@ -158,6 +158,12 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     }
 
     @Override
+    public boolean hasNetwork()
+    {
+        return this.network != null;
+    }
+
+    @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         return type == NetworkType.HYDROGEN;

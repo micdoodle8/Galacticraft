@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -314,7 +314,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
         else if (metadata == EnumEnclosedBlockType.OXYGEN_PIPE.getMeta())
         {
-            return new TileEntityOxygenPipe();
+            return new TileEntityFluidPipe();
         }
         else if (metadata <= 6)
         {

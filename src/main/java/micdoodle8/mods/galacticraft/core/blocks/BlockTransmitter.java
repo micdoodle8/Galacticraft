@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 
-public abstract class BlockTransmitter extends Block
+public abstract class BlockTransmitter extends BlockAdvanced
 {
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");

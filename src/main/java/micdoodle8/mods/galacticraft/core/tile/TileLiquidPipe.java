@@ -67,4 +67,10 @@ public class TileLiquidPipe extends TileEntityAdvanced implements ITransmitter
     {
         return false;
     }
+
+    @Override
+    public boolean hasNetwork()
+    {
+        return false;
+    }
 }

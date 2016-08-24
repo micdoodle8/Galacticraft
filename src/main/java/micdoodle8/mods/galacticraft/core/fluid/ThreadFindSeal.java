@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.oxygen;
+package micdoodle8.mods.galacticraft.core.fluid;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;

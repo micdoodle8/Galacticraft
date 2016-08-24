@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -127,7 +127,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         if (metadata == EnumWalkwayType.WALKWAY_PIPE.getMeta())
         {
-        	return new TileEntityOxygenPipe(); 
+        	return new TileEntityFluidPipe();
         }
 
         if (metadata == EnumWalkwayType.WALKWAY_WIRE.getMeta())

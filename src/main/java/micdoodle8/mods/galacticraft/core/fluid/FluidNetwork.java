@@ -1,5 +1,6 @@
-package micdoodle8.mods.galacticraft.core.oxygen;
+package micdoodle8.mods.galacticraft.core.fluid;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -8,39 +9,56 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketFluidNetworkUpdate;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
-public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmitter<FluidStack>, TileEntity>
+/**
+ * Based heavily on Mekanism FluidNetwork
+ *
+ * @author aidancbrady
+ */
+public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitter<FluidStack>, TileEntity>
 {
     public Map<BlockPos, IFluidHandler> acceptors = Maps.newHashMap();
     public Map<BlockPos, EnumSet<EnumFacing>> acceptorDirections = Maps.newHashMap();
-    private final Set<IBufferTransmitter<FluidStack>> pipes = new HashSet<>();
-    private FluidStack buffer;
+    public final Set<IBufferTransmitter<FluidStack>> pipes = new HashSet<>();
+    private Set<IBufferTransmitter<FluidStack>> pipesAdded = new HashSet<>();
+    public FluidStack buffer;
     private int capacity;
     private World worldObj;
     private int prevBufferAmount;
     private boolean needsUpdate;
+    public float fluidScale;
+    public Fluid refFluid;
+    public boolean didTransfer;
+    public boolean prevTransfer;
+    public int transferDelay = 0;
+    private int prevTransferAmount;
+    private int updateDelay;
+    private boolean firstUpdate = true;
 
-    public LiquidNetwork()
+    public FluidNetwork()
     {
 
     }
 
-    public LiquidNetwork(Collection<LiquidNetwork> toMerge)
+    public FluidNetwork(Collection<FluidNetwork> toMerge)
     {
-        for (LiquidNetwork network : toMerge)
+        for (FluidNetwork network : toMerge)
         {
             if (network != null)
             {
@@ -65,7 +83,7 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
                     network.buffer = null;
                 }
 
-                this.pipes.addAll(network.getTransmitters());
+                this.adoptNetwork(network);
                 network.unregister();
             }
         }
@@ -73,23 +91,58 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
         this.register();
     }
 
+    public void adoptNetwork(FluidNetwork network)
+    {
+        for (IBufferTransmitter<FluidStack> transmitter : network.pipes)
+        {
+            transmitter.setNetwork(this);
+            this.pipes.add(transmitter);
+            this.pipesAdded.add(transmitter);
+            this.updateDelay = 3;
+        }
+
+        this.acceptors.putAll(network.acceptors);
+
+        for (Map.Entry<BlockPos, EnumSet<EnumFacing>> e : network.acceptorDirections.entrySet())
+        {
+            BlockPos pos = e.getKey();
+
+            if (this.acceptorDirections.containsKey(pos))
+            {
+                this.acceptorDirections.get(pos).addAll(e.getValue());
+            }
+            else
+            {
+                this.acceptorDirections.put(pos, e.getValue());
+            }
+        }
+    }
+
     public void register()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-        {
-            TickHandlerServer.addLiquidNetwork(this);
-        }
+        GalacticraftCore.proxy.registerNetwork(this);
     }
 
     public void unregister()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-        {
-            TickHandlerServer.removeLiquidNetwork(this);
-        }
+        GalacticraftCore.proxy.unregisterNetwork(this);
     }
 
     public void addTransmitter(IBufferTransmitter<FluidStack> transmitter)
+    {
+        this.pipes.add(transmitter);
+        this.pipesAdded.add(transmitter);
+        this.refresh();
+        this.updateDelay = 1;
+    }
+
+    public void removeTransmitter(IBufferTransmitter<FluidStack> transmitter)
+    {
+        this.pipes.remove(transmitter);
+        this.updateCapacity();
+    }
+
+    public void onTransmitterAdded(IBufferTransmitter<FluidStack> transmitter)
     {
         FluidStack stack = transmitter.getBuffer();
 
@@ -128,7 +181,7 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
     {
         this.capacity = 0;
 
-        for (IBufferTransmitter<FluidStack> transmitter : getTransmitters())
+        for (IBufferTransmitter<FluidStack> transmitter : this.pipes)
         {
             this.capacity += transmitter.getCapacity();
         }
@@ -191,6 +244,12 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
             }
         }
 
+        if (doTransfer && totalSend > 0 && FMLCommonHandler.instance().getEffectiveSide().isServer())
+        {
+            this.didTransfer = true;
+            this.transferDelay = 2;
+        }
+
         return totalSend;
     }
 
@@ -230,21 +289,55 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
     {
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
+            if (this.updateDelay > 0)
+            {
+                this.updateDelay--;
+
+                if (this.updateDelay == 0)
+                {
+                    BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
+                    GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getAddTransmitterUpdate(this.worldObj.provider.getDimensionId(), pos, this.firstUpdate, this.pipesAdded), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 20.0));
+                    this.firstUpdate = false;
+                    this.pipesAdded.clear();
+                    this.needsUpdate = true;
+                }
+            }
+
+            this.prevTransferAmount = 0;
+
+            if (this.transferDelay == 0)
+            {
+                this.didTransfer = false;
+            }
+            else
+            {
+                this.transferDelay--;
+            }
+
             int stored = buffer != null ? buffer.amount : 0;
 
-            if (stored != prevBufferAmount)
+            if (stored != this.prevBufferAmount)
             {
                 this.needsUpdate = true;
             }
 
-            prevBufferAmount = stored;
+            this.prevBufferAmount = stored;
+
+            if (this.didTransfer != this.prevTransfer || this.needsUpdate)
+            {
+                BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
+                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(this.worldObj.provider.getDimensionId(), pos, this.buffer, this.didTransfer), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 20.0));
+                this.needsUpdate = false;
+            }
+
+            this.prevTransfer = this.didTransfer;
 
             if (buffer != null)
             {
-                int prevTransferAmount = this.emitToAcceptors(buffer, true);
+                this.prevTransferAmount = this.emitToAcceptors(buffer, true);
                 if (buffer != null)
                 {
-                    buffer.amount -= prevTransferAmount;
+                    buffer.amount -= this.prevTransferAmount;
 
                     if (buffer.amount <= 0)
                     {
@@ -253,6 +346,35 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
                 }
             }
         }
+    }
+
+    public void clientTick()
+    {
+        this.fluidScale = Math.max(this.fluidScale, this.getScale());
+
+        if (this.didTransfer && this.fluidScale < 1.0F)
+        {
+            this.fluidScale = Math.max(this.getScale(), Math.min(1, fluidScale + 0.02F));
+        }
+        else if (!this.didTransfer && fluidScale > 0.0F)
+        {
+            this.fluidScale = this.getScale();
+
+            if (this.fluidScale == 0.0F)
+            {
+                this.buffer = null;
+            }
+        }
+    }
+
+    public float getScale()
+    {
+        if (this.buffer == null || this.getCapacity() == 0)
+        {
+            return 0.0F;
+        }
+
+        return Math.min(1.0F, this.buffer.amount / (float)this.getCapacity());
     }
 
     public Set<Pair<BlockPos, IFluidHandler>> getAcceptors(FluidStack toSend)
@@ -399,17 +521,17 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
     }
 
     @Override
-    public Set<IBufferTransmitter<FluidStack>> getTransmitters()
+    public ImmutableSet<IBufferTransmitter<FluidStack>> getTransmitters()
     {
-        return this.pipes;
+        return ImmutableSet.copyOf(this.pipes);
     }
 
     @Override
-    public LiquidNetwork merge(LiquidNetwork network)
+    public FluidNetwork merge(FluidNetwork network)
     {
         if (network != null && network != this)
         {
-            LiquidNetwork newNetwork = new LiquidNetwork(Lists.newArrayList(this, network));
+            FluidNetwork newNetwork = new FluidNetwork(Lists.newArrayList(this, network));
             newNetwork.refresh();
             return newNetwork;
         }
@@ -468,7 +590,7 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
                                  * The connections A and B are not connected
                                  * anymore. Give both of them a new network.
                                  */
-                                LiquidNetwork newNetwork = new LiquidNetwork();
+                                FluidNetwork newNetwork = new FluidNetwork();
 
                                 for (BlockVec3 node : finder.closedSet)
                                 {
@@ -478,7 +600,9 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
                                     {
                                         if (nodeTile != splitPoint)
                                         {
-                                            newNetwork.getTransmitters().add((IBufferTransmitter) nodeTile);
+                                            newNetwork.pipes.add((IBufferTransmitter<FluidStack>) nodeTile);
+                                            newNetwork.pipesAdded.add((IBufferTransmitter<FluidStack>) nodeTile);
+                                            newNetwork.onTransmitterAdded((IBufferTransmitter<FluidStack>) nodeTile);
                                         }
                                     }
                                 }
@@ -495,12 +619,16 @@ public class LiquidNetwork implements IGridNetwork<LiquidNetwork, IBufferTransmi
             {
                 this.unregister();
             }
+            else
+            {
+                this.updateCapacity();
+            }
         }
     }
 
     @Override
     public String toString()
     {
-        return "LiquidNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + (this.acceptors == null ? 0 : this.acceptors.size()) + "]";
+        return "FluidNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + (this.acceptors == null ? 0 : this.acceptors.size()) + "]";
     }
 }

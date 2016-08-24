@@ -2,11 +2,12 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 
+import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.event.world.WorldEvent;
@@ -18,7 +19,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
-import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
@@ -38,7 +38,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
@@ -58,29 +57,18 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-import org.apache.commons.io.FileUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class TickHandlerClient
 {
@@ -91,6 +79,22 @@ public class TickHandlerClient
     private static long tickCount;
     public static boolean spaceRaceGuiScheduled = false;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
+    private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
+
+    public static void addLiquidNetwork(FluidNetwork network)
+    {
+        fluidNetworks.add(network);
+    }
+
+    public static void removeLiquidNetwork(FluidNetwork network)
+    {
+        fluidNetworks.remove(network);
+    }
+
+    public static void clearLiquidNetworks()
+    {
+        fluidNetworks.clear();
+    }
 
     public static void addPacketHandler(GalacticraftPacketHandler handler)
     {
@@ -325,6 +329,24 @@ public class TickHandlerClient
             }
 
             TickHandlerClient.tickCount++;
+
+            if (!GalacticraftCore.proxy.isPaused())
+            {
+                Iterator<FluidNetwork> it = TickHandlerClient.fluidNetworks.iterator();
+                while (it.hasNext())
+                {
+                    FluidNetwork network = it.next();
+
+                    if (network.getTransmitters().size() == 0)
+                    {
+                        it.remove();
+                    }
+                    else
+                    {
+                        network.clientTick();
+                    }
+                }
+            }
             
             if (TickHandlerClient.tickCount % 20 == 0)
             {
