@@ -12,8 +12,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.oxygen.LiquidNetwork;
-import micdoodle8.mods.galacticraft.core.oxygen.NetworkHelper;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -532,7 +532,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         if (provide > 0)
         {
             TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-            LiquidNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+            FluidNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
 
             if (outputNetwork != null)
             {
