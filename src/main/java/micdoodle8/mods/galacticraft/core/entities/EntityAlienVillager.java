@@ -669,13 +669,6 @@ public class EntityAlienVillager extends EntityVillager implements IMerchant, IN
     {
         this.isLookingForHome = true;
     }
-    @Override
-    public EntityAlienVillager createChild(EntityAgeable p_90011_1_)
-    {
-        EntityAlienVillager entityvillager = new EntityAlienVillager(this.worldObj);
-        entityvillager.onSpawnWithEgg((IEntityLivingData)null);
-        return entityvillager;
-    }
 
     public boolean allowLeashing()
     {
