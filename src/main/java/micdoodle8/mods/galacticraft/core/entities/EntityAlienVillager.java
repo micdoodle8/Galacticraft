@@ -481,36 +481,44 @@ public class EntityAlienVillager extends EntityVillager implements IMerchant, IN
         switch (this.getProfession())
         { 
             case 0:
-            	   //Random recipes 
-         
-                   
+    
                	 if (this.rand.nextFloat() < this.adjustProbability(0.9F))
                      {
-               	
+                     	
+               	       merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.cheeseCurd, 16), new ItemStack(GCItems.partBuggy, 1, 2)));
+           		merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 11, 2), new ItemStack(GCItems.battery.setMaxDamage(0), 1, 0)));
+           	         merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.meteoricIronIngot, 12), new ItemStack(MarsItems.marsItemBasic, 1, 6)));
+           	        merchantrecipelist.add(new MerchantRecipe(new ItemStack(MarsItems.carbonFragments, 11), new ItemStack(Items.iron_ingot, 10, 0)));
+           	        merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 12, 9), new ItemStack(GCItems.oxTankHeavy.setMaxDamage(2700), 1, 0))); 
                      }
 
                 break;
                
             case 1:
             	   
-             
-                   
                	 if (this.rand.nextFloat() < this.adjustProbability(0.9F))
                      {
-              
+                     merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.cheeseCurd, 16), new ItemStack(GCItems.partBuggy, 1, 2)));
+           		merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 11, 2), new ItemStack(GCItems.battery.setMaxDamage(0), 1, 0)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.meteoricIronIngot, 12), new ItemStack(MarsItems.marsItemBasic, 1, 6)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(MarsItems.carbonFragments, 11), new ItemStack(Items.iron_ingot, 10, 0)));
+           	     merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 12, 9), new ItemStack(GCItems.oxTankHeavy.setMaxDamage(2700), 1, 0))); 
     
                      }
                 break;
                
             case 2:
-            	  
-               
-                   
+            
                	 if (this.rand.nextFloat() < this.adjustProbability(0.9F))
                      {
-               		
+               		 merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.cheeseCurd, 16), new ItemStack(GCItems.partBuggy, 1, 2)));
+           		merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 11, 2), new ItemStack(GCItems.battery.setMaxDamage(0), 1, 0)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.meteoricIronIngot, 12), new ItemStack(MarsItems.marsItemBasic, 1, 6)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(MarsItems.carbonFragments, 11), new ItemStack(Items.iron_ingot, 10, 0)));
+           	     merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 12, 9), new ItemStack(GCItems.oxTankHeavy.setMaxDamage(2700), 1, 0))); 
             
                      }
+                     
                 Item[] aitem = new Item[] {};
                 Item[] aitem1 = aitem;
                 int j = aitem.length;
@@ -532,30 +540,34 @@ public class EntityAlienVillager extends EntityVillager implements IMerchant, IN
                 } 
                
             case 3:
-            	  
-               	
-                   
+ 
                	 if (this.rand.nextFloat() < this.adjustProbability(0.9F))
                      {
-               		
+               		 merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.cheeseCurd, 16), new ItemStack(GCItems.partBuggy, 1, 2)));
+           		merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 11, 2), new ItemStack(GCItems.battery.setMaxDamage(0), 1, 0)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.meteoricIronIngot, 12), new ItemStack(MarsItems.marsItemBasic, 1, 6)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(MarsItems.carbonFragments, 11), new ItemStack(Items.iron_ingot, 10, 0)));
+           	     merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 12, 9), new ItemStack(GCItems.oxTankHeavy.setMaxDamage(2700), 1, 0))); 
     
                      }
                 break;
                
            case 4:
         	   
-           	
-               
            	 if (this.rand.nextFloat() < this.adjustProbability(0.9F))
                  {
-           		
+           		 merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.cheeseCurd, 16), new ItemStack(GCItems.partBuggy, 1, 2)));
+           		merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 11, 2), new ItemStack(GCItems.battery.setMaxDamage(0), 1, 0)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.meteoricIronIngot, 12), new ItemStack(MarsItems.marsItemBasic, 1, 6)));
+           	    merchantrecipelist.add(new MerchantRecipe(new ItemStack(MarsItems.carbonFragments, 11), new ItemStack(Items.iron_ingot, 10, 0)));
+           	     merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.basicItem, 12, 9), new ItemStack(GCItems.oxTankHeavy.setMaxDamage(2700), 1, 0))); 
            		
                  }
         }
 
         if (merchantrecipelist.isEmpty())
         {
-           //func_146091_a(merchantrecipelist, Items.potato, this.rand, 1.0F);
+            merchantrecipelist.add(new MerchantRecipe(new ItemStack(GCItems.cheeseCurd, 16), new ItemStack(GCItems.partBuggy, 1, 2)));
         }
 
         Collections.shuffle(merchantrecipelist);
