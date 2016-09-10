@@ -273,7 +273,7 @@ Galacticraft: licence
 
 binaries in Galacticraft are made freely available to all players.
 
-The Galacticrafat project source code can be accessed and used
+The Galacticraft project source code can be accessed and used
 
 on an open-source basis by any person, except that (a) no person can
 
