@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -443,7 +445,12 @@ public class OxygenUtil
         return false;
     }
 
-    public static TileEntity[] getAdjacentOxygenConnections(TileEntity tile)
+    public static TileEntity[] getAdjacentFluidConnections(TileEntity tile)
+    {
+        return getAdjacentFluidConnections(tile, false);
+    }
+
+    public static TileEntity[] getAdjacentFluidConnections(TileEntity tile, boolean ignoreConnect)
     {
         TileEntity[] adjacentConnections = new TileEntity[EnumFacing.values().length];
 
@@ -456,7 +463,7 @@ public class OxygenUtil
 
             if (tileEntity instanceof IFluidHandler)
             {
-//                if (((IFluidHandler) tileEntity).)
+                if (ignoreConnect || !(tileEntity instanceof IConnector) || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }

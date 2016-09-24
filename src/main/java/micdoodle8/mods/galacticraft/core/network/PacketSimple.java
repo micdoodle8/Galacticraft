@@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.*;
@@ -53,10 +54,6 @@ import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
@@ -164,7 +161,8 @@ public class PacketSimple extends PacketBase implements Packet
         C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
         C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
-        C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class);
+        C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
+        C_RECOLOR_PIPE(Side.CLIENT, Integer.class, Integer.class, Integer.class);
         
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -831,6 +829,15 @@ public class PacketSimple extends PacketBase implements Packet
             catch (Exception e)
             {
                 ;
+            }
+            break;
+        case C_RECOLOR_PIPE:
+            TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos((Integer)data.get(0), (Integer)data.get(1), (Integer)data.get(2)));
+            if (tileEntity instanceof TileEntityFluidPipe)
+            {
+                TileEntityFluidPipe pipe = (TileEntityFluidPipe) tileEntity;
+                pipe.getNetwork().split(pipe);
+                pipe.setNetwork(null);
             }
             break;
         default:

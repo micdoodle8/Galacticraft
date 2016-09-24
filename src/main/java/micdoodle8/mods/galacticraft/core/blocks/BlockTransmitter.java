@@ -95,7 +95,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
             switch (this.getNetworkType(worldIn.getBlockState(pos)))
             {
             case FLUID:
-                connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                 break;
             case HYDROGEN:
                 connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
@@ -165,7 +165,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
             switch (this.getNetworkType(state))
             {
             case FLUID:
-                connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                 break;
             case HYDROGEN:
                 connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
@@ -227,7 +227,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
             switch (this.getNetworkType(state))
             {
                 case FLUID:
-                    connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                    connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                     break;
                 case HYDROGEN:
                     connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);

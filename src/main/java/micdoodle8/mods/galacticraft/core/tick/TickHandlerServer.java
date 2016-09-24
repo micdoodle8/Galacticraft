@@ -76,12 +76,12 @@ public class TickHandlerServer
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
 
-    public static void addLiquidNetwork(FluidNetwork network)
+    public static void addFluidNetwork(FluidNetwork network)
     {
         fluidNetworks.add(network);
     }
 
-    public static void removeLiquidNetwork(FluidNetwork network)
+    public static void removeFluidNetwork(FluidNetwork network)
     {
         fluidNetworks.remove(network);
     }
@@ -420,9 +420,19 @@ public class TickHandlerServer
         }
         else if (event.phase == Phase.END)
         {
-            for (FluidNetwork network : fluidNetworks)
+            Iterator<FluidNetwork> it = fluidNetworks.iterator();
+            while (it.hasNext())
             {
-                network.tickEnd();
+                FluidNetwork network = it.next();
+
+                if (!network.pipes.isEmpty())
+                {
+                    network.tickEnd();
+                }
+                else
+                {
+                    it.remove();
+                }
             }
 
             int maxPasses = 10;

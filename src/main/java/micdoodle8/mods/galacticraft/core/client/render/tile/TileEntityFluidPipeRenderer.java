@@ -69,6 +69,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
             float opacity = 1.0F;
@@ -82,7 +83,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, opacity);
 
-            TileEntity[] connections = OxygenUtil.getAdjacentOxygenConnections(pipe);
+            TileEntity[] connections = OxygenUtil.getAdjacentFluidConnections(pipe);
 
             for (EnumFacing side : EnumFacing.VALUES)
             {

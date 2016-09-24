@@ -29,6 +29,7 @@ public class MarsBlocks
     public static Block marsCobblestoneStairs;
     public static Block marsBricksStairs;
     public static Block hydrogenPipe;
+    public static Block slimelingTarget;
 
     public static void initBlocks()
     {
@@ -42,6 +43,7 @@ public class MarsBlocks
 //        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
 //        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
         MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogen_pipe");
+        MarsBlocks.slimelingTarget = new BlockSlimelingDummy("slimeling_target");
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
@@ -90,6 +92,7 @@ public class MarsBlocks
 //        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
         registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class);
+        registerBlock(MarsBlocks.slimelingTarget, ItemBlockDesc.class);
     }
     
     public static void oreDictRegistration()

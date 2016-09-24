@@ -105,13 +105,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -535,6 +529,12 @@ public class GalacticraftCore
     }
 
     @EventHandler
+    public void serverAboutToStart(FMLServerAboutToStartEvent event)
+    {
+        TickHandlerServer.restart();
+    }
+
+    @EventHandler
     public void serverInit(FMLServerStartedEvent event)
     {
         if (ThreadRequirementMissing.INSTANCE == null)
@@ -543,8 +543,7 @@ public class GalacticraftCore
         }
 
         ThreadVersionCheck.startCheck();
-        TickHandlerServer.restart();
-        BlockVec3.chunkCacheDim = Integer.MAX_VALUE;       
+        BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
     }
 
     @EventHandler

@@ -41,12 +41,14 @@ public abstract class BlockAdvanced extends Block
             {
                 if (this.onSneakUseWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
                 {
+                    playerIn.swingItem();
                     return true;
                 }
             }
 
             if (this.onUseWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
             {
+                playerIn.swingItem();
                 return true;
             }
         }

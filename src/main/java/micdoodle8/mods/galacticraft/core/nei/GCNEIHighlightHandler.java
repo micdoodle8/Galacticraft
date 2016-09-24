@@ -3,7 +3,10 @@ package micdoodle8.mods.galacticraft.core.nei;
 import codechicken.nei.api.IHighlightHandler;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -39,6 +42,27 @@ public class GCNEIHighlightHandler implements IHighlightHandler
                         FluidTankInfo info = infos[0];
                         currenttip.add(info.fluid != null ? info.fluid.getLocalizedName() : "Empty");
                         currenttip.add((info.fluid != null ? info.fluid.amount : 0) + " / " + info.capacity);
+                    }
+                }
+            }
+        }
+        else if (stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenPipe) || stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenPipePull))
+        {
+            if (layout == ItemInfo.Layout.BODY)
+            {
+                TileEntity tile = world.getTileEntity(mop.getBlockPos());
+                if (tile instanceof TileEntityFluidPipe)
+                {
+                    TileEntityFluidPipe pipe = (TileEntityFluidPipe) tile;
+                    currenttip.add(((BlockOxygenPipe) pipe.getBlockType()).getMode().toString());
+                    if (pipe.hasNetwork())
+                    {
+                        FluidNetwork network = ((FluidNetwork) pipe.getNetwork());
+                        currenttip.add("Network: " + (network.buffer != null ? network.buffer.amount : 0) + " / " + network.getCapacity());
+                    }
+                    else
+                    {
+                        currenttip.add("Pipe: " + (pipe.getBuffer() != null ? pipe.getBuffer().amount + " / " + pipe.buffer.getCapacity() : "None"));
                     }
                 }
             }

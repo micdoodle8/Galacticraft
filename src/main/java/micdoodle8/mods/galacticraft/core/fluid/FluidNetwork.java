@@ -10,7 +10,9 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
 import micdoodle8.mods.galacticraft.core.network.PacketFluidNetworkUpdate;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -98,7 +100,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             transmitter.setNetwork(this);
             this.pipes.add(transmitter);
             this.pipesAdded.add(transmitter);
-            this.updateDelay = 3;
+            this.updateDelay = this.firstUpdate ? 3 : 1;
         }
 
         this.acceptors.putAll(network.acceptors);
@@ -133,7 +135,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         this.pipes.add(transmitter);
         this.pipesAdded.add(transmitter);
         this.refresh();
-        this.updateDelay = 1;
+        this.updateDelay = this.firstUpdate ? 20 : 1;
     }
 
     public void removeTransmitter(IBufferTransmitter<FluidStack> transmitter)
@@ -289,6 +291,11 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     {
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
+            if (this.buffer != null)
+                System.err.println("" + this.buffer.amount);
+            else
+                System.err.println("none");
+
             if (this.updateDelay > 0)
             {
                 this.updateDelay--;
@@ -490,6 +497,15 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     continue;
                 }
 
+                if (transmitter instanceof TileEntityFluidTransmitter)
+                {
+                    TileEntityFluidTransmitter fluidTransmitter = (TileEntityFluidTransmitter) transmitter;
+                    if (((BlockOxygenPipe) fluidTransmitter.getBlockType()).getMode() == BlockOxygenPipe.EnumPipeMode.PULL)
+                    {
+                        continue;
+                    }
+                }
+
                 int i = 0;
                 for (TileEntity acceptor : transmitter.getAdjacentConnections())
                 {
@@ -603,6 +619,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                                             newNetwork.pipes.add((IBufferTransmitter<FluidStack>) nodeTile);
                                             newNetwork.pipesAdded.add((IBufferTransmitter<FluidStack>) nodeTile);
                                             newNetwork.onTransmitterAdded((IBufferTransmitter<FluidStack>) nodeTile);
+                                            this.pipes.remove(nodeTile);
                                         }
                                     }
                                 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -128,7 +129,7 @@ public class AsteroidsEventHandlerClient
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
-            GL11.glRotatef(Sys.getTime() / 10.0F % 360, 0, 0, 1);
+            GL11.glRotatef(ClientUtil.getMilliseconds() / 10.0F % 360, 0, 0, 1);
         }
     }
 

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -40,7 +41,7 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
             mul.setTranslation(trans);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY(Sys.getTime() / 1000.0F);
+            mul.rotY(ClientUtil.getMilliseconds() / 1000.0F);
             ret.mul(mul);
             mul.setIdentity();
             trans.scale(-1.0F);

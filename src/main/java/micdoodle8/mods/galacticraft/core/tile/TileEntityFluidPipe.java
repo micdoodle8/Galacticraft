@@ -1,12 +1,21 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.util.DelayTimer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -15,6 +24,9 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import java.util.List;
 
 public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
@@ -23,6 +35,18 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     public TileEntityFluidPipe()
     {
         super(100);
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
+        // Do not re-create tile entity if only the pipe's color changed!
+        if (oldState != newState)
+        {
+            return oldState.getBlock() != newState.getBlock();
+        }
+
+        return super.shouldRefresh(world, pos, oldState, newState);
     }
 
     @Override
@@ -36,7 +60,9 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
             {
                 IBlockState state = this.worldObj.getBlockState(this.getPos());
                 IBlockState adjacentTileState = adjacentTile.getWorld().getBlockState(adjacentTile.getPos());
-                return this.getColor(state) == ((IColorable) adjacentTile).getColor(adjacentTileState);
+                byte thisCol = this.getColor(state);
+                byte otherCol = ((IColorable) adjacentTile).getColor(adjacentTileState);
+                return thisCol == otherCol || thisCol == EnumDyeColor.WHITE.getDyeDamage() || otherCol == EnumDyeColor.WHITE.getDyeDamage();
             }
 
             return true;
@@ -73,7 +99,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public boolean isNetworkedTile()
     {
-        return !this.worldObj.isRemote;
+        return false;
     }
 
     @Override
@@ -108,7 +134,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public byte getColor(IBlockState state)
     {
-        if (state.getBlock() == GCBlocks.oxygenPipe)
+        if (state.getBlock() instanceof BlockOxygenPipe)
         {
             return (byte) state.getValue(BlockOxygenPipe.COLOR).getDyeDamage();
         }

@@ -168,7 +168,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                 switch (this.getNetworkType(state))
                 {
                 case FLUID:
-                    connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                    connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                     break;
                 case POWER:
                     connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
@@ -216,7 +216,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             switch (this.getNetworkType(state))
             {
             case FLUID:
-                connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                 break;
             case POWER:
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
@@ -325,7 +325,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             else if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
             {
                 TileEntity tileEntity = worldIn.getTileEntity(pos);
-                connectable = OxygenUtil.getAdjacentOxygenConnections(tileEntity);
+                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
             }
             else if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
             {

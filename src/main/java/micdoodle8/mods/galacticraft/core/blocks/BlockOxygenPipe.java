@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -13,9 +14,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -23,12 +26,10 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -40,7 +41,9 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     public Vector3 minVector = new Vector3(0.35, 0.35, 0.35);
     public Vector3 maxVector = new Vector3(0.65, 0.65, 0.65);
 
-    public BlockOxygenPipe(String assetName)
+    private EnumPipeMode mode;
+
+    public BlockOxygenPipe(String assetName, EnumPipeMode mode)
     {
         super(Material.glass);
         this.setHardness(0.3F);
@@ -48,6 +51,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
         //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
+        this.mode = mode;
     }
 
     @Override
@@ -62,13 +66,15 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         return maxVector;
     }
 
+    private static boolean ignoreDrop = false;
+
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         final TileEntityFluidPipe tile = (TileEntityFluidPipe) worldIn.getTileEntity(pos);
         int pipeColor = state.getValue(COLOR).getDyeDamage();
 
-        if (tile != null && pipeColor != 15)
+        if (!ignoreDrop && tile != null && pipeColor != 15)
         {
             final float f = 0.7F;
             final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -92,7 +98,12 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
-        return GalacticraftCore.galacticraftBlocksTab;
+        if (this.mode == EnumPipeMode.NORMAL)
+        {
+            return GalacticraftCore.galacticraftBlocksTab;
+        }
+
+        return null;
     }
 
     /*@Override
@@ -115,8 +126,36 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntityFluidPipe tile = (TileEntityFluidPipe) world.getTileEntity(pos);
-        tile.setMode(TileEntityFluidTransmitter.EnumPipeMode.values()[(tile.getMode().ordinal() + 1) % TileEntityFluidTransmitter.EnumPipeMode.values().length]);
+        if (!world.isRemote)
+        {
+            TileEntityFluidPipe tile = (TileEntityFluidPipe) world.getTileEntity(pos);
+
+            if (tile.ticks < 10)
+            {
+                return false;
+            }
+
+            Block block;
+
+            switch (this.getMode())
+            {
+            case NORMAL:
+                block = GCBlocks.oxygenPipePull;
+                break;
+            default:
+                block = GCBlocks.oxygenPipe;
+                break;
+            }
+
+            ignoreDrop = true;
+            world.setBlockState(pos, block.getStateFromMeta(this.getMetaFromState(world.getBlockState(pos))));
+            ignoreDrop = false;
+            if (tile.hasNetwork())
+            {
+                tile.getNetwork().refresh();
+            }
+        }
+
         return true;
     }
 
@@ -142,9 +181,11 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
 
                     final byte colorBefore = tileEntity.getColor(state);
 
+                    tileEntity.onColorUpdate();
+
                     worldIn.setBlockState(pos, state.withProperty(COLOR, EnumDyeColor.byDyeDamage(dyeColor)));
 
-                    tileEntity.onColorUpdate();
+                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, worldIn.provider.getDimensionId(), new Object[] { pos }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 40.0));
 
                     if (colorBefore != (byte) dyeColor && !playerIn.capabilities.isCreativeMode && --playerIn.inventory.getCurrentItem().stackSize == 0)
                     {
@@ -274,12 +315,48 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(COLOR)).getMetadata();
+        return state.getValue(COLOR).getMetadata();
     }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.TRANSMITTER;
+    }
+
+    public EnumPipeMode getMode()
+    {
+        return mode;
+    }
+
+    public static enum EnumPipeMode implements IStringSerializable
+    {
+        NORMAL(0, "normal"),
+        PULL(1, "pull");
+
+        private final int meta;
+        private final String name;
+
+        private EnumPipeMode(int meta, String name)
+        {
+            this.meta = meta;
+            this.name = name;
+        }
+
+        public int getMeta()
+        {
+            return meta;
+        }
+
+        public static EnumPipeMode byMetadata(int ordinal)
+        {
+            return EnumPipeMode.values()[ordinal];
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
     }
 }

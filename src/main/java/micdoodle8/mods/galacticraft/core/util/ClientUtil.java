@@ -27,12 +27,18 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.Sys;
 
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class ClientUtil
 {
+    public static long getMilliseconds()
+    {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
+
     public static void registerBlockJson(String texturePrefix, Block block)
     {
         registerBlockJson(texturePrefix, block, 0, block.getUnlocalizedName().substring(5));

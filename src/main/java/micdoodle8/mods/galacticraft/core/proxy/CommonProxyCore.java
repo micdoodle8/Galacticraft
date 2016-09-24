@@ -79,7 +79,7 @@ public class CommonProxyCore
     {
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            TickHandlerServer.removeLiquidNetwork(fluidNetwork);
+            TickHandlerServer.removeFluidNetwork(fluidNetwork);
         }
     }
 
@@ -87,7 +87,7 @@ public class CommonProxyCore
     {
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            TickHandlerServer.addLiquidNetwork(fluidNetwork);
+            TickHandlerServer.addFluidNetwork(fluidNetwork);
         }
     }
 

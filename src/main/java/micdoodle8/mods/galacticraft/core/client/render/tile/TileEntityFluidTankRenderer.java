@@ -46,6 +46,7 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
 
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();

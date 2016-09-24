@@ -92,7 +92,6 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
             return null;
         }
         TileEntityFluidTank last = getLastTank();
-        last.updateClient = true;
         if (!resource.isFluidEqual(last.fluidTank.getFluid()))
         {
             return null;
@@ -104,7 +103,12 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         TileEntityFluidTank last = getLastTank();
-        return last.fluidTank.drain(maxDrain, doDrain);
+        FluidStack stack = last.fluidTank.drain(maxDrain, doDrain);
+        if (doDrain && stack != null && stack.amount > 0)
+        {
+            last.updateClient = true;
+        }
+        return stack;
     }
 
     @Override

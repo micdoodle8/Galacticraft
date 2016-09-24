@@ -529,6 +529,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenDistributor);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenPipe);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenPipePull);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCollector);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCompressor, 0, "oxygen_compressor");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.oxygenCompressor, 4, "oxygen_decompressor");
@@ -1487,7 +1488,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         if (!FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            TickHandlerClient.removeLiquidNetwork(fluidNetwork);
+            TickHandlerClient.removeFluidNetwork(fluidNetwork);
         }
     }
 
@@ -1498,7 +1499,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         if (!FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            TickHandlerClient.addLiquidNetwork(fluidNetwork);
+            TickHandlerClient.addFluidNetwork(fluidNetwork);
         }
     }
 

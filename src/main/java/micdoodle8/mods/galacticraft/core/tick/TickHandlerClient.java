@@ -81,12 +81,12 @@ public class TickHandlerClient
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
 
-    public static void addLiquidNetwork(FluidNetwork network)
+    public static void addFluidNetwork(FluidNetwork network)
     {
         fluidNetworks.add(network);
     }
 
-    public static void removeLiquidNetwork(FluidNetwork network)
+    public static void removeFluidNetwork(FluidNetwork network)
     {
         fluidNetworks.remove(network);
     }
