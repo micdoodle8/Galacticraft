@@ -44,7 +44,7 @@ public class TabRegistry
 			guiLeft += getPotionOffset();
 
 			TabRegistry.updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
-			TabRegistry.addTabsToList(event.gui.buttonList);
+			TabRegistry.addTabsToList(event.buttonList);
 		}
 	}
 
