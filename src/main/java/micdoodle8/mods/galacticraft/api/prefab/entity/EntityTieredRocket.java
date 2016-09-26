@@ -303,7 +303,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 if (this.targetDimension != this.worldObj.provider.getDimensionId())
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
-                    if (targetDim != null && targetDim.worldObj instanceof WorldServer)
+                    if (targetDim != null && this.worldObj instanceof WorldServer)
                     {
                     	boolean dimensionAllowed = this.targetDimension == 0;
 
@@ -329,12 +329,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     	{
                     		if (this.riddenByEntity != null)
                     		{
-                    			WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
+                    			WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, (WorldServer) this.worldObj, false, this);
                                         //Now destroy the rocket entity, the rider is switching dimensions
                                         this.setDead();
                     		}
                                 else {
-                                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
+                                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)this.worldObj, false, null);
                                     if(e instanceof EntityAutoRocket) {
                                         e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
                                         ((EntityAutoRocket)e).landing = true;
