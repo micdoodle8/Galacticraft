@@ -80,62 +80,31 @@ public class MarsModuleClient implements IPlanetsModuleClient
         addPlanetVariants("mars_machine_t2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
         MinecraftForge.EVENT_BUS.register(this);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, new IRenderFactory<EntitySludgeling>() {
-            @Override
-            public Render<? super EntitySludgeling> createRenderFor(RenderManager manager) {
-                return new RenderSludgeling(manager);
-            }
-        });
-        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, new IRenderFactory<EntitySlimeling>() {
-            @Override
-            public Render<? super EntitySlimeling> createRenderFor(RenderManager manager) {
-                return new RenderSlimeling(manager);
-            }
-        });
-        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, new IRenderFactory<EntityCreeperBoss>() {
-            @Override
-            public Render<? super EntityCreeperBoss> createRenderFor(RenderManager manager) {
-                return new RenderCreeperBoss(manager);
-            }
-        });
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, new IRenderFactory<EntityProjectileTNT>() {
-            @Override
-            public Render<? super EntityProjectileTNT> createRenderFor(RenderManager manager) {
-                return new RenderProjectileTNT(manager);
-            }
-        });
-        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, new IRenderFactory<EntityCargoRocket>() {
-            @Override
-            public Render<? super EntityCargoRocket> createRenderFor(RenderManager manager) {
-                return new RenderCargoRocket(manager);
-            }
-        });
+        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, (RenderManager manager) -> new RenderSludgeling(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, (RenderManager manager) -> new RenderSlimeling(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, (RenderManager manager) -> new RenderCreeperBoss(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, (RenderManager manager) -> new RenderProjectileTNT(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (RenderManager manager) -> new RenderCargoRocket(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (RenderManager manager) -> new RenderLandingBalloons());
     }
 
     private void addPlanetVariants(String name, String... variants)
     {
         Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
-        String[] variants0 = new String[variants.length];
+        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
         for (int i = 0; i < variants.length; ++i)
         {
-            variants0[i] = GalacticraftPlanets.TEXTURE_PREFIX + variants[i];
+            variants0[i] = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + variants[i]);
         }
-        ModelBakery.addVariantName(itemBlockVariants, variants0);
+        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
     }
 
     @Override
     public void registerVariants()
     {
         Item sludge = Item.getItemFromBlock(MarsBlocks.blockSludge);
-        ModelBakery.registerItemVariants(sludge);
-        ModelBakery.addVariantName(sludge, GalacticraftPlanets.TEXTURE_PREFIX + "sludge");
-        ModelLoader.setCustomMeshDefinition(sludge, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return sludgeLocation;
-            }
-        });
+        ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge"));
+        ModelLoader.setCustomMeshDefinition(sludge, (ItemStack stack) -> sludgeLocation);
         ModelLoader.setCustomStateMapper(MarsBlocks.blockSludge, new StateMapperBase()
         {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -216,7 +185,6 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer(0.25F, 1.0F, 0.25F));
 //
 //        // Entities
-        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, new RenderLandingBalloons());
 
         // Add Armor Renderer Prefix
 //        RenderingRegistry.addNewArmourRendererPrefix("desh");
@@ -251,10 +219,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.slimelingTarget);
     }
 
-    private void addVariants(String name, String... variants)
+    private void addVariants(String name, ResourceLocation... variants)
     {
         Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
-        ModelBakery.addVariantName(itemBlockVariants, variants);
+        ModelBakery.registerItemVariants(itemBlockVariants, variants);
     }
 
     @Override

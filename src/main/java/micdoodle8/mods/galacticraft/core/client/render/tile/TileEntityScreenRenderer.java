@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
+public class TileEntityScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen>
 {
     public static final ResourceLocation blockTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/screenSide.png");
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
@@ -25,9 +25,8 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer
     float frame = 0.098F;
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void renderTileEntityAt(TileEntityScreen screen, double par2, double par4, double par6, float partialTickTime, int par9)
     {
-        TileEntityScreen screen = (TileEntityScreen) tile;
         GL11.glPushMatrix();
         // Texture file
         this.renderEngine.bindTexture(TileEntityScreenRenderer.blockTexture);

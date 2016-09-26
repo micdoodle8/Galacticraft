@@ -1,8 +1,8 @@
 {
-"__comment": "Designed by - with BDcraft Cubik PRO 0.93 Beta - http://bdcraft.net",
 "textures": {
 	"particle": "galacticraftcore:blocks/pipe_oxygen_white",
-    "pipeTex": "galacticraftcore:blocks/pipe_oxygen_white"
+    "pipeTex": "galacticraftcore:blocks/pipe_oxygen_white",
+	"pull_texture": "galacticraftcore:blocks/pipe_pull"
 },
 "elements": [ 
 {

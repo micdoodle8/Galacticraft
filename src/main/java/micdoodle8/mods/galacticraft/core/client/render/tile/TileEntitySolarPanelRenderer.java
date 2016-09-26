@@ -10,18 +10,16 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer
+public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer<TileEntitySolar>
 {
     private static final ResourceLocation solarPanelTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/solarPanelBasic.png");
     private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/solarPanelAdvanced.png");
     public ModelSolarPanel model = new ModelSolarPanel();
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void renderTileEntityAt(TileEntitySolar panel, double par2, double par4, double par6, float partialTickTime, int par9)
     {
-        TileEntitySolar panel = (TileEntitySolar) tile;
-
-        if (tile.getBlockMetadata() >= BlockSolar.ADVANCED_METADATA)
+        if (panel.getBlockMetadata() >= BlockSolar.ADVANCED_METADATA)
         {
             this.bindTexture(TileEntitySolarPanelRenderer.solarPanelAdvTexture);
         }

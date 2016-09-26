@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -45,7 +45,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     @Override
     public void invalidate()
     {
-//        if (!this.worldObj.isRemote)
+        if (!BlockFluidPipe.ignoreDrop)
         {
             this.getNetwork().split(this);
         }
@@ -105,7 +105,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
             }
 
             Block blockType = this.getBlockType();
-            if (blockType instanceof BlockOxygenPipe && ((BlockOxygenPipe) blockType).getMode() == BlockOxygenPipe.EnumPipeMode.PULL)
+            if (blockType instanceof BlockFluidPipe && ((BlockFluidPipe) blockType).getMode() == BlockFluidPipe.EnumPipeMode.PULL)
             {
                 TileEntity[] tiles = OxygenUtil.getAdjacentFluidConnections(this);
 

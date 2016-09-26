@@ -7,18 +7,15 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -33,7 +30,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc, ISortableBlock
+public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvider, ItemBlockDesc.IBlockShiftDesc, ISortableBlock
 {
     //private IIcon[] pipeIcons = new IIcon[16];
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
@@ -41,9 +38,11 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     public Vector3 minVector = new Vector3(0.35, 0.35, 0.35);
     public Vector3 maxVector = new Vector3(0.65, 0.65, 0.65);
 
+    public static boolean ignoreDrop = false;
+
     private EnumPipeMode mode;
 
-    public BlockOxygenPipe(String assetName, EnumPipeMode mode)
+    public BlockFluidPipe(String assetName, EnumPipeMode mode)
     {
         super(Material.glass);
         this.setHardness(0.3F);
@@ -65,8 +64,6 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
     {
         return maxVector;
     }
-
-    private static boolean ignoreDrop = false;
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
@@ -129,31 +126,7 @@ public class BlockOxygenPipe extends BlockTransmitter implements ITileEntityProv
         if (!world.isRemote)
         {
             TileEntityFluidPipe tile = (TileEntityFluidPipe) world.getTileEntity(pos);
-
-            if (tile.ticks < 10)
-            {
-                return false;
-            }
-
-            Block block;
-
-            switch (this.getMode())
-            {
-            case NORMAL:
-                block = GCBlocks.oxygenPipePull;
-                break;
-            default:
-                block = GCBlocks.oxygenPipe;
-                break;
-            }
-
-            ignoreDrop = true;
-            world.setBlockState(pos, block.getStateFromMeta(this.getMetaFromState(world.getBlockState(pos))));
-            ignoreDrop = false;
-            if (tile.hasNetwork())
-            {
-                tile.getNetwork().refresh();
-            }
+            tile.switchType();
         }
 
         return true;

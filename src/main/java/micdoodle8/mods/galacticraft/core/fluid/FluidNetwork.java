@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.fluid;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
@@ -10,9 +11,11 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
 import micdoodle8.mods.galacticraft.api.transmission.tile.*;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
+import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.PacketFluidNetworkUpdate;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -37,8 +40,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 {
     public Map<BlockPos, IFluidHandler> acceptors = Maps.newHashMap();
     public Map<BlockPos, EnumSet<EnumFacing>> acceptorDirections = Maps.newHashMap();
-    public final Set<IBufferTransmitter<FluidStack>> pipes = new HashSet<>();
-    private Set<IBufferTransmitter<FluidStack>> pipesAdded = new HashSet<>();
+    public final Set<IBufferTransmitter<FluidStack>> pipes = Sets.newHashSet();
+    private Set<IBufferTransmitter<FluidStack>> pipesAdded = Sets.newHashSet();
+    private Set<DelayQueue> updateQueue = Sets.newLinkedHashSet();
     public FluidStack buffer;
     private int capacity;
     private World worldObj;
@@ -55,7 +59,6 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     public FluidNetwork()
     {
-
     }
 
     public FluidNetwork(Collection<FluidNetwork> toMerge)
@@ -287,14 +290,46 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         this.onUpdate();
     }
 
+    public void addUpdate(EntityPlayerMP player)
+    {
+        this.updateQueue.add(new DelayQueue(player));
+    }
+
+    private IPacket getAddTransmitterUpdate()
+    {
+        BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
+        return PacketFluidNetworkUpdate.getAddTransmitterUpdate(this.worldObj.provider.getDimensionId(), pos, this.firstUpdate, this.pipesAdded);
+    }
+
     public void onUpdate()
     {
         if (FMLCommonHandler.instance().getEffectiveSide().isServer())
         {
-            if (this.buffer != null)
-                System.err.println("" + this.buffer.amount);
-            else
-                System.err.println("none");
+            Iterator<DelayQueue> iterator = this.updateQueue.iterator();
+
+            try
+            {
+                while (iterator.hasNext())
+                {
+                    DelayQueue queue = iterator.next();
+
+                    if (queue.delay > 0)
+                    {
+                        queue.delay--;
+                    }
+                    else
+                    {
+                        this.pipesAdded.addAll(this.pipes);
+                        GalacticraftCore.packetPipeline.sendTo(this.getAddTransmitterUpdate(), queue.player);
+                        this.pipesAdded.clear();
+                        iterator.remove();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
 
             if (this.updateDelay > 0)
             {
@@ -303,7 +338,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 if (this.updateDelay == 0)
                 {
                     BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                    GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getAddTransmitterUpdate(this.worldObj.provider.getDimensionId(), pos, this.firstUpdate, this.pipesAdded), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 20.0));
+                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 30.0));
                     this.firstUpdate = false;
                     this.pipesAdded.clear();
                     this.needsUpdate = true;
@@ -497,13 +532,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     continue;
                 }
 
-                if (transmitter instanceof TileEntityFluidTransmitter)
+                if (!transmitter.canTransmit())
                 {
-                    TileEntityFluidTransmitter fluidTransmitter = (TileEntityFluidTransmitter) transmitter;
-                    if (((BlockOxygenPipe) fluidTransmitter.getBlockType()).getMode() == BlockOxygenPipe.EnumPipeMode.PULL)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 int i = 0;
@@ -647,5 +678,29 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     public String toString()
     {
         return "FluidNetwork[" + this.hashCode() + "|Pipes:" + this.pipes.size() + "|Acceptors:" + (this.acceptors == null ? 0 : this.acceptors.size()) + "]";
+    }
+
+    public static class DelayQueue
+    {
+        public EntityPlayerMP player;
+        public int delay;
+
+        public DelayQueue(EntityPlayerMP player)
+        {
+            this.player = player;
+            this.delay = 5;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return this.player.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            return obj instanceof DelayQueue && ((DelayQueue) obj).player.equals(this.player);
+        }
     }
 }

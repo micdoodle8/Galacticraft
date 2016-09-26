@@ -4,5 +4,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 
 public interface ITransmitter extends INetworkProvider, INetworkConnection
 {
-    public NetworkType getNetworkType();
+    NetworkType getNetworkType();
+
+    boolean canTransmit();
 }

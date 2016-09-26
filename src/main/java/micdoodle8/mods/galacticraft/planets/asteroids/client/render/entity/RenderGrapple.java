@@ -12,7 +12,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class RenderGrapple extends Render
+public class RenderGrapple extends Render<EntityGrapple>
 {
     public RenderGrapple()
     {
@@ -75,14 +75,8 @@ public class RenderGrapple extends Render
 //    }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntityGrapple entity)
     {
         return new ResourceLocation("missing");
-    }
-
-    @Override
-    public void doRender(Entity entity, double x, double y, double z, float par8, float partialTicks)
-    {
-        this.doRender((EntityGrapple) entity, x, y, z, par8, partialTicks);
     }
 }

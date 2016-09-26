@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderMeteor extends Render
+public class RenderMeteor extends Render<EntityMeteor>
 {
     private static final ResourceLocation meteorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/meteor.png");
 
@@ -25,33 +25,23 @@ public class RenderMeteor extends Render
         this.modelMeteor = new ModelMeteor();
     }
 
-    protected ResourceLocation func_110779_a(EntityMeteor entity)
+    @Override
+    protected ResourceLocation getEntityTexture(EntityMeteor par1Entity)
     {
         return RenderMeteor.meteorTexture;
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return this.func_110779_a((EntityMeteor) par1Entity);
-    }
-
-    public void doRenderMeteor(EntityMeteor entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityMeteor meteor, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
         GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(par8, 1.0F, 0.0F, 0.0F);
-        final float f = entity.getSize();
+        final float f = meteor.getSize();
         GL11.glScalef(f / 2, f / 2, f / 2);
-        this.bindEntityTexture(entity);
-        this.modelMeteor.render(entity, 0.0F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1F);
+        this.bindEntityTexture(meteor);
+        this.modelMeteor.render(meteor, 0.0F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1F);
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.doRenderMeteor((EntityMeteor) par1Entity, par2, par4, par6, par8, par9);
     }
 }

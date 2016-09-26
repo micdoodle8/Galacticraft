@@ -1,20 +1,30 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
 
@@ -23,12 +33,70 @@ import java.util.HashMap;
 public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileEntityFluidPipe>
 {
     private static HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
+    private static IFlexibleBakedModel[] pullConnectorModel = new IFlexibleBakedModel[6];
 
     private final int stages = 100;
+
+    private void updateModels()
+    {
+        if (pullConnectorModel[0] == null)
+        {
+            try
+            {
+                for (EnumFacing facing : EnumFacing.VALUES)
+                {
+                    // Get the first character of the direction name (n/e/s/w/u/d)
+                    Character c = Character.toLowerCase(facing.getName().charAt(0));
+                    IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "block/fluid_pipe_pull_" + c));
+                    Function<ResourceLocation, TextureAtlasSprite> spriteFunction = (ResourceLocation location) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                    pullConnectorModel[facing.ordinal()] = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, spriteFunction);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     @Override
     public void renderTileEntityAt(TileEntityFluidPipe pipe, double x, double y, double z, float partialTicks, int destroyStage)
     {
+        updateModels();
+
+        if (pipe.getBlockType() == GCBlocks.oxygenPipePull)
+        {
+            GL11.glPushMatrix();
+
+            GL11.glTranslatef((float) x, (float) y, (float) z);
+
+            RenderHelper.disableStandardItemLighting();
+            this.bindTexture(TextureMap.locationBlocksTexture);
+            if (Minecraft.isAmbientOcclusionEnabled()) {
+                GlStateManager.shadeModel(GL11.GL_SMOOTH);
+            } else {
+                GlStateManager.shadeModel(GL11.GL_FLAT);
+            }
+
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+            TileEntity[] adj = OxygenUtil.getAdjacentFluidConnections(pipe);
+
+            for (EnumFacing facing : EnumFacing.VALUES)
+            {
+                TileEntity sideTile = adj[facing.ordinal()];
+
+                if (sideTile != null && !(sideTile instanceof IBufferTransmitter))
+                {
+                    GL11.glPushMatrix();
+                    drawBakedModel(pullConnectorModel[facing.ordinal()]);
+                    GL11.glPopMatrix();
+                }
+            }
+
+            GL11.glPopMatrix();
+        }
+
         float scale;
 
         if (pipe.hasNetwork())
@@ -123,8 +191,6 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
                     GL11.glCallList(list);
                 }
             }
-
-//            cache.clear();
 
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
@@ -311,51 +377,22 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         worldRenderer.pos(minX, maxY, minZ).tex(texMinZ_U, texMinX_V).endVertex();
         worldRenderer.pos(minX, maxY, maxZ).tex(texMaxZ_U, texMinX_V).endVertex();
         tess.draw();
+    }
 
-//        // North
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        worldRenderer.pos(minX, minY, minZ).tex(uMin, vMin).endVertex();
-//        worldRenderer.pos(minX, maxY, minZ).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
-//        worldRenderer.pos(maxX, maxY, minZ).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
-//        worldRenderer.pos(maxX, minY, minZ).tex(uMax, vMin).endVertex();
-//        tess.draw();
-//
-//        // South
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        worldRenderer.pos(maxX, minY, maxZ).tex(uMax, vMin).endVertex();
-//        worldRenderer.pos(maxX, maxY, maxZ).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
-//        worldRenderer.pos(minX, maxY, maxZ).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
-//        worldRenderer.pos(minX, minY, maxZ).tex(uMin, vMin).endVertex();
-//        tess.draw();
-//
-//        // West
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        worldRenderer.pos(minX, maxY, minZ).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
-//        worldRenderer.pos(minX, minY, minZ).tex(uMin, vMin).endVertex();
-//        worldRenderer.pos(minX, minY, maxZ).tex(uMax, vMin).endVertex();
-//        worldRenderer.pos(minX, maxY, maxZ).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
-//        tess.draw();
-//
-//        // East
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        worldRenderer.pos(maxX, maxY, maxZ).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
-//        worldRenderer.pos(maxX, minY, maxZ).tex(uMax, vMin).endVertex();
-//        worldRenderer.pos(maxX, minY, minZ).tex(uMin, vMin).endVertex();
-//        worldRenderer.pos(maxX, maxY, minZ).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
-//        tess.draw();
-//
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        worldRenderer.pos(maxX, minY, maxZ).tex(uMax, vMax).endVertex();
-//        worldRenderer.pos(minX, minY, maxZ).tex(uMax, vMin).endVertex();
-//        worldRenderer.pos(minX, minY, minZ).tex(uMin, vMin).endVertex();
-//        worldRenderer.pos(maxX, minY, minZ).tex(uMin, vMax).endVertex();
-//        tess.draw();
-//
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//        worldRenderer.pos(maxX, maxY, maxZ).tex(uMax, vMax).endVertex();
-//        worldRenderer.pos(maxX, maxY, minZ).tex(uMin, vMax).endVertex();
-//        worldRenderer.pos(minX, maxY, minZ).tex(uMin, vMin).endVertex();
-//        worldRenderer.pos(minX, maxY, maxZ).tex(uMax, vMin).endVertex();
-//        tess.draw();
+    private void drawBakedModel(IFlexibleBakedModel model)
+    {
+        drawBakedModel(model, -1);
+    }
+
+    private void drawBakedModel(IFlexibleBakedModel model, int color)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+
+        for(BakedQuad bakedquad : model.getGeneralQuads())
+            LightUtil.renderQuadColor(worldrenderer, bakedquad, color);
+
+        tessellator.draw();
     }
 }

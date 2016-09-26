@@ -1,18 +1,14 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
-import micdoodle8.mods.galacticraft.core.util.DelayTimer;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -24,13 +20,11 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-
-import java.util.List;
 
 public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
     public FluidTankGC buffer = new FluidTankGC(1000, this);
+    private boolean dataRequest = false;
 
     public TileEntityFluidPipe()
     {
@@ -82,6 +76,15 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     public void update()
     {
         super.update();
+
+        if (this.worldObj.isRemote)
+        {
+            if (!this.dataRequest)
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, this.worldObj.provider.getDimensionId(), new Object[] { this.worldObj.provider.getDimensionId(), this.getPos() }));
+                this.dataRequest = true;
+            }
+        }
     }
 
     @Override
@@ -134,9 +137,9 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public byte getColor(IBlockState state)
     {
-        if (state.getBlock() instanceof BlockOxygenPipe)
+        if (state.getBlock() instanceof BlockFluidPipe)
         {
-            return (byte) state.getValue(BlockOxygenPipe.COLOR).getDyeDamage();
+            return (byte) state.getValue(BlockFluidPipe.COLOR).getDyeDamage();
         }
         return 15;
     }
@@ -160,7 +163,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         if (par1NBTTagCompound.hasKey("pipeColor"))
         {
             // Backwards compatibility
-            this.worldObj.setBlockState(getPos(), this.worldObj.getBlockState(getPos()).withProperty(BlockOxygenPipe.COLOR, EnumDyeColor.byDyeDamage(par1NBTTagCompound.getByte("pipeColor"))));
+            this.worldObj.setBlockState(getPos(), this.worldObj.getBlockState(getPos()).withProperty(BlockFluidPipe.COLOR, EnumDyeColor.byDyeDamage(par1NBTTagCompound.getByte("pipeColor"))));
         }
     }
 
@@ -219,5 +222,56 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         return new FluidTankInfo[0];
+    }
+
+    public boolean switchType()
+    {
+        if (this.ticks < 10)
+        {
+            return false;
+        }
+
+        Block block;
+        Block currentType = this.getBlockType();
+
+        if (!(currentType instanceof BlockFluidPipe))
+        {
+            return false;
+        }
+
+        switch (((BlockFluidPipe)currentType).getMode())
+        {
+        case NORMAL:
+            block = GCBlocks.oxygenPipePull;
+            break;
+        default:
+            block = GCBlocks.oxygenPipe;
+            break;
+        }
+
+        BlockFluidPipe.ignoreDrop = true;
+        this.worldObj.setBlockState(pos, block.getStateFromMeta(currentType.getMetaFromState(this.worldObj.getBlockState(pos))));
+        BlockFluidPipe.ignoreDrop = false;
+        if (this.hasNetwork())
+        {
+            this.refresh();
+            this.getNetwork().refresh();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean canTransmit()
+    {
+        Block currentType = this.getBlockType();
+
+        if (!(currentType instanceof BlockFluidPipe))
+        {
+            // Walkway blocks, etc
+            return true;
+        }
+
+        return ((BlockFluidPipe) currentType).getMode() != BlockFluidPipe.EnumPipeMode.PULL;
     }
 }

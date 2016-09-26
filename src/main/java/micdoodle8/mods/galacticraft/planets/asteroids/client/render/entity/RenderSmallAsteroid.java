@@ -9,17 +9,16 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class RenderSmallAsteroid extends Render
+public class RenderSmallAsteroid extends Render<EntitySmallAsteroid>
 {
     public RenderSmallAsteroid() {
         super(FMLClientHandler.instance().getClient().getRenderManager());
     }
 
     @Override
-    public void doRender(Entity entity, double x, double y, double z, float f, float partialTickTime)
+    public void doRender(EntitySmallAsteroid asteroid, double x, double y, double z, float f, float partialTickTime)
     {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        EntitySmallAsteroid asteroid = (EntitySmallAsteroid) entity;
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x, (float) y + 0.5F, (float) z);
@@ -33,7 +32,7 @@ public class RenderSmallAsteroid extends Render
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntitySmallAsteroid entity)
     {
         return TextureMap.locationBlocksTexture;
     }

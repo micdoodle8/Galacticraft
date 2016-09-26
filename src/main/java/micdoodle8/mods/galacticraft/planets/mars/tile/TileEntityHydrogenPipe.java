@@ -111,6 +111,12 @@ public class TileEntityHydrogenPipe extends TileEntity implements ITransmitter
     }
 
     @Override
+    public boolean canTransmit()
+    {
+        return true;
+    }
+
+    @Override
     public TileEntity[] getAdjacentConnections()
     {
         /**

@@ -88,8 +88,8 @@ public class GCBlocks
         GCBlocks.unlitTorch = new BlockUnlitTorch(false, "unlit_torch");
         GCBlocks.unlitTorchLit = new BlockUnlitTorch(true, "unlit_torch_lit");
         GCBlocks.oxygenDistributor = new BlockOxygenDistributor("distributor");
-        GCBlocks.oxygenPipe = new BlockOxygenPipe("oxygen_pipe", BlockOxygenPipe.EnumPipeMode.NORMAL);
-        GCBlocks.oxygenPipePull = new BlockOxygenPipe("oxygen_pipe_pull", BlockOxygenPipe.EnumPipeMode.PULL);
+        GCBlocks.oxygenPipe = new BlockFluidPipe("fluid_pipe", BlockFluidPipe.EnumPipeMode.NORMAL);
+        GCBlocks.oxygenPipePull = new BlockFluidPipe("fluid_pipe_pull", BlockFluidPipe.EnumPipeMode.PULL);
         GCBlocks.oxygenCollector = new BlockOxygenCollector("collector");
         GCBlocks.nasaWorkbench = new BlockNasaWorkbench("rocket_workbench");
         GCBlocks.fallenMeteor = new BlockFallenMeteor("fallen_meteor");

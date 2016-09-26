@@ -5,7 +5,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
@@ -122,6 +124,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_UPDATE_VIEWSCREEN_REQUEST(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
+        S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -1346,6 +1349,21 @@ public class PacketSimple extends PacketBase implements Packet
             if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
             {
                 ((IControllableEntity) player.ridingEntity).pressKey((Integer) this.data.get(0));
+            }
+            break;
+        case S_REQUEST_DATA:
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension((Integer) this.data.get(0));
+            if (worldServer != null)
+            {
+                TileEntity requestedTile = worldServer.getTileEntity((BlockPos) this.data.get(1));
+                if (requestedTile instanceof INetworkProvider)
+                {
+                    if (((INetworkProvider) requestedTile).getNetwork() instanceof FluidNetwork)
+                    {
+                        FluidNetwork network = (FluidNetwork) ((INetworkProvider) requestedTile).getNetwork();
+                        network.addUpdate(playerBase);
+                    }
+                }
             }
             break;
         default:

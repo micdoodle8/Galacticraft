@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderLander extends Render
+public class RenderLander extends Render<EntityLander>
 {
     private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/lander.png");
 
@@ -25,27 +25,23 @@ public class RenderLander extends Render
         this.landerModel = new ModelLander();
     }
 
-    protected ResourceLocation func_110779_a(EntityLander par1EntityArrow)
+    @Override
+    protected ResourceLocation getEntityTexture(EntityLander par1Entity)
     {
         return RenderLander.landerTexture;
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return this.func_110779_a((EntityLander) par1Entity);
-    }
-
-    public void renderLander(EntityLander entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityLander lander, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
-        final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
+        final float var24 = lander.prevRotationPitch + (lander.rotationPitch - lander.prevRotationPitch) * par9;
         GL11.glTranslatef((float) par2, (float) par4 + 1.45F, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
 
-        float f6 = entity.timeSinceHit - par9;
-        float f7 = entity.currentDamage - par9;
+        float f6 = lander.timeSinceHit - par9;
+        float f7 = lander.currentDamage - par9;
 
         if (f7 < 0.0F)
         {
@@ -57,15 +53,9 @@ public class RenderLander extends Render
             GL11.glRotatef((float) Math.sin(f6) * 0.2F * f6 * f7 / 25.0F, 1.0F, 0.0F, 0.0F);
         }
 
-        this.bindEntityTexture(entity);
+        this.bindEntityTexture(lander);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        this.landerModel.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.landerModel.render(lander, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        this.renderLander((EntityLander) par1Entity, par2, par4, par6, par8, par9);
     }
 }

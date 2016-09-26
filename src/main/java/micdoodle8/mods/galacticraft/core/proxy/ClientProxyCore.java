@@ -42,10 +42,8 @@ import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -78,6 +76,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
@@ -94,6 +93,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
+import javax.vecmath.Quat4f;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,34 +191,22 @@ public class ClientProxyCore extends CommonProxyCore
     public void registerVariants()
     {
         Item fuel = Item.getItemFromBlock(GCBlocks.fuel);
-        ModelBakery.registerItemVariants(fuel);
-        ModelBakery.addVariantName(fuel, "galacticraftcore:fuel");
-        ModelLoader.setCustomMeshDefinition(fuel, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return fuelLocation;
-            }
-        });
+        ModelBakery.registerItemVariants(fuel, new ResourceLocation("galacticraftcore:fuel"));
+        ModelLoader.setCustomMeshDefinition(fuel, (ItemStack stack) -> fuelLocation);
         ModelLoader.setCustomStateMapper(GCBlocks.fuel, new StateMapperBase()
         {
+            @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
                 return fuelLocation;
             }
         });
         Item oil = Item.getItemFromBlock(GCBlocks.crudeOil);
-        ModelBakery.registerItemVariants(oil);
-        ModelBakery.addVariantName(oil, "galacticraftcore:oil");
-        ModelLoader.setCustomMeshDefinition(oil, new ItemMeshDefinition()
-        {
-            public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return oilLocation;
-            }
-        });
+        ModelBakery.registerItemVariants(oil, new ResourceLocation("galacticraftcore:oil"));
+        ModelLoader.setCustomMeshDefinition(oil, (ItemStack stack) -> oilLocation);
         ModelLoader.setCustomStateMapper(GCBlocks.crudeOil, new StateMapperBase()
         {
+            @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state)
             {
                 return oilLocation;
@@ -255,7 +243,7 @@ public class ClientProxyCore extends CommonProxyCore
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(0.0F, -0.48F, 0.0F), new Vector3f(0.42F, 0.42F, 0.42F)));
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.6F, 0.04F, 0.0F), new javax.vecmath.Quat4f(), new javax.vecmath.Vector3f(0.42F, 0.42F, 0.42F), new javax.vecmath.Quat4f()));
         replaceModelDefault(event, "rocket_t1", "rocketT1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
@@ -368,19 +356,19 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerEntityRenderers()
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, new RenderTier1Rocket(new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, new RenderEvolvedSpider());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, new RenderEvolvedZombie());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, new RenderEvolvedCreeper());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, new RenderEvolvedSkeleton());
-        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, new RenderEvolvedSkeletonBoss());
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, new RenderMeteor());
-        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, new RenderFlag());
-        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, new RenderParaChest());
-        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, new RenderAlienVillager());
-        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, new RenderLander());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, new RenderEntityFake());
-        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, new RenderBuggy());
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (RenderManager manager) -> new RenderTier1Rocket(new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (RenderManager manager) -> new RenderEvolvedSpider());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (RenderManager manager) -> new RenderEvolvedZombie());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (RenderManager manager) -> new RenderEvolvedCreeper());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, (RenderManager manager) -> new RenderEvolvedSkeleton());
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, (RenderManager manager) -> new RenderEvolvedSkeletonBoss());
+        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, (RenderManager manager) -> new RenderMeteor());
+        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, (RenderManager manager) -> new RenderFlag());
+        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, (RenderManager manager) -> new RenderParaChest());
+        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (RenderManager manager) -> new RenderAlienVillager());
+        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, (RenderManager manager) -> new RenderLander());
+        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, (RenderManager manager) -> new RenderEntityFake());
+        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, (RenderManager manager) -> new RenderBuggy());
 //        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
 //        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
 
@@ -428,10 +416,8 @@ public class ClientProxyCore extends CommonProxyCore
     private static void registerTileEntityRenderers()
     {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityParaChest.class, new TileEntityParachestRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNasaWorkbench.class, new TileEntityNasaWorkbenchRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer(0.25F, 0.25F, 1.0F));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer<>(0.25F, 0.25F, 1.0F));
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new TileEntityFluidTankRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityFluidPipeRenderer());
@@ -622,12 +608,12 @@ public class ClientProxyCore extends CommonProxyCore
     private static void addCoreVariant(String name, String... variants)
     {
         Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, name);
-        String[] variants0 = new String[variants.length];
+        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
         for (int i = 0; i < variants.length; ++i)
         {
-            variants0[i] = GalacticraftCore.TEXTURE_PREFIX + variants[i];
+            variants0[i] = new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + variants[i]);
         }
-        ModelBakery.addVariantName(itemBlockVariants, variants0);
+        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
     }
 
     public static void setupCapes()

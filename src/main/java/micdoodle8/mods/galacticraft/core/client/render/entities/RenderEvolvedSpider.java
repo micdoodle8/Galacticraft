@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,117 +21,30 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedSpider extends RenderLiving
+public class RenderEvolvedSpider extends RenderLiving<EntityEvolvedSpider>
 {
-    private static final ResourceLocation spiderEyesTextures = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/spider_eyes.png");
     private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/spider.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
-
-    private final ModelBase model = new ModelEvolvedSpider(0.2F);
 
     public RenderEvolvedSpider()
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelEvolvedSpider(), 1.0F);
-//        this.setRenderPassModel(new ModelEvolvedSpider());
     }
 
-    protected ResourceLocation func_110779_a(EntitySpider par1EntityArrow)
+    @Override
+    protected ResourceLocation getEntityTexture(EntityEvolvedSpider par1Entity)
     {
         return RenderEvolvedSpider.spiderTexture;
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return this.func_110779_a((EntitySpider) par1Entity);
-    }
-
-    protected float setSpiderDeathMaxRotation(EntitySpider par1EntitySpider)
-    {
-        return 180.0F;
-    }
-
-    @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityEvolvedSpider par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
 
-//    @Override
-//    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-//    {
-//        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-//
-//        final EntityPlayerSP player = minecraft.thePlayer;
-//
-//        ItemStack helmetSlot = null;
-//
-//        if (player != null && player.inventory.armorItemInSlot(3) != null)
-//        {
-//            helmetSlot = player.inventory.armorItemInSlot(3);
-//        }
-//
-//        if (par2 == 3)
-//        {
-//            this.bindTexture(spiderEyesTextures);
-//            GL11.glEnable(GL11.GL_BLEND);
-//            GL11.glDisable(GL11.GL_ALPHA_TEST);
-//            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//
-//            if (par1EntityLiving.isInvisible())
-//            {
-//                GL11.glDepthMask(false);
-//            }
-//            else
-//            {
-//                GL11.glDepthMask(true);
-//            }
-//
-//            char c0 = 61680;
-//            int j = c0 % 65536;
-//            int k = c0 / 65536;
-//            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//            return 1;
-//        }
-//
-//        if (helmetSlot != null && helmetSlot.getItem() instanceof ItemSensorGlasses && minecraft.currentScreen == null)
-//        {
-//            if (par2 == 1)
-//            {
-//                final float var4 = par1EntityLiving.ticksExisted * 2 + par3;
-//                this.bindTexture(RenderEvolvedSpider.powerTexture);
-//                GL11.glMatrixMode(GL11.GL_TEXTURE);
-//                GL11.glLoadIdentity();
-//                final float var5 = var4 * 0.01F;
-//                final float var6 = var4 * 0.01F;
-//                GL11.glTranslatef(var5, var6, 0.0F);
-//                this.setRenderPassModel(this.model);
-//                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//                GL11.glEnable(GL11.GL_BLEND);
-//                final float var7 = 0.5F;
-//                GL11.glColor4f(var7, var7, var7, 1.0F);
-//                GL11.glDisable(GL11.GL_LIGHTING);
-//                GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-//                return 1;
-//            }
-//
-//            if (par2 == 2)
-//            {
-//                GL11.glMatrixMode(GL11.GL_TEXTURE);
-//                GL11.glLoadIdentity();
-//                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//                GL11.glEnable(GL11.GL_LIGHTING);
-//                GL11.glDisable(GL11.GL_BLEND);
-//            }
-//        }
-//
-//        return -1;
-//    }
-
     @Override
-    protected float getDeathMaxRotation(EntityLivingBase par1EntityLiving)
+    protected float getDeathMaxRotation(EntityEvolvedSpider par1EntityLiving)
     {
-        return this.setSpiderDeathMaxRotation((EntitySpider) par1EntityLiving);
+        return 180.0F;
     }
 }

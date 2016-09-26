@@ -160,4 +160,10 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     {
         return NetworkType.POWER;
     }
+
+    @Override
+    public boolean canTransmit()
+    {
+        return true;
+    }
 }

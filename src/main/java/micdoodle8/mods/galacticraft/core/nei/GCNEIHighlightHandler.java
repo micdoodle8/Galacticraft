@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.nei.api.IHighlightHandler;
 import codechicken.nei.api.ItemInfo;
-import codechicken.nei.guihook.GuiContainerManager;
-import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenPipe;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
@@ -11,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -54,7 +52,7 @@ public class GCNEIHighlightHandler implements IHighlightHandler
                 if (tile instanceof TileEntityFluidPipe)
                 {
                     TileEntityFluidPipe pipe = (TileEntityFluidPipe) tile;
-                    currenttip.add(((BlockOxygenPipe) pipe.getBlockType()).getMode().toString());
+                    currenttip.add(((BlockFluidPipe) pipe.getBlockType()).getMode().toString());
                     if (pipe.hasNetwork())
                     {
                         FluidNetwork network = ((FluidNetwork) pipe.getNetwork());

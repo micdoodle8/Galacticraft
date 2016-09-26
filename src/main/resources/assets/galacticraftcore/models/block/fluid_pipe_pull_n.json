@@ -1,0 +1,22 @@
+{
+"textures": {
+	"particle": "galacticraftcore:blocks/pipe_oxygen_white",
+    "pipeTex": "galacticraftcore:blocks/pipe_oxygen_white",
+	"pull_texture": "galacticraftcore:blocks/pipe_pull"
+},
+"elements": [ 
+{
+    "__comment": "Pull_North",
+    "from": [ 6, 6, 0.01 ],
+    "to": [ 10, 10, 4 ],
+    "faces": {
+        "down":  { "uv": [ 8, 0, 12, 4 ], "texture": "#pull_texture" },
+        "up":    { "uv": [ 4, 0, 8, 4 ], "texture": "#pull_texture" },
+        "north": { "uv": [ 12, 0, 16, 4 ], "texture": "#pull_texture" },
+        "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#pull_texture" },
+        "west":  { "uv": [ 8, 0, 12, 4 ], "texture": "#pull_texture" },
+        "east":  { "uv": [ 4, 0, 8, 4 ], "texture": "#pull_texture" }
+    }
+}
+]
+}

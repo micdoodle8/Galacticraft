@@ -1,5 +1,5 @@
 {
-    "parent":"galacticraftcore:block/oxy_pipe_neswud",
+    "parent":"galacticraftcore:block/fluid_pipe_neswud",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],
