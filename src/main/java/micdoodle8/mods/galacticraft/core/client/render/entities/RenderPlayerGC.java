@@ -116,14 +116,14 @@ public class RenderPlayerGC extends RenderPlayer
                             modelBiped.bipedLeftLeg.showModel = i == 2 || i == 3;
 
 //                            modelBiped.onGround = thisInst.mainModel.onGround;
-                            modelBiped.isRiding = thisInst.mainModel.isRiding;
-                            modelBiped.isChild = thisInst.mainModel.isChild;
-                            if (thisInst.mainModel instanceof ModelBiped)
+                            modelBiped.isRiding = thisInst.getMainModel().isRiding;
+                            modelBiped.isChild = thisInst.getMainModel().isChild;
+                            if (thisInst.getMainModel() instanceof ModelBiped)
                             {
-                                modelBiped.heldItemLeft = ((ModelBiped) thisInst.mainModel).heldItemLeft;
-                                modelBiped.heldItemRight = ((ModelBiped) thisInst.mainModel).heldItemRight;
-                                modelBiped.isSneak = ((ModelBiped) thisInst.mainModel).isSneak;
-                                modelBiped.aimedBow = ((ModelBiped) thisInst.mainModel).aimedBow;
+                                modelBiped.heldItemLeft = ((ModelBiped) thisInst.getMainModel()).heldItemLeft;
+                                modelBiped.heldItemRight = ((ModelBiped) thisInst.getMainModel()).heldItemRight;
+                                modelBiped.isSneak = ((ModelBiped) thisInst.getMainModel()).isSneak;
+                                modelBiped.aimedBow = ((ModelBiped) thisInst.getMainModel()).aimedBow;
                             }
                             modelBiped.setLivingAnimations(par1EntityLivingBase, par2, par3, 0.0F);
                             modelBiped.render(par1EntityLivingBase, par2, par3, par4, par5, par6, par7);
