@@ -254,7 +254,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTORANGETANK);
                 }
-                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy)
+                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot1.getItem() == GCItems.oxygenCanisterInfinite)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
@@ -272,7 +272,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTORANGETANK);
                 }
-                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy)
+                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot1.getItem() == GCItems.oxygenCanisterInfinite)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
@@ -303,7 +303,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTORANGETANK);
                 }
-                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy)
+                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot2.getItem() == GCItems.oxygenCanisterInfinite)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
@@ -321,7 +321,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTORANGETANK);
                 }
-                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy)
+                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot2.getItem() == GCItems.oxygenCanisterInfinite)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }

@@ -43,18 +43,18 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     public enum EnumEnclosedBlockType implements IStringSerializable
     {
         IC2_HV_CABLE(0, 6, "enclosed_hv_cable"),
-        OXYGEN_PIPE(1, "enclosed_oxygen_pipe"),
+        OXYGEN_PIPE(1, "enclosed_fluid_pipe"),
         IC2_COPPER_CABLE(2, 0, "enclosed_copper_cable"),
         IC2_GOLD_CABLE(3, 3, "enclosed_gold_cable"),
         TE_CONDUIT(4, "enclosed_te_conduit"), //CURRENTLY UNUSED
-        IC2_GLASS_FIBRE_CABLE(5, 9, "enclosed_glassfibre_cable"),
+        IC2_GLASS_FIBRE_CABLE(5, 9, "enclosed_glass_fibre_cable"),
         IC2_LV_CABLE(6, 13, "enclosed_lv_cable"),
-        BC_ITEM_STONEPIPE(7, "PipeItemsStone", "enclosed_itempipe_stone"),
-        BC_ITEM_COBBLESTONEPIPE(8, "PipeItemsCobblestone", "enclosed_itempipe_cobblestone"),
-        BC_FLUIDS_STONEPIPE(9, "PipeFluidsStone", "enclosed_liquidpipe_stone"),
-        BC_FLUIDS_COBBLESTONEPIPE(10, "PipeFluidsCobblestone", "enclosed_liquidpipe_cobblestone"),
-        BC_POWER_STONEPIPE(11, "PipePowerStone", "enclosed_powerpipe_stone"),
-        BC_POWER_GOLDPIPE(12, "PipePowerGold", "enclosed_powerpipe_gold"),
+        BC_ITEM_STONEPIPE(7, "PipeItemsStone", "enclosed_pipe_items_stone"),
+        BC_ITEM_COBBLESTONEPIPE(8, "PipeItemsCobblestone", "enclosed_pipe_items_cobblestone"),
+        BC_FLUIDS_STONEPIPE(9, "PipeFluidsStone", "enclosed_pipe_fluids_stone"),
+        BC_FLUIDS_COBBLESTONEPIPE(10, "PipeFluidsCobblestone", "enclosed_pipe_fluids_cobblestone"),
+        BC_POWER_STONEPIPE(11, "PipePowerStone", "enclosed_pipe_power_stone"),
+        BC_POWER_GOLDPIPE(12, "PipePowerGold", "enclosed_pipe_power_gold"),
         ME_CABLE(13, "enclosed_me_cable"),
         ALUMINUM_WIRE(14, "enclosed_aluminum_wire"),
         ALUMINUM_WIRE_HEAVY(15, "enclosed_heavy_aluminum_wire");
@@ -140,7 +140,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, 4));  //Damage value not same as metadata for HV_CABLE
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()));
         }
@@ -157,7 +157,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
         if (CompatibilityManager.isAppEngLoaded() || GCBlocks.registeringSorted)
         {
-//            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ME_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()));
         }
     }
 

@@ -29,49 +29,14 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     {
         String name;
 
-        switch (par1ItemStack.getItemDamage())
+        try
         {
-        case 0:
+            name = BlockEnclosed.EnumEnclosedBlockType.byMetadata(par1ItemStack.getItemDamage()).getName();
+            name = name.substring(9, name.length()); // Remove "enclosed_"
+        }
+        catch (Exception e)
+        {
             name = "null";
-            break;
-        case 1:
-            name = "oxygen_pipe";
-            break;
-        case 2:
-            name = "copper_cable";
-            break;
-        case 3:
-            name = "gold_cable";
-            break;
-        case 4:
-            name = "hv_cable";
-            break;
-        case 5:
-            name = "glass_fibre_cable";
-            break;
-        case 6:
-            name = "lv_cable";
-            break;
-        case 13:
-            name = "me_cable";
-            break;
-        case 14:
-            name = "aluminum_wire";
-            break;
-        case 15:
-            name = "aluminum_wire_heavy";
-            break;
-        default:
-        	//The BuildCraft pipes
-            try
-            {
-                name = BlockEnclosed.EnumEnclosedBlockType.byMetadata(par1ItemStack.getItemDamage()).getBCPipeType();
-            }
-            catch (Exception e)
-            {
-                name = "null";
-            }
-            break;
         }
 
         return this.getBlock().getUnlocalizedName() + "." + name;

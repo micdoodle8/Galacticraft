@@ -1,5 +1,5 @@
 {
-    "parent":"galacticraftcore:block/enclosed_oxygen_pipe_model",
+    "parent":"galacticraftcore:block/enclosed_pipe_fluids_cobblestone_model",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -437,9 +438,8 @@ public class OxygenUtil
         case 1:
             return stack.getItem() instanceof ItemOxygenGear;
         case 2:
-            return stack.getItem() instanceof ItemOxygenTank;
         case 3:
-            return stack.getItem() instanceof ItemOxygenTank;
+            return stack.getItem() instanceof ItemOxygenTank || stack.getItem() instanceof ItemCanisterOxygenInfinite;
         }
 
         return false;

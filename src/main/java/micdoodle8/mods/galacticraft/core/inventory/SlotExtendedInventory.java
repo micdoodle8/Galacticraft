@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
-import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
+import micdoodle8.mods.galacticraft.core.items.*;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -32,9 +29,8 @@ public class SlotExtendedInventory extends Slot
         case 1:
             return itemstack.getItem() == GCItems.oxygenGear;
         case 2:
-            return itemstack.getItem() instanceof ItemOxygenTank;
         case 3:
-            return itemstack.getItem() instanceof ItemOxygenTank;
+            return itemstack.getItem() instanceof ItemOxygenTank || itemstack.getItem() instanceof ItemCanisterOxygenInfinite;
         case 4:
             return itemstack.getItem() instanceof ItemParaChute;
         case 5:
