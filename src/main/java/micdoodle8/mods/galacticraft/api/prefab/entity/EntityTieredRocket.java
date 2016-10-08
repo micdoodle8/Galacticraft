@@ -43,6 +43,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     public int launchCooldown;
     private ArrayList<BlockVec3> preGenList = new ArrayList();
     private Iterator<BlockVec3> preGenIterator = null;
+    static boolean preGenInProgress = false;
     
     public EntityTieredRocket(World par1World)
     {
@@ -117,7 +118,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         //These will be done: 2 chunks per tick during IGNITE phase (so 800 chunks during the 20 second launch countdown)
         //then the ones that are left 1 chunk per tick during flight (normally flight will last more than 450 ticks)
         //If the server is at less than 20tps then maybe some of the outermost chunks won't be pre-generated but that's probably OK
-        if (this.destinationFrequency == -1)
+        if (this.destinationFrequency == -1 && !EntityTieredRocket.preGenInProgress)
         {
             ArrayList<Integer> toPreGen = new ArrayList();
             for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
@@ -160,6 +161,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     }
                 }
                 this.preGenIterator = this.preGenList.iterator();
+                EntityTieredRocket.preGenInProgress = true;
             }
         }
         else
@@ -240,6 +242,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 else
                 {
                     this.preGenIterator = null;
+                    EntityTieredRocket.preGenInProgress = false;
                 }
             }
         }
