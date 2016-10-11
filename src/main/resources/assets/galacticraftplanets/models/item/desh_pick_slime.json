@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshPick_Slime"
+        "layer0": "galacticraftplanets:items/deshPickSlime"
     },
     "display": {
         "thirdperson": {
