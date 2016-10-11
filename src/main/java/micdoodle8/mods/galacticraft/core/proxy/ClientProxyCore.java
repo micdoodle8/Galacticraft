@@ -297,6 +297,7 @@ public class ClientProxyCore extends CommonProxyCore
     public void preInit(FMLPreInitializationEvent event)
     {
         ClientProxyCore.scaleup.put(ClientProxyCore.numbers, 0, 16);
+        ClientProxyCore.registerEntityRenderers();
 
         OBJLoader.instance.addDomain(GalacticraftCore.ASSET_PREFIX);
 
@@ -324,7 +325,6 @@ public class ClientProxyCore extends CommonProxyCore
     public void postInit(FMLPostInitializationEvent event)
     {
         ClientProxyCore.registerInventoryTabs();
-        ClientProxyCore.registerEntityRenderers();
         ClientProxyCore.addVariants();
 
         MinecraftForge.EVENT_BUS.register(new TabRegistry());
@@ -338,40 +338,6 @@ public class ClientProxyCore extends CommonProxyCore
 //			ftc.setAccessible(true);
 //			ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
 //        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    @Override
-    public void postRegisterBlock(Block block)
-    {
-        // ModelLoader.setCustomStateMapper(block, GalacticraftStateMapper.INSTANCE);
-    }
-
-    @Override
-    public void postRegisterItem(Item item)
-    {
-        if (!item.getHasSubtypes())
-        {
-            ClientProxyCore.itemsToRegisterJson.add(item);
-        }
-    }
-
-    public static void registerEntityRenderers()
-    {
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (RenderManager manager) -> new RenderTier1Rocket(new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (RenderManager manager) -> new RenderEvolvedSpider());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (RenderManager manager) -> new RenderEvolvedZombie());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (RenderManager manager) -> new RenderEvolvedCreeper());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, (RenderManager manager) -> new RenderEvolvedSkeleton());
-        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, (RenderManager manager) -> new RenderEvolvedSkeletonBoss());
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, (RenderManager manager) -> new RenderMeteor());
-        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, (RenderManager manager) -> new RenderFlag());
-        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, (RenderManager manager) -> new RenderParaChest());
-        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (RenderManager manager) -> new RenderAlienVillager());
-        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, (RenderManager manager) -> new RenderLander());
-        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, (RenderManager manager) -> new RenderEntityFake());
-        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, (RenderManager manager) -> new RenderBuggy());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
 
         if (Loader.isModLoaded("RenderPlayerAPI"))
         {
@@ -401,6 +367,40 @@ public class ClientProxyCore extends CommonProxyCore
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void postRegisterBlock(Block block)
+    {
+        // ModelLoader.setCustomStateMapper(block, GalacticraftStateMapper.INSTANCE);
+    }
+
+    @Override
+    public void postRegisterItem(Item item)
+    {
+        if (!item.getHasSubtypes())
+        {
+            ClientProxyCore.itemsToRegisterJson.add(item);
+        }
+    }
+
+    public static void registerEntityRenderers()
+    {
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (RenderManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (RenderManager manager) -> new RenderEvolvedSpider(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (RenderManager manager) -> new RenderEvolvedZombie(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (RenderManager manager) -> new RenderEvolvedCreeper(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, (RenderManager manager) -> new RenderEvolvedSkeleton(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, (RenderManager manager) -> new RenderEvolvedSkeletonBoss(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, (RenderManager manager) -> new RenderMeteor(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, (RenderManager manager) -> new RenderFlag(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, (RenderManager manager) -> new RenderParaChest(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (RenderManager manager) -> new RenderAlienVillager(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, (RenderManager manager) -> new RenderLander(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, (RenderManager manager) -> new RenderEntityFake(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, (RenderManager manager) -> new RenderBuggy(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, new RenderMeteorChunk());
+//        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
     }
 
     private static void registerHandlers()

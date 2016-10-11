@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,9 +19,9 @@ public class RenderMeteor extends Render<EntityMeteor>
 
     private final ModelMeteor modelMeteor;
 
-    public RenderMeteor()
+    public RenderMeteor(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
         this.shadowSize = 1F;
         this.modelMeteor = new ModelMeteor();
     }

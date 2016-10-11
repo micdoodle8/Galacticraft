@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,9 +13,9 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RenderEntityFake extends Render<EntityCelestialFake>
 {
-    public RenderEntityFake()
+    public RenderEntityFake(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
     }
 
     @Override

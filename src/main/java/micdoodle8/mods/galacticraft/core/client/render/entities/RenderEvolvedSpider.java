@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,9 +26,9 @@ public class RenderEvolvedSpider extends RenderLiving<EntityEvolvedSpider>
 {
     private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/spider.png");
 
-    public RenderEvolvedSpider()
+    public RenderEvolvedSpider(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelEvolvedSpider(), 1.0F);
+        super(manager, new ModelEvolvedSpider(), 1.0F);
     }
 
     @Override

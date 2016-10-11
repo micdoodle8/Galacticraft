@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,9 +30,9 @@ public class RenderEvolvedSkeletonBoss extends RenderLiving<EntitySkeletonBoss>
 
 //    private final ModelEvolvedSkeletonBoss model = new ModelEvolvedSkeletonBoss();
 
-    public RenderEvolvedSkeletonBoss()
+    public RenderEvolvedSkeletonBoss(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelEvolvedSkeletonBoss(), 1.0F);
+        super(manager, new ModelEvolvedSkeletonBoss(), 1.0F);
     }
 
     @Override

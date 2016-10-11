@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -29,9 +30,9 @@ public class RenderEntryPod extends Render<EntityEntryPod>
 {
     private OBJModel.OBJBakedModel modelEntryPod;
 
-    public RenderEntryPod()
+    public RenderEntryPod(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
     }
 
     private void updateModels()

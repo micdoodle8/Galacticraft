@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,9 +28,9 @@ public class RenderEvolvedCreeper extends RenderCreeper
 
     private final ModelBase creeperModel = new ModelEvolvedCreeper(0.2F);
 
-    public RenderEvolvedCreeper()
+    public RenderEvolvedCreeper(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
         this.mainModel = new ModelEvolvedCreeper();
     }
 

@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.Entity;
@@ -26,9 +27,9 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
     private static int isBG2Loaded = 0;
 
-    public RenderEvolvedSkeleton()
+    public RenderEvolvedSkeleton(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelEvolvedSkeleton(), 1.0F);
+        super(manager, new ModelEvolvedSkeleton(), 1.0F);
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerBipedArmor(this) {
             protected void func_177177_a() {

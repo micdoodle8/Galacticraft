@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,9 +19,9 @@ public class RenderFlag extends Render<EntityFlag>
 
     protected ModelFlag modelFlag;
 
-    public RenderFlag()
+    public RenderFlag(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
         this.shadowSize = 1F;
         this.modelFlag = new ModelFlag();
     }

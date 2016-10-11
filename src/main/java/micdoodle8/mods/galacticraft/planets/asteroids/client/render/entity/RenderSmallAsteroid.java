@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -11,8 +12,9 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderSmallAsteroid extends Render<EntitySmallAsteroid>
 {
-    public RenderSmallAsteroid() {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+    public RenderSmallAsteroid(RenderManager manager)
+    {
+        super(manager);
     }
 
     @Override

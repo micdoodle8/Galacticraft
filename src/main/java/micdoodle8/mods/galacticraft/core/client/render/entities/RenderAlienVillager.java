@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,9 +21,9 @@ public class RenderAlienVillager extends RenderLiving<EntityAlienVillager>
 
     protected ModelAlienVillager villagerModel;
 
-    public RenderAlienVillager()
+    public RenderAlienVillager(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelAlienVillager(0.0F), 0.5F);
+        super(manager, new ModelAlienVillager(0.0F), 0.5F);
         this.villagerModel = (ModelAlienVillager) this.mainModel;
     }
 

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +15,9 @@ import org.lwjgl.opengl.GL12;
 
 public class RenderGrapple extends Render<EntityGrapple>
 {
-    public RenderGrapple()
+    public RenderGrapple(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
     }
 
     public void doRender(EntityGrapple grapple, double x, double y, double z, float par8, float partialTicks)

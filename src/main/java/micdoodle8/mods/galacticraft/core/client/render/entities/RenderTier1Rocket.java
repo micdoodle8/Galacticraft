@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,15 +19,15 @@ public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
 
     protected ModelBase modelSpaceship;
 
-    public RenderTier1Rocket(ModelBase spaceshipModel, String textureDomain, String texture)
+    public RenderTier1Rocket(RenderManager manager, ModelBase spaceshipModel, String textureDomain, String texture)
     {
-        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
+        this(manager, new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
         this.modelSpaceship = spaceshipModel;
     }
 
-    private RenderTier1Rocket(ResourceLocation texture)
+    private RenderTier1Rocket(RenderManager manager, ResourceLocation texture)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager());
+        super(manager);
         this.spaceshipTexture = texture;
         this.shadowSize = 0.9F;
     }

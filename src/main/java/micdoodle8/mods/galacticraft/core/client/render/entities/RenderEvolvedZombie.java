@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.model.ModelZombieVillager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -31,9 +32,9 @@ public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
 
     private final ModelBase model = new ModelEvolvedZombie(0.2F, false, true);
 
-    public RenderEvolvedZombie()
+    public RenderEvolvedZombie(RenderManager manager)
     {
-        super(FMLClientHandler.instance().getClient().getRenderManager(), new ModelEvolvedZombie(true), 0.5F);
+        super(manager, new ModelEvolvedZombie(true), 0.5F);
         LayerRenderer layerrenderer = (LayerRenderer)this.layerRenderers.get(0);
         this.addLayer(new LayerHeldItem(this));
         LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this)
