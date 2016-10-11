@@ -342,6 +342,18 @@ public class WorldUtil
         return world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
     }
 
+    public static double getRenderPosY(Entity viewEntity, double regular)
+    {
+        if (viewEntity.posY >= 256)
+        {
+            return 255.0F;
+        }
+        else
+        {
+            return regular;
+        }
+    }
+
     public static WorldProvider getProviderForNameServer(String par1String)
     {
         String nameToFind = par1String;
