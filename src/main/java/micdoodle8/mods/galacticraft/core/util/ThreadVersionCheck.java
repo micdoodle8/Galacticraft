@@ -47,7 +47,7 @@ public class ThreadVersionCheck extends Thread
         	BufferedReader in = null;
             try
             {
-                final URL url = new URL("http://micdoodle8.com/galacticraft/version.html");
+                final URL url = new URL("https://micdoodle8.com/galacticraft/version.html");
                 final HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.addRequestProperty("User-Agent", "Mozilla/4.76");
                 InputStreamReader streamReader = new InputStreamReader(http.getInputStream());
