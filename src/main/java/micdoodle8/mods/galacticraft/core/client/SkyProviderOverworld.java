@@ -125,40 +125,40 @@ public class SkyProviderOverworld extends IRenderHandler
             ClientProxyCore.overworldTextureRequestSent = true;
         }
         
-//        double zoom = 0.0;
-//        double yaw = 0.0;
-//        double pitch = 0.0;
-//        Method m = null;
-//
-//        if (!optifinePresent)
-//        {
-//	        try
-//	        {
-//	        	Class<?> c = mc.entityRenderer.getClass();
-//	        	zoom = mc.entityRenderer.cameraZoom;
-//	        	yaw = mc.entityRenderer.cameraYaw;
-//	        	pitch = mc.entityRenderer.cameraPitch;
-//
-//	            GL11.glMatrixMode(GL11.GL_PROJECTION);
-//	            GL11.glLoadIdentity();
-//
-//	            if (zoom != 1.0D)
-//	            {
-//	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
-//	                GL11.glScaled(zoom, zoom, 1.0D);
-//	            }
-//
-//	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
-//	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//	            GL11.glLoadIdentity();
-//
-//                mc.entityRenderer.orientCamera(partialTicks);
-//	        }
-//	        catch(Exception e)
-//	        {
-//	        	e.printStackTrace();
-//	        }
-//        }
+        double zoom = 0.0;
+        double yaw = 0.0;
+        double pitch = 0.0;
+        Method m = null;
+
+        if (!optifinePresent)
+        {
+	        try
+	        {
+	        	Class<?> c = mc.entityRenderer.getClass();
+	        	zoom = mc.entityRenderer.cameraZoom;
+	        	yaw = mc.entityRenderer.cameraYaw;
+	        	pitch = mc.entityRenderer.cameraPitch;
+
+	            GL11.glMatrixMode(GL11.GL_PROJECTION);
+	            GL11.glLoadIdentity();
+
+	            if (zoom != 1.0D)
+	            {
+	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
+	                GL11.glScaled(zoom, zoom, 1.0D);
+	            }
+
+	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
+	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	            GL11.glLoadIdentity();
+
+                mc.entityRenderer.orientCamera(partialTicks);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        }
+        }
         
         float theta = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
@@ -386,30 +386,30 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
 
-//        if (!optifinePresent && m != null)
-//        {
-//	        try
-//	        {
-//	            GL11.glMatrixMode(GL11.GL_PROJECTION);
-//	            GL11.glLoadIdentity();
-//
-//	            if (zoom != 1.0D)
-//	            {
-//	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
-//	                GL11.glScaled(zoom, zoom, 1.0D);
-//	            }
-//
-//	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
-//	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//	            GL11.glLoadIdentity();
-//
-//	        	m.invoke(mc.entityRenderer, mc.gameSettings.fovSetting);
-//	        }
-//	        catch(Exception e)
-//	        {
-//	        	e.printStackTrace();
-//	        }
-//        }
+        if (!optifinePresent)
+        {
+	        try
+	        {
+	            GL11.glMatrixMode(GL11.GL_PROJECTION);
+	            GL11.glLoadIdentity();
+
+	            if (zoom != 1.0D)
+	            {
+	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
+	                GL11.glScaled(zoom, zoom, 1.0D);
+	            }
+
+	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
+	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	            GL11.glLoadIdentity();
+
+                mc.entityRenderer.orientCamera(partialTicks);
+	        }
+	        catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        }
+        }
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_BLEND);
