@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -351,11 +352,11 @@ public class ClientProxyCore extends CommonProxyCore
 
             try
             {
-                Field field = RenderManager.class.getDeclaredField("playerRenderer");
+                Field field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "m");
                 field.setAccessible(true);
                 field.set(FMLClientHandler.instance().getClient().getRenderManager(), new RenderPlayerGC());
 
-                field = RenderManager.class.getDeclaredField("skinMap");
+                field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "l");
                 field.setAccessible(true);
                 Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) field.get(FMLClientHandler.instance().getClient().getRenderManager());
                 skinMap.put("default", new RenderPlayerGC());
