@@ -467,7 +467,10 @@ public class NetworkUtil
             byte stackSize = buffer.readByte();
             short meta = buffer.readShort();
             itemstack = new ItemStack(Item.getItemById(itemID), stackSize, meta);
-            itemstack.setTagCompound(readNBTTagCompound(buffer));
+            if (buffer.readBoolean())
+            {
+                itemstack.setTagCompound(readNBTTagCompound(buffer));
+            }
         }
 
         return itemstack;
@@ -491,7 +494,11 @@ public class NetworkUtil
                 nbttagcompound = itemStack.getTagCompound();
             }
 
-            NetworkUtil.writeNBTTagCompound(nbttagcompound, buffer);
+            buffer.writeBoolean(nbttagcompound != null);
+            if (nbttagcompound != null)
+            {
+                NetworkUtil.writeNBTTagCompound(nbttagcompound, buffer);
+            }
         }
     }
 
