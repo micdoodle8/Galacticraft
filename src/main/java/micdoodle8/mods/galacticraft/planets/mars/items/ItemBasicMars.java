@@ -90,11 +90,11 @@ public class ItemBasicMars extends Item implements ISortableItem
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
         if (par1ItemStack != null && par1ItemStack.getItemDamage() == 3)
         {
-            par3List.add(GCCoreUtil.translate("item.tier2.desc"));
+            tooltip.add(GCCoreUtil.translate("item.tier2.desc"));
         }
     }
 

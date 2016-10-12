@@ -57,10 +57,10 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
-        par3List.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
-        par3List.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
+        tooltip.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
+        tooltip.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
     }
 
     @Override

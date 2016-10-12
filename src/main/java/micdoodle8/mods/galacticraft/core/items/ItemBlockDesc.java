@@ -53,7 +53,7 @@ public class ItemBlockDesc extends ItemBlockGC
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean advanced)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced)
     {
         if (this.getBlock() instanceof IBlockShiftDesc && ((IBlockShiftDesc) this.getBlock()).showDescription(stack.getItemDamage()))
         {

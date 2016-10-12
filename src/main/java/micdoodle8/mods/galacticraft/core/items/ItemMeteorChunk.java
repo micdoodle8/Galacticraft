@@ -97,7 +97,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
         if (itemstack.getItemDamage() > 0)
         {
@@ -113,7 +113,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
                 burnTime = 45.0F;
             }
 
-            par3List.add(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
+            tooltip.add(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
         }
     }
 

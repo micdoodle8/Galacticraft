@@ -59,21 +59,21 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
         if (par2EntityPlayer.worldObj.isRemote)
         {
             switch (par1ItemStack.getItemDamage())
             {
             case 0:
-                par3List.add(GCCoreUtil.translate("schematic.moonbuggy.name"));
+                tooltip.add(GCCoreUtil.translate("schematic.moonbuggy.name"));
                 break;
             case 1:
-                par3List.add(GCCoreUtil.translate("schematic.rocket_t2.name"));
+                tooltip.add(GCCoreUtil.translate("schematic.rocket_t2.name"));
 
                 if (!GalacticraftCore.isPlanetsLoaded)
                 {
-                    par3List.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");
+                    tooltip.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");
                 }
                 break;
             }

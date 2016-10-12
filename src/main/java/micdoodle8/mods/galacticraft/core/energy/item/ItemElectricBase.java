@@ -50,7 +50,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4)
+    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> tooltip, boolean par4)
     {
         String color = "";
         float joules = this.getElectricityStored(itemStack);
@@ -68,7 +68,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
             color = "\u00a76";
         }
 
-        list.add(color + EnergyDisplayHelper.getEnergyDisplayS(joules) + "/" + EnergyDisplayHelper.getEnergyDisplayS(this.getMaxElectricityStored(itemStack)));
+        tooltip.add(color + EnergyDisplayHelper.getEnergyDisplayS(joules) + "/" + EnergyDisplayHelper.getEnergyDisplayS(this.getMaxElectricityStored(itemStack)));
     }
 
     /**

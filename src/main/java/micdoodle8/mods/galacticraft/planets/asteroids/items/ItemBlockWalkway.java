@@ -28,18 +28,18 @@ public class ItemBlockWalkway extends ItemBlockDesc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean advanced)
+    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> tooltip, boolean advanced)
     {
         if (itemStack.getItemDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_WIRE.getMeta())
         {
-            list.add(EnumColor.AQUA + GCCoreUtil.translate("tile.aluminum_wire.alu_wire.name"));
+            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate("tile.aluminum_wire.alu_wire.name"));
         }
         else if (itemStack.getItemDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_PIPE.getMeta())
         {
-            list.add(EnumColor.AQUA + GCCoreUtil.translate("tile.oxygen_pipe.name"));
+            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate(GCBlocks.oxygenPipe.getUnlocalizedName() + ".name"));
         }
 
-        super.addInformation(itemStack, entityPlayer, list, advanced);
+        super.addInformation(itemStack, entityPlayer, tooltip, advanced);
     }
 
     @Override

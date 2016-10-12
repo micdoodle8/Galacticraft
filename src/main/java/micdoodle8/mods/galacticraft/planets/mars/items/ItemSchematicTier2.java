@@ -43,20 +43,20 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
         if (par2EntityPlayer.worldObj.isRemote)
         {
             switch (par1ItemStack.getItemDamage())
             {
             case 0:
-                par3List.add(GCCoreUtil.translate("schematic.rocket_t3.name"));
+                tooltip.add(GCCoreUtil.translate("schematic.rocket_t3.name"));
                 break;
             case 1:
-                par3List.add(GCCoreUtil.translate("schematic.cargo_rocket.name"));
+                tooltip.add(GCCoreUtil.translate("schematic.cargo_rocket.name"));
                 break;
             case 2:
-                par3List.add(GCCoreUtil.translate("schematic.astro_miner.name"));
+                tooltip.add(GCCoreUtil.translate("schematic.astro_miner.name"));
                 break;
             }
         }

@@ -39,11 +39,11 @@ public class ItemBase extends Item implements ISortableItem
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
         if (par1ItemStack != null && this == GCItems.heavyPlatingTier1)
         {
-            par3List.add(GCCoreUtil.translate("item.tier1.desc"));
+            tooltip.add(GCCoreUtil.translate("item.tier1.desc"));
         }
     }
 

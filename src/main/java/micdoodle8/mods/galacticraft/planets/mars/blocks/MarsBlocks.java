@@ -28,7 +28,6 @@ public class MarsBlocks
     public static Block creeperEgg;
     public static Block marsCobblestoneStairs;
     public static Block marsBricksStairs;
-    public static Block hydrogenPipe;
 
     public static void initBlocks()
     {
@@ -41,7 +40,6 @@ public class MarsBlocks
         MarsBlocks.creeperEgg = new BlockCreeperEgg("creeper_egg").setHardness(-1.0F);
 //        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
 //        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
-        MarsBlocks.hydrogenPipe = new BlockHydrogenPipe("hydrogen_pipe");
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
@@ -89,7 +87,6 @@ public class MarsBlocks
         registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
 //        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
-        registerBlock(MarsBlocks.hydrogenPipe, ItemBlockDesc.class);
     }
     
     public static void oreDictRegistration()

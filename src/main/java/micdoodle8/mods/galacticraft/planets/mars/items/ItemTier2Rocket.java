@@ -178,7 +178,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)
     {
         EnumRocketType type = null;
 
@@ -193,12 +193,12 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
 
         if (!type.getTooltip().isEmpty())
         {
-            par2List.add(type.getTooltip());
+            tooltip.add(type.getTooltip());
         }
 
         if (type.getPreFueled())
         {
-            par2List.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
+            tooltip.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
         }
 
         if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
@@ -214,12 +214,12 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 rocket = new EntityCargoRocket(FMLClientHandler.instance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
             }
 
-            par2List.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTagCompound().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
+            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTagCompound().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
         }
 
         if (par1ItemStack.getItemDamage() >= 10)
         {
-            par2List.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requires_controller.desc"));
+            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate("gui.requires_controller.desc"));
         }
     }
 
