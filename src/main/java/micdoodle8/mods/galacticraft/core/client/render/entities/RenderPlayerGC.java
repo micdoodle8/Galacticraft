@@ -36,18 +36,10 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderPlayerGC extends RenderPlayer
 {
-    public static ModelPlayer modelThermalPadding;
-    public static ModelPlayer modelThermalPaddingHelmet;
     public static ResourceLocation thermalPaddingTexture0;
     public static ResourceLocation thermalPaddingTexture1;
     public static boolean flagThermalOverride = false;
     private static Boolean isSmartRenderLoaded = null;
-
-    static
-    {
-        modelThermalPadding = new ModelPlayer(0.0F, false);
-        modelThermalPaddingHelmet = new ModelPlayer(0.0F, false);
-    }
 
     public RenderPlayerGC()
     {
