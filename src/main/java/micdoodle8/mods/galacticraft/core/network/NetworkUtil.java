@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -496,34 +497,34 @@ public class NetworkUtil
 
     public static NBTTagCompound readNBTTagCompound(ByteBuf buffer) throws IOException
     {
-        short dataLength = buffer.readShort();
-
-        if (dataLength < 0)
+        try
         {
-            return null;
+            int length = buffer.readInt();
+            byte[] compressed = new byte[length];
+            buffer.readBytes(compressed);
+            ByteArrayInputStream bais = new ByteArrayInputStream(compressed);
+            return CompressedStreamTools.readCompressed(bais);
         }
-        else
+        catch (Exception e)
         {
-            return CompressedStreamTools.read(new ByteBufInputStream(buffer), new NBTSizeTracker(2097152L));
+            e.printStackTrace();
+            return null;
         }
     }
 
     public static void writeNBTTagCompound(NBTTagCompound nbt, ByteBuf buffer) throws IOException
     {
-        if (nbt == null)
+        try
         {
-            buffer.writeShort(-1);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            CompressedStreamTools.writeCompressed(nbt, baos);
+            byte[] compressed = baos.toByteArray();
+            buffer.writeInt(compressed.length);
+            buffer.writeBytes(compressed);
         }
-        else
+        catch (Exception e)
         {
-            try
-            {
-                CompressedStreamTools.write(nbt, new ByteBufOutputStream(buffer));
-            }
-            catch (IOException ioexception)
-            {
-                throw new EncoderException(ioexception);
-            }
+            e.printStackTrace();
         }
     }
 
