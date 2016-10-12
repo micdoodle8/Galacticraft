@@ -77,7 +77,7 @@ public class SoundUpdaterRocket extends MovingSound
                 }
                 else if (this.theRocket.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
                 {
-                    this.volume = (1000F + Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - (float) this.theRocket.posY) * 0.001F;
+                    this.volume = 1.0F - (float)((this.theRocket.posY - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / (1000.0 - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT));
                 }
                 else
                     this.volume = 1.0F;

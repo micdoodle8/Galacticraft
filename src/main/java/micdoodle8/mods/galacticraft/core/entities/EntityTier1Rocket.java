@@ -299,11 +299,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
     }
 
     @Override
-    public ITickable getSoundUpdater() {
-        return null;
-    }
-
-    @Override
     public int getField(int id) {
         return 0;
     }
