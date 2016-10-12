@@ -352,11 +352,11 @@ public class ClientProxyCore extends CommonProxyCore
 
             try
             {
-                Field field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "m");
+                Field field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "field_178637_m");
                 field.setAccessible(true);
                 field.set(FMLClientHandler.instance().getClient().getRenderManager(), new RenderPlayerGC());
 
-                field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "l");
+                field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "field_178636_l");
                 field.setAccessible(true);
                 Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) field.get(FMLClientHandler.instance().getClient().getRenderManager());
                 skinMap.put("default", new RenderPlayerGC());
