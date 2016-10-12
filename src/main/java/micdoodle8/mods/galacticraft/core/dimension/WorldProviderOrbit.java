@@ -81,7 +81,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     private BlockPos oneSSBlock;
     //private HashSet<BlockPos> stationBlocks = new HashSet();
 
-    private HashSet<BlockPos> checked = new HashSet<BlockPos>();
+    private HashSet<BlockVec3> checked = new HashSet<BlockVec3>();
 
     private float artificialG;
     //Used to make continuous particles + thrust sounds at the spin thrusters in this dimension
@@ -1120,7 +1120,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
         this.checked.clear();
         currentLayer.add(new BlockVec3(this.oneSSBlock));
-        this.checked.add(this.oneSSBlock);
+        this.checked.add(new BlockVec3(this.oneSSBlock));
         Block bStart = this.worldObj.getBlockState(this.oneSSBlock).getBlock();
         if (bStart instanceof BlockSpinThruster)
         {
@@ -1180,7 +1180,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
 
                     if (!this.checked.contains(sideVec))
                     {
-                        this.checked.add(sideVec.toBlockPos());
+                        this.checked.add(sideVec);
                         Block b = sideVec.getBlockID(this.worldObj);
                         if (b != null && !b.isAir(worldObj, sideVec.toBlockPos()))
                         {
@@ -1231,7 +1231,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             nextLayer = new LinkedList<BlockVec3>();
         }
 
-        if (placingThruster && !this.checked.contains(baseBlock))
+        if (placingThruster && !this.checked.contains(new BlockVec3(baseBlock)))
         {
             if (foundThrusters.size() > 0)
             {
