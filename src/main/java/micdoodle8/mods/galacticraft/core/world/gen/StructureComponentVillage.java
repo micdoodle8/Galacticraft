@@ -88,30 +88,33 @@ public abstract class StructureComponentVillage extends StructureComponent
         }
     }
 
-    protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox)
+    protected int getAverageGroundLevel(World world, StructureBoundingBox boundingBox)
     {
-        int var3 = 0;
-        int var4 = 0;
+        int i = 0;
+        int j = 0;
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for (int var5 = this.boundingBox.minZ; var5 <= this.boundingBox.maxZ; ++var5)
+        for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k)
         {
-            for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6)
+            for (int l = this.boundingBox.minX; l <= this.boundingBox.maxX; ++l)
             {
-                if (par2StructureBoundingBox.isVecInside(new BlockPos(var6, 64, var5)))
+                blockpos$mutableblockpos.set(l, 64, k);
+
+                if (boundingBox.isVecInside(blockpos$mutableblockpos))
                 {
-                    var3 += Math.max(par1World.getTopSolidOrLiquidBlock(new BlockPos(var6, 64, var5)).getY(), par1World.provider.getAverageGroundLevel());
-                    ++var4;
+                    i += world.getTopSolidOrLiquidBlock(blockpos$mutableblockpos).getY();
+                    ++j;
                 }
             }
         }
 
-        if (var4 == 0)
+        if (j == 0)
         {
             return -1;
         }
         else
         {
-            return var3 / var4;
+            return i / j;
         }
     }
 

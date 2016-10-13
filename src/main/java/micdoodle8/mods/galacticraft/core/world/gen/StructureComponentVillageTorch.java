@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockGlowstoneTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,10 +74,11 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
         this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 1, 0, par3StructureBoundingBox);
         this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);
         this.setBlockState(par1World, Blocks.wool.getStateFromMeta(15), 1, 3, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 0, 3, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 1, 3, 1, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 2, 3, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getStateFromMeta(0), 1, 3, -1, par3StructureBoundingBox);
+        boolean flag = this.coordBaseMode == EnumFacing.EAST || this.coordBaseMode == EnumFacing.NORTH;
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.rotateY()), flag ? 2 : 0, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode), 1, 3, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.rotateYCCW()), flag ? 0 : 2, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.getOpposite()), 1, 3, -1, par3StructureBoundingBox);
         return true;
     }
 }

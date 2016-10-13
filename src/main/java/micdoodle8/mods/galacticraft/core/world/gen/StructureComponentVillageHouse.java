@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockGlowstoneTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -203,10 +204,10 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
         this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 6, yLevel, 1, par3StructureBoundingBox);
         this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 5, yLevel, 1, par3StructureBoundingBox);
 
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState(), 8, yLevel, 2, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState(), 14, yLevel, 8, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState(), 8, yLevel, 14, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState(), 2, yLevel, 8, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode), 8, yLevel, 2, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.rotateY()), 14, yLevel, 8, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.getOpposite()), 8, yLevel, 14, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.rotateYCCW()), 2, yLevel, 8, par3StructureBoundingBox);
 
         yLevel = 5;
 
