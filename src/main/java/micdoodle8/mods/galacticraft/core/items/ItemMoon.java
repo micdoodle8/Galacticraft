@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -12,9 +13,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemMoon extends Item implements ISortableItem
+public class ItemMoon extends ItemDesc implements ISortableItem
 {
-    public static String[] names = { "meteoric_iron_ingot", "compressed_meteoric_iron" };
+    public static String[] names = { "meteoric_iron_ingot", "compressed_meteoric_iron", "lunar_sapphire" };
 //    protected IIcon[] icons = new IIcon[ItemMoon.names.length];
 
     public ItemMoon(String str)
@@ -95,8 +96,27 @@ public class ItemMoon extends Item implements ISortableItem
         {
         case 0:
             return EnumSortCategoryItem.INGOT;
+        case 2:
+            return EnumSortCategoryItem.GENERAL;
         default:
             return EnumSortCategoryItem.PLATE;
         }
+    }
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        if (meta == 2)
+        {
+            return GCCoreUtil.translate("item.lunar_sapphire.description");
+        }
+
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return meta == 2;
     }
 }

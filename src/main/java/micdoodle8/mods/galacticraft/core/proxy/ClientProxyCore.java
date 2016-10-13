@@ -78,7 +78,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
@@ -93,9 +92,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
-import javax.vecmath.Quat4f;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -486,8 +483,9 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydrated_potato");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequency_module");
         ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambient_thermal_controller");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 0, "meteoric_iron_ingot");
-        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.meteoricIronIngot, 1, "compressed_meteoric_iron");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.itemBasicMoon, 0, "meteoric_iron_ingot");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.itemBasicMoon, 1, "compressed_meteoric_iron");
+        ClientUtil.registerItemJson(GalacticraftCore.TEXTURE_PREFIX, GCItems.itemBasicMoon, 2, "lunar_sapphire");
         for (int i = 0; i <= GCItems.oilCanister.getMaxDamage(); ++i)
         {
             int damage = 6 * i / GCItems.oilCanister.getMaxDamage();
@@ -602,7 +600,7 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("key", "key");
         addCoreVariant("buggymat", "wheel", "seat", "storage");
         addCoreVariant("basic_item", "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
-        addCoreVariant("meteoric_iron_ingot", "meteoric_iron_ingot", "compressed_meteoric_iron");
+        addCoreVariant("item_basic_moon", "meteoric_iron_ingot", "compressed_meteoric_iron", "lunar_sapphire");
         addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");

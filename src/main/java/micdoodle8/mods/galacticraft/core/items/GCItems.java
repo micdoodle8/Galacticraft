@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -61,7 +60,7 @@ public class GCItems
     public static Item wrench;
     public static Item cheeseCurd;
     public static Item meteoricIronRaw;
-    public static Item meteoricIronIngot;
+    public static Item itemBasicMoon;
     public static Item bucketOil;
     public static Item bucketFuel;
 //	public static Item cheeseBlock;
@@ -119,7 +118,7 @@ public class GCItems
         GCItems.cheeseCurd = new ItemCheese(1, 0.1F, false);
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoric_iron_raw");
-        GCItems.meteoricIronIngot = new ItemMoon("meteoric_iron_ingot");
+        GCItems.itemBasicMoon = new ItemMoon("item_basic_moon");
 
         GCItems.registerHarvestLevels();
 
@@ -139,8 +138,8 @@ public class GCItems
             }
         }
 
-        OreDictionary.registerOre("oreMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
-        OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 0));
+        OreDictionary.registerOre("oreMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 1));
+        OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 0));
     }
 
     public static void registerHarvestLevels()
@@ -211,7 +210,7 @@ public class GCItems
         GCItems.registerItem(GCItems.meteorChunk);
         GCItems.registerItem(GCItems.cheeseCurd);
         GCItems.registerItem(GCItems.meteoricIronRaw);
-        GCItems.registerItem(GCItems.meteoricIronIngot);
+        GCItems.registerItem(GCItems.itemBasicMoon);
 //		GCItems.registerItem(GCItems.cheeseBlock);
         GCItems.registerItem(GCItems.flag);
         GCItems.registerItem(GCItems.parachute);
