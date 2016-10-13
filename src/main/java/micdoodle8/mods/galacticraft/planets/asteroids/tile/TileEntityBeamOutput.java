@@ -199,7 +199,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
             }
         }
 
-        if (new BlockVec3(node.getTile()).equals(this.targetVec))
+        if (new BlockVec3(node.getTile()).equals(new BlockVec3(this.targetVec)))
         {
             if (index == 0)
             {
@@ -212,9 +212,13 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
                     this.setTarget(null);
                 }
             }
-            else
+            else if (index > 0)
             {
                 this.setTarget(this.nodeList.get(index - 1));
+            }
+            else
+            {
+                this.setTarget(null);
             }
         }
 
