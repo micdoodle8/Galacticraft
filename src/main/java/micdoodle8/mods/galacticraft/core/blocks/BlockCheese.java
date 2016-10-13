@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockCheese extends Block implements ItemBlockDesc.IBlockShiftDesc, ISortableBlock
+public class BlockCheese extends Block implements IShiftDescription, ISortableBlock
 {
     public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, 6);
     // IIcon[] cheeseIcons;

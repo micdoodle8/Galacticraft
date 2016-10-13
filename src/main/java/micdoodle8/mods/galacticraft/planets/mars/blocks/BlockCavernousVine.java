@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockCavernousVine extends Block implements IShearable, ItemBlockDesc.IBlockShiftDesc, ISortableBlock
+public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
 //    @SideOnly(Side.CLIENT)
 //    private IIcon[] vineIcons;

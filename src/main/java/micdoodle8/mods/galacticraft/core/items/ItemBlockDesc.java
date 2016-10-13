@@ -24,13 +24,6 @@ import java.util.List;
 
 public class ItemBlockDesc extends ItemBlockGC
 {
-    public static interface IBlockShiftDesc
-    {
-        String getShiftDescription(int meta);
-
-        boolean showDescription(int meta);
-    }
-
     public ItemBlockDesc(Block block)
     {
         super(block);
@@ -55,11 +48,11 @@ public class ItemBlockDesc extends ItemBlockGC
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced)
     {
-        if (this.getBlock() instanceof IBlockShiftDesc && ((IBlockShiftDesc) this.getBlock()).showDescription(stack.getItemDamage()))
+        if (this.getBlock() instanceof IShiftDescription && ((IShiftDescription) this.getBlock()).showDescription(stack.getItemDamage()))
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                info.addAll(FMLClientHandler.instance().getClient().fontRendererObj.listFormattedStringToWidth(((IBlockShiftDesc) this.getBlock()).getShiftDescription(stack.getItemDamage()), 150));
+                info.addAll(FMLClientHandler.instance().getClient().fontRendererObj.listFormattedStringToWidth(((IShiftDescription) this.getBlock()).getShiftDescription(stack.getItemDamage()), 150));
             }
             else
             {
