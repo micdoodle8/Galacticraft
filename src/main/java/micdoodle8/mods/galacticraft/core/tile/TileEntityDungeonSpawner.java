@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -109,6 +110,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 {
                     if (this.boss instanceof Entity)
                     {
+                        ((EntityLiving)this.boss).onSpawnWithEgg((IEntityLivingData)null);
                         this.worldObj.spawnEntityInWorld((EntityLiving) this.boss);
                         this.playSpawnSound((Entity) this.boss);
                         this.spawned = true;
