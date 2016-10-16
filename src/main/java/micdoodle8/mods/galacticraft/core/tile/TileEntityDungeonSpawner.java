@@ -9,6 +9,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
@@ -108,11 +109,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             {
                 if (this.boss != null && !this.spawned)
                 {
-                    if (this.boss instanceof Entity)
+                    if (this.boss instanceof EntityLiving)
                     {
-                        ((EntityLiving)this.boss).onSpawnWithEgg((IEntityLivingData)null);
-                        this.worldObj.spawnEntityInWorld((EntityLiving) this.boss);
-                        this.playSpawnSound((Entity) this.boss);
+                        EntityLiving bossLiving = (EntityLiving) this.boss;
+                        bossLiving.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(bossLiving)), null);
+                        this.worldObj.spawnEntityInWorld(bossLiving);
+                        this.playSpawnSound(bossLiving);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);
                         this.boss.setRoom(this.roomCoords, this.roomSize);
