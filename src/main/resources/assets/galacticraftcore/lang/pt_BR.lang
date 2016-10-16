@@ -141,7 +141,7 @@ tile.landingPad.cargoPad.name=Base de Foguete de Carga
 tile.enclosed.copperCable.name=Cabo de Cobre Selável
 tile.enclosed.goldCable.name=Cabo de Ouro Selável
 tile.enclosed.hvCable.name=Cabo AV Selável
-tile.enclosed.glassFibreCable.name=Cabo de Fibra Óptica Selável
+tile.enclosed.glassFibreCable.name=Cabo de Fibra Ótica Selável
 tile.enclosed.lvCable.name=Cabo de Corrente Ultra-Baixa Selável
 tile.enclosed.PipeItemsCobblestone.name=Cano de Transporte de Pedregulho Selável
 tile.enclosed.PipeItemsStone.name=Cano de Transporte de Pedra Selável
@@ -186,8 +186,10 @@ tile.arclamp.name=Lâmpada a Arco Voltaico
 tile.spinThruster.name=Propulsor Pivotante
 tile.viewScreen.name=Tela de Exibição
 tile.telemetry.name=Unidade de Telemetria
-tile.spaceStationBase.name=Bloco de Chegada à Estação Espacial
+tile.spaceStationBase.name=Bloco de Chegada da Estação Espacial
 tile.dish.name=Antena de Comunicação
+
+# DECOBLOCKS
 tile.tinStairs1.name=Escadas Decorativas de Estanho
 tile.tinStairs2.name=Escadas Decorativas de Estanho
 tile.wallGC.tin.name=Parede Decorativa de Estanho
@@ -219,7 +221,7 @@ entity.Lander.name=Módulo Espacial
 entity.GCFlag.name=Bandeira
 entity.MeteorChunk.name=Pedaço de Meteoro
 
-# Schematics
+# SCHEMATICS
 schematic.moonbuggy.name=Buggy
 schematic.rocketT1.name=Foguete Nível 1
 schematic.rocketT2.name=Foguete Nível 2
@@ -227,12 +229,13 @@ schematic.rocketT2.name=Foguete Nível 2
 # DEATH MESSAGES
 death.attack.spaceshipExplosion=Foguete de %1$s está com defeito!
 death.attack.spaceshipExplosionB=%1$s morreu lamentavelmente num acidente espacial!
-death.attack.spaceshipCrash=O foguete de %1$s se esborrachou no chão. Ops.
+death.attack.spaceshipCrash=O foguete de %1$s se esborrachou no chão. Ups.
 death.attack.oxygenSuffocation=%1$s ficou sem oxigênio!
 death.attack.thermal=%1$s se esqueceu da proteção térmica.
 
 # GALAXIES
 galaxy.blockyway.name=Via Bloquítica
+galaxy.milkyWay=Via Láctea
 
 # OTHER
 newversion.failed.name=Verificação de atualização do Galacticraft falhou! Tentando de novo em 15 segundos
@@ -248,31 +251,14 @@ keybind.vehicleleft.name=Mover veículo para esquerda
 keybind.vehicleright.name=Mover veículo para direita
 keybind.vehicleup.name=Mover veículo para cima
 keybind.vehicledown.name=Mover veículo para baixo
+
+# CREATIVE TABS
 itemGroup.GalacticraftBlocks=Galacticraft Blocos
 itemGroup.GalacticraftItems=Galacticraft Itens
 
-# CREATIVE TABS
-itemGroup.GalacticraftCore=Galacticraft
-
 # GUI
-container.cargoloader.name=Carregador de Carga
-container.cargounloader.name=Descarregador de Carga
-container.fuelloader.name=Carregador de Combustível
-container.oxygencollector.name=Coletor de Oxigênio
-container.oxygencompressor.name=Compressor de Oxigênio
-container.oxygendistributor.name=Distribuidor de Oxigênio
-container.oxygensealer.name=Selador de Oxigênio
-container.parachest.name=Para-baú
-container.refinery.name=Refinaria
-container.treasurechest.name=Baú de Tesouro
-container.lander.name=Módulo Espacial
-container.spaceship.name=Foguete Nível 1
-container.solarbasic.name=Painel Solar Básico
-container.solaradvanced.name=Painel Solar Avançado
-container.oxygendecompressor.name=Descompressor de Oxigênio
-
-gui.message.out.name=<-
-gui.message.in.name=->
+gui.message.out.name=Sai
+gui.message.in.name=Ent.
 gui.message.status.name=Status
 gui.message.oxoutput.name=Saída de Oxigênio
 gui.message.oxinput.name=Entrada de Oxigênio
@@ -299,7 +285,7 @@ gui.message.clickAgain.1.name=Clique de novo para aproximar (ver luas)
 gui.message.clickAgain.2.name=Clique de novo para aproximar (ver satélites)
 gui.message.clickAgain.3.name=Clique de novo para aproximar
 gui.message.exit.name=Sair
-gui.message.tier.name=Nível
+gui.message.tier.name=Nível %d
 gui.message.canCreateSpaceStation.name=Uma Estação Espacial pode ser criada aqui!
 gui.message.cannotCreateSpaceStation.name=Uma Estação Espacial não pode ser criada aqui.
 gui.message.createSS.name=Criar
@@ -309,7 +295,7 @@ gui.message.apply.name=Aplicar
 gui.message.cancel.name=Cancelar
 gui.message.assignName.name=Atribuir Nome
 gui.message.rename.name=Renomear
-gui.message.unnamed.name=Sem-nome
+gui.message.unnamed.name=Sem nome
 gui.message.grow.name=Crescer
 gui.message.breed.name=Procriar
 gui.message.strengthen.name=Fortalecer
@@ -329,7 +315,7 @@ gui.status.missingpower.name=Energia Insuficiente
 gui.status.missingoxygen.name=Oxigênio Insuficiente
 gui.status.missingtank.name=Sem Tanque Válido
 gui.status.fulltank.name=Tanque Oxigênio Cheio
-gui.status.unsealed.name=Não-Selado
+gui.status.unsealed.name=Não Selado
 gui.status.sealed.name=Selado
 gui.status.unknown.name=Desconhecido
 gui.status.disabled.name=Desabilitado
@@ -356,8 +342,8 @@ gui.status.airLockClosed.name=Porta Pressurizada Fechada
 gui.status.airLockOpen.name=Porta Pressurizada Aberta
 gui.status.running.name=Funcionando
 gui.status.generating.name=Gerando
-gui.status.notGenerating.name=Não-Gerando
-gui.status.hullHeat.name=Pré-Aquecimento
+gui.status.notGenerating.name=Não Gerando
+gui.status.hullHeat.name=Aquecendo
 gui.status.compressing.name=Prensando
 gui.status.collecting.name=Coletando
 gui.status.tankEmpty.name=Tanque de Oxigênio Vazio
@@ -419,10 +405,12 @@ gui.buggy.turn.name=Mover para os lados
 gui.buggy.accel.name=Acelerar
 gui.buggy.decel.name=Desacelerar
 gui.buggy.inv.name=Inventário / Combustível
+
 gui.rocket.launch.name=Lançar
 gui.rocket.turn.name=Mover para os lados
 gui.rocket.updown.name=Mover para cima e para baixo
 gui.rocket.inv.name=Inventário / Combustível
+
 gui.rocket.warning.nogyroscope=Forças misteriosas estão no jogo e os giroscópios estão girando descontroladamente!
 gui.rocket.warning.noparachute=Estou sem paraquedas! Se eu pressionar Lançar de novo, não há como voltar atrás!
 gui.rocket.warning.nofuel=Vou precisar de carregar algum combustível de foguete primeiro!
@@ -435,10 +423,12 @@ gui.telemetrySucceed.message=Ligação de Telemetria criado.
 gui.telemetryFail.message=Primeiro vou precisar de rastrear uma entidade com o Módulo de Frequência! (Ou tente usá-lo na cabeça!)
 gui.telemetryFailNoFrequencyModule.message=Acho que vou precisar do Módulo de Frequência em mãos para fazer uso disto!
 gui.telemetryFailWearingIt.message=Vou precisar de tirar meu Módulo de Frequência se quiser ligar isso com esta Unidade de Telemetria!
+
 gui.rocketType.0=Espaço de Armazenagem: 18
 gui.rocketType.1=Espaço de Armazenagem: 36
 gui.rocketType.2=Espaço de Armazenagem: 56
 gui.rocketType.3=Pré-abastecido
+
 gui.spacestation.typeCommand=Digite
 gui.spacestation.playername=<jogador>
 gui.spacestation.toAllowEntry=para permitir outro jogador entrar nesta estação espacial!
@@ -448,11 +438,13 @@ gui.spacestation.removesuccess=Removeu-se %s com sucesso lista da estação espa
 gui.spacestation.allowAllTrue=Suas Estações Espaciais agora estão abertas para todos os jogadores! (Use /ssinvite -all para defazer.)
 gui.spacestation.allowAllFalse=Suas Estações Espaciais não estão mais abertas a todos os jogadores!
 gui.spacestation.changesuccess=Mudou-se a posse da Estação Espacial de %s para %s.
+
 gui.skeletonBoss.message=Chefe removido, não saia da sala enquanto luta! Volte para regerar o chefe.
 gui.warning.noroom=Pouco espaço!
 gui.flag.alreadyPlaced=Já há uma bandeira aqui!
 gui.receiver.cannotAttach=Não dá para instalar um Receptor aqui!
 gui.warning.invalidThermal=Proteção Térmica Inválida
+
 gui.tank.oxygenRemaining=Oxigênio restante
 gui.buggy.storageSpace=Espaço de Armazenagem
 gui.frequencyModule.desc.0=Capaz de receber ondas sonoras
@@ -517,6 +509,8 @@ gui.player.ouch=Ai!!!!
 gui.thermalSlot.desc.0=Entrada do acessório térmico, coloque
 gui.thermalSlot.desc.1=o Controlador Térmico de Ambiente aqui
 gui.thermalSlot.desc.2=(opcional). Nota: Gasta mais energia!
+gui.display.nolink=Sem link
+
 gui.spaceRace.create.close.name=Fechar
 gui.spaceRace.create.back.name=Voltar
 gui.spaceRace.create.rename.name=Renomear Time
@@ -540,46 +534,32 @@ gui.spaceRace.create.addPlayers.name=Adicionar Jogador(es)
 gui.spaceRace.create.remPlayers.name=Remover Jogador(es)
 gui.spaceRace.create.sendInvite.name=Enviar Convite
 gui.spaceRace.create.remove.name=Remover
-gui.spaceRace.join.title.name=Juntar-se à Corrida Espacial
+gui.spaceRace.join.name=Entrar 
+gui.spaceRace.join.title.name=Entrar na Corrida Espacial
 gui.spaceRace.join.owner.name=Dono
 gui.spaceRace.join.memberCount.name=%d membros
-gui.spaceRace.chat.addSuccess=%s juntou-se à Corrida Espacial!
+gui.spaceRace.chat.addSuccess=%s entrou na Corrida Espacial!
 gui.spaceRace.chat.removeSuccess=%s foi removido da Corrida Espacial.
-gui.spaceRace.chat.inviteReceived=Você pecebeu um Convite de Time de Corrida Espacial de %s.
+gui.spaceRace.chat.inviteReceived=Você recebeu um Convite de Time de Corrida Espacial de %s.
 gui.spaceRace.chat.toJoin=Para se juntar a %s use o comando %s
 gui.spaceRace.chat.notFound=Não se pôde encontrar jogador com o nome de: %s
 gui.spaceRace.chat.alreadyPart=Você já é parte desta corrida espacial!
 gui.spaceRace.unnamed=Time sem nome
 gui.spaceRace.comingSoon=Em breve
 
-# DIMENSIONS
-dimension.Overworld.name=Mundo Principal
-dimension.Moon.name=Lua
-dimension.Sun.name=Sol
-planet.overworld=Mundo Principal
-moon.moon=Lua
-galaxy.milkyWay=Via Láctea
-solarsystem.sol=Sol
-star.sol=Sol
-satellite.spaceStation.overworld=Estação Espacial do Mundo Principal
-planet.mercury=Mercúrio
-planet.venus=Vênus
-planet.jupiter=Júpiter
-planet.saturn=Saturno
-planet.uranus=Urano
-planet.neptune=Netuno
 gui.message.moon.daynightcycle.0.name=8 dias terrestres
-gui.message.moon.daynightcycle.1.name= ##NEEDS TRANSLATE##
+gui.message.moon.daynightcycle.1.name=
 gui.message.moon.surfacegravity.0.name=0,1654g
 gui.message.moon.surfacegravity.1.name=(18% da Terra)
 gui.message.moon.surfacecomposition.0.name=Rocha Basáltica e
 gui.message.moon.surfacecomposition.1.name=Vestígios de queijo
 gui.message.moon.atmosphere.0.name=Não há
-gui.message.moon.atmosphere.1.name= ##NEEDS TRANSLATE##
+gui.message.moon.atmosphere.1.name=
 gui.message.moon.meansurfacetemp.0.name=(Lado Claro) 253°C
 gui.message.moon.meansurfacetemp.1.name=(Lado Escuro) -153°C
+
 gui.message.overworld.daynightcycle.0.name=1 dia terrestre
-gui.message.overworld.daynightcycle.1.name= ##NEEDS TRANSLATE##
+gui.message.overworld.daynightcycle.1.name=
 gui.message.overworld.surfacegravity.0.name=1,0g
 gui.message.overworld.surfacegravity.1.name=(100% da Terra)
 gui.message.overworld.surfacecomposition.0.name=Pedra, terra e
@@ -587,9 +567,11 @@ gui.message.overworld.surfacecomposition.1.name=cascalho
 gui.message.overworld.atmosphere.0.name=Nitrogênio e Oxigênio
 gui.message.overworld.atmosphere.1.name=Suporta vida
 gui.message.overworld.meansurfacetemp.0.name=14°C
-gui.message.overworld.meansurfacetemp.1.name= ##NEEDS TRANSLATE##
+gui.message.overworld.meansurfacetemp.1.name=
+
 itemDesc.powerdraw.name=Energia requerida: %s /s
 itemDesc.shift.name=Pressione %s para detalhes
+
 tile.oxygenDetector.description=Detector de Oxigênio irá emitir um sinal de redstone em contato com oxigênio.
 tile.oxygenCollector.description=Coletor de Oxigênio irá armazenar oxigênio coletado de folhas próximas.
 tile.oxygenCompressor.description=Compressor de Oxigênio irá carregar um tanque de oxigênio com o oxigênio vindo de seu armazenamento interno.
@@ -597,50 +579,85 @@ tile.oxygenDecompressor.description=Descompressor de Oxigênio irá descarregar 
 tile.distributor.description=Distribuidor de oxigênio irá emitir uma bolha de oxigênio a partir do bloco central, usando um tanque interno. Isso permite a respiração segura dentro da bolha.
 tile.sealer.description=Selador de Oxigênio irá verificar se há um espaço fechado. Se for encontrado, a área vai se encher de ar respirável.
 tile.oxygenPipe.description=Cano de Oxigênio irá transferir o oxigênio do armazenamento de gás interno de uma máquina para outra.
-tile.refinery.description=Refinaria irá usar petróleo e energia e fornecer combustível útil para foguetes e veículos.
+tile.refinery.description=Refinaria irá usar petróleo e energia, e fornecer combustível útil para foguetes e veículos.
 tile.fuelLoader.description=Após ser conectado a uma Base de Lançamento, um Carregador de Combustível irá permitir que o combustível passe para o foguete ou outro veículo conectado.
-tile.landingPad.description=Base de Lançamento vai permitir a colocação de Foguetes se construído em um quadrado de 3x3. Carregador de Combustível, Carregador de Carga e Controle de Lançamento podem ser colocados ao lado.
-tile.buggyPad.description=Base de Abastecimento vai permitir um Buggy na base ser reabastecido por um Carregador de Combustível colocado ao lado se construído em um quadrado de 3x3. Não pode ser utilizado para lançar foguetes!
+tile.landingPad.description=Base de Lançamento vai permitir a colocação de Foguetes se construído num quadrado de 3x3. Carregador de Combustível, Carregador de Carga e Controle de Lançamento podem ser colocados ao lado.
+tile.buggyPad.description=Base de Abastecimento vai permitir um Buggy na base ser reabastecido por um Carregador de Combustível colocado ao lado se construído num quadrado de 3x3. Não pode ser utilizado para lançar foguetes!
 tile.treasureChest.description=Baús de Tesouro Nível 1 são gerados nos Calabouços Lunares. Eles são desbloqueáveis depois de derrotar o chefe final.
-tile.rocketWorkbench.description=Mesa de Trabalho NASA é usada para criar muitas partes avançados e veículos. Novos esquemas que podem ser adicionados à medida que são encontrados.
+tile.rocketWorkbench.description=Mesa de Trabalho NASA é usada para criar muitos componentes avançados e veículos. Novos esquemas podem ser adicionados à medida que são encontrados.
 tile.fallenMeteor.description=Meteoros caídos podem ser encontrados em muitos planetas e luas que têm pouca ou nenhuma atmosfera. Dão Ferro Meteórico quando quebrados.
-tile.airLockFrame.description=Quadros de Porta Pressurizada, quando dispostos numa formação semelhante a um portal, com um controlador no lugar de um dos blocos, vão funcionar como uma Porta Pressurizada.
+tile.airLockFrame.description=Quadros de Porta Pressurizada, quando dispostos numa formação semelhante a um portal e com um controlador no lugar de um dos blocos, vão funcionar como uma Porta Pressurizada.
 tile.enclosed.description=Blocos Seláveis devem ser usados onde o ar não deve passar, como paredes de uma base espacial.
-tile.cargoLoader.description=Carregadores de Carga transferirão blocos e itens para foguetes e outros veículos com espaço para carga. Devem ser colocados ao lado da Base de Lançamento e de Abastecimento.
-tile.cargoUnloader.description=Descarregadores de carga irão extrair blocos e itens de foguetes e outros veículos com espaço para carga. Devem ser colocados ao lado da Base de Lançamento e de Abastecimento.
-tile.parachest.description=Para-baús cairão do céu após a aterrissagem em determinados planetas e luas, como no Mundo Principal. Contém foguete, combustível e carga do lançamento anterior.
-tile.solarBasic.description=Painéis Solares Básicos irá recolher energia do sol para armazenar para uso posterior. Recolhem mais energia ao meio-dia (não ajustável).
-tile.solarAdv.description=Painéis Solares Avançados irá recolher energia do sol para armazenar para uso posterior. Ajusta automaticamente o ângulo dos painéis para captação de energia ideal.
-tile.coalGenerator.description=Gerador a Carvão simplesmente queima carvão para coleta de energia. Um método de coleta de energia mais simples, mas menos eficiente.
-tile.compressor.description=Prensa irá processar lingotes em seus equivalentes prensados.
-tile.compressorElectric.description=Prensa Elétrica irá processar lingotes em seus equivalentes prensados. Comprime dois de cada vez, tornando-se mais eficaz do que sua antecessora.
+tile.cargoLoader.description=Carregadores de Carga transferirão blocos e itens para foguetes e outros veículos com espaço para carga. Devem ser colocados ao lado da Base de Lançamento ou de Abastecimento.
+tile.cargoUnloader.description=Descarregadores de carga irão extrair blocos e itens de foguetes e outros veículos com espaço para carga. Devem ser colocados ao lado da Base de Lançamento ou de Abastecimento.
+tile.parachest.description=Para-baús cairão do céu após aterrissagem em certos planetas e luas, como no Mundo Principal. Contém foguete, combustível e carga do lançamento anterior.
+tile.solarBasic.description=Painéis Solares Básicos irá coletar energia do sol, armazenando-a para uso posterior. Coletam mais energia ao meio-dia (não ajustável).
+tile.solarAdv.description=Painéis Solares Avançados irá coletar energia do sol, armazenando-a para uso posterior. Ajusta automaticamente o ângulo dos painéis para melhor captação de energia.
+tile.coalGenerator.description=Gerador a Carvão irá queimar carvão (ou bloco de carvão) para gerar energia. É o mais simples e o menos eficiente método de produzir energia.
+tile.compressor.description=Prensa irá processar barras em seus equivalentes prensados. É a máquina mais essencial no Galacticraft!
+tile.compressorElectric.description=Prensa Elétrica irá processar barras em seus equivalentes prensados. Comprime dois de cada vez, tornando-se mais eficaz do que sua antecessora.
 tile.circuitFabricator.description=Fabricador de Circuitos irá processar materiais básicos em wafers de silício, usado para máquinas avançadas.
 tile.oxygenStorageModule.description=Módulo de Armazenagem de Oxigênio é usado para armazenar grandes quantidades de oxigênio para uso posterior.
 tile.energyStorageModuleTier1.description=Módulo de Armazenagem de Energia é usado para armazenar grandes quantidades de energia para uso posterior.
-tile.energyStorageModuleTier2.description=Grupo de Armazenagem de Energia é usado para armazenar grandes quantidades de energia para uso posterior. Armazena e fornece mais energia do que o seu antecessor.
-tile.electricFurnaceTier1.description=Forno elétrico é usado como uma alternativa mais rápida que fornalhas a carvão tradicionais.
-tile.electricFurnaceTier2.description=Fornalha a Arco Voltaico é utilizada como uma alternativa mais rápida que ambas as fornalhas a carvão tradicional e eléctricas.
+tile.energyStorageModuleTier2.description=Grupo de Armazenagem de Energia é usado para armazenar grandes quantidades de energia para uso posterior. Armazena e fornece mais energia que o seu antecessor.
+tile.electricFurnaceTier1.description=Fornalha elétrica é usada como uma alternativa mais rápida que fornalhas a carvão tradicionais.
+tile.electricFurnaceTier2.description=Fornalha a Arco Voltaico é usada como uma alternativa melhor e mais rápida que ambas as fornalhas a carvão tradicional e elétricas: minérios rendem em dobro!
 tile.aluminumWire.description=Cabo de Alumínio é utilizado para ligar fontes de energia a máquinas que consomem energia.
-tile.aluminumWireHeavy.description=Cabo de Alumínio Pesado é usado para ligar fontes de energia a máquinas que consomem energia. Transfere em um ritmo mais rápido do que seu antecessor.
-tile.glowstoneTorch.description=Tocha de Pedra Luminosa são melhor utilizadas para iluminar áreas quando não há oxigênio para tochas de madeira para queimar.
+tile.aluminumWireHeavy.description=Cabo de Alumínio Pesado é usado para ligar fontes de energia a máquinas que consomem energia. Sua capacidade maior aumenta a eficiência de máquinas de nível 2.
+tile.glowstoneTorch.description=Tocha de Pedra Luminosa são melhores utilizadas para iluminar áreas quando não há oxigênio para tochas de madeira queimarem.
 tile.cheeseBlock.description=Blocos de Queijo são criados a partir dos queijos da Lua, colocáveis e comestíveis.
 tile.spinThruster.description=Propulsores Pivotantes são usados para fazer as estações espaciais girar.
-tile.arclamp.description=Lâmpadas a Arco Voltaico são usadas para fornecer a luz forte para uma grande área, também afugentam a maioria dos mobs.
+tile.arclamp.description=Lâmpadas a Arco Voltaico são usadas para fornecer luz forte para uma grande área, além de afugentar a maioria dos mobs.
 tile.viewScreen.description=Telas de Exibição adicionam um toque final a sua base espacial. Botão direito do mouse altera as informações mostradas.
-tile.telemetry.description=Coleta dados úteis de foguetes conectados, jogadores e mobs. Melhor colocado na proximidade de uma Tela de Exibição. Use um Módulo de Frequência para estabelecer conexões de dados.
+tile.telemetry.description=Coleta dados úteis de foguetes conectados, jogadores e mobs. Melhor colocada na proximidade de uma Tela de Exibição. Use um Módulo de Frequência para estabelecer conexões de dados.
 tile.dish.description=A Antena de Comunicação pode acompanhar a posição de estações espaciais e receber comunicações de suas bases espaciais remotas.
+
+# CONTAINERS
+container.cargoloader.name=Carregador de Carga
+container.cargounloader.name=Descarregador de Carga
+container.fuelloader.name=Carregador de Combustível
+container.oxygencollector.name=Coletor de Oxigênio
+container.oxygencompressor.name=Compressor de Oxigênio
+container.oxygendistributor.name=Distribuidor de Oxigênio
+container.oxygensealer.name=Selador de Oxigênio
+container.parachest.name=Para-baú
+container.refinery.name=Refinaria
+container.treasurechest.name=Baú de Tesouro
+container.lander.name=Módulo Espacial
+container.spaceship.name=Foguete Nível 1
+container.solarbasic.name=Painel Solar Básico
+container.solaradvanced.name=Painel Solar Avançado
+container.oxygendecompressor.name=Descompressor de Oxigênio
+
+# DIMENSIONS
+dimension.Overworld.name=Mundo Principal
+dimension.Moon.name=Lua
+dimension.Sun.name=Sol
+planet.overworld=Mundo Principal
+planet.mercury=Mercúrio
+planet.venus=Vênus
+planet.jupiter=Júpiter
+planet.saturn=Saturno
+planet.uranus=Urano
+planet.neptune=Netuno
+moon.moon=Lua
+solarsystem.sol=Sol
+star.sol=Sol
+satellite.spaceStation.overworld=Estação Espacial do Mundo Principal
 
 # COMMANDS
 commands.dimensionteleport=%s foi enviado para a atmosfera%s
-commands.gcenergyunits.invalidUnits=Invalid units in /GCEnergyUnits command. Usage: %s ##NEEDS TRANSLATE##
-commands.gcenergyunits.noUnits=The units need to be specified! Usage: %s ##NEEDS TRANSLATE##
-commands.joinrace.noTeam=The team needs to be specified! Usage: %s ##NEEDS TRANSLATE##
-commands.dimensiontp.tooMany=Too many command arguments! Usage: %s ##NEEDS TRANSLATE##
-commands.ssinvite.notFound=Could not find space station for your username, you need to travel there first! ##NEEDS TRANSLATE##
-commands.ssinvite.wrongUsage=Not enough command arguments! Usage: %s ##NEEDS TRANSLATE##
-commands.ssnewowner.wrongUsage=Cannot recognise Space Station ID# - does it even exist? Usage: %s ##NEEDS TRANSLATE##
-commands.ssuninvite.noPlayer=Couldn't find player with username %s on your Space Station list! ##NEEDS TRANSLATE##
-command.gcastrominer.count=The Astro Miner count for player %s is %s ##NEEDS TRANSLATE##
+commands.gcenergyunits.invalidUnits=Unidades inválidas no comando /GCEnergyUnits. Uso: %s
+commands.gcenergyunits.noUnits=As unidades precisam ser especificadas! Uso: %s
+commands.joinrace.noTeam=O time precisa ser especificado! Uso: %s
+commands.dimensiontp.tooMany=Argumentos de comando demais! Uso: %s
+commands.ssinvite.notFound=Não foi possível encontrar estação espacial para o seu nome de usuário, você precisa viajar para lá primeiro!
+commands.ssinvite.wrongUsage=Argumentos de comando insuficientes! Uso: %s
+commands.ssnewowner.wrongUsage=Não se pôde reconhecer o ID da Estação espacial - Ela existe mesmo? Uso: %s
+commands.ssuninvite.noPlayer=Não foi possível encontrar jogador com nome de usuário %s na lista da sua Estação Espacial!
+command.gcastrominer.count=Contagem de Astrominedores para o jogador %s é de %s
+
+# CONFIG GUI
 gc.configgui.idDimensionMoon=Moon Dimension ID
 gc.configgui.idDimensionOverworldOrbit=Space Station Dimension ID
 gc.configgui.idDimensionOverworldOrbitStatic=Space Station Static Dimension ID
@@ -653,21 +670,6 @@ gc.configgui.idSchematicRocketT1=Schematic ID Tier 1 Rocket
 gc.configgui.idSchematicMoonBuggy=Schematic ID Moon Buggy
 gc.configgui.idSchematicAddSchematic=Schematic ID "Add Schematic"
 gc.configgui.idAchievBase=Base Achievement ID
-gc.configgui.idEntityEvolvedSpider=Entity ID Evolved Spider
-gc.configgui.idEntityEvolvedCreeper=Entity ID Evolved Creeper
-gc.configgui.idEntityEvolvedZombie=Entity ID Evolved Zombie
-gc.configgui.idEntityEvolvedSkeleton=Entity ID Evolved Skeleton
-gc.configgui.idEntitySpaceship=Entity ID Tier 1 Rocket
-gc.configgui.idEntityMeteor=Entity ID Meteor
-gc.configgui.idEntityBuggy=Entity ID Buggy
-gc.configgui.idEntityFlag=Entity ID Flag
-gc.configgui.idEntityParaChest=Entity ID Parachest
-gc.configgui.idEntityAlienVillager=Entity ID Alien Villager
-gc.configgui.idEntityOxygenBubble=Entity ID Oxygen Bubble
-gc.configgui.idEntityLander=Entity ID Moon Lander
-gc.configgui.idEntityEvolvedSkeletonBoss=Entity ID Evolved Skeleton Boss
-gc.configgui.idEntityCelestialScreen=Entity ID Celestial Screen
-gc.configgui.idEntityMeteorChunk=Entity ID Throwable Meteor Chunk
 gc.configgui.moreStars=Show More Stars
 gc.configgui.disableSpaceshipParticles=Disable Rocket Particles
 gc.configgui.oxygenIndicatorLeft=Move Oxygen Indicator Left
@@ -705,6 +707,7 @@ gc.configgui.rocketFuelFactor=Rocket Fuel Factor
 gc.configgui.dungeonBossHealthMod=Dungeon Boss Health Modifier
 gc.configgui.hardMode=Harder Difficulty
 gc.configgui.quickMode=Quick Game (easier)
+gc.configgui.asteroidsStart=Challenge Mode (Asteroids start)
 gc.configgui.mapScrollInvert=Invert Map Scroll
 gc.configgui.mapScrollSensitivity=Map Scroll Mouse Sensitivity
 gc.configgui.overrideMap=Set key: Galaxy Map
@@ -712,6 +715,6 @@ gc.configgui.keyOverrideFuelLevel=Set key: Rocket Fuel GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Set key: Advanced Goggles
 gc.configgui.meteorSpawnMod=Meteor Spawn Modifier
 gc.configgui.meteorBlockDamage=Meteor Block Damage Enabled
-gc.configgui.title=Galacticraft Core Config
+gc.configgui.disableUpdateCheck=Disable Update Check
 
-# </file>
+gc.configgui.title=Galacticraft Core Config
