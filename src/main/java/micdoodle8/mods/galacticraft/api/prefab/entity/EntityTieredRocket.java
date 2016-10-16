@@ -437,7 +437,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
+                // Prevent player being dropped from the top of the rocket...
+                float heightBefore = this.height;
+                this.height = this.height / 2.0F;
                 par1EntityPlayer.mountEntity(null);
+                this.height = heightBefore;
             }
 
             return true;
