@@ -86,6 +86,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, (RenderManager manager) -> new RenderProjectileTNT(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (RenderManager manager) -> new RenderCargoRocket(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (RenderManager manager) -> new RenderLandingBalloons(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, (RenderManager manager) -> new RenderTier2Rocket(manager));
     }
 
     private void addPlanetVariants(String name, String... variants)

@@ -331,6 +331,6 @@ public class EntityTier2Rocket extends EntityTieredRocket
     @Override
     public float getRenderOffsetY()
     {
-        return 1.34F;
+        return -0.1F;
     }
 }

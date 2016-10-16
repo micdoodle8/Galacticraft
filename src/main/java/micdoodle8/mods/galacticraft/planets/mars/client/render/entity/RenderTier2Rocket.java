@@ -1,55 +1,40 @@
-package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
+package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelRocketT3;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraftforge.client.model.Attributes;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class RenderTier3Rocket extends Render<EntityTier3Rocket>
+public class RenderTier2Rocket extends Render<EntityTier2Rocket>
 {
-    private ItemModelRocketT3 rocketModel;
+    private ItemModelRocketT2 rocketModel;
 
-    public RenderTier3Rocket(RenderManager manager)
+    public RenderTier2Rocket(RenderManager manager)
     {
         super(manager);
         this.shadowSize = 2F;
@@ -66,24 +51,23 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
                 }
             };
 
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t3", "inventory");
-            rocketModel = (ItemModelRocketT3) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
+            rocketModel = (ItemModelRocketT2) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityTier3Rocket par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTier2Rocket par1Entity)
     {
         return new ResourceLocation("missing");
     }
 
     @Override
-    public void doRender(EntityTier3Rocket entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityTier2Rocket entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9 + 180;
-        final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9 + 45;
 
         GL11.glTranslatef((float) par2, (float) par4 + entity.getRenderOffsetY(), (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
@@ -121,30 +105,6 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
 
         this.renderQuads(worldrenderer, rocketModel.getGeneralQuads(), -1);
         tessellator.draw();
-
-        Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getName(), true);
-        if (teamColor != null)
-        {
-            GL11.glColor3f(teamColor.floatX(), teamColor.floatY(), teamColor.floatZ());
-        }
-
-        if (FMLClientHandler.instance().getClient().thePlayer.ticksExisted / 10 % 2 < 1)
-        {
-            GL11.glColor3f(1, 0, 0);
-        }
-        else
-        {
-            GL11.glColor3f(0, 1, 0);
-        }
-
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_LIGHTING);
-
-        GL11.glColor3f(1, 1, 1);
 
         GL11.glPopMatrix();
 
