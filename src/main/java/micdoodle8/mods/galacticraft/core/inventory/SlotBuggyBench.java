@@ -42,7 +42,7 @@ public class SlotBuggyBench extends Slot
 
                     if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, var13.worldObj.provider.getDimensionId(), new Object[] { this.pos.getX(), this.pos.getY(), this.pos.getZ() }), var13);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, var13.worldObj.provider.getDimensionId(), new Object[] { this.pos }), var13);
                     }
                 }
             }

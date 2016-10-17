@@ -128,7 +128,7 @@ public class PacketSimple extends PacketBase implements Packet
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
-        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
+        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, BlockPos.class),
         C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class),
         C_CLOSE_GUI(Side.CLIENT),
         C_RESET_THIRD_PERSON(Side.CLIENT),
