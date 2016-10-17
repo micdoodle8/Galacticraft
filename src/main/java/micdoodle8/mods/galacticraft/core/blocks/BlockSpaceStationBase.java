@@ -29,24 +29,6 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
     }
 
     @Override
-	public int getRenderType()
-	{
-	    return 3;
-	}
-
-	@Override
-    public boolean isFullCube()
-	{
-	    return false;
-    }
-	    
-    @Override
-    public boolean isOpaqueCube()
-	{
-	   return false;
-	}
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         final TileEntity tileAt = worldIn.getTileEntity(pos);
