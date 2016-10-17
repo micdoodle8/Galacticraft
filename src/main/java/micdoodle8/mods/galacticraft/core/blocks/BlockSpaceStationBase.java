@@ -15,13 +15,10 @@ import net.minecraft.world.World;
 
 public class BlockSpaceStationBase extends BlockContainer implements ITileEntityProvider
 {
-    //private IIcon[] spaceStationIcons;
-
     public BlockSpaceStationBase(String assetName)
     {
         super(Material.rock);
-        this.setHardness(-1);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setHardness(-1);    
         this.setUnlocalizedName(assetName);
     }
 
@@ -31,27 +28,23 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
         return -1.0F;
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.spaceStationIcons = new IIcon[2];
-        this.spaceStationIcons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_top");
-        this.spaceStationIcons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "space_station_side");
-        this.blockIcon = this.spaceStationIcons[0];
-    }
-
     @Override
-    public IIcon getIcon(int par1, int par2)
-    {
-        switch (par1)
-        {
-        case 1:
-            return this.spaceStationIcons[0];
-        default:
-            return this.spaceStationIcons[1];
-        }
-    }*/
+	public int getRenderType()
+	{
+	    return 3;
+	}
+
+	@Override
+    public boolean isFullCube()
+	{
+	    return false;
+    }
+	    
+    @Override
+    public boolean isOpaqueCube()
+	{
+	   return false;
+	}
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
