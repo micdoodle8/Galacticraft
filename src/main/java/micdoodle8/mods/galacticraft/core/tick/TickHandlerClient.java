@@ -262,7 +262,7 @@ public class TickHandlerClient
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
 
-            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider))
+            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && !playerBaseClient.isSpectator())
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 
@@ -282,7 +282,7 @@ public class TickHandlerClient
                 OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.thermalLevelNormalising);
             }
 
-            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode)
+            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode && !playerBaseClient.isSpectator())
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
