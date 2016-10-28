@@ -16,15 +16,20 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     @NetworkedField(targetSide = Side.CLIENT)
     public BlockPos mainBlockPosition;
 
-    public void setMainBlock(BlockPos mainBlock)
+    public TileEntityMulti(BlockPos mainBlockPosition)
     {
-        this.mainBlockPosition = mainBlock;
-
-        if (!this.worldObj.isRemote)
-        {
-            this.worldObj.markBlockForUpdate(this.getPos());
-        }
+        this.mainBlockPosition = mainBlockPosition;
     }
+
+    //    public void setMainBlock(BlockPos mainBlock)
+//    {
+//        this.mainBlockPosition = mainBlock;
+//
+//        if (!this.worldObj.isRemote)
+//        {
+//            this.worldObj.markBlockForUpdate(this.getPos());
+//        }
+//    }
 
     public void onBlockRemoval()
     {

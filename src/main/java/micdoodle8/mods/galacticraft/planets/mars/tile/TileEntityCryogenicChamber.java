@@ -31,6 +31,11 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 {
     public boolean isOccupied;
 
+    public TileEntityCryogenicChamber()
+    {
+        super(null);
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()

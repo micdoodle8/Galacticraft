@@ -17,6 +17,11 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBlock
 {
+    public TileEntityNasaWorkbench()
+    {
+        super(null);
+    }
+
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {

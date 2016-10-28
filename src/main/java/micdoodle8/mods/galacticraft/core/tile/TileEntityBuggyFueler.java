@@ -27,6 +27,11 @@ import java.util.List;
 
 public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity, ITickable
 {
+    public TileEntityBuggyFueler()
+    {
+        super(null);
+    }
+
     private IDockable dockedEntity;
 
     @Override

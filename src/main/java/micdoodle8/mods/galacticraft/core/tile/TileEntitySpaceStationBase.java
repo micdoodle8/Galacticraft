@@ -11,6 +11,11 @@ import net.minecraft.world.World;
 
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
 {
+    public TileEntitySpaceStationBase()
+    {
+        super(null);
+    }
+
     public String ownerUsername = "bobby";
 
     @Override

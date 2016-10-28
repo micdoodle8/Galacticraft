@@ -32,6 +32,11 @@ import java.util.List;
 
 public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
+    public TileEntityLandingPad()
+    {
+        super(null);
+    }
+
     private IDockable dockedEntity;
 
     @Override
