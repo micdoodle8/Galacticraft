@@ -350,7 +350,7 @@ public class WorldUtil
         }
         else
         {
-            return regular;
+            return regular + viewEntity.getEyeHeight();
         }
     }
 
