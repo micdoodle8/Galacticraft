@@ -43,7 +43,7 @@ public class PacketSimpleMars extends PacketBase
         S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
         // CLIENT
         C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
-        C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, Integer.class, Integer.class, Integer.class);
+        C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, BlockPos.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -162,11 +162,12 @@ public class PacketSimpleMars extends PacketBase
                 break;
             }
         case C_BEGIN_CRYOGENIC_SLEEP:
-            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+            BlockPos pos = (BlockPos) this.data.get(0);
+            TileEntity tile = player.worldObj.getTileEntity(pos);
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
-                ((TileEntityCryogenicChamber) tile).sleepInBedAt(player, (Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+                ((TileEntityCryogenicChamber) tile).sleepInBedAt(player, pos.getX(), pos.getY(), pos.getZ());
             }
         default:
             break;

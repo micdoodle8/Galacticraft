@@ -105,10 +105,10 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.terraformer.getPos().getX(), this.terraformer.getPos().getY(), this.terraformer.getPos().getZ(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.terraformer.getPos(), 0 }));
                 break;
             case 1:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.terraformer.getPos().getX(), this.terraformer.getPos().getY(), this.terraformer.getPos().getZ(), 1 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.terraformer.getPos(), 1 }));
                 break;
             case 2:
                 break;
