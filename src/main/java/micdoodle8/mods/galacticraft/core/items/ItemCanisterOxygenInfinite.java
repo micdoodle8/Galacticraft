@@ -4,15 +4,18 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -86,5 +89,28 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.GEAR;
+    }
+
+	@Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    {
+        if (player instanceof EntityPlayerMP)
+        {
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            ItemStack gear = stats.extendedInventory.getStackInSlot(2);
+            ItemStack gear1 = stats.extendedInventory.getStackInSlot(3);
+
+            if (gear == null)
+            {
+                stats.extendedInventory.setInventorySlotContents(2, itemStack.copy());
+                itemStack.stackSize = 0;
+            }
+            else if (gear1 == null)
+            {
+                stats.extendedInventory.setInventorySlotContents(3, itemStack.copy());
+                itemStack.stackSize = 0;
+            }
+        }
+        return itemStack;
     }
 }
