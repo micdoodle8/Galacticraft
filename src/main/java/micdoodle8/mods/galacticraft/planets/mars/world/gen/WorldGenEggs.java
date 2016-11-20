@@ -22,6 +22,8 @@ public class WorldGenEggs extends WorldGenerator
         int j1 = y + par2Random.nextInt(4) - par2Random.nextInt(4);
         int k1 = z + par2Random.nextInt(8) - par2Random.nextInt(8);
 
+        if (!par1World.blockExists(i1, j1, k1)) return false;
+        
         if (par1World.isAirBlock(i1, j1, k1) && (!par1World.provider.hasNoSky || j1 < 127) && this.eggBlock.canBlockStay(par1World, i1, j1, k1))
         {
             par1World.setBlock(i1, j1, k1, this.eggBlock, par2Random.nextInt(3), 2);
