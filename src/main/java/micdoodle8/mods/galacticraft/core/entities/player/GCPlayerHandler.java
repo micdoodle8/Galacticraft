@@ -686,24 +686,24 @@ public class GCPlayerHandler
             {
             	if (!playerStats.oxygenSetupValid)
             	{
-            		if (playerStats.damageCounter == 0)
-            		{
-            			playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
+        			GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(player);
+        			MinecraftForge.EVENT_BUS.post(suffocationEvent);
 
-            			GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(player);
-            			MinecraftForge.EVENT_BUS.post(suffocationEvent);
+        			if (!suffocationEvent.isCanceled())
+        			{
+                		if (playerStats.damageCounter == 0)
+                		{
+                			playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
 
-            			if (!suffocationEvent.isCanceled())
-            			{
             				player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage * (2 + playerStats.incrementalDamage) / 2);
             				if (ConfigManagerCore.hardMode) playerStats.incrementalDamage++;
 
             				GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
             				MinecraftForge.EVENT_BUS.post(suffocationEventPost);
-            			}
-            			else
-            				playerStats.oxygenSetupValid = true;
-            		}
+                		}
+        			}
+        			else
+        				playerStats.oxygenSetupValid = true;
             	}
         		else
         			playerStats.incrementalDamage = 0;
