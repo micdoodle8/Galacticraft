@@ -47,7 +47,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
     public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
 
-    private enum EnumBlockBasicMoon implements IStringSerializable
+    public enum EnumBlockBasicMoon implements IStringSerializable
     {
         ORE_COPPER_MOON(0, "ore_copper_moon"),
         ORE_TIN_MOON(1, "ore_tin_moon"),

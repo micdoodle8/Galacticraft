@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenMoonDungeon;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.StructureMoonDungeonPieces;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
@@ -33,6 +35,7 @@ public class MapGenVillageMoon extends MapGenStructure
         if (!MapGenVillageMoon.initialized)
         {
             MapGenStructureIO.registerStructure(StructureVillageStartMoon.class, "MoonVillage");
+            MapGenStructureIO.registerStructure(MapGenMoonDungeon.Start.class, "MoonDungeon");
             MapGenStructureIO.registerStructureComponent(StructureComponentVillageField.class, "MoonField1");
             MapGenStructureIO.registerStructureComponent(StructureComponentVillageField2.class, "MoonField2");
             MapGenStructureIO.registerStructureComponent(StructureComponentVillageHouse.class, "MoonHouse");
@@ -41,6 +44,12 @@ public class MapGenVillageMoon extends MapGenStructure
             MapGenStructureIO.registerStructureComponent(StructureComponentVillageTorch.class, "MoonTorch");
             MapGenStructureIO.registerStructureComponent(StructureComponentVillageStartPiece.class, "MoonWell");
             MapGenStructureIO.registerStructureComponent(StructureComponentVillageWoodHut.class, "MoonWoodHut");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.Start.class, "MoonDungeonStart");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.Corridor.class, "MoonDungeonCorridor");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomEmpty.class, "MoonDungeonEmptyRoom");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.TreasureCorridor.class, "MoonDungeonTreasureCorridor");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomBoss.class, "MoonDungeonBossRoom");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomTreasure.class, "MoonDungeonTreasureRoom");
         }
 
         MapGenVillageMoon.initialized = true;

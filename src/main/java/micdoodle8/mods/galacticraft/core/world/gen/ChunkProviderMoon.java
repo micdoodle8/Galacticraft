@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.*;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenMoonDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -50,22 +50,24 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     private final World worldObj;
     private final MapGenVillageMoon villageGenerator = new MapGenVillageMoon();
 
-    private final MapGenDungeon dungeonGenerator = new MapGenDungeon(GCBlocks.blockMoon, 14, 8, 16, 3);
+//    private final MapGenDungeon dungeonGenerator = new MapGenDungeon(GCBlocks.blockMoon, 14, 8, 16, 3);
+
+    private final MapGenMoonDungeon dungeonGeneratorMoon = new MapGenMoonDungeon();
 
     {
-        this.dungeonGenerator.otherRooms.add(new RoomEmptyMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.bossRooms.add(new RoomBossMoon(null, 0, 0, 0, null));
-        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomEmptyMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.otherRooms.add(new RoomChestsMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.bossRooms.add(new RoomBossMoon(null, 0, 0, 0, null));
+//        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMoon(null, 0, 0, 0, null));
     }
 
     private BiomeGenBase[] biomesForGeneration = { BiomeGenBaseMoon.moonFlat };
@@ -253,8 +255,9 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
         this.caveGenerator.generate(this, this.worldObj, x, z, chunkprimer);
 
-        this.dungeonGenerator.generateUsingArrays(this, this.worldObj, 25, x, z, chunkprimer);
+//        this.dungeonGenerator.generateUsingArrays(this, this.worldObj, 25, x, z, chunkprimer);
 
+        this.dungeonGeneratorMoon.generate(this, this.worldObj, x, z, chunkprimer);
         this.villageGenerator.generate(this, this.worldObj, x, z, chunkprimer);
 
         Chunk chunk = new Chunk(this.worldObj, chunkprimer, x, z);
@@ -394,12 +397,14 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
         long l = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed((long)x * k + (long)z * l ^ this.worldObj.getSeed());
 
-        this.dungeonGenerator.handleTileEntities(this.rand);
+//        this.dungeonGenerator.handleTileEntities(this.rand);
 
         if (!ConfigManagerCore.disableMoonVillageGen)
         {
             this.villageGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
         }
+
+        this.dungeonGeneratorMoon.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
 
         biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(i, 0, j));
         BlockFalling.fallInstantly = false;
@@ -449,5 +454,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
         {
             this.villageGenerator.generate(this, this.worldObj, x, z, null);
         }
+
+        this.dungeonGeneratorMoon.generate(this, this.worldObj, x, z, null);
     }
 }
