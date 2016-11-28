@@ -8,38 +8,38 @@ import net.minecraft.util.MathHelper;
 
 public class ModelEvolvedSkeletonBoss extends ModelBase
 {
-    ModelRenderer upperHead;
-    ModelRenderer pelvis;
-    ModelRenderer sternum;
-    ModelRenderer rightLeg;
-    ModelRenderer rightArm;
-    ModelRenderer spine;
-    ModelRenderer leftArm;
-    ModelRenderer leftLeg;
-    ModelRenderer leftFrontBotRib;
-    ModelRenderer leftFrontTopRib;
-    ModelRenderer leftFront2ndRib;
-    ModelRenderer leftFront3rdRib;
-    ModelRenderer leftSideBotRib;
-    ModelRenderer leftSide3rdRib;
-    ModelRenderer leftSide2ndRib;
-    ModelRenderer leftSideTopRib;
-    ModelRenderer rightSideTopRib;
-    ModelRenderer rightSide2ndRib;
-    ModelRenderer rightSide3rdRib;
-    ModelRenderer rightSideBotRib;
-    ModelRenderer rightFrontBotRib;
-    ModelRenderer rightFront3rdRib;
-    ModelRenderer rightFront2ndRib;
-    ModelRenderer rightFrontTopRib;
-    ModelRenderer leftBackTopRib;
-    ModelRenderer leftBack2ndRib;
-    ModelRenderer leftBack3rdRib;
-    ModelRenderer leftBackBotRib;
-    ModelRenderer rightBackBotRib;
-    ModelRenderer rightBack3rdRib;
-    ModelRenderer rightBack2ndRib;
-    ModelRenderer rightBackTopRib;
+    private ModelRenderer upperHead;
+    private ModelRenderer pelvis;
+    private ModelRenderer sternum;
+    private ModelRenderer rightLeg;
+    private ModelRenderer rightArm;
+    private ModelRenderer spine;
+    private ModelRenderer leftArm;
+    private ModelRenderer leftLeg;
+    private ModelRenderer leftFrontBotRib;
+    private ModelRenderer leftFrontTopRib;
+    private ModelRenderer leftFront2ndRib;
+    private ModelRenderer leftFront3rdRib;
+    private ModelRenderer leftSideBotRib;
+    private ModelRenderer leftSide3rdRib;
+    private ModelRenderer leftSide2ndRib;
+    private ModelRenderer leftSideTopRib;
+    private ModelRenderer rightSideTopRib;
+    private ModelRenderer rightSide2ndRib;
+    private ModelRenderer rightSide3rdRib;
+    private ModelRenderer rightSideBotRib;
+    private ModelRenderer rightFrontBotRib;
+    private ModelRenderer rightFront3rdRib;
+    private ModelRenderer rightFront2ndRib;
+    private ModelRenderer rightFrontTopRib;
+    private ModelRenderer leftBackTopRib;
+    private ModelRenderer leftBack2ndRib;
+    private ModelRenderer leftBack3rdRib;
+    private ModelRenderer leftBackBotRib;
+    private ModelRenderer rightBackBotRib;
+    private ModelRenderer rightBack3rdRib;
+    private ModelRenderer rightBack2ndRib;
+    private ModelRenderer rightBackTopRib;
 
     public ModelEvolvedSkeletonBoss()
     {
@@ -290,102 +290,85 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         model.rotateAngleZ = z;
     }
 
-//    @Override
-//    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
-//    {
-//        final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
-//        super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
-//        this.upperHead.rotateAngleY = 0;
-//        this.upperHead.rotateAngleX = 0;
-//        this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
-//        this.leftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
-//        this.rightArm.rotateAngleZ = 0.0F;
-//        this.leftArm.rotateAngleZ = 0.0F;
-//        this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-//        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-//        this.rightLeg.rotateAngleY = 0.0F;
-//        this.leftLeg.rotateAngleY = 0.0F;
-//
-//        if (this.isRiding)
-//        {
-//            this.rightArm.rotateAngleX += -((float) Math.PI / 5F);
-//            this.leftArm.rotateAngleX += -((float) Math.PI / 5F);
-//            this.rightLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
-//            this.leftLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
-//            this.rightLeg.rotateAngleY = (float) Math.PI / 10F;
-//            this.leftLeg.rotateAngleY = -((float) Math.PI / 10F);
-//        }
-//
-//        this.rightArm.rotateAngleY = 0.0F;
-//        this.leftArm.rotateAngleY = 0.0F;
-//        float var7;
-//        float var8;
-//
-//        if (this.onGround > -9990.0F)
-//        {
-//            var7 = this.onGround;
-//            this.spine.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float) Math.PI * 2.0F) * 0.2F;
-//
-//            this.rightArm.rotationPointZ = MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
-//            this.rightArm.rotationPointX = -MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
-//            this.leftArm.rotationPointZ = -MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
-//            this.leftArm.rotationPointX = MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
-//            this.rightArm.rotateAngleY += this.spine.rotateAngleY;
-//            this.leftArm.rotateAngleY += this.spine.rotateAngleY;
-//            this.leftArm.rotateAngleX += this.spine.rotateAngleY;
-//            var7 = 1.0F - this.onGround;
-//            var7 *= var7;
-//            var7 *= var7;
-//            var7 = 1.0F - var7;
-//            var8 = MathHelper.sin(var7 * (float) Math.PI);
-//            final float var9 = MathHelper.sin(this.onGround * (float) Math.PI) * -(this.upperHead.rotateAngleX - 0.7F) * 0.75F;
-//            this.rightArm.rotateAngleX = (float) (this.rightArm.rotateAngleX - (var8 * 1.2D + var9));
-//            this.rightArm.rotateAngleY += this.spine.rotateAngleY * 2.0F;
-//            this.rightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float) Math.PI) * -0.4F;
-//        }
-//
-//        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-//        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-//        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-//        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
-//
-//        MathHelper.sin(this.onGround * (float) Math.PI);
-//        MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
-//
-//        var7 = 0.0F;
-//        var8 = 0.0F;
-//        this.rightArm.rotateAngleZ = 0.0F;
-//        this.leftArm.rotateAngleZ = 0.0F;
-//        this.rightArm.rotateAngleY = -(0.1F - var7 * 0.6F) + this.upperHead.rotateAngleY;
-//        this.leftArm.rotateAngleY = 0.1F - var7 * 0.6F + this.upperHead.rotateAngleY + 0.4F;
-//        this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + this.upperHead.rotateAngleX;
-//        this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + this.upperHead.rotateAngleX;
-//        this.rightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
-//        this.leftArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
-//        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-//        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-//        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-//        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
-//
-//        final float f6 = MathHelper.sin(this.onGround * (float) Math.PI);
-//        final float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
-//        this.rightArm.rotateAngleZ = 0.0F;
-//        this.leftArm.rotateAngleZ = 0.0F;
-//        this.rightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
-//        this.leftArm.rotateAngleY = 0.1F - f6 * 0.6F;
-//        this.rightArm.rotateAngleX = -((float) Math.PI / 2F);
-//        this.leftArm.rotateAngleX = -((float) Math.PI / 2F);
-//        this.rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-//        this.leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-//        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-//        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-//        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-//        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
-//
-//        if (boss.throwTimer + boss.postThrowDelay > 0)
-//        {
-//            this.rightArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
-//            this.leftArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
-//        }
-//    }
+    @Override
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
+    {
+        final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
+        super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
+        this.upperHead.rotateAngleY = par4 / (180F / (float)Math.PI);
+        this.upperHead.rotateAngleX = par5 / (180F / (float)Math.PI);
+        this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
+        this.leftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+        this.rightArm.rotateAngleZ = 0.0F;
+        this.leftArm.rotateAngleZ = 0.0F;
+        this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.rightLeg.rotateAngleY = 0.0F;
+        this.leftLeg.rotateAngleY = 0.0F;
+
+        if (this.isRiding)
+        {
+            this.rightArm.rotateAngleX += -((float) Math.PI / 5F);
+            this.leftArm.rotateAngleX += -((float) Math.PI / 5F);
+            this.rightLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
+            this.leftLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
+            this.rightLeg.rotateAngleY = (float) Math.PI / 10F;
+            this.leftLeg.rotateAngleY = -((float) Math.PI / 10F);
+        }
+
+        this.rightArm.rotateAngleY = par4 / (180F / (float)Math.PI);
+        this.leftArm.rotateAngleY = par4 / (180F / (float)Math.PI);
+        float var7;
+        float var8;
+
+        if (this.swingProgress > -9990.0F)
+        {
+            var7 = this.swingProgress;
+            this.spine.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float) Math.PI * 2.0F) * 0.2F;
+
+            this.rightArm.rotationPointZ = MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
+            this.rightArm.rotationPointX = -MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
+            this.leftArm.rotationPointZ = -MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
+            this.leftArm.rotationPointX = MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
+            this.rightArm.rotateAngleY += this.spine.rotateAngleY;
+            this.leftArm.rotateAngleY += this.spine.rotateAngleY;
+            this.leftArm.rotateAngleX += this.spine.rotateAngleY;
+            var7 = 1.0F - this.swingProgress;
+            var7 *= var7;
+            var7 *= var7;
+            var7 = 1.0F - var7;
+            var8 = MathHelper.sin(var7 * (float) Math.PI);
+            final float var9 = MathHelper.sin(this.swingProgress * (float) Math.PI) * -(this.upperHead.rotateAngleX - 0.7F) * 0.75F;
+            this.rightArm.rotateAngleX = (float) (this.rightArm.rotateAngleX - (var8 * 1.2D + var9));
+            this.rightArm.rotateAngleY += this.spine.rotateAngleY * 2.0F;
+            this.rightArm.rotateAngleZ = MathHelper.sin(this.swingProgress * (float) Math.PI) * -0.4F;
+        }
+
+        final float f6 = MathHelper.sin(this.swingProgress * (float) Math.PI);
+        final float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
+        this.rightArm.rotateAngleZ = 0.0F;
+        this.leftArm.rotateAngleZ = 0.0F;
+        this.rightArm.rotateAngleY = 0.5F * (par4 / (180F / (float)Math.PI)) + -(0.1F - f6 * 0.6F);
+        this.leftArm.rotateAngleY = 0.5F * (par4 / (180F / (float)Math.PI)) + 0.1F - f6 * 0.6F;
+        this.rightArm.rotateAngleX = -((float) Math.PI / 2F);
+        this.leftArm.rotateAngleX = -((float) Math.PI / 2F);
+        this.rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+        this.leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+        this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+        this.leftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+        this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+        this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+
+        if (((EntitySkeletonBoss) e).deathTicks > 0)
+        {
+            this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 3.0F * (float)(Math.PI / 180.0F);
+            this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 2.0F * (float)(Math.PI / 180.0F);
+        }
+
+        if (boss.throwTimer + boss.postThrowDelay > 0)
+        {
+            this.rightArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+            this.leftArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+        }
+    }
 }

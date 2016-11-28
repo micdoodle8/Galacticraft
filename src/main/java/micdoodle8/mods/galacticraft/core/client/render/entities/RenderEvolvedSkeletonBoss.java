@@ -45,6 +45,7 @@ public class RenderEvolvedSkeletonBoss extends RenderLiving<EntitySkeletonBoss>
     protected void preRenderCallback(EntitySkeletonBoss par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
+        GL11.glRotatef((float) (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F + (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F - Math.pow(par1EntityLiving.deathTicks - 1, 2) / 5.0F) * par2), 0.0F, 1.0F, 0.0F);
     }
 
     @Override
