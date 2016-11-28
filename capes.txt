@@ -98,3 +98,4 @@ urix123:capePurple
 Monkeypants_271:capeLime
 Nomad043:capeLightGray
 Malstrim:capePurple
+CthulhuTheElder:capeCyan
