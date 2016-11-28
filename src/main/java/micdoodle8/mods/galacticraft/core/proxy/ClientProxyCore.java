@@ -575,6 +575,8 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.screen);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.telemetry);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fluidTank);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorch);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
     }
 
     private static void addVariants()
