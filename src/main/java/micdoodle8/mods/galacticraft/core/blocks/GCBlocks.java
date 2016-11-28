@@ -63,6 +63,7 @@ public class GCBlocks
     public static Block screen;
     public static Block telemetry;
     public static Block fluidTank;
+    public static Block bossSpawner;
     /*public static Block slabGCHalf;
     public static Block slabGCDouble;
     public static Block tinStairs1;
@@ -118,6 +119,7 @@ public class GCBlocks
         GCBlocks.screen = new BlockScreen("view_screen");
         GCBlocks.telemetry = new BlockTelemetry("telemetry");
         GCBlocks.fluidTank = new BlockFluidTank("fluid_tank");
+        GCBlocks.bossSpawner = new BlockBossSpawner("boss_spawner");
         /*GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock);
         GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock);
         GCBlocks.tinStairs1 = new BlockStairsGC("tinStairs1", blockMoon, BlockStairsGC.StairsCategoryGC.TIN1).setHardness(2.0F);
@@ -136,6 +138,7 @@ public class GCBlocks
         GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
         GCBlocks.hiddenBlocks.add(GCBlocks.fakeBlock);
         GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
+        GCBlocks.hiddenBlocks.add(GCBlocks.bossSpawner);
         //GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);
 
         // Register blocks before register ores, so that the ItemStack picks up the correct item
@@ -315,6 +318,7 @@ public class GCBlocks
         registerBlock(GCBlocks.brightLamp, ItemBlockArclamp.class);
         registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class);
         registerBlock(GCBlocks.fluidTank, ItemBlockDesc.class);
+        registerBlock(GCBlocks.bossSpawner, ItemBlockGC.class);
         /*registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());
         registerBlock(GCBlocks.tinStairs2, ItemBlockGC.class, GCBlocks.tinStairs2.getUnlocalizedName());
         registerBlock(GCBlocks.moonStoneStairs, ItemBlockGC.class, GCBlocks.moonStoneStairs.getUnlocalizedName());

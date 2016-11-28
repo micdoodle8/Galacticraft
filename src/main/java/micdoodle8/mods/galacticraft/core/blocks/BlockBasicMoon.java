@@ -43,7 +43,7 @@ import java.util.Random;
 public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
     // CopperMoon: 0, TinMoon: 1, CheeseStone: 2
-    // Moon dirt: 3;  Moon rock: 4;  Moon topsoil: 5-13 (6-13 have GC2 footprints);  Moon dungeon brick: 14;  Moon boss spawner: 15;
+    // Moon dirt: 3;  Moon rock: 4;  Moon topsoil: 5-13 (6-13 have GC2 footprints);  Moon dungeon brick: 14;
 
     public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
 
@@ -63,8 +63,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         MOON_TURF_6(11, "moon_turf_6"),
         MOON_TURF_7(12, "moon_turf_7"),
         MOON_TURF_8(13, "moon_turf_8"),
-        MOON_DUNGEON_BRICK(14, "moon_dungeon_brick"),
-        MOON_BOSS_SPAWNER(15, "moon_boss_spawner");
+        MOON_DUNGEON_BRICK(14, "moon_dungeon_brick");
 
         private final int meta;
         private final String name;
@@ -112,41 +111,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         /*this.setUnlocalizedName("moonBlock");*/
     }
 
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (getMetaFromState(state) == 15)
-        {
-            return AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
-        }
-
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos)
-    {
-        if (getMetaFromState(world.getBlockState(pos)) == 15)
-        {
-            return AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
-        }
-
-        return super.getSelectedBoundingBox(world, pos);
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockAccess world, BlockPos pos)
-    {
-        if (getMetaFromState(world.getBlockState(pos)) == 15)
-        {
-            return false;
-        }
-        else
-        {
-            return super.isNormalCube(world, pos);
-        }
-    }
-
     /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -183,11 +147,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     {
     	int metadata = getMetaFromState(world.getBlockState(pos));
 
-    	if (metadata == 15)
-        {
-            return 10000.0F;
-        }
-    	else if (metadata == 14)
+    	if (metadata == 14)
         {
             return 40.0F;
         }
@@ -320,8 +280,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         {
         case 2:
             return GCItems.cheeseCurd;
-        case 15:
-            return Item.getItemFromBlock(Blocks.air);
         default:
             return Item.getItemFromBlock(this);
         }
@@ -357,8 +315,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
                 return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2 : 1;
             }
             return 1;
-        case 15:
-            return 0;
         default:
             return 1;
         }
@@ -379,17 +335,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        if (getMetaFromState(state) == 15)
-        {
-            return new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
-        }
-
-        return null;
     }
 
     @Override
@@ -455,10 +400,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         if (metadata == 2)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-        }
-        if (metadata == 15)
-        {
-            return null;
         }
 
         return super.getPickBlock(target, world, pos);
