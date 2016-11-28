@@ -549,13 +549,13 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_PLAY_SOUND_BOSS_DEATH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, 0.8F);
+            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, 1.5F);
             break;
         case C_PLAY_SOUND_EXPLODE:
             player.playSound("random.explode", 10.0F, 0.7F);
             break;
         case C_PLAY_SOUND_BOSS_LAUGH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
+            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 1.1F);
             break;
         case C_PLAY_SOUND_BOW:
             player.playSound("random.bow", 10.0F, 0.2F);

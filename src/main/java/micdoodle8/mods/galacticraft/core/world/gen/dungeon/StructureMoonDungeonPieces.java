@@ -1,17 +1,27 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraftforge.common.ChestGenHooks;
 
 import java.util.List;
 import java.util.Random;
@@ -116,7 +126,30 @@ public class StructureMoonDungeonPieces
             this.direction = direction;
         }
 
-        public Piece getCorridor(Random rand, Start startPiece, int maxAttempts, boolean treasure)
+        @Override
+        protected void writeStructureToNBT(NBTTagCompound tagCompound)
+        {
+            super.writeStructureToNBT(tagCompound);
+
+            tagCompound.setInteger("direction", this.direction.ordinal());
+        }
+
+        @Override
+        protected void readStructureFromNBT(NBTTagCompound tagCompound)
+        {
+            super.readStructureFromNBT(tagCompound);
+
+            if (tagCompound.hasKey("direction"))
+            {
+                this.direction = EnumFacing.getFront(tagCompound.getInteger("direction"));
+            }
+            else
+            {
+                this.direction = EnumFacing.NORTH;
+            }
+        }
+
+        public Piece getCorridor(Random rand, Start startPiece, int maxAttempts, boolean treasure, int minLength, int maxLength, int height)
         {
             EnumFacing randomDir;
             int blockX;
@@ -129,7 +162,7 @@ public class StructureMoonDungeonPieces
             {
                 int randDir = rand.nextInt(4);
                 randomDir = EnumFacing.getHorizontal((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
-                StructureBoundingBox extension = getExtension(randomDir, 10, 3);
+                StructureBoundingBox extension = getExtension(randomDir, minLength + rand.nextInt(maxLength - minLength), 3);
                 blockX = extension.minX;
                 blockZ = extension.minZ;
                 sizeX = extension.maxX - extension.minX;
@@ -146,11 +179,11 @@ public class StructureMoonDungeonPieces
 
             if (treasure)
             {
-                return new TreasureCorridor(this.brickBlock, rand, blockX, blockZ, sizeX, sizeZ, randomDir);
+                return new TreasureCorridor(this.brickBlock, rand, blockX, blockZ, sizeX, height, sizeZ, randomDir);
             }
             else
             {
-                return new Corridor(this.brickBlock, rand, blockX, blockZ, sizeX, sizeZ, randomDir);
+                return new Corridor(this.brickBlock, rand, blockX, blockZ, sizeX, height, sizeZ, randomDir);
             }
         }
     }
@@ -234,9 +267,9 @@ public class StructureMoonDungeonPieces
         {
         }
 
-        public TreasureCorridor(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeZ, EnumFacing direction)
+        public TreasureCorridor(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
         {
-            super(brickBlock, rand, blockPosX, blockPosZ, sizeX, sizeZ, direction);
+            super(brickBlock, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, direction);
         }
 
         @Override
@@ -246,6 +279,7 @@ public class StructureMoonDungeonPieces
 
             int sizeX = extension.maxX - extension.minX;
             int sizeZ = extension.maxZ - extension.minZ;
+            int sizeY = rand.nextInt(2) + 6;
             int blockX = extension.minX;
             int blockZ = extension.minZ;
 
@@ -254,7 +288,7 @@ public class StructureMoonDungeonPieces
                 return null;
             }
 
-            return new RoomTreasure(this.brickBlock, rand, blockX, blockZ, sizeX, sizeZ, this.getDirection().getOpposite());
+            return new RoomTreasure(this.brickBlock, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
         }
     }
 
@@ -264,11 +298,11 @@ public class StructureMoonDungeonPieces
         {
         }
 
-        public Corridor(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeZ, EnumFacing direction)
+        public Corridor(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
         {
             super(brickBlock, direction);
             this.coordBaseMode = EnumFacing.SOUTH;
-            this.boundingBox = new StructureBoundingBox(blockPosX, EntranceRoom.Y_POS, blockPosZ, blockPosX + sizeX, EntranceRoom.Y_POS + 5, blockPosZ + sizeZ);
+            this.boundingBox = new StructureBoundingBox(blockPosX, EntranceRoom.Y_POS, blockPosZ, blockPosX + sizeX, EntranceRoom.Y_POS + sizeY, blockPosZ + sizeZ);
         }
 
         @Override
@@ -329,6 +363,7 @@ public class StructureMoonDungeonPieces
 
             int sizeX = extension.maxX - extension.minX;
             int sizeZ = extension.maxZ - extension.minZ;
+            int sizeY = rand.nextInt(2) + (bossRoom ? 8 : 6);
             int blockX = extension.minX;
             int blockZ = extension.minZ;
 
@@ -339,11 +374,20 @@ public class StructureMoonDungeonPieces
 
             if (bossRoom)
             {
-                return new RoomBoss(this.brickBlock, rand, blockX, blockZ, sizeX, sizeZ, this.getDirection().getOpposite());
+                return new RoomBoss(this.brickBlock, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
             }
             else
             {
-                return new RoomEmpty(this.brickBlock, rand, blockX, blockZ, sizeX, sizeZ, this.getDirection().getOpposite());
+                switch (rand.nextInt(3))
+                {
+                case 0:
+                    return new RoomSpawner(this.brickBlock, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+                case 1:
+                    return new RoomChest(this.brickBlock, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+                default:
+                case 2:
+                    return new RoomEmpty(this.brickBlock, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+                }
             }
         }
     }
@@ -370,7 +414,7 @@ public class StructureMoonDungeonPieces
             this.sizeZ = rand.nextInt(4) + 6;
 
             this.boundingBox = new StructureBoundingBox(blockPosX - range, Y_POS, blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
-            System.err.println("findthis " + blockPosX + " " + blockPosZ);
+            System.out.println("Generating dungeon at " + blockPosX + " " + Y_POS + " " + blockPosZ);
         }
 
         @Override
@@ -429,8 +473,8 @@ public class StructureMoonDungeonPieces
             {
                 for (int k = -range; k < range; k++)
                 {
-                    final double xDev = (i) / 10D;
-                    final double zDev = (k) / 10D;
+                    final double xDev = i / 10D;
+                    final double zDev = k / 10D;
                     final double distance = xDev * xDev + zDev * zDev;
                     final int depth = (int) Math.abs(0.5 / (distance + .00001D));
                     int helper = 0;
@@ -453,7 +497,7 @@ public class StructureMoonDungeonPieces
         {
             if (startPiece.attachedComponents.isEmpty())
             {
-                return getCorridor(rand, startPiece, 10, false);
+                return getCorridor(rand, startPiece, 10, false, 8, 16, 5);
             }
 
             return null;
@@ -501,21 +545,21 @@ public class StructureMoonDungeonPieces
 
     public static class RoomEmpty extends DirectionalPiece
     {
-        private int sizeX;
-        private int sizeY;
-        private int sizeZ;
+        protected int sizeX;
+        protected int sizeY;
+        protected int sizeZ;
 
         public RoomEmpty()
         {
         }
 
-        public RoomEmpty(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeZ, EnumFacing entranceDir)
+        public RoomEmpty(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
         {
             super(brickBlock, entranceDir.getOpposite());
             this.coordBaseMode = EnumFacing.SOUTH;
             this.sizeX = sizeX;
+            this.sizeY = sizeY;
             this.sizeZ = sizeZ;
-            this.sizeY = rand.nextInt(2) + 5;
             int yPos = EntranceRoom.Y_POS;
 
             this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
@@ -597,7 +641,7 @@ public class StructureMoonDungeonPieces
                 return null;
             }
 
-            return getCorridor(rand, startPiece, 10, false);
+            return getCorridor(rand, startPiece, 10, false, 8, 16, 5);
         }
 
         @Override
@@ -631,13 +675,13 @@ public class StructureMoonDungeonPieces
         {
         }
 
-        public RoomBoss(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeZ, EnumFacing entranceDir)
+        public RoomBoss(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
         {
             super(brickBlock, entranceDir.getOpposite());
             this.coordBaseMode = EnumFacing.SOUTH;
             this.sizeX = sizeX;
             this.sizeZ = sizeZ;
-            this.sizeY = rand.nextInt(2) + 8;
+            this.sizeY = sizeY;
             int yPos = EntranceRoom.Y_POS;
 
             this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
@@ -721,12 +765,27 @@ public class StructureMoonDungeonPieces
                 }
             }
 
+            int spawnerX = this.sizeX / 2;
+            int spawnerY = 1;
+            int spawnerZ = this.sizeZ / 2;
+            this.setBlockState(worldIn, GCBlocks.bossSpawner.getDefaultState(), spawnerX, spawnerY, spawnerZ, boundingBox);
+            BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
+            TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);
+
+            if (spawner == null)
+            {
+                spawner = new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
+                worldIn.setTileEntity(blockpos, spawner);
+            }
+
+            spawner.setRoom(new Vector3(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1), new Vector3(this.sizeX - 1, this.sizeY - 1, this.sizeZ - 1));
+
             return true;
         }
 
         public Piece getNextPiece(Start startPiece, Random rand)
         {
-            return getCorridor(rand, startPiece, 10, true);
+            return getCorridor(rand, startPiece, 10, true, 8, 16, 5);
         }
 
         @Override
@@ -760,13 +819,13 @@ public class StructureMoonDungeonPieces
         {
         }
 
-        public RoomTreasure(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeZ, EnumFacing entranceDir)
+        public RoomTreasure(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
         {
             super(brickBlock, entranceDir.getOpposite());
             this.coordBaseMode = EnumFacing.SOUTH;
             this.sizeX = sizeX;
             this.sizeZ = sizeZ;
-            this.sizeY = rand.nextInt(2) + 5;
+            this.sizeY = sizeY;
             int yPos = EntranceRoom.Y_POS;
 
             this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
@@ -828,6 +887,8 @@ public class StructureMoonDungeonPieces
                         else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                         {
                             this.setBlockState(worldIn, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockT1TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
+                            BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
+                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(1));
                         }
                         else
                         {
@@ -836,8 +897,6 @@ public class StructureMoonDungeonPieces
                     }
                 }
             }
-
-            this.setBlockState(worldIn, Blocks.glowstone.getDefaultState(), 1, 1, 1, boundingBox);
 
             return true;
         }
@@ -865,6 +924,146 @@ public class StructureMoonDungeonPieces
             this.sizeX = tagCompound.getInteger("sizeX");
             this.sizeY = tagCompound.getInteger("sizeY");
             this.sizeZ = tagCompound.getInteger("sizeZ");
+        }
+    }
+
+    public static class RoomChest extends RoomEmpty
+    {
+        public RoomChest()
+        {
+        }
+
+        public RoomChest(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+        {
+            super(brickBlock, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
+        }
+
+        @Override
+        public boolean addComponentParts(World worldIn, Random rand, StructureBoundingBox boundingBox)
+        {
+            if (super.addComponentParts(worldIn, rand, boundingBox))
+            {
+                int chestX = this.sizeX / 2;
+                int chestY = 1;
+                int chestZ = this.sizeZ / 2;
+                this.setBlockState(worldIn, Blocks.chest.getDefaultState().withProperty(BlockT1TreasureChest.FACING, this.getDirection().getOpposite()), chestX, chestY, chestZ, boundingBox);
+
+                BlockPos blockpos = new BlockPos(this.getXWithOffset(chestX, chestZ), this.getYWithOffset(chestY), this.getZWithOffset(chestX, chestZ));
+                TileEntityChest chest = (TileEntityChest) worldIn.getTileEntity(blockpos);
+
+                if (chest != null)
+                {
+                    for (int i = 0; i < chest.getSizeInventory(); ++i)
+                    {
+                        // Clear contents
+                        chest.setInventorySlotContents(i, null);
+                    }
+
+                    ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+
+                    WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), chest, info.getCount(rand));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void writeStructureToNBT(NBTTagCompound tagCompound)
+        {
+            super.writeStructureToNBT(tagCompound);
+        }
+
+        @Override
+        protected void readStructureFromNBT(NBTTagCompound tagCompound)
+        {
+            super.readStructureFromNBT(tagCompound);
+        }
+    }
+
+    public static class RoomSpawner extends RoomEmpty
+    {
+        public RoomSpawner()
+        {
+        }
+
+        public RoomSpawner(IBlockState brickBlock, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+        {
+            super(brickBlock, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
+        }
+
+        @Override
+        public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+        {
+            if (super.addComponentParts(worldIn, random, boundingBox))
+            {
+                for (int i = 1; i <= this.sizeX - 1; ++i)
+                {
+                    for (int j = 1; j <= this.sizeY - 1; ++j)
+                    {
+                        for (int k = 1; k <= this.sizeZ - 1; ++k)
+                        {
+                            if (random.nextFloat() < 0.05F)
+                            {
+                                this.setBlockState(worldIn, Blocks.web.getDefaultState(), i, j, k, boundingBox);
+                            }
+                        }
+                    }
+                }
+
+                this.setBlockState(worldIn, Blocks.mob_spawner.getDefaultState(), 1, 0, 1, boundingBox);
+                this.setBlockState(worldIn, Blocks.mob_spawner.getDefaultState(), this.sizeX - 1, 0, this.sizeZ - 1, boundingBox);
+
+                BlockPos blockpos = new BlockPos(this.getXWithOffset(1, 1), this.getYWithOffset(0), this.getZWithOffset(1, 1));
+                TileEntityMobSpawner spawner = (TileEntityMobSpawner) worldIn.getTileEntity(blockpos);
+
+                if (spawner != null)
+                {
+                    spawner.getSpawnerBaseLogic().setEntityName(getMob(random));
+                }
+
+                blockpos = new BlockPos(this.getXWithOffset(this.sizeX - 1, this.sizeZ - 1), this.getYWithOffset(0), this.getZWithOffset(this.sizeX - 1, this.sizeZ - 1));
+                spawner = (TileEntityMobSpawner) worldIn.getTileEntity(blockpos);
+
+                if (spawner != null)
+                {
+                    spawner.getSpawnerBaseLogic().setEntityName(getMob(random));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static String getMob(Random rand)
+        {
+            switch (rand.nextInt(4))
+            {
+            case 0:
+                return "GalacticraftCore.evolved_spider";
+            case 1:
+                return "GalacticraftCore.evolved_creeper";
+            case 2:
+                return "GalacticraftCore.evolved_skeleton";
+            case 3:
+            default:
+                return "GalacticraftCore.evolved_zombie";
+            }
+        }
+
+        @Override
+        protected void writeStructureToNBT(NBTTagCompound tagCompound)
+        {
+            super.writeStructureToNBT(tagCompound);
+        }
+
+        @Override
+        protected void readStructureFromNBT(NBTTagCompound tagCompound)
+        {
+            super.readStructureFromNBT(tagCompound);
         }
     }
 }

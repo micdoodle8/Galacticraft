@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
@@ -12,6 +13,37 @@ import java.util.Random;
 
 public class MapGenMoonDungeon extends MapGenStructure
 {
+    private static boolean initialized;
+
+    static
+    {
+        try
+        {
+            MapGenMoonDungeon.initiateStructures();
+        }
+        catch (Throwable e)
+        {
+
+        }
+    }
+
+    public static void initiateStructures() throws Throwable
+    {
+        if (!MapGenMoonDungeon.initialized)
+        {
+            MapGenStructureIO.registerStructure(MapGenMoonDungeon.Start.class, "MoonDungeon");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.Start.class, "MoonDungeonStart");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.Corridor.class, "MoonDungeonCorridor");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomEmpty.class, "MoonDungeonEmptyRoom");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.TreasureCorridor.class, "MoonDungeonTreasureCorridor");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomBoss.class, "MoonDungeonBossRoom");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomTreasure.class, "MoonDungeonTreasureRoom");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomSpawner.class, "MoonDungeonSpawnerRoom");
+            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomChest.class, "MoonDungeonChestRoom");
+        }
+
+        MapGenMoonDungeon.initialized = true;
+    }
     @Override
     public String getStructureName()
     {

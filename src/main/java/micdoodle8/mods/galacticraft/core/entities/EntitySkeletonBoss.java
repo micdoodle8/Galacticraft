@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -105,8 +106,8 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     {
         if (this.riddenByEntity != null)
         {
-            final double offsetX = Math.sin(this.rotationYaw * Math.PI / 180.0D);
-            final double offsetZ = Math.cos(this.rotationYaw * Math.PI / 180.0D);
+            final double offsetX = Math.sin(-this.rotationYawHead * (Math.PI / 180.0D));
+            final double offsetZ = Math.cos(this.rotationYawHead * (Math.PI / 180.0D));
             final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
 
             this.riddenByEntity.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + offsetY, this.posZ + offsetZ);
@@ -202,14 +203,13 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
                 }
             }
 
-            if (this.deathTicks == 1)
+            if (this.deathTicks == 100)
             {
             	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] {}), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
             }
         }
 
         this.moveEntity(0.0D, 0.10000000149011612D, 0.0D);
-        this.renderYawOffset = this.rotationYaw += 20.0F;
 
         if (this.deathTicks == 200 && !this.worldObj.isRemote)
         {
@@ -236,10 +236,10 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 	
 	                    if (dSq < 10000)
 	                    {
-//	                    	if (!chest.locked)
-//	                        {
-//	                            chest.locked = true;
-//	                        } TODO Important, re-lock chests
+	                    	if (!chest.locked)
+	                        {
+	                            chest.locked = true;
+	                        }
 
 	                        for (int k = 0; k < chest.getSizeInventory(); k++)
 	                        {
@@ -271,6 +271,11 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
                 this.spawner.isBossDefeated = true;
                 this.spawner.boss = null;
                 this.spawner.spawned = false;
+
+                if (!this.worldObj.isRemote)
+                {
+                    this.spawner.lastKillTime = MinecraftServer.getCurrentTimeMillis();
+                }
             }
         }
     }
@@ -291,13 +296,6 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     @Override
     public void setDead()
     {
-        if (this.spawner != null)
-        {
-            this.spawner.isBossDefeated = false;
-            this.spawner.boss = null;
-            this.spawner.spawned = false;
-        }
-
         super.setDead();
     }
 
@@ -362,9 +360,16 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
         if (this.roomCoords != null && this.roomSize != null)
         {
-            List<EntityPlayer> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+                    AxisAlignedBB.fromBounds(
+                            this.roomCoords.intX(),
+                            this.roomCoords.intY(),
+                            this.roomCoords.intZ(),
+                            this.roomCoords.intX() + this.roomSize.intX(),
+                            this.roomCoords.intY() + this.roomSize.intY(),
+                            this.roomCoords.intZ() + this.roomSize.intZ()));
 
-            this.entitiesWithin = entitiesWithin.size();
+            this.entitiesWithin = playersWithin.size();
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {

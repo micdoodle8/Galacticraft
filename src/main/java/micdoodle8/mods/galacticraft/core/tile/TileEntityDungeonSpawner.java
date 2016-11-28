@@ -8,6 +8,7 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -27,10 +28,10 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public boolean playerCheated;
     private Vector3 roomCoords;
     private Vector3 roomSize;
+    public long lastKillTime;
 
     public TileEntityDungeonSpawner()
     {
-
     }
 
     public TileEntityDungeonSpawner(Class<E> bossClass)
@@ -51,6 +52,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
         if (!this.worldObj.isRemote)
         {
+            if (this.lastKillTime > 0 && MinecraftServer.getCurrentTimeMillis() - lastKillTime > 900000) // 15 minutes
+            {
+                this.lastKillTime = 0;
+                this.isBossDefeated = false;
+            }
+
             final Vector3 thisVec = new Vector3(this);
             final List<E> l = this.worldObj.getEntitiesWithinAABB(bossClass, AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
@@ -65,7 +72,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityMob> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 4, this.roomCoords.intY() - 4, this.roomCoords.intZ() - 4, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
+            List<EntityMob> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 3, this.roomCoords.intY() - 3, this.roomCoords.intZ() - 3, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
 
             for (Entity mob : entitiesWithin)
             {
@@ -75,7 +82,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            if (this.boss == null && !this.isBossDefeated)
+            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+
+            if (this.boss == null && !this.isBossDefeated && !playersWithin.isEmpty())
             {
                 try
                 {
@@ -90,8 +99,6 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 1, this.roomCoords.intY() - 1, this.roomCoords.intZ() - 1, this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
-
             if (this.playerCheated)
             {
                 if (!playersWithin.isEmpty())
@@ -101,6 +108,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                     this.lastPlayerInRange = false;
                     this.playerCheated = false;
                 }
+            }
+            else if (playersWithin.size() == 0)
+            {
+                this.spawned = false;
+                this.lastPlayerInRange = false;
+                this.playerCheated = false;
             }
 
             this.playerInRange = !playersWithin.isEmpty();
@@ -120,6 +133,15 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                         this.boss.setRoom(this.roomCoords, this.roomSize);
                     }
                 }
+            }
+
+            if (this.boss != null && ((EntityLiving) this.boss).isDead)
+            {
+                this.isBossDefeated = false;
+                this.spawned = false;
+                this.lastPlayerInRange = false;
+                this.playerCheated = false;
+                this.boss = null;
             }
 
             this.lastPlayerInRange = this.playerInRange;
@@ -175,6 +197,11 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         this.roomSize.x = nbt.getDouble("roomSizeX");
         this.roomSize.y = nbt.getDouble("roomSizeY");
         this.roomSize.z = nbt.getDouble("roomSizeZ");
+
+        if (nbt.hasKey("lastKillTime"))
+        {
+            this.lastKillTime = nbt.getLong("lastKillTime");
+        }
     }
 
     @Override
@@ -197,6 +224,8 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             nbt.setDouble("roomSizeY", this.roomSize.y);
             nbt.setDouble("roomSizeZ", this.roomSize.z);
         }
+
+        nbt.setLong("lastKillTime", this.lastKillTime);
     }
 
     @Override
