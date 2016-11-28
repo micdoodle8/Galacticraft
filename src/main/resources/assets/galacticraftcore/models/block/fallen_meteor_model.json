@@ -1,6 +1,7 @@
 {
 "__comment": "Designed by Micdoodle8 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
 "textures": {
+    "particle": "galacticraftcore:blocks/fallen_meteor",
     "texture": "galacticraftcore:blocks/fallen_meteor"
 },
 "elements": [ 

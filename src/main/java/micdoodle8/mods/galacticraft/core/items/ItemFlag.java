@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.api.item.IHoldableItemCustom;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,7 +24,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
-public class ItemFlag extends Item implements IHoldableItem, ISortableItem
+public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 {
     public int placeProgress;
 
@@ -156,13 +158,25 @@ public class ItemFlag extends Item implements IHoldableItem, ISortableItem
     @Override
     public boolean shouldHoldLeftHandUp(EntityPlayer player)
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean shouldHoldRightHandUp(EntityPlayer player)
     {
         return true;
+    }
+
+    @Override
+    public Vector3 getLeftHandRotation(EntityPlayer player)
+    {
+        return new Vector3((float) Math.PI + 1.3F, 0.5F, (float) Math.PI / 5.0F);
+    }
+
+    @Override
+    public Vector3 getRightHandRotation(EntityPlayer player)
+    {
+        return new Vector3((float) Math.PI + 1.3F, -0.5F, (float) Math.PI / 5.0F);
     }
 
     @Override

@@ -1,30 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.api.item.IHoldableItemCustom;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.Loader;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -77,24 +69,46 @@ public class ModelPlayerGC extends ModelPlayer
 
         if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
         {
-            IHoldableItem holdableItem = (IHoldableItem) player.inventory.getCurrentItem().getItem();
+            Item heldItem = player.inventory.getCurrentItem().getItem();
+            IHoldableItem holdableItem = (IHoldableItem) heldItem;
+            IHoldableItemCustom holdableItemCustom = heldItem instanceof IHoldableItemCustom ? (IHoldableItemCustom) heldItem : null;
 
             if (holdableItem.shouldHoldLeftHandUp(player))
             {
-                this.bipedLeftArm.rotateAngleX = 0;
-                this.bipedLeftArm.rotateAngleZ = 0;
+                Vector3 angle = null;
 
-                this.bipedLeftArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
+                if (holdableItemCustom != null)
+                {
+                    angle = holdableItemCustom.getLeftHandRotation(player);
+                }
+
+                if (angle == null)
+                {
+                    angle = new Vector3((float) Math.PI + 0.3F, 0.0F, (float) Math.PI / 10.0F);
+                }
+
+                this.bipedLeftArm.rotateAngleX = angle.floatX();
+                this.bipedLeftArm.rotateAngleY = angle.floatY();
+                this.bipedLeftArm.rotateAngleZ = angle.floatZ();
             }
 
             if (holdableItem.shouldHoldRightHandUp(player))
             {
-                this.bipedRightArm.rotateAngleX = 0;
-                this.bipedRightArm.rotateAngleZ = 0;
+                Vector3 angle = null;
 
-                this.bipedRightArm.rotateAngleX += (float) Math.PI + 0.3;
-                this.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+                if (holdableItemCustom != null)
+                {
+                    angle = holdableItemCustom.getRightHandRotation(player);
+                }
+
+                if (angle == null)
+                {
+                    angle = new Vector3((float) Math.PI + 0.3F, 0.0F, (float) Math.PI / 10.0F);
+                }
+
+                this.bipedRightArm.rotateAngleX = angle.floatX();
+                this.bipedRightArm.rotateAngleY = angle.floatY();
+                this.bipedRightArm.rotateAngleZ = angle.floatZ();
             }
 
             if (player.onGround && holdableItem.shouldCrouch(player))
