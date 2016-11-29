@@ -32,7 +32,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
 
         this.oxygenMask = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.oxygenMask.addBox(-8.0F, -16.0F, -8.0F, 16, 16, 16, scaleFactor);
-        this.oxygenMask.setRotationPoint(0.0F, 0.0F + 0.0F, 0.0F);
+        this.oxygenMask.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
 
     public void doRenderLayer(AbstractClientPlayer player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
@@ -47,6 +47,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
 
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedHeadwear, this.oxygenMask);
+                this.oxygenMask.rotationPointY = this.playerRenderer.getMainModel().bipedHeadwear.rotationPointY * 8.0F;
 
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);

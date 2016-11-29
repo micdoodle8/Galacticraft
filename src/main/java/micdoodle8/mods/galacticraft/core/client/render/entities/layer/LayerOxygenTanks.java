@@ -81,6 +81,41 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayer>
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.redOxygenTanks[0]);
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.redOxygenTanks[1]);
 
+                if (playerRenderer.getMainModel().isSneak)
+                {
+                    this.greenOxygenTanks[0].rotationPointY = 2.0F;
+                    this.greenOxygenTanks[1].rotationPointY = 2.0F;
+                    this.greenOxygenTanks[0].rotationPointZ = 1.6F;
+                    this.greenOxygenTanks[1].rotationPointZ = 1.6F;
+
+                    this.orangeOxygenTanks[0].rotationPointY = 2.0F;
+                    this.orangeOxygenTanks[1].rotationPointY = 2.0F;
+                    this.orangeOxygenTanks[0].rotationPointZ = 1.6F;
+                    this.orangeOxygenTanks[1].rotationPointZ = 1.6F;
+
+                    this.redOxygenTanks[0].rotationPointY = 2.0F;
+                    this.redOxygenTanks[1].rotationPointY = 2.0F;
+                    this.redOxygenTanks[0].rotationPointZ = 1.6F;
+                    this.redOxygenTanks[1].rotationPointZ = 1.6F;
+                }
+                else
+                {
+                    this.greenOxygenTanks[0].rotationPointY = 0.5F;
+                    this.greenOxygenTanks[1].rotationPointY = 0.5F;
+                    this.greenOxygenTanks[0].rotationPointZ = 0.5F;
+                    this.greenOxygenTanks[1].rotationPointZ = 0.5F;
+
+                    this.orangeOxygenTanks[0].rotationPointY = 0.5F;
+                    this.orangeOxygenTanks[1].rotationPointY = 0.5F;
+                    this.orangeOxygenTanks[0].rotationPointZ = 0.5F;
+                    this.orangeOxygenTanks[1].rotationPointZ = 0.5F;
+
+                    this.redOxygenTanks[0].rotationPointY = 0.5F;
+                    this.redOxygenTanks[1].rotationPointY = 0.5F;
+                    this.redOxygenTanks[0].rotationPointZ = 0.5F;
+                    this.redOxygenTanks[1].rotationPointZ = 0.5F;
+                }
+
                 for (int i = 0; i < 2; ++i)
                 {
                     GlStateManager.pushMatrix();

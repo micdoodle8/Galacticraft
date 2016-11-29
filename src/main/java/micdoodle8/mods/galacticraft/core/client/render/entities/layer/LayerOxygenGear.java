@@ -111,7 +111,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayer>
                 boolean wearingGear = gearData.getGear() > -1;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
 
-                if (wearingGear)
+                if (wearingGear && !playerRenderer.getMainModel().isSneak)
                 {
                     for (int i = 0; i < 7; i++)
                     {
