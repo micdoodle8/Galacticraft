@@ -195,10 +195,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         for (BlockBasicMars.EnumBlockBasic blockBasic : BlockBasicMars.EnumBlockBasic.values())
         {
-            if (blockBasic != BlockBasicMars.EnumBlockBasic.DUNGEON_SPAWNER)
-            {
-                ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsBlock, blockBasic.getMeta(), blockBasic.getName());
-            }
+            ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsBlock, blockBasic.getMeta(), blockBasic.getName());
         }
 
         for (BlockCavernousVine.EnumVineType vineType : BlockCavernousVine.EnumVineType.values())
@@ -216,6 +213,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 0, "gas_liquefier");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 4, "methane_synthesizer");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 8, "electrolyzer");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.treasureChestTier2);
     }
 
     private void addVariants(String name, ResourceLocation... variants)

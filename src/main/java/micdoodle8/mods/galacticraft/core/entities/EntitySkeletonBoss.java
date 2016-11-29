@@ -222,44 +222,33 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
 
-            if (!this.worldObj.isRemote)
-            {
-            	for (final TileEntity tile : new ArrayList<TileEntity>(this.worldObj.loadedTileEntityList))
-	            {
-	                if (tile instanceof TileEntityTreasureChest)
-	                {
-	                    final double d3 = tile.getPos().getX() + 0.5D - this.posX;
-	                    final double d4 = tile.getPos().getY() + 0.5D - this.posY;
-	                    final double d5 = tile.getPos().getZ() + 0.5D - this.posZ;
-	                    final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
-	                    TileEntityTreasureChest chest = (TileEntityTreasureChest) tile; 
-	
-	                    if (dSq < 10000)
-	                    {
-	                    	if (!chest.locked)
-	                        {
-	                            chest.locked = true;
-	                        }
+            TileEntityTreasureChest chest = TileEntityTreasureChest.findClosest(this);
 
-	                        for (int k = 0; k < chest.getSizeInventory(); k++)
-	                        {
-	                            chest.setInventorySlotContents(k, null);
-	                        }
-	
-	                        ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-	
-	                        // Generate twice, since it's an extra special chest
-	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-	                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-	
-	                        ItemStack schematic = this.getGuaranteedLoot(this.rand);
-	                        int slot = this.rand.nextInt(chest.getSizeInventory());
-	                        chest.setInventorySlotContents(slot, schematic);
-	
-	                        break;
-	                    }
-	                }
-	            }
+            if (chest != null)
+            {
+                double dist = this.getDistanceSq(chest.getPos().getX() + 0.5, chest.getPos().getY() + 0.5, chest.getPos().getZ() + 0.5);
+                if (dist < 100 * 100)
+                {
+                    if (!chest.locked)
+                    {
+                        chest.locked = true;
+                    }
+
+                    for (int k = 0; k < chest.getSizeInventory(); k++)
+                    {
+                        chest.setInventorySlotContents(k, null);
+                    }
+
+                    ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+
+                    // Generate twice, since it's an extra special chest
+                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+
+                    ItemStack schematic = this.getGuaranteedLoot(this.rand);
+                    int slot = this.rand.nextInt(chest.getSizeInventory());
+                    chest.setInventorySlotContents(slot, schematic);
+                }
             }
 
             this.entityDropItem(new ItemStack(GCItems.key, 1, 0), 0.5F);

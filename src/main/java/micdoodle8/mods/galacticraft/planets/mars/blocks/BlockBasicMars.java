@@ -38,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITileEntityProvider, ITerraformableBlock, ISortableBlock
+public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeMars", EnumBlockBasic.class);
 
@@ -53,8 +53,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         MIDDLE(6, "mars_middle"),
         DUNGEON_BRICK(7, "dungeon_brick"),
         DESH_BLOCK(8, "desh_block"),
-        MARS_STONE(9, "mars_stone"),
-        DUNGEON_SPAWNER(10, "dungeon_spawner");
+        MARS_STONE(9, "mars_stone");
 
         private final int meta;
         private final String name;
@@ -114,38 +113,9 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return null;
-        }
-
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return AxisAlignedBB.fromBounds(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D, pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D);
-        }
-
-        return super.getSelectedBoundingBox(worldIn, pos);
-    }
-
-    @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
         IBlockState state = world.getBlockState(pos);
-
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return 10000.0F;
-        }
 
         if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
         {
@@ -190,42 +160,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return 4.0F;
         }
 
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return -1.0F;
-        }
-
         return this.blockHardness;
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return new TileEntityDungeonSpawnerMars();
-        }
-
-        return null;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta)
-    {
-        return null;
-    }
-
-    @Override
-    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
-    {
-        IBlockState state = world.getBlockState(pos);
-        int meta = state.getBlock().getMetaFromState(state);
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return false;
-        }
-
-        return super.canHarvestBlock(world, pos, player);
     }
 
     /*@Override
@@ -267,10 +202,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         {
             return MarsItems.marsItemBasic;
         }
-        else if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return Item.getItemFromBlock(Blocks.air);
-        }
 
         return Item.getItemFromBlock(this);
     }
@@ -296,11 +227,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return 0;
-        }
-        else if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH && fortune >= 1)
+        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH && fortune >= 1)
         {
             return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2 : 1;
         }
@@ -315,10 +242,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         for (EnumBlockBasic blockBasic : EnumBlockBasic.values())
         {
-            if (blockBasic != EnumBlockBasic.DUNGEON_SPAWNER)
-            {
-                par3List.add(new ItemStack(par1, 1, blockBasic.getMeta()));
-            }
+            par3List.add(new ItemStack(par1, 1, blockBasic.getMeta()));
         }
     }
 
@@ -381,12 +305,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
-    {
-        return state.getValue(BASIC_TYPE) != EnumBlockBasic.DUNGEON_SPAWNER;
-    }
-
-    @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         IBlockState state = world.getBlockState(pos);
@@ -398,10 +316,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         if (state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-        }
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_SPAWNER)
-        {
-            return null;
         }
 
         return super.getPickBlock(target, world, pos, player);

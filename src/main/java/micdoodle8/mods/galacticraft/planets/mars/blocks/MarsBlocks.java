@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBossSpawner;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
@@ -22,22 +23,24 @@ public class MarsBlocks
     public static Block blockSludge;
     public static Block vine;
     public static Block rock;
-    public static Block tier2TreasureChest;
+    public static Block treasureChestTier2;
     public static Block machine;
     public static Block machineT2;
     public static Block creeperEgg;
     public static Block marsCobblestoneStairs;
     public static Block marsBricksStairs;
+    public static Block bossSpawner;
 
     public static void initBlocks()
     {
     	MarsBlocks.marsBlock = new BlockBasicMars("mars").setHardness(2.2F);
         MarsBlocks.vine = new BlockCavernousVine("cavern_vines").setHardness(0.1F);
         MarsBlocks.rock = new BlockSlimelingEgg("slimeling_egg").setHardness(0.75F);
-        MarsBlocks.tier2TreasureChest = AsteroidBlocks.treasureChestTier2;
+        MarsBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasure_t2");
         MarsBlocks.machine = new BlockMachineMars("mars_machine").setHardness(1.8F);
         MarsBlocks.machineT2 = new BlockMachineMarsT2("mars_machine_t2").setHardness(1.8F);
         MarsBlocks.creeperEgg = new BlockCreeperEgg("creeper_egg").setHardness(-1.0F);
+        MarsBlocks.bossSpawner = new BlockBossSpawnerMars("boss_spawner_mars");
 //        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
 //        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
     }
@@ -79,12 +82,14 @@ public class MarsBlocks
 
     public static void registerBlocks()
     {
+        registerBlock(MarsBlocks.treasureChestTier2, ItemBlockDesc.class);
         registerBlock(MarsBlocks.marsBlock, ItemBlockMars.class);
         registerBlock(MarsBlocks.vine, ItemBlockDesc.class);
         registerBlock(MarsBlocks.rock, ItemBlockEgg.class);
         registerBlock(MarsBlocks.creeperEgg, ItemBlockDesc.class);
         registerBlock(MarsBlocks.machine, ItemBlockMachine.class);
         registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
+        registerBlock(MarsBlocks.bossSpawner, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
     }

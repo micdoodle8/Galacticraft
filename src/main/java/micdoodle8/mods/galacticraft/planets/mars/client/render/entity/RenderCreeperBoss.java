@@ -82,6 +82,7 @@ public class RenderCreeperBoss extends RenderLiving<EntityCreeperBoss>
     protected void preRenderCallback(EntityCreeperBoss par1EntityLiving, float par2)
     {
         GL11.glScalef(4.0F, 4.0F, 4.0F);
+        GL11.glRotatef((float) (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F + (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F - Math.pow(par1EntityLiving.deathTicks - 1, 2) / 5.0F) * par2), 0.0F, 1.0F, 0.0F);
     }
 
     @Override

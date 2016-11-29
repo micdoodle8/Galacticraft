@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -11,15 +9,16 @@ import net.minecraft.world.gen.structure.StructureStart;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenMoonDungeon extends MapGenStructure
+public class MapGenDungeon extends MapGenStructure
 {
     private static boolean initialized;
+    private DungeonConfiguration configuration;
 
     static
     {
         try
         {
-            MapGenMoonDungeon.initiateStructures();
+            MapGenDungeon.initiateStructures();
         }
         catch (Throwable e)
         {
@@ -27,23 +26,28 @@ public class MapGenMoonDungeon extends MapGenStructure
         }
     }
 
+    public MapGenDungeon(DungeonConfiguration configuration)
+    {
+        this.configuration = configuration;
+    }
+
     public static void initiateStructures() throws Throwable
     {
-        if (!MapGenMoonDungeon.initialized)
+        if (!MapGenDungeon.initialized)
         {
-            MapGenStructureIO.registerStructure(MapGenMoonDungeon.Start.class, "MoonDungeon");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.Start.class, "MoonDungeonStart");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.Corridor.class, "MoonDungeonCorridor");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomEmpty.class, "MoonDungeonEmptyRoom");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.TreasureCorridor.class, "MoonDungeonTreasureCorridor");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomBoss.class, "MoonDungeonBossRoom");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomTreasure.class, "MoonDungeonTreasureRoom");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomSpawner.class, "MoonDungeonSpawnerRoom");
-            MapGenStructureIO.registerStructureComponent(StructureMoonDungeonPieces.RoomChest.class, "MoonDungeonChestRoom");
+            MapGenStructureIO.registerStructure(MapGenDungeon.Start.class, "MoonDungeon");
+            MapGenStructureIO.registerStructureComponent(DungeonStart.class, "MoonDungeonStart");
+            MapGenStructureIO.registerStructureComponent(Corridor.class, "MoonDungeonCorridor");
+            MapGenStructureIO.registerStructureComponent(RoomEmpty.class, "MoonDungeonEmptyRoom");
+            MapGenStructureIO.registerStructureComponent(RoomBoss.class, "MoonDungeonBossRoom");
+            MapGenStructureIO.registerStructureComponent(RoomTreasure.class, "MoonDungeonTreasureRoom");
+            MapGenStructureIO.registerStructureComponent(RoomSpawner.class, "MoonDungeonSpawnerRoom");
+            MapGenStructureIO.registerStructureComponent(RoomChest.class, "MoonDungeonChestRoom");
         }
 
-        MapGenMoonDungeon.initialized = true;
+        MapGenDungeon.initialized = true;
     }
+
     @Override
     public String getStructureName()
     {
@@ -81,19 +85,22 @@ public class MapGenMoonDungeon extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        return new MapGenMoonDungeon.Start(this.worldObj, this.rand, chunkX, chunkZ);
+        return new MapGenDungeon.Start(this.worldObj, this.rand, chunkX, chunkZ, this.configuration);
     }
 
     public static class Start extends StructureStart
     {
+        private DungeonConfiguration configuration;
+
         public Start()
         {
         }
 
-        public Start(World worldIn, Random rand, int chunkX, int chunkZ)
+        public Start(World worldIn, Random rand, int chunkX, int chunkZ, DungeonConfiguration configuration)
         {
             super(chunkX, chunkZ);
-            StructureMoonDungeonPieces.Start startPiece = new StructureMoonDungeonPieces.Start(worldIn, GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK), rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+            this.configuration = configuration;
+            DungeonStart startPiece = new DungeonStart(worldIn, configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             startPiece.buildComponent(startPiece, this.components, rand);
             List<StructureComponent> list = startPiece.attachedComponents;
 

@@ -9,9 +9,15 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomBoss;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -24,24 +30,11 @@ public class ChunkProviderMars extends ChunkProviderSpace
     private final MapGenCavernMars caveGenerator = new MapGenCavernMars();
     private final MapGenCaveMars cavernGenerator = new MapGenCaveMars();
 
-//    private final MapGenDungeon dungeonGenerator = new MapGenDungeon(MarsBlocks.marsBlock, 7, 8, 16, 6);
+    private final MapGenDungeon dungeonGenerator = new MapGenDungeonMars(new DungeonConfiguration(MarsBlocks.marsBlock.getDefaultState().withProperty(BlockBasicMars.BASIC_TYPE, BlockBasicMars.EnumBlockBasic.DUNGEON_BRICK), 30, 8, 16, 7, 7, RoomBossMars.class, RoomTreasureMars.class));
 
     public ChunkProviderMars(World par1World, long seed, boolean mapFeaturesEnabled)
     {
         super(par1World, seed, mapFeaturesEnabled);
-//        this.dungeonGenerator.otherRooms.add(new RoomEmptyMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.bossRooms.add(new RoomBossMars(null, 0, 0, 0, null));
-//        this.dungeonGenerator.treasureRooms.add(new RoomTreasureMars(null, 0, 0, 0, null));
     }
 
     @Override
@@ -139,12 +132,18 @@ public class ChunkProviderMars extends ChunkProviderSpace
     @Override
     public void onChunkProvide(int cX, int cZ, ChunkPrimer primer)
     {
-//        this.dungeonGenerator.generateUsingArrays(this, this.worldObj, 30, cX, cZ, primer);
+        this.dungeonGenerator.generate(this, this.worldObj, cX, cZ, primer);
     }
 
     @Override
     public void onPopulate(IChunkProvider provider, int cX, int cZ)
     {
-//        this.dungeonGenerator.handleTileEntities(this.rand);
+        this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(cX, cZ));
+    }
+
+    @Override
+    public void recreateStructures(Chunk chunk, int x, int z)
+    {
+        this.dungeonGenerator.generate(this, this.worldObj, x, z, null);
     }
 }

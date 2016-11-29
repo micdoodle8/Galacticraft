@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
@@ -207,7 +208,6 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         }
 
         this.moveEntity(0.0D, 0.10000000149011612D, 0.0D);
-        this.renderYawOffset = this.rotationYaw += 20.0F;
 
         if (this.deathTicks == 200 && !this.worldObj.isRemote)
         {
@@ -220,39 +220,31 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
 
-            for (final TileEntity tile : (List<TileEntity>) this.worldObj.loadedTileEntityList)
+            TileEntityTreasureChestMars chest = TileEntityTreasureChestMars.findClosest(this);
+
+            if (chest != null)
             {
-                if (tile instanceof TileEntityTreasureChestMars)
+                double dist = this.getDistanceSq(chest.getPos().getX() + 0.5, chest.getPos().getY() + 0.5, chest.getPos().getZ() + 0.5);
+                if (dist < 100 * 100)
                 {
-                	final double d3 = tile.getPos().getX() + 0.5D - this.posX;
-                    final double d4 = tile.getPos().getY() + 0.5D - this.posY;
-                    final double d5 = tile.getPos().getZ() + 0.5D - this.posZ;
-                    final double dSq = d3 * d3 + d4 * d4 + d5 * d5;
-                    TileEntityTreasureChestMars chest = (TileEntityTreasureChestMars) tile; 
-
-                    if (dSq < 10000)
+                    if (!chest.locked)
                     {
-                    	if (!chest.locked)
-                        {
-                            chest.locked = true;
-                        }
-
-                        for (int k = 0; k < chest.getSizeInventory(); k++)
-                        {
-                            chest.setInventorySlotContents(k, null);
-                        }
-
-                        ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-
-                        // Generate three times, since it's an extra extra special chest
-                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-                        WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-
-                        chest.setInventorySlotContents(this.rand.nextInt(chest.getSizeInventory()), this.getGuaranteedLoot(this.rand));
-
-                        break;
+                        chest.locked = true;
                     }
+
+                    for (int k = 0; k < chest.getSizeInventory(); k++)
+                    {
+                        chest.setInventorySlotContents(k, null);
+                    }
+
+                    ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+
+                    // Generate three times, since it's an extra extra special chest
+                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+
+                    chest.setInventorySlotContents(this.rand.nextInt(chest.getSizeInventory()), this.getGuaranteedLoot(this.rand));
                 }
             }
 
@@ -478,12 +470,12 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         double d6 = par2 - d3;
         double d7 = par4 - d4;
         double d8 = par6 - d5;
-        EntityProjectileTNT entitywitherskull = new EntityProjectileTNT(this.worldObj, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
+        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(this.worldObj, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
 
-        entitywitherskull.posY = d4;
-        entitywitherskull.posX = d3;
-        entitywitherskull.posZ = d5;
-        this.worldObj.spawnEntityInWorld(entitywitherskull);
+        projectileTNT.posY = d4;
+        projectileTNT.posX = d3;
+        projectileTNT.posZ = d5;
+        this.worldObj.spawnEntityInWorld(projectileTNT);
     }
 
     private double func_82214_u(int par1)
@@ -502,7 +494,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
     private double func_82208_v(int par1)
     {
-        return par1 <= 0 ? this.posY + 6.0D : this.posY + 4.2D;
+        return par1 <= 0 ? this.posY + 5.5D : this.posY + 4.2D;
     }
 
     private double func_82213_w(int par1)

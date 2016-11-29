@@ -29,21 +29,26 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
     @Override
     public void doRender(EntityProjectileTNT entity, double x, double y, double z, float par8, float partialTicks)
     {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y + 0.5F, (float) z);
-        this.bindTexture(TextureMap.locationBlocksTexture);
-        final Block var10 = Blocks.tnt;
-        GL11.glDisable(GL11.GL_LIGHTING);
-        if (var10 != null)
+        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
+
+        float f2 = (1.0F - ((float)entity.ticksExisted - partialTicks + 1.0F) / 100.0F) * 0.1F;
+        this.bindEntityTexture(entity);
+        GlStateManager.translate(-0.5F, -0.5F, 0.5F);
+        blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), entity.getBrightness(partialTicks));
+        GlStateManager.translate(0.0F, 0.0F, 1.0F);
+
+        if (entity.ticksExisted % 2 == 0)
         {
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(770, 772);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, partialTicks);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, f2);
             GlStateManager.doPolygonOffset(-3.0F, -3.0F);
             GlStateManager.enablePolygonOffset();
-//            blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), 1.0F);
+            blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), 0.2F);
             GlStateManager.doPolygonOffset(0.0F, 0.0F);
             GlStateManager.disablePolygonOffset();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -59,6 +64,6 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
     @Override
     protected ResourceLocation getEntityTexture(EntityProjectileTNT entity)
     {
-        return null;
+        return TextureMap.locationBlocksTexture;
     }
 }

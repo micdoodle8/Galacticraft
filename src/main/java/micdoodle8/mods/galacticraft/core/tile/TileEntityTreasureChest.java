@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -23,6 +24,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.*;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -229,6 +231,11 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         ++this.ticksSinceSync;
         float f;
 
+        if (this.locked)
+        {
+            this.numPlayersUsing = 0;
+        }
+
         if (!this.worldObj.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0)
         {
             this.numPlayersUsing = 0;
@@ -264,17 +271,17 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             this.worldObj.playSoundEffect(d1, (double)j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
-        if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
+        if (((this.numPlayersUsing == 0 || this.locked) && this.lidAngle > 0.0F) || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
         {
             float f1 = this.lidAngle;
 
-            if (this.numPlayersUsing > 0)
+            if (this.numPlayersUsing == 0 || this.locked)
             {
-                this.lidAngle += f;
+                this.lidAngle -= f;
             }
             else
             {
-                this.lidAngle -= f;
+                this.lidAngle += f;
             }
 
             if (this.lidAngle > 1.0F)
@@ -297,6 +304,8 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                 this.lidAngle = 0.0F;
             }
         }
+
+        super.update();
     }
 
     public boolean receiveClientEvent(int id, int type)
@@ -330,12 +339,12 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
     public void closeInventory(EntityPlayer player)
     {
-        if (!player.isSpectator() && this.getBlockType() instanceof BlockChest)
+        if (!player.isSpectator())
         {
-            --this.numPlayersUsing;
-            this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-            this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
-            this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
+//            --this.numPlayersUsing;
+//            this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
+//            this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
+//            this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
         }
     }
 
@@ -461,5 +470,25 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public boolean canBreak()
     {
         return false;
+    }
+
+    public static TileEntityTreasureChest findClosest(Entity entity)
+    {
+        double distance = Double.MAX_VALUE;
+        TileEntityTreasureChest chest = null;
+        for (final TileEntity tile : entity.worldObj.loadedTileEntityList)
+        {
+            if (tile instanceof TileEntityTreasureChest)
+            {
+                double dist = entity.getDistanceSq(tile.getPos().getX() + 0.5, tile.getPos().getY() + 0.5, tile.getPos().getZ() + 0.5);
+                if (dist < distance)
+                {
+                    distance = dist;
+                    chest = (TileEntityTreasureChest) tile;
+                }
+            }
+        }
+
+        return chest;
     }
 }
