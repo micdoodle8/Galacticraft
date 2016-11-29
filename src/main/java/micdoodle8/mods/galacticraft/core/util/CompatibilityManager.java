@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Method;
@@ -18,7 +20,6 @@ public class CompatibilityManager
     private static boolean modPneumaticCraftLoaded;
     public static Class<?> classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
-    public static Method methodBCBlockPipe_getPipe = null;
 
     public static void checkForCompatibleMods()
     {
@@ -62,21 +63,12 @@ public class CompatibilityManager
             try
             {
             	classBCBlockGenericPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
-
-                for (Method m : classBCBlockGenericPipe.getDeclaredMethods())
-                {
-                    if (m.getName().equals("getPipe"))
-                    {
-                        CompatibilityManager.methodBCBlockPipe_getPipe = m;
-                        break;
-                    }
-                }
             }
             catch (Exception e) { e.printStackTrace(); }
             
             BlockEnclosed.initialiseBC();
 
-            if (CompatibilityManager.methodBCBlockPipe_getPipe == null)
+            if (classBCBlockGenericPipe == null)
             {
                 CompatibilityManager.modBCraftLoaded = false;
             }

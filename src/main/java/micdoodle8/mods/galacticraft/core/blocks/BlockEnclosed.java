@@ -181,15 +181,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             try {
                 Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
                 blockPipeBC = (Block) clazzBC.getField("genericPipeBlock").get(null);
-                CompatibilityManager.classBCBlockGenericPipe = blockPipeBC.getClass();
-                for (Method m : CompatibilityManager.classBCBlockGenericPipe.getDeclaredMethods())
-                {
-                    if (m.getName().equals("getPipe"))
-                    {
-                        CompatibilityManager.methodBCBlockPipe_getPipe = m;
-                        break;
-                    }
-                }
             }
             catch (Exception e) { e.printStackTrace(); }
         }

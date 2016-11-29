@@ -38,7 +38,10 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
         }
 
         packetMap = ImmutableMap.copyOf(map);
-        TickHandlerClient.addPacketHandler(this);
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            TickHandlerClient.addPacketHandler(this);
+        }
         TickHandlerServer.addPacketHandler(this);
     }
 
