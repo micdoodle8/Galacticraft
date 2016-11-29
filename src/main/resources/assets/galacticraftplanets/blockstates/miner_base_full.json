@@ -4,6 +4,12 @@
     "model": "galacticraftplanets:minerbase0.obj",
     "custom": {
       "flip-v": true
-    }
+    },
+	"textures": {
+        "particle": "galacticraftplanets:blocks/machineframe"
+	}
+  },
+  "textures": {
+	"particle": "galacticraftplanets:blocks/machineframe"
   }
 }

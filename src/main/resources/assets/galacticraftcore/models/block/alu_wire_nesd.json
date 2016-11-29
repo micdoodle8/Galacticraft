@@ -1,7 +1,8 @@
 {
 "__comment": "Designed by - with BDcraft Cubik PRO 0.93 Beta - http://bdcraft.net",
 "textures": {
-    "aluminum_wire": "galacticraftcore:blocks/aluminum_wire"
+    "aluminum_wire": "galacticraftcore:blocks/aluminum_wire",
+	"particle": "galacticraftcore:blocks/aluminum_wire"
 },
 "elements": [ 
 {
