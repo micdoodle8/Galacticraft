@@ -153,6 +153,8 @@ public class ItemMeteorChunk extends Item implements ISortableItem
             world.spawnEntityInWorld(meteor);
         }
 
+        player.swingItem();
+
         return itemStack;
     }
 

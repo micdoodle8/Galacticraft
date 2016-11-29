@@ -21,6 +21,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Random;
 
 public class EntityMeteorChunk extends Entity implements IProjectile
 {
@@ -35,6 +36,8 @@ public class EntityMeteorChunk extends Entity implements IProjectile
     private int ticksInGround;
     private int ticksInAir;
     private boolean inGround;
+    private float randYawInc;
+    private float randPitchInc;
 
     private int knockbackStrength;
 
@@ -44,49 +47,16 @@ public class EntityMeteorChunk extends Entity implements IProjectile
     {
         super(world);
         this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
-    }
-
-    public EntityMeteorChunk(World world, double x, double y, double z)
-    {
-        super(world);
-        this.renderDistanceWeight = 10.0D;
-        this.setSize(0.5F, 0.5F);
-        this.setPosition(x, y, z);
-    }
-
-    public EntityMeteorChunk(World world, EntityLivingBase shootingEntity, EntityLivingBase target, float speed, float randMod)
-    {
-        super(world);
-        this.renderDistanceWeight = 10.0D;
-        this.shootingEntity = shootingEntity;
-
-        if (shootingEntity instanceof EntityPlayer)
-        {
-            this.canBePickedUp = 1;
-        }
-
-        this.posY = shootingEntity.posY + shootingEntity.getEyeHeight() - 0.10000000149011612D;
-        double d0 = target.posX - shootingEntity.posX;
-        double d1 = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
-        double d2 = target.posZ - shootingEntity.posZ;
-        double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-
-        if (d3 >= 1.0E-7D)
-        {
-            float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f3 = (float) -(Math.atan2(d1, d3) * 180.0D / Math.PI);
-            double d4 = d0 / d3;
-            double d5 = d2 / d3;
-            this.setLocationAndAngles(shootingEntity.posX + d4, this.posY, shootingEntity.posZ + d5, f2, f3);
-            float f4 = (float) d3 * 0.2F;
-            this.setThrowableHeading(d0, d1 + f4, d2, speed, randMod);
-        }
+        this.setSize(0.25F, 0.25F);
+        this.randPitchInc = rand.nextFloat() * 20 - 10;
+        this.randYawInc = rand.nextFloat() * 20 - 10;
     }
 
     public EntityMeteorChunk(World par1World, EntityLivingBase par2EntityLivingBase, float speed)
     {
         super(par1World);
+        this.randPitchInc = rand.nextFloat() * 20 - 10;
+        this.randYawInc = rand.nextFloat() * 20 - 10;
         this.renderDistanceWeight = 10.0D;
         this.shootingEntity = par2EntityLivingBase;
 
@@ -379,8 +349,8 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
             if (!this.onGround)
             {
-                this.rotationPitch += 10;
-                this.rotationYaw += 2;
+                this.rotationPitch += this.randPitchInc;
+                this.rotationYaw += this.randYawInc;
             }
 
             float f4 = 0.99F;
