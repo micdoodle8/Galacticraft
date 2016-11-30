@@ -93,7 +93,10 @@ public class RoomTreasure extends SizedPiece
                     {
                         this.setBlockState(worldIn, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockT1TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(1));
+                        if (worldIn.getTileEntity(blockpos) == null)
+                        {
+                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(1));
+                        }
                     }
                     else
                     {

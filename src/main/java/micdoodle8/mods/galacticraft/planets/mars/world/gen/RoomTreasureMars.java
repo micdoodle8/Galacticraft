@@ -91,7 +91,10 @@ public class RoomTreasureMars extends RoomTreasure
                     {
                         this.setBlockState(worldIn, MarsBlocks.treasureChestTier2.getDefaultState().withProperty(BlockTier2TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        worldIn.setTileEntity(blockpos, new TileEntityTreasureChestMars(1));
+                        if (worldIn.getTileEntity(blockpos) == null)
+                        {
+                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChestMars(1));
+                        }
                     }
                     else
                     {
