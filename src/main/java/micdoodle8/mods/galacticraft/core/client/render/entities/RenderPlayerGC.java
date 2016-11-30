@@ -54,6 +54,7 @@ public class RenderPlayerGC extends RenderPlayer
         this.addLayer(new LayerOxygenGear(this));
         this.addLayer(new LayerOxygenMask(this));
         this.addLayer(new LayerOxygenParachute(this));
+        this.addLayer(new LayerFrequencyModule(this));
 
         if (GalacticraftCore.isPlanetsLoaded)
         {

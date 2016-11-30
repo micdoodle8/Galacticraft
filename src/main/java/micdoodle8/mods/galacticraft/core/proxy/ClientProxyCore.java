@@ -174,6 +174,7 @@ public class ClientProxyCore extends CommonProxyCore
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyStorage"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyWheels"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/frequencyModule"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
     }
