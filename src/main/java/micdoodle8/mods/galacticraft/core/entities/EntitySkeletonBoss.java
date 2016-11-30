@@ -157,7 +157,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     @Override
     protected String getHurtSound()
     {
-        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
+        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.ooh", this.getSoundVolume(), this.getSoundPitch() + 1.0F);
         return null;
     }
 
@@ -205,7 +205,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
 
             if (this.deathTicks == 100)
             {
-            	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] {}), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+            	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] { 1.5F }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
             }
         }
 

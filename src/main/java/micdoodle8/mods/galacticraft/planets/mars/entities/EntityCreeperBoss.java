@@ -151,7 +151,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     @Override
     protected String getHurtSound()
     {
-        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossliving", this.getSoundVolume(), this.getSoundPitch() + 6.0F);
+        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
         return null;
     }
 
@@ -202,7 +202,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] {}), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
                 //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimensionId(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_BOSS_DEATH, new Object[] { 0 }));
             }
         }

@@ -140,7 +140,7 @@ public class PacketSimple extends PacketBase implements Packet
         C_UPDATE_STATS(Side.CLIENT, Integer.class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
-        C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT),
+        C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT, Float.class),
         C_PLAY_SOUND_EXPLODE(Side.CLIENT),
         C_PLAY_SOUND_BOSS_LAUGH(Side.CLIENT),
         C_PLAY_SOUND_BOW(Side.CLIENT),
@@ -549,7 +549,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_PLAY_SOUND_BOSS_DEATH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, 1.5F);
+            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, (Float) this.data.get(0));
             break;
         case C_PLAY_SOUND_EXPLODE:
             player.playSound("random.explode", 10.0F, 0.7F);
