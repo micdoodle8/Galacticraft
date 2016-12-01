@@ -234,7 +234,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         if (provide > 0)
         {
             TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, outputDirection);
-            FluidNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+            FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)
             {

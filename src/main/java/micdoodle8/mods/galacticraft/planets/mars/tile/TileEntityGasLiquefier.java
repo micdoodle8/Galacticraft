@@ -597,13 +597,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (side == (metaside ^ 1))
+        if (from == getGasInputDirection().getOpposite())
             return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
 
         //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (getGasInputDirection().rotateY() == from)
             return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
 
         return false;
@@ -612,16 +610,14 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (side == (metaside ^ 1))
+        if (from == getGasInputDirection().getOpposite())
         {
             if (resource != null && resource.isFluidEqual(this.liquidTank2.getFluid()))
                 return this.liquidTank2.drain(resource.amount, doDrain);
         }
 
         //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (getGasInputDirection().rotateY() == from)
         {
             if (resource != null && resource.isFluidEqual(this.liquidTank.getFluid()))
                 return this.liquidTank.drain(resource.amount, doDrain);
@@ -633,15 +629,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (side == (metaside ^ 1))
+        if (from == getGasInputDirection().getOpposite())
         {
             return this.liquidTank2.drain(maxDrain, doDrain);
         }
 
         //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (getGasInputDirection().rotateY() == from)
         {
             return this.liquidTank.drain(maxDrain, doDrain);
         }
@@ -652,7 +646,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2)))
+        if (from.equals(this.getGasInputDirection()))
         {
             //Can fill with gases
             return fluid != null && this.getIdFromName(fluid.getName()) > -1;
@@ -690,18 +684,16 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
 
-        if (metaside == side)
+        if (from == this.getGasInputDirection())
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
         }
-        else if (metaside == (side ^ 1))
+        else if (from == this.getGasInputDirection().getOpposite())
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank2) };
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (getGasInputDirection().rotateY() == from)
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
         }
@@ -724,7 +716,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 	@Override
 	public int receiveOxygen(EnumFacing from, int receive, boolean doReceive)
 	{
-		if (from.ordinal() == this.getBlockMetadata() + 2 && this.shouldPullOxygen())
+		if (from == this.getGasInputDirection() && this.shouldPullOxygen())
     	{
 			float conversion = 2F * Constants.LOX_GAS_RATIO;
 	        FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
@@ -763,7 +755,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.FLUID)
         {
-            return direction == getFront().rotateY();
+            return direction == getGasInputDirection() || direction == this.getGasInputDirection().getOpposite() || direction == this.getGasInputDirection().rotateY();
         }
 
         if (type == NetworkType.POWER)
@@ -782,5 +774,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+    }
+
+    public EnumFacing getGasInputDirection()
+    {
+        return this.getFront().rotateY();
     }
 }

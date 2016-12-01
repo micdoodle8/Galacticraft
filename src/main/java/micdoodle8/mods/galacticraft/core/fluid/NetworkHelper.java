@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.fluid;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -106,7 +105,7 @@ public class NetworkHelper
         return null;
     }
 
-    public static FluidNetwork getOxygenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
+    public static FluidNetwork getFluidNetworkFromTile(TileEntity tileEntity, EnumFacing approachDirection)
     {
         if (tileEntity != null)
         {
@@ -135,32 +134,32 @@ public class NetworkHelper
         return null;
     }
 
-    public static IHydrogenNetwork getHydrogenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
-    {
-        if (tileEntity != null)
-        {
-            if (tileEntity instanceof INetworkProvider)
-            {
-                if (tileEntity instanceof IConnector)
-                {
-                    if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.HYDROGEN))
-                    {
-                        if (((INetworkProvider) tileEntity).getNetwork() instanceof IHydrogenNetwork)
-                        {
-                            return (IHydrogenNetwork) ((INetworkProvider) tileEntity).getNetwork();
-                        }
-                    }
-                }
-                else
-                {
-                    if (((INetworkProvider) tileEntity).getNetwork() instanceof IHydrogenNetwork)
-                    {
-                        return (IHydrogenNetwork) ((INetworkProvider) tileEntity).getNetwork();
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
+//    public static IHydrogenNetwork getHydrogenNetworkFromTileEntity(TileEntity tileEntity, EnumFacing approachDirection)
+//    {
+//        if (tileEntity != null)
+//        {
+//            if (tileEntity instanceof INetworkProvider)
+//            {
+//                if (tileEntity instanceof IConnector)
+//                {
+//                    if (((IConnector) tileEntity).canConnect(approachDirection.getOpposite(), NetworkType.HYDROGEN))
+//                    {
+//                        if (((INetworkProvider) tileEntity).getNetwork() instanceof IHydrogenNetwork)
+//                        {
+//                            return (IHydrogenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    if (((INetworkProvider) tileEntity).getNetwork() instanceof IHydrogenNetwork)
+//                    {
+//                        return (IHydrogenNetwork) ((INetworkProvider) tileEntity).getNetwork();
+//                    }
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 }

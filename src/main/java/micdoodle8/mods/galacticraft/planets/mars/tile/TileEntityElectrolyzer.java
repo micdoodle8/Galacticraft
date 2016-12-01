@@ -4,7 +4,6 @@ import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.grid.IHydrogenNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -532,7 +531,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         if (provide > 0)
         {
             TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-            FluidNetwork outputNetwork = NetworkHelper.getOxygenNetworkFromTileEntity(outputTile, outputDirection);
+            FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)
             {
@@ -582,23 +581,22 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     private boolean produceHydrogen(EnumFacing outputDirection)
     {
-        float provide = this.getHydrogenProvide(outputDirection);
+        int provide = this.getHydrogenProvide(outputDirection);
 
         if (provide > 0)
         {
             TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
-            IHydrogenNetwork outputNetwork = NetworkHelper.getHydrogenNetworkFromTileEntity(outputTile, outputDirection);
+            FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)
             {
-                float powerRequest = outputNetwork.getRequest(this);
+                int gasRequested = outputNetwork.getRequest();
 
-                if (powerRequest > 0)
+                if (gasRequested > 0)
                 {
-                    float toSend = Math.min(this.getHydrogenStored(), provide);
-                    float rejectedPower = outputNetwork.produce(toSend, this);
+                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(FluidRegistry.getFluid("hydrogen"), Math.min(gasRequested, provide)), true);
 
-                    this.provideHydrogen((int) Math.max(toSend - rejectedPower, 0), true);
+                    this.drawHydrogen(usedGas, true);
                     return true;
                 }
             }
@@ -608,9 +606,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
                 if (requestedHydrogen > 0)
                 {
-                    float toSend = Math.min(this.getHydrogenStored(), provide);
-                    float acceptedHydrogen = ((TileEntityMethaneSynthesizer) outputTile).receiveHydrogen(outputDirection.getOpposite(), toSend, true);
-                    this.provideHydrogen((int) acceptedHydrogen, true);
+                    int toSend = Math.min(this.getHydrogenStored(), provide);
+                    int acceptedHydrogen = ((TileEntityMethaneSynthesizer) outputTile).receiveHydrogen(outputDirection.getOpposite(), toSend, true);
+                    this.drawHydrogen(acceptedHydrogen, true);
                     return true;
                 }
             }
@@ -618,7 +616,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 //            {
 //                //TODO Gas item handling - internal tank (IGasItem)
 //                //int acceptedHydrogen = GasTransmission.addGas(itemStack, type, amount);
-//                //this.provideHydrogen(acceptedHydrogen, true);
+//                //this.drawHydrogen(acceptedHydrogen, true);
 //
 //                if (outputTile instanceof IGasHandler && ((IGasHandler) outputTile).canReceiveGas(outputDirection.getOpposite(), (Gas) EnergyConfigHandler.gasHydrogen))
 //                {
@@ -627,7 +625,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 //                    try {
 //                    	acceptedHydrogen = ((IGasHandler) outputTile).receiveGas(outputDirection.getOpposite(), toSend);
 //                    } catch (Exception e) { }
-//                    this.provideHydrogen(acceptedHydrogen, true);
+//                    this.drawHydrogen(acceptedHydrogen, true);
 //                    return true;
 //                }
 //            }
@@ -664,7 +662,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return 0;
     }
 
-    public int provideHydrogen(int request, boolean doProvide)
+    public int drawHydrogen(int request, boolean doProvide)
     {
         if (request > 0)
         {
@@ -688,7 +686,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return this.getOxygenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }
 
-    public float getHydrogenProvide(EnumFacing direction)
+    public int getHydrogenProvide(EnumFacing direction)
     {
         return this.getHydrogenOutputDirection() == direction ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getHydrogenStored()) : 0;
     }
@@ -718,12 +716,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.FLUID)
         {
-            return this.getOxygenOutputDirection() == direction;
-        }
-
-        if (type == NetworkType.HYDROGEN)
-        {
-            return this.getHydrogenOutputDirection() == direction;
+            return this.getOxygenOutputDirection() == direction || this.getHydrogenOutputDirection() == direction;
         }
 
         if (type == NetworkType.POWER)

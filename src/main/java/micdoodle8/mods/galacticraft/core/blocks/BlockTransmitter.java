@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -97,9 +96,6 @@ public abstract class BlockTransmitter extends BlockAdvanced
             case FLUID:
                 connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                 break;
-            case HYDROGEN:
-                connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
-                break;
             case POWER:
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
                 break;
@@ -167,9 +163,6 @@ public abstract class BlockTransmitter extends BlockAdvanced
             case FLUID:
                 connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
                 break;
-            case HYDROGEN:
-                connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
-                break;
             case POWER:
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
                 break;
@@ -228,9 +221,6 @@ public abstract class BlockTransmitter extends BlockAdvanced
             {
                 case FLUID:
                     connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
-                    break;
-                case HYDROGEN:
-                    connectable = TileEntityHydrogenPipe.getAdjacentHydrogenConnections(tileEntity);
                     break;
                 case POWER:
                     connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);

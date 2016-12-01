@@ -38,7 +38,6 @@ import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityHydrogenPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -69,7 +68,7 @@ public class TickHandlerServer
     public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
 	public static LinkedList<TileEntityFluidTransmitter> oxygenTransmitterUpdates  = new LinkedList<TileEntityFluidTransmitter>();
-	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
+//	public static LinkedList<TileEntityHydrogenPipe> hydrogenTransmitterUpdates  = new LinkedList<TileEntityHydrogenPipe>();
 	public static LinkedList<TileBaseConductor> energyTransmitterUpdates  = new LinkedList<TileBaseConductor>();
     private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
 	private final int MAX_BLOCKS_PER_TICK = 50000;
@@ -108,7 +107,7 @@ public class TickHandlerServer
         TickHandlerServer.networkTicks.clear();
         TickHandlerServer.serverFootprintMap.clear();
         TickHandlerServer.oxygenTransmitterUpdates.clear();
-        TickHandlerServer.hydrogenTransmitterUpdates.clear();
+//        TickHandlerServer.hydrogenTransmitterUpdates.clear();
         TickHandlerServer.energyTransmitterUpdates.clear();
         TickHandlerServer.playersRequestingMapData.clear();
         TickHandlerServer.networkTicks.clear();
@@ -469,22 +468,22 @@ public class TickHandlerServer
                 }
             }
 
-            maxPasses = 10;
-            while (!TickHandlerServer.hydrogenTransmitterUpdates.isEmpty())
-            {
-                LinkedList<TileEntityHydrogenPipe> pass = new LinkedList();
-                pass.addAll(TickHandlerServer.hydrogenTransmitterUpdates);
-                TickHandlerServer.hydrogenTransmitterUpdates.clear();
-                for (TileEntityHydrogenPipe newTile : pass)
-                {
-                    if (!newTile.isInvalid()) newTile.refresh();
-                }            
-
-                if (--maxPasses <= 0)
-                {
-                    break;
-                }
-            }
+//            maxPasses = 10;
+//            while (!TickHandlerServer.hydrogenTransmitterUpdates.isEmpty())
+//            {
+//                LinkedList<TileEntityHydrogenPipe> pass = new LinkedList();
+//                pass.addAll(TickHandlerServer.hydrogenTransmitterUpdates);
+//                TickHandlerServer.hydrogenTransmitterUpdates.clear();
+//                for (TileEntityHydrogenPipe newTile : pass)
+//                {
+//                    if (!newTile.isInvalid()) newTile.refresh();
+//                }
+//
+//                if (--maxPasses <= 0)
+//                {
+//                    break;
+//                }
+//            }
 
             maxPasses = 10;
             while (!TickHandlerServer.energyTransmitterUpdates.isEmpty())
