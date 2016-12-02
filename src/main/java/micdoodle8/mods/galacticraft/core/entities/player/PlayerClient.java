@@ -31,6 +31,7 @@ public class PlayerClient implements IPlayerClient
 {
     private boolean saveSneak;
 	private double downMot2;
+	public static boolean startup;
 
 	@Override
     public void moveEntity(EntityPlayerSP player, double par1, double par3, double par5)
@@ -76,12 +77,18 @@ public class PlayerClient implements IPlayerClient
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            stats.inFreefallLast = stats.inFreefall;
-        	stats.inFreefall = FreefallHandler.testFreefall(player);
+            if (!startup)
+            {
+                stats.inFreefallLast = stats.inFreefall;
+                stats.inFreefall = FreefallHandler.testFreefall(player);
+                startup = true;
+            }
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
-            	this.downMot2 = stats.downMotionLast;
-            	stats.downMotionLast = player.motionY;
+                stats.inFreefallLast = stats.inFreefall;
+                stats.inFreefall = FreefallHandler.testFreefall(player);
+                this.downMot2 = stats.downMotionLast;
+                stats.downMotionLast = player.motionY;
                 ((WorldProviderOrbit) player.worldObj.provider).preVanillaMotion(player);
             }
         }
