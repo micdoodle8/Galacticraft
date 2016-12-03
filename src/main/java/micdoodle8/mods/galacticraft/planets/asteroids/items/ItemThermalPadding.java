@@ -6,12 +6,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -86,5 +90,52 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.ARMOR;
+    }
+
+	@Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    {
+        if (player instanceof EntityPlayerMP)
+        {
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            ItemStack gear = stats.extendedInventory.getStackInSlot(6);
+            ItemStack gear1 = stats.extendedInventory.getStackInSlot(7);
+            ItemStack gear2 = stats.extendedInventory.getStackInSlot(8);
+            ItemStack gear3 = stats.extendedInventory.getStackInSlot(9);
+
+            if (itemStack.getItemDamage() == 0)
+            {
+                if (gear == null)
+                {
+                    stats.extendedInventory.setInventorySlotContents(6, itemStack.copy());
+                    itemStack.stackSize = 0;
+                }
+            }
+            else if (itemStack.getItemDamage() == 1)
+            {
+                if (gear1 == null)
+                {
+                    stats.extendedInventory.setInventorySlotContents(7, itemStack.copy());
+                    itemStack.stackSize = 0;
+                }
+            }
+            else if (itemStack.getItemDamage() == 2)
+            {
+                if (gear2 == null)
+                {
+                    stats.extendedInventory.setInventorySlotContents(8, itemStack.copy());
+                    itemStack.stackSize = 0;
+                }
+            }
+            else if (itemStack.getItemDamage() == 3)
+            {
+                if (gear3 == null)
+                {
+                    stats.extendedInventory.setInventorySlotContents(9, itemStack.copy());
+                    itemStack.stackSize = 0;
+                }
+            }
+        }
+        return itemStack;
     }
 }

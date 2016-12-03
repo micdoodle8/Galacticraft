@@ -5,11 +5,15 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -239,5 +243,22 @@ public class ItemParaChute extends Item implements ISortableItem
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.GEAR;
+    }
+
+	@Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    {
+        if (player instanceof EntityPlayerMP)
+        {
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            ItemStack gear = stats.extendedInventory.getStackInSlot(4);
+
+            if (gear == null)
+            {
+                stats.extendedInventory.setInventorySlotContents(4, itemStack.copy());
+                itemStack.stackSize = 0;
+            }
+        }
+        return itemStack;
     }
 }

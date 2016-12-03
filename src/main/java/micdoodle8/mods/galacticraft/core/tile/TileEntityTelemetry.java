@@ -285,7 +285,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 				GCLog.debug("Frequency module worn: world provider is null.  This is a bug. "+dim);
 			else
 			{
-				TileEntity te = player.worldObj.getTileEntity(new BlockPos(x, y, z));
+				TileEntity te = wp.worldObj.getTileEntity(new BlockPos(x, y, z));
 				if (te instanceof TileEntityTelemetry)
 				{
 					if (player == null)

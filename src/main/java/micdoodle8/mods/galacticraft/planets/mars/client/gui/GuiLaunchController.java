@@ -255,10 +255,10 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.launchController.getPos().getX(), this.launchController.getPos().getY(), this.launchController.getPos().getZ(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.launchController.getPos(), 0 }));
                 break;
             case 6:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.launchController.getPos().getX(), this.launchController.getPos().getY(), this.launchController.getPos().getZ(), 2 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.launchController.getPos(), 2 }));
             	break;
             default:
                 break;

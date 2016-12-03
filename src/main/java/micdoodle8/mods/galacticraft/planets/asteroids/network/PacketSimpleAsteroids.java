@@ -147,18 +147,23 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case C_UPDATE_MINERBASE_FACING:
-        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
-        	int facingNew = (Integer) this.data.get(3);
-        	if (tile instanceof TileEntityMinerBase)
-        	{
-        		((TileEntityMinerBase)tile).facing = EnumFacing.getFront(facingNew);
-//                System.err.println("Setting main c: " + tile.getPos() + "   " + new BlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6)));
-        		((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(4), (Integer) this.data.get(5), (Integer) this.data.get(6));
-            	int link = (Integer) this.data.get(7);
-            	if (link > 0) ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
-            	else ((TileEntityMinerBase)tile).linkedMinerID = null;
-        	}
-        	break;
+            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            int facingNew = (Integer) this.data.get(1);
+            if (tile instanceof TileEntityMinerBase)
+            {
+                ((TileEntityMinerBase)tile).facing = EnumFacing.getFront(facingNew);
+                ((TileEntityMinerBase)tile).setMainBlockPos((Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4));
+                int link = (Integer) this.data.get(5);
+                if (link > 0)
+                {
+                    ((TileEntityMinerBase)tile).linkedMinerID = UUID.randomUUID();
+                }
+                else
+                {
+                    ((TileEntityMinerBase)tile).linkedMinerID = null;
+                }
+            }
+            break;
         default:
             break;
         }
@@ -172,7 +177,7 @@ public class PacketSimpleAsteroids extends PacketBase
         switch (this.type)
         {
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -180,14 +185,14 @@ public class PacketSimpleAsteroids extends PacketBase
                 if (tile instanceof TileEntityShortRangeTelepad)
                 {
                     TileEntityShortRangeTelepad launchController = (TileEntityShortRangeTelepad) tile;
-                    launchController.setAddress((Integer) this.data.get(4));
+                    launchController.setAddress((Integer) this.data.get(2));
                 }
                 break;
             case 1:
                 if (tile instanceof TileEntityShortRangeTelepad)
                 {
                     TileEntityShortRangeTelepad launchController = (TileEntityShortRangeTelepad) tile;
-                    launchController.setTargetAddress((Integer) this.data.get(4));
+                    launchController.setTargetAddress((Integer) this.data.get(2));
                 }
                 break;
             default:

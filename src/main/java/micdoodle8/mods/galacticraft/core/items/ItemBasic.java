@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -8,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -197,7 +199,20 @@ public class ItemBasic extends Item implements ISortableItem
         {
             par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         }
+        if (par1ItemStack.getItemDamage() == 19)
+        {
+            if (par3EntityPlayer instanceof EntityPlayerMP)
+            {
+                GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par3EntityPlayer);
+                ItemStack gear = stats.extendedInventory.getStackInSlot(5);
 
+                if (gear == null)
+                {
+                    stats.extendedInventory.setInventorySlotContents(5, par1ItemStack.copy());
+                    par1ItemStack.stackSize = 0;
+                }
+            }
+        }
         return par1ItemStack;
     }
     

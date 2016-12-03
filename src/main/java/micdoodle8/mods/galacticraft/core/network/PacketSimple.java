@@ -103,7 +103,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_SET_ENTITY_FIRE(Side.SERVER, Integer.class),
         S_BIND_SPACE_STATION_ID(Side.SERVER, Integer.class),
         S_UNLOCK_NEW_SCHEMATIC(Side.SERVER),
-        S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_UPDATE_DISABLEABLE_BUTTON(Side.SERVER, BlockPos.class, Integer.class),
         S_ON_FAILED_CHEST_UNLOCK(Side.SERVER, Integer.class),
         S_RENAME_SPACE_STATION(Side.SERVER, String.class, Integer.class),
         S_OPEN_EXTENDED_INVENTORY(Side.SERVER),
@@ -117,18 +117,18 @@ public class PacketSimple extends PacketBase implements Packet
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
-        S_REQUEST_ARCLAMP_FACING(Side.SERVER, Integer.class, Integer.class, Integer.class), 
+        S_REQUEST_ARCLAMP_FACING(Side.SERVER, BlockPos.class),
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
         S_REQUEST_MAP_IMAGE(Side.SERVER, Integer.class, Integer.class, Integer.class),
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
-        S_UPDATE_VIEWSCREEN_REQUEST(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_UPDATE_VIEWSCREEN_REQUEST(Side.SERVER, BlockPos.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
-        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, BlockPos.class),
+        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
         C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class),
         C_CLOSE_GUI(Side.CLIENT),
         C_RESET_THIRD_PERSON(Side.CLIENT),
@@ -146,7 +146,7 @@ public class PacketSimple extends PacketBase implements Packet
         C_PLAY_SOUND_BOW(Side.CLIENT),
         C_UPDATE_OXYGEN_VALIDITY(Side.CLIENT, Boolean.class),
         C_OPEN_PARACHEST_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_WIRE_BOUNDS(Side.CLIENT, Integer.class, Integer.class, Integer.class),
+        C_UPDATE_WIRE_BOUNDS(Side.CLIENT, BlockPos.class),
         C_OPEN_SPACE_RACE_GUI(Side.CLIENT),
         C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
         C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
@@ -160,12 +160,12 @@ public class PacketSimple extends PacketBase implements Packet
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
-        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_VIEWSCREEN(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_TELEMETRY(Side.CLIENT, Integer.class, Integer.class, Integer.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
+        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, BlockPos.class, Integer.class),
+        C_UPDATE_VIEWSCREEN(Side.CLIENT, BlockPos.class, Integer.class, Integer.class),
+        C_UPDATE_TELEMETRY(Side.CLIENT, BlockPos.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
-        C_RECOLOR_PIPE(Side.CLIENT, Integer.class, Integer.class, Integer.class);
+        C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class);
         
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -587,7 +587,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_UPDATE_WIRE_BOUNDS:
-            TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
 
             if (tile instanceof TileBaseConductor)
             {
@@ -734,65 +734,69 @@ public class PacketSimple extends PacketBase implements Packet
             WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
         case C_UPDATE_ARCLAMP_FACING:
-        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
-        	int facingNew = (Integer) this.data.get(3);
-        	if (tile instanceof TileEntityArclamp)
-        	{
-        		((TileEntityArclamp)tile).facing = facingNew;
-        	}
-        	break;
+            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            int facingNew = (Integer) this.data.get(1);
+            if (tile instanceof TileEntityArclamp)
+            {
+                ((TileEntityArclamp)tile).facing = facingNew;
+            }
+            break;
         case C_UPDATE_STATS:
-        	stats.buildFlags = (Integer) this.data.get(0);
-        	break;
+            stats.buildFlags = (Integer) this.data.get(0);
+            break;
         case C_UPDATE_VIEWSCREEN:
-        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
-        	if (tile instanceof TileEntityScreen)
-        	{
-            	TileEntityScreen screenTile = (TileEntityScreen)tile; 
-        		int screenType = (Integer) this.data.get(3);
-        		int flags = (Integer) this.data.get(4);
-            	screenTile.imageType = screenType;
-            	screenTile.connectedUp = (flags & 8) != 0;
-            	screenTile.connectedDown = (flags & 4) != 0;
-            	screenTile.connectedLeft = (flags & 2) != 0;
-            	screenTile.connectedRight = (flags & 1) != 0;
-            	screenTile.refreshNextTick(true);
-        	}      	
-        	break;
+            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tile instanceof TileEntityScreen)
+            {
+                TileEntityScreen screenTile = (TileEntityScreen)tile;
+                int screenType = (Integer) this.data.get(1);
+                int flags = (Integer) this.data.get(2);
+                screenTile.imageType = screenType;
+                screenTile.connectedUp = (flags & 8) != 0;
+                screenTile.connectedDown = (flags & 4) != 0;
+                screenTile.connectedLeft = (flags & 2) != 0;
+                screenTile.connectedRight = (flags & 1) != 0;
+                screenTile.refreshNextTick(true);
+            }
+            break;
         case C_UPDATE_TELEMETRY:
-        	tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
-        	if (tile instanceof TileEntityTelemetry)
-        	{
-        		String name = (String) this.data.get(3);
-        		if (name.startsWith("$"))
-        		{
-        			//It's a player name
-        			((TileEntityTelemetry)tile).clientClass = EntityPlayerMP.class;
-        			String strName = name.substring(1);
-        			((TileEntityTelemetry)tile).clientName = strName;
-        			GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
-        			if (!strName.equals(profile.getName()))
-        			{
-        				profile = PlayerUtil.getOtherPlayerProfile(strName);
-            			if (profile == null)
-            			{
-            				String strUUID = (String) this.data.get(9);
-            				profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
-            			}
-            			if (!profile.getProperties().containsKey("textures"))
-            				GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, getDimensionID(), new Object[] { strName }));
-        			}
-        			((TileEntityTelemetry)tile).clientGameProfile = profile;
-        		}
-        		else
-        			((TileEntityTelemetry)tile).clientClass = (Class) EntityList.stringToClassMapping.get(name);
-        		((TileEntityTelemetry)tile).clientData = new int[5];
-        		for (int i = 4; i < 9; i++)
+            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tile instanceof TileEntityTelemetry)
+            {
+                String name = (String) this.data.get(1);
+                if (name.startsWith("$"))
                 {
-            		((TileEntityTelemetry)tile).clientData[i - 4] = (Integer) this.data.get(i);
-            	}
-        	}
-        	break;
+                    //It's a player name
+                    ((TileEntityTelemetry)tile).clientClass = EntityPlayerMP.class;
+                    String strName = name.substring(1);
+                    ((TileEntityTelemetry)tile).clientName = strName;
+                    GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
+                    if (!strName.equals(profile.getName()))
+                    {
+                        profile = PlayerUtil.getOtherPlayerProfile(strName);
+                        if (profile == null)
+                        {
+                            String strUUID = (String) this.data.get(7);
+                            profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
+                        }
+                        if (!profile.getProperties().containsKey("textures"))
+                        {
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, this.getDimensionID(), new Object[] { strName }));
+                        }
+                    }
+                    ((TileEntityTelemetry)tile).clientGameProfile = profile;
+                }
+                else
+                {
+                    ((TileEntityTelemetry)tile).clientClass = EntityList.stringToClassMapping.get(name);
+                }
+                ((TileEntityTelemetry)tile).clientData = new int[5];
+                for (int i = 4; i < 7; i++)
+                {
+                    ((TileEntityTelemetry)tile).clientData[i - 4] = (Integer) this.data.get(i);
+                }
+            }
+            break;
         case C_SEND_PLAYERSKIN:
         	String strName = (String) this.data.get(0);
         	String s1 = (String) this.data.get(1);
@@ -835,7 +839,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_RECOLOR_PIPE:
-            TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos((Integer)data.get(0), (Integer)data.get(1), (Integer)data.get(2)));
+            TileEntity tileEntity = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
             if (tileEntity instanceof TileEntityFluidPipe)
             {
                 TileEntityFluidPipe pipe = (TileEntityFluidPipe) tileEntity;
@@ -990,13 +994,13 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_UPDATE_DISABLEABLE_BUTTON:
-            final TileEntity tileAt = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+            final TileEntity tileAt = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
 
             if (tileAt instanceof IDisableableMachine)
             {
                 final IDisableableMachine machine = (IDisableableMachine) tileAt;
 
-                machine.setDisabled((Integer) this.data.get(3), !machine.getDisabled((Integer) this.data.get(3)));
+                machine.setDisabled((Integer) this.data.get(1), !machine.getDisabled((Integer) this.data.get(1)));
             }
             break;
         case S_ON_FAILED_CHEST_UNLOCK:
@@ -1041,7 +1045,7 @@ public class PacketSimple extends PacketBase implements Packet
                 if (tile1 instanceof TileEntityAirLockController)
                 {
                     TileEntityAirLockController airlockController = (TileEntityAirLockController) tile1;
-                    airlockController.playerDistanceSelection = (Integer) this.data.get(4);
+                    airlockController.playerDistanceSelection = (Integer) this.data.get(2);
                 }
                 break;
             case 3:
@@ -1262,23 +1266,22 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_REQUEST_ARCLAMP_FACING:
-        	TileEntity tileAL = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
-        	if (tileAL instanceof TileEntityArclamp)
-        	{
-            	((TileEntityArclamp)tileAL).updateClientFlag = true; 
-        	}
-        	break;
+            TileEntity tileAL = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tileAL instanceof TileEntityArclamp)
+            {
+                ((TileEntityArclamp)tileAL).updateClientFlag = true;
+            }
+            break;
         case S_BUILDFLAGS_UPDATE:
-        	stats.buildFlags = (Integer) this.data.get(0);
-        	break;
+            stats.buildFlags = (Integer) this.data.get(0);
+            break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
-        	int screenDim = (Integer) this.data.get(0);
-        	TileEntity tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3)));
-        	if (tile instanceof TileEntityScreen)
-        	{
-            	((TileEntityScreen)tile).updateClients(); 
-        	}
-        	break;
+            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tile instanceof TileEntityScreen)
+            {
+                ((TileEntityScreen)tile).updateClients();
+            }
+            break;
         case S_REQUEST_OVERWORLD_IMAGE:
         	MapUtil.sendOverworldToClient(playerBase);
 //        	if (GalacticraftCore.enableJPEG)

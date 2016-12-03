@@ -562,7 +562,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     		z = this.mainBlockPosition.getZ();
     	}
     	int link = (this.linkedMinerID != null) ? 1:0;
-    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.facing, x, y, z, link} ), this.worldObj.provider.getDimensionId());
+    	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing, x, y, z, link} ), this.worldObj.provider.getDimensionId());
     }
     
     @Override
