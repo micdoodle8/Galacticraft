@@ -16,6 +16,11 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     @NetworkedField(targetSide = Side.CLIENT)
     public BlockPos mainBlockPosition;
 
+    public TileEntityMulti()
+    {
+
+    }
+
     public TileEntityMulti(BlockPos mainBlockPosition)
     {
         this.mainBlockPosition = mainBlockPosition;

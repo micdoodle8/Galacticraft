@@ -237,6 +237,8 @@ public class ClientProxyCore extends CommonProxyCore
 
         modelResourceLocation = new ModelResourceLocation("galacticraftcore:flag", "inventory");
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
+
+        ClientProxyCore.registerInventoryJsons();
     }
 
     @SubscribeEvent
@@ -317,7 +319,6 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
         ClientProxyCore.setupCapes();
-        ClientProxyCore.registerInventoryJsons();
     }
 
     @Override
@@ -536,7 +537,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.basicBlock, 12, "block_meteoric_iron_gc");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
-        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockSeal);
+        ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.airLockSeal, 0, "air_lock_seal");
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.refinery);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.fuelLoader);
         ClientUtil.registerBlockJson(GalacticraftCore.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");

@@ -5,5 +5,7 @@
     "custom": {
       "flip-v": true
     }
+  },
+  "variants": { 
   }
 }
