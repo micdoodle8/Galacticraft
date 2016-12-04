@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 
 public class ItemCarbonFragments extends Item implements ISortableItem
 {
-
     public ItemCarbonFragments()
     {
         super();

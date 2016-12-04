@@ -30,6 +30,11 @@ public class PlanetsProxyClient extends PlanetsProxy
         {
             module.preInit(event);
         }
+
+        for (Item toReg : itemsToRegisterJson)
+        {
+            ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, toReg);
+        }
     }
 
     @Override
@@ -45,11 +50,6 @@ public class PlanetsProxyClient extends PlanetsProxy
     public void init(FMLInitializationEvent event)
     {
         super.init(event);
-
-        for (Item toReg : itemsToRegisterJson)
-        {
-            ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, toReg);
-        }
 
         for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {

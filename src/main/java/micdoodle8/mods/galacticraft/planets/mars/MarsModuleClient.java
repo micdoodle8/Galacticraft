@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -132,19 +133,6 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @Override
     public void init(FMLInitializationEvent event)
     {
-
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 0, "raw_desh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 1, "desh_stick");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 2, "ingot_desh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 3, "reinforced_plate_t2");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 4, "slimeling_cargo");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 5, "compressed_desh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 6, "fluid_manip");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.key, 0, "key");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 0, "schematic_rocket_t3");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 1, "schematic_rocket_cargo");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 2, "schematic_astro_miner");
-
         MinecraftForge.EVENT_BUS.register(new TickHandlerClient());
     }
 
@@ -215,6 +203,17 @@ public class MarsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 4, "methane_synthesizer");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 8, "electrolyzer");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.treasureChestTier2);
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 0, "raw_desh");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 1, "desh_stick");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 2, "ingot_desh");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 3, "reinforced_plate_t2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 4, "slimeling_cargo");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 5, "compressed_desh");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 6, "fluid_manip");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.key, 0, "key");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 0, "schematic_rocket_t3");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 1, "schematic_rocket_cargo");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 2, "schematic_astro_miner");
     }
 
     private void addVariants(String name, ResourceLocation... variants)

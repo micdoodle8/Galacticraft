@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 import com.google.common.collect.ImmutableList;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -59,6 +61,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class AsteroidsModuleClient implements IPlanetsModuleClient
@@ -78,6 +81,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         addPlanetVariants("canister_partial_ln2", "canister_partial_ln2_0", "canister_partial_ln2_1", "canister_partial_ln2_2", "canister_partial_ln2_3", "canister_partial_ln2_4", "canister_partial_ln2_5", "canister_partial_ln2_6");
         addPlanetVariants("canister_partial_lox", "canister_partial_lox_0", "canister_partial_lox_1", "canister_partial_lox_2", "canister_partial_lox_3", "canister_partial_lox_4", "canister_partial_lox_5", "canister_partial_lox_6");
         MinecraftForge.EVENT_BUS.register(this);
+        AsteroidsModuleClient.registerBlockRenderers();
     }
 
     @Override
@@ -158,7 +162,6 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @Override
     public void init(FMLInitializationEvent event)
     {
-        AsteroidsModuleClient.registerBlockRenderers();
         AsteroidsEventHandlerClient clientEventHandler = new AsteroidsEventHandlerClient();
         MinecraftForge.EVENT_BUS.register(clientEventHandler);
         FluidTexturesGC.init();
