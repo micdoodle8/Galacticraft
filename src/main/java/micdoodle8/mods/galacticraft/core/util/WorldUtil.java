@@ -393,7 +393,7 @@ public class WorldUtil
 
     public static void initialiseDimensionNames()
     {
-    	WorldProvider provider = WorldUtil.getProviderForDimensionServer(0);
+    	WorldProvider provider = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld);
     	WorldUtil.dimNames.put(ConfigManagerCore.idDimensionOverworld, new String(provider.getDimensionName()));
     }
     
