@@ -34,12 +34,12 @@ public class PacketSimpleAsteroids extends PacketBase
     public static enum EnumSimplePacketAsteroids
     {
         // SERVER
-        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
         S_REQUEST_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class),
         // CLIENT
         C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class),
         C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class),
-        C_UPDATE_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
+        C_UPDATE_MINERBASE_FACING(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
