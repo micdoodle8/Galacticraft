@@ -160,7 +160,7 @@ public class MapUtil
 	{
     	//doneOverworldTexture = true;
     	if (doneOverworldTexture) return;
-		World world = WorldUtil.getProviderForDimensionServer(0).worldObj;
+		World world = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).worldObj;
     	if (world == null) return;
 
     	File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
