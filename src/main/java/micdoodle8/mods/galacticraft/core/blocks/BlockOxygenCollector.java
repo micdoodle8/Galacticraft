@@ -29,20 +29,13 @@ import java.util.Random;
 
 public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    /*@SideOnly(Side.CLIENT)
-    private IIcon[] collectorIcons;
-
-    private IIcon iconMachineSide;
-    private IIcon iconInput;
-    private IIcon iconOutput;*/
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOxygenCollector(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
 
@@ -51,21 +44,6 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDes
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_collector_fan");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }*/
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -96,21 +74,6 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDes
     {
         return new TileEntityOxygenCollector();
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == metadata + 2)
-        {
-            return this.iconOutput;
-        }
-        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-        {
-            return this.iconInput;
-        }
-
-        return this.iconMachineSide;
-    }*/
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)

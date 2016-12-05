@@ -20,44 +20,13 @@ import net.minecraft.world.World;
 
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    /*private IIcon iconSide;
-    private IIcon iconTop;*/
-
     protected BlockOxygenDetector(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "detector_side");
-    }
-
-    @Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 0 || side == 1)
-        {
-            return this.iconTop;
-        }
-        else
-        {
-            return this.iconSide;
-        }
-    }*/
 
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
