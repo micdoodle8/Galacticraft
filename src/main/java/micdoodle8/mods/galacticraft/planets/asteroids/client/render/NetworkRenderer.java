@@ -41,9 +41,6 @@ public class NetworkRenderer
         double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        RenderHelper.disableStandardItemLighting();
 
         for (TileEntityBeamOutput tileEntity : nodes)
         {
@@ -70,7 +67,6 @@ public class NetworkRenderer
             GL11.glRotatef(-tileEntity.pitch, 1, 0, 0);
             GL11.glRotatef(tileEntity.ticks * 10, 0, 0, 1);
 
-//            GL11.glColor4f(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F);
             tess.getWorldRenderer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
             for (EnumFacing dir : EnumFacing.values())
@@ -85,8 +81,6 @@ public class NetworkRenderer
         }
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        RenderHelper.enableStandardItemLighting();
 
         GL11.glColor4f(1, 1, 1, 1);
     }
