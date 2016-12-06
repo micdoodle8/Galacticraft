@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -149,38 +149,38 @@ public class ItemParaChute extends Item implements ISortableItem
     {
         switch (damage)
         {
-            case 1:
-                return BLACK;
-            case 13:
-                return RED;
-            case 7:
-                return GREEN;
-            case 4:
-                return BROWN;
-            case 5:
-                return BLUE;
-            case 12:
-                return PURPLE;
-            case 14:
-                return CYAN;
-            case 8:
-                return SILVER;
-            case 6:
-                return GRAY;
-            case 11:
-                return PINK;
-            case 3:
-                return LIME;
-            case 15:
-                return YELLOW;
-            case 2:
-                return LIGHT_BLUE;
-            case 9:
-                return MAGENTA;
-            case 10:
-                return ORANGE;
-            case 0:
-                return WHITE;
+        case 1:
+            return BLACK;
+        case 13:
+            return RED;
+        case 7:
+            return GREEN;
+        case 4:
+            return BROWN;
+        case 5:
+            return BLUE;
+        case 12:
+            return PURPLE;
+        case 14:
+            return CYAN;
+        case 8:
+            return SILVER;
+        case 6:
+            return GRAY;
+        case 11:
+            return PINK;
+        case 3:
+            return LIME;
+        case 15:
+            return YELLOW;
+        case 2:
+            return LIGHT_BLUE;
+        case 9:
+            return MAGENTA;
+        case 10:
+            return ORANGE;
+        case 0:
+            return WHITE;
         }
 
         return WHITE;
@@ -190,38 +190,38 @@ public class ItemParaChute extends Item implements ISortableItem
     {
         switch (color)
         {
-            case BLACK:
-                return 1;
-            case RED:
-                return 13;
-            case GREEN:
-                return 7;
-            case BROWN:
-                return 4;
-            case BLUE:
-                return 5;
-            case PURPLE:
-                return 12;
-            case CYAN:
-                return 14;
-            case SILVER:
-                return 8;
-            case GRAY:
-                return 6;
-            case PINK:
-                return 11;
-            case LIME:
-                return 3;
-            case YELLOW:
-                return 15;
-            case LIGHT_BLUE:
-                return 2;
-            case MAGENTA:
-                return 9;
-            case ORANGE:
-                return 10;
-            case WHITE:
-                return 0;
+        case BLACK:
+            return 1;
+        case RED:
+            return 13;
+        case GREEN:
+            return 7;
+        case BROWN:
+            return 4;
+        case BLUE:
+            return 5;
+        case PURPLE:
+            return 12;
+        case CYAN:
+            return 14;
+        case SILVER:
+            return 8;
+        case GRAY:
+            return 6;
+        case PINK:
+            return 11;
+        case LIME:
+            return 3;
+        case YELLOW:
+            return 15;
+        case LIGHT_BLUE:
+            return 2;
+        case MAGENTA:
+            return 9;
+        case ORANGE:
+            return 10;
+        case WHITE:
+            return 0;
         }
 
         return -1;
@@ -245,7 +245,7 @@ public class ItemParaChute extends Item implements ISortableItem
         return EnumSortCategoryItem.GEAR;
     }
 
-	@Override
+    @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
     {
         if (player instanceof EntityPlayerMP)

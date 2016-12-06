@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiver
 {
@@ -58,13 +57,13 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 
             if (tileEntity instanceof IMultiBlock)
             {
-            	return ((IMultiBlock) tileEntity).onActivated(player);
+                return ((IMultiBlock) tileEntity).onActivated(player);
             }
         }
 
         return false;
     }
-    
+
     public TileEntity getMainBlockTile()
     {
         if (this.mainBlockPosition != null)
@@ -119,6 +118,6 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
     @Override
     public boolean isNetworkedTile()
     {
-    	 return (this.mainBlockPosition != null);
+        return (this.mainBlockPosition != null);
     }
 }

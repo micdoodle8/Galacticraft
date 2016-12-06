@@ -10,13 +10,10 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -46,7 +43,8 @@ public class EntityTier2Rocket extends EntityTieredRocket
     }
 
     @Override
-    public double getYOffset() {
+    public double getYOffset()
+    {
         return 1.5F;
     }
 
@@ -56,11 +54,11 @@ public class EntityTier2Rocket extends EntityTieredRocket
         super.entityInit();
     }
 
-	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target)
-	{
-	return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex());
-	}
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex());
+    }
 
     @Override
     public double getMountedYOffset()
@@ -77,9 +75,9 @@ public class EntityTier2Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 0.0D;
+        return 0.0D;
     }
-    
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
@@ -138,8 +136,10 @@ public class EntityTier2Rocket extends EntityTieredRocket
             if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
-				if (!this.hasValidFuel())
-					this.stopRocketSound();
+                if (!this.hasValidFuel())
+                {
+                    this.stopRocketSound();
+                }
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -225,10 +225,10 @@ public class EntityTier2Rocket extends EntityTieredRocket
             GalacticraftCore.proxy.spawnParticle(this.getLaunched() ? "launchFlameLaunched" : "launchFlameIdle", new Vector3(x3 - 0.7 + this.rand.nextDouble() / 10, y3, z3 - this.rand.nextDouble() / 10), motionVec, new Object[] { riddenByEntity });
             GalacticraftCore.proxy.spawnParticle(this.getLaunched() ? "launchFlameLaunched" : "launchFlameIdle", new Vector3(x3 + this.rand.nextDouble() / 10, y3, z3 + 0.7 + this.rand.nextDouble() / 10), motionVec, new Object[] { riddenByEntity });
             GalacticraftCore.proxy.spawnParticle(this.getLaunched() ? "launchFlameLaunched" : "launchFlameIdle", new Vector3(x3 - this.rand.nextDouble() / 10, y3, z3 - 0.7 + this.rand.nextDouble() / 10), motionVec, new Object[] { riddenByEntity });
-            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2 - 0.8, y, z2), motionVec, new Object[] { });
-            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2 + 0.8, y, z2), motionVec, new Object[] { });
-            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2, y, z2 - 0.8), motionVec, new Object[] { });
-            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2, y, z2 + 0.8), motionVec, new Object[] { });
+            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2 - 0.8, y, z2), motionVec, new Object[] {});
+            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2 + 0.8, y, z2), motionVec, new Object[] {});
+            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2, y, z2 - 0.8), motionVec, new Object[] {});
+            GalacticraftCore.proxy.spawnParticle("blueflame", new Vector3(x2, y, z2 + 0.8), motionVec, new Object[] {});
         }
     }
 
@@ -308,17 +308,20 @@ public class EntityTier2Rocket extends EntityTieredRocket
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 

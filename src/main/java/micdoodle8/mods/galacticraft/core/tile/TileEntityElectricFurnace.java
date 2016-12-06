@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
@@ -18,6 +15,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -63,19 +63,19 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 
         this.setTier2();
     }
-    
+
     private void setTier2()
     {
         this.storage.setCapacity(25000);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
         this.processTimeRequired = 100;
-        this.setTierGC(2);   	
+        this.setTierGC(2);
     }
 
     @Override
     public void update()
     {
-        if (!this.initialised )
+        if (!this.initialised)
         {
             int metadata = this.getBlockMetadata();
             //for version update compatibility
@@ -86,7 +86,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             }
             else if (metadata >= 8)
             {
-            	this.setTier2();
+                this.setTier2();
             }
             this.initialised = true;
         }
@@ -100,7 +100,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 if (this.hasEnoughEnergyToRun)
                 {
                     //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
-                    if (this.tierGC == 2) this.processTimeRequired = 200 / (1 + this.poweredByTierGC);
+                    if (this.tierGC == 2)
+                    {
+                        this.processTimeRequired = 200 / (1 + this.poweredByTierGC);
+                    }
 
                     if (this.processTicks == 0)
                     {
@@ -174,7 +177,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 {
                     String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
                     if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
+                    {
                         this.containingItems[2].stackSize += resultItemStack.stackSize;
+                    }
                 }
             }
             else if (this.containingItems[2].isItemEqual(resultItemStack))
@@ -183,8 +188,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 if (this.tierGC > 1)
                 {
                     String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
-                    if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw")  || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
+                    if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
+                    {
                         this.containingItems[2].stackSize += resultItemStack.stackSize;
+                    }
                 }
             }
 
@@ -203,11 +210,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         super.readFromNBT(par1NBTTagCompound);
         if (this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
-        	this.setTier2();
-        	this.initialised = true;
+            this.setTier2();
+            this.initialised = true;
         }
         else
-        	this.initialised = false;
+        {
+            this.initialised = false;
+        }
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
     }
@@ -216,8 +225,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
-        	this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
-    	super.writeToNBT(par1NBTTagCompound);
+        {
+            this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
+        }
+        super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
     }
@@ -247,8 +258,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        if (itemStack == null) return false;
-    	return slotID == 1 ? FurnaceRecipes.instance().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+        if (itemStack == null)
+        {
+            return false;
+        }
+        return slotID == 1 ? FurnaceRecipes.instance().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override
@@ -276,15 +290,18 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return false;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING);

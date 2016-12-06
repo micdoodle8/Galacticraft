@@ -142,69 +142,69 @@ public class ChunkLoadingCallback implements LoadingCallback
 
             if (!saveFile.exists())
             {
-                try 
+                try
                 {
-					if (!saveFile.createNewFile())
-					{
-						GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
-					}
-				} 
-                catch (IOException e) 
+                    if (!saveFile.createNewFile())
+                    {
+                        GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
+                    }
+                }
+                catch (IOException e)
                 {
-					GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
-					e.printStackTrace();
-				}
+                    GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
+                    e.printStackTrace();
+                }
             }
 
             FileOutputStream fos = null;
-			try 
-			{
-				fos = new FileOutputStream(saveFile);
-			} 
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			}
-			if (fos != null)
-			{
-	            DataOutputStream dataStream = new DataOutputStream(fos);
-	            try
-	            {
-		            dataStream.writeInt(ChunkLoadingCallback.chunkLoaderList.size());
-	
-		            for (Entry<String, HashMap<Integer, HashSet<BlockPos>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
-		            {
-		                dataStream.writeUTF(playerEntry.getKey());
-		                dataStream.writeInt(playerEntry.getValue().size());
-	
-		                for (Entry<Integer, HashSet<BlockPos>> dimensionEntry : playerEntry.getValue().entrySet())
-		                {
-		                    dataStream.writeInt(dimensionEntry.getKey());
-		                    dataStream.writeInt(dimensionEntry.getValue().size());
-	
-		                    for (BlockPos coords : dimensionEntry.getValue())
-		                    {
-		                        dataStream.writeInt(coords.getX());
-		                        dataStream.writeInt(coords.getY());
-		                        dataStream.writeInt(coords.getZ());
-		                    }
-		                }
-		            }
-	            }
-	            catch (IOException e)
-	            {
-	            	e.printStackTrace();
-	            }
-	            try 
-	            {
-		            dataStream.close();
-					fos.close();
-				} 
-	            catch (IOException e) 
-	            {
-					e.printStackTrace();
-				}
-			}
+            try
+            {
+                fos = new FileOutputStream(saveFile);
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+            if (fos != null)
+            {
+                DataOutputStream dataStream = new DataOutputStream(fos);
+                try
+                {
+                    dataStream.writeInt(ChunkLoadingCallback.chunkLoaderList.size());
+
+                    for (Entry<String, HashMap<Integer, HashSet<BlockPos>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
+                    {
+                        dataStream.writeUTF(playerEntry.getKey());
+                        dataStream.writeInt(playerEntry.getValue().size());
+
+                        for (Entry<Integer, HashSet<BlockPos>> dimensionEntry : playerEntry.getValue().entrySet())
+                        {
+                            dataStream.writeInt(dimensionEntry.getKey());
+                            dataStream.writeInt(dimensionEntry.getValue().size());
+
+                            for (BlockPos coords : dimensionEntry.getValue())
+                            {
+                                dataStream.writeInt(coords.getX());
+                                dataStream.writeInt(coords.getY());
+                                dataStream.writeInt(coords.getZ());
+                            }
+                        }
+                    }
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+                try
+                {
+                    dataStream.close();
+                    fos.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -218,7 +218,7 @@ public class ChunkLoadingCallback implements LoadingCallback
             {
                 if (!saveDir.mkdirs())
                 {
-                	GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
+                    GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
                 }
             }
 
@@ -236,7 +236,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
 
         DataInputStream dataStream = null;
-        
+
         try
         {
             File saveDir = ChunkLoadingCallback.getSaveDir();
@@ -247,7 +247,7 @@ public class ChunkLoadingCallback implements LoadingCallback
                 {
                     if (!saveDir.mkdirs())
                     {
-                    	GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
+                        GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
                     }
                 }
 
@@ -289,17 +289,17 @@ public class ChunkLoadingCallback implements LoadingCallback
         catch (Exception e)
         {
             e.printStackTrace();
-            
+
             if (dataStream != null)
             {
-            	try 
-            	{
-					dataStream.close();
-				} 
-            	catch (IOException e1) 
-            	{
-					e1.printStackTrace();
-				}
+                try
+                {
+                    dataStream.close();
+                }
+                catch (IOException e1)
+                {
+                    e1.printStackTrace();
+                }
             }
         }
 

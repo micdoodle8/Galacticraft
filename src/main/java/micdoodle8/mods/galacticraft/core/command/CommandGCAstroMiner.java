@@ -11,7 +11,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
-import java.util.*;
+
+import java.util.List;
 
 public class CommandGCAstroMiner extends CommandBase
 {
@@ -68,58 +69,72 @@ public class CommandGCAstroMiner extends CommandBase
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
-    	if (args.length > 2)
-    	{
+        if (args.length > 2)
+        {
             throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getCommandUsage(sender)), new Object[0]);
-    	}
-    	if (args.length < 1)
-    	{
+        }
+        if (args.length < 1)
+        {
             throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrong_usage", this.getCommandUsage(sender)), new Object[0]);
-    	}
-    	
-    	int type = 0;
-    	int newvalue = 0;
-    	if (args[0].equalsIgnoreCase("show")) type = 1;
-    	else if (args[0].equalsIgnoreCase("reset")) type = 2;
-    	else if (args[0].length() > 3 && args[0].substring(0,3).equalsIgnoreCase("set"))
-    	{
-    		String number = args[0].substring(3);
+        }
+
+        int type = 0;
+        int newvalue = 0;
+        if (args[0].equalsIgnoreCase("show"))
+        {
+            type = 1;
+        }
+        else if (args[0].equalsIgnoreCase("reset"))
+        {
+            type = 2;
+        }
+        else if (args[0].length() > 3 && args[0].substring(0, 3).equalsIgnoreCase("set"))
+        {
+            String number = args[0].substring(3);
             try
             {
                 newvalue = Integer.parseInt(number);
-        		if (newvalue > 0)
-        			type = 3;
+                if (newvalue > 0)
+                {
+                    type = 3;
+                }
             }
-            catch (NumberFormatException ex) { }
-    	}
-    	
-    	//Proceed if syntax of show|reset|set<number> was correct
-    	if (type > 0)
-    	{
-    		EntityPlayerMP playerBase = null;
+            catch (NumberFormatException ex)
+            {
+            }
+        }
+
+        //Proceed if syntax of show|reset|set<number> was correct
+        if (type > 0)
+        {
+            EntityPlayerMP playerBase = null;
             try
             {
                 if (args.length == 2)
+                {
                     playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[1], true);
+                }
                 else
+                {
                     playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
+                }
 
                 if (playerBase != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     switch (type)
                     {
-                    case 1: 
-                    	sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.astroMinerCount)));
-                    	break;
+                    case 1:
+                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.astroMinerCount)));
+                        break;
                     case 2:
-                    	stats.astroMinerCount = 0;
+                        stats.astroMinerCount = 0;
                         sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
-                    	break;
+                        break;
                     case 3:
-                    	stats.astroMinerCount = newvalue;
+                        stats.astroMinerCount = newvalue;
                         sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
-                    	break;
+                        break;
                     }
                 }
                 else

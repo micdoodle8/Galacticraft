@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import com.google.common.base.Function;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
@@ -44,9 +41,11 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
     {
         if (rocketModel == null)
         {
-            Function<ResourceLocation, TextureAtlasSprite> textureGetter = new Function<ResourceLocation, TextureAtlasSprite>() {
+            Function<ResourceLocation, TextureAtlasSprite> textureGetter = new Function<ResourceLocation, TextureAtlasSprite>()
+            {
                 @Override
-                public TextureAtlasSprite apply(ResourceLocation input) {
+                public TextureAtlasSprite apply(ResourceLocation input)
+                {
                     return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
                 }
             };
@@ -111,8 +110,11 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
         RenderHelper.enableStandardItemLighting();
     }
 
-    private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color) {
-        for(BakedQuad bakedquad : quads)
+    private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color)
+    {
+        for (BakedQuad bakedquad : quads)
+        {
             LightUtil.renderQuadColor(renderer, bakedquad, color);
+        }
     }
 }

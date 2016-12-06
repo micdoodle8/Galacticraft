@@ -18,7 +18,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -28,7 +30,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ChatComponentText;
@@ -57,7 +58,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     {
         super(par1World);
         this.setSize(0.45F, 0.7F);
-        ((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
+        ((PathNavigateGround) this.getNavigator()).setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.aiSit = new EntityAISitGC(this);
         this.tasks.addTask(2, this.aiSit);
@@ -77,9 +78,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             {
                 return p_180094_1_ instanceof EntitySludgeling;
             }
+
+            @Override
             public boolean apply(Object p_apply_1_)
             {
-                return this.func_180094_a((Entity)p_apply_1_);
+                return this.func_180094_a((Entity) p_apply_1_);
             }
         }));
         this.setTamed(false);
@@ -116,6 +119,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         return owner;
     }
 
+    @Override
     public boolean isOwner(EntityLivingBase entityLivingBase)
     {
         return entityLivingBase == this.getOwner();
@@ -274,8 +278,8 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     @Override
     protected String getHurtSound()
     {
-		this.playSound("mob.slime.small", this.getSoundVolume(), 1.1F);
-		return null;
+        this.playSound("mob.slime.small", this.getSoundVolume(), 1.1F);
+        return null;
     }
 
     @Override
@@ -644,6 +648,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.dataWatcher.updateObject(22, age);
     }
 
+    @Override
     public String getName()
     {
         return this.dataWatcher.getWatchableObjectString(23);
@@ -744,6 +749,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             this.setMutexBits(5);
         }
 
+        @Override
         public boolean shouldExecute()
         {
             if (!this.theEntity.isTamed())
@@ -766,28 +772,34 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             }
         }
 
+        @Override
         public void startExecuting()
         {
             this.theEntity.getNavigator().clearPathEntity();
             this.theEntity.setSitting(true);
         }
 
+        @Override
         public void resetTask()
         {
             this.theEntity.setSitting(false);
         }
 
+        @Override
         public void setSitting(boolean isSitting)
         {
             this.isSitting = isSitting;
         }
     }
-    
+
     @Override
     protected void jump()
     {
         this.motionY = 0.48D / WorldUtil.getGravityFactor(this);
-        if (this.motionY < 0.28D) this.motionY = 0.28D;
+        if (this.motionY < 0.28D)
+        {
+            this.motionY = 0.28D;
+        }
 
         if (this.isPotionActive(Potion.jump))
         {

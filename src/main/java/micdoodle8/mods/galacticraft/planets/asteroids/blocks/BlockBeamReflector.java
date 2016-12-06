@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
@@ -33,7 +32,6 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
     {
         super(Material.iron);
         this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName("stone");
         this.setStepSound(Block.soundTypeMetal);
     }
 
@@ -61,12 +59,6 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
     {
         return -1;
     }
-
-//    @Override
-//    public int damageDropped(int metadata)
-//    {
-//        return metadata;
-//    }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)

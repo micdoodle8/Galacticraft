@@ -25,7 +25,7 @@ public enum EnumGravity
     private final float eyeVecZ;
     private final static EnumGravity[] GDirections = { down, up, west, east, south, north };
 
-    private EnumGravity(int value, float pitchX, float pitchY, float yawX, float yawY, float yawZ, float thetaX, float thetaZ, float sneakX, float sneakY, float sneakZ, float eyeX, float eyeY, float eyeZ)
+    EnumGravity(int value, float pitchX, float pitchY, float yawX, float yawY, float yawZ, float thetaX, float thetaZ, float sneakX, float sneakY, float sneakZ, float eyeX, float eyeY, float eyeZ)
     {
         this.intValue = value;
         this.pitchGravityX = pitchX;
@@ -43,63 +43,78 @@ public enum EnumGravity
         this.eyeVecZ = eyeZ;
     }
 
-	public int getIntValue() {
-		return intValue;
-	}
+    public int getIntValue()
+    {
+        return intValue;
+    }
 
-	public float getPitchGravityX() {
-		return pitchGravityX;
-	}
+    public float getPitchGravityX()
+    {
+        return pitchGravityX;
+    }
 
-	public float getPitchGravityY() {
-		return pitchGravityY;
-	}
+    public float getPitchGravityY()
+    {
+        return pitchGravityY;
+    }
 
-	public float getYawGravityX() {
-		return yawGravityX;
-	}
+    public float getYawGravityX()
+    {
+        return yawGravityX;
+    }
 
-	public float getYawGravityY() {
-		return yawGravityY;
-	}
+    public float getYawGravityY()
+    {
+        return yawGravityY;
+    }
 
-	public float getYawGravityZ() {
-		return yawGravityZ;
-	}
+    public float getYawGravityZ()
+    {
+        return yawGravityZ;
+    }
 
-	public float getThetaX() {
-		return thetaX;
-	}
+    public float getThetaX()
+    {
+        return thetaX;
+    }
 
-	public float getThetaZ() {
-		return thetaZ;
-	}
+    public float getThetaZ()
+    {
+        return thetaZ;
+    }
 
-	public float getSneakVecX() {
-		return sneakVecX;
-	}
+    public float getSneakVecX()
+    {
+        return sneakVecX;
+    }
 
-	public float getSneakVecY() {
-		return sneakVecY;
-	}
+    public float getSneakVecY()
+    {
+        return sneakVecY;
+    }
 
-	public float getSneakVecZ() {
-		return sneakVecZ;
-	}
+    public float getSneakVecZ()
+    {
+        return sneakVecZ;
+    }
 
-	public float getEyeVecX() {
-		return eyeVecX;
-	}
+    public float getEyeVecX()
+    {
+        return eyeVecX;
+    }
 
-	public float getEyeVecY() {
-		return eyeVecY;
-	}
+    public float getEyeVecY()
+    {
+        return eyeVecY;
+    }
 
-	public float getEyeVecZ() {
-		return eyeVecZ;
-	}
+    public float getEyeVecZ()
+    {
+        return eyeVecZ;
+    }
 
-	public static EnumGravity[] getGDirections() {
-		return GDirections;
-	}
+    public static EnumGravity[] getGDirections()
+    {
+        return GDirections;
+    }
 }

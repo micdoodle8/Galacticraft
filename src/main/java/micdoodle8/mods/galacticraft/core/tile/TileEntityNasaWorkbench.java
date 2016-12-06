@@ -1,19 +1,18 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBlock
 {
@@ -35,13 +34,16 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
         this.mainBlockPosition = placedPosition;
         this.markDirty();
         int buildHeight = world.getHeight() - 1;
-        
+
         for (int y = 1; y < 3; y++)
         {
-        	if (placedPosition.getY() + y > buildHeight) return;
+            if (placedPosition.getY() + y > buildHeight)
+            {
+                return;
+            }
 
-	        for (int x = -1; x < 2; x++)
-	        {
+            for (int x = -1; x < 2; x++)
+            {
                 for (int z = -1; z < 2; z++)
                 {
                     final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + y, placedPosition.getZ() + z);
@@ -57,9 +59,12 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
             }
         }
 
-    	if (placedPosition.getY() + 3 > buildHeight) return;
+        if (placedPosition.getY() + 3 > buildHeight)
+        {
+            return;
+        }
         final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + 3, placedPosition.getZ());
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);       
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
     }
 
     @Override
@@ -105,6 +110,6 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
     }
 }

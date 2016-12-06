@@ -28,11 +28,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -110,7 +107,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             if (this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
                 List containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.fromBounds(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
-                                                                                                                                            this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
+                        this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                 if (containedEntities.size() > 0 && this.getEnergyStoredGC() >= ENERGY_USE_ON_TELEPORT)
                 {
@@ -155,7 +152,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     this.worldObj.updateEntityWithOptionalForce(e, true);
                                     if (e instanceof EntityPlayerMP)
                                     {
-                                        ((EntityPlayerMP)e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
+                                        ((EntityPlayerMP) e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
                                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, this.worldObj.provider.getDimensionId(), new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimensionId());
                                 }
@@ -295,7 +292,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         int buildHeight = world.getHeight() - 1;
         for (int y = 0; y < 3; y += 2)
         {
-        	if (placedPosition.getY() + y > buildHeight) return;
+            if (placedPosition.getY() + y > buildHeight)
+            {
+                return;
+            }
             for (int x = -1; x <= 1; x++)
             {
                 for (int z = -1; z <= 1; z++)
@@ -330,56 +330,66 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
     }
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
+    public void clear()
+    {
 
     }
 
     @Override
-    public void closeInventory(EntityPlayer player) {
+    public void openInventory(EntityPlayer player)
+    {
 
     }
 
     @Override
-    public int getField(int id) {
+    public void closeInventory(EntityPlayer player)
+    {
+
+    }
+
+    @Override
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return GCCoreUtil.translate("container.short_range_telepad.name");
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    public int[] getSlotsForFace(EnumFacing side)
+    {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return true;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
@@ -402,12 +412,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    {
         return index == 0;
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    {
         return this.isItemValidForSlot(index, itemStackIn);
     }
 

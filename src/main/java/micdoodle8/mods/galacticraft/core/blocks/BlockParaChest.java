@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -10,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
@@ -47,7 +45,6 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         this.setHardness(3.0F);
         this.setStepSound(Block.soundTypeWood);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
@@ -74,12 +71,6 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     public boolean isFullCube()
     {
         return false;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
     }
 
     @Override
@@ -219,13 +210,6 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         return new TileEntityParaChest();
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon("planks_oak");
-    }*/
-
     @Override
     public String getShiftDescription(int meta)
     {
@@ -238,6 +222,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
@@ -250,11 +235,13 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return (state.getValue(FACING)).getIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, COLOR, FACING);
@@ -265,7 +252,9 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     {
         TileEntity tile = worldIn.getTileEntity(pos);
         if (!(tile instanceof TileEntityParaChest))
+        {
             return state;
+        }
         TileEntityParaChest chest = (TileEntityParaChest) tile;
         return state.withProperty(COLOR, chest.color);
     }

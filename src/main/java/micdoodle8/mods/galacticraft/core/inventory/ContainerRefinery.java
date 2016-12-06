@@ -95,8 +95,8 @@ public class ContainerRefinery extends Container
                 }
                 else
                 {
-                	if (FluidUtil.isOilContainerAny(var4))
-                	{
+                    if (FluidUtil.isOilContainerAny(var4))
+                    {
                         if (!this.mergeItemStack(var4, 1, 2, false))
                         {
                             return null;

@@ -21,6 +21,7 @@ public class CanisterRecipes extends ShapelessRecipes
     /**
      * Used to check if a recipe matches current crafting inventory
      */
+    @Override
     public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_)
     {
         ItemStack itemCanister = null;
@@ -80,6 +81,7 @@ public class CanisterRecipes extends ShapelessRecipes
     /**
      * Returns an Item that is the result of this recipe
      */
+    @Override
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
         ItemStack itemTank = null;
@@ -140,14 +142,20 @@ public class CanisterRecipes extends ShapelessRecipes
         {
             ItemStack result = itemTank.copy();
             result.setItemDamage(0);
-            if (itemCanister.getItem() instanceof ItemCanisterLiquidOxygen) ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getItemDamage() + oxygenToFill);
+            if (itemCanister.getItem() instanceof ItemCanisterLiquidOxygen)
+            {
+                ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getItemDamage() + oxygenToFill);
+            }
             return result;
         }
 
         int tankDamageNew = (oxygenToFill - oxygenAvail) * 54 / 5;
         ItemStack result = itemTank.copy();
         result.setItemDamage(tankDamageNew);
-        if (itemCanister.getItem() instanceof ItemCanisterLiquidOxygen) ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getMaxDamage());
+        if (itemCanister.getItem() instanceof ItemCanisterLiquidOxygen)
+        {
+            ItemCanisterLiquidOxygen.saveDamage(itemCanister, itemCanister.getMaxDamage());
+        }
         return result;
     }
 

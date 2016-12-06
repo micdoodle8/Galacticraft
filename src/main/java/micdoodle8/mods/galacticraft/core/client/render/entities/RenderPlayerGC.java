@@ -1,38 +1,27 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.Loader;
 import org.lwjgl.opengl.GL11;
 
 /**
  * This renders the thermal armor (unless RenderPlayerAPI is installed).
  * The thermal armor render is done after the corresponding body part of the player is drawn.
  * This ALSO patches RenderPlayer so that it uses ModelPlayerGC in place of ModelPlayer to draw the player.
- *
+ * <p>
  * Finally, this also adds a hook into rotateCorpse so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
  *
  * @author User
- *
  */
 public class RenderPlayerGC extends RenderPlayer
 {
@@ -84,9 +73,9 @@ public class RenderPlayerGC extends RenderPlayer
         }
         else
         {
-          	if (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
-        	{
-                final EntityPlayer player = (EntityPlayer)par1AbstractClientPlayer;
+            if (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
+            {
+                final EntityPlayer player = (EntityPlayer) par1AbstractClientPlayer;
 
                 if (player.ridingEntity instanceof EntityTieredRocket)
                 {
@@ -98,8 +87,8 @@ public class RenderPlayerGC extends RenderPlayer
                     GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
                 }
-        	}
-          	super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+            }
+            super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
         }
     }
 

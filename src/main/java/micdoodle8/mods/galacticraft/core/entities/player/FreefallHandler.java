@@ -1,4 +1,4 @@
- package micdoodle8.mods.galacticraft.core.entities.player;
+package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
@@ -11,17 +11,18 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 
-public class FreefallHandler {
+public class FreefallHandler
+{
 
-	private static double pPrevMotionX;
-	public static double pPrevMotionY;
-	private static double pPrevMotionZ;
-	private static float jetpackBoost;
-	private static double pPrevdY;
-	public static boolean sneakLast;
+    private static double pPrevMotionX;
+    public static double pPrevMotionY;
+    private static double pPrevMotionZ;
+    private static float jetpackBoost;
+    private static double pPrevdY;
+    public static boolean sneakLast;
 
-	public static boolean testFreefall(EntityPlayer player)
-	{
+    public static boolean testFreefall(EntityPlayer player)
+    {
         //Test whether feet are on a block, also stops the login glitch
         int playerFeetOnY = (int) (player.getEntityBoundingBox().minY - 0.01D);
         int xx = MathHelper.floor_double(player.posX);
@@ -31,7 +32,7 @@ public class FreefallHandler {
         Block b = state.getBlock();
         if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
         {
-        	double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
+            double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
             if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
@@ -46,57 +47,57 @@ public class FreefallHandler {
                     if (collisionBox != null && collisionBox.intersectsWith(player.getEntityBoundingBox()))
                     {
                         player.posY -= player.getEntityBoundingBox().minY - blockYmax;
-	                    player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0);
+                        player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0);
                     }
                 }
                 return false;
             }
         }
         return true;
-	}
+    }
 
-	public static void setupFreefallPre(EntityPlayerSP p)
-	{
+    public static void setupFreefallPre(EntityPlayerSP p)
+    {
         double dY = p.motionY - pPrevMotionY;
         jetpackBoost = 0F;
         pPrevdY = dY;
-		pPrevMotionX = p.motionX;
+        pPrevMotionX = p.motionX;
         pPrevMotionY = p.motionY;
         pPrevMotionZ = p.motionZ;
-	}
-	
-	public static void freefallMotion(EntityPlayerSP p)
-	{
+    }
+
+    public static void freefallMotion(EntityPlayerSP p)
+    {
         boolean jetpackUsed = false;
-		double dX = p.motionX - pPrevMotionX;
+        double dX = p.motionX - pPrevMotionX;
         double dY = p.motionY - pPrevMotionY;
         double dZ = p.motionZ - pPrevMotionZ;
 
-        double posOffsetX = - p.motionX;
-        double posOffsetY = - p.motionY;// + WorldUtil.getGravityForEntity(p);
-        double posOffsetZ = - p.motionZ;
+        double posOffsetX = -p.motionX;
+        double posOffsetY = -p.motionY;// + WorldUtil.getGravityForEntity(p);
+        double posOffsetZ = -p.motionZ;
         //if (p.capabilities.isFlying)
 
         ///Undo whatever vanilla tried to do to our y motion
         if (dY < 0D && p.motionY != 0.0D)
         {
-        	p.motionY = pPrevMotionY;
+            p.motionY = pPrevMotionY;
         }
         else if (dY > 0.01D && GCPlayerStatsClient.get(p).inFreefallLast)
         {
-    		//Impulse upwards - it's probably a jetpack from another mod
-        	if (dX < 0.01D && dZ < 0.01D)
-        	{
-        		float pitch = p.rotationPitch / 57.29578F;
-       			jetpackBoost = (float) dY * MathHelper.cos(pitch) * 0.1F;
-        		float factor = 1 + MathHelper.sin(pitch) / 5;
-        		p.motionY -= dY * factor;
-        		jetpackUsed = true;
-        	}
-        	else
-        	{
-            	p.motionY -= dY / 2;
-        	}
+            //Impulse upwards - it's probably a jetpack from another mod
+            if (dX < 0.01D && dZ < 0.01D)
+            {
+                float pitch = p.rotationPitch / 57.29578F;
+                jetpackBoost = (float) dY * MathHelper.cos(pitch) * 0.1F;
+                float factor = 1 + MathHelper.sin(pitch) / 5;
+                p.motionY -= dY * factor;
+                jetpackUsed = true;
+            }
+            else
+            {
+                p.motionY -= dY / 2;
+            }
         }
 
         p.motionX -= dX;
@@ -119,21 +120,22 @@ public class FreefallHandler {
         {
             if (!sneakLast)
             {
-            	posOffsetY += 0.0268;
-            	sneakLast = true;
+                posOffsetY += 0.0268;
+                sneakLast = true;
             }
             p.motionY -= ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
-        } else if (sneakLast)
+        }
+        else if (sneakLast)
         {
-        	sneakLast = false;
-        	posOffsetY -= 0.0268;
+            sneakLast = false;
+            posOffsetY -= 0.0268;
         }
 
         if (!jetpackUsed && p.movementInput.jump)
         {
             p.motionY += ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
         }
-        
+
         float speedLimit = ConfigManagerCore.hardMode ? 0.9F : 0.7F;
 
         if (p.motionX > speedLimit)
@@ -164,10 +166,10 @@ public class FreefallHandler {
         pPrevMotionY = p.motionY;
         pPrevMotionZ = p.motionZ;
         p.moveEntity(p.motionX + posOffsetX, p.motionY + posOffsetY, p.motionZ + posOffsetZ);
-	}
+    }
 
 	/*				double dyaw = p.rotationYaw - p.prevRotationYaw;
-	p.rotationYaw -= dyaw * 0.8D;
+    p.rotationYaw -= dyaw * 0.8D;
 	double dyawh = p.rotationYawHead - p.prevRotationYawHead;
 	p.rotationYawHead -= dyawh * 0.8D;
 	while (p.rotationYaw > 360F)
@@ -189,10 +191,10 @@ public class FreefallHandler {
 */
 
 
-	public static void updateFreefall(EntityPlayer p)
-	{
-	    pPrevMotionX = p.motionX;
-	    pPrevMotionY = p.motionY;
-	    pPrevMotionZ = p.motionZ;
-	}
+    public static void updateFreefall(EntityPlayer p)
+    {
+        pPrevMotionX = p.motionX;
+        pPrevMotionY = p.motionY;
+        pPrevMotionZ = p.motionZ;
+    }
 }

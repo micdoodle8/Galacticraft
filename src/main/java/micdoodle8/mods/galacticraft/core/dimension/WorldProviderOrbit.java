@@ -1,14 +1,9 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -30,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
@@ -42,10 +38,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -217,6 +217,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         return WorldChunkManagerOrbit.class;
     }
 
+    @Override
     public boolean isDaytime()
     {
         final float a = this.worldObj.getCelestialAngle(0F);
@@ -447,7 +448,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         return true;
     }
 
-	//Overriding only in case the Galacticraft API is not up-to-date
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
     @Override
     public boolean isSurfaceWorld()
@@ -455,15 +456,15 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         return (this.worldObj == null) ? false : this.worldObj.isRemote;
     }
 
-	//Overriding only in case the Galacticraft API is not up-to-date
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
-	@Override
-	public boolean canRespawnHere()
-	{
-		return false;
-	}
-	
-	//Overriding only in case the Galacticraft API is not up-to-date
+    @Override
+    public boolean canRespawnHere()
+    {
+        return false;
+    }
+
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
@@ -591,7 +592,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         FreefallHandler.setupFreefallPre(p);
         this.pWasOnGround = p.onGround;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void postVanillaMotion(EntityPlayerSP p)
     {
@@ -601,12 +602,12 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         freefall = this.testFreefall(p, freefall);
         stats.inFreefall = freefall;
         stats.inFreefallFirstCheck = true;
-        
+
         boolean doGravity = true;
 
         if (freefall)
         {
-        	doGravity = false;
+            doGravity = false;
             this.pjumpticks = 0;
             //Do spinning
             if (this.doSpinning && this.angularVelocityRadians != 0F)
@@ -708,7 +709,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             //Do freefall motion
             if (!p.capabilities.isCreativeMode)
             {
-            	FreefallHandler.freefallMotion(p);
+                FreefallHandler.freefallMotion(p);
             }
             else
             {
@@ -781,18 +782,18 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                 if (!p.onGround)
                 {
                     p.motionY -= 0.015D;
-                    if (!FreefallHandler.sneakLast )
+                    if (!FreefallHandler.sneakLast)
                     {
-                    	p.getEntityBoundingBox().offset(0D, 0.0268D, 0D);
-                    	FreefallHandler.sneakLast = true;
+                        p.getEntityBoundingBox().offset(0D, 0.0268D, 0D);
+                        FreefallHandler.sneakLast = true;
                     }
                 }
                 this.pjumpticks = 0;
             }
             else if (FreefallHandler.sneakLast)
             {
-            	FreefallHandler.sneakLast = false;
-            	p.getEntityBoundingBox().offset(0D, -0.0268D, 0D);
+                FreefallHandler.sneakLast = false;
+                p.getEntityBoundingBox().offset(0D, -0.0268D, 0D);
             }
 
             if (this.pjumpticks > 0)
@@ -862,16 +863,20 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         {
             return false;
         }
-        
+
         if (p.ridingEntity != null)
         {
-        	Entity e = p.ridingEntity;
-        	if (e instanceof EntitySpaceshipBase)
-        		return ((EntitySpaceshipBase)e).getLaunched();
-        	if (e instanceof EntityLanderBase)
-        		return false;
-        	//TODO: should check whether lander has landed (whatever that means)
-        	//TODO: could check other ridden entities - every entity should have its own freefall check :(
+            Entity e = p.ridingEntity;
+            if (e instanceof EntitySpaceshipBase)
+            {
+                return ((EntitySpaceshipBase) e).getLaunched();
+            }
+            if (e instanceof EntityLanderBase)
+            {
+                return false;
+            }
+            //TODO: should check whether lander has landed (whatever that means)
+            //TODO: could check other ridden entities - every entity should have its own freefall check :(
         }
 
         //This is an "on the ground" check
@@ -881,47 +886,59 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         }
         else
         {
-    		float rY = p.rotationYaw % 360F;
+            float rY = p.rotationYaw % 360F;
             double zreach = 0D;
             double xreach = 0D;
-    		if (rY < 80F || rY > 280F) zreach = 0.2D;
-    		if (rY < 170F && rY > 10F) xreach = 0.2D;
-    		if (rY < 260F && rY > 100F) zreach = -0.2D;
-    		if (rY < 350F && rY > 190F) xreach = -0.2D;
-        	AxisAlignedBB playerReach = p.getEntityBoundingBox().addCoord(xreach, 0, zreach);
-            
-        	if (playerReach.maxX >= this.ssBoundsMinX && playerReach.minX <= this.ssBoundsMaxX && playerReach.maxY >= this.ssBoundsMinY && playerReach.minY <= this.ssBoundsMaxY && playerReach.maxZ >= this.ssBoundsMinZ && playerReach.minZ <= this.ssBoundsMaxZ)
-	        //Player is somewhere within the space station boundaries
-	        {
-	        	//Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
-	            //If so, it's assumed the player has something close enough to grab onto, so is not in freefall
-	            //Note: breatheable air here means the player is definitely not in freefall
-	        	int xm = MathHelper.floor_double(playerReach.minX);
-	        	int xx = MathHelper.floor_double(playerReach.maxX);
-	            int ym = MathHelper.floor_double(playerReach.minY);
-	            int yy = MathHelper.floor_double(playerReach.maxY);
-	            int zm = MathHelper.floor_double(playerReach.minZ);
-	            int zz = MathHelper.floor_double(playerReach.maxZ);
-	            for (int x = xm; x <= xx; x++)
-	            {
-	                for (int y = ym; y <= yy; y++)
-	                {
-	                    for (int z = zm; z <= zz; z++)
-	                    {
-	                        //Blocks.air is hard vacuum - we want to check for that, here
-	                    	Block b = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-	                        if (Blocks.air != b && GCBlocks.brightAir != b)
-	                        {
-	                            return false;
-	                        }
-	                    }
-	                }
-	            }
-	        }
+            if (rY < 80F || rY > 280F)
+            {
+                zreach = 0.2D;
+            }
+            if (rY < 170F && rY > 10F)
+            {
+                xreach = 0.2D;
+            }
+            if (rY < 260F && rY > 100F)
+            {
+                zreach = -0.2D;
+            }
+            if (rY < 350F && rY > 190F)
+            {
+                xreach = -0.2D;
+            }
+            AxisAlignedBB playerReach = p.getEntityBoundingBox().addCoord(xreach, 0, zreach);
+
+            if (playerReach.maxX >= this.ssBoundsMinX && playerReach.minX <= this.ssBoundsMaxX && playerReach.maxY >= this.ssBoundsMinY && playerReach.minY <= this.ssBoundsMaxY && playerReach.maxZ >= this.ssBoundsMinZ && playerReach.minZ <= this.ssBoundsMaxZ)
+            //Player is somewhere within the space station boundaries
+            {
+                //Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+                //If so, it's assumed the player has something close enough to grab onto, so is not in freefall
+                //Note: breatheable air here means the player is definitely not in freefall
+                int xm = MathHelper.floor_double(playerReach.minX);
+                int xx = MathHelper.floor_double(playerReach.maxX);
+                int ym = MathHelper.floor_double(playerReach.minY);
+                int yy = MathHelper.floor_double(playerReach.maxY);
+                int zm = MathHelper.floor_double(playerReach.minZ);
+                int zz = MathHelper.floor_double(playerReach.maxZ);
+                for (int x = xm; x <= xx; x++)
+                {
+                    for (int y = ym; y <= yy; y++)
+                    {
+                        for (int z = zm; z <= zz; z++)
+                        {
+                            //Blocks.air is hard vacuum - we want to check for that, here
+                            Block b = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
+                            if (Blocks.air != b && GCBlocks.brightAir != b)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 		/*
-		if (freefall)
+        if (freefall)
 		{
 			//If that check didn't produce a result, see if the player is inside the walls
 			//TODO: could apply special weightless movement here like Coriolis force - the player is inside the walls,  not touching them, and in a vacuum
@@ -1142,10 +1159,10 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
         while (currentLayer.size() > 0)
         {
             int bits;
-        	for (BlockVec3 vec : currentLayer)
+            for (BlockVec3 vec : currentLayer)
             {
                 bits = vec.sideDoneBits;
-        		if (vec.x < thisssBoundsMinX)
+                if (vec.x < thisssBoundsMinX)
                 {
                     thisssBoundsMinX = vec.x;
                 }
@@ -1514,7 +1531,8 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     }
 
     @Override
-    public String getInternalNameSuffix() {
+    public String getInternalNameSuffix()
+    {
         return "_orbit";
     }
 }

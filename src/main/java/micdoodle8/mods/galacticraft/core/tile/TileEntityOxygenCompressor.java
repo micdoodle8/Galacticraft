@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
@@ -36,22 +35,24 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     {
         if (!this.worldObj.isRemote)
         {
-	    	ItemStack oxygenItemStack = this.getStackInSlot(2);
-	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
-	    	{
+            ItemStack oxygenItemStack = this.getStackInSlot(2);
+            if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+            {
                 IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
                 int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
                 this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
                 if (this.getOxygenStored() > this.getMaxOxygenStored())
+                {
                     this.setOxygenStored(this.getOxygenStored());
-	    	}
+                }
+            }
         }
-    	
+
         super.update();
 
         if (!this.worldObj.isRemote)
         {
-	    	this.usingEnergy = false;
+            this.usingEnergy = false;
             if (this.getOxygenStored() > 0 && this.hasEnoughEnergyToRun)
             {
                 ItemStack tank0 = this.containingItems[0];
@@ -227,7 +228,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
             case 1:
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
             case 2:
-            	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+                return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
             default:
                 return false;
             }
@@ -238,17 +239,17 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-    	switch (slotID)
-    	{
-    	case 0:
-    		return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getItemDamage() == 0;
-    	case 1:
-    		return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
-    	case 2:
-    		return FluidUtil.isEmptyContainer(itemstack);
-    	default:
-    		return false;
-    	}
+        switch (slotID)
+        {
+        case 0:
+            return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getItemDamage() == 0;
+        case 1:
+            return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+        case 2:
+            return FluidUtil.isEmptyContainer(itemstack);
+        default:
+            return false;
+        }
     }
 
     @Override
@@ -261,7 +262,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         case 1:
             return ItemElectricBase.isElectricItem(itemstack.getItem());
         case 2:
-        	return itemstack.getItem() instanceof IItemOxygenSupply;
+            return itemstack.getItem() instanceof IItemOxygenSupply;
         }
 
         return false;
@@ -279,6 +280,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         return this.usingEnergy;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         return (this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING)).rotateY();
@@ -315,27 +317,32 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 }

@@ -30,6 +30,7 @@ public class BiomeDecoratorMoon extends BiomeDecorator
         this.dirtGen = new WorldGenMinableMeta(GCBlocks.blockMoon, 32, 3, true, GCBlocks.blockMoon, 4);
     }
 
+    @Override
     public void decorate(World worldIn, Random random, BiomeGenBase p_180292_3_, BlockPos pos)
     {
         if (this.worldObj != null)

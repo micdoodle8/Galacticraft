@@ -145,45 +145,54 @@ public class ColorUtil
         return ColorUtil.hue_to_rgb(hueresult).scale(1 / 255D);
     }
 
-	public static int to32BitColor(int a, int r, int g, int b)
-	{
-	    a = a << 24;
-	    r = r << 16;
-	    g = g << 8;
-	
-	    return a | r | g | b;
-	}
+    public static int to32BitColor(int a, int r, int g, int b)
+    {
+        a = a << 24;
+        r = r << 16;
+        g = g << 8;
 
-	public static int to32BitColorB(byte r, byte g, byte b)
-	{
-	    int rr = (r & 255) << 16;
-	    int gg = (g & 255) << 8;
-	
-	    return rr | gg | (b & 255);
-	}
+        return a | r | g | b;
+    }
 
-	public static int lighten(int col, float factor)
-	{
-	    int gg = col >> 8;
-		int rr = gg >> 8;
-	    gg &= 255;
-	    int bb = col & 255;
-	    rr *= (1F + factor);
-	    gg *= (1F + factor);
-	    bb *= (1F + factor);
-	    if (rr > 255) rr = 255;
-	    if (gg > 255) gg = 255;
-	    if (bb > 255) bb = 255;
-		return rr << 16 | gg << 8 | bb;
-	}
+    public static int to32BitColorB(byte r, byte g, byte b)
+    {
+        int rr = (r & 255) << 16;
+        int gg = (g & 255) << 8;
 
-	public static int toGreyscale(int col)
-	{
-	    int gg = col >> 8;
-		int grey = gg >> 8;
-	    grey += gg & 255;
-	    grey += col & 255;
-	    grey /= 3;
-		return grey << 16 | grey << 8 | (grey & 255);
-	}
+        return rr | gg | (b & 255);
+    }
+
+    public static int lighten(int col, float factor)
+    {
+        int gg = col >> 8;
+        int rr = gg >> 8;
+        gg &= 255;
+        int bb = col & 255;
+        rr *= (1F + factor);
+        gg *= (1F + factor);
+        bb *= (1F + factor);
+        if (rr > 255)
+        {
+            rr = 255;
+        }
+        if (gg > 255)
+        {
+            gg = 255;
+        }
+        if (bb > 255)
+        {
+            bb = 255;
+        }
+        return rr << 16 | gg << 8 | bb;
+    }
+
+    public static int toGreyscale(int col)
+    {
+        int gg = col >> 8;
+        int grey = gg >> 8;
+        grey += gg & 255;
+        grey += col & 255;
+        grey /= 3;
+        return grey << 16 | grey << 8 | (grey & 255);
+    }
 }

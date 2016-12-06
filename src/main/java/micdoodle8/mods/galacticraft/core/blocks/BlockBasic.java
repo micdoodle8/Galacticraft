@@ -32,8 +32,6 @@ import java.util.Random;
  */
 public class BlockBasic extends Block implements IDetectableResource, ISortableBlock
 {
-    /*IIcon[] iconBuffer;*/
-
     public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicType", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
@@ -52,7 +50,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         private final int meta;
         private final String name;
 
-        private EnumBlockBasic(int meta, String name)
+        EnumBlockBasic(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -69,7 +67,8 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -80,7 +79,6 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         this.setHardness(1.0F);
         this.blockResistance = 15F;
         this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE, EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0));
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -89,62 +87,6 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.iconBuffer = new IIcon[12];
-        this.iconBuffer[0] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_2");
-        this.iconBuffer[1] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-        this.iconBuffer[2] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_1");
-        this.iconBuffer[3] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_4");
-        this.iconBuffer[4] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreCopper");
-        this.iconBuffer[5] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreTin");
-        this.iconBuffer[6] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreAluminum");
-        this.iconBuffer[7] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oreSilicon");
-        this.iconBuffer[8] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_copper_block");
-        this.iconBuffer[9] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_tin_block");
-        this.iconBuffer[10] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_aluminium_block");
-        this.iconBuffer[11] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "deco_meteoriron_block");
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-        switch (meta)
-        {
-        case 3:
-            switch (side)
-            {
-            case 0:
-                return this.iconBuffer[1];
-            case 1:
-                return this.iconBuffer[0];
-            default:
-                return this.iconBuffer[2];
-            }
-        case 4:
-            return this.iconBuffer[3];
-        case 5:
-            return this.iconBuffer[4];
-        case 6:
-            return this.iconBuffer[5];
-        case 7:
-            return this.iconBuffer[6];
-        case 8:
-            return this.iconBuffer[7];
-        case 9:
-            return this.iconBuffer[8];
-        case 10:
-            return this.iconBuffer[9];
-        case 11:
-            return this.iconBuffer[10];
-        case 12:
-            return this.iconBuffer[11];
-        default:
-            return meta < this.iconBuffer.length ? this.iconBuffer[meta] : this.iconBuffer[0];
-        }
-    }*/
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
@@ -193,19 +135,19 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
-    	int metadata = getMetaFromState(world.getBlockState(pos));
+        int metadata = getMetaFromState(world.getBlockState(pos));
 
-    	if (metadata < 5)
+        if (metadata < 5)
         {
             return 2.0F;
             //Decoration blocks are soft, like cauldrons or wood 
         }
-    	else if (metadata == 12)
+        else if (metadata == 12)
         {
             return 8.0F;
             //Meteoric Iron is tougher than diamond
         }
-    	else if (metadata > 8)
+        else if (metadata > 8)
         {
             return 6.0F;
             //Blocks of metal are tough - like diamond blocks in vanilla
@@ -250,14 +192,14 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public boolean isValueable(IBlockState state)
     {
-    	switch (this.getMetaFromState(state))
-    	{
-    	case 5:
-    	case 6:
-    	case 7:
-    	case 8:
-    		return true;
-    	}
+        switch (this.getMetaFromState(state))
+        {
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            return true;
+        }
         return false;
     }
 
@@ -274,16 +216,19 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         return super.getPickBlock(target, world, pos, player);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
+        return ((EnumBlockBasic) state.getValue(BASIC_TYPE)).getMeta();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, BASIC_TYPE);

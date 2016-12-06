@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EffectHandler
@@ -42,11 +41,11 @@ public class EffectHandler
             }
             else if (particleID.equals("launchFlameIdle"))
             {
-                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, false, (EntityLivingBase)otherInfo[0]);
+                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, false, (EntityLivingBase) otherInfo[0]);
             }
             else if (particleID.equals("launchFlameLaunched"))
             {
-                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, true, (EntityLivingBase)otherInfo[0]);
+                particle = new EntityFXLaunchFlame(mc.theWorld, position, motion, true, (EntityLivingBase) otherInfo[0]);
             }
             else if (particleID.equals("whiteSmokeTiny"))
             {
@@ -56,10 +55,10 @@ public class EffectHandler
             {
                 particle = new EntitySmokeFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
             }*/
-			else if (particleID.equals("oilDrip"))
-			{
-				particle = new EntityFXOilDrip(mc.theWorld, position.x, position.y, position.z);
-			}
+            else if (particleID.equals("oilDrip"))
+            {
+                particle = new EntityFXOilDrip(mc.theWorld, position.x, position.y, position.z);
+            }
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {

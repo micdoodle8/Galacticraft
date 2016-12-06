@@ -88,7 +88,7 @@ public class WorldGenTerraformTree extends WorldGenerator
             {
                 BlockPos down = position.down();
                 Block block1 = worldIn.getBlockState(down).getBlock();
-                boolean isSoil = block1.canSustainPlant(worldIn, down, net.minecraft.util.EnumFacing.UP, (net.minecraft.block.BlockSapling)Blocks.sapling);
+                boolean isSoil = block1.canSustainPlant(worldIn, down, net.minecraft.util.EnumFacing.UP, (net.minecraft.block.BlockSapling) Blocks.sapling);
 
                 if (isSoil && position.getY() < 256 - i - 1)
                 {
@@ -242,7 +242,7 @@ public class WorldGenTerraformTree extends WorldGenerator
         this.setBlockAndNotifyAdequately(world, pos, iblockstate);
         int i = 4;
 
-        for (pos = pos.down(); world.getBlockState(pos).getBlock().isAir(world,pos) && i > 0; --i)
+        for (pos = pos.down(); world.getBlockState(pos).getBlock().isAir(world, pos) && i > 0; --i)
         {
             this.setBlockAndNotifyAdequately(world, pos, iblockstate);
             pos = pos.down();

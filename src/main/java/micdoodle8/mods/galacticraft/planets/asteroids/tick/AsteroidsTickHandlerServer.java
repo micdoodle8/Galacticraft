@@ -1,21 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tick;
 
-import com.google.common.collect.Lists;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class AsteroidsTickHandlerServer
 {
@@ -30,11 +20,14 @@ public class AsteroidsTickHandlerServer
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
-    	MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-    	//Prevent issues when clients switch to LAN servers
-    	if (server == null) return;
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        //Prevent issues when clients switch to LAN servers
+        if (server == null)
+        {
+            return;
+        }
 
-    	if (event.phase == TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.START)
         {
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {

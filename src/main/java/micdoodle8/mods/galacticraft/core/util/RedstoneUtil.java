@@ -12,13 +12,20 @@ public class RedstoneUtil
      */
     public static boolean isBlockReceivingRedstone(World w, BlockPos pos)
     {
-    	if (w == null) return false;
+        if (w == null)
+        {
+            return false;
+        }
 
         // Check up/down without chunk load test first
         if (isBlockProvidingPowerTo(w, pos.offset(EnumFacing.DOWN), EnumFacing.DOWN) > 0)
+        {
             return true;
+        }
         if (isBlockProvidingPowerTo(w, pos.offset(EnumFacing.UP), EnumFacing.UP) > 0)
+        {
             return true;
+        }
 
         for (EnumFacing facing : EnumFacing.HORIZONTALS)
         {
@@ -28,7 +35,7 @@ public class RedstoneUtil
             }
         }
 
-    	return false;
+        return false;
     }
 
     /**
@@ -41,7 +48,10 @@ public class RedstoneUtil
 
     public static int isBlockProvidingPowerTo_NoChunkLoad(World w, BlockPos pos, EnumFacing side)
     {
-        if (!w.isBlockLoaded(pos)) return 0;
-    	return w.getBlockState(pos).getBlock().getStrongPower(w, pos, w.getBlockState(pos), side);
+        if (!w.isBlockLoaded(pos))
+        {
+            return 0;
+        }
+        return w.getBlockState(pos).getBlock().getStrongPower(w, pos, w.getBlockState(pos), side);
     }
 }

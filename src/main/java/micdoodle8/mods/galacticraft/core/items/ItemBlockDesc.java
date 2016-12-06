@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -18,6 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -32,18 +32,25 @@ public class ItemBlockDesc extends ItemBlockGC
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
-        if (!world.isRemote) return;
+        if (!world.isRemote)
+        {
+            return;
+        }
 
-    	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
-    	if (player instanceof EntityPlayerSP)
-    	{
-	        if (this.getBlock() == GCBlocks.fuelLoader)
-	        	ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
-	        else if (this.getBlock() == GCBlocks.fuelLoader)
-	        	ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
-    	}
+        //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
+        if (player instanceof EntityPlayerSP)
+        {
+            if (this.getBlock() == GCBlocks.fuelLoader)
+            {
+                ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
+            }
+            else if (this.getBlock() == GCBlocks.fuelLoader)
+            {
+                ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+            }
+        }
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced)

@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy.item;
 
 import ic2.api.item.IElectricItemManager;
-import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
-import net.minecraftforge.fml.relauncher.FMLInjectionData;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
@@ -18,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 import java.util.List;
 
@@ -198,10 +198,13 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     public static boolean isElectricItemEmpty(ItemStack itemstack)
     {
-        if (itemstack == null) return false;        
-    	Item item = itemstack.getItem();
-    	
-    	if (item instanceof ItemElectricBase)
+        if (itemstack == null)
+        {
+            return false;
+        }
+        Item item = itemstack.getItem();
+
+        if (item instanceof ItemElectricBase)
         {
             return ((ItemElectricBase) item).getElectricityStored(itemstack) <= 0;
         }
@@ -216,33 +219,33 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
         return false;
     }
-    
+
     //For RF compatibility
-    
+
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
     public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate)
     {
-    	return (int) (this.recharge(container, maxReceive * EnergyConfigHandler.RF_RATIO, !simulate) / EnergyConfigHandler.RF_RATIO);
+        return (int) (this.recharge(container, maxReceive * EnergyConfigHandler.RF_RATIO, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
-    
+
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
     public int extractEnergy(ItemStack container, int maxExtract, boolean simulate)
     {
-    	return (int) (this.discharge(container, maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+        return (int) (this.discharge(container, maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
-    
+
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
     public int getEnergyStored(ItemStack container)
     {
-    	return (int) (this.getElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);
+        return (int) (this.getElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);
     }
-    
+
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
     public int getMaxEnergyStored(ItemStack container)
     {
-    	return (int) (this.getMaxElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);
+        return (int) (this.getMaxElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);
     }
-    
+
     // The following seven methods are for Mekanism compatibility
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")

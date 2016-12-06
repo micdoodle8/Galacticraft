@@ -1,32 +1,28 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import com.google.common.base.Predicate;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
-import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 
@@ -62,7 +58,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                     {
                         if (fuelable instanceof ILandable)
                         {
-                        	((ILandable) fuelable).landEntity(this.getPos());
+                            ((ILandable) fuelable).landEntity(this.getPos());
                         }
                         else
                         {
@@ -183,7 +179,9 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);
                             if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
-                            	((TileEntityLaunchController) tile).setAttachedPad(this);
+                            {
+                                ((TileEntityLaunchController) tile).setAttachedPad(this);
+                            }
                         }
                     }
                 }
@@ -219,7 +217,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-    	return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 0.4D, getPos().getZ() + 2);
+        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 0.4D, getPos().getZ() + 2);
     }
 
     @Override

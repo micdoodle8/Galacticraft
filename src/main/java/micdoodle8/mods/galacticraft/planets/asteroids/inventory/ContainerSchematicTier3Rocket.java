@@ -135,7 +135,7 @@ public class ContainerSchematicTier3Rocket extends Container
             else
             {
                 boolean valid = false;
-            	for (int i = 1; i < 19; i++)
+                for (int i = 1; i < 19; i++)
                 {
                     Slot testSlot = (Slot) this.inventorySlots.get(i);
                     if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
@@ -146,10 +146,10 @@ public class ContainerSchematicTier3Rocket extends Container
                 }
                 if (valid)
                 {
-	            	if (!this.mergeOneItemTestValid(var4, 1, 19, false))
-	                {
-	                    return null;
-	                }
+                    if (!this.mergeOneItemTestValid(var4, 1, 19, false))
+                    {
+                        return null;
+                    }
                 }
                 else
                 {

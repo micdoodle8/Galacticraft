@@ -1,21 +1,19 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import net.minecraft.network.Packet;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Map;
@@ -97,7 +95,7 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
         Map<Integer, Queue<PacketPlayerPair>> map = packetMap.get(side);
         if (!map.containsKey(dimID))
         {
-            map.put(dimID, Queues.<PacketPlayerPair> newConcurrentLinkedQueue());
+            map.put(dimID, Queues.<PacketPlayerPair>newConcurrentLinkedQueue());
         }
         return map.get(dimID);
     }

@@ -17,12 +17,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.client.model.pipeline.LightUtil;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -44,9 +42,11 @@ public class RenderEntryPod extends Render<EntityEntryPod>
                 OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "pod.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()
+                {
                     @Override
-                    public TextureAtlasSprite apply(ResourceLocation location) {
+                    public TextureAtlasSprite apply(ResourceLocation location)
+                    {
                         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
                     }
                 };
@@ -107,8 +107,10 @@ public class RenderEntryPod extends Render<EntityEntryPod>
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
 
-        for(BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getGeneralQuads())
+        {
             LightUtil.renderQuadColor(worldrenderer, bakedquad, -1);
+        }
 
         tessellator.draw();
     }

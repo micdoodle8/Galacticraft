@@ -3,9 +3,10 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -14,22 +15,15 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.client.model.pipeline.LightUtil;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -48,9 +42,11 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
                 OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "receiver.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>() {
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()
+                {
                     @Override
-                    public TextureAtlasSprite apply(ResourceLocation location) {
+                    public TextureAtlasSprite apply(ResourceLocation location)
+                    {
                         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
                     }
                 };
@@ -80,42 +76,45 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
 
         switch (tile.facing)
         {
-            case DOWN:
-                GL11.glTranslatef(0.7F, -0.15F, 0.0F);
-                GL11.glRotatef(90, 0, 0, 1);
-                break;
-            case UP:
-                GL11.glTranslatef(-0.7F, 1.3F, 0.0F);
-                GL11.glRotatef(-90, 0, 0, 1);
-                break;
-            case EAST:
-                GL11.glTranslatef(0.7F, -0.15F, 0.0F);
-                GL11.glRotatef(180, 0, 1, 0);
-                break;
-            case SOUTH:
-                GL11.glTranslatef(0.0F, -0.15F, 0.7F);
-                GL11.glRotatef(90, 0, 1, 0);
-                break;
-            case WEST:
-                GL11.glTranslatef(-0.7F, -0.15F, 0.0F);
-                GL11.glRotatef(0, 0, 1, 0);
-                break;
-            case NORTH:
-                GL11.glTranslatef(0.0F, -0.15F, -0.7F);
-                GL11.glRotatef(270, 0, 1, 0);
-                break;
-            default:
-                GL11.glPopMatrix();
-                return;
+        case DOWN:
+            GL11.glTranslatef(0.7F, -0.15F, 0.0F);
+            GL11.glRotatef(90, 0, 0, 1);
+            break;
+        case UP:
+            GL11.glTranslatef(-0.7F, 1.3F, 0.0F);
+            GL11.glRotatef(-90, 0, 0, 1);
+            break;
+        case EAST:
+            GL11.glTranslatef(0.7F, -0.15F, 0.0F);
+            GL11.glRotatef(180, 0, 1, 0);
+            break;
+        case SOUTH:
+            GL11.glTranslatef(0.0F, -0.15F, 0.7F);
+            GL11.glRotatef(90, 0, 1, 0);
+            break;
+        case WEST:
+            GL11.glTranslatef(-0.7F, -0.15F, 0.0F);
+            GL11.glRotatef(0, 0, 1, 0);
+            break;
+        case NORTH:
+            GL11.glTranslatef(0.0F, -0.15F, -0.7F);
+            GL11.glRotatef(270, 0, 1, 0);
+            break;
+        default:
+            GL11.glPopMatrix();
+            return;
         }
 
         updateModels();
 
         RenderHelper.disableStandardItemLighting();
         this.bindTexture(TextureMap.locationBlocksTexture);
-        if (Minecraft.isAmbientOcclusionEnabled()) {
+        if (Minecraft.isAmbientOcclusionEnabled())
+        {
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        } else {
+        }
+        else
+        {
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
@@ -169,8 +168,10 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
 
-        for(BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getGeneralQuads())
+        {
             LightUtil.renderQuadColor(worldrenderer, bakedquad, color);
+        }
 
         tessellator.draw();
     }

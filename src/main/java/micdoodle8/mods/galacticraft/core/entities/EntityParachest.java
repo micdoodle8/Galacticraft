@@ -6,11 +6,9 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +19,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 
@@ -57,7 +54,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
         final NBTTagList var2 = nbt.getTagList("Items", 10);
         int size = 56;
         if (nbt.hasKey("CargoLength"))
-        	size = nbt.getInteger("CargoLength");
+        {
+            size = nbt.getInteger("CargoLength");
+        }
         this.cargo = new ItemStack[size];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -174,10 +173,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
             chest.chestContents = new ItemStack[this.cargo.length + 1];
             chest.color = this.color;
 
-            for (int i = 0; i < this.cargo.length; i++)
-            {
-                chest.chestContents[i] = this.cargo[i];
-            }
+            System.arraycopy(this.cargo, 0, chest.chestContents, 0, this.cargo.length);
 
             chest.fuelTank.fill(FluidRegistry.getFluidStack(GalacticraftCore.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
 

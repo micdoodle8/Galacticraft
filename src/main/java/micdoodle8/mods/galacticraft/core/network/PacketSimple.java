@@ -5,21 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
-import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
-import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.*;
-import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.*;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.server.FMLServerHandler;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
@@ -30,6 +16,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -46,21 +33,27 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -77,12 +70,14 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +85,7 @@ import java.util.*;
 
 public class PacketSimple extends PacketBase implements Packet
 {
-    public static enum EnumSimplePacket
+    public enum EnumSimplePacket
     {
         // SERVER
         S_RESPAWN_PLAYER(Side.SERVER, String.class),
@@ -166,11 +161,11 @@ public class PacketSimple extends PacketBase implements Packet
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
         C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class);
-        
+
         private Side targetSide;
         private Class<?>[] decodeAs;
 
-        private EnumSimplePacket(Side targetSide, Class<?>... decodeAs)
+        EnumSimplePacket(Side targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;
@@ -292,7 +287,7 @@ public class PacketSimple extends PacketBase implements Packet
                     if (!dimensionList.equals(PacketSimple.spamCheckString))
                     {
                         GCLog.info("DEBUG info: " + dimensionList);
-                        PacketSimple.spamCheckString = new String(dimensionList);
+                        PacketSimple.spamCheckString = dimensionList;
                     }
                 }
                 final String[] destinations = dimensionList.split("\\?");
@@ -385,7 +380,7 @@ public class PacketSimple extends PacketBase implements Packet
             int subtype = (Integer) this.data.get(2);
             EntityPlayer gearDataPlayer = null;
             MinecraftServer server = MinecraftServer.getServer();
-            String gearName = (String) this.data.get(0); 
+            String gearName = (String) this.data.get(0);
 
             if (server != null && server.getConfigurationManager() != null)
             {
@@ -410,7 +405,9 @@ public class PacketSimple extends PacketBase implements Packet
                     }
                 }
                 else
-                	ClientProxyCore.gearDataRequests.remove(gearName);
+                {
+                    ClientProxyCore.gearDataRequests.remove(gearName);
+                }
 
                 EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
 
@@ -509,7 +506,7 @@ public class PacketSimple extends PacketBase implements Packet
             FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
             break;
         case C_UPDATE_SPACESTATION_LIST:
-        	WorldUtil.decodeSpaceStationListClient(data);
+            WorldUtil.decodeSpaceStationListClient(data);
             break;
         case C_UPDATE_SPACESTATION_DATA:
             SpaceStationWorldData var4 = SpaceStationWorldData.getMPSpaceStationData(player.worldObj, (Integer) this.data.get(0), player);
@@ -519,12 +516,12 @@ public class PacketSimple extends PacketBase implements Packet
             ClientProxyCore.clientSpaceStationID = WorldUtil.stringToSpaceStationData((String) this.data.get(0));
             break;
         case C_UPDATE_PLANETS_LIST:
-        	WorldUtil.decodePlanetsListClient(data);
+            WorldUtil.decodePlanetsListClient(data);
             break;
         case C_UPDATE_CONFIGS:
-        	ConfigManagerCore.saveClientConfigOverrideable();
-        	ConfigManagerCore.setConfigOverride(data);
-        	break;
+            ConfigManagerCore.saveClientConfigOverrideable();
+            ConfigManagerCore.setConfigOverride(data);
+            break;
         case C_ADD_NEW_SCHEMATIC:
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
             if (!stats.unlockedSchematics.contains(page))
@@ -541,9 +538,9 @@ public class PacketSimple extends PacketBase implements Packet
                 {
                     Collections.sort(stats.unlockedSchematics);
 
-                    if (!stats.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID))))
+                    if (!stats.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
                     {
-                        stats.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(Integer.valueOf(schematicID)));
+                        stats.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(schematicID));
                     }
                 }
             }
@@ -738,7 +735,7 @@ public class PacketSimple extends PacketBase implements Packet
             int facingNew = (Integer) this.data.get(1);
             if (tile instanceof TileEntityArclamp)
             {
-                ((TileEntityArclamp)tile).facing = facingNew;
+                ((TileEntityArclamp) tile).facing = facingNew;
             }
             break;
         case C_UPDATE_STATS:
@@ -748,7 +745,7 @@ public class PacketSimple extends PacketBase implements Packet
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
             if (tile instanceof TileEntityScreen)
             {
-                TileEntityScreen screenTile = (TileEntityScreen)tile;
+                TileEntityScreen screenTile = (TileEntityScreen) tile;
                 int screenType = (Integer) this.data.get(1);
                 int flags = (Integer) this.data.get(2);
                 screenTile.imageType = screenType;
@@ -767,9 +764,9 @@ public class PacketSimple extends PacketBase implements Packet
                 if (name.startsWith("$"))
                 {
                     //It's a player name
-                    ((TileEntityTelemetry)tile).clientClass = EntityPlayerMP.class;
+                    ((TileEntityTelemetry) tile).clientClass = EntityPlayerMP.class;
                     String strName = name.substring(1);
-                    ((TileEntityTelemetry)tile).clientName = strName;
+                    ((TileEntityTelemetry) tile).clientName = strName;
                     GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
                     if (!strName.equals(profile.getName()))
                     {
@@ -784,38 +781,38 @@ public class PacketSimple extends PacketBase implements Packet
                             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, this.getDimensionID(), new Object[] { strName }));
                         }
                     }
-                    ((TileEntityTelemetry)tile).clientGameProfile = profile;
+                    ((TileEntityTelemetry) tile).clientGameProfile = profile;
                 }
                 else
                 {
-                    ((TileEntityTelemetry)tile).clientClass = EntityList.stringToClassMapping.get(name);
+                    ((TileEntityTelemetry) tile).clientClass = EntityList.stringToClassMapping.get(name);
                 }
-                ((TileEntityTelemetry)tile).clientData = new int[5];
+                ((TileEntityTelemetry) tile).clientData = new int[5];
                 for (int i = 4; i < 7; i++)
                 {
-                    ((TileEntityTelemetry)tile).clientData[i - 4] = (Integer) this.data.get(i);
+                    ((TileEntityTelemetry) tile).clientData[i - 4] = (Integer) this.data.get(i);
                 }
             }
             break;
         case C_SEND_PLAYERSKIN:
-        	String strName = (String) this.data.get(0);
-        	String s1 = (String) this.data.get(1);
-        	String s2 = (String) this.data.get(2);
-        	String strUUID = (String) this.data.get(3);
-        	GameProfile gp = PlayerUtil.getOtherPlayerProfile(strName);
-        	if (gp == null)
-        	{
-            	gp = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
-        	}
-        	gp.getProperties().put("textures", new Property("textures", s1, s2));
-        	break;
+            String strName = (String) this.data.get(0);
+            String s1 = (String) this.data.get(1);
+            String s2 = (String) this.data.get(2);
+            String strUUID = (String) this.data.get(3);
+            GameProfile gp = PlayerUtil.getOtherPlayerProfile(strName);
+            if (gp == null)
+            {
+                gp = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
+            }
+            gp.getProperties().put("textures", new Property("textures", s1, s2));
+            break;
         case C_SEND_OVERWORLD_IMAGE:
             try
             {
                 int cx = (Integer) this.data.get(0);
                 int cz = (Integer) this.data.get(1);
-            	byte[] bytes = (byte[]) this.data.get(2);
-                
+                byte[] bytes = (byte[]) this.data.get(2);
+
                 try
                 {
                     File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
@@ -835,7 +832,6 @@ public class PacketSimple extends PacketBase implements Packet
             }
             catch (Exception e)
             {
-                ;
             }
             break;
         case C_RECOLOR_PIPE:
@@ -861,7 +857,7 @@ public class PacketSimple extends PacketBase implements Packet
         {
             return;
         }
-        
+
         final GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
@@ -1082,7 +1078,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_ON_ADVANCED_GUI_CLICKED_STRING:
-            TileEntity tile2 = player.worldObj.getTileEntity((BlockPos)this.data.get(1));
+            TileEntity tile2 = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -1269,7 +1265,7 @@ public class PacketSimple extends PacketBase implements Packet
             TileEntity tileAL = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
             if (tileAL instanceof TileEntityArclamp)
             {
-                ((TileEntityArclamp)tileAL).updateClientFlag = true;
+                ((TileEntityArclamp) tileAL).updateClientFlag = true;
             }
             break;
         case S_BUILDFLAGS_UPDATE:
@@ -1279,11 +1275,11 @@ public class PacketSimple extends PacketBase implements Packet
             TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
             if (tile instanceof TileEntityScreen)
             {
-                ((TileEntityScreen)tile).updateClients();
+                ((TileEntityScreen) tile).updateClients();
             }
             break;
         case S_REQUEST_OVERWORLD_IMAGE:
-        	MapUtil.sendOverworldToClient(playerBase);
+            MapUtil.sendOverworldToClient(playerBase);
 //        	if (GalacticraftCore.enableJPEG)
 //        	{
 //            ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
@@ -1326,28 +1322,34 @@ public class PacketSimple extends PacketBase implements Packet
 //        	}
             break;
         case S_REQUEST_MAP_IMAGE:
-        	int dim = (Integer) this.data.get(0);
-        	int cx = (Integer) this.data.get(1);
-        	int cz = (Integer) this.data.get(2);
-        	MapUtil.sendOrCreateMap(WorldUtil.getProviderForDimensionServer(dim).worldObj, cx, cz, playerBase);
-        	break;
+            int dim = (Integer) this.data.get(0);
+            int cx = (Integer) this.data.get(1);
+            int cz = (Integer) this.data.get(2);
+            MapUtil.sendOrCreateMap(WorldUtil.getProviderForDimensionServer(dim).worldObj, cx, cz, playerBase);
+            break;
         case S_REQUEST_PLAYERSKIN:
-        	String strName = (String) this.data.get(0);
-        	EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getConfigurationManager().getPlayerByUsername(strName);
-        	
-        	//Player not online
-        	if (playerRequested == null) return;
-        	
-        	GameProfile gp = playerRequested.getGameProfile();
-        	if (gp == null) return;
-        	
-            Property property = (Property)Iterables.getFirst(gp.getProperties().get("textures"), (Object)null);
+            String strName = (String) this.data.get(0);
+            EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getConfigurationManager().getPlayerByUsername(strName);
+
+            //Player not online
+            if (playerRequested == null)
+            {
+                return;
+            }
+
+            GameProfile gp = playerRequested.getGameProfile();
+            if (gp == null)
+            {
+                return;
+            }
+
+            Property property = (Property) Iterables.getFirst(gp.getProperties().get("textures"), (Object) null);
             if (property == null)
             {
                 return;
             }
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, getDimensionID(), new Object[] { strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString() }), playerBase);
-        	break;
+            break;
         case S_CONTROL_ENTITY:
             if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
             {
@@ -1410,7 +1412,7 @@ public class PacketSimple extends PacketBase implements Packet
     }
 
 	/*
-	 * 
+     *
 	 * END "net.minecraft.network.Packet" IMPLEMENTATION
 	 * 
 	 * This is for handling server->client packets before the player has joined the world

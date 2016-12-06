@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -33,7 +32,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    //private IIcon[] pipeIcons = new IIcon[16];
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
 
     public Vector3 minVector = new Vector3(0.35, 0.35, 0.35);
@@ -49,7 +47,6 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         this.setHardness(0.3F);
         this.setStepSound(Block.soundTypeGlass);
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.mode = mode;
     }
@@ -103,23 +100,6 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
         return null;
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
-    {
-        BlockVec3 thisVec = new BlockVec3(x, y, z).modifyPositionFromSide(ForgeDirection.getOrientation(par5));
-        final Block blockAt = thisVec.getBlock(par1IBlockAccess);
-
-        final TileEntityFluidPipe tileEntity = (TileEntityFluidPipe) par1IBlockAccess.getTileEntity(x, y, z);
-
-        if (blockAt == GCBlocks.oxygenPipe && ((TileEntityFluidPipe) thisVec.getTileEntity(par1IBlockAccess)).getColor() == tileEntity.getColor())
-        {
-            return this.pipeIcons[15];
-        }
-
-        return this.pipeIcons[tileEntity.getColor()];
-    }*/
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -199,26 +179,6 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         return false;
     }
 
-//    @Override
-//    public int getRenderType()
-//    {
-//        return GalacticraftCore.proxy.getBlockRender(this);
-//    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.pipeIcons = new IIcon[16];
-
-        for (int count = 0; count < ItemDye.field_150923_a.length; count++)
-        {
-            this.pipeIcons[count] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "pipe_oxygen_" + ItemDye.field_150923_a[count]);
-        }
-
-        this.blockIcon = this.pipeIcons[15];
-    }*/
-
     @Override
     public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
@@ -240,7 +200,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-    	return new TileEntityFluidPipe();
+        return new TileEntityFluidPipe();
     }
 
     @SideOnly(Side.CLIENT)
@@ -262,6 +222,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
@@ -303,7 +264,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         return mode;
     }
 
-    public static enum EnumPipeMode implements IStringSerializable
+    public enum EnumPipeMode implements IStringSerializable
     {
         NORMAL(0, "normal"),
         PULL(1, "pull");
@@ -311,7 +272,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         private final int meta;
         private final String name;
 
-        private EnumPipeMode(int meta, String name)
+        EnumPipeMode(int meta, String name)
         {
             this.meta = meta;
             this.name = name;

@@ -46,7 +46,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         private final int meta;
         private final String name;
 
-        private EnumBlockMultiType(int meta, String name)
+        EnumBlockMultiType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -63,7 +63,8 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -194,13 +195,6 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         return false;
     }
 
-    /*@Override
-    public Block setBlockTextureName(String name)
-    {
-        this.textureName = name;
-        return this;
-    }*/
-
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -255,7 +249,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -263,14 +257,14 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
             if (mainBlockPosition != null)
-	        {
-	            Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
-	
-	            if (Blocks.air != mainBlockID)
-	            {
-	                return mainBlockID.getPickBlock(target, world, mainBlockPosition);
-	            }
-	        }
+            {
+                Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
+
+                if (Blocks.air != mainBlockID)
+                {
+                    return mainBlockID.getPickBlock(target, world, pos, player);
+                }
+            }
         }
 
         return null;
@@ -284,10 +278,10 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-	        if (mainBlockPosition != null)
-	        {
-	            return world.getBlockState(mainBlockPosition).getBlock().getBedDirection(world, mainBlockPosition);
-	        }
+            if (mainBlockPosition != null)
+            {
+                return world.getBlockState(mainBlockPosition).getBlock().getBedDirection(world, mainBlockPosition);
+            }
         }
 
         return EnumFacing.UP; // TODO
@@ -302,9 +296,9 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
             if (mainBlockPosition != null)
-	        {
-	            return world.getBlockState(mainBlockPosition).getBlock().isBed(world, mainBlockPosition, player);
-	        }
+            {
+                return world.getBlockState(mainBlockPosition).getBlock().isBed(world, mainBlockPosition, player);
+            }
         }
 
         return super.isBed(world, pos, player);
@@ -352,16 +346,19 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         return super.addDestroyEffects(world, pos, effectRenderer);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(MULTI_TYPE, EnumBlockMultiType.byMetadata(meta));
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumBlockMultiType)state.getValue(MULTI_TYPE)).getMeta();
+        return ((EnumBlockMultiType) state.getValue(MULTI_TYPE)).getMeta();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, MULTI_TYPE, RENDER_TYPE);
@@ -370,7 +367,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        EnumBlockMultiType type = (EnumBlockMultiType)state.getValue(MULTI_TYPE);
+        EnumBlockMultiType type = (EnumBlockMultiType) state.getValue(MULTI_TYPE);
         int renderType = 0;
 
         switch (type)

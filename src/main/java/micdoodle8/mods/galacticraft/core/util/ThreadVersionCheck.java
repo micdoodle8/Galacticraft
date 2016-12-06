@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.util.ChatComponentText;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class ThreadVersionCheck extends Thread
 
         while (this.count < 3 && remoteBuildVer == 0)
         {
-        	BufferedReader in = null;
+            BufferedReader in = null;
             try
             {
                 final URL url = new URL("https://micdoodle8.com/galacticraft/version.html");
@@ -86,23 +86,23 @@ public class ThreadVersionCheck extends Thread
                         }
                     }
                 }
-                
+
                 in.close();
                 streamReader.close();
             }
             catch (final Exception e)
             {
-            	if (in != null)
-            	{
-                	try 
-                	{
-						in.close();
-					} 
-                	catch (IOException e1) 
-                	{
-						e1.printStackTrace();
-					}
-            	}
+                if (in != null)
+                {
+                    try
+                    {
+                        in.close();
+                    }
+                    catch (IOException e1)
+                    {
+                        e1.printStackTrace();
+                    }
+                }
             }
 
             if (remoteBuildVer == 0)

@@ -1,12 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.common.Loader;
-
-import java.lang.reflect.Method;
-
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+import net.minecraftforge.fml.common.Loader;
 
 public class CompatibilityManager
 {
@@ -23,17 +18,21 @@ public class CompatibilityManager
 
     public static void checkForCompatibleMods()
     {
-        if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("GregTech_Addon") || Loader.isModLoaded("GregTech") )
+        if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("GregTech_Addon") || Loader.isModLoaded("GregTech"))
         {
             CompatibilityManager.modGTLoaded = true;
-            try {
-            	Class<?> clazz = Class.forName("gregtech.common.blocks.GT_Block_Ores");
-            	if (clazz != null)
-            	{
-            		classGTOre = clazz;
-            	}
+            try
+            {
+                Class<?> clazz = Class.forName("gregtech.common.blocks.GT_Block_Ores");
+                if (clazz != null)
+                {
+                    classGTOre = clazz;
+                }
             }
-            catch (Exception e) { e.printStackTrace(); }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         if (Loader.isModLoaded("ThermalExpansion"))
@@ -44,15 +43,19 @@ public class CompatibilityManager
         if (Loader.isModLoaded("IC2"))
         {
             CompatibilityManager.modIc2Loaded = true;
-            
-            try {
-            	Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-            	if (clazz != null)
-            	{
-            		BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborBlockChange");
-            	}
+
+            try
+            {
+                Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                if (clazz != null)
+                {
+                    BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborBlockChange");
+                }
             }
-            catch (Exception e) { e.printStackTrace(); }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
         }
 
@@ -62,10 +65,13 @@ public class CompatibilityManager
 
             try
             {
-            	classBCBlockGenericPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
+                classBCBlockGenericPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
             }
-            catch (Exception e) { e.printStackTrace(); }
-            
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
             BlockEnclosed.initialiseBC();
 
             if (classBCBlockGenericPipe == null)

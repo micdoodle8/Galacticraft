@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -42,7 +41,6 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         super(Material.iron);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName("stone");
         this.setStepSound(Block.soundTypeMetal);
     }
 
@@ -64,11 +62,11 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     {
         return false;
     }
-    
+
     @Override
     public boolean isFullCube()
     {
-		return false;
+        return false;
     }
 
     @Override
@@ -174,11 +172,11 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
 
         if (tileAt instanceof TileEntityShortRangeTelepad)
         {
-        	if (fakeBlockCount > 0)
-        	{
-        		((TileEntityShortRangeTelepad) tileAt).onDestroy(tileAt);
-        	}
-        	ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
+            if (fakeBlockCount > 0)
+            {
+                ((TileEntityShortRangeTelepad) tileAt).onDestroy(tileAt);
+            }
+            ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
         }
 
         super.breakBlock(worldIn, pos, state);

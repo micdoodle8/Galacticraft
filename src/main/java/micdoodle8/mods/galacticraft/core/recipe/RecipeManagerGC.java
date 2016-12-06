@@ -36,8 +36,8 @@ import java.util.List;
 public class RecipeManagerGC
 {
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
-    
-	public static void loadRecipes()
+
+    public static void loadRecipes()
     {
         if (CompatibilityManager.isBCraftLoaded())
         {
@@ -50,14 +50,14 @@ public class RecipeManagerGC
         }
 
         RecipeManagerGC.addUniversalRecipes();
-        
+
         RecipeManagerGC.addExNihiloRecipes();
     }
 
     @SuppressWarnings("unchecked")
     private static void addUniversalRecipes()
     {
-    	FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.basicBlock, 1, 5), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.basicBlock, 1, 5), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.basicBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.basicBlock, 1, 7), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.meteorChunk, 1, 0), new ItemStack(GCItems.meteorChunk, 1, 1), 0.1F);
@@ -200,40 +200,42 @@ public class RecipeManagerGC
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 3), input2);
 
         aluminumIngots.addAll(OreDictionary.getOres("ingotAluminum"));
-    	ArrayList<ItemStack> addedList = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> addedList = new ArrayList<ItemStack>();
         for (ItemStack ingotNew : OreDictionary.getOres("ingotAluminium"))
         {
-        	boolean flag = false;
-        	for (ItemStack ingotDone : aluminumIngots)
-        	{
-        		if (ItemStack.areItemStacksEqual(ingotNew, ingotDone))
-        		{
-        			flag = true;
-        			break;
-        		}
-        	}
-        	if (!flag)
-        	{
-        		addedList.add(ingotNew);
-        		OreDictionary.registerOre("ingotAluminum", ingotNew);
-        	}
+            boolean flag = false;
+            for (ItemStack ingotDone : aluminumIngots)
+            {
+                if (ItemStack.areItemStacksEqual(ingotNew, ingotDone))
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+            {
+                addedList.add(ingotNew);
+                OreDictionary.registerOre("ingotAluminum", ingotNew);
+            }
         }
         if (addedList.size() > 0)
-        {	
-        	aluminumIngots.addAll(addedList);
-        	addedList.clear();
+        {
+            aluminumIngots.addAll(addedList);
+            addedList.clear();
         }
         for (ItemStack ingotNew : OreDictionary.getOres("ingotNaturalAluminum"))
         {
-        	for (ItemStack ingotDone : aluminumIngots)
-        	{
-        		if (!ItemStack.areItemStacksEqual(ingotNew, ingotDone))
-        			addedList.add(ingotNew);
-        	}
+            for (ItemStack ingotDone : aluminumIngots)
+            {
+                if (!ItemStack.areItemStacksEqual(ingotNew, ingotDone))
+                {
+                    addedList.add(ingotNew);
+                }
+            }
         }
         if (addedList.size() > 0)
-        {	
-        	aluminumIngots.addAll(addedList);
+        {
+            aluminumIngots.addAll(addedList);
         }
 
         final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
@@ -415,7 +417,7 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCItems.wrench), new Object[] { "  Y", " X ", "X  ", 'X', "compressedBronze", 'Y', "compressedSteel" });
 
         RecipeUtil.addRecipe(new ItemStack(Blocks.lit_pumpkin), new Object[] { "P  ", "T  ", "   ", 'P', new ItemStack(Blocks.pumpkin), 'T', new ItemStack(GCBlocks.unlitTorch) });
-        
+
         if (GalacticraftCore.isPlanetsLoaded)
         {
             RecipeUtil.addRecipe(new ItemStack(GCBlocks.brightLamp), new Object[] { "XYX", "YZY", "XYX", 'X', "ingotDesh", 'Y', Items.glowstone_dust, 'Z', new ItemStack(GCItems.battery, 1, 0) });
@@ -513,56 +515,70 @@ public class RecipeManagerGC
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.itemBasicMoon, 1, 1), "ingotMeteoricIron");
         CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 2, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
     }
-    
+
     public static void setConfigurableRecipes()
     {
-    	ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
-    	ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
-    	ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
-    	
-    	CircuitFabricatorRecipes.removeRecipe(solarPanels);
-    	CircuitFabricatorRecipes.removeRecipe(basicWafers);
-    	CircuitFabricatorRecipes.removeRecipe(advancedWafers);
-    	List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
-    	int siliconCount = silicons.size();
-    	for (int j = 0; j <= siliconCount; j++)
-    	{
-    		ItemStack silicon;
-    		if (j == 0) silicon = new ItemStack(GCItems.basicItem, 1, 2);
-    		else silicon = silicons.get(j - 1); 
-    		CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
-    		CircuitFabricatorRecipes.addRecipe(basicWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
-    		CircuitFabricatorRecipes.addRecipe(advancedWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
-    	}
+        ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
+        ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
+        ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
 
-    	CompressorRecipes.removeRecipe(new ItemStack(GCItems.basicItem, 1, 9));
-    	boolean steelDone = false;
-    	if (OreDictionary.getOres("ingotSteel").size() > 0)
-    	{
-    		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
-    		steelDone = true;
-    	}
-    	if (!ConfigManagerCore.hardMode || !steelDone)
-    		CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
-    	else
-    		CompressorRecipes.addShapelessAdventure(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+        CircuitFabricatorRecipes.removeRecipe(solarPanels);
+        CircuitFabricatorRecipes.removeRecipe(basicWafers);
+        CircuitFabricatorRecipes.removeRecipe(advancedWafers);
+        List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
+        int siliconCount = silicons.size();
+        for (int j = 0; j <= siliconCount; j++)
+        {
+            ItemStack silicon;
+            if (j == 0)
+            {
+                silicon = new ItemStack(GCItems.basicItem, 1, 2);
+            }
+            else
+            {
+                silicon = silicons.get(j - 1);
+            }
+            CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
+            CircuitFabricatorRecipes.addRecipe(basicWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
+            CircuitFabricatorRecipes.addRecipe(advancedWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.repeater) });
+        }
+
+        CompressorRecipes.removeRecipe(new ItemStack(GCItems.basicItem, 1, 9));
+        boolean steelDone = false;
+        if (OreDictionary.getOres("ingotSteel").size() > 0)
+        {
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
+            steelDone = true;
+        }
+        if (!ConfigManagerCore.hardMode || !steelDone)
+        {
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+        }
+        else
+        {
+            CompressorRecipes.addShapelessAdventure(new ItemStack(GCItems.basicItem, 1, 9), Items.coal, new ItemStack(GCItems.basicItem, 1, 11), Items.coal);
+        }
     }
 
     private static void addBuildCraftCraftingRecipes()
     {
         boolean refineryDone = false;
-    	try
+        try
         {
             BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GalacticraftCore.fluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
             refineryDone = true;
         }
-        catch (Exception e) { }
+        catch (Exception e)
+        {
+        }
 
-    	if (refineryDone)
-    		GCLog.info("Successfully added GC oil to Buildcraft Refinery recipes.");
-    	
+        if (refineryDone)
+        {
+            GCLog.info("Successfully added GC oil to Buildcraft Refinery recipes.");
+        }
+
         try
-        {           
+        {
             Class<?> clazz = Class.forName("buildcraft.BuildCraftTransport");
 
             Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);
@@ -588,56 +604,61 @@ public class RecipeManagerGC
 
     private static void addIndustrialCraft2Recipes()
     {
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, 4), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedTinCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, 4), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedTinCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
 
-         try
-         {
-             Class<?> clazz = Class.forName("ic2.core.Ic2Items");
+        try
+        {
+            Class<?> clazz = Class.forName("ic2.core.Ic2Items");
 
-             Object copperDustObject =
-             clazz.getField("crushedCopperOre").get(null);
-             ItemStack copperDustItemStack = (ItemStack) copperDustObject;
-             Class<?> clazz2 =
-             Class.forName("ic2.api.recipe.RecipeInputItemStack");
-             Object o = clazz2.getConstructor(ItemStack.class).newInstance(new
-             ItemStack(GCBlocks.blockMoon, 1, 0));
-             Method addRecipe =
-             Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe",
-             Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class,
-             ItemStack[].class);
-             addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
-             o, null, new ItemStack[] { new
-             ItemStack(copperDustItemStack.getItem(), 2,
-             copperDustItemStack.getItemDamage()) });
+            Object copperDustObject =
+                    clazz.getField("crushedCopperOre").get(null);
+            ItemStack copperDustItemStack = (ItemStack) copperDustObject;
+            Class<?> clazz2 =
+                    Class.forName("ic2.api.recipe.RecipeInputItemStack");
+            Object o = clazz2.getConstructor(ItemStack.class).newInstance(new
+                    ItemStack(GCBlocks.blockMoon, 1, 0));
+            Method addRecipe =
+                    Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe",
+                            Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class,
+                            ItemStack[].class);
+            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
+                    o, null, new ItemStack[] { new
+                            ItemStack(copperDustItemStack.getItem(), 2,
+                            copperDustItemStack.getItemDamage()) });
 
-             Object tinDustObject = clazz.getField("crushedTinOre").get(null);
-             ItemStack tinDustItemStack = (ItemStack) tinDustObject;
-             o = clazz2.getConstructor(ItemStack.class).newInstance(new
-             ItemStack(GCBlocks.blockMoon, 1, 1));
-             addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
-             o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(),
-             2, tinDustItemStack.getItemDamage()) });
-         }
-         catch (Throwable e)
-         {
-             e.printStackTrace();
-         }
+            Object tinDustObject = clazz.getField("crushedTinOre").get(null);
+            ItemStack tinDustItemStack = (ItemStack) tinDustObject;
+            o = clazz2.getConstructor(ItemStack.class).newInstance(new
+                    ItemStack(GCBlocks.blockMoon, 1, 1));
+            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
+                    o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(),
+                            2, tinDustItemStack.getItemDamage()) });
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace();
+        }
     }
-   
+
     private static void addExNihiloRecipes()
     {
-    	try {
-    		Class registry = Class.forName("exnihilo.registries.HeatRegistry");
-    		Method m = registry.getMethod("register", Block.class, float.class);
-    		m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
-    		for (Block torch : GCBlocks.otherModTorchesLit)
-    			m.invoke(null, torch, 0.1F);
-    		GCLog.info("Successfully added space torches as heat sources for Ex Nihilo crucibles etc");
-    	}
-         catch (Throwable e) { }
+        try
+        {
+            Class registry = Class.forName("exnihilo.registries.HeatRegistry");
+            Method m = registry.getMethod("register", Block.class, float.class);
+            m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
+            for (Block torch : GCBlocks.otherModTorchesLit)
+            {
+                m.invoke(null, torch, 0.1F);
+            }
+            GCLog.info("Successfully added space torches as heat sources for Ex Nihilo crucibles etc");
+        }
+        catch (Throwable e)
+        {
+        }
     }
 }

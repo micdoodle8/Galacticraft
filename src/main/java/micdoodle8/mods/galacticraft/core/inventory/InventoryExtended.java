@@ -119,6 +119,7 @@ public class InventoryExtended implements IInventoryGC
         return false;
     }
 
+    @Override
     public void dropExtendedItems(EntityPlayer player)
     {
         for (int i = 0; i < this.inventoryStacks.length; i++)
@@ -190,37 +191,43 @@ public class InventoryExtended implements IInventoryGC
         return tagList;
     }
 
+    @Override
     public void copyInventory(IInventoryGC par1InventoryPlayer)
     {
-    	InventoryExtended toCopy = (InventoryExtended) par1InventoryPlayer;
-    	for (int i = 0; i < this.inventoryStacks.length; ++i)
+        InventoryExtended toCopy = (InventoryExtended) par1InventoryPlayer;
+        for (int i = 0; i < this.inventoryStacks.length; ++i)
         {
             this.inventoryStacks[i] = ItemStack.copyItemStack(toCopy.inventoryStacks[i]);
         }
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 }

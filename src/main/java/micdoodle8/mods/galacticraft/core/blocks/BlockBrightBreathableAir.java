@@ -20,7 +20,6 @@ public class BlockBrightBreathableAir extends BlockAir
     {
         this.setResistance(1000.0F);
         this.setHardness(0.0F);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setStepSound(new SoundType("sand", 0.0F, 1.0F));
         this.setLightLevel(1.0F);
@@ -37,12 +36,6 @@ public class BlockBrightBreathableAir extends BlockAir
     {
         return true;
     }
-
-    /*@Override
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }*/
 
     @Override
     public int getMobilityFlag()

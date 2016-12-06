@@ -9,11 +9,17 @@ import net.minecraft.util.IChatComponent;
 
 public class InventoryTreasureChest implements IInventory
 {
-    /** Name of the chest. */
+    /**
+     * Name of the chest.
+     */
     private String name;
-    /** Inventory object corresponding to double chest upper part */
+    /**
+     * Inventory object corresponding to double chest upper part
+     */
     private IInventory upperChest;
-    /** Inventory object corresponding to double chest lower part */
+    /**
+     * Inventory object corresponding to double chest lower part
+     */
     private IInventory lowerChest;
     private static final String __OBFID = "CL_00001507";
 
@@ -35,6 +41,7 @@ public class InventoryTreasureChest implements IInventory
         this.lowerChest = p_i1559_3_;
     }
 
+    @Override
     public int getSizeInventory()
     {
         return this.upperChest.getSizeInventory() + this.lowerChest.getSizeInventory();
@@ -150,6 +157,6 @@ public class InventoryTreasureChest implements IInventory
     @Override
     public IChatComponent getDisplayName()
     {
-        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 }

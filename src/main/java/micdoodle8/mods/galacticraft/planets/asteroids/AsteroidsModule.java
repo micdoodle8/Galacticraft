@@ -1,12 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
-import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -17,16 +10,14 @@ import micdoodle8.mods.galacticraft.core.command.CommandGCAstroMiner;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
+import micdoodle8.mods.galacticraft.planets.asteroids.entities.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsPlayerHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerAstroMinerDock;
@@ -45,15 +36,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import java.lang.reflect.Method;
@@ -78,13 +73,13 @@ public class AsteroidsModule implements IPlanetsModule
     private Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous)
     {
         Fluid returnFluid = FluidRegistry.getFluid(fluidName);
-    	if (returnFluid == null)
+        if (returnFluid == null)
         {
             ResourceLocation texture = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/fluids/" + fluidName);
-    		FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
-    		returnFluid = FluidRegistry.getFluid(fluidName);
+            FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
+            returnFluid = FluidRegistry.getFluid(fluidName);
         }
-    	return returnFluid;
+        return returnFluid;
     }
 
     @Override
@@ -122,9 +117,9 @@ public class AsteroidsModule implements IPlanetsModule
         AsteroidBlocks.registerBlocks();
         AsteroidBlocks.setHarvestLevels();
         AsteroidBlocks.oreDictRegistration();
-        
+
         AsteroidsItems.initItems();
-        
+
         FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, 1000), new ItemStack(AsteroidsItems.methaneCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidOxygen, 1000), new ItemStack(AsteroidsItems.canisterLOX, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidNitrogen, 1000), new ItemStack(AsteroidsItems.canisterLN2, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
@@ -136,8 +131,8 @@ public class AsteroidsModule implements IPlanetsModule
         ((CreativeTabGC) GalacticraftCore.galacticraftItemsTab).setItemForTab(AsteroidsItems.astroMiner); // Set creative tab item to Astro Miner
 
         this.registerMicroBlocks();
-    	SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
-    	SchematicRegistry.registerSchematicRecipe(new SchematicAstroMiner());
+        SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
+        SchematicRegistry.registerSchematicRecipe(new SchematicAstroMiner());
 
         GalacticraftCore.packetPipeline.addDiscriminator(7, PacketSimpleAsteroids.class);
 
@@ -269,23 +264,23 @@ public class AsteroidsModule implements IPlanetsModule
     {
         if (side == Side.SERVER)
         {
-	        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
-	
-	        switch (ID)
-	        {
-	        case GuiIdsPlanets.MACHINE_ASTEROIDS:
-	
-	            if (tile instanceof TileEntityShortRangeTelepad)
-	            {
-	                return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile), player);
-	            }
-	            if (tile instanceof TileEntityMinerBase)
-	            {
-	            	return new ContainerAstroMinerDock(player.inventory, (TileEntityMinerBase) tile);
-	            }
-	
-	            break;
-	        }
+            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+
+            switch (ID)
+            {
+            case GuiIdsPlanets.MACHINE_ASTEROIDS:
+
+                if (tile instanceof TileEntityShortRangeTelepad)
+                {
+                    return new ContainerShortRangeTelepad(player.inventory, ((TileEntityShortRangeTelepad) tile), player);
+                }
+                if (tile instanceof TileEntityMinerBase)
+                {
+                    return new ContainerAstroMinerDock(player.inventory, (TileEntityMinerBase) tile);
+                }
+
+                break;
+            }
         }
 
         return null;
@@ -314,28 +309,32 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerMicroBlocks()
     {
-		try {
-			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
-			if (clazz != null)
-			{
-				Method registerMethod = null;
-				Method[] methodz = clazz.getMethods();
-				for (Method m : methodz)
-				{
-					if (m.getName().equals("registerMaterial"))
-					{
-						registerMethod = m;
-						break;
-					}
-				}
-				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroids_block.asteroid_rock_0");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroids_block.asteroid_rock_1");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroids_block.asteroid_rock_2");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.dense_ice");
-			}
-		} catch (Exception e) {}
-	}
+        try
+        {
+            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+            if (clazz != null)
+            {
+                Method registerMethod = null;
+                Method[] methodz = clazz.getMethods();
+                for (Method m : methodz)
+                {
+                    if (m.getName().equals("registerMaterial"))
+                    {
+                        registerMethod = m;
+                        break;
+                    }
+                }
+                Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroids_block.asteroid_rock_0");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroids_block.asteroid_rock_1");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroids_block.asteroid_rock_2");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockDenseIce, 0), "tile.dense_ice");
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }
 
     private void registerTileEntities()
     {

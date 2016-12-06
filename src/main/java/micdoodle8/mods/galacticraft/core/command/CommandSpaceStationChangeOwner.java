@@ -56,43 +56,47 @@ public class CommandSpaceStationChangeOwner extends CommandBase
 
             try
             {
-            	stationID = Integer.parseInt(astring[0]);
+                stationID = Integer.parseInt(astring[0]);
             }
             catch (final Exception var6)
             {
-            	throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+                throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
             }
-            
+
             if (stationID < 2)
-            	throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
-            
+            {
+                throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+            }
+
             try
-            {          	
+            {
                 SpaceStationWorldData stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
                 if (stationData == null)
-            	{
-            		throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
-            	}
-                
+                {
+                    throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+                }
+
                 oldOwner = stationData.getOwner();
                 stationData.getAllowedPlayers().remove(oldOwner);
                 if (stationData.getSpaceStationName().equals("Station: " + oldOwner))
-                	stationData.setSpaceStationName("Station: " + newOwner);
+                {
+                    stationData.setSpaceStationName("Station: " + newOwner);
+                }
                 stationData.getAllowedPlayers().add(newOwner);
                 stationData.setOwner(newOwner);
-                
+
                 final EntityPlayerMP oldPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(oldOwner, true);
                 final EntityPlayerMP newPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(newOwner, true);
                 if (oldPlayer != null)
                 {
-                	final GCPlayerStats stats = GCPlayerStats.get(oldPlayer);
-                	SpaceStationWorldData.updateSSOwnership(oldPlayer, oldOwner, stats, stationID, stationData);
+                    final GCPlayerStats stats = GCPlayerStats.get(oldPlayer);
+                    SpaceStationWorldData.updateSSOwnership(oldPlayer, oldOwner, stats, stationID, stationData);
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), oldPlayer);
                 }
                 if (newPlayer != null)
                 {
-                	final GCPlayerStats stats = GCPlayerStats.get(newPlayer);
-                	SpaceStationWorldData.updateSSOwnership(newPlayer, newOwner.replace(".", ""), stats, stationID, stationData);
+                    final GCPlayerStats stats = GCPlayerStats.get(newPlayer);
+                    SpaceStationWorldData.updateSSOwnership(newPlayer, newOwner.replace(".", ""), stats, stationID, stationData);
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), newPlayer);
                 }
             }
@@ -111,8 +115,10 @@ public class CommandSpaceStationChangeOwner extends CommandBase
             playerAdmin.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
         }
         else
-        	//Console
-        	System.out.println(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner));
+        //Console
+        {
+            System.out.println(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner));
+        }
     }
 
     protected String[] getPlayers()

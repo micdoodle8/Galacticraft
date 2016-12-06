@@ -303,7 +303,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     /**
      * Make sure this does not exceed the oxygen stored.
      * This should return 0 if no oxygen is stored.
-     * Implementing tiles must respect this or you will generate infinite oxygen. 
+     * Implementing tiles must respect this or you will generate infinite oxygen.
      */
     @Override
     public int getOxygenProvide(EnumFacing direction)
@@ -314,14 +314,17 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
-    	if (!stack.getGas().getName().equals("oxygen")) return 0;
-    	return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
+        if (!stack.getGas().getName().equals("oxygen"))
+        {
+            return 0;
+        }
+        return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(EnumFacing side, GasStack stack)
     {
-    	return this.receiveGas(side, stack, true);
+        return this.receiveGas(side, stack, true);
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -11,6 +9,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
     public void update()
     {
         super.update();
- 
+
         if (!this.worldObj.isRemote)
         {
             this.active = false;
@@ -136,9 +136,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     this.otherAirLocks = this.protocol.calculate(this.horizontalModeEnabled);
 
-                    if (this.active && (this.otherAirLocks != null || 
-                    		(this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks) || 
-                    		(this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size())))
+                    if (this.active && (this.otherAirLocks != null ||
+                            (this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks) ||
+                            (this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size())))
                     {
                         this.sealAirLock();
                     }

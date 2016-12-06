@@ -6,7 +6,6 @@ import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.ItemInfo;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -263,7 +262,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
         for (int j = 0; j < siliconCount; j++)
         {
-        	silicons[j + 1] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j);
+            silicons[j + 1] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j);
         }
         input1.put(1, new PositionedStack(silicons, 69, 51));
         input1.put(2, new PositionedStack(silicons, 69, 69));
@@ -313,8 +312,10 @@ public class NEIGalacticraftConfig implements IConfigureNEI
             ItemStack resultItemStack = rec.getRecipeOutput();
             if (ConfigManagerCore.quickMode)
             {
-            	if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
-            		resultItemStack.stackSize *= 2;
+                if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+                {
+                    resultItemStack.stackSize *= 2;
+                }
             }
 
             this.registerIngotCompressorRecipe(input1, new PositionedStack(resultItemStack, 140, 46));

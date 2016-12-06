@@ -1,12 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -47,6 +40,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -54,6 +48,13 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -117,7 +118,7 @@ public class MarsModule implements IPlanetsModule
     public void init(FMLInitializationEvent event)
     {
         this.registerMicroBlocks();
-    	SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
+        SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
         SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());
 
         GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
@@ -162,30 +163,34 @@ public class MarsModule implements IPlanetsModule
 
     private void registerMicroBlocks()
     {
-		try {
-			Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
-			if (clazz != null)
-			{
-				Method registerMethod = null;
-				Method[] methodz = clazz.getMethods();
-				for (Method m : methodz)
-				{
-					if (m.getName().equals("registerMaterial"))
-					{
-						registerMethod = m;
-						break;
-					}
-				}
-				Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 4), "tile.mars.marscobblestone");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 5), "tile.mars.marsgrass");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 6), "tile.mars.marsdirt");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 7), "tile.mars.marsdungeon");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 8), "tile.mars.marsdeco");
-				registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 9), "tile.mars.marsstone");
-			}
-		} catch (Exception e) {}
-	}
+        try
+        {
+            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+            if (clazz != null)
+            {
+                Method registerMethod = null;
+                Method[] methodz = clazz.getMethods();
+                for (Method m : methodz)
+                {
+                    if (m.getName().equals("registerMaterial"))
+                    {
+                        registerMethod = m;
+                        break;
+                    }
+                }
+                Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 4), "tile.mars.marscobblestone");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 5), "tile.mars.marsgrass");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 6), "tile.mars.marsdirt");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 7), "tile.mars.marsdungeon");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 8), "tile.mars.marsdeco");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 9), "tile.mars.marsstone");
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }
 
     public void registerTileEntities()
     {
@@ -198,7 +203,6 @@ public class MarsModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "Water Electrolyzer");
         GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
         GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
-//        GameRegistry.registerTileEntity(TileEntityHydrogenPipe.class, "Hydrogen Pipe");
     }
 
     public void registerCreatures()
@@ -211,7 +215,6 @@ public class MarsModule implements IPlanetsModule
     public void registerOtherEntities()
     {
         MarsModule.registerGalacticraftNonMobEntity(EntityTier2Rocket.class, "rocket_t2", 150, 1, false);
-//        MarsModule.registerGalacticraftNonMobEntity(EntityTerraformBubble.class, "TerraformBubble", 150, 20, false);
         MarsModule.registerGalacticraftNonMobEntity(EntityProjectileTNT.class, "projectile_tnt", 150, 1, true);
         MarsModule.registerGalacticraftNonMobEntity(EntityLandingBalloons.class, "landing_balloons", 150, 5, true);
         MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "rocket_cargo", 150, 1, false);
@@ -219,24 +222,24 @@ public class MarsModule implements IPlanetsModule
 
     public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
-    	MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
+        MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
         int nextEggID = GCCoreUtil.getNextValidEggID();
         if (nextEggID < 65536)
         {
-	        EntityList.idToClassMapping.put(nextEggID, var0);
+            EntityList.idToClassMapping.put(nextEggID, var0);
             EntityList.classToIDMapping.put(var0, nextEggID);
-	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
-        } 
+            EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+        }
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-    	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-    		LanguageRegistry.instance().addStringLocalization("entity.galacticraftplanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftPlanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-		}
-    	EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            LanguageRegistry.instance().addStringLocalization("entity.galacticraftplanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+            LanguageRegistry.instance().addStringLocalization("entity.GalacticraftPlanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+        }
+        EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }
 
     @Override

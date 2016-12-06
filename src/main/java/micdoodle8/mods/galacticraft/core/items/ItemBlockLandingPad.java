@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -9,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockLandingPad extends ItemBlockDesc
 {
@@ -44,9 +44,11 @@ public class ItemBlockLandingPad extends ItemBlockDesc
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
         if (world.isRemote && stack.getItemDamage() == 0 && player instanceof EntityPlayerSP)
-        	ClientProxyCore.playerClientHandler.onBuild(5, (EntityPlayerSP) player);
+        {
+            ClientProxyCore.playerClientHandler.onBuild(5, (EntityPlayerSP) player);
+        }
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)

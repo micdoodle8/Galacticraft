@@ -102,6 +102,7 @@ public class RoomEntrance extends SizedPiece
         return true;
     }
 
+    @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
         if (startPiece.attachedComponents.isEmpty())

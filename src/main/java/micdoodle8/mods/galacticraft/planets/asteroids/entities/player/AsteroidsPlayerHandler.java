@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities.player;
 
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 public class AsteroidsPlayerHandler
 {
@@ -76,7 +76,7 @@ public class AsteroidsPlayerHandler
                 {
                     double x, y, z;
                     double motX, motY, motZ;
-                    double r = player.worldObj.rand.nextInt(60)+30D;
+                    double r = player.worldObj.rand.nextInt(60) + 30D;
                     double theta = Math.PI * 2.0 * player.worldObj.rand.nextDouble();
                     x = player.posX + Math.cos(theta) * r;
                     y = player.posY + player.worldObj.rand.nextInt(5);

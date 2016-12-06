@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -38,10 +36,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import java.util.List;
 import java.util.Random;
@@ -92,7 +90,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
                 {
                     if (entity != this && entity instanceof EntityLivingBase)
                     {
-                        this.setAttackTarget((EntityLivingBase)entity);
+                        this.setAttackTarget((EntityLivingBase) entity);
                     }
 
                     return true;
@@ -184,7 +182,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, this.worldObj.provider.getDimensionId(), new Object[] { }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_EXPLODE, this.worldObj.provider.getDimensionId(), new Object[] {}), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
                 //				PacketDispatcher.sendPacketToAllAround(this.posX, this.posY, this.posZ, 40.0, this.worldObj.provider.getDimensionId(), PacketUtil.createPacket(GalacticraftCore.CHANNEL, EnumPacketClient.PLAY_SOUND_EXPLODE, new Object[] { 0 }));
             }
 
@@ -402,26 +400,30 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
         if (player != null)
         {
-	        GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-	        if (stats != null)
-	        {
-		        for (ISchematicPage page : stats.unlockedSchematics)
-		        {
-		        	if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
-		        	{
-		        		range = 3;
-		        		break;
-		        	}
-		        }
-		        if (stats.rocketItem == AsteroidsItems.tier3Rocket)
-		        	range = 3;
-	        }
-	        if (range == 2)
-	        {
-	        	SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
-	        	if (race != null && race.getCelestialBodyStatusList().containsKey(AsteroidsModule.planetAsteroids))
-	        		range = 3;        	
-	        }
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            if (stats != null)
+            {
+                for (ISchematicPage page : stats.unlockedSchematics)
+                {
+                    if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
+                    {
+                        range = 3;
+                        break;
+                    }
+                }
+                if (stats.rocketItem == AsteroidsItems.tier3Rocket)
+                {
+                    range = 3;
+                }
+            }
+            if (range == 2)
+            {
+                SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+                if (race != null && race.getCelestialBodyStatusList().containsKey(AsteroidsModule.planetAsteroids))
+                {
+                    range = 3;
+                }
+            }
         }
         return stackList.get(rand.nextInt(range)).copy();
     }

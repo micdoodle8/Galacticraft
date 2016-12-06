@@ -90,6 +90,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
         return false;
     }
 
+    @Override
     public boolean isFullCube()
     {
         return false;
@@ -113,11 +114,11 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     {
         return true;
     }
-    
+
     @Override
     public Item getItem(World world, BlockPos pos)
     {
-		return null;
+        return null;
     }
 
     @Override

@@ -46,8 +46,8 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         this.textureWidth = 128;
         this.textureHeight = 128;
 
-        float halfPI = (float)(Math.PI / 2.0);
-        
+        float halfPI = (float) (Math.PI / 2.0);
+
         this.upperHead = new ModelRenderer(this, 0, 16);
         this.upperHead.addBox(-4F, -8F, -6F, 8, 8, 8);
         this.upperHead.setRotationPoint(0F, -24F, 6F);
@@ -295,8 +295,8 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
     {
         final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
-        this.upperHead.rotateAngleY = par4 / (180F / (float)Math.PI);
-        this.upperHead.rotateAngleX = par5 / (180F / (float)Math.PI);
+        this.upperHead.rotateAngleY = par4 / (180F / (float) Math.PI);
+        this.upperHead.rotateAngleX = par5 / (180F / (float) Math.PI);
         this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
         this.leftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
         this.rightArm.rotateAngleZ = 0.0F;
@@ -316,8 +316,8 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
             this.leftLeg.rotateAngleY = -((float) Math.PI / 10F);
         }
 
-        this.rightArm.rotateAngleY = par4 / (180F / (float)Math.PI);
-        this.leftArm.rotateAngleY = par4 / (180F / (float)Math.PI);
+        this.rightArm.rotateAngleY = par4 / (180F / (float) Math.PI);
+        this.leftArm.rotateAngleY = par4 / (180F / (float) Math.PI);
         float var7;
         float var8;
 
@@ -348,8 +348,8 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         final float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
         this.rightArm.rotateAngleZ = 0.0F;
         this.leftArm.rotateAngleZ = 0.0F;
-        this.rightArm.rotateAngleY = 0.5F * (par4 / (180F / (float)Math.PI)) + -(0.1F - f6 * 0.6F);
-        this.leftArm.rotateAngleY = 0.5F * (par4 / (180F / (float)Math.PI)) + 0.1F - f6 * 0.6F;
+        this.rightArm.rotateAngleY = 0.5F * (par4 / (180F / (float) Math.PI)) + -(0.1F - f6 * 0.6F);
+        this.leftArm.rotateAngleY = 0.5F * (par4 / (180F / (float) Math.PI)) + 0.1F - f6 * 0.6F;
         this.rightArm.rotateAngleX = -((float) Math.PI / 2F);
         this.leftArm.rotateAngleX = -((float) Math.PI / 2F);
         this.rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
@@ -361,8 +361,8 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
 
         if (((EntitySkeletonBoss) e).deathTicks > 0)
         {
-            this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 3.0F * (float)(Math.PI / 180.0F);
-            this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 2.0F * (float)(Math.PI / 180.0F);
+            this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 3.0F * (float) (Math.PI / 180.0F);
+            this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 2.0F * (float) (Math.PI / 180.0F);
         }
 
         if (boss.throwTimer + boss.postThrowDelay > 0)

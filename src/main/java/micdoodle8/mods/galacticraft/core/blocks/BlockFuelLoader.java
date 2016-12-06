@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -24,10 +23,6 @@ import net.minecraft.world.World;
 
 public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    /*private IIcon iconMachineSide;
-    private IIcon iconInput;
-    private IIcon iconFront;
-    private IIcon iconFuelInput;*/
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockFuelLoader(String assetName)
@@ -35,7 +30,6 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -44,22 +38,6 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuelloader");
-        this.iconFuelInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuel_input");
-    }*/
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
@@ -73,27 +51,6 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
         entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 0 || side == 1)
-        {
-            return this.iconMachineSide;
-        }
-        else if (side == metadata + 2)
-        {
-            return this.iconInput;
-        }
-        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-        {
-            return this.iconFuelInput;
-        }
-        else
-        {
-            return this.iconFront;
-        }
-    }*/
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -165,17 +122,20 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);

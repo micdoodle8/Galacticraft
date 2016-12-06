@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class EntityAILookAtTradePlayerGC extends EntityAIWatchClosest
@@ -17,6 +16,7 @@ public class EntityAILookAtTradePlayerGC extends EntityAIWatchClosest
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         if (this.theMerchant.isTrading())

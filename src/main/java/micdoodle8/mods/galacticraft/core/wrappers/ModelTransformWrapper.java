@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.wrappers;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -24,10 +25,10 @@ public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISma
         this.iBakedModel = i_modelToWrap;
     }
 
-    protected abstract Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType);
+    protected abstract Matrix4f getTransformForPerspective(TransformType cameraTransformType);
 
     @Override
-    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType)
+    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
     {
         Matrix4f matrix4f = getTransformForPerspective(cameraTransformType);
 

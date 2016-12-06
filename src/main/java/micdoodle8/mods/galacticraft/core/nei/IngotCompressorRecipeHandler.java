@@ -196,7 +196,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-        	return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, this.input);
+            return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, this.input);
         }
 
         @Override

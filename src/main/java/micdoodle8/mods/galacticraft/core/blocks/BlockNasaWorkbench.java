@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -33,15 +32,12 @@ import java.util.List;
 
 public class BlockNasaWorkbench extends BlockContainer implements ITileEntityProvider, IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
-    // IIcon[] iconBuffer;
-
     public BlockNasaWorkbench(String assetName)
     {
         super(Material.iron);
         this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
         this.setHardness(2.5F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -50,14 +46,6 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconBuffer = new IIcon[2];
-        this.iconBuffer[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_side");
-        this.iconBuffer[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "workbench_nasa_top");
-    }*/
 
     @Override
     public int getRenderType()
@@ -223,12 +211,6 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 
         super.breakBlock(worldIn, pos, state);
     }
-
-    /*@Override
-    public IIcon getIcon(int par1, int par2)
-    {
-        return par1 == 1 ? this.iconBuffer[1] : this.iconBuffer[0];
-    }*/
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)

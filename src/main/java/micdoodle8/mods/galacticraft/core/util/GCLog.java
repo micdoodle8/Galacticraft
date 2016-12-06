@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import micdoodle8.mods.galacticraft.core.Constants;
-
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import org.apache.logging.log4j.Level;
 
 public class GCLog
@@ -16,12 +15,12 @@ public class GCLog
     {
         FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.ERROR, message);
     }
-    
+
     public static void debug(String message)
     {
         if (ConfigManagerCore.enableDebug)
         {
-        	FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.INFO, "Debug: " + message);
+            FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.INFO, "Debug: " + message);
         }
     }
 }

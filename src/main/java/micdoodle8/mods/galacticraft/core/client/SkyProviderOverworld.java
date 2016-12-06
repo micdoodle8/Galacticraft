@@ -23,7 +23,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Random;
 
@@ -31,14 +30,18 @@ public class SkyProviderOverworld extends IRenderHandler
 {
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
-    
+
     private static boolean optifinePresent = false;
-    
+
     static
     {
-        try {
+        try
+        {
             optifinePresent = Launch.classLoader.getClassBytes("CustomColorizer") != null;
-        } catch (final Exception e) { }
+        }
+        catch (final Exception e)
+        {
+        }
     }
 
     private int starGLCallList = GLAllocation.generateDisplayLists(7);
@@ -124,7 +127,7 @@ public class SkyProviderOverworld extends IRenderHandler
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, mc.theWorld.provider.getDimensionId(), new Object[] {}));
             ClientProxyCore.overworldTextureRequestSent = true;
         }
-        
+
         double zoom = 0.0;
         double yaw = 0.0;
         double pitch = 0.0;
@@ -132,34 +135,34 @@ public class SkyProviderOverworld extends IRenderHandler
 
         if (!optifinePresent)
         {
-	        try
-	        {
-	        	Class<?> c = mc.entityRenderer.getClass();
-	        	zoom = mc.entityRenderer.cameraZoom;
-	        	yaw = mc.entityRenderer.cameraYaw;
-	        	pitch = mc.entityRenderer.cameraPitch;
+            try
+            {
+                Class<?> c = mc.entityRenderer.getClass();
+                zoom = mc.entityRenderer.cameraZoom;
+                yaw = mc.entityRenderer.cameraYaw;
+                pitch = mc.entityRenderer.cameraPitch;
 
-	            GL11.glMatrixMode(GL11.GL_PROJECTION);
-	            GL11.glLoadIdentity();
+                GL11.glMatrixMode(GL11.GL_PROJECTION);
+                GL11.glLoadIdentity();
 
-	            if (zoom != 1.0D)
-	            {
-	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
-	                GL11.glScaled(zoom, zoom, 1.0D);
-	            }
+                if (zoom != 1.0D)
+                {
+                    GL11.glTranslatef((float) yaw, (float) (-pitch), 0.0F);
+                    GL11.glScaled(zoom, zoom, 1.0D);
+                }
 
-	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, 1400.0F);
-	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	            GL11.glLoadIdentity();
+                Project.gluPerspective(mc.gameSettings.fovSetting, (float) mc.displayWidth / (float) mc.displayHeight, 0.05F, 1400.0F);
+                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                GL11.glLoadIdentity();
 
                 mc.entityRenderer.orientCamera(partialTicks);
-	        }
-	        catch(Exception e)
-	        {
-	        	e.printStackTrace();
-	        }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
-        
+
         float theta = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
@@ -205,7 +208,7 @@ public class SkyProviderOverworld extends IRenderHandler
         if (costh != null)
         {
             final float sunsetModInv = Math.min(1.0F, Math.max(1.0F - theta * 50.0F, 0.0F));
-            
+
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
@@ -244,10 +247,10 @@ public class SkyProviderOverworld extends IRenderHandler
             GL11.glPopMatrix();
             GL11.glShadeModel(GL11.GL_FLAT);
         }
-        
+
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        
+
         GL11.glPushMatrix();
         z = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
         var9 = 0.0F;
@@ -259,7 +262,7 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         double playerHeight = this.minecraft.thePlayer.posY;
-        
+
         //Draw stars
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -275,8 +278,8 @@ public class SkyProviderOverworld extends IRenderHandler
 //        float bright5 = Math.min(0.7F, var20 * 0.75F);
         if (bright1 > threshold)
         {
-	        GL11.glColor4f(bright1, bright1, bright1, 1.0F);
-	        GL11.glCallList(this.starGLCallList);
+            GL11.glColor4f(bright1, bright1, bright1, 1.0F);
+            GL11.glCallList(this.starGLCallList);
         }
 //        if (bright2 > threshold)
 //        {
@@ -286,17 +289,17 @@ public class SkyProviderOverworld extends IRenderHandler
 //        if (bright3 > threshold)
 //        {
 //	        GL11.glColor4f(bright3, bright3, bright3, 1.0F);
-	        GL11.glCallList(this.starGLCallList + 2);
+        GL11.glCallList(this.starGLCallList + 2);
 //        }
 //        if (bright4 > threshold)
 //        {
 //	        GL11.glColor4f(bright4, bright4, bright4, 1.0F);
-	        GL11.glCallList(this.starGLCallList + 3);
+        GL11.glCallList(this.starGLCallList + 3);
 //        }
 //        if (bright5 > threshold)
 //        {
 //	        GL11.glColor4f(bright5, bright5, bright5, 1.0F);
-	        GL11.glCallList(this.starGLCallList + 4);
+        GL11.glCallList(this.starGLCallList + 4);
 //        }
 
         //Draw sun
@@ -343,42 +346,42 @@ public class SkyProviderOverworld extends IRenderHandler
 
         if (var25 > this.minecraft.gameSettings.renderDistanceChunks * 16)
         {
-	        theta *= 400.0F;
-	
-	        final float sinth = Math.max(Math.min(theta / 100.0F - 0.2F, 0.5F), 0.0F);
-	
-	        GL11.glPushMatrix();
-	        GL11.glEnable(GL11.GL_TEXTURE_2D);
-	        GL11.glDisable(GL11.GL_FOG);
-	        float scale = 850 * (0.25F - theta / 10000.0F);
-	        scale = Math.max(scale, 0.2F);
-	        GL11.glScalef(scale, 1.0F, scale);
-	        GL11.glTranslatef(0.0F, -(float)mc.thePlayer.posY, 0.0F);
+            theta *= 400.0F;
+
+            final float sinth = Math.max(Math.min(theta / 100.0F - 0.2F, 0.5F), 0.0F);
+
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glDisable(GL11.GL_FOG);
+            float scale = 850 * (0.25F - theta / 10000.0F);
+            scale = Math.max(scale, 0.2F);
+            GL11.glScalef(scale, 1.0F, scale);
+            GL11.glTranslatef(0.0F, -(float) mc.thePlayer.posY, 0.0F);
 //	        if (ClientProxyCore.overworldTextureLocal != null)
 //	        {
 //	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
 //	        }
 //	        else
-	        {
-	            this.minecraft.renderEngine.bindTexture(this.planetToRender);
-	        }
-	
-	        size = 1.0F;
-	
-	        GL11.glColor4f(sinth, sinth, sinth, 1.0F);
+            {
+                this.minecraft.renderEngine.bindTexture(this.planetToRender);
+            }
+
+            size = 1.0F;
+
+            GL11.glColor4f(sinth, sinth, sinth, 1.0F);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 //	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
 //	        if (zoomIn < 0F) zoomIn = 0F;
             float zoomIn = 0.0F;
-	        float cornerB = 1.0F - zoomIn;
-	        worldRenderer.pos(-size, 0, size).tex(zoomIn, cornerB).endVertex();
-	        worldRenderer.pos(size, 0, size).tex(cornerB, cornerB).endVertex();
-	        worldRenderer.pos(size, 0, -size).tex(cornerB, zoomIn).endVertex();
-	        worldRenderer.pos(-size, 0, -size).tex(zoomIn, zoomIn).endVertex();
-	        var23.draw();
-	        GL11.glDisable(GL11.GL_TEXTURE_2D);
-	        GL11.glPopMatrix();
+            float cornerB = 1.0F - zoomIn;
+            worldRenderer.pos(-size, 0, size).tex(zoomIn, cornerB).endVertex();
+            worldRenderer.pos(size, 0, size).tex(cornerB, cornerB).endVertex();
+            worldRenderer.pos(size, 0, -size).tex(cornerB, zoomIn).endVertex();
+            worldRenderer.pos(-size, 0, -size).tex(zoomIn, zoomIn).endVertex();
+            var23.draw();
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glPopMatrix();
         }
 
         GL11.glColor3f(0.0f, 0.0f, 0.0f);
@@ -388,27 +391,27 @@ public class SkyProviderOverworld extends IRenderHandler
 
         if (!optifinePresent)
         {
-	        try
-	        {
-	            GL11.glMatrixMode(GL11.GL_PROJECTION);
-	            GL11.glLoadIdentity();
+            try
+            {
+                GL11.glMatrixMode(GL11.GL_PROJECTION);
+                GL11.glLoadIdentity();
 
-	            if (zoom != 1.0D)
-	            {
-	                GL11.glTranslatef((float)yaw, (float)(-pitch), 0.0F);
-	                GL11.glScaled(zoom, zoom, 1.0D);
-	            }
+                if (zoom != 1.0D)
+                {
+                    GL11.glTranslatef((float) yaw, (float) (-pitch), 0.0F);
+                    GL11.glScaled(zoom, zoom, 1.0D);
+                }
 
-	            Project.gluPerspective(mc.gameSettings.fovSetting, (float)mc.displayWidth / (float)mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
-	            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	            GL11.glLoadIdentity();
+                Project.gluPerspective(mc.gameSettings.fovSetting, (float) mc.displayWidth / (float) mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
+                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                GL11.glLoadIdentity();
 
                 mc.entityRenderer.orientCamera(partialTicks);
-	        }
-	        catch(Exception e)
-	        {
-	        	e.printStackTrace();
-	        }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -436,7 +439,9 @@ public class SkyProviderOverworld extends IRenderHandler
                 final double xx = x * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
                 final double zz = z * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
                 if (Math.abs(xx) < 29D && Math.abs(zz) < 29D)
-                	continue;
+                {
+                    continue;
+                }
                 final double yy = y * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
                 final double theta = Math.atan2(x, z);
                 final double sinth = Math.sin(theta);

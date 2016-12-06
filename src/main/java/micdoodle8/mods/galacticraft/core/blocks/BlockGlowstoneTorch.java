@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -25,6 +24,7 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
     {
+        @Override
         public boolean apply(EnumFacing facing)
         {
             return facing != EnumFacing.DOWN;
@@ -36,7 +36,6 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
         super(Material.circuits);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setTickRandomly(true);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setLightLevel(0.85F);
         this.setStepSound(Block.soundTypeWood);
@@ -64,12 +63,6 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
     public boolean isFullCube()
     {
         return false;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
     }
 
     @Override
@@ -147,7 +140,7 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
         }
         else
         {
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
             EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
             EnumFacing enumfacing1 = enumfacing.getOpposite();
             boolean flag = false;
@@ -176,7 +169,7 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
 
     protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing)state.getValue(FACING)))
+        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing) state.getValue(FACING)))
         {
             return true;
         }
@@ -241,21 +234,21 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
 
         switch (meta)
         {
-            case 1:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
-                break;
-            case 2:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
-                break;
-            case 3:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
-                break;
-            case 4:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
-                break;
-            case 5:
-            default:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
+        case 1:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
+            break;
+        case 2:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
+            break;
+        case 3:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
+            break;
+        case 4:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
+            break;
+        case 5:
+        default:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
         }
 
         return iblockstate;
@@ -266,24 +259,24 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
     {
         int i = 0;
 
-        switch ((EnumFacing)state.getValue(FACING))
+        switch ((EnumFacing) state.getValue(FACING))
         {
-            case EAST:
-                i = i | 1;
-                break;
-            case WEST:
-                i = i | 2;
-                break;
-            case SOUTH:
-                i = i | 3;
-                break;
-            case NORTH:
-                i = i | 4;
-                break;
-            case DOWN:
-            case UP:
-            default:
-                i = i | 5;
+        case EAST:
+            i = i | 1;
+            break;
+        case WEST:
+            i = i | 2;
+            break;
+        case SOUTH:
+            i = i | 3;
+            break;
+        case NORTH:
+            i = i | 4;
+            break;
+        case DOWN:
+        case UP:
+        default:
+            i = i | 5;
         }
 
         return i;
@@ -299,7 +292,7 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockState(this, new IProperty[] { FACING });
     }
 
     @Override

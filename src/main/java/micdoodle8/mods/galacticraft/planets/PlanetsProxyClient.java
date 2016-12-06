@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.planets;
 
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 
 import java.util.List;
 

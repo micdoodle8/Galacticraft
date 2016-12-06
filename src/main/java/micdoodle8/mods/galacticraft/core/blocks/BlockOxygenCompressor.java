@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -41,7 +40,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
         private final int meta;
         private final String name;
 
-        private EnumCompressorType(int meta, String name)
+        EnumCompressorType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -58,32 +57,18 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
-
-    /*private IIcon iconMachineSide;
-    private IIcon iconCompressor1;
-    private IIcon iconCompressor2;
-    private IIcon iconDecompressor;
-    private IIcon iconOxygenInput;
-    private IIcon iconOxygenOutput;
-    private IIcon iconInput;*/
 
     public BlockOxygenCompressor(boolean isActive, String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
     }
 
     @Override
@@ -91,19 +76,6 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconCompressor1 = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_compressor_1");
-        this.iconCompressor2 = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_compressor_2");
-        this.iconDecompressor = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_decompressor_1");
-        this.iconOxygenInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
-        this.iconOxygenOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }*/
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -146,62 +118,6 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
             return null;
         }
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 0 || side == 1)
-        {
-            return this.iconMachineSide;
-        }
-
-        if (metadata >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
-        {
-            metadata -= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
-
-            if (side == metadata + 2)
-            {
-                return this.iconInput;
-            }
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-            {
-                return this.iconOxygenOutput;
-            }
-            else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
-            {
-                return this.iconCompressor2;
-            }
-            else
-            {
-                return this.iconDecompressor;
-            }
-        }
-        else if (metadata >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
-        {
-            metadata -= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
-
-            if (side == metadata + 2)
-            {
-                return this.iconInput;
-            }
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-            {
-                return this.iconOxygenInput;
-            }
-            else if (metadata == 0 && side == 5 || metadata == 3 && side == 3 || metadata == 1 && side == 4 || metadata == 2 && side == 2)
-            {
-                return this.iconCompressor2;
-            }
-            else
-            {
-                return this.iconCompressor1;
-            }
-        }
-        else
-        {
-            return this.iconMachineSide;
-        }
-    }*/
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
@@ -272,18 +188,21 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumCompressorType type = EnumCompressorType.byMetadata((int)Math.floor(meta / 4.0));
+        EnumCompressorType type = EnumCompressorType.byMetadata((int) Math.floor(meta / 4.0));
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumCompressorType)state.getValue(TYPE)).getMeta() * 4;
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumCompressorType) state.getValue(TYPE)).getMeta() * 4;
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);

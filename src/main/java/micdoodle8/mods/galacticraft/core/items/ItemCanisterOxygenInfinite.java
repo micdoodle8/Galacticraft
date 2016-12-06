@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -62,28 +62,30 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     public ItemStack getContainerItem(ItemStack itemstack)
     {
         if (super.getContainerItem(itemstack) == null)
-        	return null;
-    	return itemstack;
+        {
+            return null;
+        }
+        return itemstack;
     }
 
-	@Override
-	public int discharge(ItemStack itemStack, int amount)
-	{
-		return amount;
-	}
+    @Override
+    public int discharge(ItemStack itemStack, int amount)
+    {
+        return amount;
+    }
 
-	@Override
-	public int getOxygenStored(ItemStack par1ItemStack)
-	{
-		return par1ItemStack.getMaxDamage();
-	}
-	
-	@Override
-    	@SideOnly(Side.CLIENT)
-    	public EnumRarity getRarity(ItemStack par1ItemStack)
-    	{
-        	return ClientProxyCore.galacticraftItem;
-    	}
+    @Override
+    public int getOxygenStored(ItemStack par1ItemStack)
+    {
+        return par1ItemStack.getMaxDamage();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
 
     @Override
     public EnumSortCategoryItem getCategory(int meta)
@@ -91,7 +93,7 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
         return EnumSortCategoryItem.GEAR;
     }
 
-	@Override
+    @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
     {
         if (player instanceof EntityPlayerMP)

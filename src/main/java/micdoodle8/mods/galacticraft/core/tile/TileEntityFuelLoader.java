@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
-import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -36,9 +35,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
     public TileEntityFuelLoader()
     {
-    	this.storage.setMaxExtract(30);
+        this.storage.setMaxExtract(30);
     }
- 
+
     public int getScaledFuelLevel(int i)
     {
         final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
@@ -59,48 +58,55 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
             {
                 if (this.containingItems[1].getItem() instanceof ItemCanisterGeneric)
                 {
-	                if (this.containingItems[1].getItem() == GCItems.fuelCanister)
-	                {
-	                	int originalDamage = this.containingItems[1].getItemDamage();
-	                	int used = this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
-	                	if (originalDamage + used == ItemCanisterGeneric.EMPTY)
-	                		this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
-	                	else
-	                		this.containingItems[1] = new ItemStack(GCItems.fuelCanister, 1, originalDamage + used);
-	                }
-            	}
+                    if (this.containingItems[1].getItem() == GCItems.fuelCanister)
+                    {
+                        int originalDamage = this.containingItems[1].getItemDamage();
+                        int used = this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
+                        if (originalDamage + used == ItemCanisterGeneric.EMPTY)
+                        {
+                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
+                        }
+                        else
+                        {
+                            this.containingItems[1] = new ItemStack(GCItems.fuelCanister, 1, originalDamage + used);
+                        }
+                    }
+                }
                 else
                 {
-                	final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+                    final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
 
-                	if (liquid != null)
-                	{
-                		boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid)); 
+                    if (liquid != null)
+                    {
+                        boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
 
-                		if (isFuel)
-                		{
-                			if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
-                			{
-                				this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, liquid.amount), true);
+                        if (isFuel)
+                        {
+                            if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
+                            {
+                                this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, liquid.amount), true);
 
-                				if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-                				{
-                					final int amount = this.containingItems[1].stackSize;
-                					if (amount > 1) this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
-                					this.containingItems[1] = new ItemStack(Items.bucket, amount);
-                				}
-                				else
-                				{
-                					this.containingItems[1].stackSize--;
+                                if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+                                {
+                                    final int amount = this.containingItems[1].stackSize;
+                                    if (amount > 1)
+                                    {
+                                        this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                                    }
+                                    this.containingItems[1] = new ItemStack(Items.bucket, amount);
+                                }
+                                else
+                                {
+                                    this.containingItems[1].stackSize--;
 
-                					if (this.containingItems[1].stackSize == 0)
-                					{
-                						this.containingItems[1] = null;
-                					}
-                				}
-                			}
-                		}
-                	}
+                                    if (this.containingItems[1].stackSize == 0)
+                                    {
+                                        this.containingItems[1] = null;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -114,7 +120,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
                     if (pad instanceof TileEntityMulti)
                     {
-                       	final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
+                        final TileEntity mainTile = ((TileEntityMulti) pad).getMainBlockTile();
 
                         if (mainTile instanceof IFuelable)
                         {
@@ -206,7 +212,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         if (slotID == 1 && itemstack != null)
         {
-           	return FluidUtil.isEmptyContainer(itemstack);
+            return FluidUtil.isEmptyContainer(itemstack);
         }
         return false;
     }
@@ -218,12 +224,14 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 //    }
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return false;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 
@@ -292,6 +300,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         return true;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING);

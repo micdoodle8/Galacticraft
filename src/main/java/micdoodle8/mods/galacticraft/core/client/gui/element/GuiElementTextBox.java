@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -8,6 +7,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.input.Keyboard;
 
 public class GuiElementTextBox extends GuiButton
@@ -240,20 +240,21 @@ public class GuiElementTextBox extends GuiButton
         }
     }
 
-    public int getMaxLength() {
+    public int getMaxLength()
+    {
         return maxLength;
     }
 
-    public static interface ITextBoxCallback
+    public interface ITextBoxCallback
     {
-        public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player);
+        boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player);
 
-        public void onTextChanged(GuiElementTextBox textBox, String newText);
+        void onTextChanged(GuiElementTextBox textBox, String newText);
 
-        public String getInitialText(GuiElementTextBox textBox);
+        String getInitialText(GuiElementTextBox textBox);
 
-        public int getTextColor(GuiElementTextBox textBox);
+        int getTextColor(GuiElementTextBox textBox);
 
-        public void onIntruderInteraction(GuiElementTextBox textBox);
+        void onIntruderInteraction(GuiElementTextBox textBox);
     }
 }

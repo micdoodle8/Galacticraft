@@ -148,7 +148,7 @@ public class GCBlocks
         GCBlocks.setHarvestLevels();
 
         //Complete registration of various types of torches
-        BlockUnlitTorch.register((BlockUnlitTorch)GCBlocks.unlitTorch, (BlockUnlitTorch)GCBlocks.unlitTorchLit, Blocks.torch);
+        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.torch);
         GCBlocks.doOtherModsTorches();
 
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
@@ -180,11 +180,15 @@ public class GCBlocks
         if (Loader.isModLoaded("TConstruct"))
         {
             Block modTorch = null;
-            try {
+            try
+            {
                 //tconstruct.world.TinkerWorld.stoneTorch
                 Class clazz = Class.forName("tconstruct.world.TinkerWorld");
                 modTorch = (Block) clazz.getField("stoneTorch").get(null);
-            } catch (Exception e) { }
+            }
+            catch (Exception e)
+            {
+            }
             if (modTorch != null)
             {
                 torch = new BlockUnlitTorch(false, "unlitTorch_Stone");

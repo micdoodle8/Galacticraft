@@ -25,10 +25,7 @@ public class SimplexNoise
             this.perm[i] = this.perm[i] ^ this.perm[j];
         }
 
-        for (int i = 0; i < 256; i++)
-        {
-            this.perm[i + 256] = this.perm[i];
-        }
+        System.arraycopy(this.perm, 0, this.perm, 256, 256);
     }
 
 }

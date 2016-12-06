@@ -2,11 +2,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -21,11 +19,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.lang.reflect.Field;
 
 public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
@@ -40,7 +35,6 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ACTIVE, true));
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeWood);
-        //this.setBlockTextureName("stone");
         this.setUnlocalizedName(assetName);
         this.setLightLevel(1.0F);
     }
@@ -86,12 +80,6 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     }
 
     @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         for (EnumFacing side : EnumFacing.values())
@@ -128,7 +116,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        EnumFacing side = (EnumFacing)state.getValue(FACING);
+        EnumFacing side = (EnumFacing) state.getValue(FACING);
 
         BlockPos offsetPos = pos.offset(side);
         IBlockState state1 = worldIn.getBlockState(offsetPos);
@@ -184,11 +172,11 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     {
         if (!world.isRemote)
         {
-	    	TileEntity tile = world.getTileEntity(pos);
-	        if (tile instanceof TileEntityArclamp)
-	        {
-	            ((TileEntityArclamp) tile).facingChanged();
-	        }
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile instanceof TileEntityArclamp)
+            {
+                ((TileEntityArclamp) tile).facingChanged();
+            }
         }
         return true;
     }
@@ -239,7 +227,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, ACTIVE});
+        return new BlockState(this, new IProperty[] { FACING, ACTIVE });
     }
 
     @Override

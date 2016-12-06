@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.energy.tile;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySource;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -12,8 +10,10 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.lang.reflect.Constructor;
 
@@ -235,50 +235,54 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
-    	if (this.getNetwork() == null)
-    	{
-    		return 0;
-    	}
+        if (this.getNetwork() == null)
+        {
+            return 0;
+        }
         float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
-    	return MathHelper.floor_float(sentGC / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor_float(sentGC / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
-    	return 0;
+        return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public boolean canConnectEnergy(EnumFacing from)
     {
-    	//Do not form wire-to-wire connections with EnderIO conduits
-    	TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, from);
-        try {
+        //Do not form wire-to-wire connections with EnderIO conduits
+        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, from);
+        try
+        {
             if (EnergyUtil.clazzEnderIOCable != null && EnergyUtil.clazzEnderIOCable.isInstance(tile))
             {
                 return false;
             }
-        } catch (Exception e) { }
-    	return true;
+        }
+        catch (Exception e)
+        {
+        }
+        return true;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int getEnergyStored(EnumFacing from)
     {
-    	return 0;
+        return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int getMaxEnergyStored(EnumFacing from)
     {
-    	if (this.getNetwork() == null)
-    	{
-    		return 0;
-    	}
+        if (this.getNetwork() == null)
+        {
+            return 0;
+        }
 
-    	return MathHelper.floor_float(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor_float(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -325,7 +329,6 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public void setEnergy(double energy)
     {
-        ;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")

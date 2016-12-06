@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.Timer;
 
@@ -18,9 +18,9 @@ public class ItemModelFlag extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
     {
-        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        if (cameraTransformType == TransformType.GUI)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -37,7 +37,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -71,7 +71,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                     Field f = c.getDeclaredField("timer");
                     f.setAccessible(true);
                     Timer t = (Timer) f.get(Minecraft.getMinecraft());
-                    mul.rotX(((var7 + (var72 - var7) * t.renderPartialTicks) * 75.0F) * (float)(Math.PI / 180.0F));
+                    mul.rotX(((var7 + (var72 - var7) * t.renderPartialTicks) * 75.0F) * (float) (Math.PI / 180.0F));
                 }
                 catch (Exception e)
                 {
@@ -82,7 +82,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

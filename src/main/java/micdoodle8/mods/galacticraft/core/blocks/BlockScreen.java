@@ -2,9 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -26,30 +24,26 @@ import net.minecraft.world.World;
 
 public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ITileEntityProvider, ISortableBlock
 {
-    /*private IIcon iconFront;
-    private IIcon iconSide;*/
-
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
     public static final PropertyBool LEFT = PropertyBool.create("left");
     public static final PropertyBool RIGHT = PropertyBool.create("right");
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
-	
-	//Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
-	protected BlockScreen(String assetName)
+
+    //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
+    protected BlockScreen(String assetName)
     {
         super(Material.circuits);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeGlass);
-        //this.setBlockTextureName("glass");
         this.setUnlocalizedName(assetName);
     }
 
-	@Override
+    @Override
     public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing direction)
     {
-    	return direction.ordinal() != getMetaFromState(world.getBlockState(pos));
+        return direction.ordinal() != getMetaFromState(world.getBlockState(pos));
     }
 
     @Override
@@ -70,31 +64,6 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     {
         return false;
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "screenFront");
-        this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "screenSide");
-    }
-    
-    @Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == (metadata & 7))
-        {
-            return this.iconSide;
-        }
-
-        return this.iconFront;
-    }*/
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
@@ -130,10 +99,10 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
         {
-        	((TileEntityScreen) tile).changeChannel();
-        	return true;
+            ((TileEntityScreen) tile).changeChannel();
+            return true;
         }
-    	return false;
+        return false;
     }
 
     @Override
@@ -142,10 +111,10 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
         {
-        	((TileEntityScreen) tile).refreshConnections(true);
+            ((TileEntityScreen) tile).refreshConnections(true);
         }
     }
-    
+
     @Override
     public String getShiftDescription(int meta)
     {
@@ -158,11 +127,11 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
         return true;
     }
 
-	@Override
-	public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
-	{
-    	return true;
-	}
+    @Override
+    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
+    {
+        return true;
+    }
 
     @Override
     public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
@@ -174,23 +143,23 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
         switch (metadata)
         {
         case 0:
-        	this.setBlockBounds(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);        	
-        	break;
+            this.setBlockBounds(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
+            break;
         case 1:
-        	this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
-        	break;
+            this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
+            break;
         case 2:
             this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
             break;
         case 3:
             this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
-        	break;
+            break;
         case 4:
-            this.setBlockBounds(boundsFront, 0F, 0F,  1.0F, 1.0F, 1.0F);
+            this.setBlockBounds(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
             break;
         case 5:
             this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
-        	break;
+            break;
         }
 
         return super.collisionRayTrace(worldIn, pos, start, end);

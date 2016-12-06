@@ -69,7 +69,7 @@ public class ContainerBuggy extends Container
 
             if (par2 < b)
             {
-                if (!this.mergeItemStack(var5, b, b+36, true))
+                if (!this.mergeItemStack(var5, b, b + 36, true))
                 {
                     return null;
                 }

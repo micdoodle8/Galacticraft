@@ -3,11 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -22,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -36,8 +32,6 @@ import java.util.Random;
 
 public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-//    @SideOnly(Side.CLIENT)
-//    private IIcon[] vineIcons;
     public static final PropertyEnum VINE_TYPE = PropertyEnum.create("vineType", EnumVineType.class);
 
     public enum EnumVineType implements IStringSerializable
@@ -105,16 +99,16 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         return (blockAbove == this || blockAbove.getMaterial().isSolid());
     }
 
-	@Override
+    @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
-	{
-		super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+    {
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
 
-		if (!this.canBlockStay(worldIn, pos))
-		{
+        if (!this.canBlockStay(worldIn, pos))
+        {
             worldIn.setBlockToAir(pos);
-		}
-	}
+        }
+    }
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, Entity entityIn)
@@ -136,34 +130,11 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         }
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.vineIcons = new IIcon[3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            this.vineIcons[i] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "vine_" + i);
-        }
-    }*/
-
     @Override
     public int getLightValue(IBlockAccess world, BlockPos pos)
     {
         return this.getVineLight(world, pos);
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int meta)
-    {
-        if (meta < 3)
-        {
-            return this.vineIcons[meta];
-        }
-
-        return super.getIcon(side, meta);
-    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -322,7 +293,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumVineType)state.getValue(VINE_TYPE)).getMeta();
+        return ((EnumVineType) state.getValue(VINE_TYPE)).getMeta();
     }
 
     @Override

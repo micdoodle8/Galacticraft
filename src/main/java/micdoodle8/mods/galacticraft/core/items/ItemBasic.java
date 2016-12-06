@@ -27,7 +27,7 @@ public class ItemBasic extends Item implements ISortableItem
     public static final String[] names = { "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller" };
     public static final int WAFER_BASIC = 13;
     public static final int WAFER_ADVANCED = 14;
-    
+
 //    protected IIcon[] icons = new IIcon[ItemBasic.names.length];
 
     public ItemBasic(String assetName)
@@ -215,27 +215,30 @@ public class ItemBasic extends Item implements ISortableItem
         }
         return par1ItemStack;
     }
-    
+
     @Override
     public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity)
     {
-    	if (itemStack.getItemDamage() != 19) return false;
-    	
-    	//Frequency module
-    	if (!player.worldObj.isRemote && entity != null && !(entity instanceof EntityPlayer))
-    	{
-    		if (itemStack.getTagCompound() == null)
-    		{
-    			itemStack.setTagCompound(new NBTTagCompound());
-    		}
+        if (itemStack.getItemDamage() != 19)
+        {
+            return false;
+        }
 
-   			itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
-   			itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
+        //Frequency module
+        if (!player.worldObj.isRemote && entity != null && !(entity instanceof EntityPlayer))
+        {
+            if (itemStack.getTagCompound() == null)
+            {
+                itemStack.setTagCompound(new NBTTagCompound());
+            }
 
-    		player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.tracking.message")));
-    		return true;
-    	}
-    	return false;
+            itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
+            itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
+
+            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.tracking.message")));
+            return true;
+        }
+        return false;
     }
 
     @Override

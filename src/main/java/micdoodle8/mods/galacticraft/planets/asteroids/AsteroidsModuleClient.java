@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids;
 import com.google.common.collect.ImmutableList;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -61,7 +59,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.util.vector.Vector3f;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class AsteroidsModuleClient implements IPlanetsModuleClient
@@ -178,7 +175,9 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestAsteroids.class, new TileEntityTreasureChestRenderer());
 
         if (Loader.isModLoaded("craftguide"))
-        	CraftGuideIntegration.register();
+        {
+            CraftGuideIntegration.register();
+        }
     }
 
     public static void registerBlockRenderers()
@@ -259,7 +258,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             }
             if (tile instanceof TileEntityMinerBase)
             {
-            	return new GuiAstroMinerDock(player.inventory, (TileEntityMinerBase) tile);
+                return new GuiAstroMinerDock(player.inventory, (TileEntityMinerBase) tile);
             }
 
             break;

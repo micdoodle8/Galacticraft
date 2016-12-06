@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -26,7 +25,6 @@ import java.util.Random;
 
 public class BlockSpinThruster extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
-    //public static IIcon thrusterIcon;
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     protected BlockSpinThruster(String assetName)
@@ -34,7 +32,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         super(Material.circuits);
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeWood);
-        //this.setBlockTextureName("stone");
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
@@ -43,27 +40,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     {
         return world.getBlockState(pos).getBlock().isSideSolid(world, pos, direction);
     }
-
-    //	@Override
-    //	@SideOnly(Side.CLIENT)
-    //	public IIcon getIcon(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5)
-    //	{
-    //		return BlockSpinThruster.thrusterIcon;
-    //	}
-    //
-    //	@Override
-    //	@SideOnly(Side.CLIENT)
-    //	public IIcon getIcon(int par1, int x)
-    //	{
-    //		return BlockSpinThruster.thrusterIcon;
-    //	}
-    //
-    //	@Override
-    //	@SideOnly(Side.CLIENT)
-    //	public void registerBlockIcons(IIconRegister par1IconRegister)
-    //	{
-    //		BlockSpinThruster.thrusterIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "spinThruster");
-    //	}
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
@@ -81,12 +57,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     public boolean isFullCube()
     {
         return false;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
     }
 
     @Override
@@ -119,29 +89,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         int metadata = getMetaFromState(state);
-//        TileEntityThruster tile = (TileEntityThruster) worldIn.getTileEntity(pos);
-//
-//        if (metadata == 0)
-//        {
-//            if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST))
-//            {
-//                metadata = 2;
-//            }
-//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST))
-//            {
-//                metadata = 3;
-//            }
-//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH))
-//            {
-//                metadata = 0;
-//            }
-//            else if (BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH))
-//            {
-//                metadata = 1;
-//            }
-//
-//            worldIn.setBlockState(pos, getStateFromMeta(metadata), 3);
-//        }
 
         BlockPos baseBlock;
         switch (metadata)
@@ -172,11 +119,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which
-     * neighbor changed (coordinates passed are their own) Args: x, y, z,
-     * neighbor blockID
-     */
     @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
@@ -221,11 +163,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         }
     }
 
-    /**
-     * Tests if the block can remain at its current location and will drop as an
-     * item if it is unable to stay. Returns True if it can stay and False if it
-     * drops. Args: world, x, y, z
-     */
     private boolean dropTorchIfCantStay(World worldIn, BlockPos pos)
     {
         if (!this.canPlaceBlockAt(worldIn, pos))
@@ -244,10 +181,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         }
     }
 
-    /**
-     * Ray traces through the blocks collision from start vector to end vector
-     * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
-     */
     @Override
     public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
     {
@@ -276,9 +209,6 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 
     @Override
     @SideOnly(Side.CLIENT)
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
@@ -379,17 +309,20 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return (state.getValue(FACING)).getHorizontalIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);

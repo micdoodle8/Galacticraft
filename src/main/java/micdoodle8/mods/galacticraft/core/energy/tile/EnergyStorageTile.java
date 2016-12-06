@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
@@ -11,12 +9,14 @@ import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
 {
     public static final float STANDARD_CAPACITY = 16000F;
-	
-	@NetworkedField(targetSide = Side.CLIENT)
+
+    @NetworkedField(targetSide = Side.CLIENT)
     public EnergyStorage storage = new EnergyStorage(STANDARD_CAPACITY, 10);
     public int tierGC = 1;
     public int poweredByTierGC = 1;
@@ -116,6 +116,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
         return 0;
     }
 
+    @Override
     public int getTierGC()
     {
         return this.tierGC;

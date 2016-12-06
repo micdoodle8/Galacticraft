@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
-
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -17,7 +15,6 @@ import net.minecraft.world.WorldServer;
 /**
  * Do not reference this or test 'intance of' this in your code:
  * if PlayerAPI is installed, GCEntityPlayerMP will not be used.
- * 
  */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
@@ -26,10 +23,10 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
         if (this.worldObj != world)
         {
-        	GCPlayerStats.get(this).startAdventure(WorldUtil.getDimensionName(this.worldObj.provider));
+            GCPlayerStats.get(this).startAdventure(WorldUtil.getDimensionName(this.worldObj.provider));
         }
     }
-    
+
     //Server-only method
     @Override
     public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)

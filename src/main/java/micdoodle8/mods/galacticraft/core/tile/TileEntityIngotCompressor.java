@@ -170,7 +170,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipe) recipe).getInput());
-                
+
                 Iterator<Object> req = required.iterator();
 
                 int match = 0;
@@ -181,26 +181,35 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
                     if (next instanceof ItemStack)
                     {
-                        if ( OreDictionary.itemMatches((ItemStack)next, stack, false)) match++;
+                        if (OreDictionary.itemMatches((ItemStack) next, stack, false))
+                        {
+                            match++;
+                        }
                     }
                     else if (next instanceof ArrayList)
                     {
-                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>)next).iterator();
+                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>) next).iterator();
                         while (itr.hasNext())
                         {
                             if (OreDictionary.itemMatches(itr.next(), stack, false))
                             {
-                            	match++;
-                            	break;
+                                match++;
+                                break;
                             }
                         }
                     }
                 }
-                
-                if (match == 0) continue;
-                
-                if (match == 1) return true;
-                
+
+                if (match == 0)
+                {
+                    continue;
+                }
+
+                if (match == 1)
+                {
+                    return true;
+                }
+
                 return randnum.nextInt(match) == 0;
             }
         }
@@ -215,42 +224,50 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             ItemStack resultItemStack = this.producingStack;
             if (ConfigManagerCore.quickMode)
             {
-            	if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
-            		resultItemStack.stackSize *= 2;
+                if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+                {
+                    resultItemStack.stackSize *= 2;
+                }
             }
- 
-        	if (this.containingItems[1] == null)
-        	{
-        		this.containingItems[1] = resultItemStack.copy();
-        	}
-        	else if (this.containingItems[1].isItemEqual(resultItemStack))
-        	{
-        		if (this.containingItems[1].stackSize + resultItemStack.stackSize > 64)
-        		{
-        			for (int i = 0; i < this.containingItems[1].stackSize + resultItemStack.stackSize - 64; i++)
-        			{
-        				float var = 0.7F;
-        				double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        				double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        				double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        				EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-        				entityitem.setPickupDelay(10);
+            if (this.containingItems[1] == null)
+            {
+                this.containingItems[1] = resultItemStack.copy();
+            }
+            else if (this.containingItems[1].isItemEqual(resultItemStack))
+            {
+                if (this.containingItems[1].stackSize + resultItemStack.stackSize > 64)
+                {
+                    for (int i = 0; i < this.containingItems[1].stackSize + resultItemStack.stackSize - 64; i++)
+                    {
+                        float var = 0.7F;
+                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
-        				this.worldObj.spawnEntityInWorld(entityitem);
-        			}
-        			this.containingItems[1].stackSize = 64;
-        		}
-        		else
-        			this.containingItems[1].stackSize += resultItemStack.stackSize;
-        	}
+                        entityitem.setPickupDelay(10);
+
+                        this.worldObj.spawnEntityInWorld(entityitem);
+                    }
+                    this.containingItems[1].stackSize = 64;
+                }
+                else
+                {
+                    this.containingItems[1].stackSize += resultItemStack.stackSize;
+                }
+            }
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
                 if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.water_bucket)
-                	this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.bucket));
+                {
+                    this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.bucket));
+                }
                 else
-                	this.compressingCraftMatrix.decrStackSize(i, 1);
+                {
+                    this.compressingCraftMatrix.decrStackSize(i, 1);
+                }
             }
             this.updateInput();
         }
@@ -445,12 +462,12 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
         else if (slotID >= 2)
         {
-        	if (this.producingStack != null)
-        	{
+            if (this.producingStack != null)
+            {
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
                 return stackInSlot != null && stackInSlot.isItemEqual(itemStack);
-        	}
-        	return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
+            }
+            return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
         }
 
         return false;
@@ -459,48 +476,70 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
-    	if (side == EnumFacing.DOWN) return new int[] { 1 };
-    	int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    	ArrayList<Integer> removeSlots = new ArrayList();
-    	
-    	for (int i = 2; i < 11; i++)
-    	{
-			if (removeSlots.contains(i)) continue;
-    		ItemStack stack1 = this.getStackInSlot(i);
-    		if (stack1 == null || stack1.stackSize <= 0) continue;
-    		
-    		for (int j = i + 1; j < 11; j++)
-    		{
-    			if (removeSlots.contains(j)) continue;
-    			ItemStack stack2 = this.getStackInSlot(j);
-    			if (stack2 == null) continue;
-    			
-    			if (stack1.isItemEqual(stack2))
-    			{
-    				if (stack2.stackSize >= stack1.stackSize)
-    					removeSlots.add(j);
-    				else
-    					removeSlots.add(i);
-    				break;
-    			}
-    		}
-    	}
-    	
-    	if (removeSlots.size() > 0)
-    	{
-    		int[] returnSlots = new int[slots.length - removeSlots.size()];
-        	int j = 0;
-        	for (int i = 0; i < slots.length; i++)
-        	{
-    			if (i > 0 && removeSlots.contains(slots[i])) { continue; }
-    			returnSlots[j] = slots[i];
-    			j++;    			
-        	}
-        	
-        	return returnSlots;
-    	}
-    	
-    	return slots;
+        if (side == EnumFacing.DOWN)
+        {
+            return new int[] { 1 };
+        }
+        int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        ArrayList<Integer> removeSlots = new ArrayList();
+
+        for (int i = 2; i < 11; i++)
+        {
+            if (removeSlots.contains(i))
+            {
+                continue;
+            }
+            ItemStack stack1 = this.getStackInSlot(i);
+            if (stack1 == null || stack1.stackSize <= 0)
+            {
+                continue;
+            }
+
+            for (int j = i + 1; j < 11; j++)
+            {
+                if (removeSlots.contains(j))
+                {
+                    continue;
+                }
+                ItemStack stack2 = this.getStackInSlot(j);
+                if (stack2 == null)
+                {
+                    continue;
+                }
+
+                if (stack1.isItemEqual(stack2))
+                {
+                    if (stack2.stackSize >= stack1.stackSize)
+                    {
+                        removeSlots.add(j);
+                    }
+                    else
+                    {
+                        removeSlots.add(i);
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (removeSlots.size() > 0)
+        {
+            int[] returnSlots = new int[slots.length - removeSlots.size()];
+            int j = 0;
+            for (int i = 0; i < slots.length; i++)
+            {
+                if (i > 0 && removeSlots.contains(slots[i]))
+                {
+                    continue;
+                }
+                returnSlots[j] = slots[i];
+                j++;
+            }
+
+            return returnSlots;
+        }
+
+        return slots;
     }
 
     @Override
@@ -534,32 +573,38 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return false;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 }

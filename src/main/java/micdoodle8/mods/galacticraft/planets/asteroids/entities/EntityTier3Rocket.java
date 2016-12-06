@@ -8,13 +8,10 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -43,15 +40,16 @@ public class EntityTier3Rocket extends EntityTieredRocket
     }
 
     @Override
-    public double getYOffset() {
+    public double getYOffset()
+    {
         return 1.5F;
     }
 
-	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target)
-	{
-	return new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex());
-	}
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex());
+    }
 
     @Override
     protected void entityInit()
@@ -74,7 +72,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 0.0D;
+        return 0.0D;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -135,8 +133,10 @@ public class EntityTier3Rocket extends EntityTieredRocket
             if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
-				if (!this.hasValidFuel())
-					this.stopRocketSound();
+                if (!this.hasValidFuel())
+                {
+                    this.stopRocketSound();
+                }
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -308,22 +308,26 @@ public class EntityTier3Rocket extends EntityTieredRocket
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 

@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.tile.IColorable;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -9,17 +12,14 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import micdoodle8.mods.galacticraft.api.tile.IColorable;
-import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
@@ -239,7 +239,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
             return false;
         }
 
-        switch (((BlockFluidPipe)currentType).getMode())
+        switch (((BlockFluidPipe) currentType).getMode())
         {
         case NORMAL:
             block = GCBlocks.oxygenPipePull;

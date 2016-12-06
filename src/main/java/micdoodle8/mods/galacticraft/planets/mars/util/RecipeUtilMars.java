@@ -49,8 +49,8 @@ public class RecipeUtilMars
         return null;
     }
 
-	public static ItemStack findMatchingAstroMinerRecipe (InventorySchematicAstroMiner craftMatrix)
-	{
+    public static ItemStack findMatchingAstroMinerRecipe(InventorySchematicAstroMiner craftMatrix)
+    {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getAstroMinerRecipes())
         {
             if (recipe.matches(craftMatrix))
@@ -60,5 +60,5 @@ public class RecipeUtilMars
         }
 
         return null;
-	}
+    }
 }

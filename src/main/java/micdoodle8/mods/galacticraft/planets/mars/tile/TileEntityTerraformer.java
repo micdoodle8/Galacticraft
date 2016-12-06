@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
@@ -56,7 +53,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public boolean grassDisabled;
     public final double MAX_SIZE = 15.0D;
     private int[] useCount = new int[2];
-	private int saplingIndex = 6;
+    private int saplingIndex = 6;
     public float bubbleSize;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRenderBubble = true;
@@ -133,7 +130,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 bubbleSizeSq *= bubbleSizeSq;
                 boolean doGrass = !this.grassDisabled && this.getFirstSeedStack() != null;
                 boolean doTrees = !this.treesDisabled && this.getFirstSaplingStack() != null;
-            	for (int x = this.getPos().getX() - bubbleSize; x < this.getPos().getX() + bubbleSize; x++)
+                for (int x = this.getPos().getX() - bubbleSize; x < this.getPos().getX() + bubbleSize; x++)
                 {
                     for (int y = this.getPos().getY() - bubbleSize; y < this.getPos().getY() + bubbleSize; y++)
                     {
@@ -141,7 +138,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                         {
                             BlockPos pos = new BlockPos(x, y, z);
                             Block blockID = this.worldObj.getBlockState(pos).getBlock();
-                            if (blockID == null) continue;
+                            if (blockID == null)
+                            {
+                                continue;
+                            }
 
                             if (!(blockID.isAir(this.worldObj, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
@@ -152,8 +152,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                                 else if (doTrees)
                                 {
                                     Block blockIDAbove = this.worldObj.getBlockState(pos.up()).getBlock();
-                                	if (blockID == Blocks.grass && blockIDAbove.isAir(this.worldObj, pos.up()))
-	                                {
+                                    if (blockID == Blocks.grass && blockIDAbove.isAir(this.worldObj, pos.up()))
+                                    {
                                         this.grassBlockList.add(new BlockPos(x, y, z));
                                     }
                                 }
@@ -173,37 +173,37 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
             if (this.worldObj.getBlockState(vec).getBlock() instanceof ITerraformableBlock)
             {
-	            Block id;
-	
-	            switch (this.worldObj.rand.nextInt(40))
-	            {
-	            case 0:
-	                if (this.worldObj.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
-	                {
-	                    id = Blocks.flowing_water;
-	                }
-	                else
-	                {
-	                    id = Blocks.grass;
-	                }
-	                break;
-	            default:
-	                id = Blocks.grass;
-	                break;
-	            }
-	
-	            this.worldObj.setBlockState(vec, id.getDefaultState());
-	
-	            if (id == Blocks.grass)
-	            {
-	                this.useCount[0]++;
-	                this.waterTank.drain(1, true);
-	                this.checkUsage(1);
-	            }
-	            else if (id == Blocks.flowing_water)
-	            {
-	                this.checkUsage(2);
-	            }
+                Block id;
+
+                switch (this.worldObj.rand.nextInt(40))
+                {
+                case 0:
+                    if (this.worldObj.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
+                    {
+                        id = Blocks.flowing_water;
+                    }
+                    else
+                    {
+                        id = Blocks.grass;
+                    }
+                    break;
+                default:
+                    id = Blocks.grass;
+                    break;
+                }
+
+                this.worldObj.setBlockState(vec, id.getDefaultState());
+
+                if (id == Blocks.grass)
+                {
+                    this.useCount[0]++;
+                    this.waterTank.drain(1, true);
+                    this.checkUsage(1);
+                }
+                else if (id == Blocks.flowing_water)
+                {
+                    this.checkUsage(2);
+                }
             }
 
             this.terraformableBlocksList.remove(randomIndex);
@@ -216,52 +216,56 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
             if (this.worldObj.getBlockState(vecGrass).getBlock() == Blocks.grass)
             {
-            	BlockPos vecSapling = vecGrass.add(0, 1, 0);
-            	ItemStack sapling = this.getFirstSaplingStack();
-            	boolean flag = false;
+                BlockPos vecSapling = vecGrass.add(0, 1, 0);
+                ItemStack sapling = this.getFirstSaplingStack();
+                boolean flag = false;
 
-            	//Attempt to prevent placement too close to other trees
-            	for (BlockPos testVec : this.grownTreesList)
-            	{
-            		if (testVec.distanceSq(vecSapling) < 9)
-            		{
-            			flag = true;
-            			break;
-            		}
-            	}
+                //Attempt to prevent placement too close to other trees
+                for (BlockPos testVec : this.grownTreesList)
+                {
+                    if (testVec.distanceSq(vecSapling) < 9)
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
 
-            	if (!flag && sapling != null)
-            	{
-            		Block b = Block.getBlockFromItem(sapling.getItem());
-            		this.worldObj.setBlockState(vecSapling, b.getStateFromMeta(sapling.getItemDamage()), 3);
-            		if (b instanceof BlockSapling)
-            		{
-            			if (this.worldObj.getLightFromNeighbors(vecSapling) >= 9)
-            			{
-            				((BlockSapling)b).grow(this.worldObj, vecSapling, this.worldObj.getBlockState(vecSapling), this.worldObj.rand);
+                if (!flag && sapling != null)
+                {
+                    Block b = Block.getBlockFromItem(sapling.getItem());
+                    this.worldObj.setBlockState(vecSapling, b.getStateFromMeta(sapling.getItemDamage()), 3);
+                    if (b instanceof BlockSapling)
+                    {
+                        if (this.worldObj.getLightFromNeighbors(vecSapling) >= 9)
+                        {
+                            ((BlockSapling) b).grow(this.worldObj, vecSapling, this.worldObj.getBlockState(vecSapling), this.worldObj.rand);
                             this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
-            			}
-            		}
-            		else if (b instanceof BlockBush)
-            		{
-            			if (this.worldObj.getLightFromNeighbors(vecSapling) >= 5)
-            				//Hammer the update tick a few times to try to get it to grow - it won't always
-            				for (int j = 0; j < 12; j++)
-            				{
-            					if (this.worldObj.getBlockState(vecSapling).getBlock() == b)
-            						((BlockBush)b).updateTick(this.worldObj, vecSapling, this.worldObj.getBlockState(vecSapling), this.worldObj.rand);
-            					else
-            					{
-            						this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
-            						break;
-            					}
-            				}
-            		}
+                        }
+                    }
+                    else if (b instanceof BlockBush)
+                    {
+                        if (this.worldObj.getLightFromNeighbors(vecSapling) >= 5)
+                        //Hammer the update tick a few times to try to get it to grow - it won't always
+                        {
+                            for (int j = 0; j < 12; j++)
+                            {
+                                if (this.worldObj.getBlockState(vecSapling).getBlock() == b)
+                                {
+                                    ((BlockBush) b).updateTick(this.worldObj, vecSapling, this.worldObj.getBlockState(vecSapling), this.worldObj.rand);
+                                }
+                                else
+                                {
+                                    this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-            		this.useCount[1]++;
-            		this.waterTank.drain(50, true);
-            		this.checkUsage(0);
-            	}
+                    this.useCount[1]++;
+                    this.waterTank.drain(50, true);
+                    this.checkUsage(0);
+                }
             }
 
             this.grassBlockList.remove(randomIndex);
@@ -376,29 +380,34 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     private int getRandomStack(int start, int end)
     {
-    	int stackcount = 0;
-    	for (int i = start; i < end; i++)
+        int stackcount = 0;
+        for (int i = start; i < end; i++)
         {
             if (this.containingItems[i] != null)
             {
                 stackcount++;
             }
         }
-    	
-    	if (stackcount == 0)
-    		return -1;
-    	
-    	int random = this.worldObj.rand.nextInt(stackcount);
-    	for (int i = start; i < end; i++)
+
+        if (stackcount == 0)
+        {
+            return -1;
+        }
+
+        int random = this.worldObj.rand.nextInt(stackcount);
+        for (int i = start; i < end; i++)
         {
             if (this.containingItems[i] != null)
             {
-                if (random == 0) return i;
-                random --;
+                if (random == 0)
+                {
+                    return i;
+                }
+                random--;
             }
         }
-    	
-    	return -1;
+
+        return -1;
     }
 
     public ItemStack getFirstBonemealStack()
@@ -420,7 +429,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         if (index != -1)
         {
             this.saplingIndex = index;
-        	return this.containingItems[index];
+            return this.containingItems[index];
         }
 
         return null;
@@ -508,16 +517,16 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-    	if (slotID == 0)
-    	{
-    		return FluidContainerRegistry.isEmptyContainer(itemstack);
-    	}
-    	if (slotID == 1)
-    	{
-    		return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
-    	}
-    	
-    	return false;
+        if (slotID == 0)
+        {
+            return FluidContainerRegistry.isEmptyContainer(itemstack);
+        }
+        if (slotID == 1)
+        {
+            return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+        }
+
+        return false;
     }
 
     @Override
@@ -529,29 +538,29 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-    	switch (slotID)
-    	{
-    	case 0:
-    		return FluidContainerRegistry.containsFluid(itemstack, new FluidStack(FluidRegistry.WATER, 1));
-    	case 1:
-    		return ItemElectricBase.isElectricItem(itemstack.getItem());
-    	case 2:
-    	case 3:
-    	case 4:
-    	case 5:
-    		return itemstack.getItem() == Items.dye && itemstack.getItemDamage() == 15;
-    	case 6:
-    	case 7:
-    	case 8:
-    	case 9:
-    		return ContainerTerraformer.isOnSaplingList(itemstack);
-    	case 10:
-    	case 11:
-    	case 12:
-    	case 13:
-    		return itemstack.getItem() == Items.wheat_seeds;
-    	}
-    	return false;
+        switch (slotID)
+        {
+        case 0:
+            return FluidContainerRegistry.containsFluid(itemstack, new FluidStack(FluidRegistry.WATER, 1));
+        case 1:
+            return ItemElectricBase.isElectricItem(itemstack.getItem());
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            return itemstack.getItem() == Items.dye && itemstack.getItemDamage() == 15;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            return ContainerTerraformer.isOnSaplingList(itemstack);
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            return itemstack.getItem() == Items.wheat_seeds;
+        }
+        return false;
     }
 
     @Override
@@ -616,7 +625,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         return 64.0F;
     }
- 
+
     //Pipe handling
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
@@ -667,6 +676,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return null;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
@@ -685,6 +695,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return this.shouldRenderBubble;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);

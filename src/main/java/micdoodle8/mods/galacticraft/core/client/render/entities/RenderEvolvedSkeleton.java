@@ -4,16 +4,11 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import net.minecraft.client.model.ModelSkeleton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -31,8 +26,10 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     {
         super(manager, new ModelEvolvedSkeleton(), 1.0F);
         this.addLayer(new LayerHeldItem(this));
-        this.addLayer(new LayerBipedArmor(this) {
-            protected void func_177177_a() {
+        this.addLayer(new LayerBipedArmor(this)
+        {
+            protected void func_177177_a()
+            {
                 this.field_177189_c = new ModelSkeleton(0.5F, true);
                 this.field_177186_d = new ModelSkeleton(1.0F, true);
             }

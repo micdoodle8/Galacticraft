@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -16,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderMoon extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
@@ -194,7 +194,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
         return true;
     }
 
-	//Overriding only in case the Galacticraft API is not up-to-date
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
     @Override
     public boolean isSurfaceWorld()
@@ -202,19 +202,19 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
         return (this.worldObj == null) ? false : this.worldObj.isRemote;
     }
 
-	//Overriding  so that beds do not explode on Moon
-	@Override
-	public boolean canRespawnHere()
-	{
-		if (EventHandlerGC.bedActivated)
-		{
-			EventHandlerGC.bedActivated = false;
-			return true;
-		}
-		return false;
-	}
-	
-	//Overriding only in case the Galacticraft API is not up-to-date
+    //Overriding  so that beds do not explode on Moon
+    @Override
+    public boolean canRespawnHere()
+    {
+        if (EventHandlerGC.bedActivated)
+        {
+            EventHandlerGC.bedActivated = false;
+            return true;
+        }
+        return false;
+    }
+
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
@@ -337,7 +337,8 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public String getInternalNameSuffix() {
+    public String getInternalNameSuffix()
+    {
         return "_moon";
     }
 

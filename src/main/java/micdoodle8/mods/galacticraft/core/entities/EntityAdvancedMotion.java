@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -17,10 +13,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,41 +149,41 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
         }
         else
         {
-        	Entity e = var1.getEntity(); 
+            Entity e = var1.getEntity();
             if (this.isEntityInvulnerable(var1) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
             }
             else
             {
-	        	this.rockDirection = -this.rockDirection;
-	            this.timeSinceHit = 10;
-	            this.currentDamage = this.currentDamage + var2 * 10;
-	            this.setBeenAttacked();
-	
-	            if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
-	            {
-	                this.currentDamage = 100;
-	            }
-	
-	            if (this.currentDamage > 70)
-	            {
-	                if (this.riddenByEntity != null)
-	                {
-	                    this.riddenByEntity.mountEntity(this);
-	
-	                    return false;
-	                }
-	
-	                if (!this.worldObj.isRemote)
-	                {
-	                    this.dropItems();
-	
-	                    this.setDead();
-	                }
-	            }
-	
-	            return true;
+                this.rockDirection = -this.rockDirection;
+                this.timeSinceHit = 10;
+                this.currentDamage = this.currentDamage + var2 * 10;
+                this.setBeenAttacked();
+
+                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+                {
+                    this.currentDamage = 100;
+                }
+
+                if (this.currentDamage > 70)
+                {
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+
+                        return false;
+                    }
+
+                    if (!this.worldObj.isRemote)
+                    {
+                        this.dropItems();
+
+                        this.setDead();
+                    }
+                }
+
+                return true;
             }
         }
     }

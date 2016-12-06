@@ -1,17 +1,17 @@
 package micdoodle8.mods.galacticraft.planets.mars.client;
 
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -19,11 +19,10 @@ import java.util.Random;
 
 /**
  * SkyProviderMars.java
- * 
+ * <p>
  * This file is part of the Galacticraft project
  *
  * @author micdoodle8
- * 
  */
 public class SkyProviderMars extends IRenderHandler
 {
@@ -38,8 +37,8 @@ public class SkyProviderMars extends IRenderHandler
     public SkyProviderMars(IGalacticraftWorldProvider marsProvider)
     {
         this.sunSize = 17.5F * marsProvider.getSolarSize();
-        
-    	int displayLists = GLAllocation.generateDisplayLists(3);
+
+        int displayLists = GLAllocation.generateDisplayLists(3);
         this.starList = displayLists;
         this.glSkyList = displayLists + 1;
         this.glSkyList2 = displayLists + 2;
@@ -227,7 +226,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         // Render sun
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
         //Some blanking to conceal the stars
         f10 = this.sunSize / 3.5F;
         worldRenderer1.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);

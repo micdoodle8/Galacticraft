@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,16 +24,11 @@ import java.util.Random;
 
 public class BlockMinerBaseFull extends BlockTileGC
 {
-	//16 different orientations
-//    private IIcon iconInput;
-
-
     public BlockMinerBaseFull(String assetName)
     {
         super(Material.rock);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
         this.setStepSound(soundTypeMetal);
     }
 
@@ -72,15 +66,15 @@ public class BlockMinerBaseFull extends BlockTileGC
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getStateFromMeta(0);
-    	//TODO
-    	//return this.getMetadataFromAngle(world, x, y, z, side);
+        //TODO
+        //return this.getMetadataFromAngle(world, x, y, z, side);
     }
 
     @Override
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
     {
-    	//TODO
-    	/*
+        //TODO
+        /*
     	if (this.getMetadataFromAngle(world, x, y, z, side) != -1)
         {
             return true;
@@ -89,7 +83,7 @@ public class BlockMinerBaseFull extends BlockTileGC
 
         return true;
     }
-    
+
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -108,8 +102,13 @@ public class BlockMinerBaseFull extends BlockTileGC
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMinerBase)
-        	return ((TileEntityMinerBase)tileEntity).onActivated(playerIn);
-        else return false;
+        {
+            return ((TileEntityMinerBase) tileEntity).onActivated(playerIn);
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override

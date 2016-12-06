@@ -7,8 +7,6 @@ import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -21,7 +19,9 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.*;
 
@@ -158,7 +158,7 @@ public class EnergyNetwork implements IElectricityNetwork
 
             if (!this.doneScheduled && this.totalRequested > 0.0F)
             {
-            	TickHandlerServer.scheduleNetworkTick(this);
+                TickHandlerServer.scheduleNetworkTick(this);
                 this.doneScheduled = true;
             }
 
@@ -216,8 +216,11 @@ public class EnergyNetwork implements IElectricityNetwork
                 {
                     this.totalEnergy = 0F;
                 }
-            } else
-            	this.totalEnergy = 0F;
+            }
+            else
+            {
+                this.totalEnergy = 0F;
+            }
         }
         else
         {
@@ -292,12 +295,12 @@ public class EnergyNetwork implements IElectricityNetwork
                         }
                         //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
                         result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
-                        e = (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
+                        e = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
                     }
                     else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
-					{
-						e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
-					}
+                    {
+                        e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+                    }
 
                     if (e > 0.0F)
                     {
@@ -355,104 +358,109 @@ public class EnergyNetwork implements IElectricityNetwork
             int tierProduced = Math.min(this.producersTierGC, this.networkTierGC);
 
             TileEntity debugTE = null;
-            try {
-            for (TileEntity tileEntity : this.availableAcceptors)
+            try
             {
-            	debugTE = tileEntity;
-            	//Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
-                if (sent >= energyAvailable)
+                for (TileEntity tileEntity : this.availableAcceptors)
                 {
-                    break;
-                }
-
-                //The base case is to give each acceptor what it is requesting
-                currentSending = this.energyRequests.get(tileEntity);
-
-                //If it's an energy store, we may need to damp it down if energyStorageReducor is less than 1
-                if (currentSending > EnergyNetwork.ENERGY_STORAGE_LEVEL)
-                {
-                    currentSending = EnergyNetwork.ENERGY_STORAGE_LEVEL + (currentSending - EnergyNetwork.ENERGY_STORAGE_LEVEL) * energyStorageReducor;
-                }
-
-                //Reduce everything proportionately if there is not enough energy for all needs
-                currentSending *= reducor;
-
-                if (currentSending > energyAvailable - sent)
-                {
-                    currentSending = energyAvailable - sent;
-                }
-
-                EnumFacing sideFrom = this.availableconnectedDirections.get(tileEntity);
-
-                if (tileEntity instanceof IElectrical)
-                {
-                    sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, tierProduced, true);
-                }
-                else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
-                {
-                    sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO;
-                }
-                else if (isIC2Loaded && tileEntity instanceof IEnergySink)
-                {
-                    double energySendingIC2 = currentSending * EnergyConfigHandler.TO_IC2_RATIO;
-                    if (energySendingIC2 >= 1D)
+                    debugTE = tileEntity;
+                    //Exit the loop if there is no energy left at all (should normally not happen, should be some even for the last acceptor)
+                    if (sent >= energyAvailable)
                     {
-                        double result = 0;
-                        try
+                        break;
+                    }
+
+                    //The base case is to give each acceptor what it is requesting
+                    currentSending = this.energyRequests.get(tileEntity);
+
+                    //If it's an energy store, we may need to damp it down if energyStorageReducor is less than 1
+                    if (currentSending > EnergyNetwork.ENERGY_STORAGE_LEVEL)
+                    {
+                        currentSending = EnergyNetwork.ENERGY_STORAGE_LEVEL + (currentSending - EnergyNetwork.ENERGY_STORAGE_LEVEL) * energyStorageReducor;
+                    }
+
+                    //Reduce everything proportionately if there is not enough energy for all needs
+                    currentSending *= reducor;
+
+                    if (currentSending > energyAvailable - sent)
+                    {
+                        currentSending = energyAvailable - sent;
+                    }
+
+                    EnumFacing sideFrom = this.availableconnectedDirections.get(tileEntity);
+
+                    if (tileEntity instanceof IElectrical)
+                    {
+                        sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, tierProduced, true);
+                    }
+                    else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+                    {
+                        sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO;
+                    }
+                    else if (isIC2Loaded && tileEntity instanceof IEnergySink)
+                    {
+                        double energySendingIC2 = currentSending * EnergyConfigHandler.TO_IC2_RATIO;
+                        if (energySendingIC2 >= 1D)
                         {
-                            if (EnergyUtil.voltageParameterIC2)
+                            double result = 0;
+                            try
                             {
-                                result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2, 120D);
+                                if (EnergyUtil.voltageParameterIC2)
+                                {
+                                    result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2, 120D);
+                                }
+                                else
+                                {
+                                    result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2);
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom, energySendingIC2);
+                                if (ConfigManagerCore.enableDebug)
+                                {
+                                    ex.printStackTrace();
+                                }
+                            }
+                            sentToAcceptor = currentSending - (float) result / EnergyConfigHandler.TO_IC2_RATIO;
+                            if (sentToAcceptor < 0F)
+                            {
+                                sentToAcceptor = 0F;
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            if (ConfigManagerCore.enableDebug)
-                            {
-                                ex.printStackTrace();
-                            }
-                        }
-                        sentToAcceptor = currentSending - (float) result/ EnergyConfigHandler.TO_IC2_RATIO;
-                        if (sentToAcceptor < 0F)
+                        else
                         {
                             sentToAcceptor = 0F;
                         }
+                    }
+                    else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
+                    {
+                        final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+                        sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
                     }
                     else
                     {
                         sentToAcceptor = 0F;
                     }
-                }
-				else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
-				{
-					final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-					sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
-				}
-                else
-                {
-                    sentToAcceptor = 0F;
-                }
 
-                if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.01F)
-                {
-                    if (!this.spamstop)
+                    if (sentToAcceptor / currentSending > 1.002F && sentToAcceptor > 0.01F)
                     {
-                        FMLLog.info("Energy network: acceptor took too much energy, offered " + currentSending + ", took " + sentToAcceptor + ". " + tileEntity.toString());
-                        this.spamstop = true;
+                        if (!this.spamstop)
+                        {
+                            FMLLog.info("Energy network: acceptor took too much energy, offered " + currentSending + ", took " + sentToAcceptor + ". " + tileEntity.toString());
+                            this.spamstop = true;
+                        }
+                        sentToAcceptor = currentSending;
                     }
-                    sentToAcceptor = currentSending;
-                }
 
-                sent += sentToAcceptor;
+                    sent += sentToAcceptor;
+                }
             }
-            } catch (Exception e) {
-            	GCLog.severe("DEBUG Energy network loop issue, please report this");
-            	if (debugTE != null)
-            		GCLog.severe("Problem was likely caused by tile in dim " + debugTE.getWorld().provider.getDimensionId() + " at "+ debugTE.getPos() + " Type:" + debugTE.getClass().getSimpleName());
+            catch (Exception e)
+            {
+                GCLog.severe("DEBUG Energy network loop issue, please report this");
+                if (debugTE != null)
+                {
+                    GCLog.severe("Problem was likely caused by tile in dim " + debugTE.getWorld().provider.getDimensionId() + " at " + debugTE.getPos() + " Type:" + debugTE.getClass().getSimpleName());
+                }
             }
         }
 
@@ -613,14 +621,14 @@ public class EnergyNetwork implements IElectricityNetwork
                                 this.connectedDirections.add(sideFrom);
                             }
                         }
-						else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
-						{
-							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
-							{
-								this.connectedAcceptors.add(acceptor);
-								this.connectedDirections.add(sideFrom);
-							}
-						}
+                        else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
+                        {
+                            if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
+                            {
+                                this.connectedAcceptors.add(acceptor);
+                                this.connectedDirections.add(sideFrom);
+                            }
+                        }
                     }
                 }
             }
@@ -686,97 +694,107 @@ public class EnergyNetwork implements IElectricityNetwork
 
     }
 
-	public void split(IConductor splitPoint)
-	{
+    @Override
+    public void split(IConductor splitPoint)
+    {
         if (splitPoint instanceof TileEntity)
         {
             this.getTransmitters().remove(splitPoint);
-    		splitPoint.setNetwork(null);
+            splitPoint.setNetwork(null);
 
             //If the size of the residual network is 1, it should simply be preserved 
             if (this.getTransmitters().size() > 1)
             {
-	            World world = ((TileEntity) splitPoint).getWorld();
-	            
-				if (this.getTransmitters().size() > 0)
-				{	
-					TileEntity[] nextToSplit = new TileEntity[6];
-					boolean[] toDo = {true,true,true,true,true,true};
-					TileEntity tileEntity;
-					
-					int xCoord = ((TileEntity)splitPoint).getPos().getX();
-					int yCoord = ((TileEntity)splitPoint).getPos().getY();
-					int zCoord = ((TileEntity)splitPoint).getPos().getZ();
-	
-					for(int j = 0; j < 6; j++)
-					{
-						switch (j)
-						{
-			    		case 0:  tileEntity = world.getTileEntity(((TileEntity)splitPoint).getPos().down());
-			    			break;
-			    		case 1:  tileEntity = world.getTileEntity(((TileEntity)splitPoint).getPos().up());
-			    			break;
-			    		case 2:  tileEntity = world.getTileEntity(((TileEntity)splitPoint).getPos().north());
-			    			break;
-			    		case 3:  tileEntity = world.getTileEntity(((TileEntity)splitPoint).getPos().south());
-			    			break;
-			    		case 4:  tileEntity = world.getTileEntity(((TileEntity)splitPoint).getPos().west());
-			    			break;
-			    		case 5:  tileEntity = world.getTileEntity(((TileEntity)splitPoint).getPos().east());
-			    			break;
-			    		default:
-			    			//Not reachable, only to prevent uninitiated compile errors
-			    			tileEntity = null;
-			    			break;
-			    		}
-		    						
-						if (tileEntity instanceof IConductor)
-						{
-							nextToSplit[j]=tileEntity;
-						}
-						else toDo[j]=false;
-					}
-		
-					for(int i1 = 0; i1 < 6; i1++)
-					{
-						if(toDo[i1])
-						{
-							TileEntity connectedBlockA = nextToSplit[i1];
-							NetworkFinder finder = new NetworkFinder(world, new BlockVec3(connectedBlockA), new BlockVec3((TileEntity)splitPoint));
-							List<IConductor> partNetwork = finder.exploreNetwork();
-							
-							//Mark any others still to do in the nextToSplit array which are connected to this, as dealt with
-							for(int i2 = i1 + 1; i2 < 6; i2++)
-							{
-								TileEntity connectedBlockB = nextToSplit[i2];
-								
-								if(toDo[i2])
-								{
-									if(partNetwork.contains(connectedBlockB))
-									{
-										toDo[i2] = false;
-									}
-								}
-							}
-					
-							//Now make the new network from partNetwork
-							EnergyNetwork newNetwork = new EnergyNetwork();
-							newNetwork.getTransmitters().addAll(partNetwork);
-							newNetwork.refreshWithChecks();
-						}
-					}
-					
-					this.destroy();
-				}
+                World world = ((TileEntity) splitPoint).getWorld();
+
+                if (this.getTransmitters().size() > 0)
+                {
+                    TileEntity[] nextToSplit = new TileEntity[6];
+                    boolean[] toDo = { true, true, true, true, true, true };
+                    TileEntity tileEntity;
+
+                    int xCoord = ((TileEntity) splitPoint).getPos().getX();
+                    int yCoord = ((TileEntity) splitPoint).getPos().getY();
+                    int zCoord = ((TileEntity) splitPoint).getPos().getZ();
+
+                    for (int j = 0; j < 6; j++)
+                    {
+                        switch (j)
+                        {
+                        case 0:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().down());
+                            break;
+                        case 1:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().up());
+                            break;
+                        case 2:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().north());
+                            break;
+                        case 3:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().south());
+                            break;
+                        case 4:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().west());
+                            break;
+                        case 5:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().east());
+                            break;
+                        default:
+                            //Not reachable, only to prevent uninitiated compile errors
+                            tileEntity = null;
+                            break;
+                        }
+
+                        if (tileEntity instanceof IConductor)
+                        {
+                            nextToSplit[j] = tileEntity;
+                        }
+                        else
+                        {
+                            toDo[j] = false;
+                        }
+                    }
+
+                    for (int i1 = 0; i1 < 6; i1++)
+                    {
+                        if (toDo[i1])
+                        {
+                            TileEntity connectedBlockA = nextToSplit[i1];
+                            NetworkFinder finder = new NetworkFinder(world, new BlockVec3(connectedBlockA), new BlockVec3((TileEntity) splitPoint));
+                            List<IConductor> partNetwork = finder.exploreNetwork();
+
+                            //Mark any others still to do in the nextToSplit array which are connected to this, as dealt with
+                            for (int i2 = i1 + 1; i2 < 6; i2++)
+                            {
+                                TileEntity connectedBlockB = nextToSplit[i2];
+
+                                if (toDo[i2])
+                                {
+                                    if (partNetwork.contains(connectedBlockB))
+                                    {
+                                        toDo[i2] = false;
+                                    }
+                                }
+                            }
+
+                            //Now make the new network from partNetwork
+                            EnergyNetwork newNetwork = new EnergyNetwork();
+                            newNetwork.getTransmitters().addAll(partNetwork);
+                            newNetwork.refreshWithChecks();
+                        }
+                    }
+
+                    this.destroy();
+                }
             }
             //Splitting a 1-block network leaves nothing
             else if (this.getTransmitters().size() == 0)
             {
-            	this.destroy();
+                this.destroy();
             }
         }
-	}
-    
+    }
+
     @Override
     public String toString()
     {

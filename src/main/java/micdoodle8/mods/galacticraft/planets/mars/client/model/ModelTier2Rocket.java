@@ -29,8 +29,8 @@ public class ModelTier2Rocket extends ModelBase
         this.textureWidth = 256;
         this.textureHeight = 256;
 
-        float halfPI = (float)(Math.PI / 2.0);
-        float fullPI = (float)(Math.PI);
+        float halfPI = (float) (Math.PI / 2.0);
+        float fullPI = (float) (Math.PI);
 
         this.inside[0] = new ModelRenderer(this, 0, 59);
         this.inside[0].addBox(-9F, -57F, -9F, 18, 1, 18, var1);
@@ -295,7 +295,7 @@ public class ModelTier2Rocket extends ModelBase
         this.boosters[0][0].mirror = true;
         this.setStartingAngles(this.boosters[0][0], 0F, -halfPI, 0F);
         this.boosters[0][1] = new ModelRenderer(this, 154, 6);
-        this.boosters[0][1].addBox(-14.9F, -11F, -2.5F, 5, 8,    5, var1);
+        this.boosters[0][1].addBox(-14.9F, -11F, -2.5F, 5, 8, 5, var1);
         this.boosters[0][1].setRotationPoint(0F, 24F, 0F);
         this.boosters[0][1].setTextureSize(256, 256);
         this.boosters[0][1].mirror = true;

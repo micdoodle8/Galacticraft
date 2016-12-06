@@ -36,7 +36,7 @@ public class ContainerTerraformer extends Container
 
         for (var6 = 0; var6 < 3; ++var6)
         {
-        	List<ItemStack> stacks = new ArrayList<ItemStack>();
+            List<ItemStack> stacks = new ArrayList<ItemStack>();
 
             if (var6 == 0)
             {
@@ -46,9 +46,9 @@ public class ContainerTerraformer extends Container
             {
                 if (ContainerTerraformer.saplingList == null)
                 {
-            		initSaplingList();
+                    initSaplingList();
                 }
-                
+
                 stacks.addAll(ContainerTerraformer.saplingList);
             }
             else if (var6 == 2)
@@ -58,7 +58,7 @@ public class ContainerTerraformer extends Container
 
             for (var7 = 0; var7 < 4; ++var7)
             {
-               	this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
+                this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
             }
         }
 
@@ -179,55 +179,59 @@ public class ContainerTerraformer extends Container
 
         return var2;
     }
-    
+
     public static boolean isOnSaplingList(ItemStack stack)
-    {	
-    	if (saplingList == null)
-    	{
-    		initSaplingList();
-    	}
-    	
-    	for (ItemStack sapling : saplingList)
-    	{
-    		if (sapling.isItemEqual(stack))
-    		{
-    			return true;
-    		}    		
-    	}
-    	
-    	return false;
+    {
+        if (saplingList == null)
+        {
+            initSaplingList();
+        }
+
+        for (ItemStack sapling : saplingList)
+        {
+            if (sapling.isItemEqual(stack))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
-    
+
     private static void initSaplingList()
     {
-    	ContainerTerraformer.saplingList = new LinkedList();
+        ContainerTerraformer.saplingList = new LinkedList();
         Iterator iterator = Block.blockRegistry.iterator();
-    
+
         while (iterator.hasNext())
         {
             Block b = (Block) iterator.next();
 
             if (b instanceof BlockBush)
             {
-                try 
+                try
                 {
-                	Item item = Item.getItemFromBlock(b);
+                    Item item = Item.getItemFromBlock(b);
                     if (item != null)
                     {
-                    	//item.getSubItems(item, null, subItemsList); - can't use because clientside only
-                    	ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
-                    	String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
-                		for (int i = 1; i < 16; i++)
-                		{
-                			ItemStack testStack = new ItemStack(item, 1, i);
-                			String testName = item.getUnlocalizedName(testStack); 
-                			if (testName == null || testName.equals("") || testName.equals(basicName))
-                				break;
-                			ContainerTerraformer.saplingList.add(testStack);
-                		}                   		
+                        //item.getSubItems(item, null, subItemsList); - can't use because clientside only
+                        ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
+                        String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
+                        for (int i = 1; i < 16; i++)
+                        {
+                            ItemStack testStack = new ItemStack(item, 1, i);
+                            String testName = item.getUnlocalizedName(testStack);
+                            if (testName == null || testName.equals("") || testName.equals(basicName))
+                            {
+                                break;
+                            }
+                            ContainerTerraformer.saplingList.add(testStack);
+                        }
                     }
-                } 
-                catch (Exception e) { }
+                }
+                catch (Exception e)
+                {
+                }
             }
         }
     }

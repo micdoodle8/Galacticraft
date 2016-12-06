@@ -1,23 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.EventSpecialRender;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import org.lwjgl.Sys;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 public class AsteroidsEventHandlerClient
@@ -52,10 +51,14 @@ public class AsteroidsEventHandlerClient
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
-        	if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
-        		GL11.glColor4f(0.7F, 0.0F, 0.0F, 0.5F);
-        	else
-        		GL11.glColor4f(0.3F, 0.1F, 0.1F, 1.0F);
+            if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
+            {
+                GL11.glColor4f(0.7F, 0.0F, 0.0F, 0.5F);
+            }
+            else
+            {
+                GL11.glColor4f(0.3F, 0.1F, 0.1F, 1.0F);
+            }
             renderEvent.setCanceled(true);
             GL11.glBegin(GL11.GL_LINE_LOOP);
 

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.nei;
 
-import static codechicken.lib.gui.GuiDraw.getMousePosition;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -8,9 +7,7 @@ import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,15 +15,16 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
 public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 {
@@ -262,16 +260,25 @@ public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
     public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
     {
         Point mousePos = getMousePosition();
-    	try {
-        	Class<GuiContainer> clazz = GuiContainer.class;
-        	mousePos.x -= (Integer) clazz.getField("field_147003_i").get(gui);
-        	mousePos.y -= (Integer) clazz.getField("field_147009_r").get(gui);
-    	}  catch (Exception ee) { ee.printStackTrace(); }
+        try
+        {
+            Class<GuiContainer> clazz = GuiContainer.class;
+            mousePos.x -= (Integer) clazz.getField("field_147003_i").get(gui);
+            mousePos.y -= (Integer) clazz.getField("field_147009_r").get(gui);
+        }
+        catch (Exception ee)
+        {
+            ee.printStackTrace();
+        }
 
         if (mousePos.x < 23 && mousePos.x > 6 && mousePos.y < 78 && mousePos.y > 39)
-        	currenttip.add(GCCoreUtil.translate("fluid.hydrogen"));
+        {
+            currenttip.add(GCCoreUtil.translate("fluid.hydrogen"));
+        }
         else if (mousePos.x < 44 && mousePos.x > 27 && mousePos.y < 60 && mousePos.y > 39)
-    		currenttip.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+        {
+            currenttip.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+        }
 
         return currenttip;
     }

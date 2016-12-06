@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -34,7 +33,6 @@ import java.util.List;
 
 public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-//    private IIcon[] enclosedIcons;
     public static Item[] pipeItemsBC = new Item[6];
     public static Block blockPipeBC = null;
     public static Method onBlockNeighbourChangeIC2 = null;
@@ -109,7 +107,8 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -120,7 +119,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         this.setResistance(0.2F);
         this.setHardness(0.4f);
         this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -166,23 +164,31 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     {
         for (int i = 0; i < 6; i++)
         {
-            try {
+            try
+            {
                 Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
-                String pipeName = EnumEnclosedBlockType.values()[i+7].getBCPipeType();
+                String pipeName = EnumEnclosedBlockType.values()[i + 7].getBCPipeType();
                 pipeName = pipeName.substring(0, 1).toLowerCase() + pipeName.substring(1);
                 pipeItemsBC[i] = (Item) clazzBC.getField(pipeName).get(null);
             }
-            catch (Exception e) { e.printStackTrace(); }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         //Now update the cached classes in CompatibilityManager
         //This is needed for BCCompat compatibility, as that overrides the basic BlockGenericPipe
         if (pipeItemsBC[0] != null)
         {
-            try {
+            try
+            {
                 Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
                 blockPipeBC = (Block) clazzBC.getField("genericPipeBlock").get(null);
             }
-            catch (Exception e) { e.printStackTrace(); }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -192,36 +198,21 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int meta)
-    {
-        if (meta == 4) meta = 0;  //Deal with item rendering for the HV block
-        return meta >= this.enclosedIcons.length ? this.blockIcon : this.enclosedIcons[meta];
-    }*/
-
     @Override
     public int damageDropped(IBlockState state)
     {
         int meta = state.getBlock().getMetaFromState(state);
         //TE_CONDUIT and HV_CABLE have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
-        if (meta == 0) return 4;
-        if (meta == 4) return 0;
+        if (meta == 0)
+        {
+            return 4;
+        }
+        if (meta == 4)
+        {
+            return 0;
+        }
         return meta;
     }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.enclosedIcons = new IIcon[16];
-
-        for (int i = 0; i < EnumEnclosedBlockType.values().length; i++)
-        {
-            this.enclosedIcons[EnumEnclosedBlockType.values()[i].getMetadata()] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + EnumEnclosedBlockType.values()[i].getTexture());
-        }
-
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "" + EnumEnclosedBlockType.OXYGEN_PIPE.getTexture());
-    }*/
 
     @Override
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block block)
@@ -252,7 +243,10 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                     onBlockNeighbourChangeIC2.invoke(tileEntity);
                     return;
                 }
-                catch (Exception e) { e.printStackTrace(); }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         else if (metadata <= 12)
@@ -261,10 +255,14 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 if (blockPipeBC != null)
                 {
-                    try {
+                    try
+                    {
                         blockPipeBC.onNeighborBlockChange(world, pos, state, block);
                     }
-                    catch (Exception e) { e.printStackTrace(); }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                     return;
                 }
             }
@@ -332,7 +330,10 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
                     return (TileEntity) constructor.newInstance(EnumEnclosedBlockType.byMetadata(metadata).getIC2Meta());
                 }
-                catch (Exception e) { e.printStackTrace(); }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         else if (metadata <= 12)
@@ -343,7 +344,10 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 {
                     return blockPipeBC.createTileEntity(world, blockPipeBC.getDefaultState());
                 }
-                catch (Exception e) { e.printStackTrace(); }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         else if (metadata <= EnumEnclosedBlockType.ME_CABLE.getMeta())
@@ -398,7 +402,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             //  tilePipe.initialize(pipe);
             //	and optionally: tilePipe.sendUpdateToClient();
 
-            Item pipeItem = pipeItemsBC[metadata-7];
+            Item pipeItem = pipeItemsBC[metadata - 7];
             Class<?> clazzBlockPipe = CompatibilityManager.classBCBlockGenericPipe;
             TileEntity tilePipe = world.getTileEntity(pos);
             Class<?> clazzTilePipe = tilePipe.getClass();
@@ -434,8 +438,13 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                     {
                         m = clazzTilePipe.getMethod("sendUpdateToClient");
                     }
-                    catch (Exception e) { }
-                    if (m != null) m.invoke(tilePipe);
+                    catch (Exception e)
+                    {
+                    }
+                    if (m != null)
+                    {
+                        m.invoke(tilePipe);
+                    }
                 }
             }
         }
@@ -445,17 +454,20 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumEnclosedBlockType type = EnumEnclosedBlockType.byMetadata(meta);
         return this.getDefaultState().withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumEnclosedBlockType)state.getValue(TYPE)).getMeta();
+        return ((EnumEnclosedBlockType) state.getValue(TYPE)).getMeta();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, TYPE);

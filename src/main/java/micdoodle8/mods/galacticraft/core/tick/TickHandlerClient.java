@@ -1,22 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
-
 import com.google.common.collect.Sets;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -27,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
@@ -39,7 +25,9 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -51,6 +39,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -60,10 +49,19 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
-
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -111,26 +109,32 @@ public class TickHandlerClient
     }
 
     private static ThreadRequirementMissing missingRequirementThread;
-    
+
     public static HashSet<TileEntityScreen> screenConnectionsUpdateList = new HashSet<TileEntityScreen>();
 
     static
     {
-    	registerDetectableBlocks(true);
+        registerDetectableBlocks(true);
     }
-    
+
     public static void registerDetectableBlocks(boolean logging)
     {
-    	ClientProxyCore.detectableBlocks.clear();
-    	
-    	for (final String s : ConfigManagerCore.detectableIDs)
-        {
-        	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Detectable IDs", logging); 
-        	if (bt == null) continue;
+        ClientProxyCore.detectableBlocks.clear();
 
-			int meta = bt.meta;
-			if (meta == -1) meta = 0;
-        	
+        for (final String s : ConfigManagerCore.detectableIDs)
+        {
+            BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Detectable IDs", logging);
+            if (bt == null)
+            {
+                continue;
+            }
+
+            int meta = bt.meta;
+            if (meta == -1)
+            {
+                meta = 0;
+            }
+
             boolean flag = false;
             for (BlockMetaList blockMetaList : ClientProxyCore.detectableBlocks)
             {
@@ -169,7 +173,7 @@ public class TickHandlerClient
 
         if (event.phase == Phase.END)
         {
-        	if (minecraft.currentScreen instanceof GuiIngameMenu)
+            if (minecraft.currentScreen instanceof GuiIngameMenu)
             {
                 int i = Mouse.getEventX() * minecraft.currentScreen.width / minecraft.displayWidth;
                 int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
@@ -287,10 +291,14 @@ public class TickHandlerClient
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
 
-            try {
-            	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
-            	clazz.getMethod("onTick").invoke(null);
-            } catch (Exception e) { }
+            try
+            {
+                Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
+                clazz.getMethod("onTick").invoke(null);
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 
@@ -323,7 +331,7 @@ public class TickHandlerClient
 
         if (event.phase == Phase.START)
         {
-        	if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
+            if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
             {
                 TickHandlerClient.tickCount = 0;
             }
@@ -347,25 +355,25 @@ public class TickHandlerClient
                     }
                 }
             }
-            
+
             if (TickHandlerClient.tickCount % 20 == 0)
             {
-            	for (List<Footprint> fpList : ClientProxyCore.footprintRenderer.footprints.values())
-            	{
-            		Iterator<Footprint> fpIt = fpList.iterator();
-            		while (fpIt.hasNext())
-            		{
-            			Footprint fp = fpIt.next();
-            			fp.age += 20;
+                for (List<Footprint> fpList : ClientProxyCore.footprintRenderer.footprints.values())
+                {
+                    Iterator<Footprint> fpIt = fpList.iterator();
+                    while (fpIt.hasNext())
+                    {
+                        Footprint fp = fpIt.next();
+                        fp.age += 20;
 
                         if (fp.age >= Footprint.MAX_AGE)
                         {
                             fpIt.remove();
                         }
-            		}
-            	}
+                    }
+                }
 
-            	if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
+                if (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
                 {
                     ClientProxyCore.valueableBlocks.clear();
 
@@ -409,16 +417,18 @@ public class TickHandlerClient
                     //TODO: revert. Correct code is temporarily commented out for testing render
                     if (nearestSealer != null)// && nearestSealer.threadSeal != null)
                     {
-                    	ClientProxyCore.leakTrace = new ArrayList();//nearestSealer.threadSeal.leakTrace;
-                    	//TODO: revert. Temporarily for testing purposes any sealer should show a leak block directly above itself
-                    	ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0,1,0));
+                        ClientProxyCore.leakTrace = new ArrayList();//nearestSealer.threadSeal.leakTrace;
+                        //TODO: revert. Temporarily for testing purposes any sealer should show a leak block directly above itself
+                        ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0, 1, 0));
                     }
                 }
 
                 if (world != null)
                 {
                     if (MapUtil.resetClientFlag.getAndSet(false))
+                    {
                         MapUtil.resetClientBody();
+                    }
                 }
             }
 
@@ -541,10 +551,10 @@ public class TickHandlerClient
                 {
                     if (e instanceof IEntityNoisy)
                     {
-                        IEntityNoisy vehicle = (IEntityNoisy)e;
-                    	if (vehicle.getSoundUpdater() == null)
+                        IEntityNoisy vehicle = (IEntityNoisy) e;
+                        if (vehicle.getSoundUpdater() == null)
                         {
-                        	ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
+                            ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
                             if (noise != null)
                             {
                                 FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
@@ -573,22 +583,25 @@ public class TickHandlerClient
 
             if (player != null && player.ridingEntity != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, player.worldObj.provider.getDimensionId(), new Object[] { }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, player.worldObj.provider.getDimensionId(), new Object[] {}));
                 ClientProxyCore.lastSpacebarDown = true;
             }
-            
+
             if (!(this.screenConnectionsUpdateList.isEmpty()))
             {
-            	HashSet<TileEntityScreen> updateListCopy = (HashSet<TileEntityScreen>) screenConnectionsUpdateList.clone();
-            	screenConnectionsUpdateList.clear();
-            	for (TileEntityScreen te : updateListCopy)
-            	{
+                HashSet<TileEntityScreen> updateListCopy = (HashSet<TileEntityScreen>) screenConnectionsUpdateList.clone();
+                screenConnectionsUpdateList.clear();
+                for (TileEntityScreen te : updateListCopy)
+                {
                     if (te.getWorld().getBlockState(te.getPos()).getBlock() == GCBlocks.screen)
                     {
-                        if (te.refreshOnUpdate) te.refreshConnections(true);
+                        if (te.refreshOnUpdate)
+                        {
+                            te.refreshConnections(true);
+                        }
                         te.getWorld().markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
                     }
-            	}
+                }
             }
         }
         else if (event.phase == Phase.END)

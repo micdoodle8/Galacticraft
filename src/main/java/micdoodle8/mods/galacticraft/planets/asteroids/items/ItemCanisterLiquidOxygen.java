@@ -1,21 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortableItem
 {
-//    protected IIcon[] icons = new IIcon[7];
+    //    protected IIcon[] icons = new IIcon[7];
     private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
 
     public ItemCanisterLiquidOxygen(String assetName)
@@ -86,31 +87,31 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
         Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack);
         if (saved != null)
         {
-        	if (saved < ItemCanisterGeneric.EMPTY)
-	        {
-	            ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
-	            itemstack.setItemDamage(saved);
-	            return itemstack;
-	        }
-        	return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
+            if (saved < ItemCanisterGeneric.EMPTY)
+            {
+                ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
+                itemstack.setItemDamage(saved);
+                return itemstack;
+            }
+            return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
         }
         return super.getContainerItem(itemstack);
     }
 
     @Override
     public int discharge(ItemStack itemStack, int amount)
-	{
-		int damage = itemStack.getItemDamage();
-		int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
-		this.setNewDamage(itemStack, damage + used);
-		return (int) Math.floor(used / Constants.LOX_GAS_RATIO);
-	}
+    {
+        int damage = itemStack.getItemDamage();
+        int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
+        this.setNewDamage(itemStack, damage + used);
+        return (int) Math.floor(used / Constants.LOX_GAS_RATIO);
+    }
 
-	@Override
-	public int getOxygenStored(ItemStack par1ItemStack)
-	{
-		return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
-	}
+    @Override
+    public int getOxygenStored(ItemStack par1ItemStack)
+    {
+        return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
+    }
 
     @Override
     public EnumSortCategoryItem getCategory(int meta)

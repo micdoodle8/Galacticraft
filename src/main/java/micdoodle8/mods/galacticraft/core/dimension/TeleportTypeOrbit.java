@@ -40,9 +40,10 @@ public class TeleportTypeOrbit implements ITeleportType
     {
     }
 
-	@Override
-	public void setupAdventureSpawn(EntityPlayerMP player) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setupAdventureSpawn(EntityPlayerMP player)
+    {
+        // TODO Auto-generated method stub
+
+    }
 }

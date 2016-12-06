@@ -3,23 +3,23 @@ package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 import com.google.common.base.Function;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -40,9 +40,11 @@ public class RenderCargoRocket extends Render<EntityCargoRocket>
     {
         if (rocketModel == null)
         {
-            TEXTUREGETTER = new Function<ResourceLocation, TextureAtlasSprite>() {
+            TEXTUREGETTER = new Function<ResourceLocation, TextureAtlasSprite>()
+            {
                 @Override
-                public TextureAtlasSprite apply(ResourceLocation input) {
+                public TextureAtlasSprite apply(ResourceLocation input)
+                {
                     return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
                 }
             };
@@ -92,8 +94,11 @@ public class RenderCargoRocket extends Render<EntityCargoRocket>
         RenderHelper.enableStandardItemLighting();
     }
 
-    private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color) {
-        for(BakedQuad bakedquad : quads)
+    private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color)
+    {
+        for (BakedQuad bakedquad : quads)
+        {
             LightUtil.renderQuadColor(renderer, bakedquad, color);
+        }
     }
 }

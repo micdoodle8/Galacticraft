@@ -28,15 +28,21 @@ public class ContainerSchematicAstroMiner extends Container
 
         // Miner top layer
         for (i = 0; i < 4; i++)
-        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 27 + i * 18, 35 + 26, pos, par1InventoryPlayer.player));
+        {
+            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 27 + i * 18, 35 + 26, pos, par1InventoryPlayer.player));
+        }
 
         // Miner mid layer
         for (i = 0; i < 5; i++)
-        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 16 + i * 18, 53 + 26, pos, par1InventoryPlayer.player));
+        {
+            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 16 + i * 18, 53 + 26, pos, par1InventoryPlayer.player));
+        }
 
         // Miner bottom layer
         for (i = 0; i < 3; i++)
-        this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 44 + i * 18, 71 + 26, pos, par1InventoryPlayer.player));
+        {
+            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 44 + i * 18, 71 + 26, pos, par1InventoryPlayer.player));
+        }
 
         // Laser
         for (i = 0; i < 2; ++i)
@@ -117,7 +123,7 @@ public class ContainerSchematicAstroMiner extends Container
             else
             {
                 boolean valid = false;
-            	for (int i = 1; i < 15; i++)
+                for (int i = 1; i < 15; i++)
                 {
                     Slot testSlot = (Slot) this.inventorySlots.get(i);
                     if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
@@ -128,10 +134,10 @@ public class ContainerSchematicAstroMiner extends Container
                 }
                 if (valid)
                 {
-	            	if (!this.mergeOneItemTestValid(var4, 1, 15, false))
-	                {
-	                    return null;
-	                }
+                    if (!this.mergeOneItemTestValid(var4, 1, 15, false))
+                    {
+                        return null;
+                    }
                 }
                 else
                 {

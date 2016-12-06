@@ -22,9 +22,13 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
     public void renderTileEntityAt(TileEntityTreasureChestAsteroids chest, double x, double y, double z, float par5, int par6)
     {
         if (chest.getWorld() != null)
-        	GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        {
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        }
         else
-        	GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        {
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        }
         int var9;
 
         if (!chest.hasWorldObj())

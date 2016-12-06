@@ -48,7 +48,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
         this.setBlockBoundsBasedOnState(worldIn, pos);
         GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, worldIn.provider.getDimensionId(), new Object[] { pos }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
 
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
 
         if (tile instanceof INetworkConnection)
         {
@@ -57,6 +57,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
     }
 
     public abstract Vector3 getMinVector(IBlockState state);
+
     public abstract Vector3 getMaxVector(IBlockState state);
 
     /**
@@ -210,6 +211,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -219,14 +221,14 @@ public abstract class BlockTransmitter extends BlockAdvanced
             TileEntity[] connectable = new TileEntity[6];
             switch (this.getNetworkType(state))
             {
-                case FLUID:
-                    connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
-                    break;
-                case POWER:
-                    connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
-                    break;
-                default:
-                    break;
+            case FLUID:
+                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
+                break;
+            case POWER:
+                connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+                break;
+            default:
+                break;
             }
 
             return state.withProperty(DOWN, Boolean.valueOf(connectable[EnumFacing.DOWN.ordinal()] != null))

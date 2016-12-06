@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -17,9 +15,10 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-
+import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
 import org.lwjgl.input.Keyboard;
 
 public class KeyHandlerClient extends KeyHandler
@@ -27,7 +26,7 @@ public class KeyHandlerClient extends KeyHandler
     public static KeyBinding galaxyMap;
     public static KeyBinding openFuelGui;
     public static KeyBinding toggleAdvGoggles;
-    
+
     static
     {
         galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), ConfigManagerCore.keyOverrideMapI == 0 ? Keyboard.KEY_M : ConfigManagerCore.keyOverrideMapI, Constants.MOD_NAME_SIMPLE);
@@ -35,7 +34,7 @@ public class KeyHandlerClient extends KeyHandler
         toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), ConfigManagerCore.keyOverrideToggleAdvGogglesI == 0 ? Keyboard.KEY_K : ConfigManagerCore.keyOverrideToggleAdvGogglesI, Constants.MOD_NAME_SIMPLE);
         // See ConfigManagerCore.class for actual defaults. These do nothing
     }
-    
+
     public static KeyBinding accelerateKey;
     public static KeyBinding decelerateKey;
     public static KeyBinding leftKey;
@@ -71,12 +70,12 @@ public class KeyHandlerClient extends KeyHandler
         if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
         {
             EntityPlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
-            
+
             if (playerBase == null)
             {
-            	return;
+                return;
             }
-            
+
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerBase);
 
             if (kb.getKeyCode() == KeyHandlerClient.galaxyMap.getKeyCode())

@@ -7,14 +7,12 @@ import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -72,7 +70,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             TileEntity thisTile = worldIn.getTileEntity(pos);
             if (thisTile instanceof TileEntityBeamReceiver)
             {
-            	TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile; 
+                TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile;
                 thisReceiver.setFacing(EnumFacing.getFront(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
@@ -87,7 +85,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     {
         TileEntity thisTile = world.getTileEntity(pos);
         if (thisTile instanceof TileEntityBeamReceiver)
-        	((TileEntityBeamReceiver)thisTile).setFacing(EnumFacing.getFront(getMetaFromState(state)));
+        {
+            ((TileEntityBeamReceiver) thisTile).setFacing(EnumFacing.getFront(getMetaFromState(state)));
+        }
     }
 
     @Override
@@ -150,14 +150,19 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
                 return -1;
             }
         }
-        
+
         if (EnergyUtil.otherModCanReceive(tileAt, direction.getOpposite()))
-        	return direction.ordinal();
+        {
+            return direction.ordinal();
+        }
 
         for (EnumFacing adjacentDir : EnumFacing.values())
         {
-            if (adjacentDir == direction) continue;
-        	tileAt = world.getTileEntity(pos.add(adjacentDir.getFrontOffsetX(), adjacentDir.getFrontOffsetY(), adjacentDir.getFrontOffsetZ()));
+            if (adjacentDir == direction)
+            {
+                continue;
+            }
+            tileAt = world.getTileEntity(pos.add(adjacentDir.getFrontOffsetX(), adjacentDir.getFrontOffsetY(), adjacentDir.getFrontOffsetZ()));
 
             if (tileAt instanceof IConductor)
             {
@@ -168,9 +173,11 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             {
                 return adjacentDir.ordinal();
             }
-            
+
             if (EnergyUtil.otherModCanReceive(tileAt, adjacentDir.getOpposite()))
-            	return adjacentDir.ordinal();
+            {
+                return adjacentDir.ordinal();
+            }
         }
 
         return -1;

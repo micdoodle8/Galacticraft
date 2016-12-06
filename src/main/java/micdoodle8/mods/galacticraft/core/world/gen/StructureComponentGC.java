@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
@@ -20,21 +19,21 @@ public abstract class StructureComponentGC extends StructureComponent
 
     public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int lengthOffset, int heightOffset, int widthOffset, int length, int height, int width, EnumFacing coordBaseMode)
     {
-		if (coordBaseMode != null)
-		{
-			switch (SwitchEnumFacing.field_176064_a[coordBaseMode.ordinal()])
-			{
-	        case 0:
-	            return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
-	        case 1:
-	            return new StructureBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
-	        case 2:
-	            return new StructureBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
-	        case 3:
-	            return new StructureBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
-			}
+        if (coordBaseMode != null)
+        {
+            switch (SwitchEnumFacing.field_176064_a[coordBaseMode.ordinal()])
+            {
+            case 0:
+                return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
+            case 1:
+                return new StructureBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
+            case 2:
+                return new StructureBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
+            case 3:
+                return new StructureBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
+            }
         }
-		return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
+        return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
     }
 
     protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, String var6, StructureBoundingBox var7)
@@ -127,42 +126,42 @@ public abstract class StructureComponentGC extends StructureComponent
     }
 
     protected static class SwitchEnumFacing
-	{
-		protected static int[] field_176064_a = new int[EnumFacing.values().length];
+    {
+        protected static int[] field_176064_a = new int[EnumFacing.values().length];
 
-		static
-		{
-			try
-			{
-				field_176064_a[EnumFacing.NORTH.ordinal()] = 1;
-			}
-			catch (NoSuchFieldError var4)
-			{
-			}
+        static
+        {
+            try
+            {
+                field_176064_a[EnumFacing.NORTH.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var4)
+            {
+            }
 
-			try
-			{
-				field_176064_a[EnumFacing.SOUTH.ordinal()] = 2;
-			}
-			catch (NoSuchFieldError var3)
-			{
-			}
+            try
+            {
+                field_176064_a[EnumFacing.SOUTH.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var3)
+            {
+            }
 
-			try
-			{
-				field_176064_a[EnumFacing.WEST.ordinal()] = 3;
-			}
-			catch (NoSuchFieldError var2)
-			{
-			}
+            try
+            {
+                field_176064_a[EnumFacing.WEST.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var2)
+            {
+            }
 
-			try
-			{
-				field_176064_a[EnumFacing.EAST.ordinal()] = 4;
-			}
-			catch (NoSuchFieldError var1)
-			{
-			}
-		}
-	}
+            try
+            {
+                field_176064_a[EnumFacing.EAST.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var1)
+            {
+            }
+        }
+    }
 }

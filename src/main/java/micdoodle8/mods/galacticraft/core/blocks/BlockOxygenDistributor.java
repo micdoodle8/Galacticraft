@@ -3,13 +3,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -28,10 +26,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    /*private IIcon iconMachineSide;
-    private IIcon iconDistributor;
-    private IIcon iconInput;
-    private IIcon iconOutput;*/
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOxygenDistributor(String assetName)
@@ -39,7 +33,6 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
@@ -64,26 +57,10 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
     }
 
     @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconDistributor = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_distributor_fan");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }*/
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -108,27 +85,6 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
         entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 0 || side == 1)
-        {
-            return this.iconMachineSide;
-        }
-        else if (side == metadata + 2)
-        {
-            return this.iconOutput;
-        }
-        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-        {
-            return this.iconInput;
-        }
-        else
-        {
-            return this.iconDistributor;
-        }
-    }*/
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
@@ -155,17 +111,20 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);

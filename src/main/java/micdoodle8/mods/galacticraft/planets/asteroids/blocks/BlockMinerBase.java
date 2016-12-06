@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
@@ -30,17 +29,9 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
         super(Material.rock);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setStepSound(soundTypeMetal);
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "machineframe");
-    }*/
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -48,13 +39,6 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-        return this.blockIcon;
-    }*/
 
     @Override
     public Item getItemDropped(IBlockState state, Random random, int par3)
@@ -89,7 +73,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-    	return getStateFromMeta(0);
+        return getStateFromMeta(0);
     }
 
     @Override
@@ -97,7 +81,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     {
         return true;
     }
-    
+
     @Override
     public String getShiftDescription(int meta)
     {

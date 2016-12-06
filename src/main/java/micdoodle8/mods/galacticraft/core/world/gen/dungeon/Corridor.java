@@ -90,6 +90,7 @@ public class Corridor extends SizedPiece
         return null;
     }
 
+    @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
         boolean bossRoom = rand.nextInt((int) (1.0 / Math.pow(startPiece.attachedComponents.size() / 55.0, 2))) == 0;

@@ -39,9 +39,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank gasTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = Side.CLIENT)
-    public FluidTank gasTank2 = new FluidTank(this.tankCapacity/2);
+    public FluidTank gasTank2 = new FluidTank(this.tankCapacity / 2);
     @NetworkedField(targetSide = Side.CLIENT)
-    public FluidTank liquidTank = new FluidTank(this.tankCapacity/2);
+    public FluidTank liquidTank = new FluidTank(this.tankCapacity / 2);
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -89,12 +89,12 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
                     {
                         Block blockAbove = this.worldObj.getBlockState(this.getPos().up()).getBlock();
-                        if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove!=GCBlocks.breatheableAir && blockAbove!=GCBlocks.brightBreatheableAir)
+                        if (blockAbove != null && blockAbove.getMaterial() == Material.air && blockAbove != GCBlocks.breatheableAir && blockAbove != GCBlocks.brightBreatheableAir)
                         {
                             if (!OxygenUtil.inOxygenBubble(this.worldObj, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
-	                        	FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-	                            this.gasTank2.fill(gcAtmosphere, true);
+                                FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
+                                this.gasTank2.fill(gcAtmosphere, true);
                             }
                         }
                     }
@@ -108,7 +108,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             if (this.hasEnoughEnergyToRun && this.canProcess())
             {
                 //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
-                if (this.tierGC == 2) this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
+                if (this.tierGC == 2)
+                {
+                    this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
+                }
 
                 if (this.processTicks <= 0)
                 {
@@ -126,9 +129,13 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             else
             {
                 if (this.processTicks > 0)
-                	this.processTicks = 0;
+                {
+                    this.processTicks = 0;
+                }
                 else if (--this.processTicks <= -8)
-                	this.processTicks = -8;
+                {
+                    this.processTicks = -8;
+                }
             }
         }
     }
@@ -174,8 +181,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
         this.noCoal = this.containingItems[3] == null || this.containingItems[3].stackSize == 0 || this.containingItems[3].getItem() != MarsItems.carbonFragments;
 
-        if (this.noCoal && this.coalPartial == 0 && (this.gasTank2.getFluid() == null || this.gasTank2.getFluidAmount() <=0))
+        if (this.noCoal && this.coalPartial == 0 && (this.gasTank2.getFluid() == null || this.gasTank2.getFluidAmount() <= 0))
+        {
             return false;
+        }
 
         return this.liquidTank.getFluidAmount() < this.liquidTank.getCapacity();
     }
@@ -185,18 +194,27 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         WorldProvider WP = this.worldObj.provider;
         if (WP instanceof WorldProviderSpace)
         {
-            ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace)WP).getCelestialBody().atmosphere;
+            ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere;
             if (atmos.size() > 0)
             {
-                if (atmos.get(0) == IAtmosphericGas.CO2) return 1;
+                if (atmos.get(0) == IAtmosphericGas.CO2)
+                {
+                    return 1;
+                }
             }
             if (atmos.size() > 1)
             {
-                if (atmos.get(1) == IAtmosphericGas.CO2) return 1;
+                if (atmos.get(1) == IAtmosphericGas.CO2)
+                {
+                    return 1;
+                }
             }
             if (atmos.size() > 2)
             {
-                if (atmos.get(2) == IAtmosphericGas.CO2) return 1;
+                if (atmos.get(2) == IAtmosphericGas.CO2)
+                {
+                    return 1;
+                }
             }
 
             return 0;
@@ -209,14 +227,22 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (this.noCoal && this.coalPartial == 0)
         {
-            if (this.gasTank2.getFluid() == null || this.gasTank2.drain(1, true).amount < 1) return;
+            if (this.gasTank2.getFluid() == null || this.gasTank2.drain(1, true).amount < 1)
+            {
+                return;
+            }
         }
         else
         {
             if (this.coalPartial == 0)
+            {
                 this.decrStackSize(3, 1);
+            }
             this.coalPartial++;
-            if (this.coalPartial == 40) this.coalPartial = 0;
+            if (this.coalPartial == 40)
+            {
+                this.coalPartial = 0;
+            }
         }
         this.gasTank.drain(this.placeIntoFluidTanks(2) * 8, true);
     }
@@ -227,10 +253,16 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
         if (fuelSpace > 0)
         {
-            if (amountToDrain > fuelSpace) amountToDrain = fuelSpace;
+            if (amountToDrain > fuelSpace)
+            {
+                amountToDrain = fuelSpace;
+            }
             this.liquidTank.fill(FluidRegistry.getFluidStack("methane", amountToDrain), true);
-        } else
+        }
+        else
+        {
             amountToDrain = 0;
+        }
 
         return amountToDrain;
     }
@@ -387,7 +419,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         if (from == this.getHydrogenInputDirection().getOpposite())
+        {
             return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
+        }
 
         return false;
     }
@@ -398,7 +432,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         if (from == this.getHydrogenInputDirection().getOpposite())
         {
             if (resource != null && resource.isFluidEqual(this.liquidTank.getFluid()))
+            {
                 return this.liquidTank.drain(resource.amount, doDrain);
+            }
         }
 
         return null;
@@ -466,15 +502,19 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
-    	if (!stack.getGas().getName().equals("hydrogen")) return 0;
-    	int used = 0;
+        if (!stack.getGas().getName().equals("hydrogen"))
+        {
+            return 0;
+        }
+        int used = 0;
         //System.out.println("Giving gas amount "+stack.amount);
         if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
         {
@@ -532,7 +572,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         {
             return direction == this.getElectricInputDirection();
         }
-        
+
         //Hydrogen pipe
         if (type == NetworkType.FLUID)
         {
@@ -542,27 +582,28 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         return false;
     }
 
-	public int getHydrogenRequest(EnumFacing direction)
-	{
-		return this.receiveHydrogen(direction, 1000000F, false);
-	}
+    public int getHydrogenRequest(EnumFacing direction)
+    {
+        return this.receiveHydrogen(direction, 1000000F, false);
+    }
 
-	public boolean shouldPullHydrogen()
-	{
-		return this.gasTank.getFluidAmount() < this.gasTank.getCapacity();
-	}
+    public boolean shouldPullHydrogen()
+    {
+        return this.gasTank.getFluidAmount() < this.gasTank.getCapacity();
+    }
 
-	public int receiveHydrogen(EnumFacing from, float receive, boolean doReceive)
-	{
-		if (from == this.getHydrogenInputDirection() && this.shouldPullHydrogen())
-    	{
-	        FluidStack fluidToFill = FluidRegistry.getFluidStack("hydrogen", (int) (receive));
-	    	return this.gasTank.fill(fluidToFill, doReceive);
-    	}
-    	
-    	return 0;
-	}
+    public int receiveHydrogen(EnumFacing from, float receive, boolean doReceive)
+    {
+        if (from == this.getHydrogenInputDirection() && this.shouldPullHydrogen())
+        {
+            FluidStack fluidToFill = FluidRegistry.getFluidStack("hydrogen", (int) (receive));
+            return this.gasTank.fill(fluidToFill, doReceive);
+        }
 
+        return 0;
+    }
+
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);

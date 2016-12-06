@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -18,7 +14,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
 {
@@ -91,7 +91,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
 
             if (pad != null && pad instanceof TileEntityMulti)
             {
-                final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
+                final TileEntity mainTile = ((TileEntityMulti) pad).getMainBlockTile();
 
                 if (mainTile instanceof ICargoEntity)
                 {
@@ -142,12 +142,14 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
 
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return false;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 
@@ -306,6 +308,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         return true;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockCargoLoader.FACING);

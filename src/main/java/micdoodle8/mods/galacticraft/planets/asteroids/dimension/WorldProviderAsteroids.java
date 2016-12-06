@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -19,6 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,7 +30,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     private HashSet<AsteroidData> asteroids = new HashSet();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
-	private double solarMultiplier = -1D;
+    private double solarMultiplier = -1D;
 
     //	@Override
 //	public void registerWorldChunkManager()
@@ -74,6 +74,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return 0;
     }
 
+    @Override
     public boolean isDaytime()
     {
         return true;
@@ -134,7 +135,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return true;
     }
 
-	//Overriding only in case the Galacticraft API is not up-to-date
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
     @Override
     public boolean isSurfaceWorld()
@@ -142,19 +143,19 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return (this.worldObj == null) ? false : this.worldObj.isRemote;
     }
 
-	//Overriding so that beds do not explode on Asteroids
-	@Override
-	public boolean canRespawnHere()
-	{
-		if (EventHandlerGC.bedActivated)
-		{
-			EventHandlerGC.bedActivated = false;
-			return true;
-		}
-		return false;
-	}
-	
-	//Overriding only in case the Galacticraft API is not up-to-date
+    //Overriding so that beds do not explode on Asteroids
+    @Override
+    public boolean canRespawnHere()
+    {
+        if (EventHandlerGC.bedActivated)
+        {
+            EventHandlerGC.bedActivated = false;
+            return true;
+        }
+        return false;
+    }
+
+    //Overriding only in case the Galacticraft API is not up-to-date
     //(with up-to-date API this makes zero difference)
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
@@ -229,7 +230,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
     public void removeAsteroid(int x, int y, int z)
     {
-    	AsteroidData coords = new AsteroidData(x, y, z);
+        AsteroidData coords = new AsteroidData(x, y, z);
         if (this.asteroids.contains(coords))
         {
             this.asteroids.remove(coords);
@@ -319,7 +320,9 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         for (AsteroidData test : this.asteroids)
         {
             if ((test.sizeAndLandedFlag & 128) > 0)
-            	continue;
+            {
+                continue;
+            }
 
             int dx = x - test.centre.x;
             int dz = z - test.centre.z;
@@ -333,8 +336,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         }
 
         if (result == null)
-        	return null;
-        
+        {
+            return null;
+        }
+
         resultRoid.sizeAndLandedFlag |= 128;
         this.writeToNBT(this.datafile.datacompound);
         return result.clone();
@@ -353,73 +358,90 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         }
 
         TreeMap<Integer, BlockVec3> targets = new TreeMap();
-        
+
         for (AsteroidData roid : this.asteroids)
         {
             BlockVec3 test = roid.centre;
-        	switch (facing)
+            switch (facing)
             {
             case 2:
-            	if (z - 16 < test.z)
-            		continue;
-            	break;
+                if (z - 16 < test.z)
+                {
+                    continue;
+                }
+                break;
             case 3:
-            	if (z + 16 > test.z)
-            		continue;
-            	break;
+                if (z + 16 > test.z)
+                {
+                    continue;
+                }
+                break;
             case 4:
-            	if (x - 16 < test.x)
-            		continue;
-            	break;
+                if (x - 16 < test.x)
+                {
+                    continue;
+                }
+                break;
             case 5:
-            	if (x + 16 > test.x)
-            		continue;
-            	break;
+                if (x + 16 > test.x)
+                {
+                    continue;
+                }
+                break;
             }
-        	int dx = x - test.x;
+            int dx = x - test.x;
             int dz = z - test.z;
             int a = dx * dx + dz * dz;
-            if (a < 262144) targets.put(a, test);
+            if (a < 262144)
+            {
+                targets.put(a, test);
+            }
         }
 
-        int max = Math.max(count,  targets.size());
-        if (max <= 0) return null;
-        
+        int max = Math.max(count, targets.size());
+        if (max <= 0)
+        {
+            return null;
+        }
+
         ArrayList<BlockVec3> returnValues = new ArrayList();
         int i = 0;
         int offset = EntityAstroMiner.MINE_LENGTH_AST / 2;
         for (BlockVec3 target : targets.values())
         {
-        	BlockVec3 coords = target.clone();
-        	GCLog.debug("Found nearby asteroid at "+ target.toString());
+            BlockVec3 coords = target.clone();
+            GCLog.debug("Found nearby asteroid at " + target.toString());
             switch (facing)
             {
             case 2:
-            	coords.z += offset;
-            	break;
+                coords.z += offset;
+                break;
             case 3:
-            	coords.z -= offset;
-            	break;
+                coords.z -= offset;
+                break;
             case 4:
-            	coords.x += offset;
-            	break;
+                coords.x += offset;
+                break;
             case 5:
-            	coords.x -= offset;
-            	break;
+                coords.x -= offset;
+                break;
             }
-        	returnValues.add(coords);
-        	if (++i >= count) break; 
+            returnValues.add(coords);
+            if (++i >= count)
+            {
+                break;
+            }
         }
-        
+
         return returnValues;
     }
-    
+
     @Override
     public float getWindLevel()
     {
         return 0.05F;
     }
-    
+
     @Override
     public int getActualHeight()
     {
@@ -433,96 +455,105 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         this.hasNoSky = true;
     }
 
-	@Override
-	public double getSolarEnergyMultiplier()
-	{
-		if (this.solarMultiplier < 0D)
-		{
-			double s = this.getSolarSize();
-			this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
-		}
-		return this.solarMultiplier;
-	}
+    @Override
+    public double getSolarEnergyMultiplier()
+    {
+        if (this.solarMultiplier < 0D)
+        {
+            double s = this.getSolarSize();
+            this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
+        }
+        return this.solarMultiplier;
+    }
 
     @Override
-    public String getInternalNameSuffix() {
+    public String getInternalNameSuffix()
+    {
         return "_asteroids";
     }
 
-	private static class AsteroidData
-	{
-		protected BlockVec3 centre;
-		protected int sizeAndLandedFlag = 15;
-		protected int coreAndSpawnedFlag = -2;
+    private static class AsteroidData
+    {
+        protected BlockVec3 centre;
+        protected int sizeAndLandedFlag = 15;
+        protected int coreAndSpawnedFlag = -2;
 
-		public AsteroidData(int x, int y, int z)
-		{
-			this.centre = new BlockVec3(x, y, z);
-		}
-		
-		public AsteroidData(int x, int y, int z, int size, int core)
-		{
-			this.centre = new BlockVec3(x, y, z);
-			this.sizeAndLandedFlag = size;
-			this.coreAndSpawnedFlag = core;
-		}
-		
-		public AsteroidData(BlockVec3 bv)
-		{
-			this.centre = bv;
-		}
-		
-	    @Override
-	    public int hashCode()
-	    {
-	    	if (this.centre != null)
-	    		return this.centre.hashCode();
-	    	else
-	    		return 0;
-	    }
-	    
-	    @Override
-	    public boolean equals(Object o)
-	    {
-	        if (o instanceof AsteroidData)
-	        {
-	            BlockVec3 vector = ((AsteroidData) o).centre;
-	            return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
-	        }
-	        
-	        if (o instanceof BlockVec3)
-	        {
-	            BlockVec3 vector = (BlockVec3) o;
-	            return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
-	        }
+        public AsteroidData(int x, int y, int z)
+        {
+            this.centre = new BlockVec3(x, y, z);
+        }
 
-	        return false;
-	    }
-	    
-	    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	    {
-	        tag.setInteger("x", this.centre.x);
-	        tag.setInteger("y", this.centre.y);
-	        tag.setInteger("z", this.centre.z);
-	        tag.setInteger("coreAndFlag", this.coreAndSpawnedFlag);
-	        tag.setInteger("sizeAndFlag", this.sizeAndLandedFlag);
-	        return tag;
-	    }
+        public AsteroidData(int x, int y, int z, int size, int core)
+        {
+            this.centre = new BlockVec3(x, y, z);
+            this.sizeAndLandedFlag = size;
+            this.coreAndSpawnedFlag = core;
+        }
 
-	    public static AsteroidData readFromNBT(NBTTagCompound tag)
-	    {
-	        BlockVec3 tempVector = new BlockVec3();
-	        tempVector.x = tag.getInteger("x");
-	        tempVector.y = tag.getInteger("y");
-	        tempVector.z = tag.getInteger("z");
-	        
-	        AsteroidData roid = new AsteroidData(tempVector);
-	    	if (tag.hasKey("coreAndFlag"))
-	    		roid.coreAndSpawnedFlag = tag.getInteger("coreAndFlag");
-	    	if (tag.hasKey("sizeAndFlag"))
-	    		roid.sizeAndLandedFlag = tag.getInteger("sizeAndFlag");
+        public AsteroidData(BlockVec3 bv)
+        {
+            this.centre = bv;
+        }
 
-	    	return roid;
-	    }
-	}
+        @Override
+        public int hashCode()
+        {
+            if (this.centre != null)
+            {
+                return this.centre.hashCode();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (o instanceof AsteroidData)
+            {
+                BlockVec3 vector = ((AsteroidData) o).centre;
+                return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
+            }
+
+            if (o instanceof BlockVec3)
+            {
+                BlockVec3 vector = (BlockVec3) o;
+                return this.centre.x == vector.x && this.centre.y == vector.y && this.centre.z == vector.z;
+            }
+
+            return false;
+        }
+
+        public NBTTagCompound writeToNBT(NBTTagCompound tag)
+        {
+            tag.setInteger("x", this.centre.x);
+            tag.setInteger("y", this.centre.y);
+            tag.setInteger("z", this.centre.z);
+            tag.setInteger("coreAndFlag", this.coreAndSpawnedFlag);
+            tag.setInteger("sizeAndFlag", this.sizeAndLandedFlag);
+            return tag;
+        }
+
+        public static AsteroidData readFromNBT(NBTTagCompound tag)
+        {
+            BlockVec3 tempVector = new BlockVec3();
+            tempVector.x = tag.getInteger("x");
+            tempVector.y = tag.getInteger("y");
+            tempVector.z = tag.getInteger("z");
+
+            AsteroidData roid = new AsteroidData(tempVector);
+            if (tag.hasKey("coreAndFlag"))
+            {
+                roid.coreAndSpawnedFlag = tag.getInteger("coreAndFlag");
+            }
+            if (tag.hasKey("sizeAndFlag"))
+            {
+                roid.sizeAndLandedFlag = tag.getInteger("sizeAndFlag");
+            }
+
+            return roid;
+        }
+    }
 }

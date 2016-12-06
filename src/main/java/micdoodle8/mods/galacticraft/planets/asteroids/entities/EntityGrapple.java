@@ -1,11 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
@@ -13,13 +7,18 @@ import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -114,6 +113,7 @@ public class EntityGrapple extends Entity implements IProjectile
         this.setRotation(yaw, pitch);
     }
 
+    @Override
     public void setPosition(double x, double y, double z)
     {
         super.setPosition(x, y, z);
@@ -183,7 +183,7 @@ public class EntityGrapple extends Entity implements IProjectile
                     shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
                     if (shootingEntity.worldObj.isRemote && shootingEntity.worldObj.provider instanceof WorldProviderOrbit)
                     {
-                    	FreefallHandler.updateFreefall(shootingEntity);
+                        FreefallHandler.updateFreefall(shootingEntity);
                     }
                 }
             }
@@ -418,9 +418,9 @@ public class EntityGrapple extends Entity implements IProjectile
     {
         if (this.hitVec != null)
         {
-	    	par1NBTTagCompound.setShort("xTile", (short) this.hitVec.getX());
-	        par1NBTTagCompound.setShort("yTile", (short) this.hitVec.getY());
-	        par1NBTTagCompound.setShort("zTile", (short) this.hitVec.getZ());
+            par1NBTTagCompound.setShort("xTile", (short) this.hitVec.getX());
+            par1NBTTagCompound.setShort("yTile", (short) this.hitVec.getY());
+            par1NBTTagCompound.setShort("zTile", (short) this.hitVec.getZ());
         }
         par1NBTTagCompound.setShort("life", (short) this.ticksInGround);
         par1NBTTagCompound.setByte("inTile", (byte) Block.getIdFromBlock(this.hitBlock));
@@ -433,7 +433,10 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.hasKey("xTile")) this.hitVec = new BlockPos(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
+        if (par1NBTTagCompound.hasKey("xTile"))
+        {
+            this.hitVec = new BlockPos(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
+        }
 
         this.ticksInGround = par1NBTTagCompound.getShort("life");
         this.hitBlock = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);

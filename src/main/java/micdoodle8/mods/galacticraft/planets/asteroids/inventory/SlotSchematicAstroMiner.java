@@ -72,17 +72,17 @@ public class SlotSchematicAstroMiner extends Slot
             return par1ItemStack.getItem() == AsteroidsItems.orionDrive;
         //Advanced Wafer
         case 6:
-        	return par1ItemStack.getItem() == GCItems.basicItem && par1ItemStack.getItemDamage() == 14;
+            return par1ItemStack.getItem() == GCItems.basicItem && par1ItemStack.getItemDamage() == 14;
         //Chest
         case 7:
         case 8:
-        	return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.chest); 
+            return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.chest);
         //Laser: beam core
         case 13:
-        	return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 8;
+            return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 8;
         //Laser: pole
         case 14:
-        	return par1ItemStack.getItem() == GCItems.flagPole; 
+            return par1ItemStack.getItem() == GCItems.flagPole;
         }
 
         return false;

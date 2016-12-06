@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
 import org.lwjgl.Sys;
 
@@ -16,9 +16,9 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
     {
-        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        if (cameraTransformType == TransformType.GUI)
         {
             Vector3f trans = new Vector3f(-0.08F, 0.0F, -0.08F);
             Matrix4f ret = new Matrix4f();
@@ -52,7 +52,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON)
         {
             Vector3f trans = new Vector3f(0.0F, -1.9F, -1.0F);
             Matrix4f ret = new Matrix4f();
@@ -73,7 +73,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON)
         {
             Vector3f trans = new Vector3f(0.0F, -0.9F, 2.2F);
             Matrix4f ret = new Matrix4f();

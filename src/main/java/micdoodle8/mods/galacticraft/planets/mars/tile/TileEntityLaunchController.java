@@ -28,7 +28,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
@@ -303,9 +302,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 this.launchSchedulingEnabled = disabled;
                 break;
             case 2:
-            	this.hideTargetDestination = disabled;
+                this.hideTargetDestination = disabled;
                 this.disableCooldown = 10;
-            	break;
+                break;
             }
         }
     }
@@ -320,7 +319,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         case 1:
             return this.launchSchedulingEnabled;
         case 2:
-        	return this.hideTargetDestination;
+            return this.hideTargetDestination;
         }
 
         return true;
@@ -354,7 +353,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     {
                         tile2 = world.getTileEntity(tile2.getPos());
                         if (tile2 == null)
+                        {
                             continue;
+                        }
 
                         if (tile2 instanceof TileEntityLaunchController)
                         {
@@ -394,7 +395,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             if (this.destFrequency >= 0)
             {
                 WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
-            	for (int i = 0; i < servers.length; i++)
+                for (int i = 0; i < servers.length; i++)
                 {
                     WorldServer world = servers[i];
 
@@ -404,7 +405,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                         {
                             tile2 = world.getTileEntity(tile2.getPos());
                             if (tile2 == null)
+                            {
                                 continue;
+                            }
 
                             if (tile2 instanceof TileEntityLaunchController)
                             {
@@ -451,7 +454,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void updateRocketOnDockSettings()
     {
-    	if (this.attachedDock instanceof TileEntityLandingPad)
+        if (this.attachedDock instanceof TileEntityLandingPad)
         {
             TileEntityLandingPad pad = ((TileEntityLandingPad) this.attachedDock);
             IDockable rocket = pad.getDockedEntity();
@@ -468,11 +471,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         return null;
     }
 
-	public void setAttachedPad(IFuelDock pad)
-	{
-		this.attachedDock = pad;
-	}
+    public void setAttachedPad(IFuelDock pad)
+    {
+        this.attachedDock = pad;
+    }
 
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);

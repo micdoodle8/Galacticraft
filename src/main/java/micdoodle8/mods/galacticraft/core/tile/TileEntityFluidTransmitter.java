@@ -39,7 +39,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     public void validate()
     {
         this.validated = false;
-    	super.validate();
+        super.validate();
     }
 
     @Override
@@ -61,7 +61,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     public void onChunkUnload()
     {
         super.invalidate();
-    	super.onChunkUnload();
+        super.onChunkUnload();
     }
 
 //    @Override
@@ -235,31 +235,37 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     }
 
     @Override
-    public double getPacketRange() {
+    public double getPacketRange()
+    {
         return 0;
     }
 
     @Override
-    public int getPacketCooldown() {
+    public int getPacketCooldown()
+    {
         return 0;
     }
 
     @Override
-    public boolean isNetworkedTile() {
+    public boolean isNetworkedTile()
+    {
         return false;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
-    	if (!stack.getGas().getName().equals("oxygen")) return 0;
+        if (!stack.getGas().getName().equals("oxygen"))
+        {
+            return 0;
+        }
         return stack.amount - (int) Math.floor(((IOxygenNetwork) this.getNetwork()).produce(stack.amount, this));
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public int receiveGas(EnumFacing side, GasStack stack)
     {
-    	return this.receiveGas(side, stack, true);
+        return this.receiveGas(side, stack, true);
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

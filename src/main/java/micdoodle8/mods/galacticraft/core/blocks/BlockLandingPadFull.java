@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -24,8 +23,6 @@ import java.util.Random;
 
 public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
-    //private IIcon[] icons = new IIcon[3];
-
     public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadFullType.class);
 
     public enum EnumLandingPadFullType implements IStringSerializable
@@ -36,7 +33,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         private final int meta;
         private final String name;
 
-        private EnumLandingPadFullType(int meta, String name)
+        EnumLandingPadFullType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -53,7 +50,8 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -64,7 +62,6 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         this.setHardness(1.0F);
         this.setResistance(10.0F);
         this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.maxY = 0.25F;
     }
@@ -136,38 +133,6 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
-        this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_fueler");
-        this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "buggy_fueler_blank");
-        this.blockIcon = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2)
-    {
-        switch (par2)
-        {
-        case 0:
-            return this.icons[0];
-        case 1:
-            return this.icons[1];
-        case 2:
-            return this.icons[2];
-        }
-
-        return this.blockIcon;
-    }*/
-
-    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         for (int x2 = -1; x2 < 2; ++x2)
@@ -224,13 +189,13 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     {
         return false;
     }
-    
+
     @SideOnly(Side.CLIENT)
-	@Override
-	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    {
+        return true;
+    }
 
     @Override
     public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
@@ -245,16 +210,19 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         return new ItemStack(Item.getItemFromBlock(GCBlocks.landingPad), 1, metadata);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadFullType.byMetadata(meta));
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumLandingPadFullType)state.getValue(PAD_TYPE)).getMeta();
+        return ((EnumLandingPadFullType) state.getValue(PAD_TYPE)).getMeta();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, PAD_TYPE);

@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -10,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -18,12 +15,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.*;
-import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
@@ -72,9 +69,12 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
             RenderHelper.disableStandardItemLighting();
             this.bindTexture(TextureMap.locationBlocksTexture);
-            if (Minecraft.isAmbientOcclusionEnabled()) {
+            if (Minecraft.isAmbientOcclusionEnabled())
+            {
                 GlStateManager.shadeModel(GL11.GL_SMOOTH);
-            } else {
+            }
+            else
+            {
                 GlStateManager.shadeModel(GL11.GL_FLAT);
             }
 
@@ -106,7 +106,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         }
         else
         {
-            scale = pipe.buffer.getFluidAmount() / (float)pipe.buffer.getCapacity();
+            scale = pipe.buffer.getFluidAmount() / (float) pipe.buffer.getCapacity();
         }
 
         Fluid fluid;
@@ -164,7 +164,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
                     {
                         if (!gas)
                         {
-                            Integer list = displayLists[Math.max(3, (int)(scale * (stages - 1)))];
+                            Integer list = displayLists[Math.max(3, (int) (scale * (stages - 1)))];
                             GL11.glCallList(list);
                         }
                         else
@@ -182,7 +182,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
             {
                 if (!gas)
                 {
-                    Integer list = displayLists[Math.max(3, (int)(scale * (stages - 1)))];
+                    Integer list = displayLists[Math.max(3, (int) (scale * (stages - 1)))];
                     GL11.glCallList(list);
                 }
                 else
@@ -242,7 +242,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
             displayLists[i] = GLAllocation.generateDisplayLists(1);
             GL11.glNewList(displayLists[i], GL11.GL_COMPILE);
 
-            float level = (i / (float)stages);
+            float level = (i / (float) stages);
 
             switch (sideIndex)
             {
@@ -390,8 +390,10 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
 
-        for(BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getGeneralQuads())
+        {
             LightUtil.renderQuadColor(worldrenderer, bakedquad, color);
+        }
 
         tessellator.draw();
     }

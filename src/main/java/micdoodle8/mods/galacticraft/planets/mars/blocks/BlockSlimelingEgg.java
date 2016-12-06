@@ -3,16 +3,13 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
@@ -30,17 +27,15 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
-import java.util.Random;
 
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-//    private IIcon[] icons;
+    //    private IIcon[] icons;
     public static final PropertyEnum EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
     public static final PropertyBool BROKEN = PropertyBool.create("broken");
 
@@ -65,7 +60,8 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -110,7 +106,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 //        Block block = par1World.getBlock(par2, par3 - 1, par4);
 //        return block.isSideSolid(par1World, par2, par3, par4, ForgeDirection.UP);
 //    }
-    
+
     private boolean beginHatch(World world, BlockPos pos, EntityPlayer player)
     {
         IBlockState state = world.getBlockState(pos);
@@ -144,25 +140,25 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         ItemStack currentStack = player.getCurrentEquippedItem();
-    	if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
-	    {
-	        return world.setBlockToAir(pos);
-	    }
-	    else if (player.capabilities.isCreativeMode)
-	    {
-	        return world.setBlockToAir(pos);
-	    }
-	    else 
-	    {
-	    	beginHatch(world, pos, player);
-	    	return false;
-	    }
+        if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
+        {
+            return world.setBlockToAir(pos);
+        }
+        else if (player.capabilities.isCreativeMode)
+        {
+            return world.setBlockToAir(pos);
+        }
+        else
+        {
+            beginHatch(world, pos, player);
+            return false;
+        }
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-    	return beginHatch(worldIn, pos, playerIn);
+        return beginHatch(worldIn, pos, playerIn);
     }
 
     @Override
@@ -283,7 +279,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumEggColor)state.getValue(EGG_COLOR)).getMeta() + (state.getValue(BROKEN) ? 3 : 0);
+        return ((EnumEggColor) state.getValue(EGG_COLOR)).getMeta() + (state.getValue(BROKEN) ? 3 : 0);
     }
 
     @Override

@@ -1,17 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -78,7 +75,7 @@ public class AsteroidsItems
 
     public static void registerHarvestLevels()
     {
-    	AsteroidsItems.titaniumPickaxe.setHarvestLevel("pickaxe", 5);
+        AsteroidsItems.titaniumPickaxe.setHarvestLevel("pickaxe", 5);
         AsteroidsItems.titaniumAxe.setHarvestLevel("axe", 5);
         AsteroidsItems.titaniumSpade.setHarvestLevel("shovel", 5);
     }

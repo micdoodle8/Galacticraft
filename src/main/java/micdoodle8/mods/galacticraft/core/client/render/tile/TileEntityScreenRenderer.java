@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -77,17 +76,21 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer<TileEnti
         GL11.glRotatef(90, 1F, 0F, 0F);
         boolean cornerblock = false;
         if (screen.connectionsLeft == 0 || screen.connectionsRight == 0)
-        	cornerblock = (screen.connectionsUp == 0 || screen.connectionsDown == 0);
+        {
+            cornerblock = (screen.connectionsUp == 0 || screen.connectionsDown == 0);
+        }
         int totalLR = screen.connectionsLeft + screen.connectionsRight;
-        int totalUD = screen.connectionsUp+ screen.connectionsDown;
+        int totalUD = screen.connectionsUp + screen.connectionsDown;
         if (totalLR > 1 && totalUD > 1 && !cornerblock)
         {
-    		//centre block
-        	if (screen.connectionsLeft == screen.connectionsRight - (totalLR | 1))
-        	{
-    			if (screen.connectionsUp == screen.connectionsDown - (totalUD | 1))
-        			cornerblock = true;
-        	}
+            //centre block
+            if (screen.connectionsLeft == screen.connectionsRight - (totalLR | 1))
+            {
+                if (screen.connectionsUp == screen.connectionsDown - (totalUD | 1))
+                {
+                    cornerblock = true;
+                }
+            }
         }
         GL11.glRotatef(180, 0, 1, 0);
         GL11.glTranslatef(-screen.screen.getScaleX(), 0.0F, 0.0F);

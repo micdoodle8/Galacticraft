@@ -4,9 +4,9 @@ import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -20,9 +20,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -61,26 +61,37 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void validate()
     {
-    	super.validate();
+        super.validate();
         if (!this.worldObj.isRemote)
-        	if (!TileEntityOxygenSealer.loadedTiles.contains(this)) TileEntityOxygenSealer.loadedTiles.add(this);
+        {
+            if (!TileEntityOxygenSealer.loadedTiles.contains(this))
+            {
+                TileEntityOxygenSealer.loadedTiles.add(this);
+            }
+        }
     }
 
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.remove(this);
-    	super.invalidate();
+        if (!this.worldObj.isRemote)
+        {
+            TileEntityOxygenSealer.loadedTiles.remove(this);
+        }
+        super.invalidate();
     }
 
     @Override
     public void onChunkUnload()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenSealer.loadedTiles.remove(this);
-    	super.onChunkUnload();
+        if (!this.worldObj.isRemote)
+        {
+            TileEntityOxygenSealer.loadedTiles.remove(this);
+        }
+        super.onChunkUnload();
     }
 
-   	public int getScaledThreadCooldown(int i)
+    public int getScaledThreadCooldown(int i)
     {
         if (this.active)
         {
@@ -115,17 +126,19 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void update()
     {
-    	if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
-	    	ItemStack oxygenItemStack = this.getStackInSlot(1);
-	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
-	    	{
+            ItemStack oxygenItemStack = this.getStackInSlot(1);
+            if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+            {
                 IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
                 int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
                 this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
                 if (this.getOxygenStored() > this.getMaxOxygenStored())
+                {
                     this.setOxygenStored(this.getOxygenStored());
-	    	}
+                }
+            }
 
             if (this.thermalControlEnabled())
             {
@@ -139,7 +152,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                 this.storage.setMaxExtract(10.0F);
             }
         }
-    	
+
         super.update();
 
         if (!this.worldObj.isRemote)
@@ -339,7 +352,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             case 0:
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
             case 1:
-            	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+                return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
             case 2:
                 return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
             default:
@@ -352,15 +365,15 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-    	switch (slotID)
-    	{
-    	case 0:
-    		return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
-    	case 1:
-    		return FluidUtil.isEmptyContainer(itemstack);
-    	default:
-    		return false;
-    	}
+        switch (slotID)
+        {
+        case 0:
+            return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+        case 1:
+            return FluidUtil.isEmptyContainer(itemstack);
+        default:
+            return false;
+        }
     }
 
     @Override
@@ -372,10 +385,22 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-    	if (itemstack == null) return false; 
-    	if (slotID == 0) return ItemElectricBase.isElectricItem(itemstack.getItem());
-        if (slotID == 1) return itemstack.getItem() instanceof IItemOxygenSupply;
-        if (slotID == 2) return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
+        if (itemstack == null)
+        {
+            return false;
+        }
+        if (slotID == 0)
+        {
+            return ItemElectricBase.isElectricItem(itemstack.getItem());
+        }
+        if (slotID == 1)
+        {
+            return itemstack.getItem() instanceof IItemOxygenSupply;
+        }
+        if (slotID == 2)
+        {
+            return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
+        }
         return false;
     }
 
@@ -422,63 +447,68 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 
-	public static HashMap<BlockVec3, TileEntityOxygenSealer> getSealersAround(World world, BlockPos pos, int rSquared)
-	{
-		HashMap<BlockVec3, TileEntityOxygenSealer> ret = new HashMap<BlockVec3, TileEntityOxygenSealer>();
-		
-		for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
-		{
-			if (tile != null && tile.getWorld() == world && tile.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < rSquared)
-			{
-				ret.put(new BlockVec3(tile.getPos()), tile);
-			}
-		}
-		
-		return ret;
-	}
+    public static HashMap<BlockVec3, TileEntityOxygenSealer> getSealersAround(World world, BlockPos pos, int rSquared)
+    {
+        HashMap<BlockVec3, TileEntityOxygenSealer> ret = new HashMap<BlockVec3, TileEntityOxygenSealer>();
 
-	public static TileEntityOxygenSealer getNearestSealer(World world, double x, double y, double z)
-	{
-		TileEntityOxygenSealer ret = null;
-		double dist = 96 * 96D;
-		
-		for (Object tile : world.loadedTileEntityList)
-		{
-			if (tile instanceof TileEntityOxygenSealer)
-			{
-				double testDist = ((TileEntityOxygenSealer) tile).getDistanceSq(x, y, z);
-				if (testDist < dist)
-				{
-					dist = testDist;
-					ret = (TileEntityOxygenSealer) tile;			
-				}
-			}
-		}
-		
-		return ret;
-	}
+        for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
+        {
+            if (tile != null && tile.getWorld() == world && tile.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < rSquared)
+            {
+                ret.put(new BlockVec3(tile.getPos()), tile);
+            }
+        }
+
+        return ret;
+    }
+
+    public static TileEntityOxygenSealer getNearestSealer(World world, double x, double y, double z)
+    {
+        TileEntityOxygenSealer ret = null;
+        double dist = 96 * 96D;
+
+        for (Object tile : world.loadedTileEntityList)
+        {
+            if (tile instanceof TileEntityOxygenSealer)
+            {
+                double testDist = ((TileEntityOxygenSealer) tile).getDistanceSq(x, y, z);
+                if (testDist < dist)
+                {
+                    dist = testDist;
+                    ret = (TileEntityOxygenSealer) tile;
+                }
+            }
+        }
+
+        return ret;
+    }
 }

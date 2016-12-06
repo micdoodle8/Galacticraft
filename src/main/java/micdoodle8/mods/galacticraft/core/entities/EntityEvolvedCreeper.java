@@ -1,11 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -48,6 +46,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.setSize(0.7F, 2.2F);
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
@@ -95,6 +94,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.setCreeperScale(isChild ? 0.5F : 1.0F);
     }
 
+    @Override
     protected final void setSize(float sizeX, float sizeY)
     {
         boolean flag = this.sizeXBase > 0.0F && this.sizeYBase > 0.0F;
@@ -113,11 +113,13 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         //FMLLog.info("" + this.sizeYBase + " " + scale);
     }
 
+    @Override
     public boolean isChild()
     {
         return this.getDataWatcher().getWatchableObjectByte(12) == 1;
     }
 
+    @Override
     protected int getExperiencePoints(EntityPlayer p_70693_1_)
     {
         if (this.isChild())
@@ -145,12 +147,15 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
 
         this.setChildSize(isChild);
     }
-    
+
     @Override
     protected void jump()
     {
         this.motionY = 0.45D / WorldUtil.getGravityFactor(this);
-        if (this.motionY < 0.22D) this.motionY = 0.22D;
+        if (this.motionY < 0.22D)
+        {
+            this.motionY = 0.22D;
+        }
 
         if (this.isPotionActive(Potion.jump))
         {
@@ -172,8 +177,10 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     protected Item getDropItem()
     {
         if (this.isBurning())
-        	return Items.blaze_rod;
-    	return Items.redstone;
+        {
+            return Items.blaze_rod;
+        }
+        return Items.redstone;
     }
 
     @Override
@@ -185,23 +192,26 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         case 1:
         case 2:
         case 3:
-        	this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
-        	break;
+            this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
+            break;
         case 4:
         case 5:
-        	//Oxygen tank half empty or less
-        	this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
-        	break;
+            //Oxygen tank half empty or less
+            this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+            break;
         case 6:
-        	this.dropItem(GCItems.oxygenGear, 1);
-        	break;
+            this.dropItem(GCItems.oxygenGear, 1);
+            break;
         case 7:
         case 8:
             this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
             break;
         default:
-        	if (ConfigManagerCore.challengeMode) this.dropItem(Items.reeds, 1);
-        	break;
+            if (ConfigManagerCore.challengeMode)
+            {
+                this.dropItem(Items.reeds, 1);
+            }
+            break;
         }
     }
 }

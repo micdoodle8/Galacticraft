@@ -12,15 +12,12 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -70,11 +67,11 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         return weight;
     }
 
-	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target)
-	{
-	return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
-	}
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
+    }
 
     @Override
     public void onUpdate()
@@ -111,8 +108,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
-				if (!this.hasValidFuel())
-					this.stopRocketSound();
+                if (!this.hasValidFuel())
+                {
+                    this.stopRocketSound();
+                }
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched())
@@ -224,9 +223,9 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         if (this.worldObj.isRemote)
         {
-        	//stop the sounds on the client - but do not reset, the rocket may start again
-        	this.stopRocketSound();
-        	return;
+            //stop the sounds on the client - but do not reset, the rocket may start again
+            this.stopRocketSound();
+            return;
         }
 
         GCLog.debug("[Serverside] Cargo rocket reached space, heading to " + this.destinationFrequency);
@@ -235,31 +234,33 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-        	if (this.targetDimension != this.worldObj.provider.getDimensionId())
+            if (this.targetDimension != this.worldObj.provider.getDimensionId())
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
-                WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
+                WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
                 if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                 {
-                	GCLog.debug("Loaded destination dimension " + this.targetDimension);
-            		this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-            		Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.worldObj, false, null);
+                    GCLog.debug("Loaded destination dimension " + this.targetDimension);
+                    this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.worldObj, false, null);
 
-            		if (e instanceof EntityCargoRocket)
-            		{
-                    	GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
-            			e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-            			((EntityCargoRocket) e).landing = true;
-            			if (e != this)
-            				this.setDead();
-            		}
-            		else
-            		{
-            			GCLog.info("Error: failed to recreate the cargo rocket in landing mode on target planet.");
-            			e.setDead();
-            			this.setDead();
-            		}
-            		return;
+                    if (e instanceof EntityCargoRocket)
+                    {
+                        GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
+                        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                        ((EntityCargoRocket) e).landing = true;
+                        if (e != this)
+                        {
+                            this.setDead();
+                        }
+                    }
+                    else
+                    {
+                        GCLog.info("Error: failed to recreate the cargo rocket in landing mode on target planet.");
+                        e.setDead();
+                        this.setDead();
+                    }
+                    return;
                 }
                 GCLog.info("Error: the server failed to load the dimension the cargo rocket is supposed to land in. Destroying rocket!");
                 this.setDead();
@@ -268,14 +269,14 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             else
             {
                 GCLog.debug("Cargo rocket going into landing mode in same destination.");
-            	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                 this.landing = true;
                 return;
             }
         }
         else
         {
-        	GCLog.info("Error: the cargo rocket failed to find a valid landing spot when it reached space.");
+            GCLog.info("Error: the cargo rocket failed to find a valid landing spot when it reached space.");
             this.setDead();
         }
     }
@@ -316,8 +317,11 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public int getSizeInventory()
     {
-        if (this.rocketType == null) return 0;
-    	return this.rocketType.getInventorySpace();
+        if (this.rocketType == null)
+        {
+            return 0;
+        }
+        return this.rocketType.getInventorySpace();
     }
 
     @Override
@@ -372,24 +376,28 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         return false;
     }
-    
+
+    @Override
     public double getOnPadYOffset()
     {
-    	return 0D;//-0.25D;
+        return 0D;//-0.25D;
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 

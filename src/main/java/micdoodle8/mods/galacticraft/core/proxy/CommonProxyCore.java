@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
-import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerServer;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerServer;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class CommonProxyCore
 {
@@ -38,11 +38,6 @@ public class CommonProxyCore
     {
     }
 
-    public int getBlockRender(Block blockID)
-    {
-        return 3;
-    }
-
     public World getClientWorld()
     {
         return null;
@@ -54,9 +49,12 @@ public class CommonProxyCore
 
     public World getWorldForID(int dimensionID)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance(); 
-    	if (theServer == null) return null;
-    	return theServer.worldServerForDimension(dimensionID);
+        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (theServer == null)
+        {
+            return null;
+        }
+        return theServer.worldServerForDimension(dimensionID);
     }
 
     public EntityPlayer getPlayerFromNetHandler(INetHandler handler)
@@ -71,9 +69,13 @@ public class CommonProxyCore
         }
     }
 
-    public void postRegisterBlock(Block block) { }
+    public void postRegisterBlock(Block block)
+    {
+    }
 
-    public void postRegisterItem(Item item) { }
+    public void postRegisterItem(Item item)
+    {
+    }
 
     public void unregisterNetwork(FluidNetwork fluidNetwork)
     {

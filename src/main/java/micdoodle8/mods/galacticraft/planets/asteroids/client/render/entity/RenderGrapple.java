@@ -5,11 +5,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -20,6 +18,7 @@ public class RenderGrapple extends Render<EntityGrapple>
         super(manager);
     }
 
+    @Override
     public void doRender(EntityGrapple grapple, double x, double y, double z, float par8, float partialTicks)
     {
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);

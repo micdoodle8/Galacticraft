@@ -6,27 +6,22 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
 import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
-import micdoodle8.mods.miccore.Annotations.AltForVersion;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
-import micdoodle8.mods.miccore.Annotations.VersionSpecific;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.EnumSet;
 
 
@@ -71,8 +66,10 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     public float getRequest(EnumFacing direction)
     {
         if (this.getElectricalInputDirections().contains(direction) || direction == null)
-        	return super.getRequest(direction);
-        
+        {
+            return super.getRequest(direction);
+        }
+
         return 0F;
     }
 
@@ -81,12 +78,12 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     {
         if (this.getElectricalInputDirections().contains(from) || from == null)
         {
-        	return super.receiveElectricity(from, receive, tier, doReceive);
+            return super.receiveElectricity(from, receive, tier, doReceive);
         }
-        
+
         return 0F;
     }
-    
+
     //	@Override
     //	public float receiveElectricity(EnumFacing from, ElectricityPack receive, boolean doReceive)
     //	{
@@ -444,36 +441,36 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             return 0;
         }
 
-    	if (!this.getElectricalInputDirections().contains(from))
-    	{
-    		return 0;
-    	}
+        if (!this.getElectricalInputDirections().contains(from))
+        {
+            return 0;
+        }
 
-    	return MathHelper.floor_float(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor_float(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
-    	return 0;
+        return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public boolean canConnectEnergy(EnumFacing from)
     {
-    	return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
+        return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int getEnergyStored(EnumFacing from)
     {
-    	return MathHelper.floor_float(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor_float(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int getMaxEnergyStored(EnumFacing from)
     {
-    	return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")

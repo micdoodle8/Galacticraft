@@ -12,7 +12,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
@@ -28,6 +27,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
     {
+        @Override
         public boolean apply(EnumFacing facing)
         {
             return facing != EnumFacing.DOWN;
@@ -47,7 +47,6 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         this.setLightLevel(lit ? 0.9375F : 0.2F);
         this.setHardness(0.0F);
         this.setStepSound(Block.soundTypeWood);
-//        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
     }
@@ -66,9 +65,13 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     public Block changeState()
     {
         if (this.lit)
+        {
             return this.litVersion;
+        }
         else
+        {
             return this.unlitVersion;
+        }
     }
 
     private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction, boolean nope)
@@ -92,12 +95,6 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     public boolean isFullCube()
     {
         return false;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
     }
 
     private boolean canPlaceTorchOn(World world, BlockPos pos)
@@ -169,7 +166,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 
     protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing)state.getValue(FACING)))
+        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing) state.getValue(FACING)))
         {
             return true;
         }
@@ -226,7 +223,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         }
         else
         {
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
             EnumFacing.Axis enumfacingAxis = enumfacing.getAxis();
             EnumFacing enumfacing1 = enumfacing.getOpposite();
             boolean flag = false;
@@ -269,7 +266,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         }
         else
         {
-            EnumFacing enumfacing = (EnumFacing)world.getBlockState(pos).getValue(FACING);
+            EnumFacing enumfacing = (EnumFacing) world.getBlockState(pos).getValue(FACING);
             world.setBlockState(pos, this.fallback.getDefaultState().withProperty(FACING, enumfacing), 2);
         }
     }
@@ -317,19 +314,19 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random par5Random)
     {
         EnumFacing enumfacing = state.getValue(FACING);
-        double d0 = (double)pos.getX() + 0.5D;
-        double d1 = (double)pos.getY() + 0.7D;
-        double d2 = (double)pos.getZ() + 0.5D;
+        double d0 = (double) pos.getX() + 0.5D;
+        double d1 = (double) pos.getY() + 0.7D;
+        double d2 = (double) pos.getZ() + 0.5D;
         double d3 = 0.22D;
         double d4 = 0.27D;
 
         if (enumfacing.getAxis().isHorizontal())
         {
             EnumFacing enumfacing1 = enumfacing.getOpposite();
-            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4 * (double)enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double)enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
+            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4 * (double) enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double) enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
             if (this == GCBlocks.unlitTorchLit)
             {
-                worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4 * (double)enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double)enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
+                worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4 * (double) enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double) enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
             }
         }
         else
@@ -347,7 +344,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            EnumFacing enumfacing = (EnumFacing)world.getBlockState(pos).getValue(FACING);
+            EnumFacing enumfacing = (EnumFacing) world.getBlockState(pos).getValue(FACING);
             world.setBlockState(pos, this.unlitVersion.getDefaultState().withProperty(FACING, enumfacing), 2);
         }
     }
@@ -357,7 +354,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            EnumFacing enumfacing = (EnumFacing)world.getBlockState(pos).getValue(FACING);
+            EnumFacing enumfacing = (EnumFacing) world.getBlockState(pos).getValue(FACING);
             world.setBlockState(pos, this.litVersion.getDefaultState().withProperty(FACING, enumfacing), 2);
         }
     }
@@ -377,21 +374,21 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 
         switch (meta)
         {
-            case 1:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
-                break;
-            case 2:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
-                break;
-            case 3:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
-                break;
-            case 4:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
-                break;
-            case 5:
-            default:
-                iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
+        case 1:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
+            break;
+        case 2:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
+            break;
+        case 3:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.SOUTH);
+            break;
+        case 4:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.NORTH);
+            break;
+        case 5:
+        default:
+            iblockstate = iblockstate.withProperty(FACING, EnumFacing.UP);
         }
 
         return iblockstate;
@@ -402,24 +399,24 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     {
         int i = 0;
 
-        switch ((EnumFacing)state.getValue(FACING))
+        switch ((EnumFacing) state.getValue(FACING))
         {
-            case EAST:
-                i = i | 1;
-                break;
-            case WEST:
-                i = i | 2;
-                break;
-            case SOUTH:
-                i = i | 3;
-                break;
-            case NORTH:
-                i = i | 4;
-                break;
-            case DOWN:
-            case UP:
-            default:
-                i = i | 5;
+        case EAST:
+            i = i | 1;
+            break;
+        case WEST:
+            i = i | 2;
+            break;
+        case SOUTH:
+            i = i | 3;
+            break;
+        case NORTH:
+            i = i | 4;
+            break;
+        case DOWN:
+        case UP:
+        default:
+            i = i | 5;
         }
 
         return i;
@@ -428,9 +425,10 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockState(this, new IProperty[] { FACING });
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public EnumWorldBlockLayer getBlockLayer()
     {

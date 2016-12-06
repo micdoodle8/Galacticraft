@@ -101,7 +101,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
             else if (worldIn.canBlockBePlaced(block, pos, false, side, playerIn, stack))
             {
 //                public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-            	IBlockState j1 = this.getBlock().onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, metadata, playerIn);
+                IBlockState j1 = this.getBlock().onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, metadata, playerIn);
                 block.onBlockPlacedBy(worldIn, pos, j1, playerIn, stack);
 
                 if (placeBlockAt(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, j1))
@@ -116,7 +116,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                             BlockEnclosed.initialiseBCPipe(worldIn, pos, metadata);
                         }
                     }
-                    
+
                     else if (metadata == BlockEnclosed.EnumEnclosedBlockType.ME_CABLE.getMeta())
                     {
 //                    	ItemStack itemME = new ItemStack(Block.getBlockFromName("appliedenergistics2:tile.BlockCableBus"), 16);
@@ -155,8 +155,14 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     public int getMetadata(int damage)
     {
         //TE_CONDUIT (item damage 0: currently unused) and HV_CABLE (item damage 4) have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
-    	if (damage == 4) return 0;
-        if (damage == 0) return 4;
-    	return damage;
+        if (damage == 4)
+        {
+            return 0;
+        }
+        if (damage == 0)
+        {
+            return 4;
+        }
+        return damage;
     }
 }

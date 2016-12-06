@@ -12,6 +12,7 @@ public class BlockTier3TreasureChest extends BlockT1TreasureChest
         super(assetName);
     }
 
+    @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityTreasureChestAsteroids();

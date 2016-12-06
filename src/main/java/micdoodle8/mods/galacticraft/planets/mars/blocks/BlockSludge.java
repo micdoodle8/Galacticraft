@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -79,23 +77,23 @@ public class BlockSludge extends BlockFluidClassic
 
     @Override
     public boolean canDisplace(IBlockAccess world, BlockPos pos)
-	{
-		if (world.getBlockState(pos).getBlock().getMaterial().isLiquid())
-		{
-			return false;
-		}
-		return super.canDisplace(world, pos);
-	}
+    {
+        if (world.getBlockState(pos).getBlock().getMaterial().isLiquid())
+        {
+            return false;
+        }
+        return super.canDisplace(world, pos);
+    }
 
-	@Override
+    @Override
     public boolean displaceIfPossible(World world, BlockPos pos)
-	{
-		if (world.getBlockState(pos).getBlock().getMaterial().isLiquid())
-		{
-			return false;
-		}
-		return super.displaceIfPossible(world, pos);
-	}
+    {
+        if (world.getBlockState(pos).getBlock().getMaterial().isLiquid())
+        {
+            return false;
+        }
+        return super.displaceIfPossible(world, pos);
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -107,12 +105,12 @@ public class BlockSludge extends BlockFluidClassic
         {
             worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, "liquid.lava", rand.nextFloat() * 0.25F + 0.75F, 0.00001F + rand.nextFloat() * 0.5F, false);
         }
-		if (rand.nextInt(10) == 0)
-		{
-			if (World.doesBlockHaveSolidTopSurface(worldIn, pos.down()) && !worldIn.getBlockState(pos.down(2)).getBlock().getMaterial().blocksMovement())
-			{
-				GalacticraftPlanets.spawnParticle("bacterialDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0));
-			}
-		}
+        if (rand.nextInt(10) == 0)
+        {
+            if (World.doesBlockHaveSolidTopSurface(worldIn, pos.down()) && !worldIn.getBlockState(pos.down(2)).getBlock().getMaterial().blocksMovement())
+            {
+                GalacticraftPlanets.spawnParticle("bacterialDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0));
+            }
+        }
     }
 }

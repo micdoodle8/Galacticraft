@@ -96,7 +96,7 @@ public class ContainerRocketInventory extends Container
     {
         ItemStack var3 = null;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);
-        final int b = this.inventorySlots.size()-36;
+        final int b = this.inventorySlots.size() - 36;
 
         if (var4 != null && var4.getHasStack())
         {
@@ -105,7 +105,7 @@ public class ContainerRocketInventory extends Container
 
             if (par2 < b)
             {
-                if (!this.mergeItemStack(var5, b, b+36, true))
+                if (!this.mergeItemStack(var5, b, b + 36, true))
                 {
                     return null;
                 }

@@ -17,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
@@ -30,12 +29,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,7 +75,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         }
         else
         {
-        	boolean isOwner = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName());
+            boolean isOwner = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName());
             this.enableControllerButton.enabled = isOwner;
             this.enablePadRemovalButton.enabled = isOwner;
             this.hideDestinationFrequency.enabled = isOwner;
@@ -128,22 +125,24 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
         if (Math.random() < 0.025 && !destinationFrequency.isTextFocused)
         {
-	        if (!Minecraft.getMinecraft().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()) &&
-	        		!this.launchController.getDisabled(2))
-	        {
-	            // in case the player is not equal to the owner of the controller,
-	            // scramble the destination number such that other players can't
-	            // fly to it directly
-	            Random r = new Random();
-	            String fakefrequency = "";
-	            for (int i = 0; i < this.destinationFrequency.getMaxLength(); i++)
-	                fakefrequency += (char) (r.nextInt(126 - 33) + 33);
-	            destinationFrequency.text = fakefrequency;
-	        }
-	        else
-	        {
-	        	destinationFrequency.text = String.valueOf(this.launchController.destFrequency);
-	        }
+            if (!Minecraft.getMinecraft().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()) &&
+                    !this.launchController.getDisabled(2))
+            {
+                // in case the player is not equal to the owner of the controller,
+                // scramble the destination number such that other players can't
+                // fly to it directly
+                Random r = new Random();
+                String fakefrequency = "";
+                for (int i = 0; i < this.destinationFrequency.getMaxLength(); i++)
+                {
+                    fakefrequency += (char) (r.nextInt(126 - 33) + 33);
+                }
+                destinationFrequency.text = fakefrequency;
+            }
+            else
+            {
+                destinationFrequency.text = String.valueOf(this.launchController.destFrequency);
+            }
         }
     }
 
@@ -244,12 +243,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-    	if (!FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()))
-    	{
-    		this.onIntruderInteraction();
-    		return;
-    	}
-    	
+        if (!FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        {
+            this.onIntruderInteraction();
+            return;
+        }
+
         if (par1GuiButton.enabled)
         {
             switch (par1GuiButton.id)
@@ -259,7 +258,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
                 break;
             case 6:
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.launchController.getPos(), 2 }));
-            	break;
+                break;
             default:
                 break;
             }
@@ -377,19 +376,19 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     @Override
     public void onTextChanged(GuiElementTextBox textBox, String newText)
     {
-    	if (FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()))
-    	{
-	        if (textBox.equals(this.frequency))
-	        {
-	            this.launchController.frequency = textBox.getIntegerValue();
-	            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimensionId(), new Object[] { 0, this.launchController.getPos(), this.launchController.frequency }));
-	        }
-	        else if (textBox.equals(this.destinationFrequency))
-	        {
-	            this.launchController.destFrequency = textBox.getIntegerValue();
-	            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimensionId(), new Object[] { 2, this.launchController.getPos(), this.launchController.destFrequency }));
-	        }
-    	}
+        if (FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        {
+            if (textBox.equals(this.frequency))
+            {
+                this.launchController.frequency = textBox.getIntegerValue();
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimensionId(), new Object[] { 0, this.launchController.getPos(), this.launchController.frequency }));
+            }
+            else if (textBox.equals(this.destinationFrequency))
+            {
+                this.launchController.destFrequency = textBox.getIntegerValue();
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimensionId(), new Object[] { 2, this.launchController.getPos(), this.launchController.destFrequency }));
+            }
+        }
     }
 
     @Override
@@ -413,7 +412,9 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
                 Random r = new Random();
                 String fakefrequency = "";
                 for (int i = 0; i < this.destinationFrequency.getMaxLength(); i++)
+                {
                     fakefrequency += (char) (r.nextInt(126 - 33) + 33);
+                }
                 return fakefrequency;
             }
         }

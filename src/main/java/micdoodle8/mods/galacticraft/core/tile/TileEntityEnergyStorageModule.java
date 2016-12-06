@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
-import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
@@ -27,7 +26,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 {
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
-	private ItemStack[] containingItems = new ItemStack[2];
+    private ItemStack[] containingItems = new ItemStack[2];
 
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledEnergyLevel;
@@ -57,12 +56,12 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
         this.setTier2();
     }
-    
+
     private void setTier2()
     {
         this.storage.setCapacity(TIER2_CAPACITY);
         this.storage.setMaxExtract(1800);
-        this.setTierGC(2);  	
+        this.setTierGC(2);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             }
             else if (metadata >= 8)
             {
-            	this.setTier2();
+                this.setTier2();
             }
             this.initialised = true;
         }
@@ -138,11 +137,13 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         super.readFromNBT(par1NBTTagCompound);
         if (this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {
-        	this.setTier2();
+            this.setTier2();
             this.initialised = true;
         }
         else
+        {
             this.initialised = false;
+        }
 
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -166,7 +167,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > BASE_CAPACITY)
-        	this.storage.setEnergyStored(BASE_CAPACITY);
+        {
+            this.storage.setEnergyStored(BASE_CAPACITY);
+        }
 
         super.writeToNBT(par1NBTTagCompound);
         NBTTagList var2 = new NBTTagList();
@@ -280,37 +283,44 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    public int[] getSlotsForFace(EnumFacing side)
+    {
         return new int[0];
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return false;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 
@@ -364,9 +374,12 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
     public EnumFacing getFront()
     {
-        if (getBlockType() instanceof BlockMachine) {
+        if (getBlockType() instanceof BlockMachine)
+        {
             return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
-        } else if (getBlockType() instanceof BlockMachineTiered) {
+        }
+        else if (getBlockType() instanceof BlockMachineTiered)
+        {
             return (this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
         }
         return EnumFacing.NORTH;

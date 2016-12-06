@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import net.minecraftforge.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
@@ -51,7 +51,7 @@ public class ConfigManagerMars
 
             if (!config.isChild && load)
             {
-            	config.load();
+                config.load();
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDMars", -29);
@@ -65,7 +65,7 @@ public class ConfigManagerMars
             prop.comment = "Schematic ID for Tier 2 Rocket, must be unique.";
             prop.setLanguageKey("gc.configgui.idSchematicRocketT2");
             idSchematicRocketT2 = prop.getInt(2);
-            
+
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicCargoRocket", 3);
             prop.comment = "Schematic ID for Cargo Rocket, must be unique.";
             prop.setLanguageKey("gc.configgui.idSchematicCargoRocket");
@@ -88,9 +88,9 @@ public class ConfigManagerMars
             prop.setLanguageKey("gc.configgui.disableIronGenMars");
             if (update)
             {
-            	prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
-            	prop.setLanguageKey(prop.getLanguageKey());
-            	config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop.setLanguageKey(prop.getLanguageKey());
+                config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
             disableIronGen = prop.getBoolean(false);
             propOrder.add(prop.getName());
@@ -100,9 +100,9 @@ public class ConfigManagerMars
             prop.setLanguageKey("gc.configgui.disableCopperGenMars");
             if (update)
             {
-            	prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
-            	prop.setLanguageKey(prop.getLanguageKey());
-            	config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop.setLanguageKey(prop.getLanguageKey());
+                config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
             disableCopperGen = prop.getBoolean(false);
             propOrder.add(prop.getName());
@@ -112,9 +112,9 @@ public class ConfigManagerMars
             prop.setLanguageKey("gc.configgui.disableTinGenMars");
             if (update)
             {
-            	prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
-            	prop.setLanguageKey(prop.getLanguageKey());
-            	config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop.setLanguageKey(prop.getLanguageKey());
+                config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
             disableTinGen = prop.getBoolean(false);
             propOrder.add(prop.getName());
@@ -124,9 +124,9 @@ public class ConfigManagerMars
             prop.setLanguageKey("gc.configgui.disableDeshGenMars");
             if (update)
             {
-            	prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
-            	prop.setLanguageKey(prop.getLanguageKey());
-            	config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop.setLanguageKey(prop.getLanguageKey());
+                config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
             disableDeshGen = prop.getBoolean(false);
             propOrder.add(prop.getName());

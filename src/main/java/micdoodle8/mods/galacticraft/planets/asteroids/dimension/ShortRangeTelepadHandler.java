@@ -93,8 +93,8 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     {
         if (!telepad.getWorld().isRemote)
         {
-            GCLog.debug("Adding telepad with address "+telepad.address);
-        	if (telepad.addressValid)
+            GCLog.debug("Adding telepad with address " + telepad.address);
+            if (telepad.addressValid)
             {
                 TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimensionId(), new BlockVec3(telepad));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);

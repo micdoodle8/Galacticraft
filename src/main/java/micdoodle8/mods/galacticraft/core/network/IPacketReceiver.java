@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.core.network;
 
-import net.minecraftforge.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 
 public interface IPacketReceiver
 {
-    public void getNetworkedData(ArrayList<Object> sendData);
+    void getNetworkedData(ArrayList<Object> sendData);
 
-    public void decodePacketdata(ByteBuf buffer);
+    void decodePacketdata(ByteBuf buffer);
 }

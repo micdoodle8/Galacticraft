@@ -63,7 +63,8 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -75,38 +76,12 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         this.setUnlocalizedName(assetName);
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcons = new IIcon[6];
-        this.blockIcons[0] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid0");
-        this.blockIcons[1] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid1");
-        this.blockIcons[2] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "asteroid2");
-        this.blockIcons[3] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreAluminum");
-        this.blockIcons[4] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreIlmenite");
-        this.blockIcons[5] = par1IconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + "oreIron");
-        this.blockIcon = this.blockIcons[0];
-    }*/
-
     @SideOnly(Side.CLIENT)
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-        if (meta < 0 || meta >= this.blockIcons.length)
-        {
-            return this.blockIcon;
-        }
-
-        return this.blockIcons[meta];
-    }*/
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
@@ -115,12 +90,12 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         {
             ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
-            int count = quantityDropped(state, fortune, ((World)world).rand);
+            int count = quantityDropped(state, fortune, ((World) world).rand);
             for (int i = 0; i < count; i++)
             {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 3));
             }
-            count = quantityDropped(state, fortune, ((World)world).rand);
+            count = quantityDropped(state, fortune, ((World) world).rand);
             for (int i = 0; i < count; i++)
             {
                 ret.add(new ItemStack(AsteroidsItems.basicItem, 1, 4));
@@ -180,7 +155,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         case 3:
         case 4:
         case 5:
-        	return true;
+            return true;
         default:
             return false;
         }
@@ -222,16 +197,19 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         return super.getPickBlock(target, world, pos, player);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
+        return ((EnumBlockBasic) state.getValue(BASIC_TYPE)).getMeta();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, BASIC_TYPE);

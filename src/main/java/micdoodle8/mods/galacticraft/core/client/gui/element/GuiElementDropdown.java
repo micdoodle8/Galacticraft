@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.SmallFontRenderer;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
@@ -9,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GuiElementDropdown extends GuiButton
@@ -135,14 +135,14 @@ public class GuiElementDropdown extends GuiButton
         return false;
     }
 
-    public static interface IDropboxCallback
+    public interface IDropboxCallback
     {
-        public boolean canBeClickedBy(GuiElementDropdown dropdown, EntityPlayer player);
+        boolean canBeClickedBy(GuiElementDropdown dropdown, EntityPlayer player);
 
-        public void onSelectionChanged(GuiElementDropdown dropdown, int selection);
+        void onSelectionChanged(GuiElementDropdown dropdown, int selection);
 
-        public int getInitialSelection(GuiElementDropdown dropdown);
+        int getInitialSelection(GuiElementDropdown dropdown);
 
-        public void onIntruderInteraction();
+        void onIntruderInteraction();
     }
 }

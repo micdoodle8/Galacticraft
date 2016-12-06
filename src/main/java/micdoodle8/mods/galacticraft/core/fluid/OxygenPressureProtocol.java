@@ -27,10 +27,13 @@ public class OxygenPressureProtocol
         {
             try
             {
-            	BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Sealable IDs", true); 
-            	if (bt == null) continue;
+                BlockTuple bt = ConfigManagerCore.stringToBlock(s, "External Sealable IDs", true);
+                if (bt == null)
+                {
+                    continue;
+                }
 
-    			int meta = bt.meta;
+                int meta = bt.meta;
 
                 if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(bt.block))
                 {
@@ -81,9 +84,11 @@ public class OxygenPressureProtocol
     public static boolean canBlockPassAir(World world, Block block, BlockPos pos, EnumFacing side)
     {
         if (block == null)
-        	return true;
-    	
-    	//Check leaves first, because their isOpaqueCube() test depends on graphics settings
+        {
+            return true;
+        }
+
+        //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
         if (block instanceof BlockLeavesBase)
         {
@@ -135,9 +140,9 @@ public class OxygenPressureProtocol
         {
             BlockPistonBase piston = (BlockPistonBase) block;
             IBlockState state = world.getBlockState(pos);
-            if (((Boolean)state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+            if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
             {
-                EnumFacing facing = (EnumFacing)state.getValue(BlockPistonBase.FACING);
+                EnumFacing facing = (EnumFacing) state.getValue(BlockPistonBase.FACING);
                 return side != facing;
             }
             return false;

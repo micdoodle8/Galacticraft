@@ -67,7 +67,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
     public void setAllowedAll(boolean b)
     {
-    	this.allowAllPlayers = b;
+        this.allowAllPlayers = b;
         this.markDirty();
     }
 
@@ -163,7 +163,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
 
         this.allowAllPlayers = nbttagcompound.getBoolean("allowedAll");
-        	
+
         final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
         this.allowedPlayers.clear();
 
@@ -298,7 +298,9 @@ public class SpaceStationWorldData extends WorldSavedData
     {
         final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
         if (var0 == null)
-        	var0 = DimensionManager.getProvider(0).worldObj;
+        {
+            var0 = DimensionManager.getProvider(0).worldObj;
+        }
         SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
 
         if (var3 == null)
@@ -335,37 +337,41 @@ public class SpaceStationWorldData extends WorldSavedData
     {
         return "spacestation_" + dimID;
     }
-    
-	public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
-	{
-		if (stationData == null)
-			stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
-		
-		if (stationData.owner.equals(playerName))
-		{
-			//This player is the owner of the station - ensure stats data matches
+
+    public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
+    {
+        if (stationData == null)
+        {
+            stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
+        }
+
+        if (stationData.owner.equals(playerName))
+        {
+            //This player is the owner of the station - ensure stats data matches
             if (!(stats.spaceStationDimensionData.values().contains(stationID)))
             {
-    			GCLog.debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
-            	stats.spaceStationDimensionData.put(stationData.getHomePlanet(), stationID);
+                GCLog.debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+                stats.spaceStationDimensionData.put(stationData.getHomePlanet(), stationID);
             }
-		}
-		else
-		{
-			//This player is the owner of the station - remove from stats data
-			Integer savedOwned = stats.spaceStationDimensionData.get(stationData.getHomePlanet());
+        }
+        else
+        {
+            //This player is the owner of the station - remove from stats data
+            Integer savedOwned = stats.spaceStationDimensionData.get(stationData.getHomePlanet());
             if (savedOwned != null && savedOwned == stationID)
             {
-    			GCLog.debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
-            	stats.spaceStationDimensionData.remove(savedOwned);
-            }		
-		}		
-	}
+                GCLog.debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+                stats.spaceStationDimensionData.remove(savedOwned);
+            }
+        }
+    }
 
-	public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
-	{
-		String name = thePlayer.getGameProfile().getName().replace(".", "");
-		for (int id : WorldUtil.registeredSpaceStations.keySet())
-			SpaceStationWorldData.updateSSOwnership(thePlayer, name, stats, id, null);		
-	}
+    public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
+    {
+        String name = thePlayer.getGameProfile().getName().replace(".", "");
+        for (int id : WorldUtil.registeredSpaceStations.keySet())
+        {
+            SpaceStationWorldData.updateSSOwnership(thePlayer, name, stats, id, null);
+        }
+    }
 }

@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
@@ -45,7 +44,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
         private final int meta;
         private final String name;
 
-        private EnumMachineExtendedType(int meta, String name)
+        EnumMachineExtendedType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -62,26 +61,17 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
-
-    /*private IIcon iconMachineSide;
-    private IIcon iconInput;
-    private IIcon iconOxygenInput;
-    private IIcon iconOxygenOutput;
-
-    private IIcon iconElectricCompressor;
-    private IIcon iconCircuitFabricator;
-    private IIcon[] iconOxygenStorageModule;*/
 
     public BlockMachine2(String assetName)
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -89,32 +79,6 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
-    }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-        this.iconOxygenInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
-        this.iconOxygenOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_output");
-
-        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
-        this.iconElectricCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electric_compressor");
-        this.iconCircuitFabricator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "circuit_fabricator");
-        this.iconOxygenStorageModule = new IIcon[17];
-
-        for (int i = 0; i < this.iconOxygenStorageModule.length; i++)
-        {
-            this.iconOxygenStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oxygenStorageModule_" + i);
-        }
-    }*/
-
-    @Override
-    public int getRenderType()
-    {
-//        return GalacticraftCore.proxy.getBlockRender(this);
-        return 3;
     }
 
     @Override
@@ -170,109 +134,6 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
         }
     }
 
-    /*@Override
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int metadata = world.getBlockMetadata(x, y, z);
-
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            metadata -= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-
-            if (side == 0 || side == 1)
-            {
-                return this.blockIcon;
-            }
-
-            // If it is the front side
-            if (side == metadata + 2)
-            {
-                return this.iconOxygenInput;
-            }
-            // If it is the back side
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-            {
-                return this.iconOxygenOutput;
-            }
-
-            int oxygenLevel = 0;
-            TileEntity tile = world.getTileEntity(x, y, z);
-            if (tile instanceof TileEntityOxygenStorageModule)
-            {
-                oxygenLevel = Math.min(((TileEntityOxygenStorageModule) tile).scaledOxygenLevel, 16);
-            }
-
-            return this.iconOxygenStorageModule[oxygenLevel];
-        }
-
-        return super.getIcon(world, x, y, z, side);
-    }
-
-    @Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 0 || side == 1)
-        {
-            return this.blockIcon;
-        }
-
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            metadata -= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-
-            if (side == 0 || side == 1)
-            {
-                return this.blockIcon;
-            }
-
-            // If it is the front side
-            if (side == metadata + 2)
-            {
-                return this.iconOxygenInput;
-            }
-            // If it is the back side
-            else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-            {
-                return this.iconOxygenOutput;
-            }
-
-            return this.iconOxygenStorageModule[16];
-        }
-        else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            metadata -= BlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-
-            if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-            {
-                return this.iconCircuitFabricator;
-            }
-
-            if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
-            {
-                return this.iconInput;
-            }
-        }
-        else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            metadata -= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
-
-            if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-            {
-                return this.iconElectricCompressor;
-            }
-
-            if (side == ForgeDirection.getOrientation(metadata + 2).ordinal())
-            {
-                return this.iconInput;
-            }
-        }
-
-        return this.iconMachineSide;
-    }*/
-
-    /**
-     * Called when the block is placed in the world.
-     */
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
@@ -313,9 +174,6 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
         return true;
     }
 
-    /**
-     * Called when the block is right clicked by the player
-     */
     @Override
     public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
@@ -428,14 +286,14 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineExtendedType type = EnumMachineExtendedType.byMetadata((int)Math.floor(meta / 4.0));
+        EnumMachineExtendedType type = EnumMachineExtendedType.byMetadata((int) Math.floor(meta / 4.0));
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType)state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType) state.getValue(TYPE)).getMeta() * 4;
     }
 
     @Override

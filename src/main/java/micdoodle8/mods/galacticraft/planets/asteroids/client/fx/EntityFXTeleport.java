@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.fx;
 
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.ref.WeakReference;
 
@@ -39,6 +38,7 @@ public class EntityFXTeleport extends EntityFX
         this.direction = direction;
     }
 
+    @Override
     public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
         float f6 = (this.particleAge + f0) / this.particleMaxAge;
@@ -49,6 +49,7 @@ public class EntityFXTeleport extends EntityFX
         super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
     }
 
+    @Override
     public int getBrightnessForRender(float par1)
     {
         int i = super.getBrightnessForRender(par1);
@@ -67,6 +68,7 @@ public class EntityFXTeleport extends EntityFX
         return j | k << 16;
     }
 
+    @Override
     public float getBrightness(float par1)
     {
         float f1 = super.getBrightness(par1);
@@ -75,6 +77,7 @@ public class EntityFXTeleport extends EntityFX
         return f1 * (1.0F - f2) + f2;
     }
 
+    @Override
     public void onUpdate()
     {
         TileEntityShortRangeTelepad telepad1 = this.telepad.get();

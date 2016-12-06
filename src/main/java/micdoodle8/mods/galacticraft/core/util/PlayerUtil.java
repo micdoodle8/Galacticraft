@@ -17,9 +17,9 @@ import java.util.UUID;
 
 public class PlayerUtil
 {
-	public static HashMap<String, GameProfile> knownSkins = new HashMap();
-	
-	public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
+    public static HashMap<String, GameProfile> knownSkins = new HashMap();
+
+    public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
         return server.getConfigurationManager().getPlayerByUsername(username);
 //        return VersionUtil.getPlayerForUsername(server, username);
@@ -87,56 +87,56 @@ public class PlayerUtil
 
         return clientPlayer;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public static GameProfile getOtherPlayerProfile(String name)
     {
-    	return knownSkins.get(name);
+        return knownSkins.get(name);
     }
 
     @SideOnly(Side.CLIENT)
-	public static GameProfile makeOtherPlayerProfile(String strName, String strUUID)
-	{
-		GameProfile profile = null;
-		for (Object e : FMLClientHandler.instance().getWorldClient().getLoadedEntityList())
-		{
-			if (e instanceof AbstractClientPlayer)
-			{
-				GameProfile gp2 = ((AbstractClientPlayer)e).getGameProfile();
-				if (gp2.getName().equals(strName))
-				{
-					profile = gp2;
-					break;
-				}
-			}
-		}
-		if (profile == null)
+    public static GameProfile makeOtherPlayerProfile(String strName, String strUUID)
+    {
+        GameProfile profile = null;
+        for (Object e : FMLClientHandler.instance().getWorldClient().getLoadedEntityList())
+        {
+            if (e instanceof AbstractClientPlayer)
+            {
+                GameProfile gp2 = ((AbstractClientPlayer) e).getGameProfile();
+                if (gp2.getName().equals(strName))
+                {
+                    profile = gp2;
+                    break;
+                }
+            }
+        }
+        if (profile == null)
         {
             UUID uuid = strUUID.isEmpty() ? UUID.randomUUID() : UUID.fromString(strUUID);
             profile = new GameProfile(uuid, strName);
         }
 
-		PlayerUtil.knownSkins.put(strName, profile);
-		return profile;
-	}
-    
+        PlayerUtil.knownSkins.put(strName, profile);
+        return profile;
+    }
+
     public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
     {
         List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
         EntityPlayerMP entityplayermp;
-    	for (int i = players.size() - 1; i >= 0; --i)
+        for (int i = players.size() - 1; i >= 0; --i)
         {
-            entityplayermp = (EntityPlayerMP)players.get(i);
+            entityplayermp = (EntityPlayerMP) players.get(i);
 
             if (entityplayermp.getUniqueID().equals(theUUID))
             {
                 return entityplayermp;
             }
         }
-    	return null;
+        return null;
     }
-    
-    
+
+
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
         return MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);

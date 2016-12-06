@@ -1,10 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
@@ -21,14 +16,19 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class GCCoreUtil
 {
-	public static int nextID = 0;
+    public static int nextID = 0;
     private static boolean deobfuscated;
 
     static
@@ -47,8 +47,8 @@ public class GCCoreUtil
     {
         return deobfuscated;
     }
-	
-	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
+
+    public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -72,10 +72,10 @@ public class GCCoreUtil
 
     public static int nextInternalID()
     {
-    	GCCoreUtil.nextID++;
-    	return GCCoreUtil.nextID - 1;
+        GCCoreUtil.nextID++;
+        return GCCoreUtil.nextID - 1;
     }
-    
+
     public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
     {
         registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
@@ -84,14 +84,14 @@ public class GCCoreUtil
         {
             EntityList.idToClassMapping.put(nextEggID, var0);
             EntityList.classToIDMapping.put(var0, nextEggID);
-	        EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+            EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
         }
     }
 
     public static int getNextValidEggID()
     {
         int eggID = 255;
-        
+
         //Non-global entity IDs - for egg ID purposes - can be greater than 255
         //The spawn egg will have this metadata.  Metadata up to 65535 is acceptable (see potions).
 
@@ -106,11 +106,11 @@ public class GCCoreUtil
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-    	if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-    		LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-    		LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-		}
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", "en_US", GCCoreUtil.translate("entity." + var1 + ".name"));
+            LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
+        }
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 
@@ -184,22 +184,25 @@ public class GCCoreUtil
         return ret;
     }
 
-	public static void drawStringRightAligned(String string, int x, int y, int color, FontRenderer fontRendererObj)
-	{
+    public static void drawStringRightAligned(String string, int x, int y, int color, FontRenderer fontRendererObj)
+    {
         fontRendererObj.drawString(string, x - fontRendererObj.getStringWidth(string), y, color);
-	}
+    }
 
-	public static void drawStringCentered(String string, int x, int y, int color, FontRenderer fontRendererObj)
-	{
+    public static void drawStringCentered(String string, int x, int y, int color, FontRenderer fontRendererObj)
+    {
         fontRendererObj.drawString(string, x - fontRendererObj.getStringWidth(string) / 2, y, color);
-	}
+    }
 
-	public static String lowerCaseNoun(String string)
-	{
-		Language l = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
-		if (l.getLanguageCode().equals("de_DE")) return string;
-		return GCCoreUtil.translate(string).toLowerCase();
-	}
+    public static String lowerCaseNoun(String string)
+    {
+        Language l = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
+        if (l.getLanguageCode().equals("de_DE"))
+        {
+            return string;
+        }
+        return GCCoreUtil.translate(string).toLowerCase();
+    }
 
 //    public static void sortBlock(Block block, int meta, StackSorted beforeStack)
 //    {

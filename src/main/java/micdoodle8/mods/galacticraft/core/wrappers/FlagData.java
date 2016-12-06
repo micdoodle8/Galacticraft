@@ -86,44 +86,44 @@ public class FlagData
 
     public static FlagData readFlagData(NBTTagCompound nbt)
     {
-    	if (nbt.hasKey("FlagWidth"))
-    	{
-    		//Legacy saves
-	    	int width = nbt.getInteger("FlagWidth");
-	        int height = nbt.getInteger("FlagHeight");
-	
-	        FlagData flagData = new FlagData(width, height);
-	
-	        for (int i = 0; i < width; i++)
-	        {
-	            for (int j = 0; j < height; j++)
-	            {
-	                flagData.color[i][j][0] = nbt.getByte("ColorR-X" + i + "-Y" + j);
-	                flagData.color[i][j][1] = nbt.getByte("ColorG-X" + i + "-Y" + j);
-	                flagData.color[i][j][2] = nbt.getByte("ColorB-X" + i + "-Y" + j);
-	            }
-	        }
-	
-	        return flagData;
-    	}
-    	
-    	//New more compact flag save style 
-    	int width = nbt.getInteger("FWidth");
+        if (nbt.hasKey("FlagWidth"))
+        {
+            //Legacy saves
+            int width = nbt.getInteger("FlagWidth");
+            int height = nbt.getInteger("FlagHeight");
+
+            FlagData flagData = new FlagData(width, height);
+
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    flagData.color[i][j][0] = nbt.getByte("ColorR-X" + i + "-Y" + j);
+                    flagData.color[i][j][1] = nbt.getByte("ColorG-X" + i + "-Y" + j);
+                    flagData.color[i][j][2] = nbt.getByte("ColorB-X" + i + "-Y" + j);
+                }
+            }
+
+            return flagData;
+        }
+
+        //New more compact flag save style
+        int width = nbt.getInteger("FWidth");
         int height = nbt.getInteger("FHeight");
 
         FlagData flagData = new FlagData(width, height);
         for (int i = 0; i < height; i++)
         {
-        	int[] colorRow = nbt.getIntArray("FRow"+i);
-        	for (int j = 0; j < width; j++)
+            int[] colorRow = nbt.getIntArray("FRow" + i);
+            for (int j = 0; j < width; j++)
             {
-                int color = colorRow[j]; 
-        		flagData.color[j][i][0] = (byte) (color >> 16);
-        		flagData.color[j][i][1] = (byte) ((color >> 8) & 255);
-        		flagData.color[j][i][2] = (byte) (color & 255);
+                int color = colorRow[j];
+                flagData.color[j][i][0] = (byte) (color >> 16);
+                flagData.color[j][i][1] = (byte) ((color >> 8) & 255);
+                flagData.color[j][i][2] = (byte) (color & 255);
             }
         }
-    	return flagData;
+        return flagData;
     }
 
     public void saveFlagData(NBTTagCompound nbt)
@@ -133,13 +133,13 @@ public class FlagData
 
         for (int i = 0; i < this.height; i++)
         {
-        	int[] colorRow = new int[this.width]; 
-        	for (int j = 0; j < this.width; j++)
+            int[] colorRow = new int[this.width];
+            for (int j = 0; j < this.width; j++)
             {
                 byte[] arrayColor = this.color[j][i];
                 colorRow[j] = ColorUtil.to32BitColorB(arrayColor[0], arrayColor[1], arrayColor[2]);
             }
-        	nbt.setIntArray("FRow"+i, colorRow);
+            nbt.setIntArray("FRow" + i, colorRow);
         }
     }
 
@@ -160,13 +160,25 @@ public class FlagData
     @Override
     public boolean equals(Object o)
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
 
         FlagData flagData = (FlagData) o;
 
-        if (height != flagData.height) return false;
-        if (width != flagData.width) return false;
+        if (height != flagData.height)
+        {
+            return false;
+        }
+        if (width != flagData.width)
+        {
+            return false;
+        }
         return Arrays.deepEquals(color, flagData.color);
     }
 

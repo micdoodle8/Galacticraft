@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -32,13 +31,6 @@ import java.util.List;
 
 public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    /*private IIcon iconMachineSide;
-    private IIcon iconInput;
-    private IIcon iconFrontLoader;
-    private IIcon iconFrontUnloader;
-    private IIcon iconItemInput;
-    private IIcon iconItemOutput;*/
-
     private enum EnumLoaderType implements IStringSerializable
     {
         CARGO_LOADER(0, "cargo_loader"),
@@ -47,7 +39,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         private final int meta;
         private final String name;
 
-        private EnumLoaderType(int meta, String name)
+        EnumLoaderType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -69,7 +61,8 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -85,14 +78,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -129,72 +115,12 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         }
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconFrontLoader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargoloader");
-        this.iconFrontUnloader = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_cargounloader");
-        this.iconItemInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_input");
-        this.iconItemOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_item_output");
-    }*/
-
     @Override
     public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        int shiftedMeta = metadata;
-
-        if (side == 0 || side == 1)
-        {
-            return this.iconMachineSide;
-        }
-
-        if (metadata >= BlockCargoLoader.METADATA_CARGO_UNLOADER)
-        {
-            shiftedMeta -= BlockCargoLoader.METADATA_CARGO_UNLOADER;
-
-            if (side == shiftedMeta + 2)
-            {
-                return this.iconInput;
-            }
-            else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
-            {
-                return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
-            }
-            else
-            {
-                return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
-            }
-        }
-        else if (metadata >= BlockCargoLoader.METADATA_CARGO_LOADER)
-        {
-            shiftedMeta -= BlockCargoLoader.METADATA_CARGO_LOADER;
-
-            if (side == shiftedMeta + 2)
-            {
-                return this.iconInput;
-            }
-            else if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
-            {
-                return metadata < 4 ? this.iconItemInput : this.iconItemOutput;
-            }
-            else
-            {
-                return metadata < 4 ? this.iconFrontLoader : this.iconFrontUnloader;
-            }
-        }
-
-        return this.iconMachineSide;
-    }*/
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
@@ -302,19 +228,22 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumLoaderType type = EnumLoaderType.byMetadata((int)Math.floor(meta / 4.0));
+        EnumLoaderType type = EnumLoaderType.byMetadata((int) Math.floor(meta / 4.0));
 
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType)state.getValue(TYPE)).getMeta() * 4;
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType) state.getValue(TYPE)).getMeta() * 4;
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);

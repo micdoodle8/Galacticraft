@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -109,6 +108,7 @@ public class RoomTreasure extends SizedPiece
         return true;
     }
 
+    @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
         return null;

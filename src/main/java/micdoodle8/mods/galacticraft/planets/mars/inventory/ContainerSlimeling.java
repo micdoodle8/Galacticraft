@@ -97,72 +97,74 @@ public class ContainerSlimeling extends Container
 
             if (b < 39)
             {
-	            if (par1 < b - 36)
-	            {
-	                if (!this.mergeItemStack(var4, b - 36, b, true))
-	                {
-	                    return null;
-	                }
-	            }
-	            else
-	            {
-	                if (var4.getItem() == MarsItems.marsItemBasic && var4.getItemDamage() == 4)
-	                {
-	                    if (!this.mergeItemStack(var4, 0, 1, false))
-	                    {
-	                        return null;
-	                    }
-	                }
-	                else if (par1 < b - 9)
-	                {
-	                    if (!this.mergeItemStack(var4, b - 9, b, false))
-	                    {
-	                        return null;
-	                    }
-	                }
-	                else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
-	                {
-	                    return null;
-	                }
-	            }
+                if (par1 < b - 36)
+                {
+                    if (!this.mergeItemStack(var4, b - 36, b, true))
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (var4.getItem() == MarsItems.marsItemBasic && var4.getItemDamage() == 4)
+                    {
+                        if (!this.mergeItemStack(var4, 0, 1, false))
+                        {
+                            return null;
+                        }
+                    }
+                    else if (par1 < b - 9)
+                    {
+                        if (!this.mergeItemStack(var4, b - 9, b, false))
+                        {
+                            return null;
+                        }
+                    }
+                    else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
+                    {
+                        return null;
+                    }
+                }
             }
             else
             {
-	            //With inventory bag, slot 0 is a bag slot
-            	//Slots 1-36 are regular inventory (27 inventory, 9 hotbar)
-            	//Slots 37-63 are the inventory bag slots
-            	if (par1 == 0)
-            		return null;
-            	
-            	if (par1 > 36)
-	            {
-	                if (!this.mergeItemStack(var4, 1, 37, true))
-	                {
-	                    return null;
-	                }
-	            }
-	            else
-	            {
-	                if (par1 < 28)
-	                {
-	                    if (!this.mergeItemStack(var4, 37, 64, false))
-	                    {
-		                    if (!this.mergeItemStack(var4, 28, 37, false))
-		                    {
-		                        return null;
-		                    }
-	                    }
-	                }
-	                else if (!this.mergeItemStack(var4, 37, 64, false))
+                //With inventory bag, slot 0 is a bag slot
+                //Slots 1-36 are regular inventory (27 inventory, 9 hotbar)
+                //Slots 37-63 are the inventory bag slots
+                if (par1 == 0)
+                {
+                    return null;
+                }
+
+                if (par1 > 36)
+                {
+                    if (!this.mergeItemStack(var4, 1, 37, true))
                     {
-	                	if (!this.mergeItemStack(var4, 1, 28, false))
-		                {
-		                    return null;
-		                }
+                        return null;
                     }
-	            }
+                }
+                else
+                {
+                    if (par1 < 28)
+                    {
+                        if (!this.mergeItemStack(var4, 37, 64, false))
+                        {
+                            if (!this.mergeItemStack(var4, 28, 37, false))
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                    else if (!this.mergeItemStack(var4, 37, 64, false))
+                    {
+                        if (!this.mergeItemStack(var4, 1, 28, false))
+                        {
+                            return null;
+                        }
+                    }
+                }
             }
-            
+
             if (var4.stackSize == 0)
             {
                 slot.putStack((ItemStack) null);

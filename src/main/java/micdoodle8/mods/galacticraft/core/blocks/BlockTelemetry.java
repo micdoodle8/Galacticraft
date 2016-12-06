@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -28,42 +27,14 @@ import java.util.UUID;
 
 public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    /*private IIcon iconFront;
-    private IIcon iconSide;*/
-	
-	//Metadata: 0-3 = orientation;  bits 2,3 = reserved for future use
-	protected BlockTelemetry(String assetName)
+    //Metadata: 0-3 = orientation;  bits 2,3 = reserved for future use
+    protected BlockTelemetry(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "cargo_pad");
-        this.iconSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "cargo_pad");
-    }
-    
-    @Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == (metadata & 7))
-        {
-            return this.iconSide;
-        }
-
-        return this.iconFront;
-    }*/
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
@@ -96,26 +67,26 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
         final int metadata = getMetaFromState(world.getBlockState(pos));
         final int facing = metadata & 3;
         int change = 0;
-        
+
         switch (facing)
         {
-        	case 0:
-        		change = 1;
-        		break;
-        	case 1:
-        		change = 3;
-        		break;
-        	case 2:
-        		change = 5;
-        		break;
-        	case 3:
-        		change = 4;
-        		break;
-        	case 4:
-        		change = 2;
-        		break;
-        	case 5:
-        		change = 0;       		
+        case 0:
+            change = 1;
+            break;
+        case 1:
+            change = 3;
+            break;
+        case 2:
+            change = 5;
+            break;
+        case 3:
+            change = 4;
+            break;
+        case 4:
+            change = 2;
+            break;
+        case 5:
+            change = 0;
         }
         change += (12 & metadata);
         world.setBlockState(pos, getStateFromMeta(change), 2);
@@ -140,48 +111,53 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
     {
         if (!world.isRemote)
         {
-        	TileEntity tile = world.getTileEntity(pos);
-        	if (tile instanceof TileEntityTelemetry)
-        	{
-        		ItemStack held = entityPlayer.inventory.getCurrentItem();
-        		//Look for Frequency Module
-        		if (held != null && held.getItem() == GCItems.basicItem && held.getItemDamage() == 19)
-        		{
-        			NBTTagCompound fmData = held.getTagCompound();
-        			if (fmData != null && fmData.hasKey("linkedUUIDMost") && fmData.hasKey("linkedUUIDLeast"))
-        			{
-        				UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
-        				((TileEntityTelemetry) tile).addTrackedEntity(uuid);
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile instanceof TileEntityTelemetry)
+            {
+                ItemStack held = entityPlayer.inventory.getCurrentItem();
+                //Look for Frequency Module
+                if (held != null && held.getItem() == GCItems.basicItem && held.getItemDamage() == 19)
+                {
+                    NBTTagCompound fmData = held.getTagCompound();
+                    if (fmData != null && fmData.hasKey("linkedUUIDMost") && fmData.hasKey("linkedUUIDLeast"))
+                    {
+                        UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
+                        ((TileEntityTelemetry) tile).addTrackedEntity(uuid);
                         entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_succeed.message")));
-        			}
-        			else
-        			{
+                    }
+                    else
+                    {
                         entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail.message")));
 
-        				if (fmData == null)
-            			{
-            				fmData = new NBTTagCompound();
-            				held.setTagCompound(fmData);
-            			}
-        			}
-        			fmData.setInteger("teCoordX", pos.getX());
-        			fmData.setInteger("teCoordY", pos.getY());
-        			fmData.setInteger("teCoordZ", pos.getZ());
-        			fmData.setInteger("teDim", world.provider.getDimensionId());
-        			return true;
-        		}
+                        if (fmData == null)
+                        {
+                            fmData = new NBTTagCompound();
+                            held.setTagCompound(fmData);
+                        }
+                    }
+                    fmData.setInteger("teCoordX", pos.getX());
+                    fmData.setInteger("teCoordY", pos.getY());
+                    fmData.setInteger("teCoordZ", pos.getZ());
+                    fmData.setInteger("teDim", world.provider.getDimensionId());
+                    return true;
+                }
 
-        		ItemStack wearing = GCPlayerStats.get((EntityPlayerMP)entityPlayer).frequencyModuleInSlot;
-        		if (wearing != null)
-        		{
-        			if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim")) return false;
+                ItemStack wearing = GCPlayerStats.get((EntityPlayerMP) entityPlayer).frequencyModuleInSlot;
+                if (wearing != null)
+                {
+                    if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim"))
+                    {
+                        return false;
+                    }
                     entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail_wearing_it.message")));
-        		}
-        		else
+                }
+                else
+                {
                     entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail_no_frequency_module.message")));
-        	}
+                }
+            }
         }
-    	return false;
+        return false;
     }
 
     @Override

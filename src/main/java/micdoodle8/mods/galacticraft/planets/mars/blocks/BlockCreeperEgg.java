@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -29,13 +28,6 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
         super();
         this.setUnlocalizedName(assetName);
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.blockIcon = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "creeperEgg");
-    }*/
 
     @Override
     public boolean isOpaqueCube()
@@ -90,6 +82,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
         this.onBlockDestroyedByExplosion(world, pos, explosion);
     }
 
+    @Override
     public boolean canDropFromExplosion(Explosion explose)
     {
         return false;
@@ -107,6 +100,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
         return stack.getItem() == MarsItems.deshPickSlime;
     }
 
+    @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer playerIn, World worldIn, BlockPos pos)
     {
         ItemStack stack = playerIn.inventory.getCurrentItem();
@@ -116,13 +110,6 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
         }
         return super.getPlayerRelativeBlockHardness(playerIn, worldIn, pos);
     }
-
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public Item getItem(World worldIn, BlockPos pos)
-//    {
-//        return Item.getItemFromBlock(this);
-//    }
 
     @Override
     public String getShiftDescription(int meta)

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -90,6 +89,7 @@ public class RoomEmpty extends SizedPiece
         return true;
     }
 
+    @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
         if (Math.abs(startPiece.getBoundingBox().maxZ - boundingBox.minZ) > 200)

@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -35,19 +34,11 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    /*private IIcon iconMachineSide;
-    private IIcon iconFuelOutput;
-    private IIcon iconOilInput;
-    private IIcon iconFront;
-    private IIcon iconBack;
-    private IIcon iconTop;*/
-
     protected BlockRefinery(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -56,24 +47,6 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconFuelOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_fuel_input");
-        this.iconOilInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oil_input");
-        this.iconFront = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_front");
-        this.iconBack = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "refinery_side");
-        this.iconTop = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }*/
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -182,36 +155,6 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
         super.breakBlock(worldIn, pos, state);
     }
 
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == metadata + 2)
-        {
-            return this.iconFuelOutput;
-        }
-        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-        {
-            return this.iconOilInput;
-        }
-
-        if (side == 1)
-        {
-            return this.iconTop;
-        }
-
-        if (side == 0)
-        {
-            return this.iconMachineSide;
-        }
-
-        if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-        {
-            return this.iconFront;
-        }
-
-        return this.iconBack;
-    }*/
-
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
@@ -231,17 +174,20 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);

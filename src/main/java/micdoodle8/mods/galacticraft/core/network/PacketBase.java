@@ -20,7 +20,10 @@ public abstract class PacketBase implements IPacket
     @Override
     public void encodeInto(ByteBuf buffer)
     {
-        if (dimensionID == INVALID_DIMENSION_ID) throw new IllegalStateException("Invalid Dimension ID! [GC]");
+        if (dimensionID == INVALID_DIMENSION_ID)
+        {
+            throw new IllegalStateException("Invalid Dimension ID! [GC]");
+        }
         buffer.writeInt(this.dimensionID);
     }
 

@@ -20,63 +20,79 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TileEntityScreen extends TileEntityAdvanced
-{   
+{
     public static float FRAMEBORDER = 0.098F;  //used for rendering
     public int imageType;
-	public DrawGameScreen screen;
-	public boolean connectedUp;
+    public DrawGameScreen screen;
+    public boolean connectedUp;
     public boolean connectedDown;
     public boolean connectedLeft;
     public boolean connectedRight;
-	public int connectionsUp;
-	public int connectionsDown;
-	public int connectionsLeft;
-	public int connectionsRight;
-	public boolean isMultiscreen;
+    public int connectionsUp;
+    public int connectionsDown;
+    public int connectionsLeft;
+    public int connectionsRight;
+    public boolean isMultiscreen;
 
-	public int screenOffsetx = 0;
-	public int screenOffsetz = 0;
-	
-	private int requiresUpdate = 0;
-	//Used on client side only
-	public boolean refreshOnUpdate = false;
+    public int screenOffsetx = 0;
+    public int screenOffsetz = 0;
 
-    public void setConnectedUp(boolean connectedUpL) {
+    private int requiresUpdate = 0;
+    //Used on client side only
+    public boolean refreshOnUpdate = false;
+
+    public void setConnectedUp(boolean connectedUpL)
+    {
         this.connectedUp = connectedUpL;
     }
 
-    public void setConnectedDown(boolean connectedDownL) {
+    public void setConnectedDown(boolean connectedDownL)
+    {
         this.connectedDown = connectedDownL;
     }
 
-    public void setConnectedLeft(boolean connectedLeftL) {
+    public void setConnectedLeft(boolean connectedLeftL)
+    {
         this.connectedLeft = connectedLeftL;
     }
 
-    public void setConnectedRight(boolean connectedRightL) {
+    public void setConnectedRight(boolean connectedRightL)
+    {
         this.connectedRight = connectedRightL;
     }
 
     @Override
-	public void validate()
-	{
+    public void validate()
+    {
         super.validate();
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-		{
-			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-			GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos() } ));
-		}
-	}
-	
-	public void updateClients()
-	{
-		int connectedFlags = 0;
-        if (this.connectedUp) connectedFlags += 8;
-        if (this.connectedDown) connectedFlags += 4;
-        if (this.connectedLeft) connectedFlags += 2;
-        if (this.connectedRight) connectedFlags += 1;
-		GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.imageType, connectedFlags } ), this.worldObj.provider.getDimensionId());
-	}
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        {
+            this.screen = new DrawGameScreen(1.0F, 1.0F, this);
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }));
+        }
+    }
+
+    public void updateClients()
+    {
+        int connectedFlags = 0;
+        if (this.connectedUp)
+        {
+            connectedFlags += 8;
+        }
+        if (this.connectedDown)
+        {
+            connectedFlags += 4;
+        }
+        if (this.connectedLeft)
+        {
+            connectedFlags += 2;
+        }
+        if (this.connectedRight)
+        {
+            connectedFlags += 1;
+        }
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.imageType, connectedFlags }), this.worldObj.provider.getDimensionId());
+    }
 
     public EnumFacing getFront()
     {
@@ -88,247 +104,276 @@ public class TileEntityScreen extends TileEntityAdvanced
         return state.getValue(BlockScreen.FACING);
     }
 
-	/**
-	 * Call when a screen (which maybe part of a multiscreen) is either
-	 * broken or rotated.
-	 * 
-	 * @param state  The state of the screen prior to breaking or rotation
-	 */
-	public void breakScreen(IBlockState state)
-	{
-		BlockVec3 vec = new BlockVec3(this);
+    /**
+     * Call when a screen (which maybe part of a multiscreen) is either
+     * broken or rotated.
+     *
+     * @param state The state of the screen prior to breaking or rotation
+     */
+    public void breakScreen(IBlockState state)
+    {
+        BlockVec3 vec = new BlockVec3(this);
         int meta = state.getBlock().getMetaFromState(state);
-		TileEntity tile;
+        TileEntity tile;
         EnumFacing facingRight = getFacing(state).rotateY();
 
-		int left = this.connectionsLeft;
-		int right = this.connectionsRight;
-		int up = this.connectionsUp;
-		int down = this.connectionsDown;
-	
-		boolean doUp = this.connectedUp;
-		boolean doDown = this.connectedDown;
-		boolean doLeft = this.connectedLeft;
-		boolean doRight = this.connectedRight;
+        int left = this.connectionsLeft;
+        int right = this.connectionsRight;
+        int up = this.connectionsUp;
+        int down = this.connectionsDown;
 
-    	for (int x = -left; x <= right; x++)
-    	{
-    		for (int z = -up; z <= down; z++)
-    		{
-    			if (x == 0 && z == 0) this.resetToSingle();
-    			else
-    			{
-	    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(facingRight, x).modifyPositionFromSide(EnumFacing.DOWN, z);
-	    			tile = newVec.getTileEntity(this.worldObj);
-	    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
-	    			{
-	    				((TileEntityScreen)tile).resetToSingle();
-	    			}
-    			}
-    		}
-   		}
-    	
-    	//TODO  Try to generate largest screen possible out of remaining blocks
+        boolean doUp = this.connectedUp;
+        boolean doDown = this.connectedDown;
+        boolean doLeft = this.connectedLeft;
+        boolean doRight = this.connectedRight;
+
+        for (int x = -left; x <= right; x++)
+        {
+            for (int z = -up; z <= down; z++)
+            {
+                if (x == 0 && z == 0)
+                {
+                    this.resetToSingle();
+                }
+                else
+                {
+                    BlockVec3 newVec = vec.clone().modifyPositionFromSide(facingRight, x).modifyPositionFromSide(EnumFacing.DOWN, z);
+                    tile = newVec.getTileEntity(this.worldObj);
+                    if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
+                    {
+                        ((TileEntityScreen) tile).resetToSingle();
+                    }
+                }
+            }
+        }
+
+        //TODO  Try to generate largest screen possible out of remaining blocks
 
         this.setConnectedDown(false);
         this.setConnectedUp(false);
         this.setConnectedLeft(false);
         this.setConnectedRight(false);
 
-		if (doUp)
-		{
-			tile = vec.getTileEntityOnSide(this.worldObj, 1);
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-                if (doLeft) ((TileEntityScreen) tile).setConnectedLeft(true);
-                if (doRight) ((TileEntityScreen) tile).setConnectedRight(true);
+        if (doUp)
+        {
+            tile = vec.getTileEntityOnSide(this.worldObj, 1);
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                if (doLeft)
+                {
+                    ((TileEntityScreen) tile).setConnectedLeft(true);
+                }
+                if (doRight)
+                {
+                    ((TileEntityScreen) tile).setConnectedRight(true);
+                }
                 ((TileEntityScreen) tile).setConnectedUp(true);
 //				if (doLeft) ((TileEntityScreen)tile).connectedLeft = true;
 //				if (doRight) ((TileEntityScreen)tile).connectedRight = true;
 //				((TileEntityScreen)tile).connectedUp = true;
-				((TileEntityScreen)tile).refreshConnections(true);
-			}			
-		}
-		if (doDown)
-		{
-			tile = vec.getTileEntityOnSide(this.worldObj, 0);
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-                if (doLeft) ((TileEntityScreen) tile).setConnectedLeft(true);
-                if (doRight) ((TileEntityScreen) tile).setConnectedRight(true);
+                ((TileEntityScreen) tile).refreshConnections(true);
+            }
+        }
+        if (doDown)
+        {
+            tile = vec.getTileEntityOnSide(this.worldObj, 0);
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                if (doLeft)
+                {
+                    ((TileEntityScreen) tile).setConnectedLeft(true);
+                }
+                if (doRight)
+                {
+                    ((TileEntityScreen) tile).setConnectedRight(true);
+                }
                 ((TileEntityScreen) tile).setConnectedDown(true);
 //				if (doLeft) ((TileEntityScreen)tile).connectedLeft = true;
 //				if (doRight) ((TileEntityScreen)tile).connectedRight = true;
 //				((TileEntityScreen)tile).connectedDown = true;
-				((TileEntityScreen)tile).refreshConnections(true);
-			}			
-		}
-		if (doLeft)
-		{
-			tile = vec.getTileEntityOnSide(this.worldObj, this.getLeft(meta));
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-                if (doUp) ((TileEntityScreen) tile).setConnectedUp(true);
-                if (doDown) ((TileEntityScreen) tile).setConnectedDown(true);
+                ((TileEntityScreen) tile).refreshConnections(true);
+            }
+        }
+        if (doLeft)
+        {
+            tile = vec.getTileEntityOnSide(this.worldObj, this.getLeft(meta));
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                if (doUp)
+                {
+                    ((TileEntityScreen) tile).setConnectedUp(true);
+                }
+                if (doDown)
+                {
+                    ((TileEntityScreen) tile).setConnectedDown(true);
+                }
                 ((TileEntityScreen) tile).setConnectedLeft(true);
 //				if (doUp) ((TileEntityScreen)tile).connectedUp = true;
 //				if (doDown) ((TileEntityScreen)tile).connectedDown = true;
 //				((TileEntityScreen)tile).connectedLeft = true;
-				((TileEntityScreen)tile).refreshConnections(true);
-			}			
-		}
-		if (doRight)
-		{
-			tile = vec.getTileEntityOnSide(this.worldObj, this.getRight(meta));
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-                if (doUp) ((TileEntityScreen) tile).setConnectedUp(true);
-                if (doDown) ((TileEntityScreen) tile).setConnectedDown(true);
+                ((TileEntityScreen) tile).refreshConnections(true);
+            }
+        }
+        if (doRight)
+        {
+            tile = vec.getTileEntityOnSide(this.worldObj, this.getRight(meta));
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                if (doUp)
+                {
+                    ((TileEntityScreen) tile).setConnectedUp(true);
+                }
+                if (doDown)
+                {
+                    ((TileEntityScreen) tile).setConnectedDown(true);
+                }
                 ((TileEntityScreen) tile).setConnectedRight(true);
 //				if (doUp) ((TileEntityScreen)tile).connectedUp = true;
 //				if (doDown) ((TileEntityScreen)tile).connectedDown = true;
 //				((TileEntityScreen)tile).connectedRight = true;
-				((TileEntityScreen)tile).refreshConnections(true);
-			}			
-		}
-	}
+                ((TileEntityScreen) tile).refreshConnections(true);
+            }
+        }
+    }
 
-	/**
-	 * Check whether the screen can sustain 'multi-screen' connections on each of its 4 sides
-	 * (note: this can be called recursively from inside itself)
-	 * 
-	 * @param  doScreen  If true, build a new multi-screen if connections are found
-	 */
-	public void refreshConnections(boolean doScreen)
-	{
-		this.log("Starting connection check");
+    /**
+     * Check whether the screen can sustain 'multi-screen' connections on each of its 4 sides
+     * (note: this can be called recursively from inside itself)
+     *
+     * @param doScreen If true, build a new multi-screen if connections are found
+     */
+    public void refreshConnections(boolean doScreen)
+    {
+        this.log("Starting connection check");
 
         IBlockState iblockstate = this.worldObj.getBlockState(this.pos);
         EnumFacing facing = iblockstate.getValue(BlockScreen.FACING);
 
-		int meta = this.getBlockMetadata() & 7;
-		if (meta < 2)
-		{
-			//TODO System.out.println("Up/down oriented screens cannot be multiscreen");
-			this.resetToSingle();
-			return;
-		}
-		
-		TileEntity tileUp = null;
-		TileEntity tileDown = null;
-		TileEntity tileLeft = null;
-		TileEntity tileRight = null;
-		BlockVec3 vec = new BlockVec3(this);
+        int meta = this.getBlockMetadata() & 7;
+        if (meta < 2)
+        {
+            //TODO System.out.println("Up/down oriented screens cannot be multiscreen");
+            this.resetToSingle();
+            return;
+        }
 
-		//First, basic check that a neighbour is there and in the same orientation 
-		if (this.connectedUp)
-		{
-			tileUp = vec.getTileEntityOnSide(this.worldObj, 1);
+        TileEntity tileUp = null;
+        TileEntity tileDown = null;
+        TileEntity tileLeft = null;
+        TileEntity tileRight = null;
+        BlockVec3 vec = new BlockVec3(this);
+
+        //First, basic check that a neighbour is there and in the same orientation
+        if (this.connectedUp)
+        {
+            tileUp = vec.getTileEntityOnSide(this.worldObj, 1);
 //			this.connectedUp = tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta && !tileUp.isInvalid();
             this.setConnectedUp(tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta && !tileUp.isInvalid());
-		}
+        }
 
-		if (this.connectedDown)
-		{
-			tileDown = vec.getTileEntityOnSide(this.worldObj, 0);
+        if (this.connectedDown)
+        {
+            tileDown = vec.getTileEntityOnSide(this.worldObj, 0);
 //			this.connectedDown = tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta && !tileDown.isInvalid();
             this.setConnectedDown(tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta && !tileDown.isInvalid());
-		}
+        }
 
-		if (this.connectedLeft)
-		{
-			int side = this.getLeft(meta);
-			tileLeft = vec.getTileEntityOnSide(this.worldObj, side);
+        if (this.connectedLeft)
+        {
+            int side = this.getLeft(meta);
+            tileLeft = vec.getTileEntityOnSide(this.worldObj, side);
 //			this.connectedLeft = tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta && !tileLeft.isInvalid();
             this.setConnectedLeft(tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta && !tileLeft.isInvalid());
-		}
+        }
 
-		if (this.connectedRight)
-		{
-			int side = this.getRight(meta);
-			tileRight = vec.getTileEntityOnSide(this.worldObj, side);
+        if (this.connectedRight)
+        {
+            int side = this.getRight(meta);
+            tileRight = vec.getTileEntityOnSide(this.worldObj, side);
 //			this.connectedRight = tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta && !tileRight.isInvalid();
             this.setConnectedRight(tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta && !tileRight.isInvalid());
-		}
+        }
 
-		//Now test whether a connection can be sustained with that other tile
-		if (this.connectedUp)
-		{
+        //Now test whether a connection can be sustained with that other tile
+        if (this.connectedUp)
+        {
 //			this.connectedUp = this.tryConnectUp((TileEntityScreen)tileUp);
-            this.setConnectedUp(this.tryConnectUp((TileEntityScreen)tileUp));
-		}
+            this.setConnectedUp(this.tryConnectUp((TileEntityScreen) tileUp));
+        }
 
-		if (this.connectedDown)
-		{
+        if (this.connectedDown)
+        {
 //			this.connectedDown = this.tryConnectDown((TileEntityScreen)tileDown);
-            this.setConnectedDown(this.tryConnectDown((TileEntityScreen)tileDown));
-		}
+            this.setConnectedDown(this.tryConnectDown((TileEntityScreen) tileDown));
+        }
 
-		if (this.connectedLeft)
-		{
+        if (this.connectedLeft)
+        {
 //			this.connectedLeft = this.tryConnectLeft((TileEntityScreen)tileLeft);
-            this.setConnectedLeft(this.tryConnectLeft((TileEntityScreen)tileLeft));
-		}
+            this.setConnectedLeft(this.tryConnectLeft((TileEntityScreen) tileLeft));
+        }
 
-		if (this.connectedRight)
-		{
+        if (this.connectedRight)
+        {
 //			this.connectedRight = this.tryConnectRight((TileEntityScreen)tileRight);
-            this.setConnectedRight(this.tryConnectRight((TileEntityScreen)tileRight));
-		}
-		this.log("Ending connection check");
-		if (doScreen)
-		{
-			this.checkScreenSize();
-			this.markDirty();
-		}
-	}
-	
+            this.setConnectedRight(this.tryConnectRight((TileEntityScreen) tileRight));
+        }
+        this.log("Ending connection check");
+        if (doScreen)
+        {
+            this.checkScreenSize();
+            this.markDirty();
+        }
+    }
+
 //	@Override
 //    public boolean canUpdate()
 //    {
 //        return false;
 //    }
 
-	/**
-	 * Cycle through different screen contents
-	 */
-	public void changeChannel()
-	{
-		if (!this.worldObj.isRemote)
-		{
-			if (++this.imageType >= GalacticraftRegistry.getMaxScreenTypes())
-				this.imageType = 0;
+    /**
+     * Cycle through different screen contents
+     */
+    public void changeChannel()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (++this.imageType >= GalacticraftRegistry.getMaxScreenTypes())
+            {
+                this.imageType = 0;
+            }
 
-			boolean flag = false;
+            boolean flag = false;
 
-			if (!this.connectedRight && this.canJoinRight())
-			{
-				this.joinRight();
-				flag = true;
-			}
-			else if (!this.connectedLeft && this.canJoinLeft())
-			{
-				this.joinLeft();
-				flag = true;
-			}
-			else if (!this.connectedUp && this.canJoinUp())
-			{
-				this.joinUp();
-				flag = true;
-			}
-			else if (!this.connectedDown && this.canJoinDown())
-			{
-				this.joinDown();
-				flag = true;
-			}
+            if (!this.connectedRight && this.canJoinRight())
+            {
+                this.joinRight();
+                flag = true;
+            }
+            else if (!this.connectedLeft && this.canJoinLeft())
+            {
+                this.joinLeft();
+                flag = true;
+            }
+            else if (!this.connectedUp && this.canJoinUp())
+            {
+                this.joinUp();
+                flag = true;
+            }
+            else if (!this.connectedDown && this.canJoinDown())
+            {
+                this.joinDown();
+                flag = true;
+            }
 
-			this.refreshConnections(true);
-			this.markDirty();
+            this.refreshConnections(true);
+            this.markDirty();
 
-			this.updateClients();
-		}
-	}
-	
+            this.updateClients();
+        }
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
@@ -348,7 +393,7 @@ public class TileEntityScreen extends TileEntityAdvanced
 //        this.connectedLeft = (this.connectionsLeft > 0);
 //        this.connectedRight = (this.connectionsRight > 0);
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
@@ -360,719 +405,903 @@ public class TileEntityScreen extends TileEntityAdvanced
         nbt.setInteger("connectionsRight", this.connectionsRight);
         nbt.setBoolean("multiscreen", this.isMultiscreen);
     }
-    
+
     public void checkScreenSize()
     {
-    	this.log("Checking screen size");
-    	int up = 0;
-    	int down = 0;
-    	int left = 0;
-    	int right = 0;
-		int meta = this.getBlockMetadata() & 7;
+        this.log("Checking screen size");
+        int up = 0;
+        int down = 0;
+        int left = 0;
+        int right = 0;
+        int meta = this.getBlockMetadata() & 7;
 
-    	BlockVec3 vec = new BlockVec3(this);
-    	TileEntityScreen tile = this;
-    	while (up < 8)
-    	{
-    		if (tile.connectedUp)
-    		{
-    			up++;
-    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, 1);
-    			if (newTile instanceof TileEntityScreen)
-    			{
-    				tile = (TileEntityScreen) newTile;
-    				vec.translate(0,  1,  0);
-    			}
-    			else
-    			{
-    				System.out.println("Debug - connected up to a non-screen tile");
+        BlockVec3 vec = new BlockVec3(this);
+        TileEntityScreen tile = this;
+        while (up < 8)
+        {
+            if (tile.connectedUp)
+            {
+                up++;
+                TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, 1);
+                if (newTile instanceof TileEntityScreen)
+                {
+                    tile = (TileEntityScreen) newTile;
+                    vec.translate(0, 1, 0);
+                }
+                else
+                {
+                    System.out.println("Debug - connected up to a non-screen tile");
 //    				tile.connectedUp = false;
                     this.setConnectedUp(false);
-    				tile.markDirty();
-    				up--;
-    				break;
-    			}
-    		}
-    		else
-    			break;
-    	}
+                    tile.markDirty();
+                    up--;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
 
-    	vec = new BlockVec3(this);
-    	tile = this;
-    	while (down < 8 - up)
-    	{
-    		if (tile.connectedDown)
-    		{
-    			down++;
-    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, 0);
-    			if (newTile instanceof TileEntityScreen)
-    			{
-    				tile = (TileEntityScreen) newTile;
-    				vec.translate(0,  -1,  0);
-    			}
-    			else
-    			{
-    				System.out.println("Debug - connected down to a non-screen tile");
+        vec = new BlockVec3(this);
+        tile = this;
+        while (down < 8 - up)
+        {
+            if (tile.connectedDown)
+            {
+                down++;
+                TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, 0);
+                if (newTile instanceof TileEntityScreen)
+                {
+                    tile = (TileEntityScreen) newTile;
+                    vec.translate(0, -1, 0);
+                }
+                else
+                {
+                    System.out.println("Debug - connected down to a non-screen tile");
 //    				tile.connectedDown = false;
                     this.setConnectedDown(false);
-    				tile.markDirty();
-    				down--;
-    				break;
-    			}
-    		}
-    		else
-    			break;
-    	}
+                    tile.markDirty();
+                    down--;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
 
-    	vec = new BlockVec3(this);
-    	tile = this;
-		int leftside = this.getLeft(meta);
-    	while (left < ((up + down == 0) ? 1 : 8))
-    	{
-    		if (tile.connectedLeft)
-    		{
-    			left++;
-    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, leftside);
-    			if (newTile instanceof TileEntityScreen)
-    			{
-    				tile = (TileEntityScreen) newTile;
-    				vec = vec.newVecSide(leftside);
-    			}
-    			else
-    			{
-    				System.out.println("Debug - connected left to a non-screen tile");
+        vec = new BlockVec3(this);
+        tile = this;
+        int leftside = this.getLeft(meta);
+        while (left < ((up + down == 0) ? 1 : 8))
+        {
+            if (tile.connectedLeft)
+            {
+                left++;
+                TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, leftside);
+                if (newTile instanceof TileEntityScreen)
+                {
+                    tile = (TileEntityScreen) newTile;
+                    vec = vec.newVecSide(leftside);
+                }
+                else
+                {
+                    System.out.println("Debug - connected left to a non-screen tile");
 //    				tile.connectedLeft = false;
                     this.setConnectedLeft(false);
-    				tile.markDirty();
-    				left--;
-    				break;
-    			}
-    		}
-    		else
-    			break;
-    	}
+                    tile.markDirty();
+                    left--;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
 
-    	vec = new BlockVec3(this);
-    	tile = this;
-		int rightside = this.getRight(meta);
-    	while (right < ((up + down == 0) ? 1 : 8) - left)
-    	{
-    		if (tile.connectedRight)
-    		{
-    			right++;
-    			TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, rightside);
-    			if (newTile instanceof TileEntityScreen)
-    			{
-    				tile = (TileEntityScreen) newTile;
-    				vec = vec.newVecSide(rightside);
-    			}
-    			else
-    			{
-    				System.out.println("Debug - connected right to a non-screen tile");
+        vec = new BlockVec3(this);
+        tile = this;
+        int rightside = this.getRight(meta);
+        while (right < ((up + down == 0) ? 1 : 8) - left)
+        {
+            if (tile.connectedRight)
+            {
+                right++;
+                TileEntity newTile = vec.getTileEntityOnSide(this.worldObj, rightside);
+                if (newTile instanceof TileEntityScreen)
+                {
+                    tile = (TileEntityScreen) newTile;
+                    vec = vec.newVecSide(rightside);
+                }
+                else
+                {
+                    System.out.println("Debug - connected right to a non-screen tile");
 //    				tile.connectedRight = false;
                     this.setConnectedRight(false);
-    				tile.markDirty();
-    				right--;
-    				break;
-    			}
-    		}
-    		else
-    			break;
-    	}
-    	
-    	this.log("Screen size check midpoint "+up+" "+down+" "+left+" "+right+" ");
+                    tile.markDirty();
+                    right--;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
 
-    	vec = new BlockVec3(this);
-    	TileEntity newtile = vec.getTileEntityOnSide(this.worldObj, 1);
-    	TileEntityScreen tileUp = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null; 
-    	newtile = vec.getTileEntityOnSide(this.worldObj, 0);
-    	TileEntityScreen tileDown = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null;
-    	newtile = vec.getTileEntityOnSide(this.worldObj, leftside);
-    	TileEntityScreen tileLeft = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null;
-    	newtile = vec.getTileEntityOnSide(this.worldObj, rightside);
-    	TileEntityScreen tileRight = (newtile instanceof TileEntityScreen) ? (TileEntityScreen)newtile : null;
-    	//Prevent 3 x 1 and longer
-    	if (left + right == 0 && up + down >= 1)
-    	{
-    		if (up > 0 && !tileUp.connectedUp)  //No need for null check if up > 0
-    		{
-    			up = 1;
-    			down = 0;
-    		}
-    		else
-    		{
-    			up = 0;
-    			if (tileDown != null && !tileDown.connectedDown)
-    				down = 1;
-    			else
-    				down = 0;
-    		}
-    	}
-    	if (up + down == 0 && left + right >= 1)
-    	{
-    		if (left > 0 && !tileLeft.connectedLeft)  //No need for null check if right > 0
-    		{
-    			if (right == 0 || tileRight == null || tileRight.connectionsLeft == 0)
-    			{
-	    			left = 1;
-	    			right = 0;
-    			}
-    			else
-    			{
-    				left = 0;
-    				right = 1;
-    			}
-    		}
-    		else
-    		{
-    			left = 0;
-    			if (tileRight != null && !tileRight.connectedRight)
-    				right = 1;
-    			else
-    				right = 0;
-    		}
-    	}
-    	
-    	if (up == 0)
-    	{
+        this.log("Screen size check midpoint " + up + " " + down + " " + left + " " + right + " ");
+
+        vec = new BlockVec3(this);
+        TileEntity newtile = vec.getTileEntityOnSide(this.worldObj, 1);
+        TileEntityScreen tileUp = (newtile instanceof TileEntityScreen) ? (TileEntityScreen) newtile : null;
+        newtile = vec.getTileEntityOnSide(this.worldObj, 0);
+        TileEntityScreen tileDown = (newtile instanceof TileEntityScreen) ? (TileEntityScreen) newtile : null;
+        newtile = vec.getTileEntityOnSide(this.worldObj, leftside);
+        TileEntityScreen tileLeft = (newtile instanceof TileEntityScreen) ? (TileEntityScreen) newtile : null;
+        newtile = vec.getTileEntityOnSide(this.worldObj, rightside);
+        TileEntityScreen tileRight = (newtile instanceof TileEntityScreen) ? (TileEntityScreen) newtile : null;
+        //Prevent 3 x 1 and longer
+        if (left + right == 0 && up + down >= 1)
+        {
+            if (up > 0 && !tileUp.connectedUp)  //No need for null check if up > 0
+            {
+                up = 1;
+                down = 0;
+            }
+            else
+            {
+                up = 0;
+                if (tileDown != null && !tileDown.connectedDown)
+                {
+                    down = 1;
+                }
+                else
+                {
+                    down = 0;
+                }
+            }
+        }
+        if (up + down == 0 && left + right >= 1)
+        {
+            if (left > 0 && !tileLeft.connectedLeft)  //No need for null check if right > 0
+            {
+                if (right == 0 || tileRight == null || tileRight.connectionsLeft == 0)
+                {
+                    left = 1;
+                    right = 0;
+                }
+                else
+                {
+                    left = 0;
+                    right = 1;
+                }
+            }
+            else
+            {
+                left = 0;
+                if (tileRight != null && !tileRight.connectedRight)
+                {
+                    right = 1;
+                }
+                else
+                {
+                    right = 0;
+                }
+            }
+        }
+
+        if (up == 0)
+        {
             this.setConnectedUp(false);
-            if (tileUp != null) tileUp.setConnectedDown(false);
+            if (tileUp != null)
+            {
+                tileUp.setConnectedDown(false);
+            }
 //    		this.connectedUp = false;
 //    		if (tileUp != null) tileUp.connectedDown = false;
-    	}
-    	if (down == 0)
-    	{
+        }
+        if (down == 0)
+        {
             this.setConnectedDown(false);
-            if (tileUp != null) tileUp.setConnectedUp(false);
+            if (tileUp != null)
+            {
+                tileUp.setConnectedUp(false);
+            }
 //    		this.connectedDown = false;
 //    		if (tileDown != null) tileDown.connectedUp = false;
-    	}
-    	if (left == 0)
-    	{
+        }
+        if (left == 0)
+        {
             this.setConnectedLeft(false);
-            if (tileUp != null) tileUp.setConnectedRight(false);
+            if (tileUp != null)
+            {
+                tileUp.setConnectedRight(false);
+            }
 //    		this.connectedLeft = false;
 //    		if (tileLeft != null) tileLeft.connectedRight = false;
-    	}
-    	if (right == 0)
-    	{
+        }
+        if (right == 0)
+        {
             this.setConnectedRight(false);
-            if (tileUp != null) tileUp.setConnectedLeft(false);
+            if (tileUp != null)
+            {
+                tileUp.setConnectedLeft(false);
+            }
 //    		this.connectedRight = false;
 //    		if (tileRight != null) tileRight.connectedLeft = false;
-    	}
+        }
 
-    	this.log("Finished screen size check");
-    	
-    	this.checkWholeScreen(up, down, left, right);
+        this.log("Finished screen size check");
+
+        this.checkWholeScreen(up, down, left, right);
     }
-    
+
     /**
      * After figuring out the screen edges (overall screen dimensions)
      * check that the screen is a whole A x B rectangle with no tiles missing
-     * 
-     * If it is whole, set all tiles in the screen to match this screen type 
-     * 
-     * @param up  Number of blocks the screen edge is away from this in the up direction 
+     * <p>
+     * If it is whole, set all tiles in the screen to match this screen type
+     *
+     * @param up    Number of blocks the screen edge is away from this in the up direction
      * @param down  Number of blocks the screen edge is away from this in the down direction
      * @param left  Number of blocks the screen edge is away from this in the left direction
-     * @param right  Number of blocks the screen edge is away from this in the right direction
-     * @return  True if the screen was whole
+     * @param right Number of blocks the screen edge is away from this in the right direction
+     * @return True if the screen was whole
      */
     private boolean checkWholeScreen(int up, int down, int left, int right)
     {
-    	if (up + down + left + right == 0 || up < 0 || down < 0 || left < 0 || right < 0)
-    	{
-    		this.resetToSingle();
-    		return true;
-    	}
+        if (up + down + left + right == 0 || up < 0 || down < 0 || left < 0 || right < 0)
+        {
+            this.resetToSingle();
+            return true;
+        }
 
-    	//System.out.println("Checking screen size at "+this.getPos().getX()+","+this.getPos().getZ()+": Up "+up+" Dn "+down+" Lf "+left+" Rg "+right);
+        //System.out.println("Checking screen size at "+this.getPos().getX()+","+this.getPos().getZ()+": Up "+up+" Dn "+down+" Lf "+left+" Rg "+right);
 
-    	boolean screenWhole= true;
-    	boolean existingScreen = false;
-    	int barrierUp = up;
-    	int barrierDown = down;
-    	int barrierLeft = left;
-    	int barrierRight = right;
-    	
-		int meta = this.getBlockMetadata() & 7;
-    	BlockVec3 vec = new BlockVec3(this);
-    	ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
+        boolean screenWhole = true;
+        boolean existingScreen = false;
+        int barrierUp = up;
+        int barrierDown = down;
+        int barrierLeft = left;
+        int barrierRight = right;
+
+        int meta = this.getBlockMetadata() & 7;
+        BlockVec3 vec = new BlockVec3(this);
+        ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
 
 //		int side = this.getRight(meta);
-		EnumFacing side = getFront().rotateY();
+        EnumFacing side = getFront().rotateY();
 
-    	for (int x = -left; x <= right; x++)
-    	{
-    		for (int z = -up; z <= down; z++)
-    		{
-    			BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x).modifyPositionFromSide(EnumFacing.DOWN, z);
-    			TileEntity tile = newVec.getTileEntity(this.worldObj);
-    			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-    			{
-    				TileEntityScreen screenTile = (TileEntityScreen)tile;
-    				screenList.add(screenTile);
-    				
-    				if (screenTile.isMultiscreen)
-    				{
-    					if (screenTile.connectionsUp > z + up)
-    					{
-    						barrierUp = -z - 1;
-    						existingScreen = true;
-    					}
-    					if (screenTile.connectionsDown > down - z)
-    					{
-    						barrierDown = z - 1;
-    						existingScreen = true;
-    					}
-    					if (screenTile.connectionsLeft > x + left)
-    					{
-    						barrierLeft = -x - 1;
-    						existingScreen = true;
-    					}
-    					if (screenTile.connectionsRight > right - x)
-    					{
-    						barrierRight = x - 1;
-    						existingScreen = true;
-    					}
-    				}
-    			}
-    			else
-    			{
-    				screenWhole = false;
-    			}
-    		}
-    	}
-    	
-    	if (!screenWhole)
-    	{
-	    	for (TileEntityScreen scr : screenList)
-	   			scr.resetToSingle();
-	    	
-	    	return false;
-    	}
+        for (int x = -left; x <= right; x++)
+        {
+            for (int z = -up; z <= down; z++)
+            {
+                BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x).modifyPositionFromSide(EnumFacing.DOWN, z);
+                TileEntity tile = newVec.getTileEntity(this.worldObj);
+                if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+                {
+                    TileEntityScreen screenTile = (TileEntityScreen) tile;
+                    screenList.add(screenTile);
 
-    	if (existingScreen)
-    	{
-    		return this.checkWholeScreen(barrierUp, barrierDown, barrierLeft, barrierRight);
-    	}
-    	
-		DrawGameScreen newScreen = null;
-		boolean serverside = true;
-		TileEntity bottomLeft = vec.clone().modifyPositionFromSide(side, -left).modifyPositionFromSide(EnumFacing.DOWN, down).getTileEntity(this.worldObj);
-		if (this.worldObj.isRemote)
-		{
-			if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
-			{
-				newScreen = ((TileEntityScreen)bottomLeft).screen;
-				if (!newScreen.check(1.0F + left + right, 1.0F + up + down))
- 					newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down, bottomLeft);				
-			}
-			serverside = false;
-		}
-		
-    	Iterator<TileEntityScreen> it = screenList.iterator();
-    	for (int x = -left; x <= right; x++)
-    	{
-    		for (int z = -up; z <= down; z++)
-    		{
-    			TileEntityScreen screenTile = it.next();   			
-				screenTile.screenOffsetx = x + left;
-				screenTile.screenOffsetz = z + up;
-				screenTile.screen = newScreen;
-				screenTile.connectionsLeft = x + left;
-				screenTile.connectionsRight = right - x;
-				screenTile.connectionsUp = z + up;
-				screenTile.connectionsDown = down - z;
-				screenTile.isMultiscreen = true;
-				screenTile.refreshOnUpdate = false;
-				if (serverside)
-				{
-					screenTile.imageType = this.imageType;
-					screenTile.markDirty();
-					screenTile.updateClients();
-				}
-    			screenTile.refreshConnections(false);
-    		}
-    	}
+                    if (screenTile.isMultiscreen)
+                    {
+                        if (screenTile.connectionsUp > z + up)
+                        {
+                            barrierUp = -z - 1;
+                            existingScreen = true;
+                        }
+                        if (screenTile.connectionsDown > down - z)
+                        {
+                            barrierDown = z - 1;
+                            existingScreen = true;
+                        }
+                        if (screenTile.connectionsLeft > x + left)
+                        {
+                            barrierLeft = -x - 1;
+                            existingScreen = true;
+                        }
+                        if (screenTile.connectionsRight > right - x)
+                        {
+                            barrierRight = x - 1;
+                            existingScreen = true;
+                        }
+                    }
+                }
+                else
+                {
+                    screenWhole = false;
+                }
+            }
+        }
 
-    	this.connectionsUp = up;
-    	this.connectionsDown = down;
-    	this.connectionsLeft = left;
-    	this.connectionsRight = right;
+        if (!screenWhole)
+        {
+            for (TileEntityScreen scr : screenList)
+            {
+                scr.resetToSingle();
+            }
 
-       	return true;
+            return false;
+        }
+
+        if (existingScreen)
+        {
+            return this.checkWholeScreen(barrierUp, barrierDown, barrierLeft, barrierRight);
+        }
+
+        DrawGameScreen newScreen = null;
+        boolean serverside = true;
+        TileEntity bottomLeft = vec.clone().modifyPositionFromSide(side, -left).modifyPositionFromSide(EnumFacing.DOWN, down).getTileEntity(this.worldObj);
+        if (this.worldObj.isRemote)
+        {
+            if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
+            {
+                newScreen = ((TileEntityScreen) bottomLeft).screen;
+                if (!newScreen.check(1.0F + left + right, 1.0F + up + down))
+                {
+                    newScreen = new DrawGameScreen(1.0F + left + right, 1.0F + up + down, bottomLeft);
+                }
+            }
+            serverside = false;
+        }
+
+        Iterator<TileEntityScreen> it = screenList.iterator();
+        for (int x = -left; x <= right; x++)
+        {
+            for (int z = -up; z <= down; z++)
+            {
+                TileEntityScreen screenTile = it.next();
+                screenTile.screenOffsetx = x + left;
+                screenTile.screenOffsetz = z + up;
+                screenTile.screen = newScreen;
+                screenTile.connectionsLeft = x + left;
+                screenTile.connectionsRight = right - x;
+                screenTile.connectionsUp = z + up;
+                screenTile.connectionsDown = down - z;
+                screenTile.isMultiscreen = true;
+                screenTile.refreshOnUpdate = false;
+                if (serverside)
+                {
+                    screenTile.imageType = this.imageType;
+                    screenTile.markDirty();
+                    screenTile.updateClients();
+                }
+                screenTile.refreshConnections(false);
+            }
+        }
+
+        this.connectionsUp = up;
+        this.connectionsDown = down;
+        this.connectionsLeft = left;
+        this.connectionsRight = right;
+
+        return true;
     }
-    
+
     /**
      * Reset the screen to a 1x1 size, not part of a 'multi-screen'
      */
     public void resetToSingle()
     {
-		if (this.worldObj.isRemote)
-			this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-		this.screenOffsetx = 0;
-		this.screenOffsetz = 0;   		
-    	this.connectionsUp = 0;
-    	this.connectionsDown = 0;
-    	this.connectionsLeft = 0;
-    	this.connectionsRight = 0;
-    	this.isMultiscreen = false;
+        if (this.worldObj.isRemote)
+        {
+            this.screen = new DrawGameScreen(1.0F, 1.0F, this);
+        }
+        this.screenOffsetx = 0;
+        this.screenOffsetz = 0;
+        this.connectionsUp = 0;
+        this.connectionsDown = 0;
+        this.connectionsLeft = 0;
+        this.connectionsRight = 0;
+        this.isMultiscreen = false;
 //    	this.connectedDown = this.connectedLeft = this.connectedRight = this.connectedUp = false;
         this.setConnectedLeft(false);
         this.setConnectedRight(false);
         this.setConnectedUp(false);
         this.setConnectedDown(false);
-		this.refreshOnUpdate = false;
-		this.markDirty();
+        this.refreshOnUpdate = false;
+        this.markDirty();
         this.updateClients();
     }
-    
+
     /**
      * Get the Minecraft direction which is on the left side
      * for the block orientation given by metadata
      */
     private int getLeft(int meta)
     {
-		switch (meta)
-		{
-		case 2:
-			return 4;
-		case 3:
-			return 5;
-		case 4:
-			return 3;
-		case 5:
-			return 2;
-		}
-		return 4;
+        switch (meta)
+        {
+        case 2:
+            return 4;
+        case 3:
+            return 5;
+        case 4:
+            return 3;
+        case 5:
+            return 2;
+        }
+        return 4;
     }
-    
+
     /**
      * Get the Minecraft direction which is on the right side
      * for the block orientation given by metadata
      */
     private int getRight(int meta)
     {
-		switch (meta)
-		{
-		case 2:
-			return 5;
-		case 3:
-			return 4;
-		case 4:
-			return 2;
-		case 5:
-			return 3;
-		}
-		return 5;
+        switch (meta)
+        {
+        case 2:
+            return 5;
+        case 3:
+            return 4;
+        case 4:
+            return 2;
+        case 5:
+            return 3;
+        }
+        return 5;
     }
 
     private boolean canJoinRight()
     {
-    	int meta = this.getBlockMetadata();
-    	TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getRight(meta));
-    	if (!(te instanceof TileEntityScreen)) return false;
-    	TileEntityScreen screenTile = (TileEntityScreen) te; 
-    	if (screenTile.getBlockMetadata() != meta) return false;
-    	if (screenTile.connectionsUp != this.connectionsUp) return false;
-    	if (screenTile.connectionsDown != this.connectionsDown) return false;
-    	if (this.connectionsUp + this.connectionsDown > 0) return true;
-    	if (this.connectionsLeft > 0) return false;
-    	if (screenTile.connectionsRight > 0) return false;
-    	return true;
+        int meta = this.getBlockMetadata();
+        TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getRight(meta));
+        if (!(te instanceof TileEntityScreen))
+        {
+            return false;
+        }
+        TileEntityScreen screenTile = (TileEntityScreen) te;
+        if (screenTile.getBlockMetadata() != meta)
+        {
+            return false;
+        }
+        if (screenTile.connectionsUp != this.connectionsUp)
+        {
+            return false;
+        }
+        if (screenTile.connectionsDown != this.connectionsDown)
+        {
+            return false;
+        }
+        if (this.connectionsUp + this.connectionsDown > 0)
+        {
+            return true;
+        }
+        if (this.connectionsLeft > 0)
+        {
+            return false;
+        }
+        if (screenTile.connectionsRight > 0)
+        {
+            return false;
+        }
+        return true;
     }
-    
+
 
     private boolean canJoinLeft()
     {
-    	int meta = this.getBlockMetadata();
-    	TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getLeft(meta));
-    	if (!(te instanceof TileEntityScreen)) return false;
-    	TileEntityScreen screenTile = (TileEntityScreen) te; 
-    	if (screenTile.getBlockMetadata() != meta) return false;
-    	if (screenTile.connectionsUp != this.connectionsUp) return false;
-    	if (screenTile.connectionsDown != this.connectionsDown) return false;
-    	if (this.connectionsUp + this.connectionsDown > 0) return true;
-    	if (this.connectionsRight > 0) return false;
-    	if (screenTile.connectionsLeft > 0) return false;
-    	return true;
+        int meta = this.getBlockMetadata();
+        TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getLeft(meta));
+        if (!(te instanceof TileEntityScreen))
+        {
+            return false;
+        }
+        TileEntityScreen screenTile = (TileEntityScreen) te;
+        if (screenTile.getBlockMetadata() != meta)
+        {
+            return false;
+        }
+        if (screenTile.connectionsUp != this.connectionsUp)
+        {
+            return false;
+        }
+        if (screenTile.connectionsDown != this.connectionsDown)
+        {
+            return false;
+        }
+        if (this.connectionsUp + this.connectionsDown > 0)
+        {
+            return true;
+        }
+        if (this.connectionsRight > 0)
+        {
+            return false;
+        }
+        if (screenTile.connectionsLeft > 0)
+        {
+            return false;
+        }
+        return true;
     }
 
     private boolean canJoinUp()
     {
-    	int meta = this.getBlockMetadata();
-    	TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, 1);
-    	if (!(te instanceof TileEntityScreen)) return false;
-    	TileEntityScreen screenTile = (TileEntityScreen) te; 
-    	if (screenTile.getBlockMetadata() != meta) return false;
-    	if (screenTile.connectionsLeft != this.connectionsLeft) return false;
-    	if (screenTile.connectionsRight != this.connectionsRight) return false;
-    	if (this.connectionsLeft + this.connectionsRight > 0) return true;
-    	if (this.connectionsDown > 0) return false;
-    	if (screenTile.connectionsUp > 0) return false;
-    	return true;
+        int meta = this.getBlockMetadata();
+        TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, 1);
+        if (!(te instanceof TileEntityScreen))
+        {
+            return false;
+        }
+        TileEntityScreen screenTile = (TileEntityScreen) te;
+        if (screenTile.getBlockMetadata() != meta)
+        {
+            return false;
+        }
+        if (screenTile.connectionsLeft != this.connectionsLeft)
+        {
+            return false;
+        }
+        if (screenTile.connectionsRight != this.connectionsRight)
+        {
+            return false;
+        }
+        if (this.connectionsLeft + this.connectionsRight > 0)
+        {
+            return true;
+        }
+        if (this.connectionsDown > 0)
+        {
+            return false;
+        }
+        if (screenTile.connectionsUp > 0)
+        {
+            return false;
+        }
+        return true;
     }
 
     private boolean canJoinDown()
     {
-    	int meta = this.getBlockMetadata();
-    	TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, 0);
-    	if (!(te instanceof TileEntityScreen)) return false;
-    	TileEntityScreen screenTile = (TileEntityScreen) te; 
-    	if (screenTile.getBlockMetadata() != meta) return false;
-    	if (screenTile.connectionsLeft != this.connectionsLeft) return false;
-    	if (screenTile.connectionsRight != this.connectionsRight) return false;
-    	if (this.connectionsLeft + this.connectionsRight > 0) return true;
-    	if (this.connectionsUp > 0) return false;
-    	if (screenTile.connectionsDown > 0) return false;
-    	return true;
+        int meta = this.getBlockMetadata();
+        TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, 0);
+        if (!(te instanceof TileEntityScreen))
+        {
+            return false;
+        }
+        TileEntityScreen screenTile = (TileEntityScreen) te;
+        if (screenTile.getBlockMetadata() != meta)
+        {
+            return false;
+        }
+        if (screenTile.connectionsLeft != this.connectionsLeft)
+        {
+            return false;
+        }
+        if (screenTile.connectionsRight != this.connectionsRight)
+        {
+            return false;
+        }
+        if (this.connectionsLeft + this.connectionsRight > 0)
+        {
+            return true;
+        }
+        if (this.connectionsUp > 0)
+        {
+            return false;
+        }
+        if (screenTile.connectionsDown > 0)
+        {
+            return false;
+        }
+        return true;
     }
 
     private void joinRight()
     {
-    	int meta = this.getBlockMetadata();
-    	int side = this.getRight(meta);
-    	BlockVec3 vec = new BlockVec3(this);
-    	for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
-		{
-    		TileEntity tile;
-			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
-    		if (z == 0) tile = this;
-			else
-			{
-				tile = newVec.getTileEntity(this.worldObj);
-			}
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-				TileEntityScreen screenTile = (TileEntityScreen)tile;
+        int meta = this.getBlockMetadata();
+        int side = this.getRight(meta);
+        BlockVec3 vec = new BlockVec3(this);
+        for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
+        {
+            TileEntity tile;
+            BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
+            if (z == 0)
+            {
+                tile = this;
+            }
+            else
+            {
+                tile = newVec.getTileEntity(this.worldObj);
+            }
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                TileEntityScreen screenTile = (TileEntityScreen) tile;
 //				screenTile.connectedRight = true;
                 screenTile.setConnectedRight(true);
-				TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, side);
-				if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
-				{
-					screenTile.tryConnectRight((TileEntityScreen) te2);
-				}
-			}
-		}
+                TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, side);
+                if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
+                {
+                    screenTile.tryConnectRight((TileEntityScreen) te2);
+                }
+            }
+        }
     }
-    
+
     private void joinLeft()
     {
-    	int meta = this.getBlockMetadata();
-    	int side = this.getLeft(meta);
-    	BlockVec3 vec = new BlockVec3(this);
-    	for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
-		{
-    		TileEntity tile;
-			BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
-    		if (z == 0) tile = this;
-			else
-			{
-				tile = newVec.getTileEntity(this.worldObj);
-			}
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-				TileEntityScreen screenTile = (TileEntityScreen)tile;
+        int meta = this.getBlockMetadata();
+        int side = this.getLeft(meta);
+        BlockVec3 vec = new BlockVec3(this);
+        for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
+        {
+            TileEntity tile;
+            BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
+            if (z == 0)
+            {
+                tile = this;
+            }
+            else
+            {
+                tile = newVec.getTileEntity(this.worldObj);
+            }
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                TileEntityScreen screenTile = (TileEntityScreen) tile;
 //				screenTile.connectedLeft = true;
                 screenTile.setConnectedLeft(true);
-				TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, side);
-				if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
-				{
-					screenTile.tryConnectLeft((TileEntityScreen) te2);
-				}
-			}
-		}
+                TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, side);
+                if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
+                {
+                    screenTile.tryConnectLeft((TileEntityScreen) te2);
+                }
+            }
+        }
     }
-    
+
     private void joinUp()
     {
-    	int meta = this.getBlockMetadata();
+        int meta = this.getBlockMetadata();
 //    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
         EnumFacing side = getFront().rotateY();
-    	BlockVec3 vec = new BlockVec3(this);
-    	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
-		{
-    		TileEntity tile;
-			BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x);
-    		if (x == 0) tile = this;
-			else
-			{
-				tile = newVec.getTileEntity(this.worldObj);
-			}
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-				TileEntityScreen screenTile = (TileEntityScreen)tile;
+        BlockVec3 vec = new BlockVec3(this);
+        for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
+        {
+            TileEntity tile;
+            BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x);
+            if (x == 0)
+            {
+                tile = this;
+            }
+            else
+            {
+                tile = newVec.getTileEntity(this.worldObj);
+            }
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                TileEntityScreen screenTile = (TileEntityScreen) tile;
 //				screenTile.connectedUp = true;
                 screenTile.setConnectedUp(true);
-				TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, 1);
-				if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
-				{
-					screenTile.tryConnectUp((TileEntityScreen) te2);
-				}
-			}
-		}
+                TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, 1);
+                if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
+                {
+                    screenTile.tryConnectUp((TileEntityScreen) te2);
+                }
+            }
+        }
     }
-    
+
     private void joinDown()
     {
-    	int meta = this.getBlockMetadata();
+        int meta = this.getBlockMetadata();
 //    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
         EnumFacing side = getFront().rotateY();
-    	BlockVec3 vec = new BlockVec3(this);
-    	for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
-		{
-    		TileEntity tile;
-			BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x);
-    		if (x == 0) tile = this;
-			else
-			{
-				tile = newVec.getTileEntity(this.worldObj);
-			}
-			if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
-			{
-				TileEntityScreen screenTile = (TileEntityScreen)tile;
+        BlockVec3 vec = new BlockVec3(this);
+        for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
+        {
+            TileEntity tile;
+            BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x);
+            if (x == 0)
+            {
+                tile = this;
+            }
+            else
+            {
+                tile = newVec.getTileEntity(this.worldObj);
+            }
+            if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
+            {
+                TileEntityScreen screenTile = (TileEntityScreen) tile;
 //				screenTile.connectedDown = true;
                 screenTile.setConnectedDown(true);
-				TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, 0);
-				if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
-				{
-					screenTile.tryConnectDown((TileEntityScreen) te2);
-				}
-			}
-		}
+                TileEntity te2 = newVec.getTileEntityOnSide(this.worldObj, 0);
+                if (te2 instanceof TileEntityScreen && te2.getBlockMetadata() == meta && !te2.isInvalid())
+                {
+                    screenTile.tryConnectDown((TileEntityScreen) te2);
+                }
+            }
+        }
     }
-    
+
     private boolean tryConnectUp(TileEntityScreen screenTile)
     {
-		if (screenTile.connectedDown)
-			return true;		//No checks?
+        if (screenTile.connectedDown)
+        {
+            return true;        //No checks?
+        }
 
 //		screenTile.connectedDown = true;
 //		if (this.connectedLeft) screenTile.connectedLeft = true;
 //		if (this.connectedRight) screenTile.connectedRight = true;
         screenTile.setConnectedDown(true);
-        if (this.connectedLeft) screenTile.setConnectedLeft(true);
-        if (this.connectedRight) screenTile.setConnectedRight(true);
-		screenTile.refreshConnections(false);
-		//Undo if the neighbour could not maintain the same left-right connections
-		if ((this.connectedLeft ^ screenTile.connectedLeft) || (this.connectedRight ^ screenTile.connectedRight))
-		{
+        if (this.connectedLeft)
+        {
+            screenTile.setConnectedLeft(true);
+        }
+        if (this.connectedRight)
+        {
+            screenTile.setConnectedRight(true);
+        }
+        screenTile.refreshConnections(false);
+        //Undo if the neighbour could not maintain the same left-right connections
+        if ((this.connectedLeft ^ screenTile.connectedLeft) || (this.connectedRight ^ screenTile.connectedRight))
+        {
             screenTile.setConnectedDown(false);
 //			screenTile.connectedDown = false;
-			return false;
-		}
-		
-		return true;
+            return false;
+        }
+
+        return true;
     }
 
     private boolean tryConnectDown(TileEntityScreen screenTile)
     {
-		if (screenTile.connectedUp)
-			return true;		//No checks?
+        if (screenTile.connectedUp)
+        {
+            return true;        //No checks?
+        }
 
 //		screenTile.connectedUp = true;
 //		if (this.connectedLeft) screenTile.connectedLeft = true;
 //		if (this.connectedRight) screenTile.connectedRight = true;
         screenTile.setConnectedUp(true);
-        if (this.connectedLeft) screenTile.setConnectedLeft(true);
-        if (this.connectedRight) screenTile.setConnectedRight(true);
-		screenTile.refreshConnections(false);
-		//Undo if the neighbour could not maintain the same left-right connections
-		if ((this.connectedLeft ^ screenTile.connectedLeft) || (this.connectedRight ^ screenTile.connectedRight))
-		{
+        if (this.connectedLeft)
+        {
+            screenTile.setConnectedLeft(true);
+        }
+        if (this.connectedRight)
+        {
+            screenTile.setConnectedRight(true);
+        }
+        screenTile.refreshConnections(false);
+        //Undo if the neighbour could not maintain the same left-right connections
+        if ((this.connectedLeft ^ screenTile.connectedLeft) || (this.connectedRight ^ screenTile.connectedRight))
+        {
             screenTile.setConnectedUp(false);
 //			screenTile.connectedUp = false;
-			return false;
-		}
-		
-		return true;
+            return false;
+        }
+
+        return true;
     }
-    
+
     private boolean tryConnectLeft(TileEntityScreen screenTile)
     {
-		if (screenTile.connectedRight)
-			return true;		//No checks?
+        if (screenTile.connectedRight)
+        {
+            return true;        //No checks?
+        }
 
-		if ((screenTile.connectedUp && !this.connectedUp) || (screenTile.connectedDown && !this.connectedDown))
-			return false;
+        if ((screenTile.connectedUp && !this.connectedUp) || (screenTile.connectedDown && !this.connectedDown))
+        {
+            return false;
+        }
 
 //		screenTile.connectedRight = true;
 //		if (this.connectedUp) screenTile.connectedUp = true;
 //		if (this.connectedDown) screenTile.connectedDown = true;
         screenTile.setConnectedRight(true);
-        if (this.connectedUp) screenTile.setConnectedUp(true);
-        if (this.connectedDown) screenTile.setConnectedDown(true);
-		screenTile.refreshConnections(false);
-		//Undo if the neighbour could not maintain the same up-down connections
-		if ((this.connectedUp ^ screenTile.connectedUp) || (this.connectedDown ^ screenTile.connectedDown))
-		{
+        if (this.connectedUp)
+        {
+            screenTile.setConnectedUp(true);
+        }
+        if (this.connectedDown)
+        {
+            screenTile.setConnectedDown(true);
+        }
+        screenTile.refreshConnections(false);
+        //Undo if the neighbour could not maintain the same up-down connections
+        if ((this.connectedUp ^ screenTile.connectedUp) || (this.connectedDown ^ screenTile.connectedDown))
+        {
             screenTile.setConnectedRight(false);
 //			screenTile.connectedRight = false;
-			return false;
-		}
-		
-		return true;
+            return false;
+        }
+
+        return true;
     }
 
     private boolean tryConnectRight(TileEntityScreen screenTile)
     {
-		if (screenTile.connectedLeft)
-			return true;		//No checks?
+        if (screenTile.connectedLeft)
+        {
+            return true;        //No checks?
+        }
 
-		if ((screenTile.connectedUp && !this.connectedUp) || (screenTile.connectedDown && !this.connectedDown))
-			return false;
-		
+        if ((screenTile.connectedUp && !this.connectedUp) || (screenTile.connectedDown && !this.connectedDown))
+        {
+            return false;
+        }
+
 //		screenTile.connectedLeft = true;
 //		if (this.connectedUp) screenTile.connectedUp = true;
 //		if (this.connectedDown) screenTile.connectedDown = true;
         screenTile.setConnectedLeft(true);
-        if (this.connectedUp) screenTile.setConnectedUp(true);
-        if (this.connectedDown) screenTile.setConnectedDown(true);
-		screenTile.refreshConnections(false);
-		//Undo if the neighbour could not maintain the same up-down connections
-		if ((this.connectedUp ^ screenTile.connectedUp) || (this.connectedDown ^ screenTile.connectedDown))
-		{
+        if (this.connectedUp)
+        {
+            screenTile.setConnectedUp(true);
+        }
+        if (this.connectedDown)
+        {
+            screenTile.setConnectedDown(true);
+        }
+        screenTile.refreshConnections(false);
+        //Undo if the neighbour could not maintain the same up-down connections
+        if ((this.connectedUp ^ screenTile.connectedUp) || (this.connectedDown ^ screenTile.connectedDown))
+        {
             screenTile.setConnectedLeft(false);
 //			screenTile.connectedLeft = false;
-			return false;
-		}
-		
-		return true;
+            return false;
+        }
+
+        return true;
     }
-    
+
     private void log(String msg)
     {
-    	String connections = "";
-    	String strSide = "S";
-    	if (this.connectedUp) connections = "U";
-    	if (this.connectedDown) connections += "D";
-    	if (this.connectedLeft) connections += "L";
-    	if (this.connectedRight) connections += "R";
-    	if (this.worldObj.isRemote) strSide = "C";
-    	//System.out.println(strSide + ":" + msg + " at "+this.getPos().getX()+","+this.getPos().getZ()+" "+connections);
+        String connections = "";
+        String strSide = "S";
+        if (this.connectedUp)
+        {
+            connections = "U";
+        }
+        if (this.connectedDown)
+        {
+            connections += "D";
+        }
+        if (this.connectedLeft)
+        {
+            connections += "L";
+        }
+        if (this.connectedRight)
+        {
+            connections += "R";
+        }
+        if (this.worldObj.isRemote)
+        {
+            strSide = "C";
+        }
+        //System.out.println(strSide + ":" + msg + " at "+this.getPos().getX()+","+this.getPos().getZ()+" "+connections);
     }
 
     @SideOnly(Side.CLIENT)
-	public void refreshNextTick(boolean b)
-	{
-		this.refreshOnUpdate  = true;
-		TickHandlerClient.screenConnectionsUpdateList.add(this);
-	}
+    public void refreshNextTick(boolean b)
+    {
+        this.refreshOnUpdate = true;
+        TickHandlerClient.screenConnectionsUpdateList.add(this);
+    }
 
     @Override
-    public double getPacketRange() {
+    public double getPacketRange()
+    {
         return 0;
     }
 
     @Override
-    public int getPacketCooldown() {
+    public int getPacketCooldown()
+    {
         return 0;
     }
 
     @Override
-    public boolean isNetworkedTile() {
+    public boolean isNetworkedTile()
+    {
         return false;
     }
 }

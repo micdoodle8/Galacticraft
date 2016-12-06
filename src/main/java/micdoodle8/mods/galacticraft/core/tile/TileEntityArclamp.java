@@ -37,42 +37,44 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     private AxisAlignedBB thisAABB;
     private Vec3 thisPos;
     private int facingSide = 0;
-	public boolean updateClientFlag;
+    public boolean updateClientFlag;
 
     @Override
     public void update()
     {
         if (this.worldObj.isRemote)
-        	return;
+        {
+            return;
+        }
 
         boolean initialLight = false;
         if (this.updateClientFlag)
         {
-        	GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing } ), this.worldObj.provider.getDimensionId());
-        	this.updateClientFlag = false;
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimensionId());
+            this.updateClientFlag = false;
         }
 
         if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
         {
-        	if (this.isActive)
-        	{
-        		this.isActive = false;
-        		this.revertAir();
-        		this.markDirty();
-        	}
+            if (this.isActive)
+            {
+                this.isActive = false;
+                this.revertAir();
+                this.markDirty();
+            }
         }
         else if (!this.isActive)
         {
-        	this.isActive = true;
-        	initialLight = true;
+            this.isActive = true;
+            initialLight = true;
         }
-            
+
         if (this.isActive)
-        {     
-        	//Test for first tick after placement
-        	if (this.thisAABB == null)
+        {
+            //Test for first tick after placement
+            if (this.thisAABB == null)
             {
-        		initialLight = true;
+                initialLight = true;
                 int side = this.getBlockMetadata();
                 switch (side)
                 {
@@ -186,10 +188,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         this.thisAABB = null;
         if (this.worldObj.isRemote)
         {
-        	GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos() } ));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }));
         }
         else
+        {
             this.isActive = true;
+        }
     }
 
     @Override
@@ -239,7 +243,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                 currentLayer.add(inFront);
             }
         }
-        
+
         int side, bits;
 
         for (int count = 0; count < 14; count++)
@@ -366,7 +370,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing } ), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimensionId());
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();
@@ -392,8 +396,8 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         this.airToRestore.clear();
     }
 
-	public boolean getEnabled()
-	{
-		return !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos());
-	}
+    public boolean getEnabled()
+    {
+        return !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos());
+    }
 }

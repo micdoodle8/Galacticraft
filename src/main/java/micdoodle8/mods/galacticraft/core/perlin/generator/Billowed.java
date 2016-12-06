@@ -49,7 +49,7 @@ public class Billowed extends NoiseModule
         {
             return Math.abs(this.noiseGen.noise2d(i + this.offsetX, j + this.offsetY) * this.amplitude) + Math.abs(this.noiseGen.noise2d(i + i + this.offsetX, j + j + this.offsetY) * this.amplitude * this.persistance);
         }
-        
+
         float val = 0;
         float curAmplitude = this.amplitude;
         for (int n = 0; n < this.numOctaves; n++)

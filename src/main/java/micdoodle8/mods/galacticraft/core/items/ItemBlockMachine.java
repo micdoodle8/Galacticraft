@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
@@ -13,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockMachine extends ItemBlockDesc
 {
@@ -89,24 +89,27 @@ public class ItemBlockMachine extends ItemBlockDesc
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
-        if (!world.isRemote) return;
+        if (!world.isRemote)
+        {
+            return;
+        }
 
-    	int typenum = stack.getItemDamage() & 12;
-    	
-    	//The player could be a FakePlayer made by another mod e.g. LogisticsPipes
-    	if (player instanceof EntityPlayerSP)
-    	{
-	        if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
-	        {
-	        	ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
-	        }
-	        else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-	        {
-	        	ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
-	        }
-    	}
+        int typenum = stack.getItemDamage() & 12;
+
+        //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
+        if (player instanceof EntityPlayerSP)
+        {
+            if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
+            {
+                ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
+            }
+            else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+            {
+                ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
+            }
+        }
     }
-    
+
     @Override
     public String getUnlocalizedName()
     {

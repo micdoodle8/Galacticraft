@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.FMLLog;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -18,15 +15,18 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.Random;
 
@@ -289,7 +289,7 @@ public class TeleportTypeAsteroids implements ITeleportType
         if (!ridingAutoRocket && player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            
+
             if (stats.teleportCooldown <= 0)
             {
                 if (player.capabilities.isFlying)
@@ -309,9 +309,9 @@ public class TeleportTypeAsteroids implements ITeleportType
         }
     }
 
-	@Override
-	public void setupAdventureSpawn(EntityPlayerMP player)
-	{
+    @Override
+    public void setupAdventureSpawn(EntityPlayerMP player)
+    {
         GCPlayerStats stats = GCPlayerStats.get(player);
         SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
@@ -335,12 +335,12 @@ public class TeleportTypeAsteroids implements ITeleportType
         stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
         stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
         stats.rocketStacks[i++] = new ItemStack(Items.egg, 12);
-        
+
         stats.rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, EntityList.classToIDMapping.get(EntityCow.class));
         stats.rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
         stats.rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
         stats.rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
-      //stats.rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
-      //stats.rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
-	}
+        //stats.rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
+        //stats.rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
+    }
 }

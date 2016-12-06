@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,6 +18,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
 
     private final ModelTreasureChest chestModel = new ModelTreasureChest();
 
+    @Override
     public void renderTileEntityAt(TileEntityTreasureChestMars chest, double x, double y, double z, float par7, int par8)
     {
         int var9;

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -21,6 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,7 +123,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         if (!this.worldObj.isRemote)
         {
-   			this.checkFluidTankTransfer(this.containedItems.length - 1, this.fuelTank);
+            this.checkFluidTankTransfer(this.containedItems.length - 1, this.fuelTank);
         }
 
         AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
@@ -141,12 +141,12 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             }
         }
     }
-   
-    
+
+
     private void checkFluidTankTransfer(int slot, FluidTank tank)
-	{
-		FluidUtil.tryFillContainerFuel(tank, this.containedItems, slot);
-	}
+    {
+        FluidUtil.tryFillContainerFuel(tank, this.containedItems, slot);
+    }
 
     private void pushEntityAway(Entity entityToPush)
     {
@@ -185,7 +185,10 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         final NBTTagList var2 = nbt.getTagList("Items", 10);
 
         int invSize = nbt.getInteger("rocketStacksLength");
-        if (invSize < 3) invSize = 3;
+        if (invSize < 3)
+        {
+            invSize = 3;
+        }
         this.containedItems = new ItemStack[invSize];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -350,47 +353,51 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 int shouldBeMountedId = buffer.readInt();
                 if (this.riddenByEntity == null)
                 {
-                	 if (shouldBeMountedId > -1)
-                	 {
-                		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
-                		 if (e != null)
-                		 {
-                			 if (e.dimension != this.dimension)
-                			 {
-    	        				 if (e instanceof EntityPlayer)
-    	        				 {
-    	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
-                					 e.mountEntity(this);
-                				 }
-                			 }
-                			 else
-                				 e.mountEntity(this);
-                		 }
-                	 }
+                    if (shouldBeMountedId > -1)
+                    {
+                        Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                        if (e != null)
+                        {
+                            if (e.dimension != this.dimension)
+                            {
+                                if (e instanceof EntityPlayer)
+                                {
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
+                                    e.mountEntity(this);
+                                }
+                            }
+                            else
+                            {
+                                e.mountEntity(this);
+                            }
+                        }
+                    }
                 }
                 else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
                 {
-                	if (shouldBeMountedId == -1)
-                	{
-                		this.riddenByEntity.mountEntity(null);
-                	}
-                	else
-                	{
-                		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
-               		 	if (e != null)
-               		 	{
-               			 if (e.dimension != this.dimension)
-               			 {
-	        				 if (e instanceof EntityPlayer)
-	        				 {
-	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP)e).theItemInWorldManager.getGameType().getID());
-               					 e.mountEntity(this);
-               				 }
-               			 }
-               			 else
-               				 e.mountEntity(this);
-               		 	}
-                	}
+                    if (shouldBeMountedId == -1)
+                    {
+                        this.riddenByEntity.mountEntity(null);
+                    }
+                    else
+                    {
+                        Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                        if (e != null)
+                        {
+                            if (e.dimension != this.dimension)
+                            {
+                                if (e instanceof EntityPlayer)
+                                {
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
+                                    e.mountEntity(this);
+                                }
+                            }
+                            else
+                            {
+                                e.mountEntity(this);
+                            }
+                        }
+                    }
                 }
             }
             else

@@ -1,16 +1,10 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor;
 import micdoodle8.mods.galacticraft.api.item.IBreathableArmor.EnumGearType;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -18,13 +12,15 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
-import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -33,9 +29,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -185,8 +185,11 @@ public class OxygenUtil
      */
     public static boolean checkTorchHasOxygen(World world, BlockPos pos)
     {
-    	if (OxygenUtil.inOxygenBubble(world, pos.getX() + 0.5D, pos.getY() + 0.6D, pos.getZ() + 0.5D)) return true;
-    	OxygenUtil.checked = new HashSet();
+        if (OxygenUtil.inOxygenBubble(world, pos.getX() + 0.5D, pos.getY() + 0.6D, pos.getZ() + 0.5D))
+        {
+            return true;
+        }
+        OxygenUtil.checked = new HashSet();
         BlockVec3 vec = new BlockVec3(pos);
         for (int side = 0; side < 6; side++)
         {
@@ -309,7 +312,7 @@ public class OxygenUtil
         if (block instanceof BlockPistonBase)
         {
             IBlockState state = world.getBlockState(vec);
-            if (((Boolean)state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+            if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
             {
                 int meta0 = state.getBlock().getMetaFromState(state);
                 EnumFacing facing = BlockPistonBase.getFacing(meta0);
@@ -482,31 +485,34 @@ public class OxygenUtil
 
         return adjacentConnections;
     }
-    
+
     public static boolean noAtmosphericCombustion(WorldProvider provider)
     {
-    	if (provider instanceof IGalacticraftWorldProvider)
-    	{
-    		return (!((IGalacticraftWorldProvider) provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
-    	}
-    	
-    	return false;
+        if (provider instanceof IGalacticraftWorldProvider)
+        {
+            return (!((IGalacticraftWorldProvider) provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
+        }
+
+        return false;
     }
 
-	public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
-	{
+    public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
+    {
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
             if (blockVec != null && blockVec.dim == worldObj.provider.getDimensionId())
             {
-            	TileEntity tile = blockVec.getTileEntity();
-            	if (tile instanceof TileEntityOxygenDistributor)
-            	{
-	            	if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ)) return true;
-            	}
+                TileEntity tile = blockVec.getTileEntity();
+                if (tile instanceof TileEntityOxygenDistributor)
+                {
+                    if (((TileEntityOxygenDistributor) tile).inBubble(avgX, avgY, avgZ))
+                    {
+                        return true;
+                    }
+                }
             }
         }
 
-		return false;
-	}
+        return false;
+    }
 }

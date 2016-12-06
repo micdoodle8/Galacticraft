@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.entity.Entity;
@@ -95,8 +94,8 @@ public class PacketEntityUpdate extends PacketBase
 
     public interface IEntityFullSync
     {
-        public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround);
+        void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround);
 
-        public UUID getOwnerUUID();
+        UUID getOwnerUUID();
     }
 }

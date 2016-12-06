@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +13,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemUniversalWrench extends Item implements ISortableItem
 {
@@ -86,19 +86,24 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
         if (world.isRemote && player instanceof EntityPlayerSP)
-        	ClientProxyCore.playerClientHandler.onBuild(3, (EntityPlayerSP) player);
+        {
+            ClientProxyCore.playerClientHandler.onBuild(3, (EntityPlayerSP) player);
+        }
     }
-    
+
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (world.isRemote) return false;
+        if (world.isRemote)
+        {
+            return false;
+        }
         IBlockState state = world.getBlockState(pos);
-    	Block blockID = state.getBlock();
+        Block blockID = state.getBlock();
 
         if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace || blockID == Blocks.dropper || blockID == Blocks.hopper || blockID == Blocks.dispenser || blockID == Blocks.piston || blockID == Blocks.sticky_piston)
         {
-        	int metadata = blockID.getMetaFromState(state);
+            int metadata = blockID.getMetaFromState(state);
 
             world.setBlockState(pos, blockID.getStateFromMeta(EnumFacing.getHorizontal((metadata + 1) % 4).ordinal()), 3);
             this.wrenchUsed(player, pos);

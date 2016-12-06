@@ -1,20 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -113,15 +111,15 @@ public class FootprintRenderer
         {
             footprintList = new ArrayList<Footprint>();
         }
-        
+
         Iterator<Footprint> i = footprintList.iterator();
         while (i.hasNext())
         {
-        	Footprint print = i.next();
-        	if (!print.owner.equals(FMLClientHandler.instance().getClient().thePlayer.getName()))
-        	{
-        		i.remove();
-        	}
+            Footprint print = i.next();
+            if (!print.owner.equals(FMLClientHandler.instance().getClient().thePlayer.getName()))
+            {
+                i.remove();
+            }
         }
 
         footprintList.addAll(prints);

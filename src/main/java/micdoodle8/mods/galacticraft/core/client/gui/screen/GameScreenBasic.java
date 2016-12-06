@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,8 +7,12 @@ import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GameScreenBasic implements IGameScreen
@@ -29,78 +29,80 @@ public class GameScreenBasic implements IGameScreen
 
     public GameScreenBasic()
     {
-		//This can be called from either server or client, so don't include
-    	//client-side only code on the server.
-    	if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-		{
-			renderEngine = FMLClientHandler.instance().getClient().renderEngine;
-		}
+        //This can be called from either server or client, so don't include
+        //client-side only code on the server.
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        {
+            renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+        }
     }
-    
-    public void setFrameSize(float frameSize)
-	{
-		this.frameA = frameSize;
-	}
 
+    @Override
+    public void setFrameSize(float frameSize)
+    {
+        this.frameA = frameSize;
+    }
+
+    @Override
     public void render(int type, float ticks, float scaleX, float scaleY, IScreenManager scr)
     {
-    	frameBx = scaleX - frameA;
-    	frameBy = scaleY - frameA;
+        frameBx = scaleX - frameA;
+        frameBy = scaleY - frameA;
 
-    	if (scaleX == scaleY)
-     	{
-     	    textureAx = 0F;
-     	    textureAy = 0F;
-     	    textureBx = 1.0F;
-     	    textureBy = 1.0F;
-     	}
-    	else if (scaleX < scaleY)
-    	{
-    		textureAx = (1.0F - (scaleX / scaleY)) / 2;
-    	    textureAy = 0F;
-    		textureBx = 1.0F - textureAx;
-    	    textureBy = 1.0F;
-    	} else
-    	if (scaleY < scaleX)
-    	{
-    	    textureAx = 0F;
-    	    textureAy = (1.0F - (scaleY / scaleX)) / 2;
-    	    textureBx = 1.0F;
-    	    textureBy = 1.0F - textureAy;
-    	}
+        if (scaleX == scaleY)
+        {
+            textureAx = 0F;
+            textureAy = 0F;
+            textureBx = 1.0F;
+            textureBy = 1.0F;
+        }
+        else if (scaleX < scaleY)
+        {
+            textureAx = (1.0F - (scaleX / scaleY)) / 2;
+            textureAy = 0F;
+            textureBx = 1.0F - textureAx;
+            textureBy = 1.0F;
+        }
+        else if (scaleY < scaleX)
+        {
+            textureAx = 0F;
+            textureAy = (1.0F - (scaleY / scaleX)) / 2;
+            textureBx = 1.0F;
+            textureBy = 1.0F - textureAy;
+        }
 
-    	switch(type)
+        switch (type)
         {
         case 0:
-        	drawBlackBackground(0.09F);
+            drawBlackBackground(0.09F);
 //        	ClientProxyCore.overworldTextureLocal = null;
-        	break;
+            break;
         case 1:
-        	if (scr instanceof DrawGameScreen && ((DrawGameScreen)scr).mapDone)
-	        {
-        		GL11.glBindTexture(GL11.GL_TEXTURE_2D, DrawGameScreen.reusableMap.getGlTextureId());
-		        draw2DTexture();
-	        }
-	        else if (ClientProxyCore.overworldTexturesValid)
-	        {
-	            GL11.glPushMatrix();
-	        	float centreX = scaleX / 2;
-	        	float centreY = scaleY / 2;
-	            GL11.glTranslatef(centreX, centreY, 0F);
-	            RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
-		        GL11.glPopMatrix();
-	        }
-	        else
-	        {
-	            this.renderEngine.bindTexture(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
-	            if (!ClientProxyCore.overworldTextureRequestSent)
-	            {
-	                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
-	                ClientProxyCore.overworldTextureRequestSent = true;
-	            }
-		        draw2DTexture();
-		    }
-	        break;
+            if (scr instanceof DrawGameScreen && ((DrawGameScreen) scr).mapDone)
+            {
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, DrawGameScreen.reusableMap.getGlTextureId());
+                draw2DTexture();
+            }
+            else if (ClientProxyCore.overworldTexturesValid)
+            {
+                GL11.glPushMatrix();
+                float centreX = scaleX / 2;
+                float centreY = scaleY / 2;
+                GL11.glTranslatef(centreX, centreY, 0F);
+                RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
+                GL11.glPopMatrix();
+            }
+            else
+            {
+                this.renderEngine.bindTexture(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
+                if (!ClientProxyCore.overworldTextureRequestSent)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
+                    ClientProxyCore.overworldTextureRequestSent = true;
+                }
+                draw2DTexture();
+            }
+            break;
         }
     }
 
@@ -115,7 +117,7 @@ public class GameScreenBasic implements IGameScreen
         worldRenderer.pos(frameBx, frameBy, 0F).tex(textureBx, textureBy).endVertex();
         worldRenderer.pos(frameBx, frameA, 0F).tex(textureBx, textureAy).endVertex();
         worldRenderer.pos(frameA, frameA, 0F).tex(textureAx, textureAy).endVertex();
-        tess.draw();   	
+        tess.draw();
     }
 
     private void drawBlackBackground(float greyLevel)
@@ -131,7 +133,7 @@ public class GameScreenBasic implements IGameScreen
         worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
         worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
         worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
-        tess.draw();   	
+        tess.draw();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_TEXTURE_2D);

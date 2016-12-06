@@ -1,35 +1,29 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.math.DoubleMath;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-import io.netty.handler.codec.EncoderException;
-import micdoodle8.mods.galacticraft.core.tile.FluidTankGC;
-import net.minecraft.block.BlockPortal;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.nbt.NBTSizeTracker;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
-import micdoodle8.mods.galacticraft.core.util.FluidUtil;
+import micdoodle8.mods.galacticraft.core.tile.FluidTankGC;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,7 +35,7 @@ import java.util.UUID;
 
 public class NetworkUtil
 {
-	public static void encodeData(ByteBuf buffer, Collection<Object> sendData) throws IOException
+    public static void encodeData(ByteBuf buffer, Collection<Object> sendData) throws IOException
     {
         for (Object dataValue : sendData)
         {
@@ -206,9 +200,9 @@ public class NetworkUtil
             {
                 if (dataValue == null)
                 {
-                	GCLog.severe("Cannot construct PacketSimple with null data, this is a bug.");
+                    GCLog.severe("Cannot construct PacketSimple with null data, this is a bug.");
                 }
-            	GCLog.info("Could not find data type to encode!: " + dataValue);
+                GCLog.info("Could not find data type to encode!: " + dataValue);
             }
         }
     }
@@ -655,20 +649,20 @@ public class NetworkUtil
         // We only need to clone mutable objects
         if (a instanceof EnergyStorage)
         {
-            EnergyStorage prevStorage = (EnergyStorage)a;
+            EnergyStorage prevStorage = (EnergyStorage) a;
             EnergyStorage storage = new EnergyStorage(prevStorage.getCapacityGC(), prevStorage.getMaxReceive(), prevStorage.getMaxExtract());
             storage.setEnergyStored(prevStorage.getEnergyStoredGC());
             return storage;
         }
         else if (a instanceof FluidTankGC)
         {
-            FluidTankGC prevTank = (FluidTankGC)a;
+            FluidTankGC prevTank = (FluidTankGC) a;
             FluidTankGC tank = new FluidTankGC(prevTank.getFluid(), prevTank.getCapacity(), prevTank.getTile());
             return tank;
         }
         else if (a instanceof FluidTank)
         {
-            FluidTank prevTank = (FluidTank)a;
+            FluidTank prevTank = (FluidTank) a;
             FluidTank tank = new FluidTank(prevTank.getFluid(), prevTank.getCapacity());
             return tank;
         }

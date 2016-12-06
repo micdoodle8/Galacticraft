@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
@@ -8,9 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -29,8 +26,8 @@ public class AsteroidBlocks
     public static Block fakeTelepad;
     public static Block treasureChestTier3;
     public static Block blockDenseIce;
-	public static Block blockMinerBase;
-	public static Block minerBaseFull;
+    public static Block blockMinerBase;
+    public static Block minerBaseFull;
 
     public static void initBlocks()
     {
@@ -70,8 +67,8 @@ public class AsteroidBlocks
         registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class);
         registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class);
         registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class);
-       	registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class);
-       	registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class);
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
@@ -83,7 +80,7 @@ public class AsteroidBlocks
     {
         block.setHarvestLevel(toolClass, level);
     }
-    
+
     public static void setHarvestLevels()
     {
         setHarvestLevel(AsteroidBlocks.blockBasic, "pickaxe", 0, 0);   //Rock
@@ -99,7 +96,7 @@ public class AsteroidBlocks
         OreDictionary.registerOre("oreAluminum", new ItemStack(AsteroidBlocks.blockBasic, 1, 3));
         OreDictionary.registerOre("oreAluminium", new ItemStack(AsteroidBlocks.blockBasic, 1, 3));
         OreDictionary.registerOre("oreNaturalAluminum", new ItemStack(AsteroidBlocks.blockBasic, 1, 3));
-		OreDictionary.registerOre("oreIlmenite", new ItemStack(AsteroidBlocks.blockBasic, 1, 4));
+        OreDictionary.registerOre("oreIlmenite", new ItemStack(AsteroidBlocks.blockBasic, 1, 4));
         OreDictionary.registerOre("oreIron", new ItemStack(AsteroidBlocks.blockBasic, 1, 5));
     }
 }

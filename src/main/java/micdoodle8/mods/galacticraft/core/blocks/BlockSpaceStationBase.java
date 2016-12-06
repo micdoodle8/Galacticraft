@@ -7,6 +7,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -28,24 +29,24 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
     {
         return -1.0F;
     }
-    
-    @Override
-	public int getRenderType()
-	{
-	    return 3;
-	}
 
-	@Override
-    public boolean isFullCube()
-	{
-	    return false;
+    @Override
+    public int getRenderType()
+    {
+        return 3;
     }
-	    
+
+    @Override
+    public boolean isFullCube()
+    {
+        return false;
+    }
+
     @Override
     public boolean isOpaqueCube()
-	{
-	   return false;
-	}
+    {
+        return false;
+    }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
@@ -80,8 +81,8 @@ public class BlockSpaceStationBase extends BlockContainer implements ITileEntity
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
     {
-    	return null;
+        return null;
     }
 }

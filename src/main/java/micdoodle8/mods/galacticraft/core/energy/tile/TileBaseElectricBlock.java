@@ -1,12 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
@@ -16,9 +10,15 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -111,12 +111,14 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
                     this.storage.extractEnergyGC(this.storage.getMaxExtract(), false);
                 }
                 else
-                	this.slowDischarge();
+                {
+                    this.slowDischarge();
+                }
             }
             else
             {
                 this.hasEnoughEnergyToRun = false;
-            	this.slowDischarge();
+                this.slowDischarge();
             }
         }
 
@@ -133,9 +135,9 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public void slowDischarge()
     {
-       	this.storage.extractEnergyGC(0.5F, false);
+        this.storage.extractEnergyGC(0.5F, false);
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
@@ -192,7 +194,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();
-        drops.add(this.getBlockType().getPickBlock(null, this.worldObj, this.getPos()));
+        drops.add(this.getBlockType().getPickBlock(null, this.worldObj, this.getPos(), player));
         return drops;
     }
 
@@ -222,7 +224,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
         return direction == this.getElectricInputDirection();
     }
-    
+
     public String getGUIstatus()
     {
         if (this.getEnergyStoredGC() == 0)
@@ -245,6 +247,6 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
         }
 
-       	return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
     }
 }

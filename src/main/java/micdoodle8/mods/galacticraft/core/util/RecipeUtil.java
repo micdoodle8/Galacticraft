@@ -44,18 +44,20 @@ public class RecipeUtil
 
     @SuppressWarnings("unchecked")
     public static void addRecipe(ItemStack result, Object[] obj)
-    {    
-    	CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
+    {
+        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
-    
+
     public static void addBlockRecipe(ItemStack result, String oreDictIngot, ItemStack gcIngot)
-    {   
-    	if (OreDictionary.getOres(oreDictIngot).size() > 1)
-    	{
-    		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot }));
-    	}
-    	else
-	    	RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XXX", 'X', gcIngot });
+    {
+        if (OreDictionary.getOres(oreDictIngot).size() > 1)
+        {
+            CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot }));
+        }
+        else
+        {
+            RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XXX", 'X', gcIngot });
+        }
     }
 
 
@@ -70,7 +72,7 @@ public class RecipeUtil
     }
 
     public static ItemStack getIndustrialCraftItem(String indentifier)
-	{
-		return IC2Items.getItem(indentifier);
-	}
+    {
+        return IC2Items.getItem(indentifier);
+    }
 }

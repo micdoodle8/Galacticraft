@@ -1,18 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -26,8 +22,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-    	TileEntity tile = null;
+        TileEntity tile = null;
 
         if (worldIn.isRemote || playerIn == null)
         {
@@ -84,50 +84,50 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 tile = worldIn.getTileEntity(pos);
             }
 
-        	if (tile instanceof TileEntityMinerBase)
-        	{
-    			if (worldIn.provider instanceof WorldProviderOrbit)
-    			{
+            if (tile instanceof TileEntityMinerBase)
+            {
+                if (worldIn.provider instanceof WorldProviderOrbit)
+                {
                     playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
-        			return false;    				
-    			}
-    			
-        		if (((TileEntityMinerBase)tile).getLinkedMiner() != null)
-        		{
-                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner.fail")));
-        			return false;
-        		}
-        		
-        		//Gives a chance for any loaded Astro Miner to link itself
-        		if (((TileEntityMinerBase) tile).ticks < 15L)
-        		{
-        			return false;
-        		}
-        		
-        		EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
-        		
-               	int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;
-               	if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
-               	{
-                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
-               		return false;
-               	}
+                    return false;
+                }
 
-        		if (!((TileEntityMinerBase)tile).spawnMiner(playerMP))
-        		{
+                if (((TileEntityMinerBase) tile).getLinkedMiner() != null)
+                {
+                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner.fail")));
+                    return false;
+                }
+
+                //Gives a chance for any loaded Astro Miner to link itself
+                if (((TileEntityMinerBase) tile).ticks < 15L)
+                {
+                    return false;
+                }
+
+                EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
+
+                int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;
+                if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
+                {
+                    playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
+                    return false;
+                }
+
+                if (!((TileEntityMinerBase) tile).spawnMiner(playerMP))
+                {
                     playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
-        			return false;
-        		}
-        	        			
+                    return false;
+                }
+
                 if (!playerIn.capabilities.isCreativeMode)
                 {
-                	GCPlayerStats.get(playerMP).astroMinerCount++;
-                	--stack.stackSize;
+                    GCPlayerStats.get(playerMP).astroMinerCount++;
+                    --stack.stackSize;
                 }
-        		return true;
-        	}
-    	}
-    	return false;
+                return true;
+            }
+        }
+        return false;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -45,8 +45,10 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
             {
                 PositionedStack inputStack = input.getValue().copy();
                 for (ItemStack inputItemStack : inputStack.items)
-                	inputItemStack.stackSize = 2;
-            	inputStacks.add(inputStack);
+                {
+                    inputItemStack.stackSize = 2;
+                }
+                inputStacks.add(inputStack);
             }
 
             recipes.put(inputStacks, stack.getValue());
@@ -152,7 +154,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         @Override
         public ArrayList<PositionedStack> getIngredients()
         {
-        	return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, this.input);
+            return (ArrayList<PositionedStack>) getCycledIngredients(cycleticks / 20, this.input);
         }
 
         @Override

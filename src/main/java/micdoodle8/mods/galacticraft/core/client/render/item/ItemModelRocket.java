@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
-import org.lwjgl.Sys;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
@@ -17,9 +16,9 @@ public class ItemModelRocket extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
     {
-        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        if (cameraTransformType == TransformType.GUI)
         {
             Vector3f trans = new Vector3f(-0.08F, 0.0F, -0.08F);
             Matrix4f ret = new Matrix4f();
@@ -53,7 +52,7 @@ public class ItemModelRocket extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON)
         {
             Vector3f trans = new Vector3f(0.0F, -0.4F, -0.3F);
             Matrix4f ret = new Matrix4f();
@@ -74,7 +73,7 @@ public class ItemModelRocket extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON)
         {
             Vector3f trans = new Vector3f(0.4F, -1.8F, 0.8F);
             Matrix4f ret = new Matrix4f();

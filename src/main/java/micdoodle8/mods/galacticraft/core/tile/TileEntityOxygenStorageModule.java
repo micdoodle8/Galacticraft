@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -48,17 +45,19 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     {
         if (!this.worldObj.isRemote)
         {
-	    	ItemStack oxygenItemStack = this.getStackInSlot(0);
-	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
-	    	{
+            ItemStack oxygenItemStack = this.getStackInSlot(0);
+            if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
+            {
                 IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
                 int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
                 this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
                 if (this.getOxygenStored() > this.getMaxOxygenStored())
+                {
                     this.setOxygenStored(this.getOxygenStored());
-	    	}
+                }
+            }
         }
-    	
+
         super.update();
 
         this.scaledOxygenLevel = this.getScaledOxygenLevel(16);
@@ -131,7 +130,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-}
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
@@ -202,6 +201,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         IBlockState state = this.worldObj.getBlockState(this.getPos());
@@ -223,7 +223,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     {
         return EnumSet.of(getFront().rotateY().getOpposite());
     }
-    
+
     @Override
     public int getSizeInventory()
     {
@@ -330,9 +330,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 0 && itemstack!=null && itemstack.getItem() instanceof IItemOxygenSupply;
+        return slotID == 0 && itemstack != null && itemstack.getItem() instanceof IItemOxygenSupply;
     }
-    
+
     //ISidedInventory
     @Override
     public int[] getSlotsForFace(EnumFacing side)
@@ -343,9 +343,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (slotID ==0 && this.isItemValidForSlot(slotID, itemstack))
+        if (slotID == 0 && this.isItemValidForSlot(slotID, itemstack))
         {
-           	return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+            return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
         }
         return false;
     }
@@ -353,35 +353,40 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (slotID ==0 && itemstack != null)
+        if (slotID == 0 && itemstack != null)
         {
-    		return FluidUtil.isEmptyContainer(itemstack);
+            return FluidUtil.isEmptyContainer(itemstack);
         }
         return false;
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 

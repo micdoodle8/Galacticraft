@@ -150,24 +150,24 @@ public class PacketFluidNetworkUpdate extends PacketBase
             switch (this.type)
             {
             case ADD_TRANSMITTER:
+            {
+                FluidNetwork network = transmitter.hasNetwork() && !this.newNetwork ? (FluidNetwork) transmitter.getNetwork() : new FluidNetwork();
+                network.register();
+                transmitter.setNetwork(network);
+
+                for (BlockPos pos : this.transmittersCoords)
                 {
-                    FluidNetwork network = transmitter.hasNetwork() && !this.newNetwork ? (FluidNetwork) transmitter.getNetwork() : new FluidNetwork();
-                    network.register();
-                    transmitter.setNetwork(network);
+                    TileEntity transmitterTile = player.worldObj.getTileEntity(pos);
 
-                    for (BlockPos pos : this.transmittersCoords)
+                    if (transmitterTile instanceof IBufferTransmitter)
                     {
-                        TileEntity transmitterTile = player.worldObj.getTileEntity(pos);
-
-                        if (transmitterTile instanceof IBufferTransmitter)
-                        {
-                            ((IBufferTransmitter) transmitterTile).setNetwork(network);
-                        }
+                        ((IBufferTransmitter) transmitterTile).setNetwork(network);
                     }
-
-                    network.updateCapacity();
                 }
-                break;
+
+                network.updateCapacity();
+            }
+            break;
             case FLUID:
                 if (transmitter.getNetwork() != null)
                 {
@@ -192,7 +192,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
 
     }
 
-    public static enum PacketType
+    public enum PacketType
     {
         ADD_TRANSMITTER,
         FLUID,

@@ -72,7 +72,7 @@ public class NetworkHelper
      * to see if it is a conductor. All machines should use this function to
      * search for a connecting conductor around it.
      *
-     * @param tileEntity         - The TileEntity conductor
+     * @param tileEntity        - The TileEntity conductor
      * @param approachDirection - The direction you are approaching this wire from.
      * @return The ElectricityNetwork or null if not found.
      */

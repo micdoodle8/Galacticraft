@@ -70,7 +70,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         if ((size - 3) % 18 != 0)
         {
-        	size += 18 - ((size - 3) % 18);
+            size += 18 - ((size - 3) % 18);
         }
         this.chestContents = new ItemStack[size];
     }
@@ -163,7 +163,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         int size = nbt.getInteger("chestContentLength");
         if ((size - 3) % 18 != 0)
         {
-        	size += 18 - ((size - 3) % 18);
+            size += 18 - ((size - 3) % 18);
         }
         this.chestContents = new ItemStack[size];
 
@@ -310,15 +310,15 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (!this.worldObj.isRemote)
         {
-			this.checkFluidTankTransfer(this.chestContents.length - 1, this.fuelTank);
+            this.checkFluidTankTransfer(this.chestContents.length - 1, this.fuelTank);
         }
     }
-    
+
     private void checkFluidTankTransfer(int slot, FluidTank tank)
-	{
-    	FluidUtil.tryFillContainerFuel(tank, this.chestContents, slot);
-	}
-	
+    {
+        FluidUtil.tryFillContainerFuel(tank, this.chestContents, slot);
+    }
+
 
     @Override
     public boolean receiveClientEvent(int par1, int par2)
@@ -392,27 +392,32 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return null;
     }
 

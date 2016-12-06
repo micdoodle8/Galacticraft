@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
 import com.google.common.collect.Lists;
-
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 
@@ -53,10 +52,10 @@ public class ChunkPowerHandler
             {
                 e.printStackTrace();
             }
-            
+
             if (ConfigManagerCore.retrogenOil && event.world.provider.getDimensionId() == 0)
             {
-            	EventHandlerGC.retrogenOil(event.world, event.getChunk());
+                EventHandlerGC.retrogenOil(event.world, event.getChunk());
             }
         }
     }

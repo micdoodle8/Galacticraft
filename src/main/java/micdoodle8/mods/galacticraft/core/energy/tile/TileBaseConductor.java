@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
@@ -15,6 +12,9 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This tile entity pre-fabricated for all conductors.
@@ -31,13 +31,13 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     @Override
     public void validate()
     {
-    	super.validate();
-    	if (!this.worldObj.isRemote)
-    	{
-    		TickHandlerServer.energyTransmitterUpdates.add(this);
-    	}
+        super.validate();
+        if (!this.worldObj.isRemote)
+        {
+            TickHandlerServer.energyTransmitterUpdates.add(this);
+        }
     }
-    
+
     @Override
     public void invalidate()
     {
@@ -48,12 +48,12 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
 
         super.invalidate();
     }
-    
+
     @Override
     public void onChunkUnload()
     {
         super.invalidate();
-    	super.onChunkUnload();
+        super.onChunkUnload();
     }
 
 
@@ -100,7 +100,7 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
                 {
                     if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
                     {
-                    	((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
+                        ((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
                     }
                 }
             }

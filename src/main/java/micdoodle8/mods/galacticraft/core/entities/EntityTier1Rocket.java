@@ -10,14 +10,11 @@ import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -56,11 +53,11 @@ public class EntityTier1Rocket extends EntityTieredRocket
         return 0.0F;
     }
 
-	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target)
-	{
-		return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
-	}
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
+    }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -120,8 +117,10 @@ public class EntityTier1Rocket extends EntityTieredRocket
             if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
-				if (!this.hasValidFuel())
-					this.stopRocketSound();
+                if (!this.hasValidFuel())
+                {
+                    this.stopRocketSound();
+                }
             }
         }
         else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
@@ -179,7 +178,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             final double x2 = this.posX + x1;
             final double z2 = this.posZ + z1;
 
-            EntityLivingBase riddenByEntity = this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase)this.riddenByEntity : null;
+            EntityLivingBase riddenByEntity = this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase) this.riddenByEntity : null;
 
             if (this.getLaunched())
             {
@@ -295,26 +294,30 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public double getOnPadYOffset()
     {
-    	return 0.0D;
+        return 0.0D;
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 }

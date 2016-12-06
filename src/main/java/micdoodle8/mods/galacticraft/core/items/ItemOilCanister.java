@@ -92,7 +92,10 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
         {
             par1ItemStack.setTagCompound(null);
         }
-        else if (par1ItemStack.getItemDamage() <= 0) par1ItemStack.setItemDamage(1);
+        else if (par1ItemStack.getItemDamage() <= 0)
+        {
+            par1ItemStack.setItemDamage(1);
+        }
     }
 
     @Override

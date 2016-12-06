@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -14,7 +11,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -132,13 +128,6 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         return this.blockHardness;
     }
 
-//    @Override
-//    public Block setBlockTextureName(String name)
-//    {
-//        this.textureName = name;
-//        return this;
-//    }
-
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -218,7 +207,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
             return world.getBlockState(pos).getBlock().getBedDirection(world, mainBlockPosition);
         }
 
-        return (EnumFacing)getActualState(world.getBlockState(pos), world, pos).getValue(BlockDirectional.FACING);
+        return (EnumFacing) getActualState(world.getBlockState(pos), world, pos).getValue(BlockDirectional.FACING);
     }
 
     @Override
@@ -277,6 +266,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         return super.addDestroyEffects(world, pos, effectRenderer);
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, TOP, CONNECTABLE);

@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
@@ -100,6 +97,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayer>
         this.tubes[1][6].mirror = true;
     }
 
+    @Override
     public void doRenderLayer(AbstractClientPlayer player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
@@ -120,9 +118,9 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayer>
                             ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.tubes[k][i]);
 
                             GlStateManager.pushMatrix();
-                            GlStateManager.translate(0.175F * (float)(k * 2 - 1), 0.0F, 0.0F);
-                            GlStateManager.translate(0.0F, -0.0325F * (float)(i * 2 - 1), 0.0F);
-                            GlStateManager.translate(0.0F, 0.0F, -0.0325F * (float)(Math.pow(i * 2 - 1, 2) * 0.05));
+                            GlStateManager.translate(0.175F * (float) (k * 2 - 1), 0.0F, 0.0F);
+                            GlStateManager.translate(0.0F, -0.0325F * (float) (i * 2 - 1), 0.0F);
+                            GlStateManager.translate(0.0F, 0.0F, -0.0325F * (float) (Math.pow(i * 2 - 1, 2) * 0.05));
                             GlStateManager.translate(0.0F, 0.2F, 0.0F);
                             GlStateManager.translate(0.0F, 0.0F, 0.2F);
 
@@ -136,6 +134,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayer>
         }
     }
 
+    @Override
     public boolean shouldCombineTextures()
     {
         return true;

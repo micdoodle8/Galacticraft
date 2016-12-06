@@ -1,22 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimeling;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)

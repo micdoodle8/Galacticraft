@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -43,7 +42,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         private final int meta;
         private final String name;
 
-        private EnumSolarType(int meta, String name)
+        EnumSolarType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -60,21 +59,17 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
-
-//    public static String[] names = { "basic", "advanced" };
-
-    // private IIcon[] icons = new IIcon[6];
 
     public BlockSolar(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -86,73 +81,11 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         par3List.add(new ItemStack(par1, 1, BlockSolar.ADVANCED_METADATA));
     }
 
-    /*@Override
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_0");
-        this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_basic_1");
-        this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_advanced_0");
-        this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "solar_advanced_1");
-        this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-        this.blockIcon = this.icons[0];
-    }*/
-
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        if (meta >= BlockSolar.ADVANCED_METADATA)
-        {
-            int shiftedMeta = meta -= BlockSolar.ADVANCED_METADATA;
-
-            if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
-            {
-                return this.icons[5];
-            }
-            else if (side == ForgeDirection.UP.ordinal())
-            {
-                return this.icons[2];
-            }
-            else if (side == ForgeDirection.DOWN.ordinal())
-            {
-                return this.icons[4];
-            }
-            else
-            {
-                return this.icons[3];
-            }
-        }
-        else if (meta >= BlockSolar.BASIC_METADATA)
-        {
-            int shiftedMeta = meta -= BlockSolar.BASIC_METADATA;
-
-            if (side == ForgeDirection.getOrientation(shiftedMeta + 2).getOpposite().ordinal())
-            {
-                return this.icons[5];
-            }
-            else if (side == ForgeDirection.UP.ordinal())
-            {
-                return this.icons[0];
-            }
-            else if (side == ForgeDirection.DOWN.ordinal())
-            {
-                return this.icons[4];
-            }
-            else
-            {
-                return this.icons[1];
-            }
-        }
-
-        return this.blockIcon;
-    }*/
 
     @Override
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
@@ -208,36 +141,6 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         }
 
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
-
-//        int metadata = getMetaFromState(state);
-//
-//        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-//        int change = 0;
-//
-//        switch (angle)
-//        {
-//        case 0:
-//            change = 1;
-//            break;
-//        case 1:
-//            change = 2;
-//            break;
-//        case 2:
-//            change = 0;
-//            break;
-//        case 3:
-//            change = 3;
-//            break;
-//        }
-//
-//        if (metadata >= BlockSolar.ADVANCED_METADATA)
-//        {
-//            worldIn.setBlockState(pos, getStateFromMeta(BlockSolar.ADVANCED_METADATA + change), 3);
-//        }
-//        else
-//        {
-//            worldIn.setBlockState(pos, getStateFromMeta(BlockSolar.BASIC_METADATA + change), 3);
-//        }
 
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -355,18 +258,21 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumSolarType type = EnumSolarType.byMetadata((int)Math.floor(meta / 4.0));
+        EnumSolarType type = EnumSolarType.byMetadata((int) Math.floor(meta / 4.0));
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumSolarType)state.getValue(TYPE)).getMeta() * 4;
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumSolarType) state.getValue(TYPE)).getMeta() * 4;
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);

@@ -88,12 +88,6 @@ public class Vector3 implements Cloneable
         this(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
     }
 
-    @Deprecated
-    public Vector3(float rotationYaw, float rotationPitch)
-    {
-        this(Math.cos(Math.toRadians(rotationYaw + 90)), Math.sin(Math.toRadians(-rotationPitch)), Math.sin(Math.toRadians(rotationYaw + 90)));
-    }
-
     /**
      * Returns the coordinates as integers, ideal for block placement.
      */
@@ -613,7 +607,7 @@ public class Vector3 implements Cloneable
      */
     public static Vector3 getDeltaPositionFromRotation(float rotationYaw, float rotationPitch)
     {
-        return new Vector3(rotationYaw, rotationPitch);
+        return new Vector3(Math.cos(Math.toRadians(rotationYaw + 90)), Math.sin(Math.toRadians(-rotationPitch)), Math.sin(Math.toRadians(rotationYaw + 90)));
     }
 
     /**

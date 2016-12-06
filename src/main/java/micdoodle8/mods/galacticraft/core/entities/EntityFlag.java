@@ -45,8 +45,8 @@ public class EntityFlag extends Entity
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-		boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
-		
+        boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode;
+
         if (!this.worldObj.isRemote && !this.isDead && !this.indestructable)
         {
             if (this.isEntityInvulnerable(par1DamageSource))
@@ -71,15 +71,15 @@ public class EntityFlag extends Entity
                         this.riddenByEntity.mountEntity(this);
                     }
 
-					if (flag)
-					{
-						this.setDead();
-					}
-					else
-					{
-						this.setDead();
-						this.dropItemStack();
-					}
+                    if (flag)
+                    {
+                        this.setDead();
+                    }
+                    else
+                    {
+                        this.setDead();
+                        this.dropItemStack();
+                    }
                 }
 
                 return true;
@@ -91,11 +91,11 @@ public class EntityFlag extends Entity
         }
     }
 
-	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target)
-	{
-		return new ItemStack(GCItems.flag, 1, this.getType());
-	}
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return new ItemStack(GCItems.flag, 1, this.getType());
+    }
 
     public int getWidth()
     {
@@ -134,10 +134,10 @@ public class EntityFlag extends Entity
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(17, new String(""));
-        this.dataWatcher.addObject(18, new Float(0.0F));
-        this.dataWatcher.addObject(19, new Integer(-1));
-        this.dataWatcher.addObject(20, new Integer(-1));
+        this.dataWatcher.addObject(17, "");
+        this.dataWatcher.addObject(18, 0.0F);
+        this.dataWatcher.addObject(19, -1);
+        this.dataWatcher.addObject(20, -1);
     }
 
     @Override

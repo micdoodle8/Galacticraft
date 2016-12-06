@@ -9,12 +9,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityDungeonSpawnerMars;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -26,8 +22,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -81,16 +79,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         }
     }
 
-//    @SideOnly(Side.CLIENT)
-//    private IIcon[] marsBlockIcons;
-
-    //Metadata values:
-    //0 copper ore, 1 tin ore, 2 desh ore, 3 iron ore
-    //4 cobblestone, 5 top (surface rock), 6 middle, 7 dungeon brick
-    //8 desh decoration block
-    //9 Mars stone
-    //10 dungeon spawner (invisible)
-
     public BlockBasicMars(String assetName)
     {
         super(Material.rock);
@@ -125,24 +113,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         return super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.marsBlockIcons = new IIcon[11];
-        this.marsBlockIcons[0] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "cobblestone");
-        this.marsBlockIcons[1] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "decoration_desh");
-        this.marsBlockIcons[2] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "middle");
-        this.marsBlockIcons[3] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "brick");
-        this.marsBlockIcons[4] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "top");
-        this.marsBlockIcons[5] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "copper");
-        this.marsBlockIcons[6] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "desh");
-        this.marsBlockIcons[7] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "tin");
-        this.marsBlockIcons[8] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "bottom");
-        this.marsBlockIcons[9] = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "iron");
-        this.marsBlockIcons[10] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "blank");
-    }*/
-
     @SideOnly(Side.CLIENT)
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
@@ -162,38 +132,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
         return this.blockHardness;
     }
-
-    /*@Override
-    public IIcon getIcon(int side, int meta)
-    {
-        switch (meta)
-        {
-        case 0:
-            return this.marsBlockIcons[5];
-        case 1:
-            return this.marsBlockIcons[7];
-        case 2:
-            return this.marsBlockIcons[6];
-        case 3:
-            return this.marsBlockIcons[9];
-        case 4:
-            return this.marsBlockIcons[0];
-        case 5:
-            return this.marsBlockIcons[4];
-        case 6:
-            return this.marsBlockIcons[2];
-        case 7:
-            return this.marsBlockIcons[3];
-        case 8:
-            return this.marsBlockIcons[1];
-        case 9:
-            return this.marsBlockIcons[8];
-        case 10:
-            return this.marsBlockIcons[10];
-        }
-
-        return this.marsBlockIcons[1];
-    }*/
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
@@ -320,31 +258,37 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
         return super.getPickBlock(target, world, pos, player);
     }
-    
+
     @Override
     public boolean isReplaceableOreGen(World world, BlockPos pos, Predicate<IBlockState> target)
     {
-        if (target != Blocks.stone) return false;
+        if (target != Blocks.stone)
+        {
+            return false;
+        }
         IBlockState state = world.getBlockState(pos);
-    	return (state.getValue(BASIC_TYPE) == EnumBlockBasic.MIDDLE || state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE);
+        return (state.getValue(BASIC_TYPE) == EnumBlockBasic.MIDDLE || state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE);
     }
-    
+
     @Override
     public boolean hasTileEntity(IBlockState state)
     {
         return state.getBlock().getMetaFromState(state) == 10;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumBlockBasic)state.getValue(BASIC_TYPE)).getMeta();
+        return ((EnumBlockBasic) state.getValue(BASIC_TYPE)).getMeta();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, BASIC_TYPE);

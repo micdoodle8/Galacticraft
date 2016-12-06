@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
-import org.lwjgl.Sys;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
@@ -16,9 +15,9 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
     {
-        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        if (cameraTransformType == TransformType.GUI)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -32,7 +31,7 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -46,7 +45,7 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockFluidTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,7 +10,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTankInfo;
 import org.lwjgl.opengl.GL11;
 
@@ -59,7 +55,7 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
 
         if (compositeGaseous)
         {
-            opacity = info[0].fluid.amount / (float)info[0].capacity;
+            opacity = info[0].fluid.amount / (float) info[0].capacity;
         }
         else
         {

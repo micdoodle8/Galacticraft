@@ -2,9 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -24,41 +22,19 @@ import net.minecraft.world.World;
 
 public class BlockDish extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
-//    private IIcon[] icons = new IIcon[6];
-
     public BlockDish(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.icons[0] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.icons[1] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.icons[2] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.icons[3] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.icons[4] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.icons[5] = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-        this.blockIcon = this.icons[0];
-    }*/
 
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        return this.blockIcon;
-    }*/
 
     @Override
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
@@ -121,7 +97,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-            final TileEntity tile = worldIn.getTileEntity(pos);
+        final TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityDish)
         {
@@ -166,7 +142,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     @Override
     public TileEntity createTileEntity(World world, IBlockState metadata)
     {
-    	return new TileEntityDish();
+        return new TileEntityDish();
     }
 
     @Override
@@ -178,7 +154,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     @Override
     public String getShiftDescription(int meta)
     {
-    	return GCCoreUtil.translate("tile.radio_telescope.description");
+        return GCCoreUtil.translate("tile.radio_telescope.description");
     }
 
     @Override

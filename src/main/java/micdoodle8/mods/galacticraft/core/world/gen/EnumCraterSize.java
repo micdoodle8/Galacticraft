@@ -13,7 +13,7 @@ public enum EnumCraterSize
 
     public static EnumCraterSize[] sizeArray;
 
-    private EnumCraterSize(int min, int max, int prob)
+    EnumCraterSize(int min, int max, int prob)
     {
         this.MIN_SIZE = min;
         this.MAX_SIZE = max;

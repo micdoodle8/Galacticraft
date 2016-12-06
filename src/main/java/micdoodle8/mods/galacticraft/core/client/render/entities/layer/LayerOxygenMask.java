@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
@@ -15,8 +12,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-
-import javax.vecmath.Vector3f;
 
 @SideOnly(Side.CLIENT)
 public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
@@ -35,6 +30,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
         this.oxygenMask.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
 
+    @Override
     public void doRenderLayer(AbstractClientPlayer player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
@@ -66,6 +62,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
         }
     }
 
+    @Override
     public boolean shouldCombineTextures()
     {
         return true;

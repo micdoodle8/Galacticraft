@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class ModelBalloonParachute extends ModelBase
 {

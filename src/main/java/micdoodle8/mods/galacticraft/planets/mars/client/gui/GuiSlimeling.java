@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
@@ -15,13 +14,9 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -289,10 +284,14 @@ public class GuiSlimeling extends GuiScreen
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
 
-        try {
-        	Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
-        	clazz.getMethod("go").invoke(null);
-        } catch (Exception e) { }
+        try
+        {
+            Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
+            clazz.getMethod("go").invoke(null);
+        }
+        catch (Exception e)
+        {
+        }
     }
 
     public static void drawSlimelingOnGui(GuiSlimeling screen, EntitySlimeling slimeling, int par1, int par2, int par3, float par4, float par5)
@@ -316,7 +315,7 @@ public class GuiSlimeling extends GuiScreen
         slimeling.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         slimeling.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GL11.glTranslatef(0.0F, (float)slimeling.getYOffset(), 0.0F);
+        GL11.glTranslatef(0.0F, (float) slimeling.getYOffset(), 0.0F);
         FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
         FMLClientHandler.instance().getClient().getRenderManager().renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         slimeling.renderYawOffset = f2;

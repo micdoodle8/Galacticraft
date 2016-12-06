@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
@@ -32,11 +31,6 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     public static final int COAL_GENERATOR_METADATA = 0;
     public static final int COMPRESSOR_METADATA = 12;
 
-    /*private IIcon iconMachineSide;
-    private IIcon iconOutput;
-
-    private IIcon iconCoalGenerator;
-    private IIcon iconCompressor;*/
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineType.class);
 
@@ -48,7 +42,7 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
         private final int meta;
         private final String name;
 
-        private EnumMachineType(int meta, String name)
+        EnumMachineType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -71,7 +65,8 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -81,7 +76,6 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
         super(GCBlocks.machine);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -90,23 +84,6 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
-
-        this.iconCoalGenerator = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "coalGenerator");
-        this.iconCompressor = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "compressor");
-    }*/
 
     @Override
     public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
@@ -148,48 +125,6 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
             }
         }
     }
-
-    /*@Override
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int metadata = world.getBlockMetadata(x, y, z);
-
-        return this.getIcon(side, world.getBlockMetadata(x, y, z));
-    }
-
-    @Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 0 || side == 1)
-        {
-            return this.blockIcon;
-        }
-
-        if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-        {
-            metadata -= BlockMachine.COMPRESSOR_METADATA;
-
-            if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-            {
-                return this.iconCompressor;
-            }
-        }
-        else
-        {
-            // If it is the front side
-            if (side == metadata + 2)
-            {
-                return this.iconOutput;
-            }
-            // If it is the back side
-            if (metadata == 0 && side == 4 || metadata == 1 && side == 5 || metadata == 2 && side == 3 || metadata == 3 && side == 2)
-            {
-                return this.iconCoalGenerator;
-            }
-        }
-
-        return this.iconMachineSide;
-    }*/
 
     /**
      * Called when the block is placed in the world.
@@ -321,18 +256,21 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineType type = EnumMachineType.byMetadata((int)Math.floor(meta / 4.0));
+        EnumMachineType type = EnumMachineType.byMetadata((int) Math.floor(meta / 4.0));
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType)state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType) state.getValue(TYPE)).getMeta() * 4;
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);

@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -42,7 +41,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         private final int meta;
         private final String name;
 
-        private EnumTieredMachineType(int meta, String name)
+        EnumTieredMachineType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -59,30 +58,17 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
-
-    /*private IIcon iconMachineSide;
-    private IIcon iconInput;
-    private IIcon iconOutput;
-    private IIcon iconTier2;
-    private IIcon iconMachineSideT2;
-    private IIcon iconInputT2;
-    private IIcon iconOutputT2;
-
-    private IIcon[] iconEnergyStorageModule;
-    private IIcon[] iconEnergyStorageModuleT2;
-    private IIcon iconElectricFurnace;
-    private IIcon iconElectricFurnaceT2;*/
 
     public BlockMachineTiered(String assetName)
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeMetal);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + "machine");
         this.setUnlocalizedName(assetName);
     }
 
@@ -92,185 +78,6 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.blockIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine");
-        this.iconInput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-        this.iconOutput = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_output");
-        this.iconMachineSide = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_side");
-
-        this.iconEnergyStorageModule = new IIcon[17];
-
-        for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
-        {
-            this.iconEnergyStorageModule[i] = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "energyStorageModule_" + i);
-        }
-
-        this.iconElectricFurnace = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "electricFurnace");
-
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            this.iconTier2 = iconRegister.registerIcon("galacticraftasteroids:machine");
-            this.iconInputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_input");
-            this.iconOutputT2 = iconRegister.registerIcon("galacticraftasteroids:machine_output");
-            this.iconMachineSideT2 = iconRegister.registerIcon("galacticraftasteroids:machine_side");
-            this.iconEnergyStorageModuleT2 = new IIcon[17];
-            for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
-            {
-                this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon("galacticraftasteroids:energyStorageModule_" + i);
-            }
-            this.iconElectricFurnaceT2 = iconRegister.registerIcon("galacticraftasteroids:electricFurnace");
-        }
-        else
-        {
-            this.iconTier2 = iconRegister.registerIcon("void");
-            this.iconInputT2 = iconRegister.registerIcon("void");
-            this.iconOutputT2 = iconRegister.registerIcon("void");
-            this.iconMachineSideT2 = iconRegister.registerIcon("void");
-            this.iconEnergyStorageModuleT2 = new IIcon[17];
-            for (int i = 0; i < this.iconEnergyStorageModule.length; i++)
-            {
-                this.iconEnergyStorageModuleT2[i] = iconRegister.registerIcon("void");
-            }
-            this.iconElectricFurnaceT2 = iconRegister.registerIcon("void");
-        }
-    }
-
-    @Override
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int metadata = world.getBlockMetadata(x, y, z);
-        int type = metadata & 4;
-        int metaside = (metadata & 3) + 2;
-
-        if (type == BlockMachineTiered.STORAGE_MODULE_METADATA)
-        {
-            if (side == 0 || side == 1)
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconTier2;
-                }
-                return this.blockIcon;
-            }
-
-            // If it is the front side
-            if (side == metaside)
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconOutputT2;
-                }
-                return this.iconOutput;
-            }
-            // If it is the back side
-            else if (side == (metaside ^ 1))
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconInputT2;
-                }
-                return this.iconInput;
-            }
-
-            TileEntity tile = world.getTileEntity(x, y, z);
-
-            int level = 0;
-            if (tile instanceof TileEntityEnergyStorageModule)
-            {
-                level = ((TileEntityEnergyStorageModule) tile).scaledEnergyLevel;
-            }
-
-            if (metadata >= 8)
-            {
-                return this.iconEnergyStorageModuleT2[level];
-            }
-            return this.iconEnergyStorageModule[level];
-        }
-
-        return this.getIcon(side, metadata);
-    }
-
-    @Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        int metaside = (metadata & 3) + 2;
-
-        if (side == 0 || side == 1)
-        {
-            if (metadata >= 8)
-            {
-                return this.iconTier2;
-            }
-            return this.blockIcon;
-        }
-
-        if ((metadata & 4) == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-        {
-            // If it is the front side
-            if (side == metaside)
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconInputT2;
-                }
-                return this.iconInput;
-            }
-            // If it is the back side
-            else if (metaside == 2 && side == 4 || metaside == 3 && side == 5 || metaside == 4 && side == 3 || metaside == 5 && side == 2)
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconElectricFurnaceT2;
-                }
-                return this.iconElectricFurnace;
-            }
-        }
-        else
-        {
-            // If it is the front side
-            if (side == metaside)
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconOutputT2;
-                }
-                return this.iconOutput;
-            }
-            // If it is the back side
-            else if (side == (metaside ^ 1))
-            {
-                if (metadata >= 8)
-                {
-                    return this.iconInputT2;
-                }
-                return this.iconInput;
-            }
-
-            if (metadata >= 8)
-            {
-                return this.iconEnergyStorageModuleT2[16];
-            }
-            return this.iconEnergyStorageModule[16];
-        }
-
-        if (metadata >= 8)
-        {
-            return this.iconMachineSideT2;
-        }
-        return this.iconMachineSide;
-    }*/
-
-    /**
-     * Called when the block is placed in the world.
-     */
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
@@ -410,18 +217,21 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumTieredMachineType type = EnumTieredMachineType.byMetadata((int)Math.floor(meta / 4.0));
+        EnumTieredMachineType type = EnumTieredMachineType.byMetadata((int) Math.floor(meta / 4.0));
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType)state.getValue(TYPE)).getMeta() * 4;
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType) state.getValue(TYPE)).getMeta() * 4;
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING, TYPE);

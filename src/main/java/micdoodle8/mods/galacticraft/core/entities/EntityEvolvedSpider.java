@@ -46,17 +46,17 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     {
         return false;
     }*/
-    
+
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
-	{
+    {
         Object p_180482_2_1 = super.onInitialSpawn(difficulty, livingdata);
 
         if (this.worldObj.rand.nextInt(100) == 0)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
+            entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData) null);
             this.worldObj.spawnEntityInWorld(entityskeleton);
             entityskeleton.mountEntity(this);
         }
@@ -67,13 +67,13 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 
             if (this.worldObj.getDifficulty() == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
             {
-                ((EntitySpider.GroupData)p_180482_2_1).func_111104_a(this.worldObj.rand);
+                ((EntitySpider.GroupData) p_180482_2_1).func_111104_a(this.worldObj.rand);
             }
         }
 
         if (p_180482_2_1 instanceof EntitySpider.GroupData)
         {
-            int i = ((EntitySpider.GroupData)p_180482_2_1).potionEffectId;
+            int i = ((EntitySpider.GroupData) p_180482_2_1).potionEffectId;
 
             if (i > 0 && Potion.potionTypes[i] != null)
             {
@@ -81,14 +81,17 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             }
         }
 
-        return (IEntityLivingData)p_180482_2_1;
-	}
-    
+        return (IEntityLivingData) p_180482_2_1;
+    }
+
     @Override
     protected void jump()
     {
         this.motionY = 0.52D / WorldUtil.getGravityFactor(this);
-        if (this.motionY < 0.26D) this.motionY = 0.26D;
+        if (this.motionY < 0.26D)
+        {
+            this.motionY = 0.26D;
+        }
 
         if (this.isPotionActive(Potion.jump))
         {
@@ -111,30 +114,33 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     {
         switch (this.rand.nextInt(14))
         {
-            case 0:
-            case 1:
-            case 2:
-            	this.dropItem(GCItems.cheeseCurd, 1);
-                break;
-            case 3:
-            case 4:
-            case 5:
-            	this.dropItem(Items.fermented_spider_eye, 1);
-                break;
-            case 6:
-            case 7:
-            	//Oxygen tank half empty or less
-                this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
-                break;
-            case 8:
-                this.dropItem(GCItems.oxygenGear, 1);
-                break;
-            case 9:
-                this.dropItem(GCItems.oxygenConcentrator, 1);
-                break;
-            default:
-            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.nether_wart, 1);
-            	break;
+        case 0:
+        case 1:
+        case 2:
+            this.dropItem(GCItems.cheeseCurd, 1);
+            break;
+        case 3:
+        case 4:
+        case 5:
+            this.dropItem(Items.fermented_spider_eye, 1);
+            break;
+        case 6:
+        case 7:
+            //Oxygen tank half empty or less
+            this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+            break;
+        case 8:
+            this.dropItem(GCItems.oxygenGear, 1);
+            break;
+        case 9:
+            this.dropItem(GCItems.oxygenConcentrator, 1);
+            break;
+        default:
+            if (ConfigManagerCore.challengeMode)
+            {
+                this.dropItem(Items.nether_wart, 1);
+            }
+            break;
         }
     }
 }

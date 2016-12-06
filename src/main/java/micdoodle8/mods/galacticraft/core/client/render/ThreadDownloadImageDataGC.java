@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render;
 
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,6 +57,7 @@ public class ThreadDownloadImageDataGC extends SimpleTexture
         }
     }
 
+    @Override
     public int getGlTextureId()
     {
         this.checkTextureUploaded();
@@ -68,6 +69,7 @@ public class ThreadDownloadImageDataGC extends SimpleTexture
         this.bufferedImage = p_147641_1_;
     }
 
+    @Override
     public void loadTexture(IResourceManager p_110551_1_)
     {
         try
@@ -114,6 +116,7 @@ public class ThreadDownloadImageDataGC extends SimpleTexture
     {
         this.imageThread = new Thread("Texture Downloader #" + threadDownloadCounter.incrementAndGet())
         {
+            @Override
             public void run()
             {
                 HttpURLConnection httpurlconnection = null;

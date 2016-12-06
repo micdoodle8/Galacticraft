@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -24,11 +23,6 @@ import net.minecraft.world.World;
 
 public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    /*private IIcon iconMachineSide;
-    private IIcon iconSealer;
-    private IIcon iconInput;
-    private IIcon iconOutput;*/
-
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOxygenSealer(String assetName)
@@ -36,7 +30,6 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
         super(Material.rock);
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeStone);
-        //this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
     }
 
@@ -45,22 +38,6 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-
-    @Override
-    public int getRenderType()
-    {
-        return GalacticraftCore.proxy.getBlockRender(this);
-    }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.iconMachineSide = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_blank");
-        this.iconSealer = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_sealer");
-        this.iconInput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_oxygen_input");
-        this.iconOutput = par1IconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "machine_input");
-    }*/
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -86,27 +63,6 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
         return true;
     }
 
-    /*@Override
-    public IIcon getIcon(int side, int metadata)
-    {
-        if (side == 1)
-        {
-            return this.iconSealer;
-        }
-        else if (side == metadata + 2)
-        {
-            return this.iconOutput;
-        }
-        else if (side == ForgeDirection.getOrientation(metadata + 2).getOpposite().ordinal())
-        {
-            return this.iconInput;
-        }
-        else
-        {
-            return this.iconMachineSide;
-        }
-    }*/
-
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
@@ -128,7 +84,7 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
         // Also don't want to clear all the breatheableAir if there are still
         // working sealers in the space
         /*
-		 * TileEntity tile = world.getTileEntity(x, y, z);
+         * TileEntity tile = world.getTileEntity(x, y, z);
 		 * 
 		 * if (tile instanceof GCCoreTileEntityOxygenSealer) {
 		 * GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer)
@@ -158,17 +114,20 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
         return true;
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, FACING);

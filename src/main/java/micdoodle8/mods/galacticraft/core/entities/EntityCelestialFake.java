@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -16,6 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.*;
 
@@ -25,9 +25,9 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     private UUID persistantRiderUUID;
     private Boolean shouldMoveClient;
     private Boolean shouldMoveServer;
-	private boolean hasReceivedPacket;
+    private boolean hasReceivedPacket;
 
-	public EntityCelestialFake(World var1)
+    public EntityCelestialFake(World var1)
     {
         super(var1);
         this.setSize(3.0F, 1.0F);
@@ -228,23 +228,29 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
                 int shouldBeMountedId = buffer.readInt();
                 if (this.riddenByEntity == null)
                 {
-                	 if (shouldBeMountedId > -1)
-                	 {
-                		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
-                		 if (e != null) e.mountEntity(this);
-                	 }
+                    if (shouldBeMountedId > -1)
+                    {
+                        Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                        if (e != null)
+                        {
+                            e.mountEntity(this);
+                        }
+                    }
                 }
                 else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
                 {
-                	if (shouldBeMountedId == -1)
-                	{
-                		this.riddenByEntity.mountEntity(null);
-                	}
-                	else
-                	{
-                		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
-               		 	if (e != null) e.mountEntity(this);
-                	}
+                    if (shouldBeMountedId == -1)
+                    {
+                        this.riddenByEntity.mountEntity(null);
+                    }
+                    else
+                    {
+                        Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                        if (e != null)
+                        {
+                            e.mountEntity(this);
+                        }
+                    }
                 }
             }
             else
@@ -309,79 +315,94 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         return id;
     }
 
-	@Override
-	public boolean pressKey(int key) {
-		return false;
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return 0;
-	}
-
-	@Override
-	public String getName() {
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSpawnParticles() {
-		return false;
-	}
-
-	@Override
-	public Map<Vector3, Vector3> getParticleMap() {
-		return null;
-	}
-
-	@Override
-	public EntityFX getParticle(Random rand, double x, double y, double z,
-			double motX, double motY, double motZ) {
-		return null;
-	}
-
-	@Override
-	public void tickOnGround() {
-		this.tickInAir();
-	}
-
-	@Override
-	public void onGroundHit() {
-
-	}
-
-	@Override
-	public Vector3 getMotionVec() {
-		return new Vector3(0, 0, 0);
-	}
-
-	@Override
-	public boolean shouldIgnoreShiftExit() {
-		return true;
-	}
+    @Override
+    public boolean pressKey(int key)
+    {
+        return false;
+    }
 
     @Override
-    public int getField(int id) {
+    public int getSizeInventory()
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public String getName()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean shouldSpawnParticles()
+    {
+        return false;
+    }
+
+    @Override
+    public Map<Vector3, Vector3> getParticleMap()
+    {
+        return null;
+    }
+
+    @Override
+    public EntityFX getParticle(Random rand, double x, double y, double z,
+                                double motX, double motY, double motZ)
+    {
+        return null;
+    }
+
+    @Override
+    public void tickOnGround()
+    {
+        this.tickInAir();
+    }
+
+    @Override
+    public void onGroundHit()
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public Vector3 getMotionVec()
+    {
+        return new Vector3(0, 0, 0);
+    }
+
+    @Override
+    public boolean shouldIgnoreShiftExit()
+    {
+        return true;
+    }
+
+    @Override
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void setField(int id, int value)
+    {
+
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
 
     }
 }

@@ -73,7 +73,7 @@ public class ContainerOxygenStorageModule extends Container
             }
             else
             {
-            	if (stack.getItem() instanceof IItemOxygenSupply)
+                if (stack.getItem() instanceof IItemOxygenSupply)
                 {
                     if (!this.mergeItemStack(stack, 0, 1, false))
                     {

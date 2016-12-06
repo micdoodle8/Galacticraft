@@ -1,17 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockBossSpawner;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -35,7 +31,7 @@ public class MarsBlocks
 
     public static void initBlocks()
     {
-    	MarsBlocks.marsBlock = new BlockBasicMars("mars").setHardness(2.2F);
+        MarsBlocks.marsBlock = new BlockBasicMars("mars").setHardness(2.2F);
         MarsBlocks.vine = new BlockCavernousVine("cavern_vines").setHardness(0.1F);
         MarsBlocks.rock = new BlockSlimelingEgg("slimeling_egg").setHardness(0.75F);
         MarsBlocks.treasureChestTier2 = new BlockTier2TreasureChest("treasure_t2");
@@ -98,7 +94,7 @@ public class MarsBlocks
 //        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
 //        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
     }
-    
+
     public static void oreDictRegistration()
     {
         OreDictionary.registerOre("oreCopper", new ItemStack(MarsBlocks.marsBlock, 1, 0));

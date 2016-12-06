@@ -17,6 +17,7 @@ public class BiomeGenBaseMoon extends BiomeGenBase
         this.rainfall = 0F;
     }
 
+    @Override
     public BiomeDecorator createBiomeDecorator()
     {
         return getModdedBiomeDecorator(new BiomeDecoratorMoon());

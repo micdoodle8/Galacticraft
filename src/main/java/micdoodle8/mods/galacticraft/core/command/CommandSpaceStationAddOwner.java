@@ -66,17 +66,17 @@ public class CommandSpaceStationAddOwner extends CommandBase
 
                             if (var3.equalsIgnoreCase("+all"))
                             {
-                            	data.setAllowedAll(true);
+                                data.setAllowedAll(true);
                                 playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allow_all_true")));
                                 return;
                             }
                             if (var3.equalsIgnoreCase("-all"))
                             {
-                            	data.setAllowedAll(false);
+                                data.setAllowedAll(false);
                                 playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allow_all_false", var3)));
                                 return;
                             }
-                            
+
                             if (!data.getAllowedPlayers().contains(var3))
                             {
                                 data.getAllowedPlayers().add(var3);

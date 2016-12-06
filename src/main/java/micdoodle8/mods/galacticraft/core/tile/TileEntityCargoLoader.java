@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -91,7 +90,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
             if (pad != null && pad instanceof TileEntityMulti)
             {
-                final TileEntity mainTile = ((TileEntityMulti)pad).getMainBlockTile();
+                final TileEntity mainTile = ((TileEntityMulti) pad).getMainBlockTile();
 
                 if (mainTile instanceof ICargoEntity)
                 {
@@ -135,17 +134,20 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return GCCoreUtil.translate("container.cargoloader.name");
     }
 
     @Override
-    public boolean hasCustomName() {
+    public boolean hasCustomName()
+    {
         return true;
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public IChatComponent getDisplayName()
+    {
         return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
@@ -175,7 +177,6 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
         return false;
     }
-
 
 
     @Override
@@ -300,6 +301,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
         return true;
     }
 
+    @Override
     public EnumFacing getFront()
     {
         return this.worldObj.getBlockState(getPos()).getValue(BlockCargoLoader.FACING);

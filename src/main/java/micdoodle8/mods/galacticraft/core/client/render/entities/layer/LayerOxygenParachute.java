@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
@@ -52,6 +49,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayer>
         this.parachuteStrings[3].setRotationPoint(0.0F, 0.0F, 0.0F);
     }
 
+    @Override
     public void doRenderLayer(AbstractClientPlayer player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
@@ -100,6 +98,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayer>
         }
     }
 
+    @Override
     public boolean shouldCombineTextures()
     {
         return true;

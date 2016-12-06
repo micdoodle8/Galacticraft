@@ -36,16 +36,16 @@ public enum EnumColor
      */
     private final String unlocalizedName;
 
-    private EnumColor(String s, String n, int[] rgb)
+    EnumColor(String s, String n, int[] rgb)
     {
         this.code = s;
         this.unlocalizedName = n;
         this.rgbCode = rgb;
     }
-    
+
     public String getCode()
     {
-    	return code;
+        return code;
     }
 
     public String getLocalizedName()

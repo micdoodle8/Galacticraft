@@ -14,6 +14,7 @@ public class EntityAITradePlayerGC extends EntityAIBase
         this.setMutexBits(5);
     }
 
+    @Override
     public boolean shouldExecute()
     {
         if (!this.villager.isEntityAlive())
@@ -39,13 +40,15 @@ public class EntityAITradePlayerGC extends EntityAIBase
         }
     }
 
+    @Override
     public void startExecuting()
     {
         this.villager.getNavigator().clearPathEntity();
     }
 
+    @Override
     public void resetTask()
     {
-        this.villager.setCustomer((EntityPlayer)null);
+        this.villager.setCustomer((EntityPlayer) null);
     }
 }

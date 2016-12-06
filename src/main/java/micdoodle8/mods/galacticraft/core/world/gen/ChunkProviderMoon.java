@@ -185,7 +185,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     @Override
     public Chunk provideChunk(int x, int z)
     {
-        this.rand.setSeed((long)x * 341873128712L + (long)z * 132897987541L);
+        this.rand.setSeed((long) x * 341873128712L + (long) z * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
         this.setBlocksInChunk(x, z, chunkprimer);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
@@ -202,7 +202,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
 
         for (int i = 0; i < abyte.length; ++i)
         {
-            abyte[i] = (byte)this.biomesForGeneration[i].biomeID;
+            abyte[i] = (byte) this.biomesForGeneration[i].biomeID;
         }
 
         chunk.generateSkylightMap();
@@ -307,7 +307,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
         this.rand.setSeed(this.worldObj.getSeed());
         long k = this.rand.nextLong() / 2L * 2L + 1L;
         long l = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed((long)x * k + (long)z * l ^ this.worldObj.getSeed());
+        this.rand.setSeed((long) x * k + (long) z * l ^ this.worldObj.getSeed());
 
         if (!ConfigManagerCore.disableMoonVillageGen)
         {

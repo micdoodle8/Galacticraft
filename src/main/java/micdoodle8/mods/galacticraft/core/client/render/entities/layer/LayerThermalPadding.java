@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
@@ -60,6 +59,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
         return null;
     }
 
+    @Override
     public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float f2, float f3, float partialTicks, float f5, float f6, float f7, float scale)
     {
         this.renderLayerGC(entitylivingbaseIn, f2, f3, partialTicks, f5, f6, f7, scale, 4);

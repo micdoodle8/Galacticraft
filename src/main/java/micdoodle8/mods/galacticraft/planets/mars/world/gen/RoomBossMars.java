@@ -125,6 +125,7 @@ public class RoomBossMars extends RoomBoss
         return true;
     }
 
+    @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
         return getCorridor(rand, startPiece, 10, true);

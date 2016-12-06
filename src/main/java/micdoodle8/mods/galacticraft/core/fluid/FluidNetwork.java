@@ -8,13 +8,14 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
-import micdoodle8.mods.galacticraft.api.transmission.tile.*;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
+import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.PacketFluidNetworkUpdate;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -416,7 +417,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             return 0.0F;
         }
 
-        return Math.min(1.0F, this.buffer.amount / (float)this.getCapacity());
+        return Math.min(1.0F, this.buffer.amount / (float) this.getCapacity());
     }
 
     public Set<Pair<BlockPos, IFluidHandler>> getAcceptors(FluidStack toSend)
@@ -461,7 +462,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     public void refresh()
     {
         if (this.acceptors != null)
+        {
             this.acceptors.clear();
+        }
 
         try
         {

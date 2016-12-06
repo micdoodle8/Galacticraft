@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -13,12 +12,9 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -108,7 +104,7 @@ public class GuiSlimelingInventory extends GuiContainer
         slimeling.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
         slimeling.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GL11.glTranslatef(0.0F, (float)slimeling.getYOffset(), 0.0F);
+        GL11.glTranslatef(0.0F, (float) slimeling.getYOffset(), 0.0F);
         FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
         FMLClientHandler.instance().getClient().getRenderManager().renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         slimeling.renderYawOffset = f2;
@@ -123,6 +119,7 @@ public class GuiSlimelingInventory extends GuiContainer
         GuiSlimeling.renderingOnGui = false;
     }
 
+    @Override
     public void drawScreen(int par1, int par2, float par3)
     {
         GL11.glPushMatrix();

@@ -143,6 +143,7 @@ public class EnergyStorage implements IEnergyStorageGC
 
         return energyExtracted;
     }
+
     @Override
     public float getEnergyStoredGC()
     {
@@ -159,10 +160,12 @@ public class EnergyStorage implements IEnergyStorageGC
     public boolean equals(Object obj)
     {
         if (obj == null)
+        {
             return false;
+        }
         if (obj instanceof EnergyStorage)
         {
-            EnergyStorage storage = (EnergyStorage)obj;
+            EnergyStorage storage = (EnergyStorage) obj;
             return (storage.getEnergyStoredGC() == energy &&
                     storage.getCapacityGC() == capacity &&
                     storage.getMaxReceive() == maxReceive &&

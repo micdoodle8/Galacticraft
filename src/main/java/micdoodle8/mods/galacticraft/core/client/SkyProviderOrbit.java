@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
@@ -10,10 +7,13 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -207,7 +207,7 @@ public class SkyProviderOrbit extends IRenderHandler
         //look even brighter in outer dimensions (further from the sun)
         GL11.glColor4f(0.8F, 0.8F, 0.8F, 0.8F);
         GL11.glCallList(this.starGLCallList);
-        
+
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glPushMatrix();
@@ -217,7 +217,7 @@ public class SkyProviderOrbit extends IRenderHandler
         {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
             var12 = 8.0F;
             WorldRenderer worldRenderer = var23.getWorldRenderer();
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -243,7 +243,7 @@ public class SkyProviderOrbit extends IRenderHandler
         {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);        
+            GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
             var12 = 11.3F;
             WorldRenderer worldRenderer = var23.getWorldRenderer();
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);

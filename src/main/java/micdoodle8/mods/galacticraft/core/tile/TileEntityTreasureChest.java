@@ -1,16 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.Iterator;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,11 +17,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.*;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, IPacketReceiver
 {
@@ -54,6 +49,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Returns the number of slots in the inventory.
      */
+    @Override
     public int getSizeInventory()
     {
         return 27;
@@ -62,6 +58,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Returns the stack in slot i
      */
+    @Override
     public ItemStack getStackInSlot(int index)
     {
         return this.chestContents[index];
@@ -71,6 +68,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
+    @Override
     public ItemStack decrStackSize(int index, int count)
     {
         if (this.chestContents[index] != null)
@@ -107,6 +105,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
+    @Override
     public ItemStack removeStackFromSlot(int index)
     {
         if (this.chestContents[index] != null)
@@ -124,6 +123,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
+    @Override
     public void setInventorySlotContents(int index, ItemStack stack)
     {
         this.chestContents[index] = stack;
@@ -139,6 +139,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Gets the name of this command sender (usually username, but possibly "Rcon")
      */
+    @Override
     public String getName()
     {
         return GCCoreUtil.translate("container.treasurechest.name");
@@ -147,6 +148,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Returns true if this thing is named
      */
+    @Override
     public boolean hasCustomName()
     {
         return false;
@@ -156,6 +158,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
@@ -176,6 +179,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
@@ -188,7 +192,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             if (this.chestContents[i] != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
+                nbttagcompound1.setByte("Slot", (byte) i);
                 this.chestContents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
@@ -201,6 +205,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
+    @Override
     public int getInventoryStackLimit()
     {
         return 64;
@@ -209,11 +214,13 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
+    @Override
     public boolean isUseableByPlayer(EntityPlayer player)
     {
-        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
+    @Override
     public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
@@ -223,6 +230,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Updates the JList with a new model.
      */
+    @Override
     public void update()
     {
         int i = this.pos.getX();
@@ -240,18 +248,18 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         {
             this.numPlayersUsing = 0;
             f = 5.0F;
-            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double)((float)i - f), (double)((float)j - f), (double)((float)k - f), (double)((float)(i + 1) + f), (double)((float)(j + 1) + f), (double)((float)(k + 1) + f)));
+            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double) ((float) i - f), (double) ((float) j - f), (double) ((float) k - f), (double) ((float) (i + 1) + f), (double) ((float) (j + 1) + f), (double) ((float) (k + 1) + f)));
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
             {
-                EntityPlayer entityplayer = (EntityPlayer)iterator.next();
+                EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
                 if (entityplayer.openContainer instanceof ContainerChest)
                 {
-                    IInventory iinventory = ((ContainerChest)entityplayer.openContainer).getLowerChestInventory();
+                    IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
-                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest)iinventory).isPartOfLargeChest(this))
+                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this))
                     {
                         ++this.numPlayersUsing;
                     }
@@ -265,10 +273,10 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
         if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F)
         {
-            double d1 = (double)i + 0.5D;
-            d2 = (double)k + 0.5D;
+            double d1 = (double) i + 0.5D;
+            d2 = (double) k + 0.5D;
 
-            this.worldObj.playSoundEffect(d1, (double)j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSoundEffect(d1, (double) j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (((this.numPlayersUsing == 0 || this.locked) && this.lidAngle > 0.0F) || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
@@ -293,10 +301,10 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
             if (this.lidAngle < f2 && f1 >= f2)
             {
-                d2 = (double)i + 0.5D;
-                double d0 = (double)k + 0.5D;
+                d2 = (double) i + 0.5D;
+                double d0 = (double) k + 0.5D;
 
-                this.worldObj.playSoundEffect(d2, (double)j + 0.5D, d0, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSoundEffect(d2, (double) j + 0.5D, d0, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -308,6 +316,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         super.update();
     }
 
+    @Override
     public boolean receiveClientEvent(int id, int type)
     {
         if (id == 1)
@@ -321,6 +330,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
     }
 
+    @Override
     public void openInventory(EntityPlayer player)
     {
         if (!player.isSpectator())
@@ -337,6 +347,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
     }
 
+    @Override
     public void closeInventory(EntityPlayer player)
     {
         if (!player.isSpectator())
@@ -351,6 +362,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
+    @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
         return true;
@@ -359,6 +371,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     /**
      * invalidates a tile entity
      */
+    @Override
     public void invalidate()
     {
         super.invalidate();
@@ -375,18 +388,24 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         return new ContainerChest(playerInventory, this, playerIn);
     }
 
+    @Override
     public int getField(int id)
     {
         return 0;
     }
 
-    public void setField(int id, int value) {}
+    @Override
+    public void setField(int id, int value)
+    {
+    }
 
+    @Override
     public int getFieldCount()
     {
         return 0;
     }
 
+    @Override
     public void clear()
     {
         for (int i = 0; i < this.chestContents.length; ++i)
@@ -398,7 +417,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public IChatComponent getDisplayName()
     {
-        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -64,7 +63,8 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         }
 
         @Override
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
     }
@@ -73,7 +73,6 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         super(Material.iron);
         this.setHardness(1.0F);
-//        this.setBlockTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "walkway");
         this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeMetal);
         this.isBlockContainer = true;
@@ -128,12 +127,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         if (metadata == EnumWalkwayType.WALKWAY_PIPE.getMeta())
         {
-        	return new TileEntityFluidPipe();
+            return new TileEntityFluidPipe();
         }
 
         if (metadata == EnumWalkwayType.WALKWAY_WIRE.getMeta())
         {
-        	return new TileEntityAluminumWire(2); 
+            return new TileEntityAluminumWire(2);
         }
 
         return null;
@@ -303,6 +302,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         return new BlockState(this, WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
     }
 
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         Object[] connectable = new Object[EnumFacing.values().length];
@@ -351,7 +351,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumWalkwayType)state.getValue(WALKWAY_TYPE)).getMeta();
+        return ((EnumWalkwayType) state.getValue(WALKWAY_TYPE)).getMeta();
     }
 
     @Override

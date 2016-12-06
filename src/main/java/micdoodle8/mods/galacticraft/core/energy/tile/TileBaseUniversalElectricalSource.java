@@ -39,9 +39,12 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     public float produce()
     {
         this.storage.maxExtractRemaining = this.storage.maxExtract;
-    	float produced = this.extractEnergyGC(null, this.produce(false), false);
+        float produced = this.extractEnergyGC(null, this.produce(false), false);
         this.storage.maxExtractRemaining -= produced;
-        if (this.storage.maxExtractRemaining < 0) this.storage.maxExtractRemaining = 0;
+        if (this.storage.maxExtractRemaining < 0)
+        {
+            this.storage.maxExtractRemaining = 0;
+        }
         return produced;
     }
 
@@ -85,7 +88,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                     }
                     else if (tileAdj instanceof TileBaseUniversalElectrical)
                     {
-                  		amountProduced += ((TileBaseUniversalElectrical) tileAdj).receiveElectricity(direction.getOpposite(), toSend, this.tierGC, !simulate);
+                        amountProduced += ((TileBaseUniversalElectrical) tileAdj).receiveElectricity(direction.getOpposite(), toSend, this.tierGC, !simulate);
                     }
                     else
                     {
@@ -207,6 +210,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.tierGC + 1;
     }
 
+    @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
     public boolean canOutputTo(EnumFacing side)
     {
@@ -248,11 +252,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             return 0;
         }
 
-    	if (!this.getElectricalOutputDirections().contains(from))
-    	{
-    		return 0;
-    	}
+        if (!this.getElectricalOutputDirections().contains(from))
+        {
+            return 0;
+        }
 
-    	return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+        return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
 }

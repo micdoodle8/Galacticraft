@@ -31,7 +31,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -100,12 +99,12 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         return null;
     }
-	
-	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target)
-	{
-		return new ItemStack(GCItems.buggy, 1, this.buggyType);
-	}
+
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return new ItemStack(GCItems.buggy, 1, this.buggyType);
+    }
 
     public int getType()
     {
@@ -199,8 +198,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else
         {
-        	Entity e = var1.getEntity(); 
-			boolean flag = var1.getEntity() instanceof EntityPlayer && ((EntityPlayer)var1.getEntity()).capabilities.isCreativeMode;
+            Entity e = var1.getEntity();
+            boolean flag = var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode;
 
             if (this.isEntityInvulnerable(var1) || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
@@ -208,46 +207,46 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             }
             else
             {
-	            this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
-	            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-	            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
-	            this.setBeenAttacked();
-	
-	            if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
-	            {
-	                this.dataWatcher.updateObject(this.currentDamage, 100);
-	            }
-	
-	            if (flag || this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
-	            {
-	                if (this.riddenByEntity != null)
-	                {
-	                    this.riddenByEntity.mountEntity(this);
-	                }
-	
-	                if (!this.worldObj.isRemote)
-	                {
-	                    if (this.riddenByEntity != null)
-	                    {
-	                        this.riddenByEntity.mountEntity(this);
-	                    }
-					}
-					if (flag)
-					{
-						this.setDead();
-					}
-					else
-					{
-						this.setDead();
+                this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
+                this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
+                this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
+                this.setBeenAttacked();
+
+                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+                {
+                    this.dataWatcher.updateObject(this.currentDamage, 100);
+                }
+
+                if (flag || this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
+                {
+                    if (this.riddenByEntity != null)
+                    {
+                        this.riddenByEntity.mountEntity(this);
+                    }
+
+                    if (!this.worldObj.isRemote)
+                    {
+                        if (this.riddenByEntity != null)
+                        {
+                            this.riddenByEntity.mountEntity(this);
+                        }
+                    }
+                    if (flag)
+                    {
+                        this.setDead();
+                    }
+                    else
+                    {
+                        this.setDead();
                         if (!this.worldObj.isRemote)
                         {
                             this.dropBuggyAsItem();
                         }
-					}
-	                this.setDead();
-	            }
-	
-	            return true;
+                    }
+                    this.setDead();
+                }
+
+                return true;
             }
         }
     }
@@ -698,7 +697,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public int addFuel(FluidStack liquid, boolean doDrain)
     {
         if (this.landingPad != null)
-        	return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, doDrain);
+        {
+            return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, doDrain);
+        }
 
         return 0;
     }
@@ -790,7 +791,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 ItemStack resultStack = stackAt.copy();
                 resultStack.stackSize = 1;
 
-            	if (doRemove && --stackAt.stackSize <= 0)
+                if (doRemove && --stackAt.stackSize <= 0)
                 {
                     this.cargoItems[i] = null;
                 }
@@ -848,22 +849,26 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public int getField(int id) {
+    public int getField(int id)
+    {
         return 0;
     }
 
     @Override
-    public void setField(int id, int value) {
+    public void setField(int id, int value)
+    {
 
     }
 
     @Override
-    public int getFieldCount() {
+    public int getFieldCount()
+    {
         return 0;
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
 
     }
 }

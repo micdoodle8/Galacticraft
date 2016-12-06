@@ -37,11 +37,13 @@ public class SpecialAsteroidBlockHandler
     {
         int s = this.asteroidBlocks.size();
         if (s < 10)
-        	return this.asteroidBlocks.get(rand.nextInt(s));
-        
+        {
+            return this.asteroidBlocks.get(rand.nextInt(s));
+        }
+
         Double r = rand.nextDouble();
         int index = (int) (s * Math.pow(r, (size + 5) * 0.05D));
-    	return this.asteroidBlocks.get(index);
+        return this.asteroidBlocks.get(index);
     }
 
 }
