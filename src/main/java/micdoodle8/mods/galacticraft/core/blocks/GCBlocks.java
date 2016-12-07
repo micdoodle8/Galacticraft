@@ -295,7 +295,7 @@ public class GCBlocks
         registerBlock(GCBlocks.brightAir, ItemBlockGC.class);
         registerBlock(GCBlocks.brightBreatheableAir, ItemBlockGC.class);
         registerBlock(GCBlocks.oxygenDistributor, ItemBlockDesc.class);
-        registerBlock(GCBlocks.oxygenCollector, ItemBlock.class);
+        registerBlock(GCBlocks.oxygenCollector, ItemBlockDesc.class);
         registerBlock(GCBlocks.oxygenCompressor, ItemBlockOxygenCompressor.class);
         registerBlock(GCBlocks.oxygenSealer, ItemBlockDesc.class);
         registerBlock(GCBlocks.oxygenDetector, ItemBlockDesc.class);

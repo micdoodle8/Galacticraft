@@ -34,7 +34,7 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDes
     {
         super(Material.rock);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
 

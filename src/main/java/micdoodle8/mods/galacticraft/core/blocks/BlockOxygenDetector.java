@@ -23,7 +23,7 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     {
         super(Material.iron);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
 

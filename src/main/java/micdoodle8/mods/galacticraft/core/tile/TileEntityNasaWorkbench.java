@@ -89,7 +89,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
                                 FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                             }
 
-                            this.worldObj.destroyBlock(pos, y == 0);
+                            this.worldObj.setBlockToAir(pos);
                         }
                         else if (y != 0 && y != 3)
                         {
