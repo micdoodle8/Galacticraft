@@ -32,7 +32,7 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
     {
         super(Material.rock);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }

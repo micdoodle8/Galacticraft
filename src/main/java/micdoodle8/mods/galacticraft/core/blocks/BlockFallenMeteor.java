@@ -128,47 +128,43 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     {
         if (!worldIn.isRemote)
         {
-            this.tryToFall(worldIn, pos);
+            this.tryToFall(worldIn, pos, state);
         }
     }
 
-    private void tryToFall(World worldIn, BlockPos pos)
+    private void tryToFall(World world, BlockPos pos, IBlockState state)
     {
-        float yPos = pos.getY() - 1;
-        if (BlockFallenMeteor.canFallBelow(worldIn, pos.offset(EnumFacing.DOWN)) && pos.getY() >= 0)
+        if (this.canFallBelow(world, pos.down()) && pos.getY() >= 0)
         {
-            int prevHeatLevel = ((TileEntityFallenMeteor) worldIn.getTileEntity(pos)).getHeatLevel();
-            worldIn.setBlockToAir(pos);
+            int prevHeatLevel = ((TileEntityFallenMeteor) world.getTileEntity(pos)).getHeatLevel();
+            world.setBlockState(pos, Blocks.air.getDefaultState(), 3);
+            BlockPos blockpos1;
 
-            while (BlockFallenMeteor.canFallBelow(worldIn, new BlockPos(pos.getX(), yPos, pos.getZ())) && yPos > 0)
-            {
-                --yPos;
-            }
+            for (blockpos1 = pos.down(); this.canFallBelow(world, blockpos1) && blockpos1.getY() > 0; blockpos1 = blockpos1.down()) {}
 
-            if (yPos > 0)
+            if (blockpos1.getY() >= 0)
             {
-                worldIn.setBlockState(pos, this.getDefaultState(), 3);
-                ((TileEntityFallenMeteor) worldIn.getTileEntity(pos)).setHeatLevel(prevHeatLevel);
+                world.setBlockState(blockpos1.up(), state, 3);
+                ((TileEntityFallenMeteor) world.getTileEntity(blockpos1.up())).setHeatLevel(prevHeatLevel);
             }
         }
     }
 
-    public static boolean canFallBelow(World worldIn, BlockPos pos)
+    private boolean canFallBelow(World world, BlockPos pos)
     {
-        final Block var4 = worldIn.getBlockState(pos).getBlock();
+        Block block = world.getBlockState(pos).getBlock();
 
-        if (var4.getMaterial() == Material.air)
+        if (block.getMaterial() == Material.air)
         {
             return true;
         }
-        else if (var4 == Blocks.fire)
+        else if (block == Blocks.fire)
         {
             return true;
         }
         else
         {
-            final Material var5 = var4.getMaterial();
-            return var5 == Material.water || var5 == Material.lava;
+            return block.getMaterial() == Material.water ? true : block.getMaterial() == Material.lava;
         }
     }
 

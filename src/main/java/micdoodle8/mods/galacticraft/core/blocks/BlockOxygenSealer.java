@@ -29,7 +29,7 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     {
         super(Material.rock);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
 

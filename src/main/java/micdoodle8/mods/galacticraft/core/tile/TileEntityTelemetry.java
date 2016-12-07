@@ -198,7 +198,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
         }
     }
 

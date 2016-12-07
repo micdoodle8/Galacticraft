@@ -66,7 +66,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 3 / 16.0F, 1.0F);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
     }
 
