@@ -54,12 +54,12 @@ public class ItemModelRocket extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.FIRST_PERSON)
         {
-            Vector3f trans = new Vector3f(0.0F, -0.4F, -0.3F);
+            Vector3f trans = new Vector3f(0.5F, -1.2F, -0.8F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(5.0F);
+            mul.setScale(4.0F);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotX((float) (Math.PI / 2.0F));
@@ -80,7 +80,7 @@ public class ItemModelRocket extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.35F);
+            mul.setScale(0.5F);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotZ((float) (Math.PI / 2.0F));

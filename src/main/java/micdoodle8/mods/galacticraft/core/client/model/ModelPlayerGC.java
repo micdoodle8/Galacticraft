@@ -104,7 +104,7 @@ public class ModelPlayerGC extends ModelPlayer
 
                 if (angle == null)
                 {
-                    angle = new Vector3((float) Math.PI + 0.3F, 0.0F, (float) Math.PI / 10.0F);
+                    angle = new Vector3((float) Math.PI + 0.3F, 0.0F, (float) -Math.PI / 10.0F);
                 }
 
                 this.bipedRightArm.rotateAngleX = angle.floatX();

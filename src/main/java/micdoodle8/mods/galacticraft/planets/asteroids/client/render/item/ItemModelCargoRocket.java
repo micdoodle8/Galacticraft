@@ -54,12 +54,12 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.FIRST_PERSON)
         {
-            Vector3f trans = new Vector3f(0.0F, -0.4F, -0.3F);
+            Vector3f trans = new Vector3f(0.5F, 0.5F, -1.5F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(5.0F);
+            mul.setScale(4.0F);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotX((float) (Math.PI / 2.0F));
@@ -69,27 +69,39 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(trans);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotY((float) (Math.PI / 4.0F));
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotX((float) (Math.PI));
             ret.mul(mul);
             return ret;
         }
 
         if (cameraTransformType == TransformType.THIRD_PERSON)
         {
-            Vector3f trans = new Vector3f(0.0F, -0.4F, 0.6F);
+            Vector3f trans = new Vector3f(0.3F, -0.5F, -0.8F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(1.5F);
+            mul.setScale(0.5F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotX((float) (Math.PI / 2.0F));
+            mul.rotX((float) (Math.PI / 3.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotZ(-0.65F);
+            mul.rotZ((float) (-Math.PI / 2.0F));
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotX(0.3F);
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(trans);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotY((float) (Math.PI / 4.0F));
             ret.mul(mul);
             return ret;
         }
