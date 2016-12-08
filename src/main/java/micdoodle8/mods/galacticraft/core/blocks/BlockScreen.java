@@ -31,7 +31,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     public static final PropertyBool DOWN = PropertyBool.create("down");
 
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
-    protected BlockScreen(String assetName)
+    public BlockScreen(String assetName)
     {
         super(Material.circuits);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));

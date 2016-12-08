@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.tileentity.TileEntity;

@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamOutput;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;

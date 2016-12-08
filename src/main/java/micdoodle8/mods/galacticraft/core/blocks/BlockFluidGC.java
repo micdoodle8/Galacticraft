@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.material.Material;
@@ -25,7 +26,7 @@ public class BlockFluidGC extends BlockFluidClassic
 
     public BlockFluidGC(Fluid fluid, String assetName)
     {
-        super(fluid, (assetName.startsWith("oil") || assetName.startsWith("fuel")) ? GalacticraftCore.materialOil : Material.water);
+        super(fluid, (assetName.startsWith("oil") || assetName.startsWith("fuel")) ? GCFluids.materialOil : Material.water);
         this.fluidName = assetName;
         this.fluid = fluid;
 

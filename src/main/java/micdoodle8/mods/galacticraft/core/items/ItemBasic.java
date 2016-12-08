@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -36,7 +37,7 @@ public class ItemBasic extends Item implements ISortableItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

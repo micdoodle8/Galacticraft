@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -24,7 +25,7 @@ import java.util.Random;
 
 public class SkyProviderMoon extends IRenderHandler
 {
-    private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
+    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);

@@ -4,7 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/electric_IngotCompressor.png");
+    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_IngotCompressor.png");
     public static int ticksPassed;
     private int alternate = 0;
 
@@ -208,7 +208,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/electric_IngotCompressor.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/electric_IngotCompressor.png";
     }
 
     @Override

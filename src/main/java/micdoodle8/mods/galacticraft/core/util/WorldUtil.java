@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
-import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -19,11 +18,8 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
@@ -35,16 +31,10 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,23 +46,17 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -84,74 +68,6 @@ public class WorldUtil
     public static Map<Integer, String> dimNames = new TreeMap();  //Dimension IDs and provider names
     public static Map<EntityPlayerMP, HashMap<String, Integer>> celestialMapCache = new MapMaker().weakKeys().makeMap();
     public static List<Integer> registeredPlanets;
-    private static IWorldGenerator generatorGCGreg = null;
-    private static IWorldGenerator generatorCoFH = null;
-    private static IWorldGenerator generatorDenseOres = null;
-    private static IWorldGenerator generatorTCAuraNodes = null;
-    private static IWorldGenerator generatorAE2meteors = null;
-    private static Method generateTCAuraNodes = null;
-    private static boolean generatorsInitialised = false;
-
-    public static double getGravityForEntity(Entity entity)
-    {
-        if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
-        {
-            if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getEntityBoundingBox()))
-            {
-                return 0.08D;
-            }
-
-            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.worldObj.provider;
-            if (entity instanceof EntityPlayer)
-            {
-                EntityPlayer player = (EntityPlayer) entity;
-                if (player.inventory != null)
-                {
-                    int armorModLowGrav = 100;
-                    int armorModHighGrav = 100;
-                    for (int i = 0; i < 4; i++)
-                    {
-                        ItemStack armorPiece = player.getCurrentArmor(i);
-                        if (armorPiece != null && armorPiece.getItem() instanceof IArmorGravity)
-                        {
-                            armorModLowGrav -= ((IArmorGravity) armorPiece.getItem()).gravityOverrideIfLow(player);
-                            armorModHighGrav -= ((IArmorGravity) armorPiece.getItem()).gravityOverrideIfHigh(player);
-                        }
-                    }
-                    if (armorModLowGrav > 100)
-                    {
-                        armorModLowGrav = 100;
-                    }
-                    if (armorModHighGrav > 100)
-                    {
-                        armorModHighGrav = 100;
-                    }
-                    if (armorModLowGrav < 0)
-                    {
-                        armorModLowGrav = 0;
-                    }
-                    if (armorModHighGrav < 0)
-                    {
-                        armorModHighGrav = 0;
-                    }
-                    if (customProvider.getGravity() > 0)
-                    {
-                        return 0.08D - (customProvider.getGravity() * armorModLowGrav) / 100;
-                    }
-                    return 0.08D - (customProvider.getGravity() * armorModHighGrav) / 100;
-                }
-            }
-            return 0.08D - customProvider.getGravity();
-        }
-        else if (entity instanceof IAntiGrav)
-        {
-            return 0;
-        }
-        else
-        {
-            return 0.08D;
-        }
-    }
 
     public static float getGravityFactor(Entity entity)
     {
@@ -179,196 +95,9 @@ public class WorldUtil
         }
     }
 
-    public static double getItemGravity(EntityItem e)
-    {
-        if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
-        {
-            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) e.worldObj.provider;
-            return Math.max(0.002D, 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D);
-        }
-        else
-        {
-            return 0.03999999910593033D;
-        }
-    }
-
-    public static float getArrowGravity(EntityArrow e)
-    {
-        if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
-        {
-            return 0.005F;
-        }
-        else
-        {
-            return 0.05F;
-        }
-    }
-
-    public static float getRainStrength(World world, float partialTicks)
-    {
-        if (world.isRemote)
-        {
-            if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld)
-            {
-                return 0.0F;
-            }
-        }
-
-        return world.prevRainingStrength + (world.rainingStrength - world.prevRainingStrength) * partialTicks;
-    }
-
-    public static boolean shouldRenderFire(Entity entity)
-    {
-        if (entity.worldObj == null || !(entity.worldObj.provider instanceof IGalacticraftWorldProvider))
-        {
-            return entity.isBurning();
-        }
-
-        if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow))
-        {
-            return entity.isBurning();
-        }
-
-        if (entity.isBurning())
-        {
-            if (OxygenUtil.noAtmosphericCombustion(entity.worldObj.provider))
-            {
-                return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, entity.getEntityBoundingBox());
-            }
-            else
-            {
-                return true;
-            }
-            //Disable fire on Galacticraft worlds with no oxygen
-        }
-
-        return false;
-    }
-
     public static Vector3 getWorldColor(World world)
     {
         return new Vector3(1, 1, 1);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static float getWorldBrightness(WorldClient world)
-    {
-        if (world.provider instanceof WorldProviderMoon)
-        {
-            float f1 = world.getCelestialAngle(1.0F);
-            float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
-
-            if (f2 < 0.0F)
-            {
-                f2 = 0.0F;
-            }
-
-            if (f2 > 1.0F)
-            {
-                f2 = 1.0F;
-            }
-
-            f2 = 1.0F - f2;
-            return f2 * 0.8F;
-        }
-
-        return world.getSunBrightness(1.0F);
-    }
-
-    public static float getColorRed(World world)
-    {
-        return (float) WorldUtil.getWorldColor(world).x;
-    }
-
-    public static float getColorGreen(World world)
-    {
-        return (float) WorldUtil.getWorldColor(world).y;
-    }
-
-    public static float getColorBlue(World world)
-    {
-        return (float) WorldUtil.getWorldColor(world).z;
-    }
-
-    public static Vec3 getFogColorHook(World world)
-    {
-        EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
-        if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld)
-        {
-            float var20 = ((float) (player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
-            var20 = MathHelper.sqrt_float(var20);
-            final float var21 = Math.max(1.0F - var20 * 40.0F, 0.0F);
-
-            Vec3 vec = world.getFogColor(1.0F);
-
-            return new Vec3(vec.xCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.yCoord * Math.max(1.0F - var20 * 1.29F, 0.0F), vec.zCoord * Math.max(1.0F - var20 * 1.29F, 0.0F));
-        }
-
-        return world.getFogColor(1.0F);
-    }
-
-    public static Vec3 getSkyColorHook(World world)
-    {
-        EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
-        if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || (player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.ridingEntity instanceof EntitySpaceshipBase))
-        {
-            float f1 = world.getCelestialAngle(1.0F);
-            float f2 = MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
-
-            if (f2 < 0.0F)
-            {
-                f2 = 0.0F;
-            }
-
-            if (f2 > 1.0F)
-            {
-                f2 = 1.0F;
-            }
-
-            int i = MathHelper.floor_double(player.posX);
-            int j = MathHelper.floor_double(player.posY);
-            int k = MathHelper.floor_double(player.posZ);
-            BlockPos pos = new BlockPos(i, j, k);
-            int l = ForgeHooksClient.getSkyBlendColour(world, pos);
-            float f4 = (float) (l >> 16 & 255) / 255.0F;
-            float f5 = (float) (l >> 8 & 255) / 255.0F;
-            float f6 = (float) (l & 255) / 255.0F;
-            f4 *= f2;
-            f5 *= f2;
-            f6 *= f2;
-
-            if (player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
-            {
-                Vec3 vec = world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
-                double blend = (player.posY - Constants.OVERWORLD_CLOUD_HEIGHT) / (Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - Constants.OVERWORLD_CLOUD_HEIGHT);
-                double ablend = 1 - blend;
-                return new Vec3(f4 * blend + vec.xCoord * ablend, f5 * blend + vec.yCoord * ablend, f6 * blend + vec.zCoord * ablend);
-            }
-            else
-            {
-//	            float blackness = ((float) (player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
-//	            final float var21 = Math.max(1.0F - blackness * blackness * 4.0F, 0.0F);
-//	            return Vec3.createVectorHelper(f4 * var21, f5 * var21, f6 * var21);
-                double blend = Math.min(1.0D, (player.posY - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 300.0D);
-                double ablend = 1.0D - blend;
-                blend /= 255.0D;
-                return new Vec3(f4 * ablend + blend * 31.0D, f5 * ablend + blend * 8.0D, f6 * ablend + blend * 99.0D);
-            }
-        }
-
-        return world.getSkyColor(FMLClientHandler.instance().getClient().getRenderViewEntity(), 1.0F);
-    }
-
-    public static double getRenderPosY(Entity viewEntity, double regular)
-    {
-        if (viewEntity.posY >= 256)
-        {
-            return 255.0F;
-        }
-        else
-        {
-            return regular + viewEntity.getEyeHeight();
-        }
     }
 
     public static WorldProvider getProviderForNameServer(String par1String)
@@ -681,27 +410,6 @@ public class WorldUtil
         return getArrayOfPossibleDimensions(tier, playerBase);
     }
 
-    private static List<Integer> getExistingSpaceStationList(File var0)
-    {
-        final ArrayList<Integer> var1 = new ArrayList<Integer>();
-        final File[] var2 = var0.listFiles();
-
-        if (var2 != null)
-        {
-            for (File var5 : var2)
-            {
-                if (var5.getName().contains("spacestation_"))
-                {
-                    String var6 = var5.getName();
-                    var6 = var6.substring(13, var6.length() - 4);
-                    var1.add(Integer.parseInt(var6));
-                }
-            }
-        }
-
-        return var1;
-    }
-
     public static void unregisterSpaceStations()
     {
         if (WorldUtil.registeredSpaceStations != null)
@@ -894,41 +602,6 @@ public class WorldUtil
                 GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
             }
         }
-    }
-
-    /**
-     * This doesn't check if player is using the correct rocket, this is just a
-     * total list of all space dimensions.  It does not load the dimensions.
-     */
-    public static Integer[] getArrayOfPossibleDimensions()
-    {
-        final ArrayList<Integer> temp = new ArrayList<Integer>();
-
-        temp.add(ConfigManagerCore.idDimensionOverworld);
-
-        for (final Integer i : WorldUtil.registeredPlanets)
-        {
-            temp.add(i);
-        }
-
-        if (WorldUtil.registeredSpaceStations != null)
-        {
-            for (final Integer i : WorldUtil.registeredSpaceStations.keySet())
-            {
-                temp.add(i);
-            }
-        }
-
-        final Integer[] finalArray = new Integer[temp.size()];
-
-        int count = 0;
-
-        for (final Integer integ : temp)
-        {
-            finalArray[count++] = integ;
-        }
-
-        return finalArray;
     }
 
     public static SpaceStationWorldData bindSpaceStationToNewDimension(World world, EntityPlayerMP player, int homePlanetID)
@@ -1546,224 +1219,6 @@ public class WorldUtil
                 GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
             }
         }
-    }
-
-    public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
-    {
-        if (!(world.provider instanceof IGalacticraftWorldProvider))
-        {
-            return false;
-        }
-        if (world.provider instanceof WorldProviderOrbit)
-        {
-            return true;
-        }
-        if (ConfigManagerCore.enableOtherModsFeatures)
-        {
-            return false;
-        }
-
-        if (!generatorsInitialised)
-        {
-            generatorsInitialised = true;
-
-            try
-            {
-                Class GCGreg = Class.forName("bloodasp.galacticgreg.GT_Worldgenerator_Space");
-                if (GCGreg != null)
-                {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (GCGreg.isInstance(gen))
-                        {
-                            generatorGCGreg = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class cofh = Class.forName("cofh.core.world.WorldHandler");
-                if (cofh != null && ConfigManagerCore.whitelistCoFHCoreGen)
-                {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (cofh.isInstance(gen))
-                        {
-                            generatorCoFH = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class denseOres = Class.forName("com.rwtema.denseores.WorldGenOres");
-                if (denseOres != null)
-                {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (denseOres.isInstance(gen))
-                        {
-                            generatorDenseOres = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class ae2meteorPlace = null;
-                try
-                {
-                    ae2meteorPlace = Class.forName("appeng.hooks.MeteoriteWorldGen");
-                }
-                catch (ClassNotFoundException e)
-                {
-                }
-
-                if (ae2meteorPlace == null)
-                {
-                    try
-                    {
-                        ae2meteorPlace = Class.forName("appeng.worldgen.MeteoriteWorldGen");
-                    }
-                    catch (ClassNotFoundException e)
-                    {
-                    }
-                }
-
-                if (ae2meteorPlace != null)
-                {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (ae2meteorPlace.isInstance(gen))
-                        {
-                            generatorAE2meteors = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class genThaumCraft = Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator");
-                if (genThaumCraft != null)
-                {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (genThaumCraft.isInstance(gen))
-                        {
-                            generatorTCAuraNodes = gen;
-                            break;
-                        }
-                    }
-                    if (generatorTCAuraNodes != null && ConfigManagerCore.enableThaumCraftNodes)
-                    {
-                        generateTCAuraNodes = genThaumCraft.getDeclaredMethod("generateWildNodes", World.class, Random.class, int.class, int.class, boolean.class, boolean.class);
-                        generateTCAuraNodes.setAccessible(true);
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-            }
-
-            if (generatorGCGreg != null)
-            {
-                System.out.println("Whitelisting GalacticGreg oregen on planets.");
-            }
-            if (generatorCoFH != null)
-            {
-                System.out.println("Whitelisting CoFHCore custom oregen on planets.");
-            }
-            if (generatorDenseOres != null)
-            {
-                System.out.println("Whitelisting Dense Ores oregen on planets.");
-            }
-            if (generatorAE2meteors != null)
-            {
-                System.out.println("Whitelisting AE2 meteorites worldgen on planets.");
-            }
-            if (generatorTCAuraNodes != null && generateTCAuraNodes != null)
-            {
-                System.out.println("Whitelisting ThaumCraft aura node generation on planets.");
-            }
-        }
-
-        if (generatorGCGreg != null || generatorCoFH != null || generatorDenseOres != null || generatorTCAuraNodes != null || generatorAE2meteors != null)
-        {
-            try
-            {
-                long worldSeed = world.getSeed();
-                Random fmlRandom = new Random(worldSeed);
-                long xSeed = fmlRandom.nextLong() >> 2 + 1L;
-                long zSeed = fmlRandom.nextLong() >> 2 + 1L;
-                long chunkSeed = (xSeed * chunkX + zSeed * chunkZ) ^ worldSeed;
-                fmlRandom.setSeed(chunkSeed);
-
-                if (generatorCoFH != null)
-                {
-                    generatorCoFH.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generatorDenseOres != null)
-                {
-                    generatorDenseOres.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generatorGCGreg != null)
-                {
-                    generatorGCGreg.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generatorAE2meteors != null)
-                {
-                    generatorAE2meteors.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generateTCAuraNodes != null)
-                {
-                    generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);
-                }
-
-            }
-            catch (Exception e)
-            {
-                GCLog.severe("Error in another mod's worldgen.  This is NOT a Galacticraft bug.");
-                e.printStackTrace();
-            }
-        }
-        return true;
     }
 
     public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)

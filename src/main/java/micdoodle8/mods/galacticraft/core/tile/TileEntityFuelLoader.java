@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -61,7 +61,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                     if (this.containingItems[1].getItem() == GCItems.fuelCanister)
                     {
                         int originalDamage = this.containingItems[1].getItemDamage();
-                        int used = this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
+                        int used = this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
                         if (originalDamage + used == ItemCanisterGeneric.EMPTY)
                         {
                             this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
@@ -84,14 +84,14 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                         {
                             if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
                             {
-                                this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, liquid.amount), true);
+                                this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), true);
 
                                 if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
                                 {
                                     final int amount = this.containingItems[1].stackSize;
                                     if (amount > 1)
                                     {
-                                        this.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                                        this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                                     }
                                     this.containingItems[1] = new ItemStack(Items.bucket, amount);
                                 }
@@ -139,7 +139,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
             if (this.fuelTank != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0)
             {
-                final FluidStack liquid = new FluidStack(GalacticraftCore.fluidFuel, 2);
+                final FluidStack liquid = new FluidStack(GCFluids.fluidFuel, 2);
 
                 if (this.attachedFuelable != null && this.hasEnoughEnergyToRun && !this.disabled)
                 {

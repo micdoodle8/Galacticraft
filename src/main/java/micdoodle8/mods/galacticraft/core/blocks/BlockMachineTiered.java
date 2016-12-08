@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;

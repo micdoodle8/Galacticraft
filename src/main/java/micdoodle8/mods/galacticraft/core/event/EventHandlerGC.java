@@ -13,8 +13,9 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
@@ -25,7 +26,10 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -734,29 +738,29 @@ public class EventHandlerGC
     //	@SubscribeEvent
     //	public void onSoundLoad(SoundLoadEvent event)
     //	{
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/scaryscape.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip1.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip2.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip3.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip4.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip5.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip6.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip7.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "ambience/singledrip8.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "entity/bossdeath.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "entity/bosslaugh.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "entity/bossliving.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "entity/slime_death.ogg");
-    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.TEXTURE_PREFIX + "music/mars_JC.ogg"));
-    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.TEXTURE_PREFIX + "music/mimas_JC.ogg"));
-    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.TEXTURE_PREFIX + "music/orbit_JC.ogg"));
-    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.TEXTURE_PREFIX + "music/scary_ambience.ogg"));
-    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, GalacticraftCore.TEXTURE_PREFIX + "music/spacerace_JC.ogg"));
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "player/closeairlock.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "player/openairlock.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "player/parachute.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "player/unlockchest.ogg");
-    //		event.manager.addSound(GalacticraftCore.TEXTURE_PREFIX + "shuttle/shuttle.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/scaryscape.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip1.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip2.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip3.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip4.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip5.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip6.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip7.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "ambience/singledrip8.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "entity/bossdeath.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "entity/bosslaugh.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "entity/bossliving.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "entity/slime_death.ogg");
+    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, Constants.TEXTURE_PREFIX + "music/mars_JC.ogg"));
+    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, Constants.TEXTURE_PREFIX + "music/mimas_JC.ogg"));
+    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, Constants.TEXTURE_PREFIX + "music/orbit_JC.ogg"));
+    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, Constants.TEXTURE_PREFIX + "music/scary_ambience.ogg"));
+    //		ClientProxyCore.newMusic.add(this.func_110654_c(event.manager.soundPoolMusic, Constants.TEXTURE_PREFIX + "music/spacerace_JC.ogg"));
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "player/closeairlock.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "player/openairlock.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "player/parachute.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "player/unlockchest.ogg");
+    //		event.manager.addSound(Constants.TEXTURE_PREFIX + "shuttle/shuttle.ogg");
     //	}
     //
     //	@SideOnly(Side.CLIENT)
@@ -831,7 +835,7 @@ public class EventHandlerGC
 
             if (worldclient.provider.getSkyRenderer() instanceof SkyProviderOverworld && event.entity.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
             {
-                Vec3 vec = WorldUtil.getFogColorHook(event.entity.worldObj);
+                Vec3 vec = TransformerHooks.getFogColorHook(event.entity.worldObj);
                 event.red = (float) vec.xCoord;
                 event.green = (float) vec.yCoord;
                 event.blue = (float) vec.zCoord;

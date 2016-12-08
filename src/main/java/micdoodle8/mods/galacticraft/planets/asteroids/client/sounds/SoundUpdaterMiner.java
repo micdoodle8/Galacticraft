@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.sounds;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -22,7 +22,7 @@ public class SoundUpdaterMiner extends MovingSound
 
     public SoundUpdaterMiner(EntityPlayerSP par1EntityPlayerSP, EntityAstroMiner par2Entity)
     {
-        super(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "entity.astrominer"));
+        super(new ResourceLocation(Constants.TEXTURE_PREFIX + "entity.astrominer"));
         this.theRocket = par2Entity;
         this.thePlayer = par1EntityPlayerSP;
         this.volume = 0.00001F;  //If it's zero it won't start playing

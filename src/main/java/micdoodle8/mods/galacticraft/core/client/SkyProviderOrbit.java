@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -22,7 +22,7 @@ import java.util.Random;
 public class SkyProviderOrbit extends IRenderHandler
 {
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
-    private static final ResourceLocation sunTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;

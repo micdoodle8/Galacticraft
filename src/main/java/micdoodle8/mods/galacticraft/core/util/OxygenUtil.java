@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;

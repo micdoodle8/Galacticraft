@@ -1,8 +1,11 @@
-package micdoodle8.mods.galacticraft.core.blocks;
+package micdoodle8.mods.galacticraft.core;
 
 import com.google.common.collect.Lists;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
+import micdoodle8.mods.galacticraft.core.blocks.*;
 import micdoodle8.mods.galacticraft.core.items.*;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
@@ -19,7 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class GCBlocks
 {
@@ -78,6 +83,8 @@ public class GCBlocks
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
     public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
+
+    public static Map<EnumSortCategoryBlock, List<StackSorted>> sortMapBlocks = Maps.newHashMap();
 
     public static void initBlocks()
     {
@@ -167,6 +174,18 @@ public class GCBlocks
         OreDictionary.registerOre("blockAluminium", new ItemStack(GCBlocks.basicBlock, 1, 11));
     }
 
+    public static void finalizeSort()
+    {
+        List<StackSorted> itemOrderListBlocks = Lists.newArrayList();
+        for (EnumSortCategoryBlock type : EnumSortCategoryBlock.values())
+        {
+            List<StackSorted> stackSorteds = sortMapBlocks.get(type);
+            itemOrderListBlocks.addAll(stackSorteds);
+        }
+        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
+        GalacticraftCore.galacticraftBlocksTab.setTabSorter(tabSorterBlocks);
+    }
+
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
     {
         block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
@@ -201,6 +220,22 @@ public class GCBlocks
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
             }
         }
+    }
+
+    public static void registerFuel()
+    {
+        GCBlocks.fuel = new BlockFluidGC(GCFluids.fluidFuel, "fuel");
+        ((BlockFluidGC) GCBlocks.fuel).setQuantaPerBlock(3);
+        GCBlocks.fuel.setUnlocalizedName("fuel");
+        GCBlocks.registerBlock(GCBlocks.fuel, ItemBlockGC.class);
+    }
+
+    public static void registerOil()
+    {
+        GCBlocks.crudeOil = new BlockFluidGC(GCFluids.fluidOil, "oil");
+        ((BlockFluidGC) GCBlocks.crudeOil).setQuantaPerBlock(3);
+        GCBlocks.crudeOil.setUnlocalizedName("crude_oil_still");
+        GCBlocks.registerBlock(GCBlocks.crudeOil, ItemBlockGC.class);
     }
 
     public static void setHarvestLevels()
@@ -276,7 +311,12 @@ public class GCBlocks
             registeringSorted = false;
             for (ItemStack stack : blocks)
             {
-                GalacticraftCore.sortMapBlocks.get(sortableBlock.getCategory(stack.getItemDamage())).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
+                EnumSortCategoryBlock categoryBlock = sortableBlock.getCategory(stack.getItemDamage());
+                if (!sortMapBlocks.containsKey(categoryBlock))
+                {
+                    sortMapBlocks.put(categoryBlock, new ArrayList<>());
+                }
+                sortMapBlocks.get(categoryBlock).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
             }
         }
         else if (block.getCreativeTabToDisplayOn() == GalacticraftCore.galacticraftBlocksTab)

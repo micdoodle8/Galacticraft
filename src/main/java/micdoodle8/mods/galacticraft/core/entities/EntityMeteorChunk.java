@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -369,7 +369,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             this.motionX *= f4;
             this.motionY *= f4;
             this.motionZ *= f4;
-            this.motionY -= WorldUtil.getGravityForEntity(this);
+            this.motionY -= TransformerHooks.getGravityForEntity(this);
             this.setPosition(this.posX, this.posY, this.posZ);
             this.doBlockCollisions();
         }

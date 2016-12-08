@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
-import micdoodle8.mods.galacticraft.core.items.*;
+import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
+import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

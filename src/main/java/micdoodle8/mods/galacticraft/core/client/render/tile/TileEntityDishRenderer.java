@@ -18,12 +18,12 @@
 //
 //public class TileEntityDishRenderer extends TileEntitySpecialRenderer
 //{
-//    private static final ResourceLocation textureSupport = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/telesupport.png");
-//    private static final ResourceLocation textureFork = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/telefork.png");
-//    private static final ResourceLocation textureDish = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/teledish.png");
-//    private static final IModelCustom modelSupport = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/telesupport.obj"));
-//    private static final IModelCustom modelFork = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/telefork.obj"));
-//    private static final IModelCustom modelDish = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "models/teledish.obj"));
+//    private static final ResourceLocation textureSupport = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/telesupport.png");
+//    private static final ResourceLocation textureFork = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/telefork.png");
+//    private static final ResourceLocation textureDish = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/teledish.png");
+//    private static final IModelCustom modelSupport = AdvancedModelLoader.loadModel(new ResourceLocation(Constants.ASSET_PREFIX, "models/telesupport.obj"));
+//    private static final IModelCustom modelFork = AdvancedModelLoader.loadModel(new ResourceLocation(Constants.ASSET_PREFIX, "models/telefork.obj"));
+//    private static final IModelCustom modelDish = AdvancedModelLoader.loadModel(new ResourceLocation(Constants.ASSET_PREFIX, "models/teledish.obj"));
 //    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 //
 //    @Override

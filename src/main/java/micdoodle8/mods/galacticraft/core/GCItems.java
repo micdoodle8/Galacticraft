@@ -1,7 +1,10 @@
-package micdoodle8.mods.galacticraft.core.items;
+package micdoodle8.mods.galacticraft.core;
 
 import com.google.common.collect.Lists;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
+import micdoodle8.mods.galacticraft.core.items.*;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.item.Item;
@@ -15,7 +18,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class GCItems
 {
@@ -73,6 +78,8 @@ public class GCItems
     public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
+
+    public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
 
     public static void initItems()
     {
@@ -144,6 +151,19 @@ public class GCItems
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 0));
     }
 
+    public static void finalizeSort()
+    {
+        List<StackSorted> itemOrderListItems = Lists.newArrayList();
+        for (EnumSortCategoryItem type : EnumSortCategoryItem.values())
+        {
+            itemOrderListItems.addAll(sortMapItems.get(type));
+        }
+
+        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
+
+        GalacticraftCore.galacticraftItemsTab.setTabSorter(tabSorterItems);
+    }
+
     public static void registerHarvestLevels()
     {
         GCItems.steelPickaxe.setHarvestLevel("pickaxe", 4);
@@ -160,7 +180,12 @@ public class GCItems
             item.getSubItems(item, null, items);
             for (ItemStack stack : items)
             {
-                GalacticraftCore.sortMapItems.get(sortableItem.getCategory(stack.getItemDamage())).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
+                EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getItemDamage());
+                if (!sortMapItems.containsKey(categoryItem))
+                {
+                    sortMapItems.put(categoryItem, new ArrayList<>());
+                }
+                sortMapItems.get(categoryItem).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
             }
         }
         else if (item.getCreativeTab() == GalacticraftCore.galacticraftItemsTab)

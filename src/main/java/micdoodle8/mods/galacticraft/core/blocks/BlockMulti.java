@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;

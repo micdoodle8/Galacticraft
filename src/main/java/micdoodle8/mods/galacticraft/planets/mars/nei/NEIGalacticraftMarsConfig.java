@@ -4,7 +4,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;

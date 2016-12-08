@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import net.minecraft.client.renderer.entity.Render;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderFlag extends Render<EntityFlag>
 {
-    public static ResourceLocation flagTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/flag.png");
+    public static ResourceLocation flagTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/flag.png");
 
     protected ModelFlag modelFlag;
 

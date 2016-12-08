@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicTier1Rocket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchematicResultPage
 {
-    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocketbench.png");
+    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocketbench.png");
 
     private int pageIndex;
 

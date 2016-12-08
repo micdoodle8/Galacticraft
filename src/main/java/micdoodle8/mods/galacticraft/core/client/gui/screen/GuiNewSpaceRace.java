@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.*;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -38,7 +39,7 @@ import java.util.Map.Entry;
 
 public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
 {
-    protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
 
     public enum EnumSpaceRaceGui
     {

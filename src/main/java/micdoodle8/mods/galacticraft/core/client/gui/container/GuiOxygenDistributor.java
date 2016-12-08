@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
-    private static final ResourceLocation distributorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygenDistributor.png");
+    private static final ResourceLocation distributorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygenDistributor.png");
 
     private final TileEntityOxygenDistributor distributor;
 

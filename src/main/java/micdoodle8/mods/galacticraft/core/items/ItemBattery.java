@@ -16,7 +16,7 @@ public class ItemBattery extends ItemElectricBase implements ISortableItem
     {
         super();
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

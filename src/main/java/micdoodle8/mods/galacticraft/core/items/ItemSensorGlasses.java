@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -20,7 +22,7 @@ public class ItemSensorGlasses extends ItemArmor implements ISortableItem
     {
         super(GCItems.ARMOR_SENSOR_GLASSES, 0, 0);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ItemSensorGlasses extends ItemArmor implements ISortableItem
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
     {
-        return GalacticraftCore.TEXTURE_PREFIX + "textures/model/armor/sensor_1.png";
+        return Constants.TEXTURE_PREFIX + "textures/model/armor/sensor_1.png";
     }
 
     @Override

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;

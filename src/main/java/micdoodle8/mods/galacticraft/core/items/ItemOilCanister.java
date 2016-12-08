@@ -23,7 +23,7 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
         super(assetName);
         this.setAllowedFluid(ConfigManagerCore.useOldOilFluidID ? "oilgc" : "oil");
         this.setContainerItem(this);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     /*@Override

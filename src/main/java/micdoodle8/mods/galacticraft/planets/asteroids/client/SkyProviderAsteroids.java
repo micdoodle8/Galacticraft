@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class SkyProviderAsteroids extends IRenderHandler
 {
-    private static final ResourceLocation overworldTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
+    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation galaxyTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/planets/galaxy.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 

@@ -6,7 +6,7 @@ import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.FurnaceRecipeHandler.FuelPair;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 
 public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
+    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
     private static int ticksPassed;
     public static ArrayList<FuelPair> afuels;
     public static TreeSet<Integer> efuels;
@@ -245,7 +245,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/ingotCompressor.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/ingotCompressor.png";
     }
 
     static

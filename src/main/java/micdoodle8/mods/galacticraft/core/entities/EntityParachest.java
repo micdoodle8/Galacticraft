@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
@@ -175,7 +176,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
 
             System.arraycopy(this.cargo, 0, chest.chestContents, 0, this.cargo.length);
 
-            chest.fuelTank.fill(FluidRegistry.getFluidStack(GalacticraftCore.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
+            chest.fuelTank.fill(FluidRegistry.getFluidStack(GCFluids.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
 
             return true;
         }

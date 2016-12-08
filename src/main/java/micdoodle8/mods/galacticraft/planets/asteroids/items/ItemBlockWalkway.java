@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;

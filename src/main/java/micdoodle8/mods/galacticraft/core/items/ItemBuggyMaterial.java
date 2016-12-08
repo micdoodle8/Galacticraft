@@ -27,7 +27,7 @@ public class ItemBuggyMaterial extends Item implements ISortableItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

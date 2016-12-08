@@ -16,11 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemOxygenMask extends Item implements ISortableItem
 {
-    protected ItemOxygenMask(String assetName)
+    public ItemOxygenMask(String assetName)
     {
         super();
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

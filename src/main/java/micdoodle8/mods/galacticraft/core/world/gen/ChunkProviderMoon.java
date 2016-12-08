@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class GuiSchematicInput extends GuiContainerGC implements ISchematicResultPage
 {
-    private static final ResourceLocation schematicInputTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/schematicpage.png");
+    private static final ResourceLocation schematicInputTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/schematicpage.png");
 
     private int pageIndex;
 

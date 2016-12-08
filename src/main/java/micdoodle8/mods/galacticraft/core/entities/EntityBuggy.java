@@ -3,15 +3,15 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.network.*;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -384,7 +384,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         if (!this.onGround)
         {
-            this.motionY -= WorldUtil.getGravityForEntity(this) * 0.5D;
+            this.motionY -= TransformerHooks.getGravityForEntity(this) * 0.5D;
         }
 
         if (this.inWater && this.speed > 0.2D)

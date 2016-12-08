@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import net.minecraft.init.Blocks;

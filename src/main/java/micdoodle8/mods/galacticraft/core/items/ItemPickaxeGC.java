@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -16,7 +17,7 @@ public class ItemPickaxeGC extends ItemPickaxe implements ISortableItem
     {
         super(GCItems.TOOL_STEEL);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

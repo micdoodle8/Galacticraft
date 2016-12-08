@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
@@ -47,7 +47,7 @@ public class SkyProviderOverworld extends IRenderHandler
     private int starGLCallList = GLAllocation.generateDisplayLists(7);
     private int glSkyList;
     private int glSkyList2;
-    private final ResourceLocation planetToRender = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
+    private final ResourceLocation planetToRender = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
 
     public SkyProviderOverworld()
     {
@@ -267,7 +267,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         float threshold;
-        Vec3 vec = WorldUtil.getFogColorHook(this.minecraft.theWorld);
+        Vec3 vec = TransformerHooks.getFogColorHook(this.minecraft.theWorld);
         threshold = Math.max(0.1F, (float) vec.lengthVector() - 0.1F);
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
         var20 = MathHelper.sqrt_float(var20);

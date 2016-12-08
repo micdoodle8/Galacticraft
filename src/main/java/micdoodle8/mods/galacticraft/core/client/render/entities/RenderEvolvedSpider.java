@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSpider extends RenderLiving<EntityEvolvedSpider>
 {
-    private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/spider.png");
+    private static final ResourceLocation spiderTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/spider.png");
 
     public RenderEvolvedSpider(RenderManager manager)
     {

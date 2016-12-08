@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -16,7 +16,7 @@ import java.nio.FloatBuffer;
 @SideOnly(Side.CLIENT)
 public class TileEntityScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen>
 {
-    public static final ResourceLocation blockTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/screenSide.png");
+    public static final ResourceLocation blockTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/screenSide.png");
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 

@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -36,8 +36,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public TileEntityRefinery()
     {
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
-        this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, 0));
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, 0));
+        this.oilTank.setFluid(new FluidStack(GCFluids.fluidOil, 0));
+        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, 0));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
                     if (this.containingItems[1].getItem() == GCItems.oilCanister)
                     {
                         int originalDamage = this.containingItems[1].getItemDamage();
-                        int used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, ItemCanisterGeneric.EMPTY - originalDamage), true);
+                        int used = this.oilTank.fill(new FluidStack(GCFluids.fluidOil, ItemCanisterGeneric.EMPTY - originalDamage), true);
                         this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, originalDamage + used);
                     }
                 }
@@ -70,14 +70,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
                         {
                             if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
                             {
-                                this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, liquid.amount), true);
+                                this.oilTank.fill(new FluidStack(GCFluids.fluidOil, liquid.amount), true);
 
                                 if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
                                 {
                                     final int amount = this.containingItems[1].stackSize;
                                     if (amount > 1)
                                     {
-                                        this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                                        this.oilTank.fill(new FluidStack(GCFluids.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                                     }
                                     this.containingItems[1] = new ItemStack(Items.bucket, amount);
                                 }
@@ -176,9 +176,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             this.oilTank.readFromNBT(nbt.getCompoundTag("oilTank"));
         }
-        if (this.oilTank.getFluid() != null && this.oilTank.getFluid().getFluid() != GalacticraftCore.fluidOil)
+        if (this.oilTank.getFluid() != null && this.oilTank.getFluid().getFluid() != GCFluids.fluidOil)
         {
-            this.oilTank.setFluid(new FluidStack(GalacticraftCore.fluidOil, this.oilTank.getFluidAmount()));
+            this.oilTank.setFluid(new FluidStack(GCFluids.fluidOil, this.oilTank.getFluidAmount()));
         }
 
 
@@ -186,9 +186,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
-        if (this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid() != GalacticraftCore.fluidFuel)
+        if (this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid() != GCFluids.fluidFuel)
         {
-            this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, this.fuelTank.getFluidAmount()));
+            this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, this.fuelTank.getFluidAmount()));
         }
     }
 
@@ -340,7 +340,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         if (from.equals(getFront()))
 //        if (from.equals(EnumFacing.getFront((this.getBlockMetadata() + 2) ^ 1)))
         {
-            return this.drain(from, new FluidStack(GalacticraftCore.fluidFuel, maxDrain), doDrain);
+            return this.drain(from, new FluidStack(GCFluids.fluidFuel, maxDrain), doDrain);
         }
 
         return null;
@@ -370,13 +370,13 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
             if (liquidName != null && liquidName.startsWith("oil"))
             {
-                if (liquidName.equals(GalacticraftCore.fluidOil.getName()))
+                if (liquidName.equals(GCFluids.fluidOil.getName()))
                 {
                     used = this.oilTank.fill(resource, doFill);
                 }
                 else
                 {
-                    used = this.oilTank.fill(new FluidStack(GalacticraftCore.fluidOil, resource.amount), doFill);
+                    used = this.oilTank.fill(new FluidStack(GCFluids.fluidOil, resource.amount), doFill);
                 }
             }
 //            else if (liquidName != null && liquidName.equalsIgnoreCase("oilgc"))

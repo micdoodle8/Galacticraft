@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;

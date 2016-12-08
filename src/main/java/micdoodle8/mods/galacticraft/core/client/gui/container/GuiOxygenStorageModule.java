@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
@@ -17,7 +17,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiOxygenStorageModule extends GuiContainerGC
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygenStorageModule.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygenStorageModule.png");
 
     private TileEntityOxygenStorageModule tileEntity;
 

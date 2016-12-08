@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -285,7 +285,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     @Override
     protected String getDeathSound()
     {
-        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
+        this.playSound(Constants.TEXTURE_PREFIX + "entity.slime_death", this.getSoundVolume(), 0.8F);
         return null;
     }
 

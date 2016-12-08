@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -149,7 +150,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
     @Override
     protected String getHurtSound()
     {
-        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
+        this.playSound(Constants.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
         return null;
     }
 

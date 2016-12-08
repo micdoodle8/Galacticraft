@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.audio.ISound;
@@ -14,12 +15,11 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -35,10 +35,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -626,7 +624,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     public void decodePacketdata(ByteBuf buffer)
     {
         super.decodePacketdata(buffer);
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
+        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, buffer.readInt()));
         this.landing = buffer.readBoolean();
         this.destinationFrequency = buffer.readInt();
 

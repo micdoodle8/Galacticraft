@@ -2,7 +2,7 @@
 //
 //import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 //import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
-//import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+//import micdoodle8.mods.galacticraft.core.GCBlocks;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.item.crafting.IRecipe;
 //import net.minecraft.item.crafting.ShapedRecipes;

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItemCustom;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -22,8 +23,8 @@ import java.util.List;
 
 public class ModelPlayerGC extends ModelPlayer
 {
-    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/oxygen.png");
-    public static final ResourceLocation playerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/player.png");
+    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/oxygen.png");
+    public static final ResourceLocation playerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/player.png");
 
     public ModelPlayerGC(float var1, boolean smallArms)
     {

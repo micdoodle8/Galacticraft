@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.EntityPlayer;

@@ -21,4 +21,12 @@ public class Constants
     public static final int OVERWORLD_CLOUD_HEIGHT = 130;
 
     public static final float LOX_GAS_RATIO = 5F / 54;
+
+    public static final String CONFIG_FILE = "Galacticraft/core.conf";
+    public static final String POWER_CONFIG_FILE = "Galacticraft/power-GC3.conf";
+    public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
+
+    public static String ASSET_PREFIX = "galacticraftcore";
+    public static String TEXTURE_PREFIX = ASSET_PREFIX + ":";
+    public static String PREFIX = "micdoodle8.";
 }

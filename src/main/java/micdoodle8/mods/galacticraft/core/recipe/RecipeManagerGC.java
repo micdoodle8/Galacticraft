@@ -6,10 +6,11 @@ import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -565,7 +566,7 @@ public class RecipeManagerGC
         boolean refineryDone = false;
         try
         {
-            BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GalacticraftCore.fluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
+            BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GCFluids.fluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
             refineryDone = true;
         }
         catch (Exception e)

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.item.Item;

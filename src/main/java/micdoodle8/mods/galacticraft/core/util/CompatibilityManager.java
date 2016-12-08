@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.Loader;
+
+import java.lang.reflect.Method;
 
 public class CompatibilityManager
 {
@@ -139,5 +143,40 @@ public class CompatibilityManager
     public static boolean isPneumaticCraftLoaded()
     {
         return CompatibilityManager.modPneumaticCraftLoaded;
+    }
+
+    public static void registerMicroBlocks()
+    {
+        try
+        {
+            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+            if (clazz != null)
+            {
+                Method registerMethod = null;
+                Method[] methodz = clazz.getMethods();
+                for (Method m : methodz)
+                {
+                    if (m.getName().equals("registerMaterial"))
+                    {
+                        registerMethod = m;
+                        break;
+                    }
+                }
+                Class<?> clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 3), "tile.gcBlockCore.decoblock1");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 4), "tile.gcBlockCore.decoblock2");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 9), "tile.gcBlockCore.copperBlock");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 10), "tile.gcBlockCore.tinBlock");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 11), "tile.gcBlockCore.aluminumBlock");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 12), "tile.gcBlockCore.meteorironBlock");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 3), "tile.moonBlock.moondirt");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 4), "tile.moonBlock.moonstone");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 5), "tile.moonBlock.moongrass");
+                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 14), "tile.moonBlock.bricks");
+            }
+        }
+        catch (Exception e)
+        {
+        }
     }
 }

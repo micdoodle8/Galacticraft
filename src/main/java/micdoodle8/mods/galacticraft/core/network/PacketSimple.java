@@ -19,7 +19,9 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
@@ -455,7 +457,7 @@ public class PacketSimple extends PacketBase implements Packet
                     if (subtype != -1)
                     {
                         name = ItemParaChute.names[subtype];
-                        gearData.setParachute(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
+                        gearData.setParachute(new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
                     }
                     break;
                 case REMOVE_PARACHUTE:
@@ -546,13 +548,13 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_PLAY_SOUND_BOSS_DEATH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, (Float) this.data.get(0));
+            player.playSound(Constants.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, (Float) this.data.get(0));
             break;
         case C_PLAY_SOUND_EXPLODE:
             player.playSound("random.explode", 10.0F, 0.7F);
             break;
         case C_PLAY_SOUND_BOSS_LAUGH:
-            player.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 1.1F);
+            player.playSound(Constants.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 1.1F);
             break;
         case C_PLAY_SOUND_BOW:
             player.playSound("random.bow", 10.0F, 0.2F);
@@ -636,12 +638,12 @@ public class PacketSimple extends PacketBase implements Packet
                     printList.add(print);
                 }
             }
-            ClientProxyCore.footprintRenderer.setFootprints(chunkKey, printList);
+            FootprintRenderer.setFootprints(chunkKey, printList);
             break;
         case C_FOOTPRINTS_REMOVED:
             long chunkKey0 = (Long) this.data.get(0);
             BlockVec3 position = (BlockVec3) this.data.get(1);
-            List<Footprint> footprintList = ClientProxyCore.footprintRenderer.footprints.get(chunkKey0);
+            List<Footprint> footprintList = FootprintRenderer.footprints.get(chunkKey0);
             List<Footprint> toRemove = new ArrayList<Footprint>();
 
             if (footprintList != null)
@@ -659,7 +661,7 @@ public class PacketSimple extends PacketBase implements Packet
             if (!toRemove.isEmpty())
             {
                 footprintList.removeAll(toRemove);
-                ClientProxyCore.footprintRenderer.footprints.put(chunkKey0, footprintList);
+                FootprintRenderer.footprints.put(chunkKey0, footprintList);
             }
             break;
         case C_UPDATE_STATION_SPIN:

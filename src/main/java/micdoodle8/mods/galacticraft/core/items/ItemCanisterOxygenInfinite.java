@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -49,7 +50,7 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
-        this.itemIcon = iconRegister.registerIcon(GalacticraftCore.TEXTURE_PREFIX + "oxygenCanisterInfinite");
+        this.itemIcon = iconRegister.registerIcon(Constants.TEXTURE_PREFIX + "oxygenCanisterInfinite");
     }*/
 
     @Override

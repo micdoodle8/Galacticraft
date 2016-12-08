@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -173,7 +174,7 @@ public class MapUtil
 //		try {
 //			IResourceManager rm = Minecraft.getMinecraft().getResourceManager();			
 //			BufferedImage paletteImage2 = null;
-//			InputStream in = rm.getResource(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
+//			InputStream in = rm.getResource(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
 //			paletteImage2 = readImage(in);
 //			in.close();
 //			writeOutputFile(paletteImage2, false);
@@ -588,7 +589,7 @@ public class MapUtil
             BufferedImage paletteImage = null;
             try
             {
-                InputStream in = rm.getResource(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
+                InputStream in = rm.getResource(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
                 paletteImage = ImageIO.read(in);
                 in.close();
                 paletteImage.getHeight();

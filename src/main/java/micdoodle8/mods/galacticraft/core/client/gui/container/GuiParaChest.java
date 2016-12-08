@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -20,7 +20,7 @@ public class GuiParaChest extends GuiContainerGC
     {
         for (int i = 0; i < 4; i++)
         {
-            GuiParaChest.parachestTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/chest_" + i * 18 + ".png");
+            GuiParaChest.parachestTexture[i] = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/chest_" + i * 18 + ".png");
         }
     }
 

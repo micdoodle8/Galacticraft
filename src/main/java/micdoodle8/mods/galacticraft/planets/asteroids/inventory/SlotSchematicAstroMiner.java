@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;

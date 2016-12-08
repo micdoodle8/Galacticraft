@@ -1,13 +1,19 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -82,7 +88,7 @@ public class FluidUtil
             //If the tank is empty, fill it with the current type of GC fuel
             if (liquidInTank == null)
             {
-                return tank.fill(new FluidStack(GalacticraftCore.fluidFuel, liquid.amount), doFill);
+                return tank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), doFill);
             }
 
             //If the tank already contains something, fill it with more of the same
@@ -211,9 +217,9 @@ public class FluidUtil
                 if (liquidname.startsWith("fuel"))
                 {
                     //Make sure it is the current GC fuel
-                    if (!liquidname.equals(GalacticraftCore.fluidFuel.getName()))
+                    if (!liquidname.equals(GCFluids.fluidFuel.getName()))
                     {
-                        liquid = new FluidStack(GalacticraftCore.fluidFuel, liquid.amount);
+                        liquid = new FluidStack(GCFluids.fluidFuel, liquid.amount);
                     }
 
                     //But match any existing fuel fluid in the container
@@ -222,7 +228,7 @@ public class FluidUtil
                     if (stack.getItem() instanceof IFluidContainerItem)
                     {
                         FluidStack existingFluid = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
-                        if (existingFluid != null && !existingFluid.getFluid().getName().equals(GalacticraftCore.fluidFuel.getName()))
+                        if (existingFluid != null && !existingFluid.getFluid().getName().equals(GCFluids.fluidFuel.getName()))
                         {
                             liquid = new FluidStack(existingFluid, liquid.amount);
                         }
@@ -400,6 +406,35 @@ public class FluidUtil
             }
 
             return container;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
+    {
+        double d0 = entity.posY + entity.getEyeHeight();
+        int i = MathHelper.floor_double(entity.posX);
+        int j = MathHelper.floor_float(MathHelper.floor_double(d0));
+        int k = MathHelper.floor_double(entity.posZ);
+        BlockPos pos = new BlockPos(i, j, k);
+        Block block = entity.worldObj.getBlockState(pos).getBlock();
+
+        if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid() != null && ((IFluidBlock) block).getFluid().getName().equals(fluid.getName()))
+        {
+            double filled = ((IFluidBlock) block).getFilledPercentage(entity.worldObj, pos);
+            if (filled < 0)
+            {
+                filled *= -1;
+                return d0 > j + (1 - filled);
+            }
+            else
+            {
+                return d0 < j + filled;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 }

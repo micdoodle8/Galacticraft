@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;

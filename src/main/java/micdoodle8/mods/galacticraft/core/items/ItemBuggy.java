@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -129,7 +130,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
                     if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("BuggyFuel"))
                     {
-                        var35.buggyFuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, par1ItemStack.getTagCompound().getInteger("BuggyFuel")));
+                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, par1ItemStack.getTagCompound().getInteger("BuggyFuel")));
                     }
 
                     if (!par2World.isRemote)

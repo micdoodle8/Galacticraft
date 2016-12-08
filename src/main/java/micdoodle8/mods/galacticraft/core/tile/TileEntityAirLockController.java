@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -169,7 +169,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
         if (this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() != GCBlocks.airLockSeal)
         {
-            this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "player.openairlock", 1.0F, 1.0F);
+            this.worldObj.playSoundEffect(x, y, z, Constants.TEXTURE_PREFIX + "player.openairlock", 1.0F, 1.0F);
         }
 
         if (this.horizontalModeEnabled)
@@ -238,7 +238,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
         if (this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().getMaterial() != Material.air)
         {
-            this.worldObj.playSoundEffect(x, y, z, GalacticraftCore.TEXTURE_PREFIX + "player.closeairlock", 1.0F, 1.0F);
+            this.worldObj.playSoundEffect(x, y, z, Constants.TEXTURE_PREFIX + "player.closeairlock", 1.0F, 1.0F);
         }
 
         if (this.lastHorizontalModeEnabled)

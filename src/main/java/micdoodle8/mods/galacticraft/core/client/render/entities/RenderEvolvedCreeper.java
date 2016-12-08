@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderCreeper;
@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedCreeper extends RenderCreeper
 {
-    private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/creeper.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
+    private static final ResourceLocation creeperTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/creeper.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
 
     private final ModelBase creeperModel = new ModelEvolvedCreeper(0.2F);
 

@@ -4,7 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class RocketT1RecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocketbench.png");
+    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocketbench.png");
 
     public String getRecipeId()
     {
@@ -146,7 +146,7 @@ public class RocketT1RecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/rocketbench.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/rocketbench.png";
     }
 
     @Override

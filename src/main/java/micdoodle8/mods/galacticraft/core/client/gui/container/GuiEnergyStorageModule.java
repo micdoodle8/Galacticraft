@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiEnergyStorageModule extends GuiContainer
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/energyStorageModule.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/energyStorageModule.png");
 
     private TileEntityEnergyStorageModule tileEntity;
 

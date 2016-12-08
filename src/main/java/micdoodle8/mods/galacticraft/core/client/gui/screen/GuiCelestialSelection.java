@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -59,8 +60,8 @@ public class GuiCelestialSelection extends GuiScreen
     protected boolean doneZooming = false;
     protected float preSelectZoom = 0.0F;
     protected Vector2f preSelectPosition = new Vector2f();
-    public static ResourceLocation guiMain0 = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialselection.png");
-    public static ResourceLocation guiMain1 = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialselection1.png");
+    public static ResourceLocation guiMain0 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection.png");
+    public static ResourceLocation guiMain1 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection1.png");
     protected int ticksSinceSelection = 0;
     protected int ticksSinceUnselection = -1;
     protected int ticksSinceMenuOpen = 0;
@@ -1137,7 +1138,6 @@ public class GuiCelestialSelection extends GuiScreen
                 fb.clear();
                 float div = (this.zoom + 1.0F - this.planetZoom);
                 float scale = Math.max(0.3F, 1.5F / (this.ticksSinceSelection / 5.0F)) * 2.0F / div;
-                div = Math.max(div, 0.0001F);
                 GL11.glScalef(scale, scale, 1);
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
                 float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelection / 1.0F) * 0.5F + 0.5F) : 1.0F;

@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;

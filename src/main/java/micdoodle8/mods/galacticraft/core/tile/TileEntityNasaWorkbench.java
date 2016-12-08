@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

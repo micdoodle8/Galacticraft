@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -15,8 +15,8 @@ import org.lwjgl.util.glu.GLU;
 
 public abstract class GuiStarBackground extends GuiScreen
 {
-    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/stars.png");
-    private static final ResourceLocation blackTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/black.png");
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/stars.png");
+    private static final ResourceLocation blackTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/black.png");
 
     public void drawBlackBackground()
     {

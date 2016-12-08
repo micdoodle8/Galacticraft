@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;

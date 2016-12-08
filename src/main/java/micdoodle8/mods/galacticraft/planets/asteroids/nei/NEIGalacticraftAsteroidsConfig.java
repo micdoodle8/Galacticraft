@@ -5,7 +5,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.nei.NEIGalacticraftMarsConfig;

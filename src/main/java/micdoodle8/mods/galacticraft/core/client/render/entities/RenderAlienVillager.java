@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderAlienVillager extends RenderLiving<EntityAlienVillager>
 {
-    private static final ResourceLocation villagerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/villager.png");
+    private static final ResourceLocation villagerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/villager.png");
 
     protected ModelAlienVillager villagerModel;
 

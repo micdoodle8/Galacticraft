@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/methaneCanisterPartial_3"
+        "layer0": "galacticraftplanets:items/methane_canister_partial_3"
     },
     "display": {
         "thirdperson": {

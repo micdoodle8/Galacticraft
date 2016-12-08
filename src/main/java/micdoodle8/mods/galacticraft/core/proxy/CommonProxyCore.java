@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.IPlayerServer;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerServer;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
@@ -67,10 +66,6 @@ public class CommonProxyCore
         {
             return null;
         }
-    }
-
-    public void postRegisterBlock(Block block)
-    {
     }
 
     public void postRegisterItem(Item item)

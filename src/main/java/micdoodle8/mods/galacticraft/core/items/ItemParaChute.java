@@ -47,7 +47,7 @@ public class ItemParaChute extends Item implements ISortableItem
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

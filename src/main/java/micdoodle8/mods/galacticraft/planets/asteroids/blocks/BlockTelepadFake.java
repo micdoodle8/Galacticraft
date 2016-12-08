@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -37,9 +37,9 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     {
         super(GCBlocks.machine);
         this.setStepSound(Block.soundTypeMetal);
-//        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+//        this.setBlockTextureName(Constants.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName(GalacticraftCore.TEXTURE_PREFIX + "launch_pad");
+//        this.setBlockTextureName(Constants.TEXTURE_PREFIX + "launch_pad");
         this.setResistance(1000000000000000.0F);
     }
 

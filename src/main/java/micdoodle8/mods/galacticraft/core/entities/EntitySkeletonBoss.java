@@ -4,8 +4,9 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
@@ -154,7 +155,7 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
     @Override
     protected String getHurtSound()
     {
-        this.playSound(GalacticraftCore.TEXTURE_PREFIX + "entity.ooh", this.getSoundVolume(), this.getSoundPitch() + 1.0F);
+        this.playSound(Constants.TEXTURE_PREFIX + "entity.ooh", this.getSoundVolume(), this.getSoundPitch() + 1.0F);
         return null;
     }
 

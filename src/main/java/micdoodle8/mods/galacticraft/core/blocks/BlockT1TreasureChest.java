@@ -36,7 +36,7 @@ public class BlockT1TreasureChest extends BlockContainer implements ITileEntityP
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    protected BlockT1TreasureChest(String assetName)
+    public BlockT1TreasureChest(String assetName)
     {
         super(Material.wood);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

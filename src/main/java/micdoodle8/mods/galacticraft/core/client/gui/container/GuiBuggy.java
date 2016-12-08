@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
@@ -25,7 +25,7 @@ public class GuiBuggy extends GuiContainerGC
     {
         for (int i = 0; i < 4; i++)
         {
-            GuiBuggy.sealerTexture[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/buggy_" + i * 18 + ".png");
+            GuiBuggy.sealerTexture[i] = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/buggy_" + i * 18 + ".png");
         }
     }
 

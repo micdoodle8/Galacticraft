@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class GuiCargoUnloader extends GuiContainerGC
 {
-    private static final ResourceLocation unloaderTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/cargo_loader.png");
+    private static final ResourceLocation unloaderTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/cargo_loader.png");
 
     private final TileEntityCargoUnloader cargoUnloader;
 

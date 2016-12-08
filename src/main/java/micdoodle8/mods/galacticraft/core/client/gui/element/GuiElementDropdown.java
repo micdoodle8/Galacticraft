@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.SmallFontRenderer;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementDropdown extends GuiButton
 {
-    protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
 
     public boolean dropdownClicked;
     public String[] optionStrings;

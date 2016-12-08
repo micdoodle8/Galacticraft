@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;

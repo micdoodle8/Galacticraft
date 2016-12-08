@@ -11,12 +11,9 @@ import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderMoon;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
+import micdoodle8.mods.galacticraft.core.client.*;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
@@ -358,7 +355,7 @@ public class TickHandlerClient
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {
-                for (List<Footprint> fpList : ClientProxyCore.footprintRenderer.footprints.values())
+                for (List<Footprint> fpList : FootprintRenderer.footprints.values())
                 {
                     Iterator<Footprint> fpIt = fpList.iterator();
                     while (fpIt.hasNext())
@@ -434,7 +431,10 @@ public class TickHandlerClient
 
             if (minecraft.currentScreen instanceof GuiMainMenu)
             {
-                ClientProxyCore.reset();
+                ClientProxyCore.playerItemData.clear();
+                ClientProxyCore.overworldTextureRequestSent = false;
+                ClientProxyCore.flagRequestsSent.clear();
+                TickHandlerClient.clearLiquidNetworks();
 
                 if (TickHandlerClient.missingRequirementThread == null)
                 {
@@ -479,7 +479,7 @@ public class TickHandlerClient
                 {
                     if (world.provider.getSkyRenderer() == null)
                     {
-                        world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
+                        world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
                         ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderOrbit) world.provider).getSpinRate();
                         GCPlayerStatsClient.get(player).inFreefallFirstCheck = false;
                     }

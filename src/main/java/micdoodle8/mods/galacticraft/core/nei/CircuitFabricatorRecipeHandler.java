@@ -4,7 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/circuitFabricator.png");
+    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuitFabricator.png");
     int ticksPassed;
 
     public String getRecipeId()
@@ -173,7 +173,7 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/circuitFabricator.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/circuitFabricator.png";
     }
 
     @Override

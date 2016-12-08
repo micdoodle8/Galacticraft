@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import net.minecraft.client.renderer.entity.Render;
@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderMeteorChunk extends Render
 {
-    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/meteor_chunk.png");
-    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/blocks/meteor_chunk_hot.png");
+    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/meteor_chunk.png");
+    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/meteor_chunk_hot.png");
 
     private ModelMeteorChunk modelMeteor;
 

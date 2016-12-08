@@ -18,7 +18,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableIt
     {
         super(assetName);
         this.setAllowedFluid(ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel");
-//        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+//        this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     /*@Override

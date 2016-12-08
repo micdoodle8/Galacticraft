@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -183,7 +183,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
                     this.lastOxygenCollected = nearbyLeaves / 10F;
 
-                    this.tank.setFluid(new FluidStack(GalacticraftCore.fluidOxygenGas, (int) Math.max(Math.min(this.getOxygenStored() + nearbyLeaves, this.getMaxOxygenStored()), 0)));
+                    this.tank.setFluid(new FluidStack(GCFluids.fluidOxygenGas, (int) Math.max(Math.min(this.getOxygenStored() + nearbyLeaves, this.getMaxOxygenStored()), 0)));
                 }
                 else
                 {

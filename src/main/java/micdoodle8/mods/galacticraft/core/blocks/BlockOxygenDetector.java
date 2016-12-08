@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    protected BlockOxygenDetector(String assetName)
+    public BlockOxygenDetector(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);

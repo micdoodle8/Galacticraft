@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
@@ -18,7 +18,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiIngotCompressor extends GuiContainerGC
 {
-    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
+    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
     private TileEntityIngotCompressor tileEntity;

@@ -5,8 +5,9 @@ import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -132,7 +133,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
 
                 if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
                 {
-                    rocket.fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+                    rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
                 }
 
                 if (!player.capabilities.isCreativeMode)
@@ -149,11 +150,11 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 {
                     if (rocket instanceof EntityTieredRocket)
                     {
-                        ((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
+                        ((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
                     }
                     else
                     {
-                        ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GalacticraftCore.fluidFuel, rocket.getMaxFuel()), true);
+                        ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
                     }
                 }
             }

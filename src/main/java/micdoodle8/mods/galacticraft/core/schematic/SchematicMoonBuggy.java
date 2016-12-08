@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;

@@ -27,7 +27,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(1);
         this.setMaxDamage(256);
-        //this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override

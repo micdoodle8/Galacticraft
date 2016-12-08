@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeletonBoss extends RenderLiving<EntitySkeletonBoss>
 {
-    private static final ResourceLocation skeletonBossTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/skeletonboss.png");
-//    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
+    private static final ResourceLocation skeletonBossTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/skeletonboss.png");
+//    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
 
 //    private final ModelEvolvedSkeletonBoss model = new ModelEvolvedSkeletonBoss();
 

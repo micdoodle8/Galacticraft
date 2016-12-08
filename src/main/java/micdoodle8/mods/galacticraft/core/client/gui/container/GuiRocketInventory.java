@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -27,7 +27,7 @@ public class GuiRocketInventory extends GuiContainerGC
     {
         for (int i = 0; i < 4; i++)
         {
-            GuiRocketInventory.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
+            GuiRocketInventory.rocketTextures[i] = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 

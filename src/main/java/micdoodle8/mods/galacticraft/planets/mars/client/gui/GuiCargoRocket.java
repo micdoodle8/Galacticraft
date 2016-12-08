@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -31,7 +32,7 @@ public class GuiCargoRocket extends GuiContainerGC
     {
         for (int i = 0; i < 4; i++)
         {
-            GuiCargoRocket.rocketTextures[i] = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
+            GuiCargoRocket.rocketTextures[i] = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 

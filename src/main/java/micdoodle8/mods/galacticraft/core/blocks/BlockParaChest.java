@@ -39,7 +39,7 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
     private final Random random = new Random();
 
-    protected BlockParaChest(String assetName)
+    public BlockParaChest(String assetName)
     {
         super(Material.wood);
         this.setHardness(3.0F);

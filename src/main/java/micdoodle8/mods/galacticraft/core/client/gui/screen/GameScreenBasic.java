@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -94,7 +95,7 @@ public class GameScreenBasic implements IGameScreen
             }
             else
             {
-                this.renderEngine.bindTexture(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
+                this.renderEngine.bindTexture(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
                 if (!ClientProxyCore.overworldTextureRequestSent)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));

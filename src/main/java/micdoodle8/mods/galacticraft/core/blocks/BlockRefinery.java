@@ -34,7 +34,7 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    protected BlockRefinery(String assetName)
+    public BlockRefinery(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);

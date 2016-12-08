@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -44,7 +44,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
                 {
                     // Get the first character of the direction name (n/e/s/w/u/d)
                     Character c = Character.toLowerCase(facing.getName().charAt(0));
-                    IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "block/fluid_pipe_pull_" + c));
+                    IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "block/fluid_pipe_pull_" + c));
                     Function<ResourceLocation, TextureAtlasSprite> spriteFunction = (ResourceLocation location) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
                     pullConnectorModel[facing.ordinal()] = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, spriteFunction);
                 }

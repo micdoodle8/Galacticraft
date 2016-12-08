@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

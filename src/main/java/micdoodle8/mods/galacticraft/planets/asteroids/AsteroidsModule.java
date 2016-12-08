@@ -5,9 +5,10 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.command.CommandGCAstroMiner;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
@@ -146,12 +147,12 @@ public class AsteroidsModule implements IPlanetsModule
         AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
         AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class).setTierRequired(3);
         AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.375F, 1.375F)).setRelativeOrbitTime(45.0F).setPhaseShift((float) (Math.random() * (2 * Math.PI)));
-        AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/asteroid.png"));
+        AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/asteroid.png"));
 
         GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
         GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
 
-        HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> input = new HashMap<>();
         input.put(1, new ItemStack(AsteroidsItems.heavyNoseCone));
         input.put(2, new ItemStack(AsteroidsItems.basicItem, 1, 0));
         input.put(3, new ItemStack(AsteroidsItems.basicItem, 1, 0));

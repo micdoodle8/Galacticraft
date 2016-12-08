@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GuiOxygenDecompressor extends GuiContainerGC
 {
-    private static final ResourceLocation compressorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/decompressor.png");
+    private static final ResourceLocation compressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/decompressor.png");
 
     private final TileEntityOxygenDecompressor decompressor;
 

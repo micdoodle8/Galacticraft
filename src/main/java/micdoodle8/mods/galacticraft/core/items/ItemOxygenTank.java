@@ -25,7 +25,7 @@ public class ItemOxygenTank extends Item implements ISortableItem
         this.setMaxStackSize(1);
         this.setMaxDamage(tier * 900);
         this.setUnlocalizedName(assetName);
-//        this.setTextureName(GalacticraftCore.TEXTURE_PREFIX + assetName);
+//        this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
         this.setNoRepair();
     }
 

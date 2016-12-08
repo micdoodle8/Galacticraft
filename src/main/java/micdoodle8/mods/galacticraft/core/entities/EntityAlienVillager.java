@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;

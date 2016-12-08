@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GuiOxygenCollector extends GuiContainerGC
 {
-    private static final ResourceLocation collectorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen.png");
+    private static final ResourceLocation collectorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen.png");
 
     private final TileEntityOxygenCollector collector;
 

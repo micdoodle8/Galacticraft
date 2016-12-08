@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParaChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelRenderer;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class ModelParaChest extends ModelChest
 {
-    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/parachute/gray.png");
+    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/gray.png");
 
     public ModelRenderer[] parachute = new ModelRenderer[3];
     public ModelRenderer[] parachuteStrings = new ModelRenderer[4];

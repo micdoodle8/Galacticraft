@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -44,17 +44,10 @@ public class RenderBuggy extends Render<EntityBuggy>
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "buggy.obj"));
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "buggy.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()
-                {
-                    @Override
-                    public TextureAtlasSprite apply(ResourceLocation location)
-                    {
-                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    }
-                };
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
                 mainModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("MainBody"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 radarDish = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("RadarDish_Dish"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 wheelBackLeft = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Wheel_Back_Left"), false), DefaultVertexFormats.ITEM, spriteFunction);

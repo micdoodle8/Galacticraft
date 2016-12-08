@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;

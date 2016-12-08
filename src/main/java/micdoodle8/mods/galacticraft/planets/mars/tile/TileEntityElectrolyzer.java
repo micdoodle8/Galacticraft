@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -562,7 +562,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
                 if (gasRequested > 0)
                 {
-                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(GalacticraftCore.fluidOxygenGas, Math.min(gasRequested, provide)), true);
+                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(GCFluids.fluidOxygenGas, Math.min(gasRequested, provide)), true);
 
                     this.drawOxygen(usedGas, true);
                     return true;

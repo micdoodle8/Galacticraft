@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelSolarPanel;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL12;
 
 public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer<TileEntitySolar>
 {
-    private static final ResourceLocation solarPanelTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/solarPanelBasic.png");
-    private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/solarPanelAdvanced.png");
+    private static final ResourceLocation solarPanelTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solarPanelBasic.png");
+    private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solarPanelAdvanced.png");
     public ModelSolarPanel model = new ModelSolarPanel();
 
     @Override

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -73,7 +73,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         }
     }
 
-    protected BlockBasic(String assetName)
+    public BlockBasic(String assetName)
     {
         super(Material.rock);
         this.setHardness(1.0F);
@@ -239,6 +239,9 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     {
         switch (meta)
         {
+        case 3:
+        case 4:
+            return EnumSortCategoryBlock.DECORATION;
         case 5:
         case 6:
         case 7:

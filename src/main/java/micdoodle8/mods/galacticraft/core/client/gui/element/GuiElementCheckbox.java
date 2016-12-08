@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementCheckbox extends GuiButton
 {
-    protected static final ResourceLocation texture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
     public Boolean isSelected;
     private ICheckBoxCallback parentGui;
     private int textColor;

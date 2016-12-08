@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;

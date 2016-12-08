@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
@@ -25,7 +26,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
 {
     private final int xSize;
     private final int ySize;
-    private static final ResourceLocation airLockControllerGui = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/airLockController.png");
+    private static final ResourceLocation airLockControllerGui = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/airLockController.png");
     private final TileEntityAirLockController controller;
     private GuiElementCheckbox checkboxRedstoneSignal;
     private GuiElementCheckbox checkboxPlayerDistance;

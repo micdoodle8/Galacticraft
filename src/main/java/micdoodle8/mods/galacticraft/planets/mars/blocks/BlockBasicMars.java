@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -229,7 +230,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
                 if (rand.nextInt(100) == 0)
                 {
-                    worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), GalacticraftCore.TEXTURE_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
+                    worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), Constants.TEXTURE_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
                 }
             }
         }

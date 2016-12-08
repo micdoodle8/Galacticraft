@@ -4,8 +4,8 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class RefineryRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation refineryGuiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/refinery.png");
+    private static final ResourceLocation refineryGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/refinery.png");
     int ticksPassed;
 
     public String getRecipeId()
@@ -175,7 +175,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftCore.TEXTURE_PREFIX + "textures/gui/refinery.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/refinery.png";
     }
 
     @Override

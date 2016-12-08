@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/canisterPartialLOX_0"
+        "layer0": "galacticraftplanets:items/canister_partial_lox_0"
     },
     "display": {
         "thirdperson": {

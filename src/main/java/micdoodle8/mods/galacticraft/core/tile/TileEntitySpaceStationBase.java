@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

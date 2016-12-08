@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
     //Metadata: 0-3 = orientation;  bits 2,3 = reserved for future use
-    protected BlockTelemetry(String assetName)
+    public BlockTelemetry(String assetName)
     {
         super(Material.iron);
         this.setHardness(1.0F);

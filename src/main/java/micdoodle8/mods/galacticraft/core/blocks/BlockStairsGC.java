@@ -5,7 +5,6 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

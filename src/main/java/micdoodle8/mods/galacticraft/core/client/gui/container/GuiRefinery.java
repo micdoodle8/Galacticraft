@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
@@ -23,7 +24,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiRefinery extends GuiContainerGC
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/refinery.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/refinery.png");
 
     private final TileEntityRefinery tileEntity;
 

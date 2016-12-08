@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFuelerSingle;

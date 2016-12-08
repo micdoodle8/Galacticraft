@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
@@ -32,6 +32,6 @@ public class TileEntityDungeonSpawnerMars extends TileEntityDungeonSpawner<Entit
     @Override
     public void playSpawnSound(Entity entity)
     {
-        this.worldObj.playSoundAtEntity(entity, GalacticraftCore.TEXTURE_PREFIX + "ambience.scaryscape", 9.0F, 1.4F);
+        this.worldObj.playSoundAtEntity(entity, Constants.TEXTURE_PREFIX + "ambience.scaryscape", 9.0F, 1.4F);
     }
 }

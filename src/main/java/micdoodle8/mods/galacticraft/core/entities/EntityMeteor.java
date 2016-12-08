@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

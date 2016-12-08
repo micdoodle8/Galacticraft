@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -22,16 +21,9 @@ import java.util.Random;
 
 public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
-    {
-        @Override
-        public boolean apply(EnumFacing facing)
-        {
-            return facing != EnumFacing.DOWN;
-        }
-    });
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);
 
-    protected BlockGlowstoneTorch(String assetName)
+    public BlockGlowstoneTorch(String assetName)
     {
         super(Material.circuits);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));

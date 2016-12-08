@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiCoalGenerator extends GuiContainer
 {
-    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/coal_generator.png");
+    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/coal_generator.png");
 
     private TileEntityCoalGenerator tileEntity;
 

@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class GuiOxygenSealer extends GuiContainerGC
 {
-    private static final ResourceLocation sealerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/oxygen_sealer.png");
+    private static final ResourceLocation sealerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_sealer.png");
 
     private final TileEntityOxygenSealer sealer;
     private GuiButton buttonDisable;

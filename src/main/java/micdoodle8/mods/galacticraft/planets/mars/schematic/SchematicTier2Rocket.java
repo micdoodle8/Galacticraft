@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSchematicTier2Rocket;

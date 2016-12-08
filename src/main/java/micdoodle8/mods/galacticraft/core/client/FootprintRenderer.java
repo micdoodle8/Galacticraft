@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -20,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class FootprintRenderer
 {
-    public Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<Long, List<Footprint>>();
-    private static final ResourceLocation footprintTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/misc/footprint.png");
+    public static Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<Long, List<Footprint>>();
+    private static final ResourceLocation footprintTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/footprint.png");
 
-    public void renderFootprints(EntityPlayer player, float partialTicks)
+    public static void renderFootprints(EntityPlayer player, float partialTicks)
     {
         GL11.glPushMatrix();
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
@@ -48,7 +48,7 @@ public class FootprintRenderer
         float f10 = 0.4F;
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
-        for (List<Footprint> footprintList : this.footprints.values())
+        for (List<Footprint> footprintList : footprints.values())
         {
             for (Footprint footprint : footprintList)
             {
@@ -85,9 +85,9 @@ public class FootprintRenderer
         GL11.glPopMatrix();
     }
 
-    public void addFootprint(long chunkKey, Footprint footprint)
+    public static void addFootprint(long chunkKey, Footprint footprint)
     {
-        List<Footprint> footprintList = this.footprints.get(chunkKey);
+        List<Footprint> footprintList = footprints.get(chunkKey);
 
         if (footprintList == null)
         {
@@ -95,17 +95,17 @@ public class FootprintRenderer
         }
 
         footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation, footprint.owner));
-        this.footprints.put(chunkKey, footprintList);
+        footprints.put(chunkKey, footprintList);
     }
 
-    public void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation, String owner)
+    public static void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation, String owner)
     {
-        this.addFootprint(chunkKey, new Footprint(dimension, position, rotation, owner));
+        addFootprint(chunkKey, new Footprint(dimension, position, rotation, owner));
     }
 
-    public void setFootprints(long chunkKey, List<Footprint> prints)
+    public static void setFootprints(long chunkKey, List<Footprint> prints)
     {
-        List<Footprint> footprintList = this.footprints.get(chunkKey);
+        List<Footprint> footprintList = footprints.get(chunkKey);
 
         if (footprintList == null)
         {
@@ -123,6 +123,6 @@ public class FootprintRenderer
         }
 
         footprintList.addAll(prints);
-        this.footprints.put(chunkKey, footprintList);
+        footprints.put(chunkKey, footprintList);
     }
 }

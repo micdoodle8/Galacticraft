@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
@@ -84,7 +85,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         GCPlayerStats stats = GCPlayerStats.get(player);
         this.containedItems = new ItemStack[stats.rocketStacks.length + 1];
-        this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, stats.fuelLevel));
+        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.fuelLevel));
 
         for (int i = 0; i < stats.rocketStacks.length; i++)
         {
@@ -345,7 +346,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                     GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
                 }
 
-                this.fuelTank.setFluid(new FluidStack(GalacticraftCore.fluidFuel, buffer.readInt()));
+                this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, buffer.readInt()));
 
                 this.shouldMoveServer = buffer.readBoolean();
 

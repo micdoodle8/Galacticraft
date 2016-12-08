@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class OverlayOxygenTanks extends Overlay
 {
-    private final static ResourceLocation guiTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/gui.png");
+    private final static ResourceLocation guiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
 
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
@@ -25,21 +25,14 @@ import java.util.Random;
 
 public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate<EnumFacing>()
-    {
-        @Override
-        public boolean apply(EnumFacing facing)
-        {
-            return facing != EnumFacing.DOWN;
-        }
-    });
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);
 
     public boolean lit;
     public Block litVersion;
     public Block unlitVersion;
     public Block fallback;
 
-    protected BlockUnlitTorch(boolean lit, String assetName)
+    public BlockUnlitTorch(boolean lit, String assetName)
     {
         super(Material.circuits);
         this.setTickRandomly(true);

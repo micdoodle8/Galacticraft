@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.nei.api.IHighlightHandler;
 import codechicken.nei.api.ItemInfo;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;

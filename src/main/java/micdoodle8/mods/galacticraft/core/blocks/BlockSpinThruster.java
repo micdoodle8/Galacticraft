@@ -27,7 +27,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    protected BlockSpinThruster(String assetName)
+    public BlockSpinThruster(String assetName)
     {
         super(Material.circuits);
         this.setHardness(0.1F);

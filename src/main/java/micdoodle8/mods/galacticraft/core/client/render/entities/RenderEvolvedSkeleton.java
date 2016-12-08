@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import net.minecraft.client.model.ModelSkeleton;
@@ -16,8 +16,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
 {
-    private static final ResourceLocation skeletonTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/skeleton.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/power.png");
+    private static final ResourceLocation skeletonTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/skeleton.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
 
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
     private static int isBG2Loaded = 0;

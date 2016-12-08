@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -24,7 +23,7 @@ public class SoundUpdaterRocket extends MovingSound
 
     public SoundUpdaterRocket(EntityPlayerSP par1EntityPlayerSP, EntityAutoRocket par2Entity)
     {
-        super(new ResourceLocation(GalacticraftCore.TEXTURE_PREFIX + "shuttle.shuttle"));
+        super(new ResourceLocation(Constants.TEXTURE_PREFIX + "shuttle.shuttle"));
         this.theRocket = par2Entity;
         this.thePlayer = par1EntityPlayerSP;
         this.attenuationType = ISound.AttenuationType.NONE;

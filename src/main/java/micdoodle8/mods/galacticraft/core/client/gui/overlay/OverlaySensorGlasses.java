@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -27,8 +27,8 @@ import java.util.Iterator;
 @SideOnly(Side.CLIENT)
 public class OverlaySensorGlasses extends Overlay
 {
-    private static final ResourceLocation hudTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/hud.png");
-    private static final ResourceLocation indicatorTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/indicator.png");
+    private static final ResourceLocation hudTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/hud.png");
+    private static final ResourceLocation indicatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/indicator.png");
 
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 

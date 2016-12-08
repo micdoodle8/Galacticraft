@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;

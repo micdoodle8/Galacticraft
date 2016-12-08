@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
-    private static final ResourceLocation inventoryTexture = new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/inventory.png");
+    private static final ResourceLocation inventoryTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/inventory.png");
 
     private float xSize_lo_2;
     private float ySize_lo_2;

@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.fluid;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;

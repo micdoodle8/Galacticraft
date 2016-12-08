@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
