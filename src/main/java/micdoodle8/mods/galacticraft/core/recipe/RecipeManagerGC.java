@@ -494,10 +494,9 @@ public class RecipeManagerGC
 
         for (int i = 3; i < 6; i++)
         {
-            if (ItemBasic.names[i].contains("ingot"))
-            {
-                CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, i + 3), ItemBasic.names[i], ItemBasic.names[i]);
-            }
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), "ingotAluminum", "ingotAluminum");
         }
 
 /*        // Support for all the spellings of Aluminum

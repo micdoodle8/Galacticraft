@@ -56,7 +56,7 @@ public class CompressorRecipes
 
         HashMap<Character, ItemStack> hashmap;
 
-        for (hashmap = new HashMap<Character, ItemStack>(); i < inputList.length; i += 2)
+        for (hashmap = new HashMap<>(); i < inputList.length; i += 2)
         {
             Character character = (Character) inputList[i];
             ItemStack itemstack1 = null;
@@ -101,7 +101,7 @@ public class CompressorRecipes
 
     public static void addShapelessRecipe(ItemStack par1ItemStack, Object... par2ArrayOfObj)
     {
-        ArrayList arraylist = new ArrayList();
+        ArrayList<Object> arraylist = new ArrayList<>();
         int i = par2ArrayOfObj.length;
 
         for (int j = 0; j < i; ++j)
@@ -312,9 +312,9 @@ public class CompressorRecipes
                     {
                         match = OreDictionary.itemMatches((ItemStack)next, slot, false);
                     }
-                    else if (next instanceof ArrayList)
+                    else if (next instanceof List)
                     {
-                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>)next).iterator();
+                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
                         while (itr.hasNext() && !match)
                         {
                             match = OreDictionary.itemMatches(itr.next(), slot, false);

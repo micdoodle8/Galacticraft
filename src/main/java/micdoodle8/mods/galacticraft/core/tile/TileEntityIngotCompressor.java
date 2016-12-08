@@ -40,7 +40,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private ItemStack[] containingItems = new ItemStack[2];
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
-    private static Random randnum = new Random();
+    private static Random random = new Random();
 
     @Override
     public void update()
@@ -188,10 +188,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     }
                     else if (next instanceof ArrayList)
                     {
-                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>) next).iterator();
-                        while (itr.hasNext())
+                        for (ItemStack itemStack : ((ArrayList<ItemStack>) next))
                         {
-                            if (OreDictionary.itemMatches(itr.next(), stack, false))
+                            if (OreDictionary.itemMatches(itemStack, stack, false))
                             {
                                 match++;
                                 break;
@@ -210,14 +209,14 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     return true;
                 }
 
-                return randnum.nextInt(match) == 0;
+                return random.nextInt(match) == 0;
             }
         }
 
         return false;
     }
 
-    public void smeltItem()
+    private void smeltItem()
     {
         if (this.canSmelt())
         {
@@ -481,7 +480,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             return new int[] { 1 };
         }
         int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        ArrayList<Integer> removeSlots = new ArrayList();
+        ArrayList<Integer> removeSlots = new ArrayList<>();
 
         for (int i = 2; i < 11; i++)
         {
