@@ -123,7 +123,7 @@ public class SlotSpecific extends Slot
 
         for (ItemStack itemStack : this.validItemStacks)
         {
-            if (compareStack.isItemEqual(itemStack) || !this.isMetadataSensitive && compareStack == itemStack)
+            if (compareStack.isItemEqual(itemStack) || !this.isMetadataSensitive && compareStack.getItem() == itemStack.getItem())
             {
                 returnValue = true;
                 break;
