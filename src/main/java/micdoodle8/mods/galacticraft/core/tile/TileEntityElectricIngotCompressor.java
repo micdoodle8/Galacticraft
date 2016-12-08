@@ -532,7 +532,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFront();
+        return getFront().rotateY();
     }
 
     @Override
