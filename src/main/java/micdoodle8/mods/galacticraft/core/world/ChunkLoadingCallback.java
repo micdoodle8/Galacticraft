@@ -32,6 +32,7 @@ public class ChunkLoadingCallback implements LoadingCallback
     private static Configuration config;
     // private static boolean keepLoadedOffline;
     private static boolean loadOnLogin;
+    private static boolean dirtyData;
 
     @Override
     public void ticketsLoaded(List<Ticket> tickets, World world)
@@ -104,6 +105,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         chunkLoaders.add(new BlockPos(x, y, z));
         dimensionMap.put(world.provider.getDimensionId(), chunkLoaders);
         ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
+        ChunkLoadingCallback.dirtyData = true;
     }
 
     public static void forceChunk(Ticket ticket, World world, int x, int y, int z, String playerName)
@@ -134,6 +136,11 @@ public class ChunkLoadingCallback implements LoadingCallback
 
     public static void save(WorldServer world)
     {
+        if (!ChunkLoadingCallback.dirtyData)
+        {
+            return;
+        }
+
         File saveDir = ChunkLoadingCallback.getSaveDir();
 
         if (saveDir != null)
@@ -206,6 +213,7 @@ public class ChunkLoadingCallback implements LoadingCallback
                 }
             }
         }
+        ChunkLoadingCallback.dirtyData = false;
     }
 
     private static File getSaveDir()
@@ -304,6 +312,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
 
         ChunkLoadingCallback.loaded = true;
+        ChunkLoadingCallback.dirtyData = false;
     }
 
     public static void onPlayerLogin(EntityPlayer player)
