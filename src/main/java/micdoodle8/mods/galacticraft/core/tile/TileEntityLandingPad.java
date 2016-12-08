@@ -75,6 +75,29 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                 this.dockedEntity = null;
             }
         }
+
+        // TODO: Find a more efficient way to fix this
+        //          Broken since 1.8 and this is an inefficient fix
+        for (int x = -1; x < 2; x++)
+        {
+            for (int z = -1; z < 2; z++)
+            {
+                if (!(x == 0 && z == 0))
+                {
+                    final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
+
+                    TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+                    if (tile instanceof TileEntityMulti)
+                    {
+                        BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
+                        if (pos == null || !pos.equals(getPos()))
+                        {
+                            ((TileEntityMulti) tile).mainBlockPosition = getPos();
+                        }
+                    }
+                }
+            }
+        }
     }
 
 //    @Override

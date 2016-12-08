@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -85,16 +86,37 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         super.update();
 
+        if (this.isMaster)
+        {
+            // TODO: Find a more efficient way to fix this
+            //          Broken since 1.8 and this is an inefficient fix
+            for (int x = 0; x <= 2; x++)
+            {
+                for (int z = 0; z <= 2; z++)
+                {
+                    if (!(x == 0 && z == 0))
+                    {
+                        final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
+
+                        TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+                        if (tile instanceof TileEntityMinerBase)
+                        {
+                            BlockPos pos = ((TileEntityMinerBase) tile).mainBlockPosition;
+                            if (pos == null || !pos.equals(getPos()))
+                            {
+                                ((TileEntityMinerBase) tile).mainBlockPosition = getPos();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 //        if (this.updateClientFlag)
         if (!this.worldObj.isRemote && this.ticks % 40 == 5)
         {
             this.updateClient();
 //        	this.updateClientFlag = false;
-        }
-
-        if (!this.isMaster && this.mainBlockPosition == null)
-        {
-//            System.err.println("NOOP");
         }
 
         if (this.findTargetPointsFlag)
@@ -594,13 +616,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         if (this.isMaster)
         {
-            System.err.println(this.facing);
             return this.facing.getOpposite();
         }
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
         {
-            System.err.println(this.facing);
             return master.facing.getOpposite();
         }
         return null;

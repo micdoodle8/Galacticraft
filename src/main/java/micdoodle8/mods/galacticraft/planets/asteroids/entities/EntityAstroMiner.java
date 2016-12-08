@@ -1072,11 +1072,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
             break;
         case NORTH:
-            if (tryMineBlock(pos.down().down()))
+            if (tryMineBlock(pos.down(2)))
             {
                 wayBarred = true;
             }
-            if (tryMineBlock(pos.north().down().down()))
+            if (tryMineBlock(pos.west().down(2)))
             {
                 wayBarred = true;
             }
@@ -1084,15 +1084,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 wayBarred = true;
             }
-            if (tryMineBlock(pos.down().north()))
+            if (tryMineBlock(pos.west().down()))
             {
                 wayBarred = true;
             }
-            if (tryMineBlock(pos.south().down()))
+            if (tryMineBlock(pos.east().down()))
             {
                 wayBarred = true;
             }
-            if (tryMineBlock(pos.north().north().down()))
+            if (tryMineBlock(pos.west(2).down()))
             {
                 wayBarred = true;
             }
@@ -1100,7 +1100,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 wayBarred = true;
             }
-            if (tryMineBlock(pos.west().west()))
+            if (tryMineBlock(pos.west(2)))
             {
                 wayBarred = true;
             }
@@ -1116,7 +1116,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 wayBarred = true;
             }
-            if (tryMineBlock(pos.north().up()))
+            if (tryMineBlock(pos.west().up()))
             {
                 wayBarred = true;
             }
@@ -2143,13 +2143,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_)
+    @Override
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
-        this.minecartX = p_70056_1_;
-        this.minecartY = p_70056_3_;
-        this.minecartZ = p_70056_5_;
-        this.minecartYaw = p_70056_7_;
-        this.minecartPitch = p_70056_8_;
+        this.minecartX = x;
+        this.minecartY = y;
+        this.minecartZ = z;
+        this.minecartYaw = y;
+        this.minecartPitch = pitch;
         this.turnProgress = 0;
         this.motionX = this.velocityX;
         this.motionY = this.velocityY;
