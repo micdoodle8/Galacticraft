@@ -133,8 +133,13 @@ public class SkyProviderMars extends IRenderHandler
 
         if (f18 > 0.0F)
         {
+            GL11.glPushMatrix();
+            GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-19.0F, 0, 1.0F, 0);
             GL11.glColor4f(f18, f18, f18, f18);
             GL11.glCallList(this.starList);
+            GL11.glPopMatrix();
         }
 
         float[] afloat = new float[4];
