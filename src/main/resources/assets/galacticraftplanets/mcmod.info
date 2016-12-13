@@ -1,10 +1,10 @@
 [
 {
-  "modid": "GalacticraftMars",
+  "modid": "GalacticraftPlanets",
   "name": "Galacticraft Planets",
   "description": "Planets addon for Galacticraft.",
-  "version": "3.0.12",
-  "mcversion": "1.7.10",
+  "version": "4.0.0",
+  "mcversion": "1.8.9",
   "url": "http://www.micdoodle8.com/",
   "updateUrl": "http://www.micdoodle8.com/",
   "authorList": [
