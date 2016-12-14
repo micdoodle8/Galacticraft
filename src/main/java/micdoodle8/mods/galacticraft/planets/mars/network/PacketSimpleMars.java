@@ -158,6 +158,7 @@ public class PacketSimpleMars extends PacketBase
                 player.openContainer.windowId = (Integer) this.data.get(0);
                 break;
             }
+            break;
         case C_BEGIN_CRYOGENIC_SLEEP:
             BlockPos pos = (BlockPos) this.data.get(0);
             TileEntity tile = player.worldObj.getTileEntity(pos);
