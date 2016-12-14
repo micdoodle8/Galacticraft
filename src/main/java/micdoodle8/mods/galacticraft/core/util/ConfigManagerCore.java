@@ -95,6 +95,7 @@ public class ConfigManagerCore
     public static boolean disableTinMoon;
     public static boolean disableCopperMoon;
     public static boolean disableMoonVillageGen;
+    public static boolean disableSapphireMoon;
     public static int[] externalOilGen;
     public static double oilGenFactor;
     public static boolean retrogenOil;
@@ -329,6 +330,12 @@ public class ConfigManagerCore
             prop.comment = "Disable Copper Ore Gen on Moon.";
             prop.setLanguageKey("gc.configgui.disableCopperMoon");
             disableCopperMoon = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Sapphire Ore Gen on Moon", false);
+            prop.comment = "Disable Sapphire Ore Gen on Moon.";
+            prop.setLanguageKey("gc.configgui.disableSapphireMoon");
+            disableSapphireMoon = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Moon Village Gen", false);

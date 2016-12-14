@@ -174,7 +174,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public boolean isPlantable(int metadata)
+    public boolean isPlantable(IBlockState state)
     {
         return false;
     }

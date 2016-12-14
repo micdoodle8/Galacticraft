@@ -1,5 +1,5 @@
 {
-    "parent":"galacticraftcore:block/moon_turf_0_model",
+    "parent":"galacticraftcore:block/ore_sapphire_moon_model",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

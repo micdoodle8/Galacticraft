@@ -546,6 +546,7 @@ tile.basic_block_moon.coppermoon.name=Copper Ore
 tile.basic_block_moon.moondirt.name=Moon Dirt
 tile.basic_block_moon.moongrass.name=Moon Turf
 tile.basic_block_moon.moonstone.name=Moon Rock
+tile.basic_block_moon.sapphiremoon.name=Sapphire Ore
 tile.basic_block_moon.tinmoon.name=Tin Ore
 tile.buggy_pad.description=Fueling Pads will allow a buggy on the pad to be refueled by an attached Fuel Loaders if set up in a 3x3 square.  Cannot be used to launch rockets!
 tile.cargo.loader.name=Cargo Loader

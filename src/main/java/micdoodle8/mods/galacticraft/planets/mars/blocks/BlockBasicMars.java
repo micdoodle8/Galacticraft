@@ -213,7 +213,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean isPlantable(int metadata)
+    public boolean isPlantable(IBlockState state)
     {
         return false;
     }
@@ -263,10 +263,6 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public boolean isReplaceableOreGen(World world, BlockPos pos, Predicate<IBlockState> target)
     {
-        if (target != Blocks.stone)
-        {
-            return false;
-        }
         IBlockState state = world.getBlockState(pos);
         return (state.getValue(BASIC_TYPE) == EnumBlockBasic.MIDDLE || state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE);
     }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.block;
 
+import net.minecraft.block.state.IBlockState;
+
 /**
  * Extend this block to allow planting of saplings on it. Requires
  */
@@ -14,5 +16,5 @@ public interface IPlantableBlock
     /**
      * @return is sapling can be placed on the provided metadata value, return true
      */
-    public boolean isPlantable(int metadata);
+    public boolean isPlantable(IBlockState state);
 }

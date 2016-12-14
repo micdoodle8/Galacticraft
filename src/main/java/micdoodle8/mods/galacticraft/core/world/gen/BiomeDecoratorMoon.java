@@ -2,7 +2,11 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
@@ -72,6 +76,21 @@ public class BiomeDecoratorMoon extends BiomeDecorator
         if (!ConfigManagerCore.disableCheeseMoon)
         {
             this.genStandardOre(12, this.cheeseGen, 0, 128);
+        }
+        if (!ConfigManagerCore.disableSapphireMoon)
+        {
+            int count = 3 + this.randomGenerator.nextInt(6);
+            for (int i = 0; i < count; i++)
+            {
+                BlockPos blockpos = this.field_180294_c.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(28) + 4, this.randomGenerator.nextInt(16));
+
+                IBlockState toReplace = worldObj.getBlockState(blockpos);
+
+                if (toReplace.getBlock() == GCBlocks.blockMoon && toReplace.getBlock().isReplaceableOreGen(worldObj, blockpos, BlockHelper.forBlock(Blocks.stone)))
+                {
+                    worldObj.setBlockState(blockpos, GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.ORE_SAPPHIRE), 2);
+                }
+            }
         }
         MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, this.randomGenerator, field_180294_c));
     }

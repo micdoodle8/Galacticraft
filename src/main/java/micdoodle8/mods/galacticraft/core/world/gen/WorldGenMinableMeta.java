@@ -24,15 +24,15 @@ public class WorldGenMinableMeta extends WorldGenMinable
 
     private final int fillerMetadata;
 
-    public WorldGenMinableMeta(Block par1, int par2, int par3, boolean par4, Block id, int meta)
+    public WorldGenMinableMeta(Block placeBlock, int blockCount, int placeMeta, boolean metaActive, Block replaceBlock, int replaceMeta)
     {
-        super(par1.getStateFromMeta(par3), par2, BlockHelper.forBlock(id));
-        this.minableBlockId = par1;
-        this.numberOfBlocks = par2;
-        this.metadata = par3;
-        this.usingMetadata = par4;
-        this.fillerID = id;
-        this.fillerMetadata = meta;
+        super(placeBlock.getStateFromMeta(placeMeta), blockCount, BlockHelper.forBlock(replaceBlock));
+        this.minableBlockId = placeBlock;
+        this.numberOfBlocks = blockCount;
+        this.metadata = placeMeta;
+        this.usingMetadata = metaActive;
+        this.fillerID = replaceBlock;
+        this.fillerMetadata = replaceMeta;
     }
 
     @Override

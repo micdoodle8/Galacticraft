@@ -32,7 +32,7 @@ public class ItemBlockMoon extends ItemBlockDesc
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        String name = "";
+        String name;
 
         switch (itemstack.getItemDamage())
         {
@@ -64,6 +64,11 @@ public class ItemBlockMoon extends ItemBlockDesc
         case 5:
         {
             name = "moongrass";
+            break;
+        }
+        case 6:
+        {
+            name = "sapphiremoon";
             break;
         }
         case 14:
