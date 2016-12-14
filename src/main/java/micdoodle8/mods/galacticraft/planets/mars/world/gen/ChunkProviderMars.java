@@ -5,10 +5,6 @@ import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.ChunkProviderSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
@@ -20,7 +16,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChunkProviderMars extends ChunkProviderSpace
@@ -61,23 +56,6 @@ public class ChunkProviderMars extends ChunkProviderSpace
         generators.add(this.caveGenerator);
         generators.add(this.cavernGenerator);
         return generators;
-    }
-
-    @Override
-    protected BiomeGenBase.SpawnListEntry[] getMonsters()
-    {
-        List<BiomeGenBase.SpawnListEntry> monsters = new ArrayList<BiomeGenBase.SpawnListEntry>();
-        monsters.add(new BiomeGenBase.SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
-        monsters.add(new BiomeGenBase.SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
-        monsters.add(new BiomeGenBase.SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
-        monsters.add(new BiomeGenBase.SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
-        return monsters.toArray(new BiomeGenBase.SpawnListEntry[monsters.size()]);
-    }
-
-    @Override
-    protected BiomeGenBase.SpawnListEntry[] getCreatures()
-    {
-        return new BiomeGenBase.SpawnListEntry[0];
     }
 
     @Override

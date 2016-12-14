@@ -972,23 +972,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     @Override
     public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        if (creatureType == EnumCreatureType.MONSTER)
-        {
-            final List monsters = new ArrayList();
-            monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 3000, 1, 3));
-            monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
-            monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
-            monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-            if (ConfigManagerCore.challengeMode)
-            {
-                monsters.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
-            }
-            return monsters;
-        }
-        else
-        {
-            return null;
-        }
+        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        return biomegenbase.getSpawnableList(creatureType);
     }
 
     /**

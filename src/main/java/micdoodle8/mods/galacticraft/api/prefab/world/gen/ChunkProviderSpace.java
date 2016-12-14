@@ -390,32 +390,8 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
     @Override
     public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        if (creatureType == EnumCreatureType.MONSTER)
-        {
-            final List monsters = new ArrayList();
-
-            for (SpawnListEntry monster : this.getMonsters())
-            {
-                monsters.add(monster);
-            }
-
-            return monsters;
-        }
-        else if (creatureType == EnumCreatureType.CREATURE)
-        {
-            final List creatures = new ArrayList();
-
-            for (SpawnListEntry creature : this.getCreatures())
-            {
-                creatures.add(creature);
-            }
-
-            return creatures;
-        }
-        else
-        {
-            return null;
-        }
+        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        return biomegenbase.getSpawnableList(creatureType);
     }
 
     /**
@@ -446,16 +422,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
      * @return
      */
     protected abstract List<MapGenBaseMeta> getWorldGenerators();
-
-    /**
-     * @return List of spawn list entries for monsters
-     */
-    protected abstract SpawnListEntry[] getMonsters();
-
-    /**
-     * @return List of spawn list entries for creatures
-     */
-    protected abstract SpawnListEntry[] getCreatures();
 
     /**
      * The grass block to be generated. Doesn't have to be grass of course.
