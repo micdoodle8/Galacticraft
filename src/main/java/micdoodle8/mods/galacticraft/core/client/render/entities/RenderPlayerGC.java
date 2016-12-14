@@ -2,17 +2,22 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.model.ModelBipedGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Iterator;
 
 /**
  * This renders the thermal armor (unless RenderPlayerAPI is installed).
@@ -44,6 +49,33 @@ public class RenderPlayerGC extends RenderPlayer
         this.addLayer(new LayerOxygenMask(this));
         this.addLayer(new LayerOxygenParachute(this));
         this.addLayer(new LayerFrequencyModule(this));
+
+        // The following code removes the vanilla armor layer renderer and replaces it with the Galacticraft one
+        boolean removedVanilla = false;
+        Iterator<LayerRenderer<AbstractClientPlayer>> iterator = this.layerRenderers.iterator();
+        while (iterator.hasNext())
+        {
+            LayerRenderer<AbstractClientPlayer> renderer = iterator.next();
+            if (renderer.getClass().equals(LayerBipedArmor.class))
+            {
+                iterator.remove();
+                removedVanilla = true;
+            }
+        }
+
+        if (removedVanilla)
+        {
+            LayerBipedArmor playerArmor = new LayerBipedArmor(this)
+            {
+                @Override
+                protected void initArmor()
+                {
+                    this.field_177189_c = new ModelBipedGC(0.5F);
+                    this.field_177186_d = new ModelBipedGC(1.0F);
+                }
+            };
+            this.addLayer(playerArmor);
+        }
 
         if (GalacticraftCore.isPlanetsLoaded)
         {
