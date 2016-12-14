@@ -147,7 +147,7 @@ public class GCItems
             }
         }
 
-        OreDictionary.registerOre("oreMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 1));
+        OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 0));
     }
 
