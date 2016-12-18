@@ -79,10 +79,10 @@ public class PlayerClient implements IPlayerClient
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            stats.inFreefallLast = stats.inFreefall;
-            stats.inFreefall = FreefallHandler.testFreefall(player);
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
+                stats.inFreefallLast = stats.inFreefall;
+                stats.inFreefall = FreefallHandler.testFreefall(player);
                 this.downMot2 = stats.downMotionLast;
                 stats.downMotionLast = player.motionY;
                 ((WorldProviderOrbit) player.worldObj.provider).preVanillaMotion(player);
