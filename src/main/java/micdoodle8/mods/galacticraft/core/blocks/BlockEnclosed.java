@@ -42,13 +42,20 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
     public enum EnumEnclosedBlockType implements IStringSerializable
     {
-        IC2_HV_CABLE(0, 6, "enclosed_hv_cable"),
+//        copper(1, 1, 0.25F, 0.2D, 128),
+//        glass(0, 0, 0.25F, 0.025D, 8192),
+//        gold(2, 1, 0.1875F, 0.4D, 512),
+//        iron(3, 1, 0.375F, 0.8D, 2048),
+//        tin(1, 1, 0.25F, 0.2D, 32),
+//        detector(0, 2147483647, 0.5F, 0.5D, 8192),
+//        splitter(0, 2147483647, 0.5F, 0.5D, 8192);
+        IC2_HV_CABLE(0, "iron", 1, "enclosed_hv_cable"),
         OXYGEN_PIPE(1, "enclosed_fluid_pipe"),
-        IC2_COPPER_CABLE(2, 0, "enclosed_copper_cable"),
-        IC2_GOLD_CABLE(3, 3, "enclosed_gold_cable"),
+        IC2_COPPER_CABLE(2, "copper", 1, "enclosed_copper_cable"),
+        IC2_GOLD_CABLE(3, "gold", 1, "enclosed_gold_cable"),
         TE_CONDUIT(4, "enclosed_te_conduit"), //CURRENTLY UNUSED
-        IC2_GLASS_FIBRE_CABLE(5, 9, "enclosed_glass_fibre_cable"),
-        IC2_LV_CABLE(6, 13, "enclosed_lv_cable"),
+        IC2_GLASS_FIBRE_CABLE(5, "glass", 0, "enclosed_glass_fibre_cable"),
+        IC2_LV_CABLE(6, "tin", 1, "enclosed_lv_cable"),
         BC_ITEM_STONEPIPE(7, "PipeItemsStone", "enclosed_pipe_items_stone"),
         BC_ITEM_COBBLESTONEPIPE(8, "PipeItemsCobblestone", "enclosed_pipe_items_cobblestone"),
         BC_FLUIDS_STONEPIPE(9, "PipeFluidsStone", "enclosed_pipe_fluids_stone"),
@@ -61,28 +68,30 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
         private final int meta;
         private final String name;
-        private final int ic2Meta;
+        private final String ic2Enum;
+        private final int ic2Insulation;
         private final String bcPipeType;
 
         EnumEnclosedBlockType(int meta, String bcPipeType, String name)
         {
-            this(meta, -1, bcPipeType, name);
+            this(meta, null, -1, bcPipeType, name);
         }
 
         EnumEnclosedBlockType(int meta, String name)
         {
-            this(meta, -1, null, name);
+            this(meta, null, -1, null, name);
         }
 
-        EnumEnclosedBlockType(int meta, int ic2Meta, String name)
+        EnumEnclosedBlockType(int meta, String ic2Enum, int ic2Insulation, String name)
         {
-            this(meta, ic2Meta, null, name);
+            this(meta, ic2Enum, ic2Insulation, null, name);
         }
 
-        EnumEnclosedBlockType(int meta, int ic2Meta, String bcPipeType, String name)
+        EnumEnclosedBlockType(int meta, String ic2Enum, int ic2Insulation, String bcPipeType, String name)
         {
             this.meta = meta;
-            this.ic2Meta = ic2Meta;
+            this.ic2Enum = ic2Enum;
+            this.ic2Insulation = ic2Insulation;
             this.bcPipeType = bcPipeType;
             this.name = name;
         }
@@ -92,9 +101,14 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             return this.meta;
         }
 
-        public int getIC2Meta()
+        public String getIc2Enum()
         {
-            return ic2Meta;
+            return ic2Enum;
+        }
+
+        public int getIc2Insulation()
+        {
+            return ic2Insulation;
         }
 
         public String getBCPipeType()
@@ -202,17 +216,13 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     @Override
     public int damageDropped(IBlockState state)
     {
-        int meta = state.getBlock().getMetaFromState(state);
-        //TE_CONDUIT and HV_CABLE have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
-        if (meta == 0)
-        {
-            return 4;
-        }
-        if (meta == 4)
-        {
-            return 0;
-        }
-        return meta;
+        return state.getBlock().getMetaFromState(state);
+    }
+
+    @Override
+    public int getDamageValue(World worldIn, BlockPos pos)
+    {
+        return getMetaFromState(worldIn.getBlockState(pos));
     }
 
     @Override
@@ -241,7 +251,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 try
                 {
-                    onBlockNeighbourChangeIC2.invoke(tileEntity);
+                    onBlockNeighbourChangeIC2.invoke(tileEntity, block);
                     return;
                 }
                 catch (Exception e)
@@ -314,6 +324,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 try
                 {
                     Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                    Class<?> cableTypeClazz = Class.forName("ic2.core.block.wiring.CableType");
                     Constructor<?>[] constructors = clazz.getDeclaredConstructors();
                     Constructor<?> constructor = null;
 
@@ -321,7 +332,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                     {
                         constructor = constructor2;
 
-                        if (constructor.getGenericParameterTypes().length == 1)
+                        if (constructor.getGenericParameterTypes().length == 2)
                         {
                             break;
                         }
@@ -329,7 +340,20 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
                     constructor.setAccessible(true);
 
-                    return (TileEntity) constructor.newInstance(EnumEnclosedBlockType.byMetadata(metadata).getIC2Meta());
+                    Enum[] enums = (Enum[]) cableTypeClazz.getEnumConstants();
+                    Enum foundEnum = null;
+                    EnumEnclosedBlockType enclosedType = EnumEnclosedBlockType.byMetadata(metadata);
+
+                    for (Enum e : enums)
+                    {
+                        if (e.name().equals(enclosedType.getIc2Enum()))
+                        {
+                            foundEnum = e;
+                            break;
+                        }
+                    }
+
+                    return (TileEntity) constructor.newInstance(foundEnum, enclosedType.getIc2Insulation());
                 }
                 catch (Exception e)
                 {

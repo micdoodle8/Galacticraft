@@ -53,7 +53,7 @@ public class CompatibilityManager
                 Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
                 if (clazz != null)
                 {
-                    BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborBlockChange");
+                    BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborChange", Block.class);
                 }
             }
             catch (Exception e)

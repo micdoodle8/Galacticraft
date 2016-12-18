@@ -604,38 +604,32 @@ public class RecipeManagerGC
 
     private static void addIndustrialCraft2Recipes()
     {
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedCopperCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedGoldCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, 4), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedIronCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("glassFiberCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("insulatedTinCableItem"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:copper,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:gold,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:iron,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:glass,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:tin,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
 
         try
         {
-            Class<?> clazz = Class.forName("ic2.core.Ic2Items");
-
-            Object copperDustObject =
-                    clazz.getField("crushedCopperOre").get(null);
-            ItemStack copperDustItemStack = (ItemStack) copperDustObject;
+            ItemStack copperDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "copper");
             Class<?> clazz2 =
                     Class.forName("ic2.api.recipe.RecipeInputItemStack");
             Object o = clazz2.getConstructor(ItemStack.class).newInstance(new
                     ItemStack(GCBlocks.blockMoon, 1, 0));
             Method addRecipe =
                     Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe",
-                            Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class,
+                            Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, Boolean.TYPE,
                             ItemStack[].class);
             addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
-                    o, null, new ItemStack[] { new
-                            ItemStack(copperDustItemStack.getItem(), 2,
+                    o, null, false, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2,
                             copperDustItemStack.getItemDamage()) });
 
-            Object tinDustObject = clazz.getField("crushedTinOre").get(null);
-            ItemStack tinDustItemStack = (ItemStack) tinDustObject;
+            ItemStack tinDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "tin");
             o = clazz2.getConstructor(ItemStack.class).newInstance(new
                     ItemStack(GCBlocks.blockMoon, 1, 1));
             addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
-                    o, null, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(),
+                    o, null, false, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(),
                             2, tinDustItemStack.getItemDamage()) });
         }
         catch (Throwable e)

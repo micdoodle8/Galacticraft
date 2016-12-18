@@ -71,8 +71,8 @@ public class RecipeUtil
         GalacticraftRegistry.addMoonBuggyRecipe(new NasaWorkbenchRecipe(result, input));
     }
 
-    public static ItemStack getIndustrialCraftItem(String indentifier)
+    public static ItemStack getIndustrialCraftItem(String indentifier, String variant)
     {
-        return IC2Items.getItem(indentifier);
+        return IC2Items.getItem(indentifier, variant);
     }
 }
