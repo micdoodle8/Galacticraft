@@ -51,10 +51,6 @@ public class EffectHandler
             {
                 particle = new EntityFXSmokeSmall(mc.theWorld, position, motion);
             }
-            /*else if (particleID.equals("distanceSmoke") && dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance * 1.7)
-            {
-                particle = new EntitySmokeFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
-            }*/
             else if (particleID.equals("oilDrip"))
             {
                 particle = new EntityFXOilDrip(mc.theWorld, position.x, position.y, position.z);

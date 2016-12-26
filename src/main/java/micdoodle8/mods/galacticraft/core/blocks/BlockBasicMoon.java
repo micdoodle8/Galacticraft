@@ -153,6 +153,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         return this.blockHardness;
     }
 
+    @Override
     public int getDamageValue(World worldIn, BlockPos pos)
     {
         return getMetaFromState(worldIn.getBlockState(pos));

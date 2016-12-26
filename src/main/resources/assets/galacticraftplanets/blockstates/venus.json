@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "basictypevenus=venus_rock_0": { "model": "galacticraftplanets:venus_rock_0_model" },
+        "basictypevenus=venus_rock_1": { "model": "galacticraftplanets:venus_rock_1_model" },
+        "basictypevenus=venus_rock_2": { "model": "galacticraftplanets:venus_rock_2_model" },
+        "basictypevenus=venus_rock_3": { "model": "galacticraftplanets:venus_rock_3_model" },
+        "basictypevenus=dungeon_brick_venus_1": { "model": "galacticraftplanets:dungeon_brick_venus_1_model" },
+        "basictypevenus=dungeon_brick_venus_2": { "model": "galacticraftplanets:dungeon_brick_venus_2_model" }
+    }
+}

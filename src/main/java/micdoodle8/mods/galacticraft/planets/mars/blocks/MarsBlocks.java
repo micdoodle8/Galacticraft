@@ -41,6 +41,10 @@ public class MarsBlocks
         MarsBlocks.bossSpawner = new BlockBossSpawnerMars("boss_spawner_mars");
 //        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
 //        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
+
+        MarsBlocks.registerBlocks();
+        MarsBlocks.setHarvestLevels();
+        MarsBlocks.oreDictRegistration();
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)

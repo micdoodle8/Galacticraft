@@ -12,14 +12,14 @@ public class DungeonConfiguration
     private int hallwayLengthMax;
     private int hallwayHeight;
     private int roomHeight;
-    private Class<? extends RoomBoss> bossRoom;
-    private Class<? extends RoomTreasure> treasureRoom;
+    private Class<? extends SizedPiece> bossRoom;
+    private Class<? extends SizedPiece> treasureRoom;
 
     public DungeonConfiguration()
     {
     }
 
-    public DungeonConfiguration(IBlockState brickBlock, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<? extends RoomBoss> bossRoom, Class<? extends RoomTreasure> treasureRoom)
+    public DungeonConfiguration(IBlockState brickBlock, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<? extends SizedPiece> bossRoom, Class<? extends SizedPiece> treasureRoom)
     {
         this.brickBlock = brickBlock;
         this.yPosition = yPosition;
@@ -94,12 +94,12 @@ public class DungeonConfiguration
         return roomHeight;
     }
 
-    public Class<? extends RoomBoss> getBossRoom()
+    public Class<? extends SizedPiece> getBossRoom()
     {
         return bossRoom;
     }
 
-    public Class<? extends RoomTreasure> getTreasureRoom()
+    public Class<? extends SizedPiece> getTreasureRoom()
     {
         return treasureRoom;
     }

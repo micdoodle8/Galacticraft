@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "particle": "galacticraftplanets:blocks/venus_rock_0",
+        "down": "galacticraftplanets:blocks/venus_rock_0",
+        "up": "galacticraftplanets:blocks/spout",
+        "north": "galacticraftplanets:blocks/venus_rock_0",
+        "east": "galacticraftplanets:blocks/venus_rock_0",
+        "south": "galacticraftplanets:blocks/venus_rock_0",
+        "west": "galacticraftplanets:blocks/venus_rock_0"
+    }
+}

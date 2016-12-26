@@ -108,9 +108,6 @@ public class MarsModule implements IPlanetsModule
         EventHandlerGC.bucketList.put(MarsBlocks.blockSludge, MarsItems.bucketSludge);
 
         MarsBlocks.initBlocks();
-        MarsBlocks.registerBlocks();
-        MarsBlocks.setHarvestLevels();
-        MarsBlocks.oreDictRegistration();
 
         MarsItems.initItems();
     }

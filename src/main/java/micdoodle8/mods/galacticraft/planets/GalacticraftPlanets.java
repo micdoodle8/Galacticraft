@@ -6,6 +6,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
@@ -33,9 +35,6 @@ public class GalacticraftPlanets
     public static List<IPlanetsModule> commonModules = new ArrayList<IPlanetsModule>();
     public static List<IPlanetsModuleClient> clientModules = new ArrayList<IPlanetsModuleClient>();
 
-    public static final String MODULE_KEY_MARS = "Module_0_Mars";
-    public static final String MODULE_KEY_ASTEROIDS = "Module_1_Asteroids";
-
     public static final String ASSET_PREFIX = "galacticraftplanets";
     public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
 
@@ -58,9 +57,11 @@ public class GalacticraftPlanets
         }
         new ConfigManagerMars(newPlanetsConf, update);
         new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
+        new ConfigManagerVenus(new File(event.getModConfigurationDirectory(), "Galacticraft/venus.conf"));
 
         GalacticraftPlanets.commonModules.add(new MarsModule());
         GalacticraftPlanets.commonModules.add(new AsteroidsModule());
+        GalacticraftPlanets.commonModules.add(new VenusModule());
         GalacticraftPlanets.proxy.preInit(event);
         GalacticraftPlanets.proxy.registerVariants();
     }

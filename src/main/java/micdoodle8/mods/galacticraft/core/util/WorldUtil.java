@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -97,6 +98,11 @@ public class WorldUtil
 
     public static Vector3 getWorldColor(World world)
     {
+        if (GalacticraftCore.isPlanetsLoaded && world.provider instanceof WorldProviderVenus)
+        {
+            return new Vector3(1, 0.8F, 0.6F);
+        }
+
         return new Vector3(1, 1, 1);
     }
 

@@ -29,8 +29,11 @@ public abstract class Piece extends StructureComponent
     @Override
     protected void readStructureFromNBT(NBTTagCompound tagCompound)
     {
-        this.configuration = new DungeonConfiguration();
-        this.configuration.readFromNBT(tagCompound);
+        if (this.configuration == null)
+        {
+            this.configuration = new DungeonConfiguration();
+            this.configuration.readFromNBT(tagCompound);
+        }
     }
 
     protected StructureBoundingBox getExtension(EnumFacing direction, int length, int width)
