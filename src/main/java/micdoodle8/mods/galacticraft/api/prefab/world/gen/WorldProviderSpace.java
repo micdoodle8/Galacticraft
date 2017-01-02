@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
@@ -320,5 +321,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public float getSolarSize()
     {
         return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
+    }
+
+    @Override
+    public boolean canDisableRain(WorldProvider provider)
+    {
+        return OxygenUtil.noAtmosphericCombustion(provider);
     }
 }
