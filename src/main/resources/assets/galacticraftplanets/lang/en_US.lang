@@ -1,3 +1,6 @@
+checklist.equipThermalSuit.key=Equip Thermal Suit
+checklist.craftGrappleHook.key=Craft Grapple Hook
+checklist.equipShieldController.key=Equip Shield Controller
 container.entry_pod.name=Entry Pod
 container.launchcontroller.name=Launch Controller
 container.mars_lander.name=Landing Balloons

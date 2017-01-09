@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -43,7 +44,7 @@ public class TickHandlerClientVenus
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayerSP player = minecraft.thePlayer;
-        if (player != null)
+        if (player != null && !ConfigManagerVenus.disableAmbientLightning)
         {
             Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
             while (it.hasNext())
@@ -89,32 +90,35 @@ public class TickHandlerClientVenus
 
         if (player == event.player)
         {
-            Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
-            while (it.hasNext())
+            if (!ConfigManagerVenus.disableAmbientLightning)
             {
-                Map.Entry<BlockPos, Integer> entry = it.next();
-                int val = entry.getValue();
-                if (val - 1 <= 0)
+                Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
+                while (it.hasNext())
                 {
-                    it.remove();
+                    Map.Entry<BlockPos, Integer> entry = it.next();
+                    int val = entry.getValue();
+                    if (val - 1 <= 0)
+                    {
+                        it.remove();
+                    }
+                    else
+                    {
+                        entry.setValue(val - 1);
+                    }
                 }
-                else
-                {
-                    entry.setValue(val - 1);
-                }
-            }
 
-            if (player.getRNG().nextInt(250) == 0 && minecraft.theWorld.provider instanceof WorldProviderVenus)
-            {
-                double freq = player.getRNG().nextDouble() * Math.PI * 2.0F;
-                double dist = 180.0F;
-                double dX = dist * Math.cos(freq);
-                double dZ = dist * Math.sin(freq);
-                double posX = player.posX + dX;
-                double posY = 70;
-                double posZ = player.posZ + dZ;
-                minecraft.theWorld.playSound(posX, posY, posZ, "ambient.weather.thunder", 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F, false);
-                lightning.put(new BlockPos(posX, posY, posZ), 20);
+                if (player.getRNG().nextInt(500) == 0 && minecraft.theWorld.provider instanceof WorldProviderVenus)
+                {
+                    double freq = player.getRNG().nextDouble() * Math.PI * 2.0F;
+                    double dist = 180.0F;
+                    double dX = dist * Math.cos(freq);
+                    double dZ = dist * Math.sin(freq);
+                    double posX = player.posX + dX;
+                    double posY = 70;
+                    double posZ = player.posZ + dZ;
+                    minecraft.theWorld.playSound(posX, posY, posZ, "ambient.weather.thunder", 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F, false);
+                    lightning.put(new BlockPos(posX, posY, posZ), 20);
+                }
             }
         }
     }

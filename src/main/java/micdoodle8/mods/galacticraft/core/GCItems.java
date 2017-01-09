@@ -71,6 +71,7 @@ public class GCItems
     public static Item bucketOil;
     public static Item bucketFuel;
 //	public static Item cheeseBlock;
+    public static Item prelaunchChecklist;
 
     //    public static ArmorMaterial addArmorMaterial(String name, String textureName, int durability, int[] reductionAmounts, int enchantability)
     public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0);
@@ -128,6 +129,7 @@ public class GCItems
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         GCItems.meteoricIronRaw = new ItemMeteoricIron("meteoric_iron_raw");
         GCItems.itemBasicMoon = new ItemMoon("item_basic_moon");
+        GCItems.prelaunchChecklist = new ItemPreLaunchChecklist("prelaunch_checklist");
 
         GCItems.registerHarvestLevels();
 
@@ -241,6 +243,7 @@ public class GCItems
 //		GCItems.registerItem(GCItems.cheeseBlock);
         GCItems.registerItem(GCItems.flag);
         GCItems.registerItem(GCItems.parachute);
+        GCItems.registerItem(GCItems.prelaunchChecklist);
     }
 
     public static void registerItem(Item item)

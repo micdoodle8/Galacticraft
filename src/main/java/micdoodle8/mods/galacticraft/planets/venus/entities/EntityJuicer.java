@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.planets.venus.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
-import micdoodle8.mods.galacticraft.planets.venus.entities.pathfinding.EntityMoveHelperCeiling;
-import micdoodle8.mods.galacticraft.planets.venus.entities.pathfinding.PathNavigateCeiling;
+import micdoodle8.mods.galacticraft.planets.venus.entities.ai.EntityMoveHelperCeiling;
+import micdoodle8.mods.galacticraft.planets.venus.entities.ai.PathNavigateCeiling;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -25,32 +25,18 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
 {
     private BlockPos jumpTarget;
     private int timeSinceLastJump = 0;
-    private int posRotationIncrements;
-    private double incX;
-    private double incY;
-    private double incZ;
-    private double incYaw;
-    private double incPitch;
-    @SideOnly(Side.CLIENT)
-    private double velocityX;
-    @SideOnly(Side.CLIENT)
-    private double velocityY;
-    @SideOnly(Side.CLIENT)
-    private double velocityZ;
 
     public EntityJuicer(World world)
     {
         super(world);
         this.moveHelper = new EntityMoveHelperCeiling(this);
         this.setSize(1F, 0.6F);
-        this.tasks.taskEntries.clear();
-        this.targetTasks.taskEntries.clear();
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.8D, 40));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0, true));
+        this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.timeSinceLastJump = this.rand.nextInt(50) + 100;
     }
 
@@ -59,6 +45,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     {
         super.entityInit();
         this.dataWatcher.addObject(16, (byte)0);
+        this.dataWatcher.addObject(17, (byte)0);
     }
 
     public boolean isHanging()
@@ -71,55 +58,14 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         this.dataWatcher.updateObject(16, (byte)(hanging ? 1 : 0));
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
+    public boolean isFalling()
     {
-        if (teleport && this.riddenByEntity != null)
-        {
-            this.prevPosX = this.posX = x;
-            this.prevPosY = this.posY = y;
-            this.prevPosZ = this.posZ = z;
-            this.rotationYaw = yaw;
-            this.rotationPitch = pitch;
-            this.posRotationIncrements = 0;
-            this.setPosition(x, y, z);
-            this.motionX = this.velocityX = 0.0D;
-            this.motionY = this.velocityY = 0.0D;
-            this.motionZ = this.velocityZ = 0.0D;
-        }
-        else
-        {
-            double d0 = x - this.posX;
-            double d1 = y - this.posY;
-            double d2 = z - this.posZ;
-            double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-
-            if (d3 <= 1.0D)
-            {
-                return;
-            }
-
-            this.posRotationIncrements = 3;
-
-            this.incX = x;
-            this.incY = y;
-            this.incZ = z;
-            this.incYaw = (double)yaw;
-            this.incPitch = (double)pitch;
-            this.motionX = this.velocityX;
-            this.motionY = this.velocityY;
-            this.motionZ = this.velocityZ;
-        }
+        return this.dataWatcher.getWatchableObjectByte(17) != 0;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void setVelocity(double x, double y, double z)
+    public void setFalling(boolean falling)
     {
-        this.velocityX = this.motionX = x;
-        this.velocityY = this.motionY = y;
-        this.velocityZ = this.motionZ = z;
+        this.dataWatcher.updateObject(17, (byte)(falling ? 1 : 0));
     }
 
     @Override
@@ -132,7 +78,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D);
     }
 
     @Override
@@ -195,22 +141,26 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                 {
                     IBlockState blockAbove = this.worldObj.getBlockState(new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ));
 
-                    if (blockAbove.getBlock() == VenusBlocks.venusBlock && blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2)
+                    if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
+                            blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                     {
                         MovingObjectPosition hit = this.worldObj.rayTraceBlocks(new Vec3(this.posX, this.posY, this.posZ), new Vec3(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
 
                         if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                         {
                             IBlockState blockBelow = this.worldObj.getBlockState(hit.getBlockPos());
-                            if (blockBelow.getBlock() == VenusBlocks.venusBlock && blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2)
+                            if (blockBelow.getBlock() == VenusBlocks.venusBlock && (blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
+                                    blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                             {
                                 if (this.isHanging())
                                 {
                                     this.jumpTarget = hit.getBlockPos();
+                                    this.setFalling(this.jumpTarget != null);
                                 }
                                 else
                                 {
                                     this.jumpTarget = hit.getBlockPos().offset(EnumFacing.DOWN);
+                                    this.setFalling(this.jumpTarget != null);
                                 }
                             }
                         }
@@ -246,37 +196,6 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
 
         if (this.worldObj.isRemote)
         {
-            if (this.posRotationIncrements > 0)
-            {
-                double d12 = this.posX + (this.incX - this.posX) / (double)this.posRotationIncrements;
-                double d16 = this.posY + (this.incY - this.posY) / (double)this.posRotationIncrements;
-                double d19 = this.posZ + (this.incZ - this.posZ) / (double)this.posRotationIncrements;
-                double d22 = MathHelper.wrapAngleTo180_double(this.incYaw - (double)this.rotationYaw);
-                this.rotationYaw = (float)((double)this.rotationYaw + d22 / (double)this.posRotationIncrements);
-                this.rotationPitch = (float)((double)this.rotationPitch + (this.incPitch - (double)this.rotationPitch) / (double)this.posRotationIncrements);
-                --this.posRotationIncrements;
-                this.setPosition(d12, d16, d19);
-                this.setRotation(this.rotationYaw, this.rotationPitch);
-            }
-            else
-            {
-                double d13 = this.posX + this.motionX;
-                double d17 = this.posY + this.motionY;
-                double d20 = this.posZ + this.motionZ;
-                this.setPosition(d13, d17, d20);
-
-                if (this.onGround)
-                {
-                    this.motionX *= 0.5D;
-                    this.motionY *= 0.5D;
-                    this.motionZ *= 0.5D;
-                }
-
-                this.motionX *= 0.9900000095367432D;
-                this.motionY *= 0.949999988079071D;
-                this.motionZ *= 0.9900000095367432D;
-            }
-
             this.prevLimbSwingAmount = this.limbSwingAmount;
             double d1 = this.posX - this.prevPosX;
             double d0 = this.posZ - this.prevPosZ;
@@ -300,6 +219,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                 {
                     this.setPosition(this.posX, this.jumpTarget.getY() + 0.2, this.posZ);
                     this.jumpTarget = null;
+                    this.setFalling(false);
                     this.timeSinceLastJump = this.rand.nextInt(80) + 40;
                     this.setHanging(true);
                 }
@@ -307,6 +227,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                 {
                     this.setPosition(this.posX, this.jumpTarget.getY() + 1.0, this.posZ);
                     this.jumpTarget = null;
+                    this.setFalling(false);
                     this.timeSinceLastJump = this.rand.nextInt(80) + 40;
                     this.setHanging(false);
                 }
@@ -315,8 +236,6 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                     this.setHanging(false);
                 }
             }
-
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
         }
     }
 
@@ -392,5 +311,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         {
             this.jumpTarget = new BlockPos(tagCompund.getInteger("jumpTargetX"), tagCompund.getInteger("jumpTargetY"), tagCompund.getInteger("jumpTargetZ"));
         }
+
+        this.setFalling(this.jumpTarget != null);
     }
 }

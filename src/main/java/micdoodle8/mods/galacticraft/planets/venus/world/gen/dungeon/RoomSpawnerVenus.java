@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -17,7 +16,7 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
     {
     }
 
-    public RoomSpawnerVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomSpawnerVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
     }
@@ -69,17 +68,5 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
     private static String getMob(Random rand)
     {
         return "GalacticraftPlanets.juicer";
-    }
-
-    @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
-    {
-        super.writeStructureToNBT(tagCompound);
-    }
-
-    @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
-    {
-        super.readStructureFromNBT(tagCompound);
     }
 }

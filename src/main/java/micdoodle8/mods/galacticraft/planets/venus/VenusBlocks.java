@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBossSpawnerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSpout;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockBasicVenus;
 import net.minecraft.block.Block;
@@ -16,11 +17,15 @@ public class VenusBlocks
 {
     public static Block venusBlock;
     public static Block spout;
+    public static Block bossSpawner;
 
     public static void initBlocks()
     {
         VenusBlocks.venusBlock = new BlockBasicVenus("venus");
         VenusBlocks.spout = new BlockSpout("spout");
+        VenusBlocks.bossSpawner = new BlockBossSpawnerVenus("boss_spawner_venus");
+
+        GCBlocks.hiddenBlocks.add(VenusBlocks.bossSpawner);
 
         VenusBlocks.registerBlocks();
         VenusBlocks.setHarvestLevels();
@@ -61,6 +66,7 @@ public class VenusBlocks
     {
         registerBlock(VenusBlocks.venusBlock, ItemBlockBasicVenus.class);
         registerBlock(VenusBlocks.spout, ItemBlockGC.class);
+        registerBlock(VenusBlocks.bossSpawner, ItemBlockGC.class);
     }
 
     public static void oreDictRegistration()

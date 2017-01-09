@@ -148,6 +148,7 @@ public class AsteroidsModule implements IPlanetsModule
         AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class).setTierRequired(3);
         AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.375F, 1.375F)).setRelativeOrbitTime(45.0F).setPhaseShift((float) (Math.random() * (2 * Math.PI)));
         AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/asteroid.png"));
+        AsteroidsModule.planetAsteroids.addChecklistKeys("equipOxygenSuit", "craftGrappleHook");
 
         GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
         GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());

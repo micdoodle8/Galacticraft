@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.venus.entities.pathfinding;
+package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;

@@ -6,9 +6,7 @@ import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
-import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
@@ -1376,5 +1374,36 @@ public class WorldUtil
         }
 
         return wp.getDimensionName();
+    }
+
+    public static Map<String, List<String>> getAllChecklistKeys()
+    {
+        Map<String, List<String>> checklistMap = Maps.newHashMap();
+
+        for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
+        {
+            if (planet.getReachable())
+            {
+                checklistMap.put(planet.getUnlocalizedName(), planet.getChecklistKeys());
+            }
+        }
+
+        for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
+        {
+            if (moon.getReachable())
+            {
+                checklistMap.put(moon.getUnlocalizedName(), moon.getChecklistKeys());
+            }
+        }
+
+        for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
+        {
+            if (satellite.getReachable())
+            {
+                checklistMap.put(satellite.getUnlocalizedName(), satellite.getChecklistKeys());
+            }
+        }
+
+        return checklistMap;
     }
 }

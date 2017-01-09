@@ -42,6 +42,8 @@ public class MarsBlocks
 //        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
 //        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
 
+        GCBlocks.hiddenBlocks.add(MarsBlocks.bossSpawner);
+
         MarsBlocks.registerBlocks();
         MarsBlocks.setHarvestLevels();
         MarsBlocks.oreDictRegistration();

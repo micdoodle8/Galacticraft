@@ -37,6 +37,8 @@ public class ConfigManagerVenus
     // DIMENSIONS
     public static int dimensionIDVenus;
 
+    public static boolean disableAmbientLightning;
+
     public static void syncConfig(boolean load, boolean update)
     {
         try
@@ -62,6 +64,11 @@ public class ConfigManagerVenus
                 propCopy.setRequiresMcRestart(prop.requiresMcRestart());
             }
             dimensionIDVenus = prop.getInt();
+
+            prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "disableAmbientLightning", false);
+            prop.comment = "Disables background thunder and lightning.";
+            prop.setLanguageKey("gc.configgui.disableAmbientLightning");
+            disableAmbientLightning = prop.getBoolean(false);
 
             if (load)
             {

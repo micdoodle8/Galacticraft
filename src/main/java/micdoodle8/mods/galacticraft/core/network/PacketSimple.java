@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
@@ -122,6 +123,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
+        S_UPDATE_CHECKLIST(Side.SERVER, NBTTagCompound.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -492,6 +494,12 @@ public class PacketSimple extends PacketBase implements Packet
                     break;
                 case REMOVE_THERMAL_BOOTS:
                     gearData.setThermalPadding(3, -1);
+                    break;
+                case ADD_SHIELD_CONTROLLER:
+                    gearData.setShieldController(0);
+                    break;
+                case REMOVE_SHIELD_CONTROLLER:
+                    gearData.setShieldController(-1);
                     break;
                 default:
                     break;
@@ -1371,6 +1379,20 @@ public class PacketSimple extends PacketBase implements Packet
                         network.addUpdate(playerBase);
                     }
                 }
+            }
+            break;
+        case S_UPDATE_CHECKLIST:
+            ItemStack stack = player.getHeldItem();
+            if (stack != null && stack.getItem() == GCItems.prelaunchChecklist)
+            {
+                NBTTagCompound tagCompound = stack.getTagCompound();
+                if (tagCompound == null)
+                {
+                    tagCompound = new NBTTagCompound();
+                }
+                NBTTagCompound tagCompoundRead = (NBTTagCompound) this.data.get(0);
+                tagCompound.setTag("checklistData", tagCompoundRead);
+                stack.setTagCompound(tagCompound);
             }
             break;
         default:

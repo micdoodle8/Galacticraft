@@ -12,14 +12,14 @@ public class DungeonConfiguration
     private int hallwayLengthMax;
     private int hallwayHeight;
     private int roomHeight;
-    private Class<? extends SizedPiece> bossRoom;
-    private Class<? extends SizedPiece> treasureRoom;
+    private Class<?> bossRoom;
+    private Class<?> treasureRoom;
 
     public DungeonConfiguration()
     {
     }
 
-    public DungeonConfiguration(IBlockState brickBlock, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<? extends SizedPiece> bossRoom, Class<? extends SizedPiece> treasureRoom)
+    public DungeonConfiguration(IBlockState brickBlock, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<?> bossRoom, Class<?> treasureRoom)
     {
         this.brickBlock = brickBlock;
         this.yPosition = yPosition;
@@ -54,8 +54,8 @@ public class DungeonConfiguration
             this.hallwayLengthMax = tagCompound.getInteger("hallwayLengthMax");
             this.hallwayHeight = tagCompound.getInteger("hallwayHeight");
             this.roomHeight = tagCompound.getInteger("roomHeight");
-            this.bossRoom = (Class<? extends RoomBoss>) Class.forName(tagCompound.getString("bossRoom"));
-            this.treasureRoom = (Class<? extends RoomTreasure>) Class.forName(tagCompound.getString("treasureRoom"));
+            this.bossRoom = Class.forName(tagCompound.getString("bossRoom"));
+            this.treasureRoom = Class.forName(tagCompound.getString("treasureRoom"));
         }
         catch (Exception e)
         {
@@ -94,12 +94,12 @@ public class DungeonConfiguration
         return roomHeight;
     }
 
-    public Class<? extends SizedPiece> getBossRoom()
+    public Class<?> getBossRoom()
     {
         return bossRoom;
     }
 
-    public Class<? extends SizedPiece> getTreasureRoom()
+    public Class<?> getTreasureRoom()
     {
         return treasureRoom;
     }

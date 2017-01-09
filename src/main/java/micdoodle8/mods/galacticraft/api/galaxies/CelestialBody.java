@@ -4,9 +4,12 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public abstract class CelestialBody implements Comparable<CelestialBody>
@@ -25,13 +28,15 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected boolean forceStaticLoad = true;
     protected int tierRequired = 0;
 
-    public ArrayList<IAtmosphericGas> atmosphere = new ArrayList();
+    public ArrayList<IAtmosphericGas> atmosphere = new ArrayList<>();
 
     protected ResourceLocation celestialBodyIcon;
 
     protected float ringColorR = 1.0F;
     protected float ringColorG = 1.0F;
     protected float ringColorB = 1.0F;
+
+    protected ArrayList<String> checklistKeys = new ArrayList<>();
 
     public CelestialBody(String bodyName)
     {
@@ -241,6 +246,16 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     {
         this.forceStaticLoad = force;
         return this;
+    }
+
+    public void addChecklistKeys(String... keys)
+    {
+        this.checklistKeys.addAll(Arrays.asList(keys));
+    }
+
+    public List<String> getChecklistKeys()
+    {
+        return this.checklistKeys;
     }
 
     @Override

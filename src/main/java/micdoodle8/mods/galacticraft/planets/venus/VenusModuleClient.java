@@ -8,13 +8,18 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
 import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidVaporFX;
-import micdoodle8.mods.galacticraft.planets.venus.client.render.RenderJuicer;
+import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderEntryPodVenus;
+import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderJuicer;
+import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderSpiderQueen;
+import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderWebShot;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -37,14 +42,17 @@ import java.util.List;
 
 public class VenusModuleClient implements IPlanetsModuleClient
 {
-    private static ModelResourceLocation sludgeLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge", "fluid");
-
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
         addPlanetVariants("venus", "venus_rock_0", "venus_rock_1", "venus_rock_2", "venus_rock_3", "dungeon_brick_venus_1", "dungeon_brick_venus_2");
+        addPlanetVariants("thermal_padding_t2", "thermal_helm_t2", "thermal_chestplate_t2", "thermal_leggings_t2", "thermal_boots_t2");
+        addPlanetVariants("basic_item_venus", "shield_controller");
         MinecraftForge.EVENT_BUS.register(this);
         RenderingRegistry.registerEntityRenderingHandler(EntityJuicer.class, (RenderManager manager) -> new RenderJuicer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEntryPodVenus.class, (RenderManager manager) -> new RenderEntryPodVenus(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpiderQueen.class, (RenderManager manager) -> new RenderSpiderQueen(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, (RenderManager manager) -> new RenderWebShot(manager));
     }
 
     private void addPlanetVariants(String name, String... variants)
@@ -74,9 +82,8 @@ public class VenusModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
-        registerTexture(event, "rocketT2");
-        registerTexture(event, "cargoRocket");
-        registerTexture(event, "landingBalloon");
+        registerTexture(event, "podFlame");
+        registerTexture(event, "web");
     }
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
@@ -109,6 +116,11 @@ public class VenusModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.venusBlock, 4, "dungeon_brick_venus_1");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.venusBlock, 5, "dungeon_brick_venus_2");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.spout, 0, "spout");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 0, "thermal_helm_t2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 1, "thermal_chestplate_t2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 2, "thermal_leggings_t2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 3, "thermal_boots_t2");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.basicItem, 0, "shield_controller");
     }
 
     private void addVariants(String name, ResourceLocation... variants)

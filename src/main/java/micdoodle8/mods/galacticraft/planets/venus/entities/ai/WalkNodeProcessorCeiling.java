@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.venus.entities.pathfinding;
+package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;

@@ -11,8 +11,13 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
+import micdoodle8.mods.galacticraft.planets.venus.dimension.TeleportTypeVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityDungeonSpawnerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -39,6 +44,7 @@ public class VenusModule implements IPlanetsModule
 //        MinecraftForge.EVENT_BUS.register(new EventHandlerVenus());
 
         VenusBlocks.initBlocks();
+        VenusItems.initItems();
     }
 
     @Override
@@ -55,9 +61,10 @@ public class VenusModule implements IPlanetsModule
         VenusModule.planetVenus = (Planet) new Planet("venus").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
         VenusModule.planetVenus.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/venus.png"));
         VenusModule.planetVenus.setDimensionInfo(ConfigManagerVenus.dimensionIDVenus, WorldProviderVenus.class).setTierRequired(4);
+        VenusModule.planetVenus.addChecklistKeys("equipOxygenSuit", "equipShieldController");
 
         GalaxyRegistry.registerPlanet(VenusModule.planetVenus);
-        GalacticraftRegistry.registerTeleportType(WorldProviderVenus.class, new TeleportTypeMars());
+        GalacticraftRegistry.registerTeleportType(WorldProviderVenus.class, new TeleportTypeVenus());
 //        GalacticraftRegistry.registerRocketGui(WorldProviderMars.class, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/marsRocketGui.png"));
     }
 
@@ -85,15 +92,19 @@ public class VenusModule implements IPlanetsModule
     public void registerTileEntities()
     {
         GameRegistry.registerTileEntity(TileEntitySpout.class, "Venus Spout");
+        GameRegistry.registerTileEntity(TileEntityDungeonSpawnerVenus.class, "Venus Dungeon Spawner");
     }
 
     public void registerCreatures()
     {
         this.registerGalacticraftCreature(EntityJuicer.class, "juicer", ColorUtil.to32BitColor(180, 180, 50, 0), ColorUtil.to32BitColor(255, 0, 2, 0));
+        this.registerGalacticraftCreature(EntitySpiderQueen.class, "spider_queen", ColorUtil.to32BitColor(180, 180, 50, 0), ColorUtil.to32BitColor(255, 0, 2, 0));
     }
 
     public void registerOtherEntities()
     {
+        VenusModule.registerGalacticraftNonMobEntity(EntityEntryPodVenus.class, "entry_pod_venus", 150, 1, true);
+        VenusModule.registerGalacticraftNonMobEntity(EntityWebShot.class, "web_shot", 150, 1, true);
     }
 
     @Override

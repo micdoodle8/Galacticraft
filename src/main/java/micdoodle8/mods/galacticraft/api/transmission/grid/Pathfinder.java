@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A class that allows flexible pathfinding for different positions. Compared to
- * AStar pathfinding, this version is faster but does not calculated the most
+ * A class that allows flexible ai for different positions. Compared to
+ * AStar ai, this version is faster but does not calculated the most
  * optimal path.
  *
  * @author Calclavia
@@ -15,7 +15,7 @@ import java.util.Set;
 public class Pathfinder
 {
     /**
-     * A pathfinding call back interface used to call back on paths.
+     * A ai call back interface used to call back on paths.
      */
     public IPathCallBack callBackCheck;
 
@@ -63,7 +63,7 @@ public class Pathfinder
     }
 
     /**
-     * Called to execute the pathfinding operation.
+     * Called to execute the ai operation.
      */
     public Pathfinder init(BlockVec3 startNode)
     {

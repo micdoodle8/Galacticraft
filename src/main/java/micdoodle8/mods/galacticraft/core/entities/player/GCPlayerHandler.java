@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -181,6 +182,7 @@ public class GCPlayerHandler
         GCPlayer.thermalChestplateInSlot = GCPlayer.extendedInventory.getStackInSlot(7);
         GCPlayer.thermalLeggingsInSlot = GCPlayer.extendedInventory.getStackInSlot(8);
         GCPlayer.thermalBootsInSlot = GCPlayer.extendedInventory.getStackInSlot(9);
+        GCPlayer.shieldControllerInSlot = GCPlayer.extendedInventory.getStackInSlot(10);
         //
 
         if (GCPlayer.frequencyModuleInSlot != GCPlayer.lastFrequencyModuleInSlot || forceSend)
@@ -438,6 +440,20 @@ public class GCPlayerHandler
             }
 
             GCPlayer.lastThermalBootsInSlot = GCPlayer.thermalBootsInSlot;
+        }
+
+        if ((GCPlayer.shieldControllerInSlot != GCPlayer.lastShieldControllerInSlot || forceSend) && GalacticraftCore.isPlanetsLoaded)
+        {
+            if (GCPlayer.shieldControllerInSlot == null)
+            {
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_SHIELD_CONTROLLER);
+            }
+            else if (GCPlayer.shieldControllerInSlot.getItem() == VenusItems.basicItem && (GCPlayer.lastShieldControllerInSlot == null || forceSend))
+            {
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_SHIELD_CONTROLLER);
+            }
+
+            GCPlayer.lastShieldControllerInSlot = GCPlayer.shieldControllerInSlot;
         }
     }
 
@@ -1071,7 +1087,9 @@ public class GCPlayerHandler
         REMOVE_THERMAL_HELMET,
         REMOVE_THERMAL_CHESTPLATE,
         REMOVE_THERMAL_LEGGINGS,
-        REMOVE_THERMAL_BOOTS
+        REMOVE_THERMAL_BOOTS,
+        ADD_SHIELD_CONTROLLER,
+        REMOVE_SHIELD_CONTROLLER
     }
 
     public void onPlayerUpdate(EntityPlayerMP player)

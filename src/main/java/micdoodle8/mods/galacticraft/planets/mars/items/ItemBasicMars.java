@@ -18,7 +18,6 @@ import java.util.List;
 public class ItemBasicMars extends Item implements ISortableItem
 {
     public static String[] names = { "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip" };
-//    protected IIcon[] icons = new IIcon[ItemBasicMars.names.length];
 
     public ItemBasicMars(String name)
     {
@@ -41,29 +40,6 @@ public class ItemBasicMars extends Item implements ISortableItem
     {
         return ClientProxyCore.galacticraftItem;
     }
-
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        int i = 0;
-
-        for (String name : ItemBasicMars.names)
-        {
-            this.icons[i++] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + name);
-        }
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int damage)
-    {
-        if (this.icons.length > damage)
-        {
-            return this.icons[damage];
-        }
-
-        return super.getIconFromDamage(damage);
-    }*/
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override

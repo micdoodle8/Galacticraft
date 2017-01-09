@@ -1,3 +1,5 @@
+checklist.equipParachute.key=Equip Parachute
+checklist.equipOxygenSuit.key=Equip Oxygen Suit
 command.gcastrominer.count=The Astro Miner count for player %s is %s
 commands.dimensionteleport=%s was sent into the atmosphere%s
 commands.dimensiontp.too_many=Too many command arguments! Usage: %s
@@ -514,7 +516,7 @@ planet.overworld=Overworld
 planet.saturn=Saturn
 planet.uranus=Uranus
 planet.venus=Venus
-satellite.space_station.overworld=Overworld Space Station
+satellite.spacestation.overworld=Overworld Space Station
 schematic.moonbuggy.name=Moon Buggy
 schematic.rocket_t1.name=Tier 1 Rocket
 schematic.rocket_t2.name=Tier 2 Rocket

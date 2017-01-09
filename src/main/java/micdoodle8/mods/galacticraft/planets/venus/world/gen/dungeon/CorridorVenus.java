@@ -1,11 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonStart;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.Piece;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.SizedPiece;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -20,7 +14,7 @@ public class CorridorVenus extends SizedPieceVenus
     {
     }
 
-    public CorridorVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
+    public CorridorVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
     {
         super(configuration, sizeX, sizeY, sizeZ, direction);
         this.coordBaseMode = EnumFacing.SOUTH;
@@ -90,12 +84,12 @@ public class CorridorVenus extends SizedPieceVenus
         return true;
     }
 
-    private <T extends SizedPiece> T getRoom(Class<? extends T> clazz, DungeonStart startPiece, Random rand)
+    private <T extends SizedPieceVenus> T getRoom(Class<?> clazz, DungeonStartVenus startPiece, Random rand)
     {
         try
         {
-            Constructor<? extends T> c0 = clazz.getConstructor(DungeonConfiguration.class, Random.class, Integer.TYPE, Integer.TYPE, EnumFacing.class);
-            T dummy = c0.newInstance(this.configuration, rand, 0, 0, this.getDirection().getOpposite());
+            Constructor<?> c0 = clazz.getConstructor(DungeonConfigurationVenus.class, Random.class, Integer.TYPE, Integer.TYPE, EnumFacing.class);
+            T dummy = (T) c0.newInstance(this.configuration, rand, 0, 0, this.getDirection().getOpposite());
             StructureBoundingBox extension = getExtension(this.getDirection(), getDirection().getAxis() == EnumFacing.Axis.X ? dummy.getSizeX() : dummy.getSizeZ(), getDirection().getAxis() == EnumFacing.Axis.X ? dummy.getSizeZ() : dummy.getSizeX());
             if (startPiece.checkIntersection(extension))
             {
@@ -106,8 +100,8 @@ public class CorridorVenus extends SizedPieceVenus
             int sizeY = dummy.getSizeY();
             int blockX = extension.minX;
             int blockZ = extension.minZ;
-            Constructor<? extends T> c1 = clazz.getConstructor(DungeonConfiguration.class, Random.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, EnumFacing.class);
-            return c1.newInstance(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+            Constructor<?> c1 = clazz.getConstructor(DungeonConfigurationVenus.class, Random.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, EnumFacing.class);
+            return (T) c1.newInstance(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
         }
         catch (Exception e)
         {
@@ -118,7 +112,7 @@ public class CorridorVenus extends SizedPieceVenus
     }
 
     @Override
-    public Piece getNextPiece(DungeonStart startPiece, Random rand)
+    public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
         int bossRoomChance = Math.max((int) (1.0 / Math.pow(startPiece.attachedComponents.size() / 55.0, 2)), 5);
         boolean bossRoom = rand.nextInt(bossRoomChance) == 0;

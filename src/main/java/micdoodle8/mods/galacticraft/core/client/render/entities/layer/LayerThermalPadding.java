@@ -77,7 +77,6 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             ModelBiped t = this.func_177175_a(armorSlot);
             t.setModelAttributes(this.renderer.getMainModel());
             t.setLivingAnimations(entitylivingbaseIn, f2, f3, partialTicks);
-            t = getArmorModelHook(entitylivingbaseIn, itemstack, armorSlot, t);
             this.func_177179_a(t, armorSlot);
             this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture1);
             t.render(entitylivingbaseIn, f2, f3, f5, f6, f7, f8);

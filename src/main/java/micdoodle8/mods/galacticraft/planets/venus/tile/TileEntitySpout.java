@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 
 import java.util.Random;
@@ -25,6 +27,7 @@ public class TileEntitySpout extends TileEntity implements ITickable
                 {
                     GalacticraftPlanets.spawnParticle("acidVapor", new Vector3(posX, posY, posZ), new Vector3(rand.nextDouble() * 0.5 - 0.25, rand.nextDouble() * 0.5 + 0.5, rand.nextDouble() * 0.5 - 0.25));
                 }
+                this.worldObj.playSoundEffect(pos.getX(), pos.getY(), pos.getZ(), "ambient.weather.thunder", 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F);
             }
         }
     }

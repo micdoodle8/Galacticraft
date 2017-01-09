@@ -10,4 +10,5 @@ public class GuiIdsCore
     public static final int EXTENDED_INVENTORY = 5;
     public static final int SPACE_RACE_START = 6;
     public static final int SPACE_RACE_JOIN = 7;
+    public static final int PRE_LAUNCH_CHECKLIST = 8;
 }

@@ -343,8 +343,6 @@ public class EntitySkeletonBoss extends EntityMob implements IEntityBreathable, 
             this.postThrowDelay--;
         }
 
-        new Vector3(this);
-
         if (this.roomCoords != null && this.roomSize != null)
         {
             List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,

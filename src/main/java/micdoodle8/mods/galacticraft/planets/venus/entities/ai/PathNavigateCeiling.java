@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.venus.entities.pathfinding;
+package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import net.minecraft.block.Block;

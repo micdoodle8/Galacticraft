@@ -29,7 +29,7 @@ public class SkyProviderVenus extends IRenderHandler
 
     public SkyProviderVenus(IGalacticraftWorldProvider worldProvider)
     {
-        this.sunSize = 17.5F * worldProvider.getSolarSize();
+        this.sunSize = 30.0F * worldProvider.getSolarSize();
 
         int displayLists = GLAllocation.generateDisplayLists(3);
         this.starList = displayLists;

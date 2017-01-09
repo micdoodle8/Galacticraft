@@ -63,12 +63,12 @@ public class Corridor extends SizedPiece
         return true;
     }
 
-    private <T extends SizedPiece> T getRoom(Class<? extends T> clazz, DungeonStart startPiece, Random rand)
+    private <T extends SizedPiece> T getRoom(Class<?> clazz, DungeonStart startPiece, Random rand)
     {
         try
         {
-            Constructor<? extends T> c0 = clazz.getConstructor(DungeonConfiguration.class, Random.class, Integer.TYPE, Integer.TYPE, EnumFacing.class);
-            T dummy = c0.newInstance(this.configuration, rand, 0, 0, this.getDirection().getOpposite());
+            Constructor<?> c0 = clazz.getConstructor(DungeonConfiguration.class, Random.class, Integer.TYPE, Integer.TYPE, EnumFacing.class);
+            T dummy = (T) c0.newInstance(this.configuration, rand, 0, 0, this.getDirection().getOpposite());
             StructureBoundingBox extension = getExtension(this.getDirection(), getDirection().getAxis() == EnumFacing.Axis.X ? dummy.getSizeX() : dummy.getSizeZ(), getDirection().getAxis() == EnumFacing.Axis.X ? dummy.getSizeZ() : dummy.getSizeX());
             if (startPiece.checkIntersection(extension))
             {
@@ -79,8 +79,8 @@ public class Corridor extends SizedPiece
             int sizeY = dummy.sizeY;
             int blockX = extension.minX;
             int blockZ = extension.minZ;
-            Constructor<? extends T> c1 = clazz.getConstructor(DungeonConfiguration.class, Random.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, EnumFacing.class);
-            return c1.newInstance(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+            Constructor<?> c1 = clazz.getConstructor(DungeonConfiguration.class, Random.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, EnumFacing.class);
+            return (T) c1.newInstance(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
         }
         catch (Exception e)
         {

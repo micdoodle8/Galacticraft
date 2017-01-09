@@ -2,10 +2,13 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenMask;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
+import micdoodle8.mods.galacticraft.planets.venus.items.ItemBasicVenus;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -47,6 +50,8 @@ public class SlotExtendedInventory extends Slot
             return this.thermalArmorSlotValid(itemstack, 2);
         case 9:
             return this.thermalArmorSlotValid(itemstack, 3);
+        case 10:
+            return this.shieldControllerSlotValid(itemstack);
         }
 
         return super.isItemValid(itemstack);
@@ -57,6 +62,16 @@ public class SlotExtendedInventory extends Slot
         if (stack.getItem() instanceof IItemThermal)
         {
             return ((IItemThermal) stack.getItem()).isValidForSlot(stack, slotIndex);
+        }
+
+        return false;
+    }
+
+    public boolean shieldControllerSlotValid(ItemStack stack)
+    {
+        if (GalacticraftCore.isPlanetsLoaded && stack.getItem() instanceof ItemBasicVenus && stack.getItemDamage() == 0)
+        {
+            return true;
         }
 
         return false;

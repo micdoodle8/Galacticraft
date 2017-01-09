@@ -3,10 +3,8 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonStart;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.Piece;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.SizedPiece;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -21,12 +19,12 @@ public class RoomTreasureVenus extends SizedPieceVenus
     {
     }
 
-    public RoomTreasureVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
+    public RoomTreasureVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
     {
         this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
     }
 
-    public RoomTreasureVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomTreasureVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.coordBaseMode = EnumFacing.SOUTH;
@@ -114,7 +112,7 @@ public class RoomTreasureVenus extends SizedPieceVenus
     }
 
     @Override
-    public Piece getNextPiece(DungeonStart startPiece, Random rand)
+    public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
         return null;
     }

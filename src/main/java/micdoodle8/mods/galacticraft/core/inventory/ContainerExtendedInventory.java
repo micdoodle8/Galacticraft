@@ -38,17 +38,19 @@ public class ContainerExtendedInventory extends Container
             this.addSlotToContainer(new SlotArmorGC(thePlayer, thePlayer.inventory, 39 - i, 61, 8 + i * 18, i));
         }
 
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 0, 106 + 19, 17));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 1, 106 + 19, 35));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 2, 106 + 19 - 9, 53));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 3, 106 + 19 + 9, 53));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 4, 124 + 19, 17));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 5, 106 + 1, 17));
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 0, 125, 26));
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 1, 125, 44));
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 2, 116, 62));
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 3, 134, 62));
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 4, 143, 26));
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 5, 107, 26));
 
         for (i = 0; i < 4; ++i)
         {
             this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 6 + i, 79, 8 + i * 18));
         }
+
+        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 10, 125, 8));
     }
 
     @Override

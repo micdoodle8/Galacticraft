@@ -13,6 +13,7 @@ public class PlayerGearData
     private int[] thermalPadding;
     private ResourceLocation parachute;
     private int frequencyModule;
+    private int shieldController;
 
     public PlayerGearData(EntityPlayer player)
     {
@@ -111,6 +112,16 @@ public class PlayerGearData
         {
             this.thermalPadding[slot] = thermalPadding;
         }
+    }
+
+    public int getShieldController()
+    {
+        return shieldController;
+    }
+
+    public void setShieldController(int shieldController)
+    {
+        this.shieldController = shieldController;
     }
 
     @Override

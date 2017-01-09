@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -26,7 +27,7 @@ public class TeleportTypeVenus implements ITeleportType
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            return new Vector3(stats.coordsTeleportedFromX, ConfigManagerCore.disableLander ? 250.0 : 900.0, stats.coordsTeleportedFromZ);
+            return new Vector3(stats.coordsTeleportedFromX, 900.0, stats.coordsTeleportedFromZ);
         }
 
         return null;
@@ -35,7 +36,7 @@ public class TeleportTypeVenus implements ITeleportType
     @Override
     public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity)
     {
-        return new Vector3(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
+        return new Vector3(entity.posX, 900.0, entity.posZ);
     }
 
     @Override
@@ -47,21 +48,26 @@ public class TeleportTypeVenus implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        if (!ridingAutoRocket && player != null && GCPlayerStats.get(player).teleportCooldown <= 0)
+        if (!ridingAutoRocket && player != null)
         {
-            if (player.capabilities.isFlying)
+            GCPlayerStats stats = GCPlayerStats.get(player);
+
+            if (stats.teleportCooldown <= 0)
             {
-                player.capabilities.isFlying = false;
+                if (player.capabilities.isFlying)
+                {
+                    player.capabilities.isFlying = false;
+                }
+
+                if (!newWorld.isRemote)
+                {
+                    EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
+
+                    newWorld.spawnEntityInWorld(entryPod);
+                }
+
+                stats.teleportCooldown = 10;
             }
-
-            EntityLandingBalloons lander = new EntityLandingBalloons(player);
-
-            if (!newWorld.isRemote)
-            {
-                newWorld.spawnEntityInWorld(lander);
-            }
-
-            GCPlayerStats.get(player).teleportCooldown = 10;
         }
     }
 

@@ -9,7 +9,7 @@ import net.minecraft.util.IChatComponent;
 
 public class InventoryExtended implements IInventoryGC
 {
-    public ItemStack[] inventoryStacks = new ItemStack[10];
+    public ItemStack[] inventoryStacks = new ItemStack[11];
 
     @Override
     public int getSizeInventory()
@@ -138,7 +138,7 @@ public class InventoryExtended implements IInventoryGC
     // Backwards compatibility for old inventory
     public void readFromNBTOld(NBTTagList par1NBTTagList)
     {
-        this.inventoryStacks = new ItemStack[10];
+        this.inventoryStacks = new ItemStack[11];
 
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
@@ -158,7 +158,7 @@ public class InventoryExtended implements IInventoryGC
 
     public void readFromNBT(NBTTagList tagList)
     {
-        this.inventoryStacks = new ItemStack[10];
+        this.inventoryStacks = new ItemStack[11];
 
         for (int i = 0; i < tagList.tagCount(); ++i)
         {

@@ -82,6 +82,9 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public ItemStack thermalBootsInSlot;
     public ItemStack lastThermalBootsInSlot;
 
+    public ItemStack shieldControllerInSlot;
+    public ItemStack lastShieldControllerInSlot;
+
     public int launchAttempts = 0;
 
     public int spaceRaceInviteTeamID;

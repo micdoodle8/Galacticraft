@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonStart;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.Piece;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.SizedPiece;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -17,7 +15,7 @@ public class RoomEmptyVenus extends SizedPieceVenus
     {
     }
 
-    public RoomEmptyVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomEmptyVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.coordBaseMode = EnumFacing.SOUTH;
@@ -95,7 +93,7 @@ public class RoomEmptyVenus extends SizedPieceVenus
     }
 
     @Override
-    public Piece getNextPiece(DungeonStart startPiece, Random rand)
+    public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
         if (Math.abs(startPiece.getBoundingBox().maxZ - boundingBox.minZ) > 200)
         {

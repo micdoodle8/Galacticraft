@@ -129,6 +129,7 @@ public class MarsModule implements IPlanetsModule
         MarsModule.planetMars.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/mars.png"));
         MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class).setTierRequired(2);
         MarsModule.planetMars.atmosphereComponent(IAtmosphericGas.CO2).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.NITROGEN);
+        MarsModule.planetMars.addChecklistKeys("equipOxygenSuit");
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
         GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());

@@ -7,16 +7,19 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiPreLaunchChecklist;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.inventory.*;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -175,6 +178,10 @@ public class GuiHandler implements IGuiHandler
         else if (ID == GuiIdsCore.SPACE_RACE_JOIN)
         {
             return new GuiJoinSpaceRace(playerClient);
+        }
+        else if (ID == GuiIdsCore.PRE_LAUNCH_CHECKLIST)
+        {
+            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), player.getHeldItem().hasTagCompound() ? (NBTTagCompound) player.getHeldItem().getTagCompound().getTag("checklistData") : null);
         }
 
         TileEntity tile = world.getTileEntity(position);

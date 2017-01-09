@@ -14,7 +14,7 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
     {
     }
 
-    public DungeonConfigurationVenus(IBlockState brickBlock, IBlockState brickBlockFloor, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<? extends SizedPiece> bossRoom, Class<? extends SizedPiece> treasureRoom)
+    public DungeonConfigurationVenus(IBlockState brickBlock, IBlockState brickBlockFloor, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<?> bossRoom, Class<?> treasureRoom)
     {
         super(brickBlock, yPosition, hallwayLengthMin, hallwayLengthMax, hallwayHeight, roomHeight, bossRoom, treasureRoom);
         this.brickBlockFloor = brickBlockFloor;
@@ -24,6 +24,8 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
     public void writeToNBT(NBTTagCompound tagCompound)
     {
         tagCompound.setString("brickBlock", Block.blockRegistry.getNameForObject(this.brickBlockFloor.getBlock()).toString());
+
+        super.writeToNBT(tagCompound);
     }
 
     @Override
@@ -38,6 +40,8 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
             System.err.println("Failed to read dungeon configuration from NBT");
             e.printStackTrace();
         }
+
+        super.readFromNBT(tagCompound);
     }
 
     public IBlockState getBrickBlockFloor()

@@ -2,13 +2,13 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonStart;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.Piece;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.SizedPiece;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -18,16 +18,18 @@ import java.util.Random;
 
 public class RoomBossVenus extends SizedPieceVenus
 {
+    private EnumFacing exitDirection;
+
     public RoomBossVenus()
     {
     }
 
-    public RoomBossVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
+    public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
     {
-        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 14, rand.nextInt(2) + 8, rand.nextInt(6) + 14, entranceDir);
+        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 20, rand.nextInt(2) + 10, rand.nextInt(6) + 20, entranceDir);
     }
 
-    public RoomBossVenus(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.coordBaseMode = EnumFacing.SOUTH;
@@ -36,83 +38,124 @@ public class RoomBossVenus extends SizedPieceVenus
         this.sizeY = sizeY;
         int yPos = configuration.getYPosition();
 
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+        this.boundingBox = new StructureBoundingBox(blockPosX, yPos - 2, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+    }
+
+    @Override
+    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    {
+        super.writeStructureToNBT(tagCompound);
+
+        if (this.exitDirection != null)
+        {
+            tagCompound.setInteger("direction_exit", this.exitDirection.ordinal());
+        }
+    }
+
+    @Override
+    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    {
+        super.readStructureFromNBT(tagCompound);
+
+        if (tagCompound.hasKey("direction_exit"))
+        {
+            this.exitDirection = EnumFacing.getFront(tagCompound.getInteger("direction_exit"));
+        }
+        else
+        {
+            this.exitDirection = null;
+        }
     }
 
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
     {
+        StructureBoundingBox box = new StructureBoundingBox(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE });
+
         for (int i = 0; i <= this.sizeX; i++)
         {
             for (int j = 0; j <= this.sizeY; j++)
             {
                 for (int k = 0; k <= this.sizeZ; k++)
                 {
-                    if (i == 0 || i == this.sizeX || j == 0 || j == this.sizeY || k == 0 || k == this.sizeZ)
+                    double dX = (i - this.sizeX / 2);
+                    double dZ = (k - this.sizeZ / 2);
+                    double dXZ = Math.sqrt(dX * dX + dZ * dZ);
+
+                    double f = -Math.pow((dXZ * 1.5) / (this.sizeX / 2 - 1), 6) + this.sizeY - 1;
+
+                    if (j == 0)
+                    {
+                        this.setBlockState(worldIn, this.configuration.getBrickBlockFloor(), i, j, k, boundingBox);
+                    }
+                    else if (j < f)
+                    {
+                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        if (i < box.minX)
+                        {
+                            box.minX = i;
+                        }
+                        if (i > box.maxX)
+                        {
+                            box.maxX = i;
+                        }
+                        if (j < box.minY)
+                        {
+                            box.minY = j;
+                        }
+                        if (j > box.maxY)
+                        {
+                            box.maxY = j;
+                        }
+                        if (k < box.minZ)
+                        {
+                            box.minZ = k;
+                        }
+                        if (k > box.maxZ)
+                        {
+                            box.maxZ = k;
+                        }
+                    }
+                    else
                     {
                         boolean placeBlock = true;
-                        if (getDirection().getAxis() == EnumFacing.Axis.Z)
+
+                        int start = (this.boundingBox.maxX - this.boundingBox.minX) / 2 - 1;
+                        int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
+                        if (i > start && i <= end && j < 5 && j > 2)
                         {
-                            int start = (this.boundingBox.maxX - this.boundingBox.minX) / 2 - 1;
-                            int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
-                            if (i > start && i <= end && j < 3 && j > 0)
+                            if ((getDirection() == EnumFacing.SOUTH || (this.exitDirection != null && this.exitDirection == EnumFacing.SOUTH)) && k < 4)
                             {
-                                if (getDirection() == EnumFacing.SOUTH && k == 0)
-                                {
-                                    placeBlock = false;
-                                }
-                                else if (getDirection() == EnumFacing.NORTH && k == this.sizeZ)
-                                {
-                                    placeBlock = false;
-                                }
+                                placeBlock = false;
+                            }
+                            if ((getDirection() == EnumFacing.NORTH || (this.exitDirection != null && this.exitDirection == EnumFacing.NORTH)) && k > this.sizeZ - 4)
+                            {
+                                placeBlock = false;
                             }
                         }
-                        else
+
+                        start = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 - 1;
+                        end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
+                        if (k > start && k <= end && j < 5 && j > 2)
                         {
-                            int start = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 - 1;
-                            int end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
-                            if (k > start && k <= end && j < 3 && j > 0)
+                            if ((getDirection() == EnumFacing.EAST || (this.exitDirection != null && this.exitDirection == EnumFacing.EAST)) && i < 4)
                             {
-                                if (getDirection() == EnumFacing.EAST && i == 0)
-                                {
-                                    placeBlock = false;
-                                }
-                                else if (getDirection() == EnumFacing.WEST && i == this.sizeX)
-                                {
-                                    placeBlock = false;
-                                }
+                                placeBlock = false;
+                            }
+                            if ((getDirection() == EnumFacing.WEST || (this.exitDirection != null && this.exitDirection == EnumFacing.WEST)) && i > this.sizeX - 4)
+                            {
+                                placeBlock = false;
                             }
                         }
+
                         if (placeBlock)
                         {
-                            DungeonConfigurationVenus venusConfig = (DungeonConfigurationVenus) this.configuration;
-                            this.setBlockState(worldIn, j == 0 || j == this.sizeY ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, boundingBox);
                         }
                         else
                         {
                             this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
                         }
-                    }
-                    else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
-                    {
-                        this.setBlockState(worldIn, Blocks.flowing_lava.getDefaultState(), i, j, k, boundingBox);
-                    }
-                    else if (j % 3 == 0 && j >= 2 && ((i == 1 || i == this.sizeX - 1 || k == 1 || k == this.sizeZ - 1) || (i == 2 && k == 2) || (i == 2 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == 2) || (i == this.sizeX - 2 && k == this.sizeZ - 2)))
-                    {
-                        // Horizontal bars
-                        this.setBlockState(worldIn, Blocks.iron_bars.getDefaultState(), i, j, k, boundingBox);
-                    }
-                    else if ((i == 1 && k == 2) || (i == 2 && k == 1) ||
-                            (i == 1 && k == this.sizeZ - 2) || (i == 2 && k == this.sizeZ - 1) ||
-                            (i == this.sizeX - 1 && k == 2) || (i == this.sizeX - 2 && k == 1) ||
-                            (i == this.sizeX - 1 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == this.sizeZ - 1))
-                    {
-                        // Vertical bars
-                        this.setBlockState(worldIn, Blocks.iron_bars.getDefaultState(), i, j, k, boundingBox);
-                    }
-                    else
-                    {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
                     }
                 }
             }
@@ -121,24 +164,33 @@ public class RoomBossVenus extends SizedPieceVenus
         int spawnerX = this.sizeX / 2;
         int spawnerY = 1;
         int spawnerZ = this.sizeZ / 2;
-        this.setBlockState(worldIn, GCBlocks.bossSpawner.getDefaultState(), spawnerX, spawnerY, spawnerZ, boundingBox);
+        this.setBlockState(worldIn, VenusBlocks.bossSpawner.getDefaultState(), spawnerX, spawnerY, spawnerZ, boundingBox);
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
         TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);
 
         if (spawner == null)
         {
-            spawner = new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
+            spawner = new TileEntityDungeonSpawner(EntitySpiderQueen.class);
             worldIn.setTileEntity(blockpos, spawner);
         }
 
-        spawner.setRoom(new Vector3(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1), new Vector3(this.sizeX - 1, this.sizeY - 1, this.sizeZ - 1));
+        if (box.getXSize() > 10000 || box.getYSize() > 10000 || box.getZSize() > 10000)
+        {
+            GCLog.severe("Failed to set correct boss room size. This is a bug!");
+        }
+        else
+        {
+            spawner.setRoom(new Vector3(box.minX + this.boundingBox.minX, box.minY + this.boundingBox.minY, box.minZ + this.boundingBox.minZ), new Vector3(box.maxX - box.minX + 1, box.maxY - box.minY + 1, box.maxZ - box.minZ + 1));
+        }
 
         return true;
     }
 
     @Override
-    public Piece getNextPiece(DungeonStart startPiece, Random rand)
+    public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
-        return getCorridor(rand, startPiece, 10, true);
+        DirectionalPieceVenus corridor = (DirectionalPieceVenus) getCorridor(rand, startPiece, 10, true);
+        this.exitDirection = corridor.getDirection().getOpposite();
+        return corridor;
     }
 }

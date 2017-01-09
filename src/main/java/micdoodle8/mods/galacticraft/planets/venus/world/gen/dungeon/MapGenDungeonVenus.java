@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -91,13 +90,13 @@ public class MapGenDungeonVenus extends MapGenStructure
 
     public static class Start extends StructureStart
     {
-        private DungeonConfiguration configuration;
+        private DungeonConfigurationVenus configuration;
 
         public Start()
         {
         }
 
-        public Start(World worldIn, Random rand, int chunkX, int chunkZ, DungeonConfiguration configuration)
+        public Start(World worldIn, Random rand, int chunkX, int chunkZ, DungeonConfigurationVenus configuration)
         {
             super(chunkX, chunkZ);
             this.configuration = configuration;
