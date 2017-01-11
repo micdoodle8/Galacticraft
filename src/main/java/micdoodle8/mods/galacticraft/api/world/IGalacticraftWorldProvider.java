@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.world;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import net.minecraft.world.WorldProvider;
 
 public interface IGalacticraftWorldProvider
 {
@@ -66,7 +67,7 @@ public interface IGalacticraftWorldProvider
      * @return True if players can breathe here, False if not.
      */
     public boolean hasBreathableAtmosphere();
-   
+
     /**
      * If false (the default) then Nether Portals will have no function on this world.
      * Nether Portals can still be constructed, if the player can make fire, they just
@@ -100,7 +101,7 @@ public interface IGalacticraftWorldProvider
      * @return Flag movement magnitude. Relative to earth's value of 1.0F
      */
     public float getWindLevel();
-    
+
     /**
      * Factor by which the sun is to be drawn smaller (<1.0) or larger (>1.0) than
      * the sun on the Overworld
@@ -117,4 +118,11 @@ public interface IGalacticraftWorldProvider
      * @see micdoodle8.mods.galacticraft.api.galaxies.Moon
      */
     public abstract CelestialBody getCelestialBody();
+
+    /**
+     * Allow planets can enable or disable rain in the planet
+     *
+     * @return True if the planet don't have atmosphere (Moon, Mars, etc.), False rain will fall like vanilla.
+     */
+    public boolean canDisableRain(WorldProvider provider);
 }
