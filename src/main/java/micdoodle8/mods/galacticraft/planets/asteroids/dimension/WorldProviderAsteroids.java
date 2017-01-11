@@ -57,12 +57,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public boolean canRainOrSnow()
-    {
-        return false;
-    }
-
-    @Override
     public boolean hasSunset()
     {
         return false;
@@ -555,5 +549,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
             return roid;
         }
+    }
+
+    @Override
+    public boolean shouldDisablePrecipitation()
+    {
+        return true;
     }
 }

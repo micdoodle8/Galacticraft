@@ -54,12 +54,6 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public boolean canRainOrSnow()
-    {
-        return false;
-    }
-
-    @Override
     public boolean hasSunset()
     {
         return false;
@@ -230,5 +224,11 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     public String getInternalNameSuffix()
     {
         return "_venus";
+    }
+
+    @Override
+    public boolean shouldDisablePrecipitation()
+    {
+        return true;
     }
 }

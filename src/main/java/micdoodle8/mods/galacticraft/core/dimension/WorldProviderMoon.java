@@ -32,12 +32,6 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public boolean canRainOrSnow()
-    {
-        return false;
-    }
-
-    @Override
     public boolean hasSunset()
     {
         return false;
@@ -342,5 +336,9 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
         return "_moon";
     }
 
-
+    @Override
+    public boolean shouldDisablePrecipitation()
+    {
+        return true;
+    }
 }

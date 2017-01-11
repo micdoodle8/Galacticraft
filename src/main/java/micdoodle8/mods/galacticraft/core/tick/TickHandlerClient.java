@@ -569,7 +569,7 @@ public class TickHandlerClient
                 player.motionY = 0;
             }
 
-            if (world != null && world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.noAtmosphericCombustion(world.provider))
+            if (world != null && world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.noAtmosphericCombustion(world.provider) && ((IGalacticraftWorldProvider) world.provider).shouldDisablePrecipitation())
             {
                 world.setRainStrength(0.0F);
             }

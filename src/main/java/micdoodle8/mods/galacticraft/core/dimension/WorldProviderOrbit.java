@@ -182,12 +182,6 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     }
 
     @Override
-    public boolean canRainOrSnow()
-    {
-        return false;
-    }
-
-    @Override
     public boolean hasSunset()
     {
         return false;
@@ -1534,5 +1528,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     public String getInternalNameSuffix()
     {
         return "_orbit";
+    }
+
+    @Override
+    public boolean shouldDisablePrecipitation()
+    {
+        return true;
     }
 }

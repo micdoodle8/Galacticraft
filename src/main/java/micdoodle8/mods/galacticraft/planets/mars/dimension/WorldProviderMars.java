@@ -36,12 +36,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public boolean canRainOrSnow()
-    {
-        return false;
-    }
-
-    @Override
     public boolean hasSunset()
     {
         return false;
@@ -332,5 +326,11 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public String getInternalNameSuffix()
     {
         return "_mars";
+    }
+
+    @Override
+    public boolean shouldDisablePrecipitation()
+    {
+        return true;
     }
 }

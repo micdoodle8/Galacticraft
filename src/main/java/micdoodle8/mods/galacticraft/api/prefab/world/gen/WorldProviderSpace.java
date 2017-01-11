@@ -38,8 +38,14 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 
     /**
      * Whether or not there will be rain or snow in this dimension
+     *
+     * @deprecated Use new shouldDisablePrecipitation method in IGalacticraftWorldProvider interface
      */
-    public abstract boolean canRainOrSnow();
+    @Deprecated
+    public boolean canRainOrSnow()
+    {
+        return false;
+    }
 
     /**
      * Whether or not to render vanilla sunset (can be overridden with custom sky provider)
@@ -79,11 +85,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public void updateWeather()
     {
-        if (this.canRainOrSnow())
-        {
-            super.updateWeather();
-        }
-        else
+        if (this.shouldDisablePrecipitation())
         {
             this.worldObj.getWorldInfo().setRainTime(0);
             this.worldObj.getWorldInfo().setRaining(false);
@@ -91,6 +93,10 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             this.worldObj.getWorldInfo().setThundering(false);
             this.worldObj.rainingStrength = 0.0F;
             this.worldObj.thunderingStrength = 0.0F;
+        }
+        else
+        {
+            super.updateWeather();
         }
     }
 
@@ -115,19 +121,19 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public boolean canBlockFreeze(BlockPos pos, boolean byWater)
     {
-        return this.canRainOrSnow();
+        return !this.shouldDisablePrecipitation();
     }
 
     @Override
     public boolean canDoLightning(Chunk chunk)
     {
-        return this.canRainOrSnow();
+        return !this.shouldDisablePrecipitation();
     }
 
     @Override
     public boolean canDoRainSnowIce(Chunk chunk)
     {
-        return this.canRainOrSnow();
+        return !this.shouldDisablePrecipitation();
     }
 
     @Override

@@ -117,4 +117,11 @@ public interface IGalacticraftWorldProvider
      * @see micdoodle8.mods.galacticraft.api.galaxies.Moon
      */
     public abstract CelestialBody getCelestialBody();
+
+    /**
+     * Whether rain and snow should be disabled on this planet
+     *
+     * @return true if precipitation should be disabled. False otherwise.
+     */
+    public boolean shouldDisablePrecipitation();
 }
