@@ -125,25 +125,6 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        if (world.isRemote)
-        {
-            return null;
-        }
-
-        switch (getMetaFromState(state))
-        {
-        case 0:
-            return new TileEntityLandingPadSingle();
-        case 1:
-            return new TileEntityBuggyFuelerSingle();
-        default:
-            return null;
-        }
-    }
-
-    @Override
     public boolean isOpaqueCube()
     {
         return false;
@@ -158,7 +139,15 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-        return null;
+        switch (meta)
+        {
+        case 0:
+            return new TileEntityLandingPadSingle();
+        case 1:
+            return new TileEntityBuggyFuelerSingle();
+        default:
+            return null;
+        }
     }
 
     @Override
