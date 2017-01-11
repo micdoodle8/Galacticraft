@@ -1,8 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -26,7 +29,6 @@ import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
@@ -42,7 +44,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
 
     private void updateModels()
     {
-        if (moduleModel == null)
+        if (this.moduleModel == null)
         {
             try
             {
@@ -50,8 +52,8 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
                 Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                moduleModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Main"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                radarModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Radar"), false), DefaultVertexFormats.ITEM, spriteFunction);
+                this.moduleModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Main"), false), DefaultVertexFormats.ITEM, spriteFunction);
+                this.radarModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Radar"), false), DefaultVertexFormats.ITEM, spriteFunction);
             }
             catch (Exception e)
             {
@@ -75,7 +77,8 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
 
                 if (wearingModule)
                 {
-                    updateModels();
+                    this.updateModels();
+                    GlStateManager.pushMatrix();
                     RenderHelper.disableStandardItemLighting();
                     Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
@@ -88,32 +91,29 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                         GlStateManager.shadeModel(GL11.GL_FLAT);
                     }
 
+                    GlStateManager.rotate(180, 1, 0, 0);
                     GlStateManager.pushMatrix();
-
-                    GL11.glRotatef(180, 1, 0, 0);
-
-                    GlStateManager.pushMatrix();
-                    GL11.glRotatef((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
-                    GL11.glRotatef((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
+                    GlStateManager.rotate((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
+                    GlStateManager.rotate((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
                     GlStateManager.scale(0.3F, 0.3F, 0.3F);
+
                     if (wearingHelmet)
                     {
-                        GL11.glTranslatef(-1.1F, 1.2F, 0);
+                        GlStateManager.translate(-1.1F, 1.2F, 0);
                     }
                     else
                     {
-                        GL11.glTranslatef(-0.9F, 0.9F, 0);
+                        GlStateManager.translate(-0.9F, 0.9F, 0);
                     }
+
                     this.drawBakedModel(this.moduleModel);
-                    GL11.glTranslatef(0.0F, 1.3F, 0.0F);
-                    GL11.glRotatef((float) (Math.sin(player.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
-                    GL11.glRotatef((float) (Math.cos(player.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+                    GlStateManager.translate(0.0F, 1.3F, 0.0F);
+                    GlStateManager.rotate((float) (Math.sin(player.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+                    GlStateManager.rotate((float) (Math.cos(player.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
                     this.drawBakedModel(this.radarModel);
                     GlStateManager.popMatrix();
-
-                    GlStateManager.popMatrix();
-
                     RenderHelper.enableStandardItemLighting();
+                    GlStateManager.popMatrix();
                 }
             }
         }
