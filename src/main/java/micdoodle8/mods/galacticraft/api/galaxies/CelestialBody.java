@@ -6,9 +6,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
