@@ -17,7 +17,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -206,7 +206,7 @@ public class EventHandlerGC
                 GCPlayerStats.tryBedWarning((EntityPlayerMP) event.entityPlayer);
             }
 
-            if (worldObj.provider instanceof WorldProviderOrbit)
+            if (worldObj.provider instanceof WorldProviderZeroGravity)
             {
                 //On space stations simply block the bed activation => no explosion
                 event.setCanceled(true);

@@ -49,6 +49,10 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public boolean lastZoomed;
     public int buildFlags = -1;
 
+    public boolean ssOnGroundLast;
+
+    public FreefallHandler freefallHandler = new FreefallHandler();
+
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
     public GCPlayerStatsClient(EntityPlayerSP player)

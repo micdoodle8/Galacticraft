@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -79,13 +79,13 @@ public class PlayerClient implements IPlayerClient
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            if (player.worldObj.provider instanceof WorldProviderOrbit)
+            if (player.worldObj.provider instanceof WorldProviderZeroGravity)
             {
                 stats.inFreefallLast = stats.inFreefall;
-                stats.inFreefall = FreefallHandler.testFreefall(player);
+                stats.inFreefall = stats.freefallHandler.testFreefall(player);
                 this.downMot2 = stats.downMotionLast;
                 stats.downMotionLast = player.motionY;
-                ((WorldProviderOrbit) player.worldObj.provider).preVanillaMotion(player);
+                stats.freefallHandler.preVanillaMotion(player);
             }
         }
 
@@ -108,9 +108,9 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        if (player.worldObj.provider instanceof WorldProviderOrbit)
+        if (player.worldObj.provider instanceof WorldProviderZeroGravity)
         {
-            ((WorldProviderOrbit) player.worldObj.provider).postVanillaMotion(player);
+            stats.freefallHandler.postVanillaMotion(player);
 
             if (stats.inFreefall)
             {

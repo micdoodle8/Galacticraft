@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
@@ -1133,7 +1133,7 @@ public class GCPlayerHandler
                 GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
                 player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 
-                if (worldNew.provider instanceof WorldProviderOrbit)
+                if (worldNew.provider instanceof WorldProviderZeroGravity)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] {}), player);
                 }
@@ -1278,14 +1278,14 @@ public class GCPlayerHandler
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] {}), player);
             }
 
-            if (player.worldObj.provider instanceof WorldProviderOrbit)
+            if (player.worldObj.provider instanceof WorldProviderZeroGravity)
             {
                 player.fallDistance = 0.0F;
                 //Prevent kicks for flying
                 player.playerNetServerHandler.floatingTickCount = 0;
                 if (GCPlayer.newInOrbit)
                 {
-                    ((WorldProviderOrbit) player.worldObj.provider).sendPacketsToClient(player);
+                    ((WorldProviderZeroGravity) player.worldObj.provider).getSpinManager().sendPackets(player);
                     GCPlayer.newInOrbit = false;
                 }
             }

@@ -1,3 +1,4 @@
+checklist.createGrapple.key=Create Grapple Hook
 checklist.equipParachute.key=Equip Parachute
 checklist.equipOxygenSuit.key=Equip Oxygen Suit
 command.gcastrominer.count=The Astro Miner count for player %s is %s

@@ -3,10 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
-import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -83,9 +80,9 @@ public class ConnectionEvents
             }
         }
 
-        if (event.player.worldObj.provider instanceof WorldProviderOrbit && event.player instanceof EntityPlayerMP)
+        if (event.player.worldObj.provider instanceof WorldProviderZeroGravity && event.player instanceof EntityPlayerMP)
         {
-            ((WorldProviderOrbit) event.player.worldObj.provider).sendPacketsToClient((EntityPlayerMP) event.player);
+            ((WorldProviderZeroGravity) event.player.worldObj.provider).getSpinManager().sendPackets((EntityPlayerMP) event.player);
         }
     }
 

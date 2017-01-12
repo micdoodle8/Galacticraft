@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -162,7 +162,7 @@ public class TransformerHooks
         {
             return false;
         }
-        if (world.provider instanceof WorldProviderOrbit)
+        if (world.provider instanceof WorldProviderZeroGravity)
         {
             return true;
         }

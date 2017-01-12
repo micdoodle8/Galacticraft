@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -66,13 +66,13 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     @Override
     public boolean isSneaking()
     {
-        if (this.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.worldObj.provider instanceof WorldProviderZeroGravity)
         {
-            if (FreefallHandler.testFreefall(this))
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
+            if (stats.freefallHandler.testFreefall(this))
             {
                 return false;
             }
-            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.inFreefall)
             {
                 return false;
