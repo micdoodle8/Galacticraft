@@ -22,7 +22,6 @@ public class ItemKey extends Item implements IKeyItem, ISortableItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName("arrow");
     }
 
     @Override
@@ -65,6 +64,6 @@ public class ItemKey extends Item implements IKeyItem, ISortableItem
     @Override
     public EnumSortCategoryItem getCategory(int meta)
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategoryItem.KEYS;
     }
 }

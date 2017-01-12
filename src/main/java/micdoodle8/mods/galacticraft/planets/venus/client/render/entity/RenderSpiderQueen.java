@@ -66,6 +66,7 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
             GL11.glTranslatef(0.0F, entity.height, 0.0F);
         }
         GL11.glScalef(1.5F, 1.5F, 1.5F);
+        GL11.glRotatef((float) (Math.pow(entity.deathTicks, 2) / 5.0F + (Math.pow(entity.deathTicks, 2) / 5.0F - Math.pow(entity.deathTicks - 1, 2) / 5.0F) * partialTickTime), 0.0F, 1.0F, 0.0F);
         super.preRenderCallback(entity, partialTickTime);
     }
 

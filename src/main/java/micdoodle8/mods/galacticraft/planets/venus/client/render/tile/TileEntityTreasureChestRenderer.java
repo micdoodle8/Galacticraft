@@ -1,8 +1,8 @@
-package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
+package micdoodle8.mods.galacticraft.planets.venus.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTreasureChestAsteroids;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -12,23 +12,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<TileEntityTreasureChestAsteroids>
+public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<TileEntityTreasureChestVenus>
 {
-    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/treasure_asteroids.png");
+    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/treasure_venus.png");
 
     private final ModelTreasureChest chestModel = new ModelTreasureChest();
 
     @Override
-    public void renderTileEntityAt(TileEntityTreasureChestAsteroids chest, double x, double y, double z, float par5, int par6)
+    public void renderTileEntityAt(TileEntityTreasureChestVenus chest, double x, double y, double z, float par7, int par8)
     {
-        if (chest.getWorld() != null)
-        {
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        }
-        else
-        {
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        }
         int var9;
 
         if (!chest.hasWorldObj())
@@ -49,6 +41,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
         this.bindTexture(TileEntityTreasureChestRenderer.treasureChestTexture);
 
         GL11.glPushMatrix();
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
         GL11.glScalef(1.0F, -1.0F, -1.0F);
@@ -77,7 +70,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
 
         GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        float var12 = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * par6;
+        float var12 = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * par8;
 
         var12 = 1.0F - var12;
         var12 = 1.0F - var12 * var12 * var12;
@@ -85,6 +78,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
         this.chestModel.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
         this.chestModel.renderAll(!chest.locked);
 
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }

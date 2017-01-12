@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.mars.items;
+package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,14 +14,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
+public class ItemKeyVenus extends Item implements IKeyItem, ISortableItem
 {
-    public ItemKeyMars()
+    public ItemKeyVenus(String name)
     {
         super();
         this.setMaxStackSize(1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName(name);
     }
 
     @SideOnly(Side.CLIENT)
@@ -34,7 +35,7 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item.key.t2";
+        return "item.key.t3";
     }
 
     @Override
@@ -44,9 +45,8 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }
@@ -60,7 +60,7 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
     @Override
     public int getTier(ItemStack keyStack)
     {
-        return 2;
+        return 3;
     }
 
     @Override

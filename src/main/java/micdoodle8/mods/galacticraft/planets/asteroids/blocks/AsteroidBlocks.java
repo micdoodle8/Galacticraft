@@ -24,14 +24,12 @@ public class AsteroidBlocks
     public static Block beamReceiver;
     public static Block shortRangeTelepad;
     public static Block fakeTelepad;
-    public static Block treasureChestTier3;
     public static Block blockDenseIce;
     public static Block blockMinerBase;
     public static Block minerBaseFull;
 
     public static void initBlocks()
     {
-        AsteroidBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasure_t3");
         AsteroidBlocks.blockWalkway = new BlockWalkway("walkway");
         AsteroidBlocks.blockBasic = new BlockBasicAsteroids("asteroids_block");
         AsteroidBlocks.beamReflector = new BlockBeamReflector("beam_reflector");
@@ -59,7 +57,6 @@ public class AsteroidBlocks
 
     public static void registerBlocks()
     {
-        registerBlock(AsteroidBlocks.treasureChestTier3, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.blockBasic, ItemBlockAsteroids.class);
         registerBlock(AsteroidBlocks.blockWalkway, ItemBlockWalkway.class);
         registerBlock(AsteroidBlocks.beamReflector, ItemBlockDesc.class);

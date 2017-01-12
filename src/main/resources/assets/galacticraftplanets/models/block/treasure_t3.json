@@ -1,7 +1,7 @@
 {
 "textures": {
-    "particle": "galacticraftplanets:blocks/treasure_asteroids",
-    "texture": "galacticraftplanets:model/treasure_asteroids"
+    "particle": "galacticraftplanets:blocks/treasure_venus",
+    "texture": "galacticraftplanets:model/treasure_venus"
 },
 "elements": [ 
 {

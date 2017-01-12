@@ -224,7 +224,7 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
             if (chest != null)
             {
                 double dist = this.getDistanceSq(chest.getPos().getX() + 0.5, chest.getPos().getY() + 0.5, chest.getPos().getZ() + 0.5);
-                if (dist < 100 * 100)
+                if (dist < 1000 * 1000)
                 {
                     if (!chest.locked)
                     {

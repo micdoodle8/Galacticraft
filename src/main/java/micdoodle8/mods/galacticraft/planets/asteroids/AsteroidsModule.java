@@ -344,7 +344,6 @@ public class AsteroidsModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
         GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
         GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "Fake Short Range Telepad");
-        GameRegistry.registerTileEntity(TileEntityTreasureChestAsteroids.class, "Asteroids Treasure Chest");
         GameRegistry.registerTileEntity(TileEntityMinerBaseSingle.class, "Astro Miner Base Builder");
         GameRegistry.registerTileEntity(TileEntityMinerBase.class, "Astro Miner Base");
     }

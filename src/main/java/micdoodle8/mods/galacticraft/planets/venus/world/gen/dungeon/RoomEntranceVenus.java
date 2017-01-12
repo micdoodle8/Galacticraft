@@ -69,8 +69,7 @@ public class RoomEntranceVenus extends SizedPieceVenus
                 {
                     if (i == startX || i == endX || j == 0 || j == this.sizeY || k == startZ || k == endZ)
                     {
-                        DungeonConfigurationVenus venusConfig = (DungeonConfigurationVenus) this.configuration;
-                        this.setBlockState(worldIn, j == 0 || j == this.sizeY ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, j == 0 || j == this.sizeY ? this.configuration.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, boundingBox);
                     }
                     else
                     {
@@ -84,15 +83,15 @@ public class RoomEntranceVenus extends SizedPieceVenus
         {
             for (int k = -range; k < range; k++)
             {
-                final double xDev = i / 10D;
-                final double zDev = k / 10D;
+                final double xDev = i / 15D;
+                final double zDev = k / 15D;
                 final double distance = xDev * xDev + zDev * zDev;
                 final int depth = (int) Math.abs(0.5 / (distance + .00001D));
                 int helper = 0;
                 for (int j = maxLevel; j > 1 && helper <= depth; j--)
                 {
                     block1 = this.getBlockStateFromPos(worldIn, i + range, j, k + range, boundingBox);
-                    if (block1 == this.configuration.getBrickBlock() || j != this.sizeY)
+                    if (block1 == this.configuration.getBrickBlockFloor() || j != this.sizeY)
                     {
                         this.setBlockState(worldIn, Blocks.air.getDefaultState(), i + range, j, k + range, boundingBox);
                         helper++;

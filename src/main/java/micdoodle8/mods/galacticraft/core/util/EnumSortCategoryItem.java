@@ -6,6 +6,7 @@ public enum EnumSortCategoryItem
     ROCKET,
     CANISTER,
     GENERAL,
+    KEYS,
     BUCKET,
     SCHEMATIC,
     ARMOR,

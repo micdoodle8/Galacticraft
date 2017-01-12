@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonStart;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.Piece;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTier3TreasureChest;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -93,11 +91,11 @@ public class RoomTreasureVenus extends SizedPieceVenus
                     }
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
-                        this.setBlockState(worldIn, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockT1TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, VenusBlocks.treasureChestTier3.getDefaultState().withProperty(BlockTier3TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
                         if (worldIn.getTileEntity(blockpos) == null)
                         {
-                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(1));
+                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(3));
                         }
                     }
                     else
