@@ -1,15 +1,18 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -79,5 +82,22 @@ public class ItemBasicVenus extends Item implements ISortableItem
             return EnumSortCategoryItem.PLATE;
         }
         return EnumSortCategoryItem.GENERAL;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    {
+        if (player instanceof EntityPlayerMP)
+        {
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            ItemStack gear = stats.extendedInventory.getStackInSlot(10);
+
+            if (gear == null)
+            {
+                stats.extendedInventory.setInventorySlotContents(10, itemStack.copy());
+                itemStack.stackSize = 0;
+            }
+        }
+        return itemStack;
     }
 }
