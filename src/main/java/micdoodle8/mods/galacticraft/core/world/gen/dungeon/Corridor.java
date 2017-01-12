@@ -93,14 +93,11 @@ public class Corridor extends SizedPiece
     @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
-        int bossRoomChance = Math.max((int) (1.0 / Math.pow(startPiece.attachedComponents.size() / 55.0, 2)), 5);
-        boolean bossRoom = rand.nextInt(bossRoomChance) == 0;
-
-        if (bossRoom)
+        if (startPiece.attachedComponents.size() > 2 && startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 2) instanceof RoomBoss)
         {
             try
             {
-                return getRoom(this.configuration.getBossRoom(), startPiece, rand);
+                return getRoom(this.configuration.getTreasureRoom(), startPiece, rand);
             }
             catch (Exception e)
             {
@@ -109,11 +106,13 @@ public class Corridor extends SizedPiece
         }
         else
         {
-            if (startPiece.attachedComponents.size() > 2 && startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 2) instanceof RoomBoss)
+            int bossRoomChance = Math.max((int) (1.0 / Math.pow(startPiece.attachedComponents.size() / 55.0, 2)), 5);
+            boolean bossRoom = rand.nextInt(bossRoomChance) == 0;
+            if (bossRoom)
             {
                 try
                 {
-                    return getRoom(this.configuration.getTreasureRoom(), startPiece, rand);
+                    return getRoom(this.configuration.getBossRoom(), startPiece, rand);
                 }
                 catch (Exception e)
                 {

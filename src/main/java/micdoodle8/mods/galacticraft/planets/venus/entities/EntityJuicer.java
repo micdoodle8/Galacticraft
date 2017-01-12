@@ -18,8 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityJuicer extends EntityMob implements IEntityBreathable
 {
@@ -37,7 +35,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.timeSinceLastJump = this.rand.nextInt(50) + 100;
+        this.timeSinceLastJump = this.rand.nextInt(100) + 50;
     }
 
     @Override
