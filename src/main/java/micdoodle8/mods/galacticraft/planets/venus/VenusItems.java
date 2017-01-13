@@ -19,8 +19,9 @@ public class VenusItems
     public static Item basicItem;
     public static Item volcanicPickaxe;
     public static Item key;
+    public static Item bucketSulphuricAcid;
 
-    public static Item.ToolMaterial TOOL_VOLCANIC = EnumHelper.addToolMaterial("volcanic", 3, 1561, 8.0F, 1.5F, 10);
+    public static Item.ToolMaterial TOOL_VOLCANIC = EnumHelper.addToolMaterial("volcanic", 3, 1561, 32.0F, 1.5F, 10);
 
     public static void initItems()
     {

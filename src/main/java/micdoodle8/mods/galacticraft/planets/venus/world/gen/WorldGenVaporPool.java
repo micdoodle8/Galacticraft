@@ -1,20 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
+
+import java.util.Random;
 
 public class WorldGenVaporPool extends WorldGenerator
 {
@@ -45,7 +39,7 @@ public class WorldGenVaporPool extends WorldGenerator
                     if (distance <= radiusSq)
                     {
                         BlockPos pos = new BlockPos(poolX + position.getX(), poolY + position.getY(), poolZ + position.getZ());
-                        worldIn.setBlockState(pos, distance >= radiusSq - 16 ? venusSoft : (poolY <= 0 ? Blocks.water.getDefaultState() : Blocks.air.getDefaultState()), distance == radiusSq ? 3 : 2);
+                        worldIn.setBlockState(pos, distance >= radiusSq - 16 ? venusSoft : (poolY <= 0 ? VenusBlocks.sulphuricAcid.getDefaultState() : Blocks.air.getDefaultState()), distance == radiusSq ? 3 : 2);
                     }
                 }
             }

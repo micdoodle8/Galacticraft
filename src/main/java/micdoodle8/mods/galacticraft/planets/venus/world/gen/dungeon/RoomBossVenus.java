@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -91,6 +90,25 @@ public class RoomBossVenus extends SizedPieceVenus
                     else if (j < f)
                     {
                         this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+
+                        if (j + 1 >= f && (dXZ > 5) && random.nextInt(12) == 0)
+                        {
+                            int distFromFloor = random.nextInt(5) + 2;
+                            for (int j0 = j; j0 >= distFromFloor + 1; --j0)
+                            {
+                                BlockTorchWeb.EnumWebType webType;
+                                if (j0 == distFromFloor + 1)
+                                {
+                                    webType = BlockTorchWeb.EnumWebType.WEB_1;
+                                }
+                                else
+                                {
+                                    webType = BlockTorchWeb.EnumWebType.WEB_0;
+                                }
+                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().withProperty(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, boundingBox);
+                            }
+                        }
+
                         if (i < box.minX)
                         {
                             box.minX = i;
@@ -124,11 +142,11 @@ public class RoomBossVenus extends SizedPieceVenus
                         int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
                         if (i > start && i <= end && j < 5 && j > 2)
                         {
-                            if ((getDirection() == EnumFacing.SOUTH || (this.exitDirection != null && this.exitDirection == EnumFacing.SOUTH)) && k < 4)
+                            if ((getDirection() == EnumFacing.SOUTH || (this.exitDirection != null && this.exitDirection == EnumFacing.SOUTH)) && k < 7)
                             {
                                 placeBlock = false;
                             }
-                            if ((getDirection() == EnumFacing.NORTH || (this.exitDirection != null && this.exitDirection == EnumFacing.NORTH)) && k > this.sizeZ - 4)
+                            if ((getDirection() == EnumFacing.NORTH || (this.exitDirection != null && this.exitDirection == EnumFacing.NORTH)) && k > this.sizeZ - 7)
                             {
                                 placeBlock = false;
                             }
@@ -138,11 +156,11 @@ public class RoomBossVenus extends SizedPieceVenus
                         end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
                         if (k > start && k <= end && j < 5 && j > 2)
                         {
-                            if ((getDirection() == EnumFacing.EAST || (this.exitDirection != null && this.exitDirection == EnumFacing.EAST)) && i < 4)
+                            if ((getDirection() == EnumFacing.EAST || (this.exitDirection != null && this.exitDirection == EnumFacing.EAST)) && i < 7)
                             {
                                 placeBlock = false;
                             }
-                            if ((getDirection() == EnumFacing.WEST || (this.exitDirection != null && this.exitDirection == EnumFacing.WEST)) && i > this.sizeX - 4)
+                            if ((getDirection() == EnumFacing.WEST || (this.exitDirection != null && this.exitDirection == EnumFacing.WEST)) && i > this.sizeX - 7)
                             {
                                 placeBlock = false;
                             }

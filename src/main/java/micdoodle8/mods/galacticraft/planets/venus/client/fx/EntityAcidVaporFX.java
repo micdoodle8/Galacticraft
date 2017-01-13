@@ -1,15 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.fx;
 
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class EntityAcidVaporFX extends EntityFX
@@ -28,8 +25,8 @@ public class EntityAcidVaporFX extends EntityFX
         this.particleRed = (float)(Math.random() * 0.10000001192092896D + 0.8);
         this.particleGreen = particleRed;
         this.particleBlue = (float)(Math.random() * 0.10000001192092896D);
-        this.particleAlpha = 0.5F;
-        this.particleScale *= 0.75F;
+        this.particleAlpha = 1.0F;
+//        this.particleScale *= 0.75F;
         this.particleScale *= p_i46348_14_;
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
@@ -43,7 +40,7 @@ public class EntityAcidVaporFX extends EntityFX
         GlStateManager.disableLighting();
         float f = (float) Math.pow(this.particleAge / 11.0, 2.0F);
         f = Math.max(f, 0.1F);
-        this.particleAlpha = this.particleAlpha * 0.99F;
+        this.particleAlpha = this.particleAlpha * 0.994F;
         this.particleScale = this.smokeParticleScale * f;
         super.renderParticle(worldRendererIn, entityIn, partialTicks, p_180434_4_, p_180434_5_, p_180434_6_, p_180434_7_, p_180434_8_);
     }

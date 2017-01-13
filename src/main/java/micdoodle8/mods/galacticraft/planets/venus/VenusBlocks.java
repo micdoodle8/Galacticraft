@@ -4,10 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBossSpawnerVenus;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSpout;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTier3TreasureChest;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.*;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockBasicVenus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -21,6 +18,8 @@ public class VenusBlocks
     public static Block spout;
     public static Block bossSpawner;
     public static Block treasureChestTier3;
+    public static Block torchWeb;
+    public static Block sulphuricAcid;
 
     public static void initBlocks()
     {
@@ -28,6 +27,7 @@ public class VenusBlocks
         VenusBlocks.spout = new BlockSpout("spout");
         VenusBlocks.bossSpawner = new BlockBossSpawnerVenus("boss_spawner_venus");
         VenusBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasure_t3");
+        VenusBlocks.torchWeb = new BlockTorchWeb("web_torch");
 
         GCBlocks.hiddenBlocks.add(VenusBlocks.bossSpawner);
 
@@ -72,6 +72,7 @@ public class VenusBlocks
         registerBlock(VenusBlocks.spout, ItemBlockGC.class);
         registerBlock(VenusBlocks.bossSpawner, ItemBlockGC.class);
         registerBlock(VenusBlocks.treasureChestTier3, ItemBlockDesc.class);
+        registerBlock(VenusBlocks.torchWeb, ItemBlockGC.class);
     }
 
     public static void oreDictRegistration()

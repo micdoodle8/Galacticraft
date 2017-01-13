@@ -18,17 +18,22 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModelState;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -45,12 +50,15 @@ import java.util.List;
 
 public class VenusModuleClient implements IPlanetsModuleClient
 {
+    private static ModelResourceLocation sulphuricAcidLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid", "fluid");
+
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
         addPlanetVariants("venus", "venus_rock_0", "venus_rock_1", "venus_rock_2", "venus_rock_3", "dungeon_brick_venus_1", "dungeon_brick_venus_2");
         addPlanetVariants("thermal_padding_t2", "thermal_helm_t2", "thermal_chestplate_t2", "thermal_leggings_t2", "thermal_boots_t2");
         addPlanetVariants("basic_item_venus", "shield_controller");
+        addPlanetVariants("web_torch", "web_torch_0", "web_torch_1");
         MinecraftForge.EVENT_BUS.register(this);
         RenderingRegistry.registerEntityRenderingHandler(EntityJuicer.class, (RenderManager manager) -> new RenderJuicer(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEntryPodVenus.class, (RenderManager manager) -> new RenderEntryPodVenus(manager));
@@ -72,6 +80,17 @@ public class VenusModuleClient implements IPlanetsModuleClient
     @Override
     public void registerVariants()
     {
+        Item sludge = Item.getItemFromBlock(VenusBlocks.sulphuricAcid);
+        ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid"));
+        ModelLoader.setCustomMeshDefinition(sludge, (ItemStack stack) -> sulphuricAcidLocation);
+        ModelLoader.setCustomStateMapper(VenusBlocks.sulphuricAcid, new StateMapperBase()
+        {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return sulphuricAcidLocation;
+            }
+        });
     }
 
     @Override
@@ -121,6 +140,8 @@ public class VenusModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.venusBlock, 5, "dungeon_brick_venus_2");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.spout, 0, "spout");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.treasureChestTier3, 0, "treasure_t3");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.torchWeb, 0, "web_torch_0");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.torchWeb, 1, "web_torch_1");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 0, "thermal_helm_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 1, "thermal_chestplate_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 2, "thermal_leggings_t2");

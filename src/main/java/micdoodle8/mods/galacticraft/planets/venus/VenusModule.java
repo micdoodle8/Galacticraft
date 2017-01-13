@@ -6,10 +6,15 @@ import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
+import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSulphuricAcid;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.TeleportTypeVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
@@ -19,13 +24,20 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityDungeonSpawnerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -38,11 +50,49 @@ import java.util.List;
 public class VenusModule implements IPlanetsModule
 {
     public static Planet planetVenus;
+    public static Fluid sulphuricAcid;
+    public static Fluid sulphuricAcidGC;
+    public static Material acidMaterial = new MaterialLiquid(MapColor.emeraldColor);
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
 //        MinecraftForge.EVENT_BUS.register(new EventHandlerVenus());
+
+        if (!FluidRegistry.isFluidRegistered("sulphuricacid"))
+        {
+            ResourceLocation stillIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/fluids/sulphuric_acid_still");
+            ResourceLocation flowingIcon = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/fluids/sulphuric_acid_flow");
+            sulphuricAcidGC = new Fluid("sulphuricacid", stillIcon, flowingIcon).setDensity(6229).setViscosity(1400);
+            FluidRegistry.registerFluid(sulphuricAcidGC);
+        }
+        else
+        {
+            GCLog.info("Galacticraft sludge is not default, issues may occur.");
+        }
+
+        sulphuricAcid = FluidRegistry.getFluid("sulphuricacid");
+
+        if (sulphuricAcid.getBlock() == null)
+        {
+            VenusBlocks.sulphuricAcid = new BlockSulphuricAcid("sulphuric_acid");
+            ((BlockSulphuricAcid) VenusBlocks.sulphuricAcid).setQuantaPerBlock(5);
+            VenusBlocks.registerBlock(VenusBlocks.sulphuricAcid, ItemBlockDesc.class);
+            sulphuricAcid.setBlock(VenusBlocks.sulphuricAcid);
+        }
+        else
+        {
+            VenusBlocks.sulphuricAcid = sulphuricAcid.getBlock();
+        }
+
+        if (VenusBlocks.sulphuricAcid != null)
+        {
+            VenusItems.bucketSulphuricAcid = new ItemBucketGC(VenusBlocks.sulphuricAcid).setUnlocalizedName("bucket_sulphuric_acid");
+            VenusItems.registerItem(VenusItems.bucketSulphuricAcid);
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("sulphuricacid", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(VenusItems.bucketSulphuricAcid), new ItemStack(Items.bucket));
+        }
+
+        EventHandlerGC.bucketList.put(VenusBlocks.sulphuricAcid, VenusItems.bucketSulphuricAcid);
 
         VenusBlocks.initBlocks();
         VenusItems.initItems();
