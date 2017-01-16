@@ -50,6 +50,12 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
     }
 
     @Override
+    public int getRenderType()
+    {
+        return 3;
+    }
+
+    @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());

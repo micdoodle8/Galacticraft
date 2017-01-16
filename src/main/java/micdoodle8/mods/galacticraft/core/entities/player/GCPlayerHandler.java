@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
+import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -191,13 +192,18 @@ public class GCPlayerHandler
             {
                 if (GCPlayer.frequencyModuleInSlot == null)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_FREQUENCY_MODULE);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.FREQUENCY_MODULE);
                     TileEntityTelemetry.frequencyModulePlayer(GCPlayer.lastFrequencyModuleInSlot, null);
                 }
-                else if (GCPlayer.frequencyModuleInSlot.getItem() == GCItems.basicItem && GCPlayer.frequencyModuleInSlot.getItemDamage() == 19 && GCPlayer.lastFrequencyModuleInSlot == null)
+                else if (GCPlayer.lastFrequencyModuleInSlot == null)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_FREQUENCY_MODULE);
-                    TileEntityTelemetry.frequencyModulePlayer(GCPlayer.frequencyModuleInSlot, player);
+                    int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.frequencyModuleInSlot, EnumExtendedInventorySlot.FREQUENCY_MODULE);
+
+                    if (gearID >= 0)
+                    {
+                        GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.FREQUENCY_MODULE, gearID);
+                        TileEntityTelemetry.frequencyModulePlayer(GCPlayer.frequencyModuleInSlot, player);
+                    }
                 }
             }
 
@@ -210,11 +216,16 @@ public class GCPlayerHandler
         {
             if (GCPlayer.maskInSlot == null)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVEMASK);
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.MASK);
             }
-            else if (GCPlayer.maskInSlot.getItem() == GCItems.oxMask && (GCPlayer.lastMaskInSlot == null || forceSend))
+            else if (GCPlayer.lastMaskInSlot == null || forceSend)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDMASK);
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.maskInSlot, EnumExtendedInventorySlot.MASK);
+
+                if (gearID >= 0)
+                {
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.MASK, gearID);
+                }
             }
 
             GCPlayer.lastMaskInSlot = GCPlayer.maskInSlot;
@@ -226,11 +237,16 @@ public class GCPlayerHandler
         {
             if (GCPlayer.gearInSlot == null)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVEGEAR);
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.GEAR);
             }
             else if (GCPlayer.gearInSlot.getItem() == GCItems.oxygenGear && (GCPlayer.lastGearInSlot == null || forceSend))
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDGEAR);
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.gearInSlot, EnumExtendedInventorySlot.GEAR);
+
+                if (gearID >= 0)
+                {
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.GEAR, gearID);
+                }
             }
 
             GCPlayer.lastGearInSlot = GCPlayer.gearInSlot;
@@ -242,23 +258,17 @@ public class GCPlayerHandler
         {
             if (GCPlayer.tankInSlot1 == null)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_LEFT_TANK);
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.LEFT_TANK);
                 GCPlayer.airRemaining = 0;
                 GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
             else if (GCPlayer.lastTankInSlot1 == null || forceSend)
             {
-                if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankLight)
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.tankInSlot1, EnumExtendedInventorySlot.LEFT_TANK);
+
+                if (gearID >= 0)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTGREENTANK);
-                }
-                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankMedium)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTORANGETANK);
-                }
-                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot1.getItem() == GCItems.oxygenCanisterInfinite)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.LEFT_TANK, gearID);
                 }
                 GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
                 GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -266,17 +276,11 @@ public class GCPlayerHandler
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (GCPlayer.tankInSlot1.getItem() != GCPlayer.lastTankInSlot1.getItem())
             {
-                if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankLight)
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.tankInSlot1, EnumExtendedInventorySlot.LEFT_TANK);
+
+                if (gearID >= 0)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTGREENTANK);
-                }
-                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankMedium)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTORANGETANK);
-                }
-                else if (GCPlayer.tankInSlot1.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot1.getItem() == GCItems.oxygenCanisterInfinite)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.LEFT_TANK, gearID);
                 }
                 GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
                 GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -291,23 +295,17 @@ public class GCPlayerHandler
         {
             if (GCPlayer.tankInSlot2 == null)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_RIGHT_TANK);
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.RIGHT_TANK);
                 GCPlayer.airRemaining2 = 0;
                 GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
             }
             else if (GCPlayer.lastTankInSlot2 == null || forceSend)
             {
-                if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankLight)
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.tankInSlot2, EnumExtendedInventorySlot.RIGHT_TANK);
+
+                if (gearID >= 0)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTGREENTANK);
-                }
-                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankMedium)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTORANGETANK);
-                }
-                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot2.getItem() == GCItems.oxygenCanisterInfinite)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.RIGHT_TANK, gearID);
                 }
                 GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
                 GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -315,17 +313,11 @@ public class GCPlayerHandler
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (GCPlayer.tankInSlot2.getItem() != GCPlayer.lastTankInSlot2.getItem())
             {
-                if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankLight)
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.tankInSlot2, EnumExtendedInventorySlot.RIGHT_TANK);
+
+                if (gearID >= 0)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTGREENTANK);
-                }
-                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankMedium)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTORANGETANK);
-                }
-                else if (GCPlayer.tankInSlot2.getItem() == GCItems.oxTankHeavy || GCPlayer.tankInSlot2.getItem() == GCItems.oxygenCanisterInfinite)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.RIGHT_TANK, gearID);
                 }
                 GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
                 GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -342,19 +334,29 @@ public class GCPlayerHandler
             {
                 if (GCPlayer.usingParachute)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_PARACHUTE);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.PARACHUTE);
                 }
             }
             else if (GCPlayer.lastParachuteInSlot == null || forceSend)
             {
                 if (GCPlayer.usingParachute)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
+                    int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.parachuteInSlot, EnumExtendedInventorySlot.PARACHUTE);
+
+                    if (gearID >= 0)
+                    {
+                        GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
+                    }
                 }
             }
             else if (GCPlayer.parachuteInSlot.getItemDamage() != GCPlayer.lastParachuteInSlot.getItemDamage())
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.parachuteInSlot, EnumExtendedInventorySlot.PARACHUTE);
+
+                if (gearID >= 0)
+                {
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
+                }
             }
 
             GCPlayer.lastParachuteInSlot = GCPlayer.parachuteInSlot;
@@ -371,11 +373,16 @@ public class GCPlayerHandler
             {
                 if (GCPlayer.thermalHelmetInSlot == null || armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.REMOVE)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_HELMET);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.THERMAL_HELMET);
                 }
                 else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalHelmetInSlot == null || forceSend))
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_HELMET);
+                    int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.thermalHelmetInSlot, EnumExtendedInventorySlot.THERMAL_HELMET);
+
+                    if (gearID >= 0)
+                    {
+                        GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.THERMAL_HELMET, gearID);
+                    }
                 }
             }
 
@@ -391,11 +398,16 @@ public class GCPlayerHandler
             {
                 if (GCPlayer.thermalChestplateInSlot == null || armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.REMOVE)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_CHESTPLATE);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.THERMAL_CHESTPLATE);
                 }
                 else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalChestplateInSlot == null || forceSend))
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_CHESTPLATE);
+                    int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.thermalChestplateInSlot, EnumExtendedInventorySlot.THERMAL_CHESTPLATE);
+
+                    if (gearID >= 0)
+                    {
+                        GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, gearID);
+                    }
                 }
             }
 
@@ -411,11 +423,16 @@ public class GCPlayerHandler
             {
                 if (GCPlayer.thermalLeggingsInSlot == null || armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.REMOVE)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_LEGGINGS);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.THERMAL_LEGGINGS);
                 }
                 else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalLeggingsInSlot == null || forceSend))
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_LEGGINGS);
+                    int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.thermalLeggingsInSlot, EnumExtendedInventorySlot.THERMAL_LEGGINGS);
+
+                    if (gearID >= 0)
+                    {
+                        GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.THERMAL_LEGGINGS, gearID);
+                    }
                 }
             }
 
@@ -431,11 +448,16 @@ public class GCPlayerHandler
             {
                 if (GCPlayer.thermalBootsInSlot == null || armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.REMOVE)
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_THERMAL_BOOTS);
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.THERMAL_BOOTS);
                 }
                 else if (armorEvent.armorResult == ThermalArmorEvent.ArmorAddResult.ADD && (GCPlayer.lastThermalBootsInSlot == null || forceSend))
                 {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_THERMAL_BOOTS);
+                    int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.thermalBootsInSlot, EnumExtendedInventorySlot.THERMAL_BOOTS);
+
+                    if (gearID >= 0)
+                    {
+                        GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.THERMAL_BOOTS, gearID);
+                    }
                 }
             }
 
@@ -446,11 +468,16 @@ public class GCPlayerHandler
         {
             if (GCPlayer.shieldControllerInSlot == null)
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_SHIELD_CONTROLLER);
+                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.SHIELD_CONTROLLER);
             }
             else if (GCPlayer.shieldControllerInSlot.getItem() == VenusItems.basicItem && (GCPlayer.lastShieldControllerInSlot == null || forceSend))
             {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_SHIELD_CONTROLLER);
+                int gearID = GalacticraftRegistry.findMatchingGearID(GCPlayer.shieldControllerInSlot, EnumExtendedInventorySlot.SHIELD_CONTROLLER);
+
+                if (gearID >= 0)
+                {
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.SHIELD_CONTROLLER, gearID);
+                }
             }
 
             GCPlayer.lastShieldControllerInSlot = GCPlayer.shieldControllerInSlot;
@@ -886,11 +913,11 @@ public class GCPlayerHandler
                 subtype = playerStats.parachuteInSlot.getItemDamage();
             }
 
-            GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, subtype);
+            GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.PARACHUTE, subtype);
         }
         else
         {
-            GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_PARACHUTE);
+            GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.PARACHUTE);
         }
     }
 
@@ -1044,52 +1071,24 @@ public class GCPlayerHandler
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, player.worldObj.provider.getDimensionId(), new Object[] { playerStats.thermalLevel, playerStats.thermalLevelNormalising }), player);
     }
 
-    public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType)
+    public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType)
+    {
+        GCPlayerHandler.sendGearUpdatePacket(player, packetType, gearType, -1);
+    }
+
+    public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType, int gearID)
     {
         MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), gearType.ordinal(), -1 }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), packetType.ordinal(), gearType.ordinal(), gearID }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
         }
     }
 
-    public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacket gearType, int subtype)
+    public enum EnumModelPacketType
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
-        {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), gearType.ordinal(), subtype }), new TargetPoint(player.worldObj.provider.getDimensionId(), player.posX, player.posY, player.posZ, 50.0D));
-        }
-    }
-
-    public enum EnumModelPacket
-    {
-        ADDMASK,
-        REMOVEMASK,
-        ADDGEAR,
-        REMOVEGEAR,
-        ADDLEFTREDTANK,
-        ADDLEFTORANGETANK,
-        ADDLEFTGREENTANK,
-        REMOVE_LEFT_TANK,
-        ADDRIGHTREDTANK,
-        ADDRIGHTORANGETANK,
-        ADDRIGHTGREENTANK,
-        REMOVE_RIGHT_TANK,
-        ADD_PARACHUTE,
-        REMOVE_PARACHUTE,
-        ADD_FREQUENCY_MODULE,
-        REMOVE_FREQUENCY_MODULE,
-        ADD_THERMAL_HELMET,
-        ADD_THERMAL_CHESTPLATE,
-        ADD_THERMAL_LEGGINGS,
-        ADD_THERMAL_BOOTS,
-        REMOVE_THERMAL_HELMET,
-        REMOVE_THERMAL_CHESTPLATE,
-        REMOVE_THERMAL_LEGGINGS,
-        REMOVE_THERMAL_BOOTS,
-        ADD_SHIELD_CONTROLLER,
-        REMOVE_SHIELD_CONTROLLER
+        ADD,
+        REMOVE
     }
 
     public void onPlayerUpdate(EntityPlayerMP player)

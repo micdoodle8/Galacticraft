@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import net.minecraft.client.Minecraft;
+import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+import micdoodle8.mods.galacticraft.planets.venus.items.ItemThermalPaddingTier2;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -42,14 +44,10 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             {
                 switch (padding)
                 {
-                case 0:
-                    return new ItemStack(AsteroidsItems.thermalPadding, 1, 0);
-                case 1:
-                    return new ItemStack(AsteroidsItems.thermalPadding, 1, 1);
-                case 2:
-                    return new ItemStack(AsteroidsItems.thermalPadding, 1, 2);
-                case 3:
-                    return new ItemStack(AsteroidsItems.thermalPadding, 1, 3);
+                case Constants.GEAR_ID_THERMAL_PADDING_T1:
+                    return new ItemStack(AsteroidsItems.thermalPadding, 1, armorSlot);
+                case Constants.GEAR_ID_THERMAL_PADDING_T2:
+                    return new ItemStack(VenusItems.thermalPaddingTier2, 1, armorSlot);
                 default:
                     break;
                 }
@@ -78,13 +76,12 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             t.setModelAttributes(this.renderer.getMainModel());
             t.setLivingAnimations(entitylivingbaseIn, f2, f3, partialTicks);
             this.func_177179_a(t, armorSlot);
-            this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture1);
+            this.renderer.bindTexture(itemstack.getItem() instanceof ItemThermalPaddingTier2 ? RenderPlayerGC.thermalPaddingTexture1_T2 : RenderPlayerGC.thermalPaddingTexture1);
             t.render(entitylivingbaseIn, f2, f3, f5, f6, f7, f8);
-            this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
 
             // Start alpha render
             GL11.glDisable(GL11.GL_LIGHTING);
-            Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
+            this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);

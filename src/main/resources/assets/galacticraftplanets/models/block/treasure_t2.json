@@ -1,6 +1,6 @@
 {
 "textures": {
-    "particle": "galacticraftplanets:blocks/parachest",
+    "particle": "galacticraftplanets:blocks/treasure",
     "texture": "galacticraftplanets:model/treasure"
 },
 "elements": [ 

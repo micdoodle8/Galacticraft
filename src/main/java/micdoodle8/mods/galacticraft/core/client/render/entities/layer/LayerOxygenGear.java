@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -106,7 +107,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayer>
 
             if (gearData != null)
             {
-                boolean wearingGear = gearData.getGear() > -1;
+                boolean wearingGear = gearData.getGear() == Constants.GEAR_ID_OXYGEN_GEAR;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
 
                 if (wearingGear && !playerRenderer.getMainModel().isSneak)

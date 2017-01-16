@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -21,6 +22,7 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
+import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityDungeonSpawnerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
@@ -34,6 +36,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -57,7 +60,7 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-//        MinecraftForge.EVENT_BUS.register(new EventHandlerVenus());
+        MinecraftForge.EVENT_BUS.register(new EventHandlerVenus());
 
         if (!FluidRegistry.isFluidRegistered("sulphuricacid"))
         {
@@ -68,7 +71,7 @@ public class VenusModule implements IPlanetsModule
         }
         else
         {
-            GCLog.info("Galacticraft sludge is not default, issues may occur.");
+            GCLog.info("Galacticraft sulphuric acid is not default, issues may occur.");
         }
 
         sulphuricAcid = FluidRegistry.getFluid("sulphuricacid");
@@ -111,13 +114,19 @@ public class VenusModule implements IPlanetsModule
 
         VenusModule.planetVenus = (Planet) new Planet("venus").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
         VenusModule.planetVenus.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/venus.png"));
-        VenusModule.planetVenus.setDimensionInfo(ConfigManagerVenus.dimensionIDVenus, WorldProviderVenus.class).setTierRequired(4);
+        VenusModule.planetVenus.setDimensionInfo(ConfigManagerVenus.dimensionIDVenus, WorldProviderVenus.class).setTierRequired(3);
         VenusModule.planetVenus.addChecklistKeys("equipOxygenSuit", "equipShieldController");
 
         GalaxyRegistry.registerPlanet(VenusModule.planetVenus);
         GalacticraftRegistry.registerTeleportType(WorldProviderVenus.class, new TeleportTypeVenus());
         GalacticraftRegistry.registerRocketGui(WorldProviderVenus.class, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/venusRocketGui.png"));
         GalacticraftRegistry.addDungeonLoot(3, new ItemStack(VenusItems.volcanicPickaxe, 1, 0));
+
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_SHIELD_CONTROLLER, EnumExtendedInventorySlot.SHIELD_CONTROLLER, new ItemStack(VenusItems.basicItem, 1, 0));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_HELMET, new ItemStack(VenusItems.thermalPaddingTier2, 1, 0));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(VenusItems.thermalPaddingTier2, 1, 1));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 2));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 3));
     }
 
     @Override

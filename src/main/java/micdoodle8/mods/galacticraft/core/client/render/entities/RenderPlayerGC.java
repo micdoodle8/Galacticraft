@@ -32,6 +32,7 @@ public class RenderPlayerGC extends RenderPlayer
 {
     public static ResourceLocation thermalPaddingTexture0;
     public static ResourceLocation thermalPaddingTexture1;
+    public static ResourceLocation thermalPaddingTexture1_T2;
     public static ResourceLocation heatShieldTexture;
     public static boolean flagThermalOverride = false;
     private static Boolean isSmartRenderLoaded = null;
@@ -84,6 +85,7 @@ public class RenderPlayerGC extends RenderPlayer
 
             RenderPlayerGC.thermalPaddingTexture0 = new ResourceLocation("galacticraftplanets", "textures/misc/thermalPadding_0.png");
             RenderPlayerGC.thermalPaddingTexture1 = new ResourceLocation("galacticraftplanets", "textures/misc/thermalPadding_1.png");
+            RenderPlayerGC.thermalPaddingTexture1_T2 = new ResourceLocation("galacticraftplanets", "textures/misc/thermalPadding_T2_1.png");
             RenderPlayerGC.heatShieldTexture = new ResourceLocation("galacticraftplanets", "textures/misc/shield.png");
 
             this.addLayer(new LayerShield(this));

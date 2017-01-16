@@ -29,4 +29,16 @@ public class Constants
     public static String ASSET_PREFIX = "galacticraftcore";
     public static String TEXTURE_PREFIX = ASSET_PREFIX + ":";
     public static String PREFIX = "micdoodle8.";
+
+    public static final int GEAR_ID_OXYGEN_MASK = 0;
+    public static final int GEAR_ID_OXYGEN_GEAR = 1;
+    public static final int GEAR_ID_OXYGEN_TANK_LIGHT = 2;
+    public static final int GEAR_ID_OXYGEN_TANK_MEDIUM = 3;
+    public static final int GEAR_ID_OXYGEN_TANK_HEAVY = 4;
+    public static final int GEAR_ID_OXYGEN_TANK_INFINITE = 5;
+    public static final int GEAR_ID_THERMAL_PADDING_T1 = 6;
+    public static final int GEAR_ID_THERMAL_PADDING_T2 = 7;
+    public static final int GEAR_ID_PARACHUTE = 8;
+    public static final int GEAR_ID_FREQUENCY_MODULE = 9;
+    public static final int GEAR_ID_SHIELD_CONTROLLER = 10;
 }

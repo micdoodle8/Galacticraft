@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -235,6 +236,11 @@ public class AsteroidsModule implements IPlanetsModule
         input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 8));
         input.put(14, new ItemStack(GCItems.flagPole));
         GalacticraftRegistry.addAstroMinerRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.astroMiner, 1, 0), input));
+
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1, EnumExtendedInventorySlot.THERMAL_HELMET, new ItemStack(AsteroidsItems.thermalPadding, 1, 0));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(AsteroidsItems.thermalPadding, 1, 1));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(AsteroidsItems.thermalPadding, 1, 2));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(AsteroidsItems.thermalPadding, 1, 3));
     }
 
     @Override

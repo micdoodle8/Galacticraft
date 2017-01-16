@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
+import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -29,13 +30,16 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
-import micdoodle8.mods.galacticraft.core.dimension.*;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacket;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacketType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -125,7 +129,7 @@ public class PacketSimple extends PacketBase implements Packet
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
         C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
-        C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class),
+        C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class, Integer.class),
         C_CLOSE_GUI(Side.CLIENT),
         C_RESET_THIRD_PERSON(Side.CLIENT),
         C_UPDATE_SPACESTATION_LIST(Side.CLIENT, Integer[].class),
@@ -378,7 +382,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_UPDATE_GEAR_SLOT:
-            int subtype = (Integer) this.data.get(2);
+            int subtype = (Integer) this.data.get(3);
             EntityPlayer gearDataPlayer = null;
             MinecraftServer server = MinecraftServer.getServer();
             String gearName = (String) this.data.get(0);
@@ -410,93 +414,56 @@ public class PacketSimple extends PacketBase implements Packet
                     ClientProxyCore.gearDataRequests.remove(gearName);
                 }
 
-                EnumModelPacket type = EnumModelPacket.values()[(Integer) this.data.get(1)];
+                EnumExtendedInventorySlot type = EnumExtendedInventorySlot.values()[(Integer) this.data.get(2)];
+                EnumModelPacketType typeChange = EnumModelPacketType.values()[(Integer) this.data.get(1)];
 
                 switch (type)
                 {
-                case ADDMASK:
-                    gearData.setMask(0);
+                case MASK:
+                    gearData.setMask(subtype);
                     break;
-                case REMOVEMASK:
-                    gearData.setMask(-1);
+                case GEAR:
+                    gearData.setGear(subtype);
                     break;
-                case ADDGEAR:
-                    gearData.setGear(0);
+                case LEFT_TANK:
+                    gearData.setLeftTank(subtype);
                     break;
-                case REMOVEGEAR:
-                    gearData.setGear(-1);
+                case RIGHT_TANK:
+                    gearData.setRightTank(subtype);
                     break;
-                case ADDLEFTGREENTANK:
-                    gearData.setLeftTank(0);
-                    break;
-                case ADDLEFTORANGETANK:
-                    gearData.setLeftTank(1);
-                    break;
-                case ADDLEFTREDTANK:
-                    gearData.setLeftTank(2);
-                    break;
-                case ADDRIGHTGREENTANK:
-                    gearData.setRightTank(0);
-                    break;
-                case ADDRIGHTORANGETANK:
-                    gearData.setRightTank(1);
-                    break;
-                case ADDRIGHTREDTANK:
-                    gearData.setRightTank(2);
-                    break;
-                case REMOVE_LEFT_TANK:
-                    gearData.setLeftTank(-1);
-                    break;
-                case REMOVE_RIGHT_TANK:
-                    gearData.setRightTank(-1);
-                    break;
-                case ADD_PARACHUTE:
-                    String name = "";
-
-                    if (subtype != -1)
+                case PARACHUTE:
+                    if (typeChange == EnumModelPacketType.ADD)
                     {
-                        name = ItemParaChute.names[subtype];
-                        gearData.setParachute(new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
+                        String name;
+
+                        if (subtype != -1)
+                        {
+                            name = ItemParaChute.names[subtype];
+                            gearData.setParachute(new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
+                        }
+                    }
+                    else
+                    {
+                        gearData.setParachute(null);
                     }
                     break;
-                case REMOVE_PARACHUTE:
-                    gearData.setParachute(null);
+                case FREQUENCY_MODULE:
+                    gearData.setFrequencyModule(subtype);
                     break;
-                case ADD_FREQUENCY_MODULE:
-                    gearData.setFrequencyModule(0);
+                case THERMAL_HELMET:
+                    gearData.setThermalPadding(0, subtype);
                     break;
-                case REMOVE_FREQUENCY_MODULE:
-                    gearData.setFrequencyModule(-1);
+                case THERMAL_CHESTPLATE:
+                    gearData.setThermalPadding(1, subtype);
                     break;
-                case ADD_THERMAL_HELMET:
-                    gearData.setThermalPadding(0, 0);
+                case THERMAL_LEGGINGS:
+                    gearData.setThermalPadding(2, subtype);
                     break;
-                case ADD_THERMAL_CHESTPLATE:
-                    gearData.setThermalPadding(1, 0);
+                case THERMAL_BOOTS:
+                    gearData.setThermalPadding(3, subtype);
                     break;
-                case ADD_THERMAL_LEGGINGS:
-                    gearData.setThermalPadding(2, 0);
-                    break;
-                case ADD_THERMAL_BOOTS:
-                    gearData.setThermalPadding(3, 0);
-                    break;
-                case REMOVE_THERMAL_HELMET:
-                    gearData.setThermalPadding(0, -1);
-                    break;
-                case REMOVE_THERMAL_CHESTPLATE:
-                    gearData.setThermalPadding(1, -1);
-                    break;
-                case REMOVE_THERMAL_LEGGINGS:
-                    gearData.setThermalPadding(2, -1);
-                    break;
-                case REMOVE_THERMAL_BOOTS:
-                    gearData.setThermalPadding(3, -1);
-                    break;
-                case ADD_SHIELD_CONTROLLER:
-                    gearData.setShieldController(0);
-                    break;
-                case REMOVE_SHIELD_CONTROLLER:
-                    gearData.setShieldController(-1);
+                case SHIELD_CONTROLLER:
+                    gearData.setShieldController(subtype);
                     break;
                 default:
                     break;
