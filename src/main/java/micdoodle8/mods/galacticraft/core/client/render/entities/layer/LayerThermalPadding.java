@@ -8,7 +8,9 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemThermalPaddingTier2;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -80,12 +82,11 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             t.render(entitylivingbaseIn, f2, f3, f5, f6, f7, f8);
 
             // Start alpha render
-            GL11.glDisable(GL11.GL_LIGHTING);
-            this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.disableLighting();
+            Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             float time = entitylivingbaseIn.ticksExisted / 10.0F;
             float sTime = (float) Math.sin(time) * 0.5F + 0.5F;
 
@@ -109,12 +110,12 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
                 }
             }
 
-            GL11.glColor4f(r, g, b, 0.4F * sTime);
+            GlStateManager.color(r, g, b, 0.4F * sTime);
             t.render(entitylivingbaseIn, f2, f3, f5, f6, f7, f8);
-            GL11.glColor4f(1, 1, 1, 1);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glEnable(GL11.GL_LIGHTING);
+            GlStateManager.color(1, 1, 1, 1);
+            GlStateManager.disableBlend();
+            GlStateManager.enableAlpha();
+            GlStateManager.enableLighting();
         }
     }
 
