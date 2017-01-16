@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -140,8 +141,11 @@ public class GalacticraftCore
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(Item.getItemFromBlock(GCBlocks.machineBase2));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(GCItems.rocketTier1);
 
-        GCBlocks.finalizeSort();
-        GCItems.finalizeSort();
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            GCBlocks.finalizeSort();
+            GCItems.finalizeSort();
+        }
 
         GalacticraftCore.proxy.init(event);
 
