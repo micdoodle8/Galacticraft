@@ -1,10 +1,13 @@
 package micdoodle8.mods.galacticraft.api;
 
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
+import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
@@ -14,10 +17,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GalacticraftRegistry
 {
@@ -34,6 +34,8 @@ public class GalacticraftRegistry
     private static List<Integer> worldProviderIDs = new ArrayList<Integer>();
     private static List<IGameScreen> gameScreens = new ArrayList<IGameScreen>();
     private static int maxScreenTypes;
+    private static Map<Integer, List<Object>> gearMap = new HashMap<>();
+    private static Map<Integer, List<EnumExtendedInventorySlot>> gearSlotMap = new HashMap<>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -264,5 +266,107 @@ public class GalacticraftRegistry
     public static IGameScreen getGameScreen(int type)
     {
     	return GalacticraftRegistry.gameScreens.get(type);
+    }
+
+    /**
+     * Adds a custom item for 'extended inventory' slots
+     *
+     * Gear IDs must be unique, and should be configurable for user convenience
+     *
+     * Please do not use values less than 100, to avoid conflicts with future Galacticraft core additions
+     *
+     * @param gearID Unique ID for this gear item, please use values greater than 100
+     * @param type Slot this item can be placed in
+     * @param item Item to register, not metadata-sensitive
+     */
+    public static void registerGear(int gearID, EnumExtendedInventorySlot type, Item item)
+    {
+        addGearObject(gearID, type, item);
+    }
+
+    /**
+     * Adds a custom item for 'extended inventory' slots
+     *
+     * Gear IDs must be unique, and should be configurable for user convenience
+     *
+     * Please do not use values less than 100, to avoid conflicts with future Galacticraft core additions
+     *
+     * @param gearID Unique ID for this gear item, please use values greater than 100
+     * @param type Slot this item can be placed in
+     * @param itemStack ItemStack to register, metadata-sensitive
+     */
+    public static void registerGear(int gearID, EnumExtendedInventorySlot type, ItemStack itemStack)
+    {
+        addGearObject(gearID, type, itemStack);
+    }
+
+    private static void addGearObject(int gearID, EnumExtendedInventorySlot type, Object obj)
+    {
+        if (GalacticraftRegistry.gearMap.containsKey(gearID))
+        {
+            if (!GalacticraftRegistry.gearMap.get(gearID).contains(obj))
+            {
+                GalacticraftRegistry.gearMap.get(gearID).add(obj);
+            }
+        }
+        else
+        {
+            List<Object> gear = Lists.newArrayList();
+            gear.add(obj);
+            GalacticraftRegistry.gearMap.put(gearID, gear);
+        }
+
+        if (GalacticraftRegistry.gearSlotMap.containsKey(gearID))
+        {
+            if (!GalacticraftRegistry.gearSlotMap.get(gearID).contains(type))
+            {
+                GalacticraftRegistry.gearSlotMap.get(gearID).add(type);
+            }
+        }
+        else
+        {
+            List<EnumExtendedInventorySlot> gearType = Lists.newArrayList();
+            gearType.add(type);
+            GalacticraftRegistry.gearSlotMap.put(gearID, gearType);
+        }
+    }
+
+    public static int findMatchingGearID(ItemStack stack, EnumExtendedInventorySlot slotType)
+    {
+        for (Map.Entry<Integer, List<Object>> entry : GalacticraftRegistry.gearMap.entrySet())
+        {
+            List<EnumExtendedInventorySlot> slotType1 = getSlotType(entry.getKey());
+            List<Object> objectList = entry.getValue();
+
+            if (!slotType1.contains(slotType))
+            {
+                continue;
+            }
+
+            for (Object o : objectList)
+            {
+                if (o instanceof Item)
+                {
+                    if (stack.getItem() == o)
+                    {
+                        return entry.getKey();
+                    }
+                }
+                else if (o instanceof ItemStack)
+                {
+                    if (stack.getItem() == ((ItemStack) o).getItem() && stack.getItemDamage() == ((ItemStack) o).getItemDamage())
+                    {
+                        return entry.getKey();
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public static List<EnumExtendedInventorySlot> getSlotType(int gearID)
+    {
+        return GalacticraftRegistry.gearSlotMap.get(gearID);
     }
 }
