@@ -491,13 +491,13 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         return false;
     }
 
-    public static TileEntityTreasureChest findClosest(Entity entity)
+    public static TileEntityTreasureChest findClosest(Entity entity, int tier)
     {
         double distance = Double.MAX_VALUE;
         TileEntityTreasureChest chest = null;
         for (final TileEntity tile : entity.worldObj.loadedTileEntityList)
         {
-            if (tile instanceof TileEntityTreasureChest)
+            if (tile instanceof TileEntityTreasureChest && ((TileEntityTreasureChest) tile).getTierOfKeyRequired() == tier)
             {
                 double dist = entity.getDistanceSq(tile.getPos().getX() + 0.5, tile.getPos().getY() + 0.5, tile.getPos().getZ() + 0.5);
                 if (dist < distance)
@@ -506,6 +506,15 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                     chest = (TileEntityTreasureChest) tile;
                 }
             }
+        }
+
+        if (chest != null)
+        {
+            System.out.println("Found chest to generate boss loot in: " + chest.pos);
+        }
+        else
+        {
+            System.out.println("Could not find chest to generate boss loot in!");
         }
 
         return chest;

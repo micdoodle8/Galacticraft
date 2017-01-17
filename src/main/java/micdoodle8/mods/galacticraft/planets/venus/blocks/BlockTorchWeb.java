@@ -69,6 +69,24 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+    {
+        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
+        float f = 0.15F;
+
+        if (type == EnumWebType.WEB_0)
+        {
+            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+        }
+        else if (type == EnumWebType.WEB_1)
+        {
+            this.setBlockBounds(0.5F - f, 0.25F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+        }
+
+        return super.collisionRayTrace(worldIn, pos, start, end);
+    }
+
+    @Override
     public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         if (world.setBlockToAir(pos))

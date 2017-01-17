@@ -134,14 +134,14 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            if (this.boss != null && ((EntityLiving) this.boss).isDead)
-            {
-                this.isBossDefeated = false;
-                this.spawned = false;
-                this.lastPlayerInRange = false;
-                this.playerCheated = false;
-                this.boss = null;
-            }
+//            if (this.boss != null && ((EntityLiving) this.boss).isDead)
+//            {
+//                this.isBossDefeated = false;
+//                this.spawned = false;
+//                this.lastPlayerInRange = false;
+//                this.playerCheated = false;
+//                this.boss = null;
+//            }
 
             this.lastPlayerInRange = this.playerInRange;
         }

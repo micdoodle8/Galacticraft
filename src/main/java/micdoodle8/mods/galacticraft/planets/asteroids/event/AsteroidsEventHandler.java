@@ -12,15 +12,10 @@ public class AsteroidsEventHandler
         if (event.armorStack == null)
         {
             event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.REMOVE);
-            return;
         }
-
-        if (event.armorStack.getItem() == AsteroidsItems.thermalPadding && event.armorStack.getItemDamage() == event.armorIndex)
+        else if (event.armorStack.getItem() == AsteroidsItems.thermalPadding && event.armorStack.getItemDamage() == event.armorIndex)
         {
             event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
-            return;
         }
-
-        event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.NOTHING);
     }
 }

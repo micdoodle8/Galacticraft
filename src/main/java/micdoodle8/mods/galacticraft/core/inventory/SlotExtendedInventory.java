@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
-import micdoodle8.mods.galacticraft.api.item.IItemThermal;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.planets.venus.items.ItemBasicVenus;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -28,51 +25,6 @@ public class SlotExtendedInventory extends Slot
         int gearID = GalacticraftRegistry.findMatchingGearID(itemstack, getTypeFromSlot());
 
         if (gearID >= 0)
-        {
-            return true;
-        }
-
-//        switch (this.getSlotIndex())
-//        {
-//        case 0:
-//            return itemstack.getItem() instanceof ItemOxygenMask;
-//        case 1:
-//            return itemstack.getItem() == GCItems.oxygenGear;
-//        case 2:
-//        case 3:
-//            return itemstack.getItem() instanceof ItemOxygenTank || itemstack.getItem() instanceof ItemCanisterOxygenInfinite;
-//        case 4:
-//            return itemstack.getItem() instanceof ItemParaChute;
-//        case 5:
-//            return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 19;
-//        case 6:
-//            return this.thermalArmorSlotValid(itemstack, 0);
-//        case 7:
-//            return this.thermalArmorSlotValid(itemstack, 1);
-//        case 8:
-//            return this.thermalArmorSlotValid(itemstack, 2);
-//        case 9:
-//            return this.thermalArmorSlotValid(itemstack, 3);
-//        case 10:
-//            return this.shieldControllerSlotValid(itemstack);
-//        }
-
-        return false;
-    }
-
-    public boolean thermalArmorSlotValid(ItemStack stack, int slotIndex)
-    {
-        if (stack.getItem() instanceof IItemThermal)
-        {
-            return ((IItemThermal) stack.getItem()).isValidForSlot(stack, slotIndex);
-        }
-
-        return false;
-    }
-
-    public boolean shieldControllerSlotValid(ItemStack stack)
-    {
-        if (GalacticraftCore.isPlanetsLoaded && stack.getItem() instanceof ItemBasicVenus && stack.getItemDamage() == 0)
         {
             return true;
         }

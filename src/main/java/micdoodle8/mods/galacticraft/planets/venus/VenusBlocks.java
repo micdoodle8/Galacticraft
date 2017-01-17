@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.*;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockBasicVenus;
+import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockTorchWeb;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -72,7 +73,7 @@ public class VenusBlocks
         registerBlock(VenusBlocks.spout, ItemBlockGC.class);
         registerBlock(VenusBlocks.bossSpawner, ItemBlockGC.class);
         registerBlock(VenusBlocks.treasureChestTier3, ItemBlockDesc.class);
-        registerBlock(VenusBlocks.torchWeb, ItemBlockGC.class);
+        registerBlock(VenusBlocks.torchWeb, ItemBlockTorchWeb.class);
     }
 
     public static void oreDictRegistration()

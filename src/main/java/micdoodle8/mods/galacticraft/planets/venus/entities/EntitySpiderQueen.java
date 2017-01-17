@@ -3,21 +3,14 @@ package micdoodle8.mods.galacticraft.planets.venus.entities;
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntityBossBase;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
-import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -29,27 +22,20 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, IBoss, IBossDisplayData, IRangedAttackMob
+public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathable, IBoss, IBossDisplayData, IRangedAttackMob
 {
-    private Vector3 roomCoords;
-    private Vector3 roomSize;
-    public int entitiesWithin;
-    public int entitiesWithinLast;
-    private TileEntityDungeonSpawner spawner;
     public boolean shouldEvade;
     private List<EntityJuicer> juicersSpawned = Lists.newArrayList();
     private List<UUID> spawnedPreload;
-    public int deathTicks = 0;
 
     private int rangedAttackTime;
     private int minRangedAttackTime;
@@ -109,44 +95,9 @@ public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, I
     {
         super.onUpdate();
 
-        if (this.roomCoords != null && this.roomSize != null)
-        {
-            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-                    AxisAlignedBB.fromBounds(
-                            this.roomCoords.intX(),
-                            this.roomCoords.intY(),
-                            this.roomCoords.intZ(),
-                            this.roomCoords.intX() + this.roomSize.intX(),
-                            this.roomCoords.intY() + this.roomSize.intY(),
-                            this.roomCoords.intZ() + this.roomSize.intZ()));
-
-            this.entitiesWithin = playersWithin.size();
-
-            if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
-            {
-                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
-
-                for (EntityPlayer p : entitiesWithin2)
-                {
-                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeleton_boss.message")));
-                }
-
-                this.setDead();
-
-                if (this.spawner != null)
-                {
-                    this.spawner.playerCheated = true;
-                }
-
-                return;
-            }
-
-            this.entitiesWithinLast = this.entitiesWithin;
-        }
-
         if (!this.worldObj.isRemote)
         {
-            if (!this.shouldEvade)
+            if (!this.shouldEvade && this.deathTicks <= 0)
             {
                 EntityLivingBase attackTarget = this.getAttackTarget();
 
@@ -274,100 +225,6 @@ public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, I
         }
     }
 
-    @Override
-    protected void onDeathUpdate()
-    {
-        ++this.deathTicks;
-
-        if (this.deathTicks >= 180 && this.deathTicks <= 200)
-        {
-            final float f = (this.rand.nextFloat() - 0.5F) * 1.5F;
-            final float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F;
-            final float f2 = (this.rand.nextFloat() - 0.5F) * 1.5F;
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + f, this.posY + 2.0D + f1, this.posZ + f2, 0.0D, 0.0D, 0.0D);
-        }
-
-        int i;
-        int j;
-
-        if (!this.worldObj.isRemote)
-        {
-            if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
-            {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, this.worldObj.provider.getDimensionId(), new Object[] {}), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
-            }
-
-            if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
-            {
-                i = 30;
-
-                while (i > 0)
-                {
-                    j = EntityXPOrb.getXPSplit(i);
-                    i -= j;
-                    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
-                }
-            }
-        }
-
-        if (this.deathTicks == 200 && !this.worldObj.isRemote)
-        {
-            i = 20;
-
-            while (i > 0)
-            {
-                j = EntityXPOrb.getXPSplit(i);
-                i -= j;
-                this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
-            }
-
-            TileEntityTreasureChestVenus chest = TileEntityTreasureChestVenus.findClosest(this);
-
-            if (chest != null)
-            {
-                double dist = this.getDistanceSq(chest.getPos().getX() + 0.5, chest.getPos().getY() + 0.5, chest.getPos().getZ() + 0.5);
-                if (dist < 1000 * 1000)
-                {
-                    if (!chest.locked)
-                    {
-                        chest.locked = true;
-                    }
-
-                    for (int k = 0; k < chest.getSizeInventory(); k++)
-                    {
-                        chest.setInventorySlotContents(k, null);
-                    }
-
-                    ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-
-                    // Generate twice, since it's an extra special chest
-                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-
-                    ItemStack schematic = this.getGuaranteedLoot(this.rand);
-                    int slot = this.rand.nextInt(chest.getSizeInventory());
-                    chest.setInventorySlotContents(slot, schematic);
-                }
-            }
-
-            this.entityDropItem(new ItemStack(VenusItems.key, 1, 0), 0.5F);
-
-            super.setDead();
-
-            if (this.spawner != null)
-            {
-                this.spawner.isBossDefeated = true;
-                this.spawner.boss = null;
-                this.spawner.spawned = false;
-
-                if (!this.worldObj.isRemote)
-                {
-                    this.spawner.lastKillTime = MinecraftServer.getCurrentTimeMillis();
-                }
-            }
-        }
-    }
-
     public ItemStack getGuaranteedLoot(Random rand)
     {
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(3);
@@ -464,19 +321,6 @@ public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, I
     }
 
     @Override
-    public void setRoom(Vector3 roomCoords, Vector3 roomSize)
-    {
-        this.roomCoords = roomCoords;
-        this.roomSize = roomSize;
-    }
-
-    @Override
-    public void onBossSpawned(TileEntityDungeonSpawner spawner)
-    {
-        this.spawner = spawner;
-    }
-
-    @Override
     public boolean isEntityInvulnerable(DamageSource source)
     {
         if (this.getBurrowedCount() >= 0)
@@ -519,16 +363,6 @@ public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, I
     {
         super.writeEntityToNBT(tagCompound);
 
-        if (this.roomCoords != null && this.roomSize != null)
-        {
-            tagCompound.setDouble("room_x", this.roomCoords.x);
-            tagCompound.setDouble("room_y", this.roomCoords.y);
-            tagCompound.setDouble("room_z", this.roomCoords.z);
-            tagCompound.setDouble("room_size_x", this.roomSize.x);
-            tagCompound.setDouble("room_size_y", this.roomSize.y);
-            tagCompound.setDouble("room_size_z", this.roomSize.z);
-        }
-
         tagCompound.setBoolean("should_evade", this.shouldEvade);
 
         NBTTagList list = new NBTTagList();
@@ -545,12 +379,6 @@ public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, I
     {
         super.readEntityFromNBT(tagCompound);
 
-        if (tagCompound.hasKey("room_x"))
-        {
-            this.roomCoords = new Vector3(tagCompound.getDouble("room_x"), tagCompound.getDouble("room_y"), tagCompound.getDouble("room_z"));
-            this.roomSize = new Vector3(tagCompound.getDouble("room_size_x"), tagCompound.getDouble("room_size_y"), tagCompound.getDouble("room_size_z"));
-        }
-
         this.shouldEvade = tagCompound.getBoolean("should_evade");
 
         if (tagCompound.hasKey("spawned_children"))
@@ -564,5 +392,17 @@ public class EntitySpiderQueen extends EntityMob implements IEntityBreathable, I
                 this.spawnedPreload.add(new UUID(tagMost.getLong(), tagLeast.getLong()));
             }
         }
+    }
+
+    @Override
+    public int getChestTier()
+    {
+        return 3;
+    }
+
+    @Override
+    public void dropKey()
+    {
+        this.entityDropItem(new ItemStack(VenusItems.key, 1, 0), 0.5F);
     }
 }

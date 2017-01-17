@@ -15,24 +15,4 @@ public class TileEntityTreasureChestMars extends TileEntityTreasureChest
     {
         super(tier);
     }
-
-    public static TileEntityTreasureChestMars findClosest(Entity entity)
-    {
-        double distance = Double.MAX_VALUE;
-        TileEntityTreasureChestMars chest = null;
-        for (final TileEntity tile : entity.worldObj.loadedTileEntityList)
-        {
-            if (tile instanceof TileEntityTreasureChestMars)
-            {
-                double dist = entity.getDistanceSq(tile.getPos().getX() + 0.5, tile.getPos().getY() + 0.5, tile.getPos().getZ() + 0.5);
-                if (dist < distance)
-                {
-                    distance = dist;
-                    chest = (TileEntityTreasureChestMars) tile;
-                }
-            }
-        }
-
-        return chest;
-    }
 }

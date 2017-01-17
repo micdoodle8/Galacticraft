@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class EventHandlerVenus
 {
     @SubscribeEvent
-    public void onEntityTick(TickEvent.WorldTickEvent event)
+    public void onWorldTick(TickEvent.WorldTickEvent event)
     {
         if (event.side == Side.SERVER)
         {
@@ -42,15 +42,10 @@ public class EventHandlerVenus
         if (event.armorStack == null)
         {
             event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.REMOVE);
-            return;
         }
-
-        if (event.armorStack.getItem() == VenusItems.thermalPaddingTier2 && event.armorStack.getItemDamage() == event.armorIndex)
+        else if (event.armorStack.getItem() == VenusItems.thermalPaddingTier2 && event.armorStack.getItemDamage() == event.armorIndex)
         {
             event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
-            return;
         }
-
-        event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.NOTHING);
     }
 }
