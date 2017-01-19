@@ -651,6 +651,33 @@ public class GCPlayerHandler
         }
     }
 
+    protected void checkShield(EntityPlayerMP playerMP, GCPlayerStats playerStats)
+    {
+        if (playerMP.ticksExisted % 20 == 0 && playerMP.worldObj.provider instanceof IGalacticraftWorldProvider)
+        {
+            if (((IGalacticraftWorldProvider) playerMP.worldObj.provider).shouldCorrodeArmor())
+            {
+                ItemStack shieldController = playerStats.extendedInventory.getStackInSlot(10);
+                boolean valid = false;
+
+                if (shieldController != null)
+                {
+                    int gearID = GalacticraftRegistry.findMatchingGearID(shieldController, EnumExtendedInventorySlot.SHIELD_CONTROLLER);
+
+                    if (gearID != -1)
+                    {
+                        valid = true;
+                    }
+                }
+
+                if (!valid)
+                {
+                    playerMP.getCurrentArmor((int) (Math.random() * 4)).attemptDamageItem(1, playerMP.getRNG());
+                }
+            }
+        }
+    }
+
     protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
     {
         if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket) && !(player.ridingEntity instanceof EntityCelestialFake))
@@ -1305,7 +1332,6 @@ public class GCPlayerHandler
             GCPlayer.newInOrbit = true;
         }
 
-
         checkGear(player, GCPlayer, false);
 
         if (GCPlayer.chestSpawnCooldown > 0)
@@ -1338,6 +1364,7 @@ public class GCPlayerHandler
 
         this.checkThermalStatus(player, GCPlayer);
         this.checkOxygen(player, GCPlayer);
+        this.checkShield(player, GCPlayer);
 
         if (isInGCDimension && (GCPlayer.oxygenSetupValid != GCPlayer.lastOxygenSetupValid || tick % 100 == 0))
         {

@@ -115,7 +115,7 @@ public class VenusModule implements IPlanetsModule
         VenusModule.planetVenus = (Planet) new Planet("venus").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
         VenusModule.planetVenus.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/venus.png"));
         VenusModule.planetVenus.setDimensionInfo(ConfigManagerVenus.dimensionIDVenus, WorldProviderVenus.class).setTierRequired(3);
-        VenusModule.planetVenus.addChecklistKeys("equipOxygenSuit", "equipShieldController");
+        VenusModule.planetVenus.addChecklistKeys("equipOxygenSuit", "equipShieldController", "thermalPaddingT2");
 
         GalaxyRegistry.registerPlanet(VenusModule.planetVenus);
         GalacticraftRegistry.registerTeleportType(WorldProviderVenus.class, new TeleportTypeVenus());
@@ -123,10 +123,10 @@ public class VenusModule implements IPlanetsModule
         GalacticraftRegistry.addDungeonLoot(3, new ItemStack(VenusItems.volcanicPickaxe, 1, 0));
 
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_SHIELD_CONTROLLER, EnumExtendedInventorySlot.SHIELD_CONTROLLER, new ItemStack(VenusItems.basicItem, 1, 0));
-        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_HELMET, new ItemStack(VenusItems.thermalPaddingTier2, 1, 0));
-        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(VenusItems.thermalPaddingTier2, 1, 1));
-        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 2));
-        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 3));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_HELMET, EnumExtendedInventorySlot.THERMAL_HELMET, new ItemStack(VenusItems.thermalPaddingTier2, 1, 0));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(VenusItems.thermalPaddingTier2, 1, 1));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 2));
+        GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 3));
     }
 
     @Override

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -134,6 +135,15 @@ public class ModelBipedGC extends ModelBiped
                     break;
                 }
             }
+        }
+
+        if (biped instanceof ModelPlayer)
+        {
+            copyModelAngles(biped.bipedLeftLeg, ((ModelPlayer) biped).bipedLeftLegwear);
+            copyModelAngles(biped.bipedRightLeg, ((ModelPlayer) biped).bipedRightLegwear);
+            copyModelAngles(biped.bipedLeftArm, ((ModelPlayer) biped).bipedLeftArmwear);
+            copyModelAngles(biped.bipedRightArm, ((ModelPlayer) biped).bipedRightArmwear);
+            copyModelAngles(biped.bipedBody, ((ModelPlayer) biped).bipedBodyWear);
         }
     }
 

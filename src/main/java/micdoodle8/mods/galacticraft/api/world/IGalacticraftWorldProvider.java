@@ -124,4 +124,11 @@ public interface IGalacticraftWorldProvider
      * @return true if precipitation should be disabled. False otherwise.
      */
     public boolean shouldDisablePrecipitation();
+
+    /**
+     * Whether or not player's armor should be corroded in this world
+     *
+     * @return true if armor should be corroded, false if not
+     */
+    public boolean shouldCorrodeArmor();
 }

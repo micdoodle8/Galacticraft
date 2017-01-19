@@ -341,4 +341,10 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     {
         return true;
     }
+
+    @Override
+    public boolean shouldCorrodeArmor()
+    {
+        return false;
+    }
 }

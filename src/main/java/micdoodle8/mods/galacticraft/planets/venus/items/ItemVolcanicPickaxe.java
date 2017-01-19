@@ -1,12 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,15 +20,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
-public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem
+import java.util.List;
+
+public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, IShiftDescription
 {
     public ItemVolcanicPickaxe(String assetName)
     {
         super(VenusItems.TOOL_VOLCANIC);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced)
+    {
+        if (this.showDescription(stack.getItemDamage()))
+        {
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            {
+                info.addAll(FMLClientHandler.instance().getClient().fontRendererObj.listFormattedStringToWidth(this.getShiftDescription(stack.getItemDamage()), 150));
+            }
+            else
+            {
+                info.add(GCCoreUtil.translateWithFormat("item_desc.shift.name", GameSettings.getKeyDisplayString(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
+            }
+        }
     }
 
     @Override
@@ -101,5 +125,17 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem
         }
 
         return ret;
+    }
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate("item.volcanic_pickaxe.description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
     }
 }

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -67,6 +66,17 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
 
     private static String getMob(Random rand)
     {
-        return "GalacticraftPlanets.juicer";
+        switch (rand.nextInt(4))
+        {
+        case 0:
+            return "GalacticraftCore.evolved_spider";
+        case 1:
+            return "GalacticraftCore.evolved_creeper";
+        case 2:
+            return "GalacticraftCore.evolved_skeleton";
+        case 3:
+        default:
+            return "GalacticraftCore.evolved_zombie";
+        }
     }
 }

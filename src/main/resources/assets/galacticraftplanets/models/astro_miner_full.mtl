@@ -1,0 +1,44 @@
+# Blender MTL File: 'astroMinerOriginal.blend'
+# Material Count: 7
+
+newmtl 05___Default
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMiner
+
+newmtl 05___Default.004
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMiner
+
+newmtl 05___Default.005
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMiner
+
+newmtl 05___Default.006
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMiner
+
+newmtl 05___Default.007
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMiner
+
+newmtl 05___Default.008
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMiner
+
+newmtl Material__2
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/astroMinerFX

@@ -20,6 +20,7 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
+        this.spawnableCaveCreatureList.clear();
         spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 3000, 1, 3));
         spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
         spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));

@@ -165,15 +165,22 @@ public class CorridorVenus extends SizedPieceVenus
                     return null;
                 }
 
-                switch (rand.nextInt(3))
+                PieceVenus lastPiece = startPiece.attachedComponents.size() <= 2 ? null : (PieceVenus) startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 2);
+
+                if (!(lastPiece instanceof RoomSpawnerVenus))
                 {
-                case 0:
                     return new RoomSpawnerVenus(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
-                case 1:
-                    return new RoomChestVenus(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
-                default:
-                case 2:
-                    return new RoomEmptyVenus(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+                }
+                else
+                {
+                    if (rand.nextInt(2) == 0)
+                    {
+                        return new RoomEmptyVenus(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+                    }
+                    else
+                    {
+                        return new RoomChestVenus(this.configuration, rand, blockX, blockZ, sizeX, sizeY, sizeZ, this.getDirection().getOpposite());
+                    }
                 }
             }
 

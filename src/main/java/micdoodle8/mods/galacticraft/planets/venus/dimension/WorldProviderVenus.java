@@ -152,7 +152,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     @Override
     public float getGravity()
     {
-        return 0.0617591789267716384F;
+        return 0.0375F;
     }
 
     @Override
@@ -228,6 +228,12 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
 
     @Override
     public boolean shouldDisablePrecipitation()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean shouldCorrodeArmor()
     {
         return true;
     }

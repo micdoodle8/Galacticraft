@@ -98,10 +98,12 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
 
         if (entity.getBurrowedCount() >= 0)
         {
+            GL11.glDisable(GL11.GL_CULL_FACE);
             this.drawBakedModel(webModel);
             GL11.glScalef(1.05F, 1.1F, 1.05F);
             GL11.glRotatef(192.5F, 0.0F, 1.0F, 0.0F);
             this.drawBakedModel(webModel);
+            GL11.glEnable(GL11.GL_CULL_FACE);
         }
 
         RenderHelper.enableStandardItemLighting();

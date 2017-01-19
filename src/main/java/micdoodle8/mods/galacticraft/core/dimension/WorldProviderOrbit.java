@@ -267,4 +267,10 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     {
         return true;
     }
+
+    @Override
+    public boolean shouldCorrodeArmor()
+    {
+        return false;
+    }
 }

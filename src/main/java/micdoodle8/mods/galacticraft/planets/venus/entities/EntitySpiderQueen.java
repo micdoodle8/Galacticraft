@@ -166,15 +166,15 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                 double dZ = tarZ - this.posZ;
 
                 double movespeed = 1.0 * this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
-                this.motionX = Math.min(Math.max(dX / 10.0F, -movespeed), movespeed);
-                this.motionZ = Math.min(Math.max(dZ / 10.0F, -movespeed), movespeed);
+                this.motionX = Math.min(Math.max(dX / 2.0F, -movespeed), movespeed);
+                this.motionZ = Math.min(Math.max(dZ / 2.0F, -movespeed), movespeed);
                 this.navigator.tryMoveToXYZ(tarX, this.posY, tarZ, movespeed);
 
                 if (Math.abs(dX) < 0.1 && Math.abs(dZ) < 0.1)
                 {
-                    this.motionY = Math.min(dY, 0.1);
+                    this.motionY = Math.min(dY, 0.2);
 
-                    if (Math.abs(dY) - this.height < 1.1)
+                    if (Math.abs(dY) - this.height < 1.1 && Math.abs(this.posY - this.lastTickPosY) < 0.05)
                     {
                         if (this.getBurrowedCount() >= 0)
                         {
@@ -225,6 +225,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         }
     }
 
+    @Override
     public ItemStack getGuaranteedLoot(Random rand)
     {
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(3);
@@ -247,7 +248,13 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     protected float getSoundPitch()
     {
-        return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F + 0.75F;
+        return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F + 0.4F;
+    }
+
+    @Override
+    protected float getSoundVolume()
+    {
+        return 5.0F;
     }
 
     @Override
@@ -271,7 +278,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound("mob.spider.step", 0.15F, 0.7F);
+        this.playSound("mob.spider.step", 0.5F, 0.5F);
     }
 
     @Override

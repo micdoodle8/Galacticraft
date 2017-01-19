@@ -18,6 +18,7 @@ public class BiomeGenBaseMoon extends BiomeGenBase
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
+        this.spawnableCaveCreatureList.clear();
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));

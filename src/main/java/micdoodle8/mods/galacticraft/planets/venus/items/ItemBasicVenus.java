@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.items;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ItemDesc;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemBasicVenus extends Item implements ISortableItem
+public class ItemBasicVenus extends ItemDesc implements ISortableItem
 {
     public static String[] names = { "shield_controller" };
 
@@ -73,14 +74,6 @@ public class ItemBasicVenus extends Item implements ISortableItem
     @Override
     public EnumSortCategoryItem getCategory(int meta)
     {
-        switch (meta)
-        {
-        case 2:
-            return EnumSortCategoryItem.INGOT;
-        case 3:
-        case 5:
-            return EnumSortCategoryItem.PLATE;
-        }
         return EnumSortCategoryItem.GENERAL;
     }
 
@@ -99,5 +92,22 @@ public class ItemBasicVenus extends Item implements ISortableItem
             }
         }
         return itemStack;
+    }
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        if (meta == 0)
+        {
+            return GCCoreUtil.translate("item.shield_controller.description");
+        }
+
+        return "";
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return meta == 0;
     }
 }

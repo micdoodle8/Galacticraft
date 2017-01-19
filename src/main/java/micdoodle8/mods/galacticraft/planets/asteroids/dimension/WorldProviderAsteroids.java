@@ -556,4 +556,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     {
         return true;
     }
+
+    @Override
+    public boolean shouldCorrodeArmor()
+    {
+        return false;
+    }
 }

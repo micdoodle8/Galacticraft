@@ -53,21 +53,21 @@ public class LayerShield implements LayerRenderer<EntityLivingBase>
                     this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
                     GlStateManager.matrixMode(5890);
                     GlStateManager.loadIdentity();
-                    float f = (float) Math.sin((entitylivingbaseIn.ticksExisted + partialTicks) / 20.0F) * 20.0F;
+                    float f = (float) Math.sin((entitylivingbaseIn.ticksExisted + partialTicks) / 20.0F) * 5.0F;
                     GlStateManager.translate(0.0F, f * 0.01F, 0.0F);
                     GlStateManager.matrixMode(5888);
 
                     GL11.glDisable(GL11.GL_LIGHTING);
                     Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.heatShieldTexture);
                     GL11.glEnable(GL11.GL_BLEND);
-                    float sTime = (float) ((1.0F - Math.sin((entitylivingbaseIn.ticksExisted + partialTicks) / 10.0F)) * 0.1F + 0.2F);
+                    float sTime = (float) ((1.0F - Math.sin((entitylivingbaseIn.ticksExisted + partialTicks) / 10.0F)) * 0.1F + 0.0F);
 
                     float r = 0.9F * sTime;
                     float g = 0.2F * sTime;
                     float b = 0.9F * sTime;
 
                     GlStateManager.depthMask(true);
-                    GL11.glColor4f(r, g, b, 0.4F);
+                    GL11.glColor4f(r, g, b, 0.2F);
                     GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
                     this.shieldModel.render(entitylivingbaseIn, f2, f3, f5, f6, f7, scale);
                     GlStateManager.matrixMode(5890);

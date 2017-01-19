@@ -46,9 +46,15 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             {
                 switch (padding)
                 {
-                case Constants.GEAR_ID_THERMAL_PADDING_T1:
+                case Constants.GEAR_ID_THERMAL_PADDING_T1_HELMET:
+                case Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE:
+                case Constants.GEAR_ID_THERMAL_PADDING_T1_LEGGINGS:
+                case Constants.GEAR_ID_THERMAL_PADDING_T1_BOOTS:
                     return new ItemStack(AsteroidsItems.thermalPadding, 1, armorSlot);
-                case Constants.GEAR_ID_THERMAL_PADDING_T2:
+                case Constants.GEAR_ID_THERMAL_PADDING_T2_HELMET:
+                case Constants.GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE:
+                case Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS:
+                case Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS:
                     return new ItemStack(VenusItems.thermalPaddingTier2, 1, armorSlot);
                 default:
                     break;

@@ -16,6 +16,7 @@ public class BiomeGenBaseOrbit extends BiomeGenBase
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
+        this.spawnableCaveCreatureList.clear();
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 10, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 10, 4, 4));
         this.rainfall = 0F;

@@ -36,9 +36,15 @@ public class Constants
     public static final int GEAR_ID_OXYGEN_TANK_MEDIUM = 3;
     public static final int GEAR_ID_OXYGEN_TANK_HEAVY = 4;
     public static final int GEAR_ID_OXYGEN_TANK_INFINITE = 5;
-    public static final int GEAR_ID_THERMAL_PADDING_T1 = 6;
-    public static final int GEAR_ID_THERMAL_PADDING_T2 = 7;
-    public static final int GEAR_ID_PARACHUTE = 8;
-    public static final int GEAR_ID_FREQUENCY_MODULE = 9;
-    public static final int GEAR_ID_SHIELD_CONTROLLER = 10;
+    public static final int GEAR_ID_THERMAL_PADDING_T1_HELMET = 6;
+    public static final int GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE = 7;
+    public static final int GEAR_ID_THERMAL_PADDING_T1_LEGGINGS = 8;
+    public static final int GEAR_ID_THERMAL_PADDING_T1_BOOTS = 9;
+    public static final int GEAR_ID_THERMAL_PADDING_T2_HELMET = 10;
+    public static final int GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE = 11;
+    public static final int GEAR_ID_THERMAL_PADDING_T2_LEGGINGS = 12;
+    public static final int GEAR_ID_THERMAL_PADDING_T2_BOOTS = 13;
+    public static final int GEAR_ID_PARACHUTE = 14;
+    public static final int GEAR_ID_FREQUENCY_MODULE = 15;
+    public static final int GEAR_ID_SHIELD_CONTROLLER = 16;
 }
