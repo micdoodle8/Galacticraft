@@ -18,6 +18,7 @@ import java.util.Random;
 public class RoomBossVenus extends SizedPieceVenus
 {
     private EnumFacing exitDirection;
+    private BlockPos chestPos;
 
     public RoomBossVenus()
     {
@@ -49,6 +50,15 @@ public class RoomBossVenus extends SizedPieceVenus
         {
             tagCompound.setInteger("direction_exit", this.exitDirection.ordinal());
         }
+
+
+        tagCompound.setBoolean("chestPosNull", this.chestPos == null);
+        if (this.chestPos != null)
+        {
+            tagCompound.setInteger("chestX", this.chestPos.getX());
+            tagCompound.setInteger("chestY", this.chestPos.getY());
+            tagCompound.setInteger("chestZ", this.chestPos.getZ());
+        }
     }
 
     @Override
@@ -63,6 +73,11 @@ public class RoomBossVenus extends SizedPieceVenus
         else
         {
             this.exitDirection = null;
+        }
+
+        if (tagCompound.hasKey("chestPosNull") && !tagCompound.getBoolean("chestPosNull"))
+        {
+            this.chestPos = new BlockPos(tagCompound.getInteger("chestX"), tagCompound.getInteger("chestY"), tagCompound.getInteger("chestZ"));
         }
     }
 
@@ -199,9 +214,20 @@ public class RoomBossVenus extends SizedPieceVenus
         else
         {
             spawner.setRoom(new Vector3(box.minX + this.boundingBox.minX, box.minY + this.boundingBox.minY, box.minZ + this.boundingBox.minZ), new Vector3(box.maxX - box.minX + 1, box.maxY - box.minY + 1, box.maxZ - box.minZ + 1));
+            spawner.setChestPos(this.chestPos);
         }
 
         return true;
+    }
+
+    public BlockPos getChestPos()
+    {
+        return chestPos;
+    }
+
+    public void setChestPos(BlockPos chestPos)
+    {
+        this.chestPos = chestPos;
     }
 
     @Override

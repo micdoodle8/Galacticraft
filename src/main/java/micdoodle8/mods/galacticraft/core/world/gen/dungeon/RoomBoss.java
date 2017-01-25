@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -14,6 +15,8 @@ import java.util.Random;
 
 public class RoomBoss extends SizedPiece
 {
+    private BlockPos chestPos;
+
     public RoomBoss()
     {
     }
@@ -127,13 +130,42 @@ public class RoomBoss extends SizedPiece
         }
 
         spawner.setRoom(new Vector3(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1), new Vector3(this.sizeX - 1, this.sizeY - 1, this.sizeZ - 1));
+        spawner.setChestPos(this.chestPos);
 
         return true;
+    }
+
+    @Override
+    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    {
+        super.writeStructureToNBT(tagCompound);
+
+        tagCompound.setInteger("chestX", this.chestPos.getX());
+        tagCompound.setInteger("chestY", this.chestPos.getY());
+        tagCompound.setInteger("chestZ", this.chestPos.getZ());
+    }
+
+    @Override
+    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    {
+        super.readStructureFromNBT(tagCompound);
+
+        this.chestPos = new BlockPos(tagCompound.getInteger("chestX"), tagCompound.getInteger("chestY"), tagCompound.getInteger("chestZ"));
     }
 
     @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
         return getCorridor(rand, startPiece, 10, true);
+    }
+
+    public BlockPos getChestPos()
+    {
+        return chestPos;
+    }
+
+    public void setChestPos(BlockPos chestPos)
+    {
+        this.chestPos = chestPos;
     }
 }

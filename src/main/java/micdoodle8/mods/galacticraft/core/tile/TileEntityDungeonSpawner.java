@@ -28,6 +28,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     private Vector3 roomCoords;
     private Vector3 roomSize;
     public long lastKillTime;
+    private BlockPos chestPos;
 
     public TileEntityDungeonSpawner()
     {
@@ -200,6 +201,11 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         {
             this.lastKillTime = nbt.getLong("lastKillTime");
         }
+
+        if (nbt.hasKey("chestPosNull") && !nbt.getBoolean("chestPosNull"))
+        {
+            this.chestPos = new BlockPos(nbt.getInteger("chestX"), nbt.getInteger("chestY"), nbt.getInteger("chestZ"));
+        }
     }
 
     @Override
@@ -224,6 +230,14 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         }
 
         nbt.setLong("lastKillTime", this.lastKillTime);
+
+        nbt.setBoolean("chestPosNull", this.chestPos == null);
+        if (this.chestPos != null)
+        {
+            nbt.setInteger("chestX", this.chestPos.getX());
+            nbt.setInteger("chestY", this.chestPos.getY());
+            nbt.setInteger("chestZ", this.chestPos.getZ());
+        }
     }
 
     @Override
@@ -242,5 +256,15 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public boolean isNetworkedTile()
     {
         return false;
+    }
+
+    public BlockPos getChestPos()
+    {
+        return chestPos;
+    }
+
+    public void setChestPos(BlockPos chestPos)
+    {
+        this.chestPos = chestPos;
     }
 }

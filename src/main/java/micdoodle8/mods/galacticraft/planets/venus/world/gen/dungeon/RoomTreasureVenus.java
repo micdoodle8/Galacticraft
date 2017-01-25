@@ -8,6 +8,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 
 import java.util.Random;
 
@@ -112,6 +113,15 @@ public class RoomTreasureVenus extends SizedPieceVenus
     @Override
     public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
+        if (startPiece.attachedComponents.size() > 2)
+        {
+            StructureComponent component = startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 3);
+            if (component instanceof RoomBossVenus)
+            {
+                BlockPos blockpos = new BlockPos(this.getXWithOffset(this.sizeX / 2, this.sizeZ / 2), this.getYWithOffset(1), this.getZWithOffset(this.sizeX / 2, this.sizeZ / 2));
+                ((RoomBossVenus) component).setChestPos(new BlockPos(blockpos));
+            }
+        }
         return null;
     }
 }

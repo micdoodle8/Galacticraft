@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumParticleTypes;
@@ -93,7 +94,23 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
                 this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
 
-            TileEntityTreasureChest chest = TileEntityTreasureChest.findClosest(this, this.getChestTier());
+            TileEntityTreasureChest chest = null;
+
+            if (this.spawner != null && this.spawner.getChestPos() != null)
+            {
+                TileEntity chestTest = this.worldObj.getTileEntity(this.spawner.getChestPos());
+
+                if (chestTest != null && chestTest instanceof TileEntityTreasureChest)
+                {
+                    chest = (TileEntityTreasureChest) chestTest;
+                }
+            }
+
+            if (chest == null)
+            {
+                // Fallback to finding closest chest
+                chest = TileEntityTreasureChest.findClosest(this, this.getChestTier());
+            }
 
             if (chest != null)
             {
