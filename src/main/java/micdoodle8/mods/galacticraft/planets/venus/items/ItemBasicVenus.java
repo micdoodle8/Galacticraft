@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ItemBasicVenus extends ItemDesc implements ISortableItem
 {
-    public static String[] names = { "shield_controller" };
+    public static String[] names = { "shield_controller", "ingot_lead" };
 
     public ItemBasicVenus(String name)
     {

@@ -1,60 +1,73 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
+import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
+import micdoodle8.mods.galacticraft.core.world.gen.WorldGenMinableMeta;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.MinecraftForge;
 
-public class BiomeDecoratorVenus extends BiomeDecoratorSpace
+import java.util.Random;
+
+public class BiomeDecoratorVenus extends BiomeDecorator
 {
-//    private WorldGenerator dirtGen;
-//    private WorldGenerator deshGen;
-//    private WorldGenerator tinGen;
-//    private WorldGenerator copperGen;
-//    private WorldGenerator ironGen;
-//    private WorldGenerator iceGen;
-    private World currentWorld;
+    private WorldGenerator aluminumGen;
+    private WorldGenerator copperGen;
+    private WorldGenerator galenaGen;
+    private WorldGenerator quartzGen;
+    private WorldGenerator siliconGen;
+    private WorldGenerator tinGen;
+    private World worldObj;
 
     public BiomeDecoratorVenus()
     {
-//        this.copperGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 4, 0, true, MarsBlocks.marsBlock, 9);
-//        this.tinGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 4, 1, true, MarsBlocks.marsBlock, 9);
-//        this.deshGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 6, 2, true, MarsBlocks.marsBlock, 9);
-//        this.ironGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 8, 3, true, MarsBlocks.marsBlock, 9);
-//        this.dirtGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 32, 6, true, MarsBlocks.marsBlock, 9);
-//        this.iceGen = new WorldGenMinableMeta(Blocks.ice, 18, 0, true, MarsBlocks.marsBlock, 6);
+        this.aluminumGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 6, true, VenusBlocks.venusBlock, 1);
+        this.copperGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 7, true, VenusBlocks.venusBlock, 1);
+        this.galenaGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 8, true, VenusBlocks.venusBlock, 1);
+        this.quartzGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 9, true, VenusBlocks.venusBlock, 1);
+        this.siliconGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 10, true, VenusBlocks.venusBlock, 1);
+        this.tinGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 11, true, VenusBlocks.venusBlock, 1);
     }
 
     @Override
-    protected void decorate()
+    public void decorate(World worldIn, Random random, BiomeGenBase biome, BlockPos blockPos)
     {
-//        this.generateOre(4, this.iceGen, 60, 120);
-//        this.generateOre(20, this.dirtGen, 0, 200);
-//        if (!ConfigManagerMars.disableDeshGen)
-//        {
-//            this.generateOre(15, this.deshGen, 20, 64);
-//        }
-//        if (!ConfigManagerMars.disableCopperGen)
-//        {
-//            this.generateOre(26, this.copperGen, 0, 60);
-//        }
-//        if (!ConfigManagerMars.disableTinGen)
-//        {
-//            this.generateOre(23, this.tinGen, 0, 60);
-//        }
-//        if (!ConfigManagerMars.disableIronGen)
-//        {
-//            this.generateOre(20, this.ironGen, 0, 64);
-//        }
+        if (this.worldObj != null)
+        {
+            throw new RuntimeException("Already decorating!!");
+        }
+        else
+        {
+            this.worldObj = worldIn;
+            this.randomGenerator = random;
+            this.field_180294_c = blockPos;
+            this.generateVenus();
+            this.worldObj = null;
+            this.randomGenerator = null;
+        }
     }
 
-    @Override
-    protected void setCurrentWorld(World world)
+    private void genStandardOre(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
     {
-        this.currentWorld = world;
+        for (int var5 = 0; var5 < amountPerChunk; ++var5)
+        {
+            BlockPos blockpos = this.field_180294_c.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
+            worldGenerator.generate(this.worldObj, this.randomGenerator, blockpos);
+        }
     }
 
-    @Override
-    protected World getCurrentWorld()
+    private void generateVenus()
     {
-        return this.currentWorld;
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, this.randomGenerator, field_180294_c));
+        this.genStandardOre(18, this.aluminumGen, 0, 60);
+        this.genStandardOre(24, this.copperGen, 0, 60);
+        this.genStandardOre(18, this.galenaGen, 0, 60);
+        this.genStandardOre(26, this.quartzGen, 0, 60);
+        this.genStandardOre(4, this.siliconGen, 0, 60);
+        this.genStandardOre(22, this.tinGen, 0, 60);
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, this.randomGenerator, field_180294_c));
     }
 }

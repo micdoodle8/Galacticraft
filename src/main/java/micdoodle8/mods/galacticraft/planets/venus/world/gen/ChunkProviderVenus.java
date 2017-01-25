@@ -33,6 +33,7 @@ public class ChunkProviderVenus implements IChunkProvider
 {
     public static final IBlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
 
+    private final BiomeDecoratorVenus biomeDecoratorVenus = new BiomeDecoratorVenus();
     private Random rand;
     private NoiseGeneratorOctaves noiseGen1;
     private NoiseGeneratorOctaves noiseGen2;
@@ -356,7 +357,7 @@ public class ChunkProviderVenus implements IChunkProvider
 
         this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
 
-//        biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(i, 0, j));
+        biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(i, 0, j));
         SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, i + 8, j + 8, 16, 16, this.rand);
 
         BlockFalling.fallInstantly = false;

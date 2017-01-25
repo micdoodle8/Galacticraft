@@ -5,6 +5,12 @@
         "basictypevenus=venus_rock_2": { "model": "galacticraftplanets:venus_rock_2_model" },
         "basictypevenus=venus_rock_3": { "model": "galacticraftplanets:venus_rock_3_model" },
         "basictypevenus=dungeon_brick_venus_1": { "model": "galacticraftplanets:dungeon_brick_venus_1_model" },
-        "basictypevenus=dungeon_brick_venus_2": { "model": "galacticraftplanets:dungeon_brick_venus_2_model" }
+        "basictypevenus=dungeon_brick_venus_2": { "model": "galacticraftplanets:dungeon_brick_venus_2_model" },
+		"basictypevenus=venus_ore_aluminum": { "model": "galacticraftplanets:venus_ore_aluminum" },
+        "basictypevenus=venus_ore_copper": { "model": "galacticraftplanets:venus_ore_copper" },
+        "basictypevenus=venus_ore_galena": { "model": "galacticraftplanets:venus_ore_galena" },
+        "basictypevenus=venus_ore_quartz": { "model": "galacticraftplanets:venus_ore_quartz" },
+        "basictypevenus=venus_ore_silicon": { "model": "galacticraftplanets:venus_ore_silicon" },
+        "basictypevenus=venus_ore_tin": { "model": "galacticraftplanets:venus_ore_tin" }
     }
 }

@@ -41,7 +41,7 @@ public class BiomeGenBaseVenus extends BiomeGenBase
     @Override
     public BiomeDecorator createBiomeDecorator()
     {
-        return super.createBiomeDecorator();
+        return new BiomeDecoratorVenus();
     }
 
     @Override

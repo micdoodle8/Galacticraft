@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -14,11 +15,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,7 +42,13 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         ROCK_MAGMA(2, "venus_rock_2"),
         ROCK_VOLCANIC_DEPOSIT(3, "venus_rock_3"),
         DUNGEON_BRICK_1(4, "dungeon_brick_venus_1"),
-        DUNGEON_BRICK_2(5, "dungeon_brick_venus_2");
+        DUNGEON_BRICK_2(5, "dungeon_brick_venus_2"),
+        ORE_ALUMINUM(6, "venus_ore_aluminum"),
+        ORE_COPPER(7, "venus_ore_copper"),
+        ORE_GALENA(8, "venus_ore_galena"),
+        ORE_QUARTZ(9, "venus_ore_quartz"),
+        ORE_SILICON(10, "venus_ore_silicon"),
+        ORE_TIN(11, "venus_ore_tin");
 
         private final int meta;
         private final String name;
@@ -108,6 +117,12 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         {
             return 40.0F;
         }
+        else if (type == EnumBlockBasicVenus.ORE_ALUMINUM || type == EnumBlockBasicVenus.ORE_COPPER ||
+                type == EnumBlockBasicVenus.ORE_GALENA || type == EnumBlockBasicVenus.ORE_QUARTZ ||
+                type == EnumBlockBasicVenus.ORE_SILICON || type == EnumBlockBasicVenus.ORE_TIN)
+        {
+            return 3.0F;
+        }
 
         return this.blockResistance / 5.0F;
     }
@@ -132,6 +147,13 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             return 4.0F;
         }
 
+        if (type == EnumBlockBasicVenus.ORE_ALUMINUM || type == EnumBlockBasicVenus.ORE_COPPER ||
+                type == EnumBlockBasicVenus.ORE_GALENA || type == EnumBlockBasicVenus.ORE_QUARTZ ||
+                type == EnumBlockBasicVenus.ORE_SILICON || type == EnumBlockBasicVenus.ORE_TIN)
+        {
+            return 5.0F;
+        }
+
         return this.blockHardness;
     }
 
@@ -147,6 +169,10 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
         switch (type)
         {
+        case ORE_SILICON:
+            return GCItems.basicItem;
+        case ORE_QUARTZ:
+            return Items.quartz;
         default:
             return Item.getItemFromBlock(this);
         }
@@ -155,7 +181,16 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public int damageDropped(IBlockState state)
     {
-        return getMetaFromState(state);
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        switch (type)
+        {
+        case ORE_SILICON:
+            return 2;
+        case ORE_QUARTZ:
+            return 0;
+        default:
+            return getMetaFromState(state);
+        }
     }
 
     @Override
@@ -164,9 +199,46 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
         switch (type)
         {
+        case ORE_SILICON:
+            if (fortune > 0)
+            {
+                int j = random.nextInt(fortune + 2) - 1;
+
+                if (j < 0)
+                {
+                    j = 0;
+                }
+
+                return this.quantityDropped(random) * (j + 1);
+            }
         default:
-            return 1;
+            return this.quantityDropped(random);
         }
+    }
+
+    @Override
+    public int getExpDrop(net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune)
+    {
+        IBlockState state = world.getBlockState(pos);
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        Random rand = world instanceof World ? ((World)world).rand : new Random();
+        if (this.getItemDropped(state, rand, fortune) != Item.getItemFromBlock(this))
+        {
+            int i;
+
+            switch (type)
+            {
+            case ORE_SILICON:
+                i = MathHelper.getRandomIntegerInRange(rand, 2, 5);
+                break;
+            default:
+                i = 0;
+                break;
+            }
+
+            return i;
+        }
+        return 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -185,6 +257,13 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
         switch (type)
         {
+        case ORE_ALUMINUM:
+        case ORE_COPPER:
+        case ORE_GALENA:
+        case ORE_QUARTZ:
+        case ORE_SILICON:
+        case ORE_TIN:
+            return true;
         default:
             return false;
         }
@@ -218,7 +297,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     public boolean isReplaceableOreGen(World world, BlockPos pos, com.google.common.base.Predicate<IBlockState> target)
     {
         EnumBlockBasicVenus type = ((EnumBlockBasicVenus) world.getBlockState(pos).getValue(BASIC_TYPE_VENUS));
-        return type == EnumBlockBasicVenus.ROCK_SOFT;
+        return type == EnumBlockBasicVenus.ROCK_HARD;
     }
 
     @Override
@@ -245,6 +324,13 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         EnumBlockBasicVenus type = ((EnumBlockBasicVenus) getStateFromMeta(meta).getValue(BASIC_TYPE_VENUS));
         switch (type)
         {
+        case ORE_ALUMINUM:
+        case ORE_COPPER:
+        case ORE_GALENA:
+        case ORE_QUARTZ:
+        case ORE_SILICON:
+        case ORE_TIN:
+            return EnumSortCategoryBlock.ORE;
         case DUNGEON_BRICK_1:
         case DUNGEON_BRICK_2:
             return EnumSortCategoryBlock.BRICKS;

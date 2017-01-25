@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityDungeonSpawnerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
@@ -132,7 +133,7 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-//        RecipeManagerVenus.loadRecipes();
+        RecipeManagerVenus.loadRecipes();
     }
 
     @Override
