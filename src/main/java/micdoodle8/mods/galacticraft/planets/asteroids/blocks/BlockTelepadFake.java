@@ -121,7 +121,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 
             if (mainBlockPosition != null)
             {
-                return worldIn.getBlockState(pos).getBlock().getBlockHardness(worldIn, pos);
+                return worldIn.getBlockState(mainBlockPosition).getBlock().getBlockHardness(worldIn, mainBlockPosition);
             }
         }
 

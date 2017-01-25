@@ -31,6 +31,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         this.setNoRepair();
         this.setUnlocalizedName(assetName);
         this.setContainerItem(GCItems.oilCanister);
+        this.setHasSubtypes(true);
     }
 
     @Override

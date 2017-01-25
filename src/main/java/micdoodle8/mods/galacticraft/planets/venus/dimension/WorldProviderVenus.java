@@ -62,7 +62,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     @Override
     public long getDayLength()
     {
-        return 24000L;
+        return 720000L; // 30 times longer than earth
     }
 
     @Override

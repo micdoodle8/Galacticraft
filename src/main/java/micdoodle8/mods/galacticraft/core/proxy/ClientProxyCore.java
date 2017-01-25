@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -71,7 +72,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -119,6 +119,7 @@ public class ClientProxyCore extends CommonProxyCore
     private static List<Item> itemsToRegisterJson = Lists.newArrayList();
     private static ModelResourceLocation fuelLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "fuel", "fluid");
     private static ModelResourceLocation oilLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "oil", "fluid");
+    private static List<PartialCanister> canisters = Lists.newArrayList();
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -223,11 +224,14 @@ public class ClientProxyCore extends CommonProxyCore
             ModelLoader.setCustomModelResourceLocation(GCItems.buggy, i, modelResourceLocation);
         }
 
-        modelResourceLocation = new ModelResourceLocation("galacticraftcore:oil_canister_partial_0", "inventory");
-        for (int i = 0; i < GCItems.oilCanister.getMaxDamage(); ++i)
-        {
-            ModelLoader.setCustomModelResourceLocation(GCItems.oilCanister, i, modelResourceLocation);
-        }
+//        for (PartialCanister container : ClientProxyCore.canisters)
+//        {
+//            modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_0", "inventory");
+//            for (int i = 0; i < container.getItem().getMaxDamage(); ++i)
+//            {
+//                ModelLoader.setCustomModelResourceLocation(container.getItem(), i, modelResourceLocation);
+//            }
+//        }
 
         modelResourceLocation = new ModelResourceLocation("galacticraftcore:flag", "inventory");
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
@@ -352,19 +356,12 @@ public class ClientProxyCore extends CommonProxyCore
 
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
 
-        for (int i = 0; i < 7; ++i)
+        for (PartialCanister container : ClientProxyCore.canisters)
         {
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftcore:oil_canister_partial_" + i, "inventory");
-            IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
-            if (object != null)
+            for (int i = 0; i < container.getTextureCount(); ++i)
             {
-                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
-                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
-            }
-            modelResourceLocation = new ModelResourceLocation("galacticraftcore:fuel_canister_partial_" + i, "inventory");
-            object = event.modelRegistry.getObject(modelResourceLocation);
-            if (object != null)
-            {
+                ModelResourceLocation modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_" + i, "inventory");
+                IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
                 ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
                 event.modelRegistry.putObject(modelResourceLocation, modelFinal);
             }
@@ -480,16 +477,16 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 0, "meteoric_iron_ingot");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 1, "compressed_meteoric_iron");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 2, "lunar_sapphire");
-        for (int i = 0; i <= GCItems.oilCanister.getMaxDamage(); ++i)
+
+        for (PartialCanister container : ClientProxyCore.canisters)
         {
-            int damage = 6 * i / GCItems.oilCanister.getMaxDamage();
-            ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.oilCanister, i, "oil_canister_partial_" + (7 - damage - 1));
+            for (int i = 0; i <= container.getItem().getMaxDamage(); ++i)
+            {
+                int damage = (container.getTextureCount() - 1) * i / container.getItem().getMaxDamage();
+                ClientUtil.registerItemJson(container.getModID() + ":", container.getItem(), i, container.getBaseName() + "_" + (container.getTextureCount() - damage - 1));
+            }
         }
-        for (int i = 0; i <= GCItems.fuelCanister.getMaxDamage(); ++i)
-        {
-            int damage = 6 * i / GCItems.fuelCanister.getMaxDamage();
-            ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.fuelCanister, i, "fuel_canister_partial_" + (7 - damage - 1));
-        }
+
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.meteorChunk, 0, "meteor_chunk");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.meteorChunk, 1, "meteor_chunk_hot");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.buggy, 0, "buggy_0");
@@ -591,8 +588,6 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("canister", "canister_tin", "canister_copper");
         addCoreVariant("engine", "tier1engine", "tier1booster");
         addCoreVariant("parachute", "parachute_plain", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
-        addCoreVariant("oil_canister_partial", "oil_canister_partial_0", "oil_canister_partial_1", "oil_canister_partial_2", "oil_canister_partial_3", "oil_canister_partial_4", "oil_canister_partial_5", "oil_canister_partial_6");
-        addCoreVariant("fuel_canister_partial", "fuel_canister_partial_0", "fuel_canister_partial_1", "fuel_canister_partial_2", "fuel_canister_partial_3", "fuel_canister_partial_4", "fuel_canister_partial_5", "fuel_canister_partial_6");
         addCoreVariant("schematic", "schematic_buggy", "schematic_rocket_t2");
         addCoreVariant("key", "key");
         addCoreVariant("buggymat", "wheel", "seat", "storage");
@@ -601,17 +596,21 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");
+
+        for (PartialCanister container : ClientProxyCore.canisters)
+        {
+            String[] variants = new String[container.getTextureCount()];
+            for (int i = 0; i < container.getTextureCount(); ++i)
+            {
+                variants[i] = container.getBaseName() + "_" + i;
+            }
+            ClientUtil.addVariant(container.getModID(), container.getBaseName(), variants);
+        }
     }
 
     private static void addCoreVariant(String name, String... variants)
     {
-        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_CORE, name);
-        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
-        for (int i = 0; i < variants.length; ++i)
-        {
-            variants0[i] = new ResourceLocation(Constants.TEXTURE_PREFIX + variants[i]);
-        }
-        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
+        ClientUtil.addVariant(Constants.MOD_ID_CORE, name, variants);
     }
 
     private static void updateCapeList()
@@ -712,6 +711,12 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         TabRegistry.registerTab(new InventoryTabGalacticraft());
+    }
+
+    @Override
+    public void registerCanister(PartialCanister container)
+    {
+        ClientProxyCore.canisters.add(container);
     }
 
     public static class EventSpecialRender extends Event

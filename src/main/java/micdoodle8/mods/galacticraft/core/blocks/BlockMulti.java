@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
@@ -28,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMulti extends BlockContainer implements IPartialSealableBlock, ITileEntityProvider
+public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
 {
     public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
     public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("renderType", 0, 7);
@@ -209,17 +208,18 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         super.breakBlock(worldIn, pos, state);
     }
 
-    /**
-     * Called when the block is right clicked by the player. This modified
-     * version detects electric items and wrench actions on your machine block.
-     * Do not override this function. Use machineActivated instead! (It does the
-     * same thing)
-     */
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) worldIn.getTileEntity(pos);
         return tileEntity.onBlockActivated(worldIn, pos, playerIn);
+    }
+
+    @Override
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntityMulti tileEntity = (TileEntityMulti) world.getTileEntity(pos);
+        return tileEntity.onBlockWrenched(world, pos, entityPlayer, side, hitX, hitY, hitZ);
     }
 
     /**

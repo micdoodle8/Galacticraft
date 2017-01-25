@@ -17,15 +17,16 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModelState;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
@@ -38,6 +39,17 @@ public class ClientUtil
     public static long getMilliseconds()
     {
         return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
+
+    public static void addVariant(String modID, String name, String... variants)
+    {
+        Item itemBlockVariants = GameRegistry.findItem(modID, name);
+        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
+        for (int i = 0; i < variants.length; ++i)
+        {
+            variants0[i] = new ResourceLocation(modID + ":" + variants[i]);
+        }
+        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
     }
 
     public static void registerBlockJson(String texturePrefix, Block block)

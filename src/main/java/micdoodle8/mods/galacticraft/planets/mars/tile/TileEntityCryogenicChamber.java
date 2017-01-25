@@ -81,7 +81,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
             if (GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown > 0)
             {
-                return EnumStatus.NOT_POSSIBLE_NOW;
+//                return EnumStatus.NOT_POSSIBLE_NOW;
             }
         }
 
@@ -92,8 +92,8 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
         entityPlayer.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() + 1.9F, this.getPos().getZ() + 0.5F);
 
-//        entityPlayer.sleeping = true;
-//        entityPlayer.sleepTimer = 0; TODO access transformer
+        entityPlayer.sleeping = true;
+        entityPlayer.sleepTimer = 0;
         entityPlayer.playerLocation = new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
 
@@ -115,6 +115,23 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     public void update()
     {
         super.update();
+
+        // TODO: Find a more efficient way to fix this
+        //          Broken since 1.8 and this is an inefficient fix
+        for (int y = 1; y < 3; y++)
+        {
+            final BlockPos vecToAdd = new BlockPos(getPos().getX(), getPos().getY() + y, getPos().getZ());
+
+            TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+            if (tile instanceof TileEntityMulti)
+            {
+                BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
+                if (pos == null || !pos.equals(getPos()))
+                {
+                    ((TileEntityMulti) tile).mainBlockPosition = getPos();
+                }
+            }
+        }
     }
 
     @Override

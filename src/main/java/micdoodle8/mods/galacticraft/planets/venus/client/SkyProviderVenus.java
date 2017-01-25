@@ -127,7 +127,7 @@ public class SkyProviderVenus extends IRenderHandler
         {
             GL11.glPushMatrix();
             GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-19.0F, 0, 1.0F, 0);
             GL11.glColor4f(f18, f18, f18, f18);
             GL11.glCallList(this.starList);
@@ -139,7 +139,7 @@ public class SkyProviderVenus extends IRenderHandler
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glPushMatrix();
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(-world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         afloat[0] = 255 / 255.0F;
         afloat[1] = 194 / 255.0F;
         afloat[2] = 180 / 255.0F;
@@ -221,7 +221,7 @@ public class SkyProviderVenus extends IRenderHandler
         f9 = 0.0F;
         GL11.glTranslatef(f7, f8, f9);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(-world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         // Render sun
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);

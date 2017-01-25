@@ -3,7 +3,10 @@ package micdoodle8.mods.galacticraft.planets.mars;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
@@ -112,20 +115,27 @@ public class EventHandlerMars
         }
     }
 
-//    @SideOnly(Side.CLIENT)
-//    @SubscribeEvent
-//    public void onPlayerRotate(RotatePlayerEvent event)
-//    {
-//        ChunkCoordinates c = event.entityPlayer.playerLocation;
-//        Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY - 2, c.posZ);
-//        int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY - 2, c.posZ);
-//
-//        if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-//        {
-//            event.shouldRotate = true;
-//        	event.vanillaOverride = true;
-//        }
-//    }
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
+    {
+        BlockPos blockPos = event.entityPlayer.playerLocation;
+        IBlockState state = event.entityPlayer.worldObj.getBlockState(blockPos);
+        if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
+        {
+            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(blockPos);
+            if (tile instanceof TileEntityMulti)
+            {
+                state = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+            }
+        }
+
+        if (state.getBlock() == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+        {
+            event.shouldRotate = true;
+        	event.vanillaOverride = true;
+        }
+    }
 
     private WorldGenerator eggGenerator;
 

@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -58,6 +61,21 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
             if (tileEntity instanceof IMultiBlock)
             {
                 return ((IMultiBlock) tileEntity).onActivated(player);
+            }
+        }
+
+        return false;
+    }
+
+    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        if (this.mainBlockPosition != null)
+        {
+            IBlockState state = this.worldObj.getBlockState(this.mainBlockPosition);
+
+            if (state.getBlock() instanceof BlockAdvanced)
+            {
+                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, side, hitX, hitY, hitZ);
             }
         }
 

@@ -269,9 +269,8 @@ public class ModelEvolvedZombie extends ModelBiped
         this.bipedRightArm.rotateAngleX += MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
         this.bipedLeftArm.rotateAngleX -= MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
 
-        this.oxygenMask.rotateAngleY = this.bipedHead.rotateAngleY;
+        copyModelAngles(this.bipedHead, this.oxygenMask);
     }
-
 //    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
 //    {
 //        this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);

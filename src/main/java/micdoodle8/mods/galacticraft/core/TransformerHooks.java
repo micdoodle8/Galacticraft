@@ -3,12 +3,14 @@ package micdoodle8.mods.galacticraft.core;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -40,6 +42,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Set;
+
+import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.PLAYER_Y_OFFSET;
 
 /**
  * These methods are called from vanilla minecraft through bytecode injection done in MicdoodleCore
@@ -530,10 +534,10 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static void orientCamera(float partialTicks)
     {
-        /*EntityClientPlayerMP player = ClientProxyCore.mc.thePlayer;
+        EntityPlayerSP player = ClientProxyCore.mc.thePlayer;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        EntityLivingBase entityLivingBase = ClientProxyCore.mc.getRenderViewEntity();
+        Entity viewEntity = ClientProxyCore.mc.getRenderViewEntity();
 
         if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
@@ -548,14 +552,13 @@ public class TransformerHooks
             GL11.glTranslatef(0, offset, 0);
         }
 
-        if (entityLivingBase.worldObj.provider instanceof WorldProviderOrbit && !entityLivingBase.isPlayerSleeping())
+        if (viewEntity instanceof EntityLivingBase && viewEntity.worldObj.provider instanceof WorldProviderZeroGravity && !((EntityLivingBase)viewEntity).isPlayerSleeping())
         {
-            float f1 = entityLivingBase.yOffset - 1.62F;
-            float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * partialTicks;
-            float yaw = entityLivingBase.prevRotationYaw + (entityLivingBase.rotationYaw - entityLivingBase.prevRotationYaw) * partialTicks + 180.0F;
-            float eyeHeightChange = entityLivingBase.yOffset - entityLivingBase.width / 2.0F;
+            float pitch = viewEntity.prevRotationPitch + (viewEntity.rotationPitch - viewEntity.prevRotationPitch) * partialTicks;
+            float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
+            float eyeHeightChange = viewEntity.width / 2.0F;
 
-            GL11.glTranslatef(0.0F, -f1, 0.0F);
+//            GL11.glTranslatef(0.0F, -f1, 0.0F);
             GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
             GL11.glTranslatef(0.0F, 0.0F, 0.1F);
@@ -583,13 +586,13 @@ public class TransformerHooks
             {
                 GL11.glRotatef(90.0F * (stats.gravityTurnRatePrev + (stats.gravityTurnRate - stats.gravityTurnRatePrev) * partialTicks), stats.gravityTurnVecX, stats.gravityTurnVecY, stats.gravityTurnVecZ);
             }
-        }*/
+        }
 
         //omit this for interesting 3P views
-        //GL11.glTranslatef(0.0F, 0.0F, -0.1F);
-        //GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
-        //GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
-        //GL11.glTranslatef(0.0F, f1, 0.0F);
+//        GL11.glTranslatef(0.0F, 0.0F, -0.1F);
+//        GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
+//        GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+//        GL11.glTranslatef(0.0F, f1, 0.0F);
     }
 
     @SideOnly(Side.CLIENT)

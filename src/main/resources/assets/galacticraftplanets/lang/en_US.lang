@@ -1,4 +1,5 @@
-checklist.equipThermalSuit.key=Equip Thermal Suit
+checklist.thermalPadding.key=Equip Thermal Suit
+checklist.thermalPaddingT2.key=Equip Tier 2 Thermal Suit
 checklist.craftGrappleHook.key=Craft Grapple Hook
 checklist.equipShieldController.key=Equip Shield Controller
 container.entry_pod.name=Entry Pod

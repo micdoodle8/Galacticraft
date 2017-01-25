@@ -71,6 +71,23 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void update()
     {
+        // TODO: Find a more efficient way to fix this
+        //          Broken since 1.8 and this is an inefficient fix
+        for (int y = 1; y < 3; y++)
+        {
+            final BlockPos vecToAdd = new BlockPos(getPos().getX(), getPos().getY() + y, getPos().getZ());
+
+            TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+            if (tile instanceof TileEntityMulti)
+            {
+                BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
+                if (pos == null || !pos.equals(getPos()))
+                {
+                    ((TileEntityMulti) tile).mainBlockPosition = getPos();
+                }
+            }
+        }
+
         if (!this.initialised)
         {
             int metadata = this.getBlockMetadata();

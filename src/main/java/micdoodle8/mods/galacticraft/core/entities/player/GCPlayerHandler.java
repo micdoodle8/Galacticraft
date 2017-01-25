@@ -672,7 +672,11 @@ public class GCPlayerHandler
 
                 if (!valid)
                 {
-                    playerMP.getCurrentArmor((int) (Math.random() * 4)).attemptDamageItem(1, playerMP.getRNG());
+                    ItemStack armor = playerMP.getCurrentArmor((int) (Math.random() * 4));
+                    if (armor != null)
+                    {
+                        armor.damageItem(1, playerMP);
+                    }
                 }
             }
         }
