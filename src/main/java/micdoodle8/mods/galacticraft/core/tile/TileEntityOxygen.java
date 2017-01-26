@@ -64,9 +64,12 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
             if (this.shouldUseOxygen())
             {
-                FluidStack fluid = this.tank.getFluid().copy();
-                fluid.amount = (int) Math.max(fluid.amount - this.oxygenPerTick, 0);
-                this.tank.setFluid(fluid);
+                if (this.tank.getFluid() != null)
+                {
+                    FluidStack fluid = this.tank.getFluid().copy();
+                    fluid.amount = Math.max(fluid.amount - this.oxygenPerTick, 0);
+                    this.tank.setFluid(fluid);
+                }
             }
         }
 
