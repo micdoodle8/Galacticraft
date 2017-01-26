@@ -85,7 +85,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
                     this.motionY *= 0.994F;
                 }
 
-                if (this.posY <= 180.0F)
+                if (this.posY <= 382.0F)
                 {
                     if (groundPosY == null)
                     {
@@ -94,7 +94,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
 
                     if (this.posY - this.groundPosY > 5.0F)
                     {
-                        this.motionY -= 0.01F;
+                        this.motionY *= 0.995F;
                     }
                 }
             }
@@ -118,6 +118,11 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
         if (this.ticks >= 40 && this.ticks < 45)
         {
             this.motionY = this.getInitialMotionY();
+        }
+
+        if (!this.shouldMove())
+        {
+            return new Vector3(0, 0, 0);
         }
 
         return new Vector3(this.motionX, this.motionY, this.motionZ);
@@ -250,5 +255,10 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     public void clear()
     {
 
+    }
+
+    public Integer getGroundPosY()
+    {
+        return groundPosY;
     }
 }

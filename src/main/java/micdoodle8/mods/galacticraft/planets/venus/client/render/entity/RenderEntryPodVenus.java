@@ -5,11 +5,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -20,7 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -73,15 +74,6 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         RenderHelper.disableStandardItemLighting();
         this.bindTexture(TextureMap.locationBlocksTexture);
 
-//        if (Minecraft.isAmbientOcclusionEnabled())
-//        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
-//        }
-//        else
-//        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
-//        }
-
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.65F, 0.6F, 0.65F);
 
@@ -115,8 +107,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             RenderHelper.enableStandardItemLighting();
         }
 
-
-        if (entityEntryPod.posY >= 180.0F && entityEntryPod.posY <= 382.0F)
+        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.posY - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.posY <= 382.0F)
         {
             GL11.glPushMatrix();
 
