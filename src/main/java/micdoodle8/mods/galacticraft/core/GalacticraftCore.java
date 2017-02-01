@@ -172,6 +172,7 @@ public class GalacticraftCore
     public static GalacticraftCore instance;
 
     public static boolean isPlanetsLoaded;
+    public static boolean isHeightConflictingModInstalled;
     
     public static GalacticraftChannelHandler packetPipeline;
     public static GCPlayerHandler handler;
@@ -215,6 +216,16 @@ public class GalacticraftCore
     {
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
     	GCCoreUtil.nextID = 0;
+    	
+        if(Loader.isModLoaded("SmartMoving"))
+        {
+            isHeightConflictingModInstalled = true;
+        }
+        
+        if(Loader.isModLoaded("witchery"))
+        {
+            isHeightConflictingModInstalled = true;
+        }
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         handler = new GCPlayerHandler();

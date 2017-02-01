@@ -171,15 +171,18 @@ public class PlayerClient implements IPlayerClient
         if (gearData != null)
         {
             stats.usingParachute = gearData.getParachute() != null;
-            if (gearData.getMask() >= 0)
+            if(!GalacticraftCore.isHeightConflictingModInstalled)
             {
-            	player.height = 1.9375F;
+                if (gearData.getMask() >= 0)
+                {
+                	player.height = 1.9375F;
+                }
+                else
+                {
+                	player.height = 1.8F;
+                }
+            	player.boundingBox.maxY = player.boundingBox.minY + (double)player.height;
             }
-            else
-            {
-            	player.height = 1.8F;
-            }
-        	player.boundingBox.maxY = player.boundingBox.minY + (double)player.height;
         }
 
         if (stats.usingParachute && player.onGround)
