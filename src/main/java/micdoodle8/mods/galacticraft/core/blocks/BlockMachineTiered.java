@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
+    public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 16);
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
@@ -235,7 +238,19 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockState(this, FACING, TYPE, FILL_VALUE);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (!(tile instanceof TileEntityEnergyStorageModule))
+        {
+            return state.withProperty(FILL_VALUE, 0);
+        }
+        TileEntityEnergyStorageModule storageModule = (TileEntityEnergyStorageModule) tile;
+        return state.withProperty(FILL_VALUE, storageModule.scaledEnergyLevel);
     }
 
     @Override

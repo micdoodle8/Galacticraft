@@ -61,6 +61,7 @@ import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -103,7 +104,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", EnumChatFormatting.BLUE, "Space");
     public static Map<String, String> capeMap = new HashMap<>();
     public static InventoryExtended dummyInventory = new InventoryExtended();
-    public static final ResourceLocation underOilTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png");
+    public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
     private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
     public static IPlayerClient playerClientHandler = new PlayerClient();
     public static Minecraft mc = FMLClientHandler.instance().getClient();
@@ -717,6 +718,12 @@ public class ClientProxyCore extends CommonProxyCore
     public void registerCanister(PartialCanister container)
     {
         ClientProxyCore.canisters.add(container);
+    }
+
+    @Override
+    public void registerFluidTexture(Fluid fluid, ResourceLocation submergedTexture)
+    {
+        ClientProxyCore.submergedTextures.put(fluid, submergedTexture);
     }
 
     public static class EventSpecialRender extends Event

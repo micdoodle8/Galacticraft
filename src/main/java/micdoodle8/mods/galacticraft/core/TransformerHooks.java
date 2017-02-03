@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
@@ -27,11 +28,13 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,10 +43,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.PLAYER_Y_OFFSET;
+import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.submergedTextures;
 
 /**
  * These methods are called from vanilla minecraft through bytecode injection done in MicdoodleCore
@@ -598,11 +603,18 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static void renderLiquidOverlays(float partialTicks)
     {
-        if (FluidUtil.isInsideOfFluid(ClientProxyCore.mc.thePlayer, GCFluids.fluidOil))
+        boolean within = false;
+        for (Map.Entry<Fluid, ResourceLocation> entry : submergedTextures.entrySet())
         {
-            ClientProxyCore.mc.getTextureManager().bindTexture(ClientProxyCore.underOilTexture);
+            if (FluidUtil.isInsideOfFluid(ClientProxyCore.mc.thePlayer, entry.getKey()))
+            {
+                within = true;
+                ClientProxyCore.mc.getTextureManager().bindTexture(entry.getValue());
+                break;
+            }
         }
-        else
+
+        if (!within)
         {
             return;
         }
@@ -614,10 +626,10 @@ public class TransformerHooks
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glPushMatrix();
         float f2 = 4.0F;
-        float f3 = -1.0F;
-        float f4 = 1.0F;
-        float f5 = -1.0F;
-        float f6 = 1.0F;
+        float f3 = -1.1F;
+        float f4 = 1.1F;
+        float f5 = -1.1F;
+        float f6 = 1.1F;
         float f7 = -0.5F;
         float f8 = -ClientProxyCore.mc.thePlayer.rotationYaw / 64.0F;
         float f9 = ClientProxyCore.mc.thePlayer.rotationPitch / 64.0F;

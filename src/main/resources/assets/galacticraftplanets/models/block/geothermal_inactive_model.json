@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftcore:blocks/machine",
+        "down": "galacticraftcore:blocks/machine",
+        "up": "galacticraftcore:blocks/machine",
+        "north": "galacticraftplanets:blocks/geothermal_inactive",
+        "east": "galacticraftcore:blocks/machine_output",
+        "south": "galacticraftplanets:blocks/geothermal_inactive",
+        "west": "galacticraftcore:blocks/machine_side"
+    }
+}

@@ -21,6 +21,7 @@ public class VenusBlocks
     public static Block treasureChestTier3;
     public static Block torchWeb;
     public static Block sulphuricAcid;
+    public static Block geothermalGenerator;
 
     public static void initBlocks()
     {
@@ -29,6 +30,7 @@ public class VenusBlocks
         VenusBlocks.bossSpawner = new BlockBossSpawnerVenus("boss_spawner_venus");
         VenusBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasure_t3");
         VenusBlocks.torchWeb = new BlockTorchWeb("web_torch");
+        VenusBlocks.geothermalGenerator = new BlockGeothermalGenerator("geothermal_generator");
 
         GCBlocks.hiddenBlocks.add(VenusBlocks.bossSpawner);
 
@@ -74,9 +76,11 @@ public class VenusBlocks
         registerBlock(VenusBlocks.bossSpawner, ItemBlockGC.class);
         registerBlock(VenusBlocks.treasureChestTier3, ItemBlockDesc.class);
         registerBlock(VenusBlocks.torchWeb, ItemBlockTorchWeb.class);
+        registerBlock(VenusBlocks.geothermalGenerator, ItemBlockDesc.class);
     }
 
     public static void oreDictRegistration()
     {
+        // TODO Venus ore registration
     }
 }

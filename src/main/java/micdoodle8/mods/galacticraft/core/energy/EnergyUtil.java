@@ -52,6 +52,11 @@ public class EnergyUtil
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
+            if (tileEntity == null)
+            {
+                continue;
+            }
+
             if (tileEntity instanceof IConnector)
             {
                 if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.POWER))

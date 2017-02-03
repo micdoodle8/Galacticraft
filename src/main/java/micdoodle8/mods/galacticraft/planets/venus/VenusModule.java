@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSulphuricAcid;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.TeleportTypeVenus;
@@ -23,8 +24,10 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityDungeonSpawnerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
 import net.minecraft.block.material.MapColor;
@@ -35,6 +38,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -128,6 +133,8 @@ public class VenusModule implements IPlanetsModule
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(VenusItems.thermalPaddingTier2, 1, 1));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 2));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 3));
+
+        GalacticraftCore.proxy.registerFluidTexture(VenusModule.sulphuricAcid, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underacid.png"));
     }
 
     @Override
@@ -156,6 +163,7 @@ public class VenusModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntitySpout.class, "Venus Spout");
         GameRegistry.registerTileEntity(TileEntityDungeonSpawnerVenus.class, "Venus Dungeon Spawner");
         GameRegistry.registerTileEntity(TileEntityTreasureChestVenus.class, "Tier 3 Treasure Chest");
+        GameRegistry.registerTileEntity(TileEntityGeothermalGenerator.class, "Geothermal Generator");
     }
 
     public void registerCreatures()
@@ -173,11 +181,23 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void getGuiIDs(List<Integer> idList)
     {
+        idList.add(GuiIdsPlanets.MACHINE_VENUS);
     }
 
     @Override
     public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
     {
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
+
+        if (ID == GuiIdsPlanets.MACHINE_VENUS)
+        {
+            if (tile instanceof TileEntityGeothermalGenerator)
+            {
+                return new ContainerGeothermal(player.inventory, (TileEntityGeothermalGenerator) tile);
+            }
+        }
+
         return null;
     }
 

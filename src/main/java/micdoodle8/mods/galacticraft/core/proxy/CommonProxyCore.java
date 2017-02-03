@@ -11,7 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -39,6 +41,10 @@ public class CommonProxyCore
     }
 
     public void registerCanister(PartialCanister container)
+    {
+    }
+
+    public void registerFluidTexture(Fluid fluid, ResourceLocation submergedTexture)
     {
     }
 

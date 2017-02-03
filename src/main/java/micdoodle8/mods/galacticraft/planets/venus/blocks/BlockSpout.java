@@ -31,7 +31,6 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
         super(Material.rock);
         this.blockHardness = 4.5F;
         this.blockResistance = 2.5F;
-        this.setTickRandomly(true);
         this.setUnlocalizedName(assetName);
     }
 
@@ -46,13 +45,6 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.GENERAL;
-    }
-
-    @Override
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        super.randomDisplayTick(worldIn, pos, state, rand);
-
     }
 
     @Override
@@ -72,7 +64,8 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
     }
 
     @Override
-    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
         return super.getDrops(world, pos, state, fortune);
     }
 }

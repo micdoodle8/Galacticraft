@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "active=true,facing=north": { "model": "galacticraftplanets:geothermal_model" },
+        "active=true,facing=east":  { "model": "galacticraftplanets:geothermal_model", "y": 90 },
+        "active=true,facing=west":  { "model": "galacticraftplanets:geothermal_model", "y": 270 },
+        "active=true,facing=south": { "model": "galacticraftplanets:geothermal_model", "y": 180 },
+        "active=false,facing=north": { "model": "galacticraftplanets:geothermal_inactive_model" },
+        "active=false,facing=east":  { "model": "galacticraftplanets:geothermal_inactive_model", "y": 90 },
+        "active=false,facing=west":  { "model": "galacticraftplanets:geothermal_inactive_model", "y": 270 },
+        "active=false,facing=south": { "model": "galacticraftplanets:geothermal_inactive_model", "y": 180 }
+    }
+}
