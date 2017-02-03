@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftplanets:blocks/machine",
+        "down": "galacticraftplanets:blocks/machine",
+        "up": "galacticraftplanets:blocks/machine",
+        "north": "galacticraftplanets:blocks/energyStorageModule_14",
+        "east": "galacticraftplanets:blocks/machine_output",
+        "south": "galacticraftplanets:blocks/energyStorageModule_14",
+        "west": "galacticraftplanets:blocks/machine_input"
+    }
+}

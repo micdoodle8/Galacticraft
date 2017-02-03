@@ -1,9 +1,5 @@
 {
-    "parent":"galacticraftcore:block/energy_storage_model",
-    "textures": {
-        "north": "galacticraftcore:blocks/energyStorageModule_15",
-        "south": "galacticraftcore:blocks/energyStorageModule_15"
-    },
+    "parent":"galacticraftcore:block/energy_storage_16",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

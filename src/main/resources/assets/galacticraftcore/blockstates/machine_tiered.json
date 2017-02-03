@@ -1,20 +1,183 @@
 {
     "variants": {
-        "facing=north,type=energy_storage": { "model": "galacticraftcore:energy_storage_model" },
-        "facing=east,type=energy_storage":  { "model": "galacticraftcore:energy_storage_model", "y": 90 },
-        "facing=west,type=energy_storage":  { "model": "galacticraftcore:energy_storage_model", "y": 270 },
-        "facing=south,type=energy_storage": { "model": "galacticraftcore:energy_storage_model", "y": 180 },
-        "facing=north,type=electric_furnace": { "model": "galacticraftcore:electric_furnace_model" },
-        "facing=east,type=electric_furnace":  { "model": "galacticraftcore:electric_furnace_model", "y": 90 },
-        "facing=west,type=electric_furnace":  { "model": "galacticraftcore:electric_furnace_model", "y": 270 },
-        "facing=south,type=electric_furnace": { "model": "galacticraftcore:electric_furnace_model", "y": 180 },
-        "facing=north,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_model" },
-        "facing=east,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_model", "y": 90 },
-        "facing=west,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_model", "y": 270 },
-        "facing=south,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_model", "y": 180 },
-        "facing=north,type=arc_furnace": { "model": "galacticraftcore:arc_furnace_model" },
-        "facing=east,type=arc_furnace":  { "model": "galacticraftcore:arc_furnace_model", "y": 90 },
-        "facing=west,type=arc_furnace":  { "model": "galacticraftcore:arc_furnace_model", "y": 270 },
-        "facing=south,type=arc_furnace": { "model": "galacticraftcore:arc_furnace_model", "y": 180 }
+        "facing=north,fill_value=0,type=energy_storage": { "model": "galacticraftcore:energy_storage_0" },
+        "facing=east,fill_value=0,type=energy_storage":  { "model": "galacticraftcore:energy_storage_0", "y": 90 },
+        "facing=west,fill_value=0,type=energy_storage":  { "model": "galacticraftcore:energy_storage_0", "y": 270 },
+        "facing=south,fill_value=0,type=energy_storage": { "model": "galacticraftcore:energy_storage_0", "y": 180 },
+		
+        "facing=north,fill_value=1,type=energy_storage": { "model": "galacticraftcore:energy_storage_1" },
+        "facing=east,fill_value=1,type=energy_storage":  { "model": "galacticraftcore:energy_storage_1", "y": 90 },
+        "facing=west,fill_value=1,type=energy_storage":  { "model": "galacticraftcore:energy_storage_1", "y": 270 },
+        "facing=south,fill_value=1,type=energy_storage": { "model": "galacticraftcore:energy_storage_1", "y": 180 },
+		
+        "facing=north,fill_value=2,type=energy_storage": { "model": "galacticraftcore:energy_storage_2" },
+        "facing=east,fill_value=2,type=energy_storage":  { "model": "galacticraftcore:energy_storage_2", "y": 90 },
+        "facing=west,fill_value=2,type=energy_storage":  { "model": "galacticraftcore:energy_storage_2", "y": 270 },
+        "facing=south,fill_value=2,type=energy_storage": { "model": "galacticraftcore:energy_storage_2", "y": 180 },
+		
+        "facing=north,fill_value=3,type=energy_storage": { "model": "galacticraftcore:energy_storage_3" },
+        "facing=east,fill_value=3,type=energy_storage":  { "model": "galacticraftcore:energy_storage_3", "y": 90 },
+        "facing=west,fill_value=3,type=energy_storage":  { "model": "galacticraftcore:energy_storage_3", "y": 270 },
+        "facing=south,fill_value=3,type=energy_storage": { "model": "galacticraftcore:energy_storage_3", "y": 180 },
+		
+        "facing=north,fill_value=4,type=energy_storage": { "model": "galacticraftcore:energy_storage_4" },
+        "facing=east,fill_value=4,type=energy_storage":  { "model": "galacticraftcore:energy_storage_4", "y": 90 },
+        "facing=west,fill_value=4,type=energy_storage":  { "model": "galacticraftcore:energy_storage_4", "y": 270 },
+        "facing=south,fill_value=4,type=energy_storage": { "model": "galacticraftcore:energy_storage_4", "y": 180 },
+		
+        "facing=north,fill_value=5,type=energy_storage": { "model": "galacticraftcore:energy_storage_5" },
+        "facing=east,fill_value=5,type=energy_storage":  { "model": "galacticraftcore:energy_storage_5", "y": 90 },
+        "facing=west,fill_value=5,type=energy_storage":  { "model": "galacticraftcore:energy_storage_5", "y": 270 },
+        "facing=south,fill_value=5,type=energy_storage": { "model": "galacticraftcore:energy_storage_5", "y": 180 },
+		
+        "facing=north,fill_value=6,type=energy_storage": { "model": "galacticraftcore:energy_storage_6" },
+        "facing=east,fill_value=6,type=energy_storage":  { "model": "galacticraftcore:energy_storage_6", "y": 90 },
+        "facing=west,fill_value=6,type=energy_storage":  { "model": "galacticraftcore:energy_storage_6", "y": 270 },
+        "facing=south,fill_value=6,type=energy_storage": { "model": "galacticraftcore:energy_storage_6", "y": 180 },
+		
+        "facing=north,fill_value=7,type=energy_storage": { "model": "galacticraftcore:energy_storage_7" },
+        "facing=east,fill_value=7,type=energy_storage":  { "model": "galacticraftcore:energy_storage_7", "y": 90 },
+        "facing=west,fill_value=7,type=energy_storage":  { "model": "galacticraftcore:energy_storage_7", "y": 270 },
+        "facing=south,fill_value=7,type=energy_storage": { "model": "galacticraftcore:energy_storage_7", "y": 180 },
+		
+        "facing=north,fill_value=8,type=energy_storage": { "model": "galacticraftcore:energy_storage_8" },
+        "facing=east,fill_value=8,type=energy_storage":  { "model": "galacticraftcore:energy_storage_8", "y": 90 },
+        "facing=west,fill_value=8,type=energy_storage":  { "model": "galacticraftcore:energy_storage_8", "y": 270 },
+        "facing=south,fill_value=8,type=energy_storage": { "model": "galacticraftcore:energy_storage_8", "y": 180 },
+		
+        "facing=north,fill_value=9,type=energy_storage": { "model": "galacticraftcore:energy_storage_9" },
+        "facing=east,fill_value=9,type=energy_storage":  { "model": "galacticraftcore:energy_storage_9", "y": 90 },
+        "facing=west,fill_value=9,type=energy_storage":  { "model": "galacticraftcore:energy_storage_9", "y": 270 },
+        "facing=south,fill_value=9,type=energy_storage": { "model": "galacticraftcore:energy_storage_9", "y": 180 },
+		
+        "facing=north,fill_value=10,type=energy_storage": { "model": "galacticraftcore:energy_storage_10" },
+        "facing=east,fill_value=10,type=energy_storage":  { "model": "galacticraftcore:energy_storage_10", "y": 90 },
+        "facing=west,fill_value=10,type=energy_storage":  { "model": "galacticraftcore:energy_storage_10", "y": 270 },
+        "facing=south,fill_value=10,type=energy_storage": { "model": "galacticraftcore:energy_storage_10", "y": 180 },
+		
+        "facing=north,fill_value=11,type=energy_storage": { "model": "galacticraftcore:energy_storage_11" },
+        "facing=east,fill_value=11,type=energy_storage":  { "model": "galacticraftcore:energy_storage_11", "y": 90 },
+        "facing=west,fill_value=11,type=energy_storage":  { "model": "galacticraftcore:energy_storage_11", "y": 270 },
+        "facing=south,fill_value=11,type=energy_storage": { "model": "galacticraftcore:energy_storage_11", "y": 180 },
+		
+        "facing=north,fill_value=12,type=energy_storage": { "model": "galacticraftcore:energy_storage_12" },
+        "facing=east,fill_value=12,type=energy_storage":  { "model": "galacticraftcore:energy_storage_12", "y": 90 },
+        "facing=west,fill_value=12,type=energy_storage":  { "model": "galacticraftcore:energy_storage_12", "y": 270 },
+        "facing=south,fill_value=12,type=energy_storage": { "model": "galacticraftcore:energy_storage_12", "y": 180 },
+		
+        "facing=north,fill_value=13,type=energy_storage": { "model": "galacticraftcore:energy_storage_13" },
+        "facing=east,fill_value=13,type=energy_storage":  { "model": "galacticraftcore:energy_storage_13", "y": 90 },
+        "facing=west,fill_value=13,type=energy_storage":  { "model": "galacticraftcore:energy_storage_13", "y": 270 },
+        "facing=south,fill_value=13,type=energy_storage": { "model": "galacticraftcore:energy_storage_13", "y": 180 },
+		
+        "facing=north,fill_value=14,type=energy_storage": { "model": "galacticraftcore:energy_storage_14" },
+        "facing=east,fill_value=14,type=energy_storage":  { "model": "galacticraftcore:energy_storage_14", "y": 90 },
+        "facing=west,fill_value=14,type=energy_storage":  { "model": "galacticraftcore:energy_storage_14", "y": 270 },
+        "facing=south,fill_value=14,type=energy_storage": { "model": "galacticraftcore:energy_storage_14", "y": 180 },
+		
+        "facing=north,fill_value=15,type=energy_storage": { "model": "galacticraftcore:energy_storage_15" },
+        "facing=east,fill_value=15,type=energy_storage":  { "model": "galacticraftcore:energy_storage_15", "y": 90 },
+        "facing=west,fill_value=15,type=energy_storage":  { "model": "galacticraftcore:energy_storage_15", "y": 270 },
+        "facing=south,fill_value=15,type=energy_storage": { "model": "galacticraftcore:energy_storage_15", "y": 180 },
+		
+        "facing=north,fill_value=16,type=energy_storage": { "model": "galacticraftcore:energy_storage_16" },
+        "facing=east,fill_value=16,type=energy_storage":  { "model": "galacticraftcore:energy_storage_16", "y": 90 },
+        "facing=west,fill_value=16,type=energy_storage":  { "model": "galacticraftcore:energy_storage_16", "y": 270 },
+        "facing=south,fill_value=16,type=energy_storage": { "model": "galacticraftcore:energy_storage_16", "y": 180 },
+		
+        "facing=north,fill_value=0,type=electric_furnace": { "model": "galacticraftcore:electric_furnace_model" },
+        "facing=east,fill_value=0,type=electric_furnace":  { "model": "galacticraftcore:electric_furnace_model", "y": 90 },
+        "facing=west,fill_value=0,type=electric_furnace":  { "model": "galacticraftcore:electric_furnace_model", "y": 270 },
+        "facing=south,fill_value=0,type=electric_furnace": { "model": "galacticraftcore:electric_furnace_model", "y": 180 },
+		
+        "facing=north,fill_value=0,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_0" },
+        "facing=east,fill_value=0,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_0", "y": 90 },
+        "facing=west,fill_value=0,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_0", "y": 270 },
+        "facing=south,fill_value=0,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_0", "y": 180 },
+		
+        "facing=north,fill_value=1,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_1" },
+        "facing=east,fill_value=1,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_1", "y": 90 },
+        "facing=west,fill_value=1,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_1", "y": 270 },
+        "facing=south,fill_value=1,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_1", "y": 180 },
+		
+        "facing=north,fill_value=2,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_2" },
+        "facing=east,fill_value=2,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_2", "y": 90 },
+        "facing=west,fill_value=2,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_2", "y": 270 },
+        "facing=south,fill_value=2,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_2", "y": 180 },
+		
+        "facing=north,fill_value=3,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_3" },
+        "facing=east,fill_value=3,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_3", "y": 90 },
+        "facing=west,fill_value=3,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_3", "y": 270 },
+        "facing=south,fill_value=3,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_3", "y": 180 },
+		
+        "facing=north,fill_value=4,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_4" },
+        "facing=east,fill_value=4,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_4", "y": 90 },
+        "facing=west,fill_value=4,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_4", "y": 270 },
+        "facing=south,fill_value=4,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_4", "y": 180 },
+		
+        "facing=north,fill_value=5,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_5" },
+        "facing=east,fill_value=5,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_5", "y": 90 },
+        "facing=west,fill_value=5,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_5", "y": 270 },
+        "facing=south,fill_value=5,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_5", "y": 180 },
+		
+        "facing=north,fill_value=6,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_6" },
+        "facing=east,fill_value=6,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_6", "y": 90 },
+        "facing=west,fill_value=6,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_6", "y": 270 },
+        "facing=south,fill_value=6,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_6", "y": 180 },
+		
+        "facing=north,fill_value=7,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_7" },
+        "facing=east,fill_value=7,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_7", "y": 90 },
+        "facing=west,fill_value=7,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_7", "y": 270 },
+        "facing=south,fill_value=7,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_7", "y": 180 },
+		
+        "facing=north,fill_value=8,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_8" },
+        "facing=east,fill_value=8,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_8", "y": 90 },
+        "facing=west,fill_value=8,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_8", "y": 270 },
+        "facing=south,fill_value=8,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_8", "y": 180 },
+		
+        "facing=north,fill_value=9,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_9" },
+        "facing=east,fill_value=9,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_9", "y": 90 },
+        "facing=west,fill_value=9,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_9", "y": 270 },
+        "facing=south,fill_value=9,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_9", "y": 180 },
+		
+        "facing=north,fill_value=10,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_10" },
+        "facing=east,fill_value=10,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_10", "y": 90 },
+        "facing=west,fill_value=10,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_10", "y": 270 },
+        "facing=south,fill_value=10,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_10", "y": 180 },
+		
+        "facing=north,fill_value=11,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_11" },
+        "facing=east,fill_value=11,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_11", "y": 90 },
+        "facing=west,fill_value=11,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_11", "y": 270 },
+        "facing=south,fill_value=11,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_11", "y": 180 },
+		
+        "facing=north,fill_value=12,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_12" },
+        "facing=east,fill_value=12,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_12", "y": 90 },
+        "facing=west,fill_value=12,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_12", "y": 270 },
+        "facing=south,fill_value=12,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_12", "y": 180 },
+		
+        "facing=north,fill_value=13,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_13" },
+        "facing=east,fill_value=13,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_13", "y": 90 },
+        "facing=west,fill_value=13,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_13", "y": 270 },
+        "facing=south,fill_value=13,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_13", "y": 180 },
+		
+        "facing=north,fill_value=14,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_14" },
+        "facing=east,fill_value=14,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_14", "y": 90 },
+        "facing=west,fill_value=14,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_14", "y": 270 },
+        "facing=south,fill_value=14,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_14", "y": 180 },
+		
+        "facing=north,fill_value=15,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_15" },
+        "facing=east,fill_value=15,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_15", "y": 90 },
+        "facing=west,fill_value=15,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_15", "y": 270 },
+        "facing=south,fill_value=15,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_15", "y": 180 },
+		
+        "facing=north,fill_value=16,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_16" },
+        "facing=east,fill_value=16,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_16", "y": 90 },
+        "facing=west,fill_value=16,type=cluster_storage":  { "model": "galacticraftcore:cluster_storage_16", "y": 270 },
+        "facing=south,fill_value=16,type=cluster_storage": { "model": "galacticraftcore:cluster_storage_16", "y": 180 },
+		
+        "facing=north,fill_value=0,type=arc_furnace": { "model": "galacticraftcore:arc_furnace_model" },
+        "facing=east,fill_value=0,type=arc_furnace":  { "model": "galacticraftcore:arc_furnace_model", "y": 90 },
+        "facing=west,fill_value=0,type=arc_furnace":  { "model": "galacticraftcore:arc_furnace_model", "y": 270 },
+        "facing=south,fill_value=0,type=arc_furnace": { "model": "galacticraftcore:arc_furnace_model", "y": 180 }
     }
 }
