@@ -3,11 +3,13 @@ package micdoodle8.mods.galacticraft.planets.venus.tile;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockGeothermalGenerator;
@@ -83,6 +85,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
             if (this.worldObj.isRemote && this.validSpout != lastValidSpout)
             {
+                // Update active texture
                 this.worldObj.markBlockForUpdate(this.getPos());
             }
         }
@@ -95,11 +98,26 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             {
                 this.disableCooldown--;
             }
-        }
 
-        if (!this.worldObj.isRemote)
-        {
             this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), TileEntityGeothermalGenerator.MAX_GENERATE_GJ_PER_TICK);
+        }
+        else
+        {
+            if (this.generateWatts > 0 && this.ticks % ((int) ((float)MAX_GENERATE_GJ_PER_TICK / (this.generateWatts + 1)) * 5 + 1) == 0)
+            {
+                double posX = pos.getX() + 0.5;
+                double posY = pos.getY() + 1.0;
+                double posZ = pos.getZ() + 0.5;
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX, posY, posZ), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+            }
         }
 
         this.produce();
@@ -213,6 +231,12 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     {
         if (this.disableCooldown == 0)
         {
+            if (this.disabled != disabled && this.worldObj.isRemote)
+            {
+                // Update active texture
+                this.worldObj.markBlockForUpdate(this.getPos());
+            }
+
             this.disabled = disabled;
             this.disableCooldown = 20;
         }

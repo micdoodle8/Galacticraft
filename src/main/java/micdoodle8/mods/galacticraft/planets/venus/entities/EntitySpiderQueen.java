@@ -53,6 +53,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.maxRangedAttackTime = 60;
         this.minRangedAttackTime = 20;
+        this.ignoreFrustumCheck = true;
     }
 
     @Override

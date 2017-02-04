@@ -3,7 +3,7 @@
     "textures": {
         "particle": "galacticraftcore:blocks/machine",
         "down": "galacticraftcore:blocks/machine",
-        "up": "galacticraftcore:blocks/machine",
+        "up": "galacticraftplanets:blocks/geothermal_vent",
         "north": "galacticraftplanets:blocks/geothermal_inactive",
         "east": "galacticraftcore:blocks/machine_output",
         "south": "galacticraftplanets:blocks/geothermal_inactive",

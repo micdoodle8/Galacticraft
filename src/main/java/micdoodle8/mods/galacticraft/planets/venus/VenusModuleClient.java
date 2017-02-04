@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidExhaustFX;
 import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidVaporFX;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderEntryPodVenus;
@@ -195,11 +196,23 @@ public class VenusModuleClient implements IPlanetsModuleClient
 
         if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
+            double dX = mc.getRenderViewEntity().posX - position.x;
+            double dY = mc.getRenderViewEntity().posY - position.y;
+            double dZ = mc.getRenderViewEntity().posZ - position.z;
             EntityFX particle = null;
+            double viewDistance = 64.0D;
 
             if (particleID.equals("acidVapor"))
             {
                 particle = new EntityAcidVaporFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
+            }
+
+            if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
+            {
+                if (particleID.equals("acidExhaust"))
+                {
+                    particle = new EntityAcidExhaustFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
+                }
             }
 
             if (particle != null)
