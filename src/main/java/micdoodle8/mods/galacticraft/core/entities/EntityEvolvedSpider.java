@@ -129,7 +129,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
                 this.dropItem(GCItems.oxygenConcentrator, 1);
                 break;
             default:
-            	if (ConfigManagerCore.challengeMode) this.dropItem(Items.nether_wart, 1);
+            	if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.nether_wart, 1);
             	break;
         }
     }

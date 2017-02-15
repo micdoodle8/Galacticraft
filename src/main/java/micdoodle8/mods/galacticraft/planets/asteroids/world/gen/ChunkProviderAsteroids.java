@@ -689,7 +689,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 int asteroidSize = asteroidIndex.asteroidSizeArray;
                 boolean treesdone = false;
                 
-                if(ConfigManagerCore.challengeMode || rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
+                if(ConfigManagerCore.challengeMode || ConfigManagerCore.challengeAsteroidPopulation || rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
                 {
                 	int treeType = rand.nextInt(3);
                 	if (treeType == 1) treeType = 0;
@@ -881,7 +881,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
             monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
             monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
             monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-            if (ConfigManagerCore.challengeMode) monsters.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
+            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) monsters.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
             return monsters;
         }
         else
