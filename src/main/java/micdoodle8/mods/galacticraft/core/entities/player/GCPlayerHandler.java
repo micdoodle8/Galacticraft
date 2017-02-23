@@ -1048,7 +1048,7 @@ public class GCPlayerHandler
         //This will speed things up a little
         final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
 
-        if (ConfigManagerCore.challengeMode && GCPlayer.unlockedSchematics.size() == 0)
+        if ((ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling) && GCPlayer.unlockedSchematics.size() == 0)
         {
         	if (GCPlayer.startDimension.length() > 0)
         		GCPlayer.startDimension = "";
