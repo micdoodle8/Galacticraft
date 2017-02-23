@@ -12,4 +12,7 @@ public enum EnumSortCategoryBlock
     TREASURE,
     EGG,
     INGOT_BLOCK,
+    STAIRS,
+    SLABS,
+    WALLS
 }

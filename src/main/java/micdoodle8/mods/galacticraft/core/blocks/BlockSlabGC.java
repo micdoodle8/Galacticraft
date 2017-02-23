@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSlabGC extends BlockSlab
+public class BlockSlabGC extends BlockSlab implements ISortableBlock
 {
     public static PropertyEnum VARIANT = PropertyEnum.create("variant", BlockType.class);
 
@@ -44,17 +45,7 @@ public class BlockSlabGC extends BlockSlab
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> list)
     {
-        int max = 0;
-
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            max = 6;//Number of slab types with Planets loaded
-        }
-        else
-        {
-            max = 4;//Number of slab types with Planets not loaded
-        }
-        for (int i = 0; i < max; ++i)
+        for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); ++i)
         {
             list.add(new ItemStack(this, 1, i));
         }
@@ -113,7 +104,8 @@ public class BlockSlabGC extends BlockSlab
     @Override
     public String getUnlocalizedName(int meta)
     {
-        return super.getUnlocalizedName();
+        BlockType type = ((BlockType) this.getStateFromMeta(meta).getValue(VARIANT));
+        return type.getLangName();
     }
 
     @Override
@@ -162,24 +154,32 @@ public class BlockSlabGC extends BlockSlab
     @Override
     protected BlockState createBlockState()
     {
-        return this.isDouble() ? new BlockState(this, new IProperty[] { VARIANT }) : new BlockState(this, new IProperty[] { HALF, VARIANT });
+        return this.isDouble() ? new BlockState(this, VARIANT) : new BlockState(this, HALF, VARIANT);
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.SLABS;
     }
 
     public enum BlockType implements IStringSerializable
     {
-        tin_slab_1(0),
-        tin_slab_2(1),
-        moon_stone_slab(2),
-        moon_dungeon_brick_slab(3),
-        mars_cobblestone_slab(4),
-        mars_dungeon_slab(5);
+        TIN_SLAB_1(0, "tin_slab"),
+        TIN_SLAB_2(1, "tin_slab"),
+        MOON_STONE_SLAB(2, "moon_slab"),
+        MOON_DUNGEON_BRICK_SLAB(3, "moon_bricks_slab"),
+        MARS_COBBLESTONE_SLAB(4, "mars_slab"),
+        MARS_DUNGEON_SLAB(5, "mars_bricks_slab");
 
         private int meta;
+        private String langName;
         private static BlockType[] META_LOOKUP = new BlockType[values().length];
 
-        BlockType(int meta)
+        BlockType(int meta, String langName)
         {
             this.meta = meta;
+            this.langName = langName;
         }
 
         @Override
@@ -208,14 +208,17 @@ public class BlockSlabGC extends BlockSlab
             return META_LOOKUP[meta];
         }
 
+        public String getLangName()
+        {
+            return langName;
+        }
+
         static
         {
             BlockType[] var0 = values();
-            int var1 = var0.length;
 
-            for (int var2 = 0; var2 < var1; ++var2)
+            for (BlockType var3 : var0)
             {
-                BlockType var3 = var0[var2];
                 META_LOOKUP[var3.getMetadata()] = var3;
             }
         }

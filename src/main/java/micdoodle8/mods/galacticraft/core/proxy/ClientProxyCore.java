@@ -570,6 +570,22 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fluidTank);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.unlitTorch);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 0, "slab_tin_1");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 1, "slab_tin_2");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 2, "slab_moon_stone");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 3, "slab_moon_dungeon_brick");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 4, "slab_mars_cobblestone");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 5, "slab_mars_dungeon_brick");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.tinStairs1);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.tinStairs2);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.moonStoneStairs);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.moonBricksStairs);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 0, "wall_tin_1");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 1, "wall_tin_2");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 2, "wall_moon_stone");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 3, "wall_moon_dungeon_brick");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 4, "wall_mars_cobblestone");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 5, "wall_mars_dungeon_brick");
     }
 
     private static void addVariants()
@@ -597,6 +613,8 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");
+        addCoreVariant("slab_gc_half", "slab_tin_1", "slab_tin_2", "slab_moon_stone", "slab_moon_dungeon_brick", "slab_mars_cobblestone", "slab_mars_dungeon_brick");
+        addCoreVariant("wall_gc", "wall_tin_1", "wall_tin_2", "wall_moon_stone", "wall_moon_dungeon_brick", "wall_mars_cobblestone", "wall_mars_dungeon_brick");
 
         for (PartialCanister container : ClientProxyCore.canisters)
         {
