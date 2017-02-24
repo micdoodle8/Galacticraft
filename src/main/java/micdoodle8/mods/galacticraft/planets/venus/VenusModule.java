@@ -24,12 +24,10 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
-import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityDungeonSpawnerVenus;
-import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
-import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
-import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
+import micdoodle8.mods.galacticraft.planets.venus.tile.*;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -164,6 +162,7 @@ public class VenusModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityDungeonSpawnerVenus.class, "Venus Dungeon Spawner");
         GameRegistry.registerTileEntity(TileEntityTreasureChestVenus.class, "Tier 3 Treasure Chest");
         GameRegistry.registerTileEntity(TileEntityGeothermalGenerator.class, "Geothermal Generator");
+        GameRegistry.registerTileEntity(TileEntityCrashedProbe.class, "Crashed Probe");
     }
 
     public void registerCreatures()
@@ -195,6 +194,10 @@ public class VenusModule implements IPlanetsModule
             if (tile instanceof TileEntityGeothermalGenerator)
             {
                 return new ContainerGeothermal(player.inventory, (TileEntityGeothermalGenerator) tile);
+            }
+            else if (tile instanceof TileEntityCrashedProbe)
+            {
+                return new ContainerCrashedProbe(player.inventory, (TileEntityCrashedProbe) tile);
             }
         }
 
