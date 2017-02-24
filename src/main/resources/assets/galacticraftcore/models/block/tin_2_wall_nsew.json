@@ -1,0 +1,6 @@
+{
+    "parent": "block/wall_nsew",
+    "textures": {
+        "wall": "galacticraftcore:blocks/deco_block"
+    }
+}

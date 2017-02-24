@@ -14,9 +14,9 @@ public class ItemBlockWallGC extends ItemBlock
             "tin",
             "tin",
             "moon",
-            "moonBricks",
+            "moon_bricks",
             "mars",
-            "marsBricks"
+            "mars_bricks"
     };
 
     public ItemBlockWallGC(Block block)

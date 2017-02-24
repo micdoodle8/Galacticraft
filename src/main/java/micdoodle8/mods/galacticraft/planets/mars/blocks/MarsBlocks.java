@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockStairsGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -39,8 +40,8 @@ public class MarsBlocks
         MarsBlocks.machineT2 = new BlockMachineMarsT2("mars_machine_t2").setHardness(1.8F);
         MarsBlocks.creeperEgg = new BlockCreeperEgg("creeper_egg").setHardness(-1.0F);
         MarsBlocks.bossSpawner = new BlockBossSpawnerMars("boss_spawner_mars");
-//        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("marsCobblestoneStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_COBBLESTONE).setHardness(1.5F);
-//        MarsBlocks.marsBricksStairs = new BlockStairsGC("marsDungeonBricksStairs", marsBlock, BlockStairsGC.StairsCategoryGC.MARS_BRICKS).setHardness(4.0F);
+        MarsBlocks.marsCobblestoneStairs = new BlockStairsGC("mars_stairs_cobblestone", marsBlock.getDefaultState().withProperty(BlockBasicMars.BASIC_TYPE, BlockBasicMars.EnumBlockBasic.COBBLESTONE)).setHardness(1.5F);
+        MarsBlocks.marsBricksStairs = new BlockStairsGC("mars_stairs_brick", marsBlock.getDefaultState().withProperty(BlockBasicMars.BASIC_TYPE, BlockBasicMars.EnumBlockBasic.DUNGEON_BRICK)).setHardness(4.0F);
 
         GCBlocks.hiddenBlocks.add(MarsBlocks.bossSpawner);
 
@@ -97,8 +98,8 @@ public class MarsBlocks
         registerBlock(MarsBlocks.machine, ItemBlockMachine.class);
         registerBlock(MarsBlocks.machineT2, ItemBlockMachine.class);
         registerBlock(MarsBlocks.bossSpawner, ItemBlockGC.class);
-//        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
-//        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
+        registerBlock(MarsBlocks.marsCobblestoneStairs, ItemBlockGC.class);
+        registerBlock(MarsBlocks.marsBricksStairs, ItemBlockGC.class);
     }
 
     public static void oreDictRegistration()

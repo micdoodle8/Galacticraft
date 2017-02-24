@@ -71,13 +71,13 @@ public class GCBlocks
     public static Block telemetry;
     public static Block fluidTank;
     public static Block bossSpawner;
-    /*public static Block slabGCHalf;
+    public static Block slabGCHalf;
     public static Block slabGCDouble;
     public static Block tinStairs1;
     public static Block tinStairs2;
     public static Block moonStoneStairs;
     public static Block moonBricksStairs;
-    public static Block wallGC;*/
+    public static Block wallGC;
 
     public static final Material machine = new Material(MapColor.ironColor);
 
@@ -129,13 +129,13 @@ public class GCBlocks
         GCBlocks.telemetry = new BlockTelemetry("telemetry");
         GCBlocks.fluidTank = new BlockFluidTank("fluid_tank");
         GCBlocks.bossSpawner = new BlockBossSpawner("boss_spawner");
-        /*GCBlocks.slabGCHalf = new BlockSlabGC("slabGCHalf", false, Material.rock);
-        GCBlocks.slabGCDouble = new BlockSlabGC("slabGCDouble", true, Material.rock);
-        GCBlocks.tinStairs1 = new BlockStairsGC("tinStairs1", blockMoon, BlockStairsGC.StairsCategoryGC.TIN1).setHardness(2.0F);
-        GCBlocks.tinStairs2 = new BlockStairsGC("tinStairs2", blockMoon, BlockStairsGC.StairsCategoryGC.TIN2).setHardness(2.0F);
-        GCBlocks.moonStoneStairs = new BlockStairsGC("moonStoneStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_STONE).setHardness(1.5F);
-        GCBlocks.moonBricksStairs = new BlockStairsGC("moonBricksStairs", blockMoon, BlockStairsGC.StairsCategoryGC.MOON_BRICKS).setHardness(4.0F);
-        GCBlocks.wallGC = new BlockWallGC("wallGC", blockMoon);*/
+        GCBlocks.slabGCHalf = new BlockSlabGC("slab_gc_half", Material.rock);
+        GCBlocks.slabGCDouble = new BlockDoubleSlabGC("slab_gc_double", Material.rock);
+        GCBlocks.tinStairs1 = new BlockStairsGC("tin_stairs_1", basicBlock.getDefaultState().withProperty(BlockBasic.BASIC_TYPE, BlockBasic.EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0)).setHardness(2.0F);
+        GCBlocks.tinStairs2 = new BlockStairsGC("tin_stairs_2", basicBlock.getDefaultState().withProperty(BlockBasic.BASIC_TYPE, BlockBasic.EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_1)).setHardness(2.0F);
+        GCBlocks.moonStoneStairs = new BlockStairsGC("moon_stairs_stone", blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE)).setHardness(1.5F);
+        GCBlocks.moonBricksStairs = new BlockStairsGC("moon_stairs_brick", blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK)).setHardness(4.0F);
+        GCBlocks.wallGC = new BlockWallGC("wall_gc");
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -148,7 +148,7 @@ public class GCBlocks
         GCBlocks.hiddenBlocks.add(GCBlocks.fakeBlock);
         GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
         GCBlocks.hiddenBlocks.add(GCBlocks.bossSpawner);
-        //GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);
+        GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);
 
         // Register blocks before register ores, so that the ItemStack picks up the correct item
         GCBlocks.registerBlocks();
@@ -251,7 +251,7 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.blockMoon, "shovel", 0, 3); //Moon dirt
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 1, 4); //Moon rock
 
-        /*setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 0);
+        setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 0);
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 1);
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 2);
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 3, 3);
@@ -265,11 +265,11 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 1, 4);
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 3, 5);
 
-        setHarvestLevel(GCBlocks.tinStairs1, "pickaxe", 1);
-        setHarvestLevel(GCBlocks.tinStairs1, "pickaxe", 1);
+        setHarvestLevel(GCBlocks.tinStairs1, "pickaxe", 1, 0);
+        setHarvestLevel(GCBlocks.tinStairs1, "pickaxe", 1, 0);
 
-        setHarvestLevel(GCBlocks.moonStoneStairs, "pickaxe", 1);
-        setHarvestLevel(GCBlocks.moonBricksStairs, "pickaxe", 3);
+        setHarvestLevel(GCBlocks.moonStoneStairs, "pickaxe", 1, 0);
+        setHarvestLevel(GCBlocks.moonBricksStairs, "pickaxe", 3, 0);
 
         setHarvestLevel(GCBlocks.wallGC, "pickaxe", 1, 0);
         setHarvestLevel(GCBlocks.wallGC, "pickaxe", 1, 1);
@@ -278,20 +278,16 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.wallGC, "pickaxe", 0, 4);
         setHarvestLevel(GCBlocks.wallGC, "pickaxe", 3, 5);
 
-        for (int num = 5; num < 14; num++)
-        {
-            //Various types of Moon top dirt
-            setHarvestLevel(GCBlocks.wallGC, "shovel", 0, num);
-        }*/
+        setHarvestLevel(GCBlocks.wallGC, "shovel", 0, 5);
 
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 3, 14); //Moon dungeon brick (actually unharvestable)
     }
 
-    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... itemCtorArgs)
     {
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
-        GameRegistry.registerBlock(block, itemClass, name);
+        GameRegistry.registerBlock(block, itemClass, name, itemCtorArgs);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             GCBlocks.registerSorted(block);
@@ -368,13 +364,13 @@ public class GCBlocks
         registerBlock(GCBlocks.treasureChestTier1, ItemBlockDesc.class);
         registerBlock(GCBlocks.fluidTank, ItemBlockDesc.class);
         registerBlock(GCBlocks.bossSpawner, ItemBlockGC.class);
-        /*registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class, GCBlocks.tinStairs1.getUnlocalizedName());
-        registerBlock(GCBlocks.tinStairs2, ItemBlockGC.class, GCBlocks.tinStairs2.getUnlocalizedName());
-        registerBlock(GCBlocks.moonStoneStairs, ItemBlockGC.class, GCBlocks.moonStoneStairs.getUnlocalizedName());
-        registerBlock(GCBlocks.moonBricksStairs, ItemBlockGC.class, GCBlocks.moonBricksStairs.getUnlocalizedName());
-        registerBlock(GCBlocks.wallGC, ItemBlockWallGC.class, GCBlocks.wallGC.getUnlocalizedName());
-        registerBlock(GCBlocks.slabGCHalf, ItemBlockSlabGC.class, GCBlocks.slabGCHalf.getUnlocalizedName().replace("tile.", ""), GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
-        registerBlock(GCBlocks.slabGCDouble, ItemBlockSlabGC.class, GCBlocks.slabGCDouble.getUnlocalizedName().replace("tile.", ""), GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);*/
+        registerBlock(GCBlocks.tinStairs1, ItemBlockGC.class);
+        registerBlock(GCBlocks.tinStairs2, ItemBlockGC.class);
+        registerBlock(GCBlocks.moonStoneStairs, ItemBlockGC.class);
+        registerBlock(GCBlocks.moonBricksStairs, ItemBlockGC.class);
+        registerBlock(GCBlocks.wallGC, ItemBlockWallGC.class);
+        registerBlock(GCBlocks.slabGCHalf, ItemBlockSlabGC.class, GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
+        registerBlock(GCBlocks.slabGCDouble, ItemBlockSlabGC.class, GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 //        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));

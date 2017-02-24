@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockWallGC extends Block //Do not extends to BlockWall
+public class BlockWallGC extends Block /* Do not extend BlockWall */ implements ISortableBlock
 {
     public static PropertyBool UP = PropertyBool.create("up");
     public static PropertyBool NORTH = PropertyBool.create("north");
@@ -38,7 +39,7 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
         super(Material.rock);
         this.setHardness(1.5F);
         this.setResistance(2.5F);
-        this.setDefaultState(this.getDefaultState().withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(VARIANT, BlockType.tin_1_wall));
+        this.setDefaultState(this.getDefaultState().withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(VARIANT, BlockType.TIN_1_WALL));
         this.setUnlocalizedName(name);
     }
 
@@ -129,19 +130,9 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs creativeTabs, List list)
     {
-        if (GalacticraftCore.isPlanetsLoaded)
+        for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); ++i)
         {
-            for (int i = 0; i < 6; ++i)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 4; ++i)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
+            list.add(new ItemStack(this, 1, i));
         }
     }
 
@@ -188,14 +179,20 @@ public class BlockWallGC extends Block //Do not extends to BlockWall
         return new BlockState(this, new IProperty[] { UP, NORTH, EAST, WEST, SOUTH, VARIANT });
     }
 
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.WALLS;
+    }
+
     public enum BlockType implements IStringSerializable
     {
-        tin_1_wall,
-        tin_2_wall,
-        moon_stone_wall,
-        moon_dungeon_brick_wall,
-        mars_cobblestone_wall,
-        mars_dungeon_brick_wall;
+        TIN_1_WALL,
+        TIN_2_WALL,
+        MOON_STONE_WALL,
+        MOON_DUNGEON_BRICK_WALL,
+        MARS_COBBLESTONE_WALL,
+        MARS_DUNGEON_BRICK_WALL;
 
         @Override
         public String toString()
