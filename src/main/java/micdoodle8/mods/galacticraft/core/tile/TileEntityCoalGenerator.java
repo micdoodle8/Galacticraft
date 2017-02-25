@@ -90,7 +90,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
                 }
                 else if (this.containingItems[0].getItem() == Item.getItemFromBlock(Blocks.coal_block) && this.containingItems[0].stackSize > 0)
                 {
-                    this.itemCookTime = 320 * 9;
+                    this.itemCookTime = 320 * 10;
                     this.decrStackSize(0, 1);
                 }
             }
@@ -261,7 +261,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return itemstack.getItem() == Items.coal;
+        return itemstack.getItem() == Items.coal || itemstack.getItem() == Item.getItemFromBlock(Blocks.coal_block);
     }
 
     @Override
