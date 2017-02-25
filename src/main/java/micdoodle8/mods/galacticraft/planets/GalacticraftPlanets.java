@@ -154,7 +154,7 @@ public class GalacticraftPlanets
         info.version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
         info.description = "Planets addon for Galacticraft.";
         info.url = "https://micdoodle8.com/";
-        info.authorList = Arrays.asList("micdoodle8, radfast, EzerArch, fishtaco, SpaceViking, SteveKunG");
+        info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
         info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
     }
 }
