@@ -1220,16 +1220,7 @@ public class GCPlayerHandler
 
             if (player.worldObj.provider instanceof WorldProviderOrbit)
             {
-                player.fallDistance = 0.0F;
-                try {
-                	if (ftc == null)
-                	{
-                		ftc = player.playerNetServerHandler.getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_FLOATINGTICKCOUNT));
-            			ftc.setAccessible(true);
-                	}
-                	//Prevent kicks for flying
-					ftc.setInt(player.playerNetServerHandler, 0);
-				} catch (Exception e) { }
+            	this.preventFlyingKicks(player);
                 if (GCPlayer.newInOrbit)
                 {
                 	((WorldProviderOrbit) player.worldObj.provider).sendPacketsToClient(player);
@@ -1242,16 +1233,7 @@ public class GCPlayerHandler
             	
                 if (GalacticraftCore.isPlanetsLoaded && player.worldObj.provider instanceof WorldProviderAsteroids)
                 {
-                    player.fallDistance = 0.0F;
-                    try {
-                    	if (ftc == null)
-                    	{
-                    		ftc = player.playerNetServerHandler.getClass().getDeclaredField("floatingTickCount");
-                			ftc.setAccessible(true);
-                    	}
-                    	//Prevent kicks for flying
-    					ftc.setInt(player.playerNetServerHandler, 0);
-    				} catch (Exception e) { }
+                	this.preventFlyingKicks(player);
                 }
             }
         }
@@ -1315,5 +1297,18 @@ public class GCPlayerHandler
         GCPlayer.lastOxygenSetupValid = GCPlayer.oxygenSetupValid;
         GCPlayer.lastUnlockedSchematics = GCPlayer.unlockedSchematics;
         GCPlayer.lastOnGround = player.onGround;
+    }
+    
+    public void preventFlyingKicks(EntityPlayerMP player)
+    {
+        player.fallDistance = 0.0F;
+        try {
+        	if (ftc == null)
+        	{
+        		ftc = player.playerNetServerHandler.getClass().getDeclaredField(VersionUtil.getNameDynamic(VersionUtil.KEY_FIELD_FLOATINGTICKCOUNT));
+    			ftc.setAccessible(true);
+        	}
+			ftc.setInt(player.playerNetServerHandler, 0);
+		} catch (Exception e) { }
     }
 }
