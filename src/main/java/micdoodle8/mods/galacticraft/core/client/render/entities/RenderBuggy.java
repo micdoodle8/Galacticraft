@@ -5,22 +5,18 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -108,19 +104,19 @@ public class RenderBuggy extends Render<EntityBuggy>
         GL11.glPushMatrix();
         GL11.glRotatef(entity.wheelRotationZ, 0, 1, 0);
         GL11.glRotatef(rotation, 1, 0, 0);
-        this.drawBakedModel(wheelFrontRight);
-        this.drawBakedModel(wheelFrontLeft);
+        ClientUtil.drawBakedModel(wheelFrontRight);
+        ClientUtil.drawBakedModel(wheelFrontLeft);
         GL11.glPopMatrix();
 
         // Back wheels
         GL11.glPushMatrix();
         GL11.glRotatef(-entity.wheelRotationZ, 0, 1, 0);
         GL11.glRotatef(rotation, 1, 0, 0);
-        this.drawBakedModel(wheelBackRight);
-        this.drawBakedModel(wheelBackLeft);
+        ClientUtil.drawBakedModel(wheelBackRight);
+        ClientUtil.drawBakedModel(wheelBackLeft);
         GL11.glPopMatrix();
 
-        this.drawBakedModel(mainModel);
+        ClientUtil.drawBakedModel(mainModel);
 
         // Radar Dish
         GL11.glPushMatrix();
@@ -128,39 +124,25 @@ public class RenderBuggy extends Render<EntityBuggy>
         int ticks = entity.ticksExisted + entity.getEntityId() * 10000;
         GL11.glRotatef((float) Math.sin(ticks * 0.05) * 50.0F, 1, 0, 0);
         GL11.glRotatef((float) Math.cos(ticks * 0.1) * 50.0F, 0, 0, 1);
-        this.drawBakedModel(radarDish);
+        ClientUtil.drawBakedModel(radarDish);
         GL11.glPopMatrix();
 
         if (entity.buggyType > 0)
         {
-            this.drawBakedModel(cargoLeft);
+            ClientUtil.drawBakedModel(cargoLeft);
 
             if (entity.buggyType > 1)
             {
-                this.drawBakedModel(cargoMid);
+                ClientUtil.drawBakedModel(cargoMid);
 
                 if (entity.buggyType > 2)
                 {
-                    this.drawBakedModel(cargoRight);
+                    ClientUtil.drawBakedModel(cargoRight);
                 }
             }
         }
 
         GL11.glPopMatrix();
         RenderHelper.enableStandardItemLighting();
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            LightUtil.renderQuadColor(worldrenderer, bakedquad, -1);
-        }
-
-        tessellator.draw();
     }
 }

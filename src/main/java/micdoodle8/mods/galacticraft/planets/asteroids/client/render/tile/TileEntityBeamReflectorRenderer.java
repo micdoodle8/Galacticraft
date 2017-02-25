@@ -3,23 +3,19 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -82,20 +78,20 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
 
         updateModels();
 
-        drawBakedModel(reflectorModelBase);
+        ClientUtil.drawBakedModel(reflectorModelBase);
         GL11.glRotatef(tile.yaw, 0, 1, 0);
-        drawBakedModel(reflectorModelAxle);
+        ClientUtil.drawBakedModel(reflectorModelAxle);
         float dX = 0.0F;
         float dY = 1.13228F;
         float dZ = 0.0F;
         GL11.glTranslatef(dX, dY, dZ);
         GL11.glRotatef(tile.pitch, 1, 0, 0);
         GL11.glTranslatef(-dX, -dY, -dZ);
-        drawBakedModel(reflectorModelEnergyBlaster);
+        ClientUtil.drawBakedModel(reflectorModelEnergyBlaster);
         GL11.glTranslatef(dX, dY, dZ);
         GL11.glRotatef(tile.ticks * 5, 0, 0, 1);
         GL11.glTranslatef(-dX, -dY, -dZ);
-        drawBakedModel(reflectorModelRing);
+        ClientUtil.drawBakedModel(reflectorModelRing);
 
 //        TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Base");
 //        GL11.glRotatef(tileEntity.yaw, 0, 1, 0);
@@ -114,19 +110,5 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
 
         RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            LightUtil.renderQuadColor(worldrenderer, bakedquad, -1);
-        }
-
-        tessellator.draw();
     }
 }

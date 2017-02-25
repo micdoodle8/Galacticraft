@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,10 +22,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -203,7 +201,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
 
         if (active)
         {
-            this.drawBakedModel(mainModel);
+            ClientUtil.drawBakedModel(mainModel);
 
 	        renderLaserModel(astroMiner.retraction);
 
@@ -212,7 +210,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
 	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 	        GL11.glDisable(GL11.GL_LIGHTING);
 	        GL11.glColor4f(sinOfTheTime, sinOfTheTime, sinOfTheTime, 1.0F);
-            this.drawBakedModel(hoverPadMain);
+            ClientUtil.drawBakedModel(hoverPadMain);
 
 	        GL11.glDisable(GL11.GL_CULL_FACE);
 	        GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -222,7 +220,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 	        GL11.glColor4f(sinOfTheTime, sinOfTheTime, sinOfTheTime, 0.6F);
-            this.drawBakedModel(hoverPadGlow);
+            ClientUtil.drawBakedModel(hoverPadGlow);
 
 	        if (ais < EntityAstroMiner.AISTATE_DOCKING)
 	        {
@@ -296,7 +294,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         else
         {
             this.bindEntityTexture(astroMiner);
-            this.drawBakedModel(mainModelInactive);
+            ClientUtil.drawBakedModel(mainModelInactive);
 	        renderLaserModel(astroMiner.retraction);
 	        if (astroMiner.retraction < 1F)
 	        {
@@ -550,19 +548,19 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     		zadjust = (zadjust - yadjust) * 2.5F + yadjust;
     	}
         GL11.glTranslatef(0F, yadjust, zadjust);
-        this.drawBakedModel(modellaser1);
+        ClientUtil.drawBakedModel(modellaser1);
 	    if (yadjust == 0.938F)
 	    {
 	        //Do not move laser centre into body
 	    	GL11.glTranslatef(0F, 0F, -zadjust + 0.938F);
 	    }
-        this.drawBakedModel(modellaser3);
+        ClientUtil.drawBakedModel(modellaser3);
     	GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glTranslatef(guardmovement, 0F, 0F);
-        this.drawBakedModel(modellasergl);
+        ClientUtil.drawBakedModel(modellasergl);
         GL11.glTranslatef(-2 * guardmovement + 8.75F, 0F, 0F);
-        this.drawBakedModel(modellasergl);
+        ClientUtil.drawBakedModel(modellasergl);
         GL11.glPopMatrix();
     }
 
@@ -570,19 +568,5 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     protected ResourceLocation getEntityTexture(EntityAstroMiner entity)
     {
         return new ResourceLocation("missing");
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            LightUtil.renderQuadColor(worldrenderer, bakedquad, -1);
-        }
-
-        tessellator.draw();
     }
 }

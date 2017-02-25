@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.Piece;
-import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;

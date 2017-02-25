@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
@@ -10,16 +11,12 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.opengl.GL11;
@@ -77,7 +74,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.65F, 0.6F, 0.65F);
 
-        this.drawBakedModel(modelEntryPod);
+        ClientUtil.drawBakedModel(modelEntryPod);
 
         if (entityEntryPod.posY > 382.0F)
         {
@@ -94,12 +91,12 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             float val = (float) (Math.sin(entityEntryPod.ticksExisted) / 20.0F + 0.5F);
             GL11.glScalef(1.0F, 1.0F + val, 1.0F);
             GL11.glRotatef(entityEntryPod.ticksExisted * 20.0F, 0.0F, 1.0F, 0.0F);
-            this.drawBakedModel(modelFlame, color);
+            ClientUtil.drawBakedModelColored(modelFlame, color);
             GL11.glPopMatrix();
 
             GL11.glScalef(1.0F, 1.0F + val / 6.0F, 1.0F);
             GL11.glRotatef(entityEntryPod.ticksExisted * 5.0F, 0.0F, 1.0F, 0.0F);
-            this.drawBakedModel(modelFlame, color);
+            ClientUtil.drawBakedModelColored(modelFlame, color);
 
             GL11.glCullFace(GL11.GL_BACK);
             GL11.glEnable(GL11.GL_CULL_FACE);
@@ -125,29 +122,5 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
     protected ResourceLocation getEntityTexture(EntityEntryPodVenus entityEntryPod)
     {
         return new ResourceLocation("missing");
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        this.drawBakedModel(model, ColorUtil.to32BitColor(255, 255, 255, 255));
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model, int color)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            int[] data = bakedquad.getVertexData();
-            data[3] = color;
-            data[10] = color;
-            data[17] = color;
-            data[24] = color;
-            worldrenderer.addVertexData(data);
-        }
-
-        tessellator.draw();
     }
 }

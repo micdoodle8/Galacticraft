@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.event.oxygen;
 
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
  * Entity Living suffocation events.
