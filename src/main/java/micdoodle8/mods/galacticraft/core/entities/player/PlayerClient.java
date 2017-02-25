@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -16,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -143,18 +145,25 @@ public class PlayerClient implements IPlayerClient
 
         if (ridingThirdPersonEntity && !stats.lastRidingCameraZoomEntity)
         {
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+            if(!ConfigManagerCore.disableVehicleCameraChanges)
+                FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
         }
 
         if (player.ridingEntity != null && player.ridingEntity instanceof ICameraZoomEntity)
         {
-            stats.lastZoomed = true;
-            TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
+            if(!ConfigManagerCore.disableVehicleCameraChanges)
+            {
+                stats.lastZoomed = true;
+                TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
+            }
         }
         else if (stats.lastZoomed)
         {
-            stats.lastZoomed = false;
-            TickHandlerClient.zoom(4.0F);
+        	if(!ConfigManagerCore.disableVehicleCameraChanges)
+            {
+	            stats.lastZoomed = false;
+	            TickHandlerClient.zoom(4.0F);
+            }
         }
 
         stats.lastRidingCameraZoomEntity = ridingThirdPersonEntity;
