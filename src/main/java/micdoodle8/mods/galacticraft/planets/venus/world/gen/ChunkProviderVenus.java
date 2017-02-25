@@ -346,13 +346,25 @@ public class ChunkProviderVenus implements IChunkProvider
             (new WorldGenLakesVenus()).generate(this.worldObj, this.rand, blockpos.add(i2, l2, k3));
         }
 
-        if (biomegenbase instanceof BiomeGenVenusValley && this.rand.nextInt(5) == 0)
-        {
-            int i2 = this.rand.nextInt(16) + 8;
-            int k3 = this.rand.nextInt(16) + 8;
-            int l2 = this.worldObj.getTopSolidOrLiquidBlock(blockpos.add(i2, 0, k3)).getY() - 10 - this.rand.nextInt(5);
 
-            (new WorldGenVaporPool()).generate(this.worldObj, this.rand, blockpos.add(i2, l2, k3));
+        if (biomegenbase instanceof BiomeGenVenusValley)
+        {
+            if (this.rand.nextInt(5) == 0)
+            {
+                int i2 = this.rand.nextInt(16) + 8;
+                int k3 = this.rand.nextInt(16) + 8;
+                int l2 = this.worldObj.getTopSolidOrLiquidBlock(blockpos.add(i2, 0, k3)).getY() - 10 - this.rand.nextInt(5);
+
+                (new WorldGenVaporPool()).generate(this.worldObj, this.rand, blockpos.add(i2, l2, k3));
+            }
+            else if (this.rand.nextInt(190) == 0)
+            {
+                int i2 = this.rand.nextInt(16) + 8;
+                int k3 = this.rand.nextInt(16) + 8;
+                int l2 = this.worldObj.getTopSolidOrLiquidBlock(blockpos.add(i2, 0, k3)).getY();
+
+                (new WorldGenCrashedProbe()).generate(this.worldObj, this.rand, blockpos.add(i2, l2, k3));
+            }
         }
 
         this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));

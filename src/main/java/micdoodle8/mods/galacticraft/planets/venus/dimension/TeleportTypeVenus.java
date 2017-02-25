@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.planets.venus.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;

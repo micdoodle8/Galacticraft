@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

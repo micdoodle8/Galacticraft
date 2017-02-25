@@ -3,15 +3,13 @@ package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.client.model.ModelSpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,10 +17,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -99,10 +95,10 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
         if (entity.getBurrowedCount() >= 0)
         {
             GL11.glDisable(GL11.GL_CULL_FACE);
-            this.drawBakedModel(webModel);
+            ClientUtil.drawBakedModel(webModel);
             GL11.glScalef(1.05F, 1.1F, 1.05F);
             GL11.glRotatef(192.5F, 0.0F, 1.0F, 0.0F);
-            this.drawBakedModel(webModel);
+            ClientUtil.drawBakedModel(webModel);
             GL11.glEnable(GL11.GL_CULL_FACE);
         }
 
@@ -115,19 +111,5 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
     protected ResourceLocation getEntityTexture(EntitySpiderQueen juicer)
     {
         return spiderTexture;
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            LightUtil.renderQuadColor(worldrenderer, bakedquad, -1);
-        }
-
-        tessellator.draw();
     }
 }

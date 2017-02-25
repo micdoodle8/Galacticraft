@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
-import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Random;
 

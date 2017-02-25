@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityProjectileTNT;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;

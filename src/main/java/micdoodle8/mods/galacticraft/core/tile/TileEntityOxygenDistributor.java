@@ -47,7 +47,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public void validate()
     {
         super.validate();
-//        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimensionId()));
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimensionId()));
     }
 
     @Override
@@ -164,7 +164,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                     {
                         continue;
                     }
-                    this.loadedTiles.add(new BlockVec3Dim(i1, i2, i3, i4));
+                    loadedTiles.add(new BlockVec3Dim(i1, i2, i3, i4));
                 }
             }
             this.bubbleSize = dataStream.readFloat();

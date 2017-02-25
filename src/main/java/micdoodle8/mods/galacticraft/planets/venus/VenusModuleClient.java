@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
 import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidExhaustFX;
 import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidVaporFX;
+import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderEntryPodVenus;
 import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderJuicer;
@@ -20,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
 import net.minecraft.block.state.IBlockState;
@@ -155,6 +157,8 @@ public class VenusModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.torchWeb, 0, "web_torch_0");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.torchWeb, 1, "web_torch_1");
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.geothermalGenerator, 0, "geothermal_generator");
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.crashedProbe);
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusBlocks.scorchedRock);
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 0, "thermal_helm_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 1, "thermal_chestplate_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.thermalPaddingTier2, 2, "thermal_leggings_t2");
@@ -182,6 +186,10 @@ public class VenusModuleClient implements IPlanetsModuleClient
                 if (tile instanceof TileEntityGeothermalGenerator)
                 {
                     return new GuiGeothermal(player.inventory, (TileEntityGeothermalGenerator) tile);
+                }
+                else if (tile instanceof TileEntityCrashedProbe)
+                {
+                    return new GuiCrashedProbe(player.inventory, (TileEntityCrashedProbe) tile);
                 }
             }
         }

@@ -7,10 +7,10 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -21,7 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
 
@@ -89,7 +88,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
                 if (sideTile != null && !(sideTile instanceof IBufferTransmitter))
                 {
                     GL11.glPushMatrix();
-                    drawBakedModel(pullConnectorModel[facing.ordinal()]);
+                    ClientUtil.drawBakedModel(pullConnectorModel[facing.ordinal()]);
                     GL11.glPopMatrix();
                 }
             }
@@ -377,24 +376,5 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         worldRenderer.pos(minX, maxY, minZ).tex(texMinZ_U, texMinX_V).endVertex();
         worldRenderer.pos(minX, maxY, maxZ).tex(texMaxZ_U, texMinX_V).endVertex();
         tess.draw();
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        drawBakedModel(model, -1);
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model, int color)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            LightUtil.renderQuadColor(worldrenderer, bakedquad, color);
-        }
-
-        tessellator.draw();
     }
 }

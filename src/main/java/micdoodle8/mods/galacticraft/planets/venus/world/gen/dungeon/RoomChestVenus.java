@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;

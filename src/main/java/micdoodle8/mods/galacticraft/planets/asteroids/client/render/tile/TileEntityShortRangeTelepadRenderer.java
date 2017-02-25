@@ -3,23 +3,19 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -79,29 +75,10 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRender
 
         GL11.glScalef(0.745F, 1.0F, 0.745F);
 
-        drawBakedModel(teleporterBottom);
+        ClientUtil.drawBakedModel(teleporterBottom);
         GL11.glTranslatef(0.0F, -0.7F, 0.0F);
-        drawBakedModel(teleporterTop);
+        ClientUtil.drawBakedModel(teleporterTop);
 
         GL11.glPopMatrix();
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model)
-    {
-        drawBakedModel(model, -1);
-    }
-
-    private void drawBakedModel(IFlexibleBakedModel model, int color)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
-
-        for (BakedQuad bakedquad : model.getGeneralQuads())
-        {
-            LightUtil.renderQuadColor(worldrenderer, bakedquad, color);
-        }
-
-        tessellator.draw();
     }
 }

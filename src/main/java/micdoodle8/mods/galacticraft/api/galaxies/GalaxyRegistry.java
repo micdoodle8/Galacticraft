@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import com.google.common.collect.*;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.*;
 

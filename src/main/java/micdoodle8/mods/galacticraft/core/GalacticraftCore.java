@@ -41,13 +41,9 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -140,6 +136,7 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        GCBlocks.doOtherModsTorches();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(Item.getItemFromBlock(GCBlocks.machineBase2));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(GCItems.rocketTier1);
 

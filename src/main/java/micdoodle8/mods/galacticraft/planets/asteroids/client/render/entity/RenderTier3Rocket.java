@@ -105,7 +105,7 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
 
         worldrenderer.begin(GL11.GL_QUADS, rocketModel.getFormat());
 
-        this.renderQuads(worldrenderer, rocketModel.getGeneralQuads(), -1);
+        ClientUtil.drawBakedModel(rocketModel);
         tessellator.draw();
 
         Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getName(), true);

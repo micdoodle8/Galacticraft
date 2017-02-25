@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.SizedPiece;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
