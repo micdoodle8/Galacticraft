@@ -61,7 +61,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @Override
     public boolean canUpdate()
     {
-        return true;
+        return EnergyConfigHandler.isIndustrialCraft2Loaded();
     }
 
     @Override
@@ -73,10 +73,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         {
             if (!this.worldObj.isRemote)
             {
-                if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-                {
-                    this.initIC();
-                }
+            	this.initIC();
             }
 
             this.isAddedToEnergyNet = true;
