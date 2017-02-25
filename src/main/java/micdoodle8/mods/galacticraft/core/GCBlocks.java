@@ -83,6 +83,7 @@ public class GCBlocks
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
     public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
+    public static ArrayList<Block> otherModTorchesUnlit = new ArrayList<Block>();
 
     public static Map<EnumSortCategoryBlock, List<StackSorted>> sortMapBlocks = Maps.newHashMap();
 
@@ -196,13 +197,13 @@ public class GCBlocks
         BlockUnlitTorch torch;
         BlockUnlitTorch torchLit;
 
-        if (Loader.isModLoaded("TConstruct"))
+        if (Loader.isModLoaded("tconstruct"))
         {
             Block modTorch = null;
             try
             {
                 //tconstruct.world.TinkerWorld.stoneTorch
-                Class clazz = Class.forName("tconstruct.world.TinkerWorld");
+                Class clazz = Class.forName("tconstruct.gadgets.TinkerGadgets");
                 modTorch = (Block) clazz.getField("stoneTorch").get(null);
             }
             catch (Exception e)
@@ -210,10 +211,11 @@ public class GCBlocks
             }
             if (modTorch != null)
             {
-                torch = new BlockUnlitTorch(false, "unlitTorch_Stone");
-                torchLit = new BlockUnlitTorch(true, "unlitTorchLit_Stone");
+                torch = new BlockUnlitTorch(false, "unlit_torch_stone");
+                torchLit = new BlockUnlitTorch(true, "unlit_torch_stone_lit");
                 GCBlocks.hiddenBlocks.add(torch);
                 GCBlocks.hiddenBlocks.add(torchLit);
+                GCBlocks.otherModTorchesUnlit.add(torch);
                 GCBlocks.otherModTorchesLit.add(torchLit);
                 GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
                 GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());

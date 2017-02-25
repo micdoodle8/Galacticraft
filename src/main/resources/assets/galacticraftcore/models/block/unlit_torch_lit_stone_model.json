@@ -1,0 +1,33 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "galacticraftcore:blocks/unlitTorchLit_Stone",
+		"ultorch": "galacticraftcore:blocks/unlitTorchLit_Stone"
+    },
+    "elements": [
+        {   "from": [ 7, 0, 7 ],
+            "to": [ 9, 10, 9 ],
+            "shade": false,
+            "faces": {
+                "down": { "uv": [ 7, 13, 9, 15 ], "texture": "#ultorch" },
+                "up":   { "uv": [ 7,  6, 9,  8 ], "texture": "#ultorch" }
+            }
+        },
+        {   "from": [ 7, 0, 0 ],
+            "to": [ 9, 16, 16 ],
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#ultorch" },
+                "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#ultorch" }
+            }
+        },
+        {   "from": [ 0, 0, 7 ],
+            "to": [ 16, 16, 9 ],
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#ultorch" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#ultorch" }
+            }
+        }
+    ]
+}
