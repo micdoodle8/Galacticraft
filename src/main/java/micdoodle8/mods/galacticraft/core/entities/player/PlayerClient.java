@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -143,7 +144,8 @@ public class PlayerClient implements IPlayerClient
 
         if (ridingThirdPersonEntity && !stats.lastRidingCameraZoomEntity)
         {
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+        	if(!Loader.isModLoaded("VivecraftForge"))
+            	FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
         }
 
         if (player.ridingEntity != null && player.ridingEntity instanceof ICameraZoomEntity)
