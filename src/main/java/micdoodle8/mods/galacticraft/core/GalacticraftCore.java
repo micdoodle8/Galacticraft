@@ -140,6 +140,7 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        GCBlocks.doOtherModsTorches();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(Item.getItemFromBlock(GCBlocks.machineBase2));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(GCItems.rocketTier1);
 
@@ -519,7 +520,7 @@ public class GalacticraftCore
         info.version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
         info.description = "An advanced space travel mod for Minecraft!";
         info.url = "https://micdoodle8.com/";
-        info.authorList = Arrays.asList("micdoodle8, radfast, EzerArch, fishtaco, SpaceViking");
+        info.authorList = Arrays.asList("micdoodle8, radfast, EzerArch, fishtaco, SpaceViking, SteveKunG");
         info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
     }
 }

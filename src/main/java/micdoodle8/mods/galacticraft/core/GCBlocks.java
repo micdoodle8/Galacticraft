@@ -157,7 +157,6 @@ public class GCBlocks
 
         //Complete registration of various types of torches
         BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.torch);
-        GCBlocks.doOtherModsTorches();
 
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
@@ -192,7 +191,7 @@ public class GCBlocks
         block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
     }
 
-    private static void doOtherModsTorches()
+    public static void doOtherModsTorches()
     {
         BlockUnlitTorch torch;
         BlockUnlitTorch torchLit;
@@ -203,12 +202,14 @@ public class GCBlocks
             try
             {
                 //tconstruct.world.TinkerWorld.stoneTorch
-                Class clazz = Class.forName("tconstruct.gadgets.TinkerGadgets");
-                modTorch = (Block) clazz.getField("stoneTorch").get(null);
+                Class clazz = Class.forName("slimeknights.tconstruct.gadgets.TinkerGadgets");
+                modTorch = (Block) clazz.getDeclaredField("stoneTorch").get(null);
             }
             catch (Exception e)
             {
+                e.printStackTrace();
             }
+
             if (modTorch != null)
             {
                 torch = new BlockUnlitTorch(false, "unlit_torch_stone");
@@ -217,8 +218,8 @@ public class GCBlocks
                 GCBlocks.hiddenBlocks.add(torchLit);
                 GCBlocks.otherModTorchesUnlit.add(torch);
                 GCBlocks.otherModTorchesLit.add(torchLit);
-                GameRegistry.registerBlock(torch, ItemBlockGC.class, torch.getUnlocalizedName());
-                GameRegistry.registerBlock(torchLit, ItemBlockGC.class, torchLit.getUnlocalizedName());
+                registerBlock(torch, ItemBlockGC.class);
+                registerBlock(torchLit, ItemBlockGC.class);
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
             }
         }
