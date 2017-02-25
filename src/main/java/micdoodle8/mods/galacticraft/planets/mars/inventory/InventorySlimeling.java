@@ -52,6 +52,29 @@ public class InventorySlimeling implements IInventory
         }
     }
 
+    private void removeInventoryBagContents()
+    {
+        if (this.currentContainer instanceof ContainerSlimeling)
+        {
+        	ContainerSlimeling.removeSlots((ContainerSlimeling) this.currentContainer);
+        }
+
+        for (int i = 2; i < this.stackList.length; i++)
+        {
+            if (this.stackList[i] != null)
+            {
+                if (!this.slimeling.worldObj.isRemote)
+                {
+                    this.slimeling.entityDropItem(this.stackList[i], 0.5F);
+                }
+
+                this.stackList[i] = null;
+            }
+        }
+    }
+    
+    
+    
     @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
@@ -62,25 +85,7 @@ public class InventorySlimeling implements IInventory
             //It's a removal of the Slimeling Inventory Bag
             if (par1 == 1 && this.stackList[par1].stackSize <= par2)
             {
-                if (this.currentContainer instanceof ContainerSlimeling)
-                {
-	            	ContainerSlimeling.removeSlots((ContainerSlimeling) this.currentContainer);
-	                ContainerSlimeling.addSlots((ContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
-                }
-
-                for (int i = 2; i < this.stackList.length; i++)
-                {
-                    if (this.stackList[i] != null)
-                    {
-                        if (!this.slimeling.worldObj.isRemote)
-                        {
-                            this.slimeling.entityDropItem(this.stackList[i], 0.5F);
-                        }
-
-                        this.stackList[i] = null;
-                    }
-                }
-
+            	this.removeInventoryBagContents();
                 var3 = this.stackList[par1];
                 this.stackList[par1] = null;
                 return var3;
@@ -92,24 +97,10 @@ public class InventorySlimeling implements IInventory
 
                 if (this.stackList[par1].stackSize == 0)
                 {
-                	//Again special code if removing Inventory Bag (not sure if this is necessary?)
+                	//Not sure if this is necessary again, given the above?
                 	if (par1 == 1)
                     {
-                        ContainerSlimeling.removeSlots((ContainerSlimeling) this.currentContainer);
-                        ContainerSlimeling.addSlots((ContainerSlimeling) this.currentContainer, ((EntityPlayer) this.slimeling.getOwner()).inventory, this.slimeling);
-
-                        for (int i = 2; i < this.stackList.length; i++)
-                        {
-                            if (this.stackList[i] != null)
-                            {
-                                if (!this.slimeling.worldObj.isRemote)
-                                {
-                                    this.slimeling.entityDropItem(this.stackList[i], 0.5F);
-                                }
-
-                                this.stackList[i] = null;
-                            }
-                        }
+                		this.removeInventoryBagContents();
                     }
 
                     this.stackList[par1] = null;

@@ -49,8 +49,8 @@ public class ContainerSlimeling extends Container
     
     public static void removeSlots(ContainerSlimeling container)
     {
-        container.inventoryItemStacks.clear();
-        container.inventorySlots.clear();
+        container.inventoryItemStacks = container.inventoryItemStacks.subList(0, 37);
+        container.inventorySlots = container.inventorySlots.subList(0, 37);
     }
 
     @SuppressWarnings("unchecked")
