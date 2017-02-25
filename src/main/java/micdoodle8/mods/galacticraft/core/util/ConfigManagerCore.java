@@ -76,7 +76,8 @@ public class ConfigManagerCore
 
     // CLIENT / VISUAL FX
     public static boolean moreStars;
-    public static boolean disableSpaceshipParticles;  
+    public static boolean disableSpaceshipParticles; 
+    public static boolean disableVehicleCameraChanges;
     public static boolean oxygenIndicatorLeft;
     public static boolean oxygenIndicatorBottom;
     public static boolean overrideCapes;
@@ -258,6 +259,12 @@ public class ConfigManagerCore
             prop.comment = "If you have FPS problems, setting this to true will help if rocket particles are in your sights";
             prop.setLanguageKey("gc.configgui.disableSpaceshipParticles");
             disableSpaceshipParticles = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Vehicle Third-Person and Zoom", false);
+            prop.comment = "If you're using this mod in virtual reality, or if you don't want the camera changes when entering a Galacticraft vehicle, set this to true.";
+            prop.setLanguageKey("gc.configgui.disableVehicleCameraChanges");
+            disableVehicleCameraChanges = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Minimap Left", false);
