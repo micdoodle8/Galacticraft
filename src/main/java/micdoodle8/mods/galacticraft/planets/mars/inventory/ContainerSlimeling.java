@@ -46,7 +46,7 @@ public class ContainerSlimeling extends Container
             container.addSlotToContainer(slot);
         }
     }
-
+    
     public static void removeSlots(ContainerSlimeling container)
     {
         container.inventoryItemStacks.clear();
@@ -58,16 +58,20 @@ public class ContainerSlimeling extends Container
     {
         if (stack != null && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
         {
-            for (int var3 = 0; var3 < 3; ++var3)
-            {
-                for (int var4 = 0; var4 < 9; ++var4)
-                {
-                    Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 54 + var3 * 18);
-                    slot.slotNumber = container.inventorySlots.size();
-                    container.inventorySlots.add(slot);
-                    container.inventoryItemStacks.add((Object) null);
-                }
-            }
+        	//Note that if NEI is installed, this can be called by InventorySlimeling.setInventorySlotContents even if the container already has the slots
+        	if (container.inventorySlots.size() < 63)
+        	{
+        		for (int var3 = 0; var3 < 3; ++var3)
+        		{
+        			for (int var4 = 0; var4 < 9; ++var4)
+        			{
+        				Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 54 + var3 * 18);
+        				slot.slotNumber = container.inventorySlots.size();
+        				container.inventorySlots.add(slot);
+        				container.inventoryItemStacks.add((Object) null);
+        			}
+        		}
+        	}
         }
     }
 
