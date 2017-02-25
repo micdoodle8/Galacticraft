@@ -1,19 +1,28 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProvider> extends TileEntitySpecialRenderer<E>
 {
-    private static final ResourceLocation oxygenBubbleTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/bubble.png");
-
-    //private static IModelCustom sphere;
+    private static OBJModel.OBJBakedModel sphere;
 
     private final float colorRed;
     private final float colorGreen;
@@ -21,10 +30,28 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
 
     public TileEntityBubbleProviderRenderer(float colorRed, float colorGreen, float colorBlue)
     {
-        //sphere = AdvancedModelLoader.loadModel(new ResourceLocation(Constants.ASSET_PREFIX, "models/sphere.obj"));
         this.colorRed = colorRed;
         this.colorGreen = colorGreen;
         this.colorBlue = colorBlue;
+    }
+
+    private static void updateModels()
+    {
+        if (sphere == null)
+        {
+            try
+            {
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "sphere.obj"));
+                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                sphere = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Sphere"), false), DefaultVertexFormats.ITEM, spriteFunction);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -35,14 +62,17 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
             return;
         }
 
+        updateModels();
+
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.0F, (float) z + 0.5F);
 
-        this.bindTexture(TileEntityBubbleProviderRenderer.oxygenBubbleTexture);
+        this.bindTexture(TextureMap.locationBlocksTexture);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
 
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -56,7 +86,8 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
         GL11.glScalef(provider.getBubbleSize(), provider.getBubbleSize(), provider.getBubbleSize());
 
-        //sphere.renderAll();
+        int color = ColorUtil.to32BitColor(30, (int)(this.colorBlue / 2.0F * 255), (int)(this.colorGreen / 2.0F * 255), (int)(this.colorRed / 2.0F * 255));
+        ClientUtil.drawBakedModelColored(sphere, color);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glMatrixMode(GL11.GL_TEXTURE);
@@ -66,6 +97,7 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11.glEnable(GL11.GL_CULL_FACE);
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
 

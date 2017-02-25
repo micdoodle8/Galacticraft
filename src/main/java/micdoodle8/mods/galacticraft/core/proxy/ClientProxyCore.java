@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -326,6 +327,7 @@ public class ClientProxyCore extends CommonProxyCore
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/frequencyModule"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
     }
 
     @SubscribeEvent
@@ -505,6 +507,14 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.landingPad, 1, "buggy_pad");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.unlitTorch);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
+        for (Block torch : GCBlocks.otherModTorchesLit)
+        {
+            ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, torch);
+        }
+        for (Block torch : GCBlocks.otherModTorchesUnlit)
+        {
+            ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, torch);
+        }
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.oxygenDistributor);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.oxygenPipe);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.oxygenPipePull);

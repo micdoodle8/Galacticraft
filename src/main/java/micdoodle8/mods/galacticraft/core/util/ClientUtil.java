@@ -14,6 +14,9 @@ import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -22,6 +25,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
@@ -30,6 +34,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -148,5 +153,38 @@ public class ClientUtil
 
             event.modelRegistry.putObject(modelResourceLocation, newModel);
         }
+    }
+
+    public static void drawBakedModel(IFlexibleBakedModel model)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+
+        for (BakedQuad bakedquad : model.getGeneralQuads())
+        {
+            worldrenderer.addVertexData(bakedquad.getVertexData());
+        }
+
+        tessellator.draw();
+    }
+
+    public static void drawBakedModelColored(IFlexibleBakedModel model, int color)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+
+        for (BakedQuad bakedquad : model.getGeneralQuads())
+        {
+            int[] data = bakedquad.getVertexData();
+            data[3] = color;
+            data[10] = color;
+            data[17] = color;
+            data[24] = color;
+            worldrenderer.addVertexData(data);
+        }
+
+        tessellator.draw();
     }
 }

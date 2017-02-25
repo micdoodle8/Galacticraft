@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;

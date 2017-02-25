@@ -22,6 +22,8 @@ public class VenusBlocks
     public static Block torchWeb;
     public static Block sulphuricAcid;
     public static Block geothermalGenerator;
+    public static Block crashedProbe;
+    public static Block scorchedRock;
 
     public static void initBlocks()
     {
@@ -31,6 +33,8 @@ public class VenusBlocks
         VenusBlocks.treasureChestTier3 = new BlockTier3TreasureChest("treasure_t3");
         VenusBlocks.torchWeb = new BlockTorchWeb("web_torch");
         VenusBlocks.geothermalGenerator = new BlockGeothermalGenerator("geothermal_generator");
+        VenusBlocks.crashedProbe = new BlockCrashedProbe("crashed_probe");
+        VenusBlocks.scorchedRock = new BlockScorchedRock("venus_rock_scorched");
 
         GCBlocks.hiddenBlocks.add(VenusBlocks.bossSpawner);
 
@@ -77,6 +81,8 @@ public class VenusBlocks
         registerBlock(VenusBlocks.treasureChestTier3, ItemBlockDesc.class);
         registerBlock(VenusBlocks.torchWeb, ItemBlockTorchWeb.class);
         registerBlock(VenusBlocks.geothermalGenerator, ItemBlockDesc.class);
+        registerBlock(VenusBlocks.crashedProbe, ItemBlockDesc.class);
+        registerBlock(VenusBlocks.scorchedRock, ItemBlockGC.class);
     }
 
     public static void oreDictRegistration()
