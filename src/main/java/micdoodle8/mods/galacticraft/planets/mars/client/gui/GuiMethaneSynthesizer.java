@@ -135,7 +135,15 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         String displayText = "";
         int yOffset = -18;
 
-        if ((this.tileEntity.processTicks > -8 || this.tileEntity.canProcess()) && this.tileEntity.hasEnoughEnergyToRun)
+        if (RedstoneUtil.isBlockReceivingRedstone(this.tileEntity.getWorldObj(), this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord))
+        {
+        	displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+        }
+        else if (!this.tileEntity.hasEnoughEnergyToRun)
+        {
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
+        }
+        else if ((this.tileEntity.processTicks > -8 || this.tileEntity.canProcess()))
         {
             displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.processing.name");
         }
@@ -146,14 +154,6 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         else if (this.tileEntity.gasTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
-        }
-        else if (RedstoneUtil.isBlockReceivingRedstone(this.tileEntity.getWorldObj(), this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord))
-        {
-        	displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
-        }
-        else if (!this.tileEntity.hasEnoughEnergyToRun)
-        {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.lowEnergy.name");
         }
         else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity())
         {
