@@ -526,7 +526,7 @@ public class GalacticraftCore
 	        enableJPEG = true;
         } catch (UnsatisfiedLinkError e)
         {
-        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
+        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_Linux_servers_running_OpenJDK");
         	e.printStackTrace();
         }
     }

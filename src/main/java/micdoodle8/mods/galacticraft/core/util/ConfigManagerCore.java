@@ -52,6 +52,7 @@ public class ConfigManagerCore
     public static boolean enableDebug;
     public static boolean enableSealerEdgeChecks;
     public static boolean disableLander;
+    public static boolean recipesRequireGCAdvancedMetals = true;
 //    public static int mapfactor;
 //    public static int mapsize;
     
@@ -521,6 +522,12 @@ public class ConfigManagerCore
             otherModsSilicon = prop.getString();
             propOrder.add(prop.getName());
 
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Force the use of Galacticraft's own Meteoric Iron, Desh, Titanium etc in recipes (not their OreDict equivalents)", true);
+            prop.comment = "Should normally be true. If you set this to false, in a modpack with other mods with the same metals, players may be able to craft advanced GC items without travelling to Moon, Mars, Asteroids etc.";
+            prop.setLanguageKey("gc.configgui.disableOreDictSpaceMetals").setRequiresMcRestart(true);
+            recipesRequireGCAdvancedMetals = prop.getBoolean(true);
+            propOrder.add(prop.getName());          
+            
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Galaxy Map", "KEY_M");
             prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
             prop.setLanguageKey("gc.configgui.overrideMap").setRequiresMcRestart(true);
@@ -785,6 +792,7 @@ public class ConfigManagerCore
     	modeFlags += ConfigManagerCore.quickMode ? 2 : 0;
     	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
     	modeFlags += ConfigManagerCore.disableSpaceStationCreation ? 8 : 0;
+    	modeFlags += ConfigManagerCore.recipesRequireGCAdvancedMetals ? 16 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
@@ -808,6 +816,7 @@ public class ConfigManagerCore
     	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
     	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
     	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
+    	ConfigManagerCore.recipesRequireGCAdvancedMetals = (modeFlag & 16) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
