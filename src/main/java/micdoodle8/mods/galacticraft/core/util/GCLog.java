@@ -24,4 +24,9 @@ public class GCLog
         	FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.INFO, "Debug: " + message);
         }
     }
+
+	public static void exception(Exception e)
+	{
+		FMLRelaunchLog.log(Constants.MOD_NAME_SIMPLE, Level.ERROR, e.getMessage());
+	}
 }
