@@ -8,7 +8,6 @@ public class BiomeGenFlatMars extends BiomeGenBaseMars
     public BiomeGenFlatMars(int par1)
     {
         super(par1);
-        this.setBiomeName("marsFlat");
         this.setColor(16711680);
         this.setHeight(new Height(2.5F, 0.4F));
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)

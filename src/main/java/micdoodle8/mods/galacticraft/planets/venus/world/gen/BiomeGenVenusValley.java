@@ -17,7 +17,6 @@ public class BiomeGenVenusValley extends BiomeGenBaseVenus
     public BiomeGenVenusValley(int par1)
     {
         super(par1);
-        this.setBiomeName("venusFlat");
         this.setColor(100 << 16 | 100 << 8 | 100);
         this.setHeight(new Height(-0.4F, 0.2F));
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)

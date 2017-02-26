@@ -19,9 +19,9 @@ import java.util.Random;
 
 public class BiomeGenBaseVenus extends BiomeGenBase
 {
-    public static final BiomeGenBase venusFlat = new BiomeGenFlatVenus(ConfigManagerCore.biomeIDbase + 4).setBiomeName("venusFlat");
-    public static final BiomeGenBase venusMountain = new BiomeGenVenusMountain(ConfigManagerCore.biomeIDbase + 5).setBiomeName("venusMountain");
-    public static final BiomeGenBase venusValley = new BiomeGenVenusValley(ConfigManagerCore.biomeIDbase + 6).setBiomeName("venusValley");
+    public static final BiomeGenBase venusFlat = new BiomeGenFlatVenus(ConfigManagerCore.biomeIDbase + 4).setBiomeName("Venus Flat");
+    public static final BiomeGenBase venusMountain = new BiomeGenVenusMountain(ConfigManagerCore.biomeIDbase + 5).setBiomeName("Venus Mountain");
+    public static final BiomeGenBase venusValley = new BiomeGenVenusValley(ConfigManagerCore.biomeIDbase + 6).setBiomeName("Venus Valley");
 
     @SuppressWarnings("unchecked")
     BiomeGenBaseVenus(int var1)
