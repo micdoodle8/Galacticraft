@@ -11,7 +11,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeGenBaseAsteroids extends BiomeGenBase
 {
-    public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("asteroids");
+    public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("Asteroids");
 
     @SuppressWarnings("unchecked")
     private BiomeGenBaseAsteroids(int var1)
