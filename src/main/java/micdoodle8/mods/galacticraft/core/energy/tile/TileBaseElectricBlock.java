@@ -227,14 +227,14 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public String getGUIstatus()
     {
+        if (!this.noRedstoneControl && RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
+        {
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+        }
+
         if (this.getEnergyStoredGC() == 0)
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
-        }
-
-        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
         }
 
         if (this.getDisabled(0))

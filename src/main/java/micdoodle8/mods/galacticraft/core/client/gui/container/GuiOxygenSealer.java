@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
+//import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiButton;
@@ -145,10 +145,10 @@ public class GuiOxygenSealer extends GuiContainerGC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }
 
-        if (RedstoneUtil.isBlockReceivingRedstone(this.sealer.getWorld(), this.sealer.getPos()))
-        {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
-        }
+//        if (RedstoneUtil.isBlockReceivingRedstone(this.sealer.getWorldObj(), this.sealer.getPos()))
+//        {
+//            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+//        }
 
         if (this.sealer.disabled)
         {

@@ -263,7 +263,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return itemstack.getItem() == Items.coal;
+        return itemstack.getItem() == Items.coal || itemstack.getItem() == Item.getItemFromBlock(Blocks.coal_block);
     }
 
 //    @Override
@@ -279,15 +279,15 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing direction)
     {
-        return false;
+        return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing direction)
     {
-        return false;
+        return slotID == 0;
     }
 
     @Override

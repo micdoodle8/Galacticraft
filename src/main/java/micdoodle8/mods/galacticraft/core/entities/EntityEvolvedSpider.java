@@ -110,7 +110,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     }
 
     @Override
-    protected void dropFewItems(boolean b, int i)
+    protected void addRandomDrop()
     {
         switch (this.rand.nextInt(14))
         {
@@ -136,10 +136,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             this.dropItem(GCItems.oxygenConcentrator, 1);
             break;
         default:
-            if (ConfigManagerCore.challengeMode)
-            {
-                this.dropItem(Items.nether_wart, 1);
-            }
+            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.nether_wart, 1);
             break;
         }
     }

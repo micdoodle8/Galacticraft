@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
@@ -87,8 +88,9 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         ForgeHooks.onLivingJump(this);
     }
 
+
     @Override
-    protected void dropFewItems(boolean b, int i)
+    protected void addRandomDrop()
     {
         switch (this.rand.nextInt(16))
         {
@@ -125,11 +127,35 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         case 13:
         case 14:
         case 15:
-            if (ConfigManagerCore.challengeMode)
-            {
-                this.dropItem(Items.melon_seeds, 1);
-            }
+            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.melon_seeds, 1);
             break;
         }
+    }
+
+    @Override
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    {
+        super.dropFewItems(p_70628_1_, p_70628_2_);
+        Item item = this.getDropItem();
+
+        //Less rotten flesh than vanilla
+        int j = this.rand.nextInt(2);
+
+        if (item != null)
+        {
+            if (p_70628_2_ > 0)
+            {
+                j += this.rand.nextInt(p_70628_2_ + 1);
+            }
+
+            for (int k = 0; k < j; ++k)
+            {
+                this.dropItem(item, 1);
+            }
+        }
+
+        //Drop copper ingot as semi-rare drop if player hit and if dropping rotten flesh (50% chance)
+        if (p_70628_1_ && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) == 0)
+            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
     }
 }

@@ -70,6 +70,8 @@ public class GalacticraftCore
 
     public static boolean isPlanetsLoaded;
 
+    public static boolean isHeightConflictingModInstalled;
+    
     public static GalacticraftChannelHandler packetPipeline;
     public static GCPlayerHandler handler;
 
@@ -99,11 +101,20 @@ public class GalacticraftCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        this.initModInfo(event.getModMetadata());
-        isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
-        GCCoreUtil.nextID = 0;
-
-        MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
+    	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
+    	GCCoreUtil.nextID = 0;
+    	
+        if(Loader.isModLoaded("SmartMoving"))
+        {
+            isHeightConflictingModInstalled = true;
+        }
+        
+        if(Loader.isModLoaded("witchery"))
+        {
+            isHeightConflictingModInstalled = true;
+        }
+    	
+    	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         handler = new GCPlayerHandler();
         MinecraftForge.EVENT_BUS.register(handler);
         GalacticraftCore.proxy.preInit(event);
@@ -348,8 +359,8 @@ public class GalacticraftCore
         }
         catch (UnsatisfiedLinkError e)
         {
-            GCLog.severe("Error initialising JPEG compressor - this is likely caused by a known bug in OpenJDK.");
-            e.printStackTrace();
+        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_Linux_servers_running_OpenJDK");
+        	e.printStackTrace();
         }
     }
 

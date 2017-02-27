@@ -775,36 +775,29 @@ public class GCPlayerHandler
 
             if (!player.worldObj.isRemote && player.isEntityAlive())
             {
-                if (!playerStats.oxygenSetupValid)
-                {
-                    if (playerStats.damageCounter == 0)
-                    {
-                        playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
+            	if (!playerStats.oxygenSetupValid)
+            	{
+        			GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(player);
+        			MinecraftForge.EVENT_BUS.post(suffocationEvent);
 
-                        GCCoreOxygenSuffocationEvent suffocationEvent = new GCCoreOxygenSuffocationEvent.Pre(player);
-                        MinecraftForge.EVENT_BUS.post(suffocationEvent);
+        			if (!suffocationEvent.isCanceled())
+        			{
+                		if (playerStats.damageCounter == 0)
+                		{
+                			playerStats.damageCounter = ConfigManagerCore.suffocationCooldown;
 
-                        if (!suffocationEvent.isCanceled())
-                        {
-                            player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage * (2 + playerStats.incrementalDamage) / 2);
-                            if (ConfigManagerCore.hardMode)
-                            {
-                                playerStats.incrementalDamage++;
-                            }
+            				player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage * (2 + playerStats.incrementalDamage) / 2);
+            				if (ConfigManagerCore.hardMode) playerStats.incrementalDamage++;
 
-                            GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
-                            MinecraftForge.EVENT_BUS.post(suffocationEventPost);
-                        }
-                        else
-                        {
-                            playerStats.oxygenSetupValid = true;
-                        }
-                    }
-                }
-                else
-                {
-                    playerStats.incrementalDamage = 0;
-                }
+            				GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(player);
+            				MinecraftForge.EVENT_BUS.post(suffocationEventPost);
+                		}
+        			}
+        			else
+        				playerStats.oxygenSetupValid = true;
+            	}
+        		else
+        			playerStats.incrementalDamage = 0;
             }
         }
         else if ((player.ticksExisted - 1) % 20 == 0 && !player.capabilities.isCreativeMode && playerStats.airRemaining < 90)
@@ -1129,7 +1122,7 @@ public class GCPlayerHandler
         //This will speed things up a little
         final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
 
-        if (ConfigManagerCore.challengeMode && GCPlayer.unlockedSchematics.size() == 0)
+        if ((ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling) && GCPlayer.unlockedSchematics.size() == 0)
         {
             if (GCPlayer.startDimension.length() > 0)
             {
@@ -1310,9 +1303,7 @@ public class GCPlayerHandler
 
             if (player.worldObj.provider instanceof WorldProviderZeroGravity)
             {
-                player.fallDistance = 0.0F;
-                //Prevent kicks for flying
-                player.playerNetServerHandler.floatingTickCount = 0;
+            	this.preventFlyingKicks(player);
                 if (GCPlayer.newInOrbit)
                 {
                     ((WorldProviderZeroGravity) player.worldObj.provider).getSpinManager().sendPackets(player);
@@ -1325,9 +1316,7 @@ public class GCPlayerHandler
 
                 if (GalacticraftCore.isPlanetsLoaded && player.worldObj.provider instanceof WorldProviderAsteroids)
                 {
-                    player.fallDistance = 0.0F;
-                    //Prevent kicks for flying
-                    player.playerNetServerHandler.floatingTickCount = 0;
+                	this.preventFlyingKicks(player);
                 }
             }
         }
@@ -1394,5 +1383,11 @@ public class GCPlayerHandler
         GCPlayer.lastOxygenSetupValid = GCPlayer.oxygenSetupValid;
         GCPlayer.lastUnlockedSchematics = GCPlayer.unlockedSchematics;
         GCPlayer.lastOnGround = player.onGround;
+    }
+    
+    public void preventFlyingKicks(EntityPlayerMP player)
+    {
+        player.fallDistance = 0.0F;
+        player.playerNetServerHandler.floatingTickCount = 0;
     }
 }
