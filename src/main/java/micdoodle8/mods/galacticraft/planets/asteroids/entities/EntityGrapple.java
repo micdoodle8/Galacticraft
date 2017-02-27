@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -234,6 +235,8 @@ public class EntityGrapple extends Entity implements IProjectile
                         this.shootingEntity.motionX = (this.posX - this.shootingEntity.posX) / 16.0F;
                         this.shootingEntity.motionY = (this.posY - this.shootingEntity.posY) / 16.0F;
                         this.shootingEntity.motionZ = (this.posZ - this.shootingEntity.posZ) / 16.0F;
+                        if (this.shootingEntity instanceof EntityPlayerMP)
+                        	GalacticraftCore.handler.preventFlyingKicks((EntityPlayerMP) this.shootingEntity);
                     }
 
                     if (!this.worldObj.isRemote && this.ticksInGround < 5)

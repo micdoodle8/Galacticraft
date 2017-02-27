@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -33,7 +34,8 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 public class PlayerClient implements IPlayerClient
 {
     private boolean saveSneak;
-    private double downMot2;
+	private double downMot2;
+	public static boolean startup;
 
     @Override
     public void moveEntity(EntityPlayerSP player, double par1, double par3, double par5)
@@ -79,6 +81,12 @@ public class PlayerClient implements IPlayerClient
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
+            if (!startup)
+            {
+                stats.inFreefallLast = stats.inFreefall;
+                stats.inFreefall = stats.freefallHandler.testFreefall(player);
+                startup = true;
+            }
             if (player.worldObj.provider instanceof WorldProviderZeroGravity)
             {
                 stats.inFreefallLast = stats.inFreefall;
@@ -154,18 +162,25 @@ public class PlayerClient implements IPlayerClient
 
         if (ridingThirdPersonEntity && !stats.lastRidingCameraZoomEntity)
         {
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
+            if(!ConfigManagerCore.disableVehicleCameraChanges)
+                FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
         }
 
         if (player.ridingEntity != null && player.ridingEntity instanceof ICameraZoomEntity)
         {
-            stats.lastZoomed = true;
-            TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
+            if(!ConfigManagerCore.disableVehicleCameraChanges)
+            {
+                stats.lastZoomed = true;
+                TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
+            }
         }
         else if (stats.lastZoomed)
         {
-            stats.lastZoomed = false;
-            TickHandlerClient.zoom(4.0F);
+        	if(!ConfigManagerCore.disableVehicleCameraChanges)
+            {
+	            stats.lastZoomed = false;
+	            TickHandlerClient.zoom(4.0F);
+            }
         }
 
         stats.lastRidingCameraZoomEntity = ridingThirdPersonEntity;
@@ -182,16 +197,19 @@ public class PlayerClient implements IPlayerClient
         if (gearData != null)
         {
             stats.usingParachute = gearData.getParachute() != null;
-            if (gearData.getMask() >= 0)
+            if(!GalacticraftCore.isHeightConflictingModInstalled)
             {
-                player.height = 1.9375F;
+                if (gearData.getMask() >= 0)
+                {
+                	player.height = 1.9375F;
+                }
+                else
+                {
+                	player.height = 1.8F;
+                }
+                AxisAlignedBB bounds = player.getEntityBoundingBox();
+                player.setEntityBoundingBox(new AxisAlignedBB(bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.minY + (double) player.height, bounds.maxZ));
             }
-            else
-            {
-                player.height = 1.8F;
-            }
-            AxisAlignedBB bounds = player.getEntityBoundingBox();
-            player.setEntityBoundingBox(new AxisAlignedBB(bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.minY + (double) player.height, bounds.maxZ));
         }
 
         if (stats.usingParachute && player.onGround)

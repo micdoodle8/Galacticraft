@@ -16,6 +16,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
@@ -113,44 +114,59 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     }
 
     @Override
-    protected void dropFewItems(boolean b, int i)
+    protected void addRandomDrop()
     {
-        if (this.getSkeletonType() == 1)
-        {
-            this.entityDropItem(new ItemStack(Items.skull, 1, 1), 0.0F);
-            return;
-        }
-
-        switch (this.rand.nextInt(12))
+        int r = this.rand.nextInt(12);
+        switch (r)
         {
         case 0:
         case 1:
-            this.dropItem(Items.arrow, 1);
-            break;
         case 2:
         case 3:
-            this.dropItem(Items.arrow, 2);
-            break;
         case 4:
         case 5:
-            this.dropItem(Items.arrow, 3);
+            this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
             break;
         case 6:
             //Oxygen tank half empty or less
             this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
             break;
         case 7:
+        case 8:
             this.dropItem(GCItems.canister, 1);
             break;
-        case 8:
-            this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
-            break;
         default:
-            if (ConfigManagerCore.challengeMode)
-            {
-                this.dropItem(Items.pumpkin_seeds, 1);
-            }
+            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.pumpkin_seeds, 1);
             break;
         }
+    }
+
+    @Override
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    {
+        Item item = this.getDropItem();
+
+        int j = this.rand.nextInt(3);
+
+        if (item != null)
+        {
+            if (p_70628_2_ > 0)
+            {
+                j += this.rand.nextInt(p_70628_2_ + 1);
+            }
+
+            for (int k = 1; k < j; ++k)
+            {
+                this.dropItem(item, 1);
+            }
+        }
+
+        j = this.rand.nextInt(3 + p_70628_2_);
+        if (j > 1)
+            this.dropItem(Items.bone, 1);
+
+        //Drop lapis as semi-rare drop if player hit and if dropping bones
+        if (p_70628_1_ && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
+            this.entityDropItem(new ItemStack(Items.dye, 1, 4), 0.0F);
     }
 }

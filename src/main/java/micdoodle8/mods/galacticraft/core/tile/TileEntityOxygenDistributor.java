@@ -201,7 +201,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getEnergyStoredGC() > 0.0F && this.getOxygenStored() > this.oxygenPerTick)
+            if (this.getEnergyStoredGC() > 0.0F && this.hasEnoughEnergyToRun && this.getOxygenStored() > this.oxygenPerTick)
             {
                 this.bubbleSize += 0.01F;
             }

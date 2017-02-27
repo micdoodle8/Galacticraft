@@ -629,7 +629,7 @@ public class TransformerHooks
         float f4 = 1.1F;
         float f5 = -1.1F;
         float f6 = 1.1F;
-        float f7 = -0.5F;
+        float f7 = -0.25F;
         float f8 = -ClientProxyCore.mc.thePlayer.rotationYaw / 64.0F;
         float f9 = ClientProxyCore.mc.thePlayer.rotationPitch / 64.0F;
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();

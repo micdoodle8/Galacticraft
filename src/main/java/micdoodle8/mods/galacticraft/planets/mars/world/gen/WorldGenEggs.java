@@ -19,9 +19,9 @@ public class WorldGenEggs extends WorldGenerator
     @Override
     public boolean generate(World par1World, Random par2Random, BlockPos pos)
     {
-        int i1 = pos.getX() + par2Random.nextInt(8) - par2Random.nextInt(8);
-        int j1 = pos.getY() + par2Random.nextInt(4) - par2Random.nextInt(4);
-        int k1 = pos.getZ() + par2Random.nextInt(8) - par2Random.nextInt(8);
+        int i1 = pos.getX();
+        int j1 = pos.getY();
+        int k1 = pos.getZ();
 
         if (par1World.isAirBlock(new BlockPos(i1, j1, k1)) && (!par1World.provider.getHasNoSky() || j1 < 127) && this.eggBlock.canPlaceBlockAt(par1World, new BlockPos(i1, j1, k1)))
         {

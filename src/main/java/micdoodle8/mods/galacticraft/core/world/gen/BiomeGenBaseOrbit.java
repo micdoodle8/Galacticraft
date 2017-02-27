@@ -7,7 +7,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenBaseOrbit extends BiomeGenBase
 {
-    public static final BiomeGenBase space = new BiomeGenBaseOrbit(ConfigManagerCore.biomeIDbase + 3).setBiomeName("space");
+    public static final BiomeGenBase space = new BiomeGenBaseOrbit(ConfigManagerCore.biomeIDbase + 3).setBiomeName("Space");
 
     @SuppressWarnings("unchecked")
     private BiomeGenBaseOrbit(int var1)

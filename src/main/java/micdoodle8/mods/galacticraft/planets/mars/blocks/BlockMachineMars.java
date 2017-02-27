@@ -272,25 +272,6 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         par3List.add(this.getLaunchController());
     }
 
-    private boolean canPlaceChamberAt(World world, BlockPos pos, EntityLivingBase player)
-    {
-        for (int y = 0; y < 3; y++)
-        {
-            Block blockAt = world.getBlockState(pos.add(0, y, 0)).getBlock();
-            int metaAt = getMetaFromState(world.getBlockState(pos));
-
-            if (y == 0 && blockAt == MarsBlocks.machine && metaAt >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && metaAt < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
-            {
-                continue;
-            }
-            if (!blockAt.getMaterial().isReplaceable())
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
     public int damageDropped(IBlockState state)
     {

@@ -157,8 +157,8 @@ public class WorldUtil
 
     public static void initialiseDimensionNames()
     {
-        WorldProvider provider = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld);
-        WorldUtil.dimNames.put(ConfigManagerCore.idDimensionOverworld, provider.getDimensionName());
+    	WorldProvider provider = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld);
+    	WorldUtil.dimNames.put(ConfigManagerCore.idDimensionOverworld, provider.getDimensionName());
     }
 
     /**
@@ -986,7 +986,7 @@ public class WorldUtil
 
     public static WorldServer getStartWorld(WorldServer worldOld)
     {
-        if (ConfigManagerCore.challengeMode)
+        if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling)
         {
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;

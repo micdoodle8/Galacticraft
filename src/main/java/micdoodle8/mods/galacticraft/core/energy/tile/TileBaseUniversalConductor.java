@@ -36,25 +36,21 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return EnergyUtil.getAdjacentPowerConnections(this);
     }
 
-//    @Override
-//    public boolean canUpdate()
-//    {
-//        return true;
-//    }
-
     @Override
     public void update()
     {
+        if (!EnergyConfigHandler.isIndustrialCraft2Loaded())
+        {
+            return;
+        }
+
         super.update();
 
         if (!this.isAddedToEnergyNet)
         {
             if (!this.worldObj.isRemote)
             {
-                if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-                {
-                    this.initIC();
-                }
+            	this.initIC();
             }
 
             this.isAddedToEnergyNet = true;

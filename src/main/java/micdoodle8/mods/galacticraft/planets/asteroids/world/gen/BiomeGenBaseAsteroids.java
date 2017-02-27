@@ -11,7 +11,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeGenBaseAsteroids extends BiomeGenBase
 {
-    public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("asteroids");
+    public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("Asteroids");
 
     @SuppressWarnings("unchecked")
     private BiomeGenBaseAsteroids(int var1)
@@ -25,7 +25,7 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
         spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
         spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
         spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-        if (ConfigManagerCore.challengeMode)
+        if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning)
         {
             spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
         }

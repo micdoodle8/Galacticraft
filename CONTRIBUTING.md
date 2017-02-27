@@ -14,16 +14,22 @@ Posting new issues - guidelines
 1. If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
 2. Do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
 3. When posting, always tell us your exact Galacticraft version.
-4. You should download the latest GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
+4. You should download the __latest__ GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
 5. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
+6. Issues in add-on mods like [GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace),[MorePlanets](https://github.com/MCCommanderTH/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[4Space](https://github.com/4Space/4Space-5) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
 
 Issue reports not meeting these guidelines will be flagged as __Invalid__ and closed.
 
+
 If reporting a mod conflict, we might ask you to do some testing to isolate which exact other mod is conflicting with GC.
+
 
 How to search before posting your issue
 ---------------------------------------
-You're in the Galacticraft repository here, so it's pretty easy to do a search, just enter the search term at the top of this page.  The Github results page shows you both "Code" results and "Issues" results.  You need to click on "Issues" to see what has been found.
+You're in the Galacticraft repository here, so it's pretty easy to do a search, just enter the search at the top of this page.  The Github results page shows you both "Code" results and "Issues" results.  You need to click on "Issues" to see what has been found.
+
+If you have a crash, how about searching for some of the info which shows up at the top of that crash report?
+
 
 Are you sure it's a Galacticraft issue?
 ---------------------------------------
@@ -39,6 +45,7 @@ That's not a vanilla Minecraft crash: likewise, Galacticraft does not have an is
 
 In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` line in the middle of the report.  Or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` or other similar variants, the same guidance applies.
 
+
 What else is not OK on the issues list?
 ----------------------------------
 The issues list is __not__ for:
@@ -49,7 +56,7 @@ The issues list is __not__ for:
 * communicating with micdoodle8 - use other communication channels like Twitter or email
 * modpack permission requests - modpack permissions are found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission.
 
-On the questions and suggestions thing, we of course make an exception for developers of other mods making compatibility suggestions or questions - those are always welcomed and the Issues list is a great place for that.  Likewise if you're a coder planning a Pull Request for Galacticraft you are welcome to open an issue to discuss it first.
+On the suggestions thing, we of course make an exception for developers of other mods making compatibility suggestions - those are always welcomed and the Issues list is a great place for that.  Likewise if you're a coder planning a Pull Request for Galacticraft you are welcome to open an issue to discuss it first.
 
 Translation fixes
 -----------------
@@ -62,9 +69,9 @@ If you spot an error or something missing in the translation of Galacticraft for
     https://github.com/micdoodle8/Galacticraft/tree/master/src/main/resources/assets/galacticraftmars/lang
     https://github.com/micdoodle8/Galac...n/resources/assets/galacticraftasteroids/lang
 
-2.  Click the Fork button (top right of this screen) and navigate back to the lang file: click __src/main__ then __resources__ then __assets__
+2.  Click the Fork button (top right of this screen) and now in your new fork, navigate back to the language file: click __src/main__ then __resources__ then __assets__
 
-3.  Click the Edit button (it looks like a pencil)
+3.  Click the Edit button (it looks like a pencil!)
 
 4.  Edit the text to fix the translation, and save your edit
 
@@ -84,13 +91,13 @@ Pull Requests meeting the following guidelines can be automatically merged:
 
 2.  If you made a mistake and fixed it with a second or third minor commit, please combine them into one good commit (so not like some guys do it, commit 1 'fixed it' then commit 2 'oops, missed something' then commit 3 'derp'.)
 
-3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of them but not the third.  We are happy to have multiple Pull Requests from you.
+3.  One Pull Request per commit please.  It confuses us if you mix three unrelated commits in one Pull Request.  Bear in mind that we might, for example, decide to incorporate two of your commits but not the third.  We are happy to have multiple Pull Requests from you.
 
 4.  If you're fixing something which is not already in the issues list and is not obvious, please make comments explaining what you fixed.  A screenshot of before and after can help.  We are not super-human, please help us to understand what you did.
 
 5.  If proposing a change in currently intended behaviour of Galacticraft via a Pull Request, that could be great if it's an improvement, but you have more chance of it being immediately accepted if you discussed it with us first - you are very welcome to open an issue to do that.
 
-6.  Please respect our code style, which is fairly vanilla.  You can see the style by looking at existing sources.  Long lines are OK.  We like opening braces { to be on lines by themselves.
+6.  Please respect our code style.  You can see the style by looking at existing sources.  Long lines are OK.  We like opening braces { to be on lines by themselves.
 
 Pull Requests not meeting these guidelines are also welcomed, but we may have to manually merge them, which means that you may not be automatically accredited as the author in the changelog....
 
