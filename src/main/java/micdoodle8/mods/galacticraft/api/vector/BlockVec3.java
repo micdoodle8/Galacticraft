@@ -109,8 +109,7 @@ public class BlockVec3 implements Cloneable
             }
             else
             {
-                Chunk chunk = null;
-                chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                 BlockVec3.chunkCached = chunk;
                 BlockVec3.chunkCacheDim = world.provider.getDimensionId();
                 BlockVec3.chunkCacheX = chunkx;
@@ -157,8 +156,7 @@ public class BlockVec3 implements Cloneable
                 }
                 else
                 {
-                    Chunk chunk = null;
-                    chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3.chunkCached = chunk;
                     BlockVec3.chunkCacheDim = world.provider.getDimensionId();
                     BlockVec3.chunkCacheX = chunkx;
@@ -214,8 +212,7 @@ public class BlockVec3 implements Cloneable
                 }
                 else
                 {
-                    Chunk chunk = null;
-                    chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3.chunkCached = chunk;
                     BlockVec3.chunkCacheDim = world.provider.getDimensionId();
                     BlockVec3.chunkCacheX = chunkx;
@@ -233,14 +230,6 @@ public class BlockVec3 implements Cloneable
             crashreportcategory.addCrashSection("Location", CrashReportCategory.getCoordinateInfo(new BlockPos(this.x, this.y, this.z)));
             throw new ReportedException(crashreport);
         }
-    }
-
-    public BlockVec3 add(BlockVec3 par1)
-    {
-        this.x += par1.x;
-        this.y += par1.y;
-        this.z += par1.z;
-        return this;
     }
 
     public BlockVec3 translate(BlockVec3 par1)
@@ -310,7 +299,7 @@ public class BlockVec3 implements Cloneable
 
     public BlockVec3 newVecSide(int side)
     {
-        BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
+        final BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
         vec.sideDoneBits = (1 << (side ^ 1)) + (side << 6);
         switch (side)
         {
@@ -354,7 +343,7 @@ public class BlockVec3 implements Cloneable
     {
         if (o instanceof BlockVec3)
         {
-            BlockVec3 vector = (BlockVec3) o;
+            final BlockVec3 vector = (BlockVec3) o;
             return this.x == vector.x && this.y == vector.y && this.z == vector.z;
         }
 
@@ -406,14 +395,8 @@ public class BlockVec3 implements Cloneable
         default:
             return null;
         }
-        if (world.isBlockLoaded(new BlockPos(x, y, z)))
-        {
-            return world.getTileEntity(new BlockPos(x, y, z));
-        }
-        else
-        {
-            return null;
-        }
+        final BlockPos pos = new BlockPos(x, y, z);
+        return world.isBlockLoaded(pos) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -447,14 +430,8 @@ public class BlockVec3 implements Cloneable
         default:
             return null;
         }
-        if (world.isBlockLoaded(new BlockPos(x, y, z)))
-        {
-            return world.getTileEntity(new BlockPos(x, y, z));
-        }
-        else
-        {
-            return null;
-        }
+        final BlockPos pos = new BlockPos(x, y, z);
+        return world.isBlockLoaded(pos) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -488,7 +465,8 @@ public class BlockVec3 implements Cloneable
         default:
             return false;
         }
-        return world.getBlockState(new BlockPos(x, y, z)).getBlock().isSideSolid(world, new BlockPos(x, y, z), EnumFacing.getFront(side ^ 1));
+        final BlockPos pos = new BlockPos(x, y, z);
+        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, EnumFacing.getFront(side ^ 1));
     }
 
     /**
@@ -522,25 +500,19 @@ public class BlockVec3 implements Cloneable
         default:
             return null;
         }
-        if (world.isBlockLoaded(new BlockPos(x, y, z)))
-        {
-            return world.getBlockState(new BlockPos(x, y, z)).getBlock();
-        }
-        else
-        {
-            return null;
-        }
+        final BlockPos pos = new BlockPos(x, y, z);
+        return world.isBlockLoaded(pos) ? world.getBlockState(pos).getBlock() : null;
     }
 
     public int getBlockMetadata(IBlockAccess world)
     {
-        IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+        final IBlockState state = world.getBlockState(new BlockPos(x, y, z));
         return state.getBlock().getMetaFromState(state);
     }
 
     public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
     {
-        BlockVec3 tempVector = new BlockVec3();
+        final BlockVec3 tempVector = new BlockVec3();
         tempVector.x = nbtCompound.getInteger("x");
         tempVector.y = nbtCompound.getInteger("y");
         tempVector.z = nbtCompound.getInteger("z");
