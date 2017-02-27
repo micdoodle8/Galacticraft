@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -104,7 +104,7 @@ public class RoomBossVenus extends SizedPieceVenus
                     }
                     else if (j < f)
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
 
                         if (j + 1 >= f && (dXZ > 5) && random.nextInt(12) == 0)
                         {
@@ -187,7 +187,7 @@ public class RoomBossVenus extends SizedPieceVenus
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                 }

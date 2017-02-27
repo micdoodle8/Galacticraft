@@ -15,8 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -36,7 +37,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     public BlockTelepadFake(String assetName)
     {
         super(GCBlocks.machine);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
 //        this.setBlockTextureName(Constants.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName(Constants.TEXTURE_PREFIX + "launch_pad");
@@ -111,7 +112,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -142,7 +143,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityTelepadFake tileEntity = (TileEntityTelepadFake) worldIn.getTileEntity(pos);
         return tileEntity.onActivated(playerIn);
@@ -178,7 +179,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
@@ -187,7 +188,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         {
             Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
 
-            if (Blocks.air != mainBlockID)
+            if (Blocks.AIR != mainBlockID)
             {
                 return mainBlockID.getPickBlock(target, world, mainBlockPosition, player);
             }
@@ -267,9 +268,9 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, TOP, CONNECTABLE);
+        return new BlockStateContainer(this, TOP, CONNECTABLE);
     }
 
     @Override

@@ -16,10 +16,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
@@ -36,7 +37,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
 
     public BlockFluidTank(String assetName)
     {
-        super(Material.glass);
+        super(Material.GLASS);
         this.setHardness(3.0F);
         this.setResistance(8.0F);
         this.setUnlocalizedName(assetName);
@@ -62,9 +63,9 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -98,9 +99,9 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, UP, DOWN);
+        return new BlockStateContainer(this, UP, DOWN);
     }
 
     @Override
@@ -157,9 +158,9 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ))
+        if (super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
         {
             return true;
         }

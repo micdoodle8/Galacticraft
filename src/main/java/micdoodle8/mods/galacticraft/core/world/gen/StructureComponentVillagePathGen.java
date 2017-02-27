@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -145,7 +145,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
             {
                 BlockPos pos = new BlockPos(var5, par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1, var6);
                 IBlockState state = par1World.getBlockState(pos);
-                if (par3StructureBoundingBox.isVecInside(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.air == state.getBlock()))
+                if (par3StructureBoundingBox.isVecInside(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.AIR == state.getBlock()))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1;
                     par1World.setBlockState(new BlockPos(var5, var7, var6), var4.getStateFromMeta(1), 2);

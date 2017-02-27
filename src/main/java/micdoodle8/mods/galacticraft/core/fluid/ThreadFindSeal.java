@@ -14,7 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -140,7 +140,7 @@ public class ThreadFindSeal
             if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
             {
                 Block b = this.head.getBlockID_noChunkLoad(this.world);
-                if (Blocks.air == b)
+                if (Blocks.AIR == b)
                 {
                     this.airToReplace.add(this.head.clone());
                 }
@@ -153,7 +153,7 @@ public class ThreadFindSeal
             else
             {
                 Block headblock = this.head.getBlockIDsafe_noChunkLoad(this.world);
-                if (Blocks.air == headblock)
+                if (Blocks.AIR == headblock)
                 {
                     this.airToReplace.add(this.head.clone());
                 }
@@ -407,7 +407,7 @@ public class ThreadFindSeal
             List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
             for (BlockVec3 checkedVec : this.breatheableToReplace)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0, 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.AIR, 0, 2));
             }
             for (BlockVec3 checkedVec : this.breatheableToReplaceBright)
             {
@@ -489,7 +489,7 @@ public class ThreadFindSeal
                             else
                             {
                                 checkedLocal.add(sideVec);
-                                if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
+                                if (id != null && Blocks.AIR != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                                 {
                                     //Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
                                     nextLayer.add(sideVec);
@@ -576,7 +576,7 @@ public class ThreadFindSeal
                         else
                         {
                             checkedLocal.add(sideVec);
-                            if (id != null && Blocks.air != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
+                            if (id != null && Blocks.AIR != id && id != GCBlocks.brightAir && this.canBlockPassAirCheck(id, sideVec, EnumFacing.getFront(side)))
                             {
                                 //Look outbound through partially sealable blocks in case there is breatheableAir to clear beyond
                                 nextLayer.add(sideVec);
@@ -596,7 +596,7 @@ public class ThreadFindSeal
     {
         //Local variables are fractionally faster than statics
         Block breatheableAirID = GCBlocks.breatheableAir;
-        Block airID = Blocks.air;
+        Block airID = Blocks.AIR;
         Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
         Block airIDBright = GCBlocks.brightAir;
         Block oxygenSealerID = GCBlocks.oxygenSealer;
@@ -724,7 +724,7 @@ public class ThreadFindSeal
     {
         //Local variables are fractionally faster than statics
         Block breatheableAirID = GCBlocks.breatheableAir;
-        Block airID = Blocks.air;
+        Block airID = Blocks.AIR;
         Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
         Block airIDBright = GCBlocks.brightAir;
         Block oxygenSealerID = GCBlocks.oxygenSealer;
@@ -914,7 +914,7 @@ public class ThreadFindSeal
         if (block.isOpaqueCube())
         {
             //Gravel, wool and sponge are porous
-            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
+            return block instanceof BlockGravel || block.getMaterial() == Material.CLOTH || block instanceof BlockSponge;
 
         }
 

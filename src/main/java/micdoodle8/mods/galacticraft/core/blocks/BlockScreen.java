@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -33,7 +34,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
     public BlockScreen(String assetName)
     {
-        super(Material.circuits);
+        super(Material.CIRCUITS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeGlass);
@@ -106,7 +107,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
@@ -179,9 +180,9 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, LEFT, RIGHT, UP, DOWN);
+        return new BlockStateContainer(this, FACING, LEFT, RIGHT, UP, DOWN);
     }
 
     @Override

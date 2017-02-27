@@ -14,8 +14,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -148,9 +148,9 @@ public class FreefallHandler
                     {
                         for (int z = zm; z <= zz; z++)
                         {
-                            //Blocks.air is hard vacuum - we want to check for that, here
+                            //Blocks.AIR is hard vacuum - we want to check for that, here
                             Block b = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                            if (Blocks.air != b && GCBlocks.brightAir != b)
+                            if (Blocks.AIR != b && GCBlocks.brightAir != b)
                             {
                                 return false;
                             }
@@ -220,7 +220,7 @@ public class FreefallHandler
 			for(int x = xmin; x <= xmax; x++)
 				for (int z = zmin; z <= zmax; z++)
 					for (int y = ymin; y <= ymax; y++)
-						if (Blocks.air != this.worldProvider.worldObj.getBlock(x, y, z))
+						if (Blocks.AIR != this.worldProvider.worldObj.getBlock(x, y, z))
 						{
 							freefall = false;
 							break BLOCKCHECK0;

@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -176,7 +176,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 //                        final Block var18 = arrayOfIDs[index];
                         Block var18 = primer.getBlockState(index).getBlock();
 
-                        if (Blocks.air == var18)
+                        if (Blocks.AIR == var18)
                         {
                             var13 = -1;
                         }
@@ -188,7 +188,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                             {
                                 if (var12 <= 0)
                                 {
-                                    var14 = Blocks.air;
+                                    var14 = Blocks.AIR;
                                     var14m = 0;
                                     var15 = this.getStoneBlock().getBlock();
                                     var15m = this.getStoneBlock().getMetadata();
@@ -308,10 +308,10 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
                     int helper = 0;
                     for (int y = 127; y > 0; y--)
                     {
-                        if (Blocks.air != primer.getBlockState(this.getIndex(x, y, z)).getBlock() && helper <= yDev)
+                        if (Blocks.AIR != primer.getBlockState(this.getIndex(x, y, z)).getBlock() && helper <= yDev)
                         {
-                            primer.setBlockState(getIndex(x, y, z), Blocks.air.getDefaultState());
-//                            chunkArray[this.getIndex(x, y, z)] = Blocks.air;
+                            primer.setBlockState(getIndex(x, y, z), Blocks.AIR.getDefaultState());
+//                            chunkArray[this.getIndex(x, y, z)] = Blocks.AIR;
 //                            metaArray[this.getIndex(x, y, z)] = 0;
                             helper++;
                         }

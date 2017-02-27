@@ -1,7 +1,7 @@
 package codechicken.lib.vec;
 
 import codechicken.lib.util.Copyable;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.Iterator;
 

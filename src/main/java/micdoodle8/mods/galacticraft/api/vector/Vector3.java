@@ -5,7 +5,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -64,7 +67,7 @@ public class Vector3 implements Cloneable
         this(par1.getPos());
     }
 
-    public Vector3(Vec3 par1)
+    public Vector3(Vec3d par1)
     {
         this(par1.xCoord, par1.yCoord, par1.zCoord);
 
@@ -430,7 +433,7 @@ public class Vector3 implements Cloneable
     @SuppressWarnings("unchecked")
     public List<Entity> getEntitiesWithin(World worldObj, Class<? extends Entity> par1Class)
     {
-        return worldObj.getEntitiesWithinAABB(par1Class, AxisAlignedBB.fromBounds(this.intX(), this.intY(), this.intZ(), this.intX() + 1, this.intY() + 1, this.intZ() + 1));
+        return worldObj.getEntitiesWithinAABB(par1Class, new AxisAlignedBB(this.intX(), this.intY(), this.intZ(), this.intX() + 1, this.intY() + 1, this.intZ() + 1));
     }
 
     /**
@@ -713,7 +716,7 @@ public class Vector3 implements Cloneable
         Vec3 reachPoint = new Vec3(startingPosition.xCoord + look.xCoord * reachDistance, startingPosition.yCoord + look.yCoord * reachDistance, startingPosition.zCoord + look.zCoord * reachDistance);
 
         double checkBorder = 1.1 * reachDistance;
-        AxisAlignedBB boxToScan = AxisAlignedBB.fromBounds(-checkBorder, -checkBorder, -checkBorder, checkBorder, checkBorder, checkBorder).offset(this.x, this.y, this.z);
+        AxisAlignedBB boxToScan = new AxisAlignedBB(-checkBorder, -checkBorder, -checkBorder, checkBorder, checkBorder, checkBorder).offset(this.x, this.y, this.z);
 
         List<Entity> entitiesHit = world.getEntitiesWithinAABBExcludingEntity(null, boxToScan);
         double closestEntity = reachDistance;

@@ -20,14 +20,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -87,7 +89,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
     public BlockBasicMoon(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 1.5F;
         this.blockResistance = 2.5F;
         this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
@@ -124,7 +126,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) worldIn.getBlockState(pos).getValue(BASIC_TYPE_MOON));
 
@@ -246,7 +248,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
 
@@ -258,7 +260,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         plantable.getPlant(world, pos.offset(EnumFacing.UP));
 
         return plantable instanceof BlockFlower;
-
     }
 
     @Override
@@ -288,7 +289,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
 //        int metadata = getMetaFromState(world.getBlockState(pos));
 //        if (metadata == 2)
@@ -296,7 +297,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 //            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
 //        }
 
-        return super.getPickBlock(target, world, pos, player);
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override
@@ -359,9 +360,9 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, BASIC_TYPE_MOON);
+        return new BlockStateContainer(this, BASIC_TYPE_MOON);
     }
 
     @Override

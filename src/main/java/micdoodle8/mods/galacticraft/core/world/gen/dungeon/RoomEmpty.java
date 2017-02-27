@@ -75,12 +75,12 @@ public class RoomEmpty extends SizedPiece
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                     }
                 }
             }

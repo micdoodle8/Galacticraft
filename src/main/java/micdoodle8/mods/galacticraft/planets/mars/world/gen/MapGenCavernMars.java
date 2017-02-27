@@ -199,8 +199,8 @@ public class MapGenCavernMars extends MapGenBaseMeta
 
                                             if (block == MarsBlocks.marsBlock || block == MarsBlocks.blockSludge || block == MarsBlocks.vine)
                                             {
-                                                primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                arrayOfIDs[coords] = Blocks.air;
+                                                primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+//                                                arrayOfIDs[coords] = Blocks.AIR;
                                             }
                                         }
                                     }
@@ -231,13 +231,13 @@ public class MapGenCavernMars extends MapGenBaseMeta
                                             Block blockAbove = primer.getBlockState(var42, var50 + 1, var45).getBlock();
                                             Block blockBelow = primer.getBlockState(var42, var50 - 1, var45).getBlock();
 
-                                            if (Blocks.air == block)
+                                            if (Blocks.AIR == block)
                                             {
                                                 if (blockAbove == MarsBlocks.marsBlock && this.rand.nextInt(200) == 0)
                                                 {
                                                     int modifier = 0;
 
-                                                    while (Blocks.air == block && var50 + modifier > 0)
+                                                    while (Blocks.AIR == block && var50 + modifier > 0)
                                                     {
                                                         primer.setBlockState(var42, var50 + modifier, var45, MarsBlocks.vine.getStateFromMeta(Math.abs(modifier) % 3));
 //                                                        arrayOfIDs[coordsBelow] = MarsBlocks.vine;

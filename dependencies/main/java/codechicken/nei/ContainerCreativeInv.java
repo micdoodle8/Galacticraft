@@ -43,7 +43,7 @@ public class ContainerCreativeInv extends Container {
 
         @Override
         public boolean isItemValid(ItemStack stack) {
-            return super.isItemValid(stack) || stack != null;// && Block.getBlockFromItem(stack.getItem()) != Blocks.air;
+            return super.isItemValid(stack) || stack != null;// && Block.getBlockFromItem(stack.getItem()) != Blocks.AIR;
         }
     }
 

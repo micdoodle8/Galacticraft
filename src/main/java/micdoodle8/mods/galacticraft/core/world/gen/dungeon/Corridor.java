@@ -54,7 +54,7 @@ public class Corridor extends SizedPiece
                             }
                         }
 
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                     }
                 }
             }

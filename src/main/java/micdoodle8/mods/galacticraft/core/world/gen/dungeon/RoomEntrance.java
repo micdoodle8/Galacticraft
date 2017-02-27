@@ -45,7 +45,7 @@ public class RoomEntrance extends SizedPiece
 
                     Block block = getBlockStateFromPos(worldIn, i + range, j, k + range, boundingBox).getBlock();
 
-                    if (Blocks.air != block && block != null)
+                    if (Blocks.AIR != block && block != null)
                     {
                         break;
                     }
@@ -72,7 +72,7 @@ public class RoomEntrance extends SizedPiece
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                     }
                 }
             }
@@ -92,7 +92,7 @@ public class RoomEntrance extends SizedPiece
                     block1 = this.getBlockStateFromPos(worldIn, i + range, j, k + range, boundingBox);
                     if (block1 == this.configuration.getBrickBlock() || j != this.sizeY)
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i + range, j, k + range, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i + range, j, k + range, boundingBox);
                         helper++;
                     }
                 }

@@ -7,16 +7,16 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,7 +75,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
 
     public BlockBasic(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(1.0F);
         this.blockResistance = 15F;
         this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE, EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0));
@@ -157,9 +157,9 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     }
 
     @Override
-    public float getBlockHardness(World world, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        int metadata = getMetaFromState(world.getBlockState(pos));
+        int metadata = getMetaFromState(blockState);
 
         if (metadata == 5 || metadata == 6)
         {
@@ -204,7 +204,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
 
@@ -213,7 +213,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
         }
 
-        return super.getPickBlock(target, world, pos, player);
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override
@@ -229,9 +229,9 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, BASIC_TYPE);
+        return new BlockStateContainer(this, BASIC_TYPE);
     }
 
     @Override

@@ -535,9 +535,9 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.basicBlock, 10, "block_tin_gc");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.basicBlock, 11, "block_aluminum_gc");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.basicBlock, 12, "block_meteoric_iron_gc");
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockSeal, 0, "air_lock_seal");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.AIRLockFrame, 0, "air_lock_frame");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.AIRLockFrame, 1, "air_lock_controller");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.AIRLockSeal, 0, "air_lock_seal");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.refinery);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fuelLoader);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");

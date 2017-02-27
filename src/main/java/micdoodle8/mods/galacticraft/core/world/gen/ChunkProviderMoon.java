@@ -14,7 +14,7 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -135,7 +135,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
                     else
                     {
                         IBlockState var18 = primer.getBlockState(index);
-                        if (Blocks.air == var18)
+                        if (Blocks.AIR == var18)
                         {
                             var13 = -1;
                         }
@@ -145,7 +145,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
                             {
                                 if (var12 <= 0)
                                 {
-                                    state0 = Blocks.air.getDefaultState();
+                                    state0 = Blocks.AIR.getDefaultState();
                                     state1 = BLOCK_LOWER;
                                 }
                                 else if (var16 >= var5 - -16 && var16 <= var5 + 1)
@@ -244,9 +244,9 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
                     int helper = 0;
                     for (int y = 127; y > 0; y--)
                     {
-                        if (Blocks.air != primer.getBlockState(this.getIndex(x, y, z)).getBlock() && helper <= yDev)
+                        if (Blocks.AIR != primer.getBlockState(this.getIndex(x, y, z)).getBlock() && helper <= yDev)
                         {
-                            primer.setBlockState(this.getIndex(x, y, z), Blocks.air.getDefaultState());
+                            primer.setBlockState(this.getIndex(x, y, z), Blocks.AIR.getDefaultState());
                             helper++;
                         }
                         if (helper > yDev)

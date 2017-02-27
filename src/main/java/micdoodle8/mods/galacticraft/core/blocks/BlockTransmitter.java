@@ -15,8 +15,8 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,16 +39,14 @@ public abstract class BlockTransmitter extends BlockAdvanced
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+        super.onNeighborChange(worldIn, pos, neighborBlockPos);
 
         TileEntity tile = worldIn.getTileEntity(pos);
 
         this.setBlockBoundsBasedOnState(worldIn, pos);
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, worldIn.provider.getDimensionId(), new Object[] { pos }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
-
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, ((World) worldIn).provider.getDimension(), new Object[] { pos }), new NetworkRegistry.TargetPoint(((World) worldIn).provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
 
         if (tile instanceof INetworkConnection)
         {

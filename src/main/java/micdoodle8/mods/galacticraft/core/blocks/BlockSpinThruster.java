@@ -17,6 +17,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,9 +31,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 
     public BlockSpinThruster(String assetName)
     {
-        super(Material.circuits);
+        super(Material.CIRCUITS);
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(SoundType.WOOD);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
@@ -120,45 +122,46 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        if (this.dropTorchIfCantStay(worldIn, pos))
+        IBlockState state = worldIn.getBlockState(pos);
+        if (this.dropTorchIfCantStay((World) worldIn, pos))
         {
             final int var6 = getMetaFromState(state) & 7;
             boolean var7 = false;
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST) && var6 == 1)
+            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST) && var6 == 1)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST) && var6 == 2)
+            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST) && var6 == 2)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH) && var6 == 3)
+            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH) && var6 == 3)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH) && var6 == 4)
+            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH) && var6 == 4)
             {
                 var7 = true;
             }
 
             if (var7)
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-                worldIn.setBlockToAir(pos);
+                this.dropBlockAsItem((World) worldIn, pos, state, 0);
+                ((World)worldIn).setBlockToAir(pos);
             }
         }
 
-        if (!worldIn.isRemote)
+        if (!((World) worldIn).isRemote)
         {
-            if (worldIn.provider instanceof WorldProviderZeroGravity)
+            if (((World) worldIn).provider instanceof WorldProviderZeroGravity)
             {
-                ((WorldProviderZeroGravity) worldIn.provider).getSpinManager().refresh(pos, true);
+                ((WorldProviderZeroGravity) ((World) worldIn).provider).getSpinManager().refresh(pos, true);
             }
         }
     }
@@ -323,9 +326,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

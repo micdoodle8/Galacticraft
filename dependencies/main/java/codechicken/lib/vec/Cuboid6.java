@@ -2,7 +2,7 @@ package codechicken.lib.vec;
 
 import codechicken.lib.util.Copyable;
 import net.minecraft.block.Block;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

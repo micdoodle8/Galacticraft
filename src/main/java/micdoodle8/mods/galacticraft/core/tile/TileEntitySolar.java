@@ -23,7 +23,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -256,11 +258,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         return (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
     }
 
-    @Override
-    public boolean onActivated(EntityPlayer entityPlayer)
-    {
-        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-    }
+//    @Override TODO
+//    public boolean onActivated(EntityPlayer entityPlayer)
+//    {
+//        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+//    }
 
 //    @Override
 //    public boolean canUpdate()
@@ -416,7 +418,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        return new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
     }
 
     @Override

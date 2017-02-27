@@ -177,7 +177,7 @@ public class MapGenCaveVenus extends MapGenBaseMeta
                                             {
                                                 if (metadata == 1)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
+                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
                                                 }
                                             }
                                         }

@@ -7,11 +7,11 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -66,10 +66,10 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 
     public BlockAluminumWire(String assetName)
     {
-        super(Material.cloth);
-        this.setStepSound(Block.soundTypeCloth);
+        super(Material.CLOTH);
+        this.setSoundType(SoundType.CLOTH);
         this.setResistance(0.2F);
-        this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
+//        this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
         this.setHardness(0.075F);
         this.setUnlocalizedName(assetName);
     }
@@ -179,9 +179,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        return new BlockStateContainer(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Override

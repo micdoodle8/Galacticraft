@@ -28,8 +28,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -86,7 +86,7 @@ public class OxygenUtil
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;
 
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.fromBounds(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, new AxisAlignedBB(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
     }
 
     public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
@@ -230,7 +230,7 @@ public class OxygenUtil
         {
             if (block.isOpaqueCube())
             {
-                if (block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge)
+                if (block instanceof BlockGravel || block.getMaterial() == Material.CLOTH || block instanceof BlockSponge)
                 {
                     permeableFlag = true;
                 }

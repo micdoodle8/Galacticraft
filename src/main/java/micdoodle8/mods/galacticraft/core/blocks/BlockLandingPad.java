@@ -17,7 +17,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
@@ -63,11 +63,11 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 
     public BlockLandingPad(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 3 / 16.0F, 1.0F);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
@@ -191,9 +191,9 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, PAD_TYPE);
+        return new BlockStateContainer(this, PAD_TYPE);
     }
 
     @Override

@@ -13,7 +13,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -383,8 +383,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                             }
                             else
                             {
-                                primer.setBlockState(index, Blocks.air.getDefaultState());
-//                                blockArray[index] = Blocks.air;
+                                primer.setBlockState(index, Blocks.AIR.getDefaultState());
+//                                blockArray[index] = Blocks.AIR;
 //                                metaArray[index] = 0;
                             }
                         }
@@ -461,7 +461,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                             int indexAbove = indexBase | (y + 1);
                             IBlockState state = primer.getBlockState(index);
                             IBlockState stateAbove = primer.getBlockState(indexAbove);
-                            if (Blocks.air == stateAbove.getBlock() && (state.getBlock() == ASTEROID_STONE || state.getBlock() == GRASS))
+                            if (Blocks.AIR == stateAbove.getBlock() && (state.getBlock() == ASTEROID_STONE || state.getBlock() == GRASS))
                             {
                                 if (this.rand.nextInt(GLOWSTONE_CHANCE) == 0)
                                 {

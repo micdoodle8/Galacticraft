@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityOxygenDetector extends TileEntityAdvanced
 {
@@ -17,7 +17,7 @@ public class TileEntityOxygenDetector extends TileEntityAdvanced
 
             if (this.blockType != null && this.blockType instanceof BlockOxygenDetector)
             {
-                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.getPos(), OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, AxisAlignedBB.fromBounds(this.getPos().getX() - 1, this.getPos().getY() - 1, this.getPos().getZ() - 1, this.getPos().getX() + 2, this.getPos().getY() + 2, this.getPos().getZ() + 2)));
+                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.getPos(), OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new AxisAlignedBB(this.getPos().getX() - 1, this.getPos().getY() - 1, this.getPos().getZ() - 1, this.getPos().getX() + 2, this.getPos().getY() + 2, this.getPos().getZ() + 2)));
             }
         }
     }

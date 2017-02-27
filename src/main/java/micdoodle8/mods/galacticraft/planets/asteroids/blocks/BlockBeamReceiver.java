@@ -11,10 +11,9 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -23,10 +22,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -41,9 +40,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 
     public BlockBeamReceiver(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
     }
 
     @SideOnly(Side.CLIENT)
@@ -54,19 +53,21 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
+        IBlockState state = worldIn.getBlockState(pos);
+        IBlockState neighborBlock = worldIn.getBlockState(neighborBlockPos);
         int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
-        int meta = this.getMetadataFromAngle(worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
+        int meta = this.getMetadataFromAngle((World) worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
 
         if (meta == -1)
         {
-            worldIn.destroyBlock(pos, true);
+            ((World) worldIn).destroyBlock(pos, true);
         }
 
         if (meta != oldMeta)
         {
-            worldIn.setBlockState(pos, getStateFromMeta(meta), 3);
+            ((World) worldIn).setBlockState(pos, getStateFromMeta(meta), 3);
             TileEntity thisTile = worldIn.getTileEntity(pos);
             if (thisTile instanceof TileEntityBeamReceiver)
             {
@@ -77,7 +78,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             }
         }
 
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+        super.onNeighborChange(worldIn, pos, neighborBlockPos);
     }
 
     @Override
@@ -288,9 +289,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

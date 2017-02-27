@@ -72,7 +72,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
@@ -255,7 +255,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
 
@@ -298,9 +298,9 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

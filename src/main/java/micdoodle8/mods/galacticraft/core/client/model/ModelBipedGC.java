@@ -15,7 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 
 import java.util.List;
@@ -118,7 +118,7 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.fromBounds(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
         for (int i = 0; i < l.size(); i++)
         {

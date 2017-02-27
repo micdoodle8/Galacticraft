@@ -23,7 +23,10 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -43,7 +46,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
     public BlockFluidPipe(String assetName, EnumPipeMode mode)
     {
-        super(Material.glass);
+        super(Material.GLASS);
         this.setHardness(0.3F);
         this.setStepSound(Block.soundTypeGlass);
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
@@ -84,10 +87,10 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
-        worldIn.notifyLightSet(pos);
+        super.onNeighborChange(worldIn, pos, neighborBlockPos);
+        ((World) worldIn).notifyLightSet(pos);
     }
 
     @Override
@@ -114,11 +117,11 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         final TileEntityFluidPipe tileEntity = (TileEntityFluidPipe) worldIn.getTileEntity(pos);
 
-        if (super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ))
+        if (super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
         {
             return true;
         }
@@ -223,9 +226,9 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        return new BlockStateContainer(this, COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Override
@@ -236,9 +239,9 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

@@ -18,7 +18,8 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -141,7 +142,7 @@ public class MapUtil
                         for (int x = 0; x < 16; x++)
                         {
                             int l4 = chunk.getHeight(new BlockPos(x, 0, z)) + 1;
-                            Block block = Blocks.air;
+                            Block block = Blocks.AIR;
                             IBlockState i5 = null;
 
                             if (l4 > 1)
@@ -1071,7 +1072,7 @@ public class MapUtil
                         for (int x = 0; x < 16; x++)
                         {
                             int l4 = chunk.getHeightValue(x, z) + 1;
-                            Block block = Blocks.air;
+                            Block block = Blocks.AIR;
                             IBlockState i5 = block.getDefaultState();
 
                             if (l4 > 1)

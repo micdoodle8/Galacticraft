@@ -17,7 +17,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -73,7 +76,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
         this.setResistance(1000000000000000.0F);
     }
@@ -158,7 +161,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -209,7 +212,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) worldIn.getTileEntity(pos);
         return tileEntity.onBlockActivated(worldIn, pos, playerIn);
@@ -250,7 +253,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -261,7 +264,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             {
                 Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
 
-                if (Blocks.air != mainBlockID)
+                if (Blocks.AIR != mainBlockID)
                 {
                     return mainBlockID.getPickBlock(target, world, mainBlockPosition, player);
                 }
@@ -360,9 +363,9 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, MULTI_TYPE, RENDER_TYPE);
+        return new BlockStateContainer(this, MULTI_TYPE, RENDER_TYPE);
     }
 
     @Override

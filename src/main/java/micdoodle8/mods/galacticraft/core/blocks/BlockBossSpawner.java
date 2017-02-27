@@ -11,10 +11,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -24,7 +24,7 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
 {
     public BlockBossSpawner(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 1000000.0F;
         this.blockResistance = 1000000.0F;
         this.setUnlocalizedName(assetName);
@@ -51,7 +51,7 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return null;
     }

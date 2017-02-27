@@ -22,8 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -539,7 +539,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(getPos().getX(), getPos().getY(), getPos().getZ(), getPos().getX() + 2, getPos().getY() + 2, getPos().getZ() + 2);
+        return new AxisAlignedBB(getPos().getX(), getPos().getY(), getPos().getZ(), getPos().getX() + 2, getPos().getY() + 2, getPos().getZ() + 2);
     }
 
     @Override
@@ -587,7 +587,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {
                 IBlockState state = this.worldObj.getBlockState(offset);
-                state.getBlock().onNeighborBlockChange(worldObj, offset, state, state.getBlock());
+                state.getBlock().onNeighborChange(worldObj, this.getPos(), offset);
                 worldObj.markBlockRangeForRenderUpdate(offset, offset);
             }
         }

@@ -42,7 +42,7 @@ public class CorridorVenus extends SizedPieceVenus
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                         }
                     }
                     else if (j == 2 && this.getDirection().getAxis() == EnumFacing.Axis.X && (i + 1) % 4 == 0 && i != this.boundingBox.getXSize() - 1)
@@ -57,7 +57,7 @@ public class CorridorVenus extends SizedPieceVenus
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                         }
                     }
                     else if ((this.getDirection().getAxis() == EnumFacing.Axis.Z && (i == 1 || i == this.boundingBox.getXSize() - 2)) ||
@@ -75,7 +75,7 @@ public class CorridorVenus extends SizedPieceVenus
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                     }
                 }
             }

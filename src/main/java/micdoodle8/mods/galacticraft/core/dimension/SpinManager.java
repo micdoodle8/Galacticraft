@@ -23,7 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -576,7 +576,7 @@ public class SpinManager
                                     for (int z = zm; z <= zz; z++)
                                     {
                                         BlockPos pos = new BlockPos(x, y, z);
-                                        if (this.worldProvider.worldObj.isBlockLoaded(pos) && Blocks.air != this.worldProvider.worldObj.getBlockState(pos).getBlock())
+                                        if (this.worldProvider.worldObj.isBlockLoaded(pos) && Blocks.AIR != this.worldProvider.worldObj.getBlockState(pos).getBlock())
                                         {
                                             freefall = false;
                                             break BLOCKCHECK;

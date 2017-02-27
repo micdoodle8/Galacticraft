@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -118,13 +119,13 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+        super.onNeighborChange(worldIn, pos, neighborBlockPos);
 
-        if (!this.canBlockStay(worldIn, pos))
+        if (!this.canBlockStay((World) worldIn, pos))
         {
-            worldIn.setBlockToAir(pos);
+            ((World) worldIn).setBlockToAir(pos);
         }
     }
 
@@ -183,7 +184,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -221,9 +222,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -239,9 +240,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, WEB_TYPE);
+        return new BlockStateContainer(this, WEB_TYPE);
     }
 
     @Override

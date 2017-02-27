@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
                 for (final TileEntity tile : attachedLaunchPads)
                 {
                     tile.invalidate();
-                    tile.getWorld().setBlockState(tile.getPos(), Blocks.air.getDefaultState(), 3);
+                    tile.getWorld().setBlockState(tile.getPos(), Blocks.AIR.getDefaultState(), 3);
                     // ((GCCoreBlockLandingPadFull)GCCoreBlocks.landingPadFull).onBlockAdded(worldObj,
                     // tile.xCoord, tile.yCoord, tile.zCoord);
                 }

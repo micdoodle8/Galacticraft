@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -61,7 +61,7 @@ public class WorldGenCrashedProbe extends WorldGenerator
                     BlockPos pos = new BlockPos(poolX + position.getX(), poolY + position.getY(), poolZ + position.getZ());
                     if (distance <= radiusSq)
                     {
-                        worldIn.setBlockState(pos, Blocks.air.getDefaultState(), 2);
+                        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
                     }
                     else if (worldIn.getBlockState(pos).getBlock() == VenusBlocks.venusBlock && poolY < 0 && rand.nextInt(5) == 0)
                     {

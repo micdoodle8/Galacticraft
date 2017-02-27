@@ -148,7 +148,7 @@ public class ItemInfo {
 
             @Override
             public String[] dump(Item item, int id, String name) {
-                return new String[] { name, Integer.toString(id), Boolean.toString(Block.getBlockFromItem(item) != Blocks.air), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
+                return new String[] { name, Integer.toString(id), Boolean.toString(Block.getBlockFromItem(item) != Blocks.AIR), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
             }
 
             @Override
@@ -273,13 +273,13 @@ public class ItemInfo {
         API.addSubset("Items", new ItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
-                return Block.getBlockFromItem(item.getItem()) == Blocks.air;
+                return Block.getBlockFromItem(item.getItem()) == Blocks.AIR;
             }
         });
         API.addSubset("Blocks", new ItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
-                return Block.getBlockFromItem(item.getItem()) != Blocks.air;
+                return Block.getBlockFromItem(item.getItem()) != Blocks.AIR;
             }
         });
         API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.mob_spawner));

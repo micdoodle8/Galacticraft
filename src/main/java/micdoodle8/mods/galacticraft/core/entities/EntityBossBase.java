@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -163,7 +163,7 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
         if (this.roomCoords != null && this.roomSize != null)
         {
             List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-                    AxisAlignedBB.fromBounds(
+                    new AxisAlignedBB(
                             this.roomCoords.intX(),
                             this.roomCoords.intY(),
                             this.roomCoords.intZ(),
@@ -175,7 +175,7 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
-                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
+                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
 
                 for (EntityPlayer p : entitiesWithin2)
                 {

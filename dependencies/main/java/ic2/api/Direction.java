@@ -79,7 +79,7 @@ public enum Direction {
 	 */
 	public TileEntity applyTo(World world, BlockPos pos) {
 
-		if (world != null && world.getBlockState(pos).getBlock() != Blocks.air) {
+		if (world != null && world.getBlockState(pos).getBlock() != Blocks.AIR) {
 			try {
 				return world.getTileEntity(pos);
 			} catch (Exception e) {

@@ -8,8 +8,8 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
@@ -59,7 +59,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             }
 
             final Vector3 thisVec = new Vector3(this);
-            final List<E> l = this.worldObj.getEntitiesWithinAABB(bossClass, AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<E> l = this.worldObj.getEntitiesWithinAABB(bossClass, new AxisAlignedBB(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : l)
             {
@@ -72,7 +72,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityMob> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.fromBounds(this.roomCoords.intX() - 3, this.roomCoords.intY() - 3, this.roomCoords.intZ() - 3, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
+            List<EntityMob> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(this.roomCoords.intX() - 3, this.roomCoords.intY() - 3, this.roomCoords.intZ() - 3, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
 
             for (Entity mob : entitiesWithin)
             {
@@ -82,7 +82,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             if (this.boss == null && !this.isBossDefeated && !playersWithin.isEmpty())
             {

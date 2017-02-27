@@ -17,7 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -117,7 +117,7 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                 IBlockState state = worldIn.getBlockState(pos1);
                 if (worldIn.getBlockState(pos).equals(state))
                 {
-                    worldIn.setBlockState(pos1, Blocks.air.getDefaultState());
+                    worldIn.setBlockState(pos1, Blocks.AIR.getDefaultState());
                     state.getBlock().harvestBlock(worldIn, (EntityPlayer) playerIn, pos1, state, worldIn.getTileEntity(pos1));
                     stack.damageItem(1, playerIn);
                 }

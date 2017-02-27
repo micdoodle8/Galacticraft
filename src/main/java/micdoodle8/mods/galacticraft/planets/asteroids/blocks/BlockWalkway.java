@@ -71,10 +71,10 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     protected BlockWalkway(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(1.0F);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.isBlockContainer = true;
         this.setDefaultState(this.blockState.getBaseState().withProperty(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
     }
@@ -297,9 +297,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
+        return new BlockStateContainer(this, WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
     }
 
     @Override
@@ -364,9 +364,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
