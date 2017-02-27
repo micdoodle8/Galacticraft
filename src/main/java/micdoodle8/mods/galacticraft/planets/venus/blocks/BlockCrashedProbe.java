@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -10,7 +11,6 @@ import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockCrashedProbe extends Block implements ISortableBlock, ITileEntityProvider
+public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, ITileEntityProvider
 {
     public static final String CRASHED_PROBE = "crashedProbe";
     private static final List<WeightedRandomChestContent> CONTENTS = Lists.newArrayList(
