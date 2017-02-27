@@ -184,7 +184,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     }
 
     @Override
-    protected void dropFewItems(boolean b, int i)
+    protected void addRandomDrop()
     {
         switch (this.rand.nextInt(12))
         {
