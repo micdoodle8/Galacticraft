@@ -27,7 +27,10 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) worldIn.getTileEntity(pos));
+        if (worldIn.getTileEntity(pos) instanceof IInventory)
+        {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) worldIn.getTileEntity(pos));
+        }
         super.breakBlock(worldIn, pos, state);
     }
 
