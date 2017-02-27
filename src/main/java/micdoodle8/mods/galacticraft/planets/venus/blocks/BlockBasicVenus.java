@@ -18,7 +18,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
@@ -78,7 +78,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
 
     public BlockBasicVenus(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 2.2F;
         this.blockResistance = 2.5F;
         this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE_VENUS, EnumBlockBasicVenus.ROCK_SOFT));
@@ -128,7 +128,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         EnumBlockBasicVenus type = ((EnumBlockBasicVenus) worldIn.getBlockState(pos).getValue(BASIC_TYPE_VENUS));
 
@@ -270,7 +270,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         return false;
     }
@@ -313,9 +313,9 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, BASIC_TYPE_VENUS);
+        return new BlockStateContainer(this, BASIC_TYPE_VENUS);
     }
 
     @Override

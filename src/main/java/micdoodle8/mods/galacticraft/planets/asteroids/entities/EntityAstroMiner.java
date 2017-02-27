@@ -150,7 +150,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public boolean stopForTurn;
 
     private static ArrayList<Block> noMineList = new ArrayList();
-    public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
+    public static BlockTuple blockingBlock = new BlockTuple(Blocks.AIR, 0);
     private int givenFailMessage = 0;
     private BlockVec3 mineLast = null;
     private int mineCountDown = 0;
@@ -1491,7 +1491,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             dropStack(pos, drops);
         }
 
-        this.worldObj.setBlockState(pos, Blocks.air.getDefaultState(), 3);
+        this.worldObj.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         return false;
     }
 

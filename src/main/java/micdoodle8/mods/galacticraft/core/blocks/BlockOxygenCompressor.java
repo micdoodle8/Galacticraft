@@ -65,9 +65,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
 
     public BlockOxygenCompressor(boolean isActive, String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
@@ -163,7 +163,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         int metadata = this.getDamageValue(world, pos);
         return new ItemStack(this, 1, metadata);
@@ -203,9 +203,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

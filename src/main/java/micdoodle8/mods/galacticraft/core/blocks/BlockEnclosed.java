@@ -21,9 +21,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -226,18 +227,20 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block block)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
+        IBlockState state = worldIn.getBlockState(pos);
+        IBlockState neighborBlock = worldIn.getBlockState(neighborBlockPos);
         int metadata = state.getBlock().getMetaFromState(state);
-        final TileEntity tileEntity = world.getTileEntity(pos);
+        final TileEntity tileEntity = worldIn.getTileEntity(pos);
 
         if (metadata == EnumEnclosedBlockType.TE_CONDUIT.getMeta())
         {
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
         }
         else if (metadata == EnumEnclosedBlockType.OXYGEN_PIPE.getMeta())
         {
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
 
             if (tileEntity instanceof INetworkConnection)
             {
@@ -246,12 +249,12 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
         else if (metadata <= 6)
         {
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
             if (CompatibilityManager.isIc2Loaded() && tileEntity != null)
             {
                 try
                 {
-                    onBlockNeighbourChangeIC2.invoke(tileEntity, block);
+                    onBlockNeighbourChangeIC2.invoke(tileEntity, neighborBlock.getBlock());
                     return;
                 }
                 catch (Exception e)
@@ -268,7 +271,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 {
                     try
                     {
-                        blockPipeBC.onNeighborBlockChange(world, pos, state, block);
+                        blockPipeBC.onNeighborChange(worldIn, pos, neighborBlockPos);
                     }
                     catch (Exception e)
                     {
@@ -278,19 +281,19 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 }
             }
 
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
         }
         else if (metadata <= EnumEnclosedBlockType.ME_CABLE.getMeta())
         {
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
             if (CompatibilityManager.isAppEngLoaded())
             {
-                world.markBlockForUpdate(pos);
+//                worldIn.markBlockForUpdate(pos); TODO
             }
         }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())
         {
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
             if (tileEntity instanceof IConductor)
             {
                 ((IConductor) tileEntity).refresh();
@@ -298,7 +301,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta())
         {
-            super.onNeighborBlockChange(world, pos, state, block);
+            super.onNeighborChange(worldIn, pos, neighborBlockPos);
             if (tileEntity instanceof IConductor)
             {
                 ((IConductor) tileEntity).refresh();
@@ -493,9 +496,9 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, TYPE);
+        return new BlockStateContainer(this, TYPE);
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntitySludgeling extends EntityMob implements IEntityBreathable
@@ -102,7 +102,7 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     @Override
     protected Item getDropItem()
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override

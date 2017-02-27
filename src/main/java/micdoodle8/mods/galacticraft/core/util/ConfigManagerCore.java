@@ -761,7 +761,7 @@ public class ConfigManagerCore
         catch (NumberFormatException ex)
         {
         }
-        if (Blocks.air == block)
+        if (Blocks.AIR == block)
         {
             if (logging)
             {

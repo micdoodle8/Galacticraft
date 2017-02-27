@@ -118,7 +118,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     @Override
     protected Item getDropItem()
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override

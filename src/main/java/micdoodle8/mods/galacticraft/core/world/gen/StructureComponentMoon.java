@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -224,7 +224,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected void fillAirRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
     {
-        this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, Blocks.air, 0, var9);
+        this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, Blocks.AIR, 0, var9);
     }
 
     protected int getStairMeta(int var1)

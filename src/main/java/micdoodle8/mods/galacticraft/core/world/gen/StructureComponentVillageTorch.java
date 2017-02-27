@@ -69,7 +69,7 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4 - 1, 0);
         }
 
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 2, 3, 1, Blocks.air.getDefaultState(), Blocks.air.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 2, 3, 1, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
         this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 0, 0, par3StructureBoundingBox);
         this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 1, 0, par3StructureBoundingBox);
         this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);

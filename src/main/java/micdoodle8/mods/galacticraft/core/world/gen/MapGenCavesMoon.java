@@ -175,13 +175,13 @@ public class MapGenCavesMoon extends MapGenBaseMeta
                                             {
                                                 if (state.getBlock().getMetaFromState(state) == 3 || state.getBlock().getMetaFromState(state) == 4)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                                 else if (state.getBlock().getMetaFromState(state) == 5)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                             }
                                         }

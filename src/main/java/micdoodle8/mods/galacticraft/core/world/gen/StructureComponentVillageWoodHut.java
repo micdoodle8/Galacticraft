@@ -108,7 +108,7 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 1, yLevel, 5, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 1, yLevel, 6, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 1, yLevel, 7, par3StructureBoundingBox);
-            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.air.getDefaultState(), 1, yLevel, 8, par3StructureBoundingBox);
+            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.AIR.getDefaultState(), 1, yLevel, 8, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 1, yLevel, 9, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 1, yLevel, 10, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 1, yLevel, 11, par3StructureBoundingBox);
@@ -121,7 +121,7 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 5, yLevel, 15, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 6, yLevel, 15, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 7, yLevel, 15, par3StructureBoundingBox);
-            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.air.getDefaultState(), 8, yLevel, 15, par3StructureBoundingBox);
+            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.AIR.getDefaultState(), 8, yLevel, 15, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 9, yLevel, 15, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 10, yLevel, 15, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 11, yLevel, 15, par3StructureBoundingBox);
@@ -134,7 +134,7 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 15, yLevel, 11, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 15, yLevel, 10, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 15, yLevel, 9, par3StructureBoundingBox);
-            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.air.getDefaultState(), 15, yLevel, 8, par3StructureBoundingBox);
+            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.AIR.getDefaultState(), 15, yLevel, 8, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 15, yLevel, 7, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 15, yLevel, 6, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 15, yLevel, 5, par3StructureBoundingBox);
@@ -147,7 +147,7 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 11, yLevel, 1, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 10, yLevel, 1, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 9, yLevel, 1, par3StructureBoundingBox);
-            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.air.getDefaultState(), 8, yLevel, 1, par3StructureBoundingBox);
+            this.setBlockState(par1World, yLevel <= 1 ? GCBlocks.basicBlock.getStateFromMeta(4) : Blocks.AIR.getDefaultState(), 8, yLevel, 1, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 7, yLevel, 1, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 6, yLevel, 1, par3StructureBoundingBox);
             this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 5, yLevel, 1, par3StructureBoundingBox);

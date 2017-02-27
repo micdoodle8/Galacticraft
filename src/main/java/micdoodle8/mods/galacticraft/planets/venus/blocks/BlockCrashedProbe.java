@@ -17,8 +17,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -46,7 +48,7 @@ public class BlockCrashedProbe extends Block implements ISortableBlock, ITileEnt
 
     public BlockCrashedProbe(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.blockHardness = 4.5F;
         this.blockResistance = 2.5F;
         this.setTickRandomly(true);
@@ -81,7 +83,7 @@ public class BlockCrashedProbe extends Block implements ISortableBlock, ITileEnt
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;

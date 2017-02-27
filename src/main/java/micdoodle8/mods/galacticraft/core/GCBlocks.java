@@ -105,8 +105,8 @@ public class GCBlocks
         GCBlocks.nasaWorkbench = new BlockNasaWorkbench("rocket_workbench");
         GCBlocks.fallenMeteor = new BlockFallenMeteor("fallen_meteor");
         GCBlocks.basicBlock = new BlockBasic("basic_block_core");
-        GCBlocks.airLockFrame = new BlockAirLockFrame("air_lock_frame");
-        GCBlocks.airLockSeal = new BlockAirLockWall("air_lock_seal");
+        GCBlocks.AIRLockFrame = new BlockAirLockFrame("air_lock_frame");
+        GCBlocks.AIRLockSeal = new BlockAirLockWall("air_lock_seal");
         GCBlocks.refinery = new BlockRefinery("refinery");
         GCBlocks.oxygenCompressor = new BlockOxygenCompressor(false, "oxygen_compressor");
         GCBlocks.fuelLoader = new BlockFuelLoader("fuel_loader");
@@ -139,7 +139,7 @@ public class GCBlocks
         GCBlocks.wallGC = new BlockWallGC("wall_gc");
 
         // Hide certain items from NEI
-        GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
+        GCBlocks.hiddenBlocks.add(GCBlocks.AIRLockSeal);
         GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.brightBreatheableAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.brightAir);
@@ -346,8 +346,8 @@ public class GCBlocks
         registerBlock(GCBlocks.cargoLoader, ItemBlockCargoLoader.class);
         registerBlock(GCBlocks.nasaWorkbench, ItemBlockDesc.class);
         registerBlock(GCBlocks.basicBlock, ItemBlockBase.class);
-        registerBlock(GCBlocks.airLockFrame, ItemBlockAirLock.class);
-        registerBlock(GCBlocks.airLockSeal, ItemBlockGC.class);
+        registerBlock(GCBlocks.AIRLockFrame, ItemBlockAirLock.class);
+        registerBlock(GCBlocks.AIRLockSeal, ItemBlockGC.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);

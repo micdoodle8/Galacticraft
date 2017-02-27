@@ -22,7 +22,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -35,9 +35,9 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
 
     public BlockGeothermalGenerator(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(2.5F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
@@ -126,9 +126,9 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, ACTIVE);
+        return new BlockStateContainer(this, FACING, ACTIVE);
     }
 
     @Override

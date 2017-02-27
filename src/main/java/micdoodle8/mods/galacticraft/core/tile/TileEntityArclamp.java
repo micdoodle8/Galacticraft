@@ -17,8 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -81,12 +81,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                 case 0:
                     this.sideRear = side; //Down
                     this.facingSide = this.facing + 2;
-                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 8, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
+                    this.thisAABB = new AxisAlignedBB(this.getPos().getX() - 20, this.getPos().getY() - 8, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 case 1:
                     this.sideRear = side; //Up
                     this.facingSide = this.facing + 2;
-                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 8, this.getPos().getZ() + 20);
+                    this.thisAABB = new AxisAlignedBB(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 8, this.getPos().getZ() + 20);
                     break;
                 case 2:
                     this.sideRear = side; //North
@@ -95,7 +95,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                     {
                         this.facingSide = 7 - this.facing;
                     }
-                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 8, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
+                    this.thisAABB = new AxisAlignedBB(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 8, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 case 3:
                     this.sideRear = side; //South
@@ -104,12 +104,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                     {
                         this.facingSide += 2;
                     }
-                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 8);
+                    this.thisAABB = new AxisAlignedBB(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 8);
                     break;
                 case 4:
                     this.sideRear = side; //West
                     this.facingSide = this.facing;
-                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 8, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
+                    this.thisAABB = new AxisAlignedBB(this.getPos().getX() - 8, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 20, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 case 5:
                     this.sideRear = side; //East
@@ -118,7 +118,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                     {
                         this.facingSide = 5 - this.facing;
                     }
-                    this.thisAABB = AxisAlignedBB.fromBounds(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 8, this.getPos().getY() + 20, this.getPos().getZ() + 20);
+                    this.thisAABB = new AxisAlignedBB(this.getPos().getX() - 20, this.getPos().getY() - 20, this.getPos().getZ() - 20, this.getPos().getX() + 8, this.getPos().getY() + 20, this.getPos().getZ() + 20);
                     break;
                 default:
                     return;
@@ -209,7 +209,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
 
     public void lightArea()
     {
-        Block air = Blocks.air;
+        Block air = Blocks.AIR;
         Block breatheableAirID = GCBlocks.breatheableAir;
         Block brightAir = GCBlocks.brightAir;
         Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
@@ -296,7 +296,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                     Block id = vec.getBlockIDsafe_noChunkLoad(world);
                     if (id.isAir(world, vec.toBlockPos()))
                     {
-                        if (Blocks.air == id)
+                        if (Blocks.AIR == id)
                         {
                             world.setBlockState(vec.toBlockPos(), brightAir.getDefaultState(), 2);
                             this.airToRestore.add(vec);
@@ -385,7 +385,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             Block b = vec.getBlock(this.worldObj);
             if (b == brightAir)
             {
-                this.worldObj.setBlockState(vec.toBlockPos(), Blocks.air.getDefaultState(), 2);
+                this.worldObj.setBlockState(vec.toBlockPos(), Blocks.AIR.getDefaultState(), 2);
             }
             else if (b == brightBreatheableAir)
             {

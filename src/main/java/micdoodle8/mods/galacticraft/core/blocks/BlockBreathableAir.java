@@ -4,12 +4,14 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -22,7 +24,6 @@ public class BlockBreathableAir extends BlockAir
         this.setResistance(1000.0F);
         this.setHardness(0.0F);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(new SoundType("sand", 0.0F, 1.0F));
     }
 
     @Override
@@ -38,15 +39,15 @@ public class BlockBreathableAir extends BlockAir
     }
 
     @Override
-    public int getMobilityFlag()
+    public EnumPushReaction getMobilityFlag(IBlockState state)
     {
-        return 1;
+        return EnumPushReaction.DESTROY;
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -64,13 +65,14 @@ public class BlockBreathableAir extends BlockAir
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        if (Blocks.air != neighborBlock && neighborBlock != GCBlocks.brightAir)
+        IBlockState neighborBlock = worldIn.getBlockState(neighborBlockPos);
+        if (Blocks.AIR != neighborBlock && neighborBlock != GCBlocks.brightAir)
         //Do nothing if an air neighbour was replaced (probably because replacing with breatheableAir)
         //but do a check if replacing breatheableAir as that could be dividing a sealed space
         {
-            OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
+            OxygenPressureProtocol.onEdgeBlockUpdated((World) worldIn, pos);
         }
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,12 +35,12 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 
     public BlockUnlitTorch(boolean lit, String assetName)
     {
-        super(Material.circuits);
+        super(Material.CIRCUITS);
         this.setTickRandomly(true);
         this.lit = lit;
         this.setLightLevel(lit ? 0.9375F : 0.2F);
         this.setHardness(0.0F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setSoundType(SoundType.WOOD);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
     }
@@ -203,14 +204,15 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
      * neighbor blockID
      */
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        this.onNeighborChangeInternal(worldIn, pos, state);
+        this.onNeighborChangeInternal(worldIn, pos, neighborBlockPos);
     }
 
-    protected boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state)
+    public boolean onNeighborChangeInternal(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        if (!this.checkForDrop(worldIn, pos, state))
+        IBlockState state = worldIn.getBlockState(pos);
+        if (!this.checkForDrop((World) worldIn, pos, state))
         {
             return true;
         }
@@ -225,20 +227,20 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
             {
                 flag = true;
             }
-            else if (enumfacingAxis.isVertical() && !this.canPlaceOn(worldIn, pos.offset(enumfacing1)))
+            else if (enumfacingAxis.isVertical() && !this.canPlaceOn((World) worldIn, pos.offset(enumfacing1)))
             {
                 flag = true;
             }
 
             if (flag)
             {
-                this.dropBlockAsItem(worldIn, pos, state, 0);
-                worldIn.setBlockToAir(pos);
+                this.dropBlockAsItem((World) worldIn, pos, state, 0);
+                ((World) worldIn).setBlockToAir(pos);
                 return true;
             }
             else
             {
-                this.checkOxygen(worldIn, pos);
+                this.checkOxygen((World) worldIn, pos);
                 return false;
             }
         }
@@ -416,15 +418,15 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] { FACING });
+        return new BlockStateContainer(this, new IProperty[] { FACING });
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 }

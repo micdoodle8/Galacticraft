@@ -13,7 +13,7 @@ public class GameDataManipulator {
             Item.itemRegistry.registryObjects.put(name, item);
             Item.itemRegistry.underlyingIntegerMap.put(item, id);
             Block block = Block.getBlockById(id);
-            if (block != Blocks.air) {
+            if (block != Blocks.AIR) {
                 GameData.getBlockItemMap().put(block, item);
             }
         } catch (Exception e) {

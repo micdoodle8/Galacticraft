@@ -178,13 +178,13 @@ public class MapGenCaveMars extends MapGenBaseMeta
                                             {
                                                 if (metadata == 6 || metadata == 9)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                                 else if (metadata == 5 && random.nextInt(MapGenCaveMars.BREAK_THROUGH_CHANCE) == 0)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                             }
                                         }

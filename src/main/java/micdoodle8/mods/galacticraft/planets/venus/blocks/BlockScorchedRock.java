@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +19,7 @@ public class BlockScorchedRock extends Block implements ISortableBlock
 {
     public BlockScorchedRock(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 0.9F;
         this.blockResistance = 2.5F;
         this.setTickRandomly(true);

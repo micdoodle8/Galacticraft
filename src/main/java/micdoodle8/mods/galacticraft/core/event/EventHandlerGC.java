@@ -265,7 +265,7 @@ public class EventHandlerGC
             {
                 if (!worldObj.isRemote && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
                 {
-                    if (idClicked != Blocks.tnt && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, AxisAlignedBB.fromBounds(event.pos.getX(), event.pos.getY(), event.pos.getZ(), event.pos.getX() + 1, event.pos.getY() + 2, event.pos.getZ() + 1)))
+                    if (idClicked != Blocks.tnt && OxygenUtil.noAtmosphericCombustion(event.entityPlayer.worldObj.provider) && !OxygenUtil.isAABBInBreathableAirBlock(event.entityLiving.worldObj, new AxisAlignedBB(event.pos.getX(), event.pos.getY(), event.pos.getZ(), event.pos.getX() + 1, event.pos.getY() + 2, event.pos.getZ() + 1)))
                     {
                         event.setCanceled(true);
                     }
@@ -873,7 +873,7 @@ public class EventHandlerGC
                 {
                     // If the player doesn't have a frequency module, and the player isn't in an oxygenated environment
                     // Note: this is a very simplistic approach, and nowhere near realistic, but required for performance reasons
-                    AxisAlignedBB bb = AxisAlignedBB.fromBounds(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
+                    AxisAlignedBB bb = new AxisAlignedBB(x - 0.0015D, y - 0.0015D, z - 0.0015D, x + 0.0015D, y + 0.0015D, z + 0.0015D);
                     boolean playerInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player);
                     boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
                     if ((!playerInAtmosphere || !soundInAtmosphere))

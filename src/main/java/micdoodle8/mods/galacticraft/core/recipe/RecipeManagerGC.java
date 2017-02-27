@@ -379,9 +379,9 @@ public class RecipeManagerGC
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.oxygenVent, 1), new Object[] { "compressedTin", "compressedTin", "compressedTin", "compressedSteel" }));
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.airLockFrame, 4, 0), new Object[] { "XXX", "YZY", "XXX", 'X', "compressedAluminum", 'Y', "compressedSteel", 'Z', GCItems.oxygenConcentrator });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.AIRLockFrame, 4, 0), new Object[] { "XXX", "YZY", "XXX", 'X', "compressedAluminum", 'Y', "compressedSteel", 'Z', GCItems.oxygenConcentrator });
 
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.airLockFrame, 1, 1), new Object[] { "YYY", "WZW", "YYY", 'W', "compressedMeteoricIron", 'Y', "compressedSteel", 'Z', new ItemStack(GCItems.basicItem, 1, 13) });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.AIRLockFrame, 1, 1), new Object[] { "YYY", "WZW", "YYY", 'W', "compressedMeteoricIron", 'Y', "compressedSteel", 'Z', new ItemStack(GCItems.basicItem, 1, 13) });
 
         // Disable oil extractor:
         // RecipeUtil.addRecipe(new ItemStack(GCItems.oilExtractor), new Object[] { "X  ", " XY", "ZYY", 'X', "compressedSteel", 'Y', "compressedBronze", 'Z', Items.redstone });

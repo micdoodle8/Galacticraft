@@ -19,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,7 +30,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
 {
     public BlockFallenMeteor(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         this.setHardness(50.0F);
         this.setStepSound(Block.soundTypeStone);
@@ -117,9 +117,9 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+        ((World)worldIn).scheduleUpdate(pos, this, this.tickRate((World) worldIn));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
         if (this.canFallBelow(world, pos.down()) && pos.getY() >= 0)
         {
             int prevHeatLevel = ((TileEntityFallenMeteor) world.getTileEntity(pos)).getHeatLevel();
-            world.setBlockState(pos, Blocks.air.getDefaultState(), 3);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
             BlockPos blockpos1;
 
             for (blockpos1 = pos.down(); this.canFallBelow(world, blockpos1) && blockpos1.getY() > 0; blockpos1 = blockpos1.down()) {}
