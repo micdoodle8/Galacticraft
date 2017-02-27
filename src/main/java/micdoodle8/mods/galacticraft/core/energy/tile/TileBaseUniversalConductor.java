@@ -36,16 +36,10 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return EnergyUtil.getAdjacentPowerConnections(this);
     }
 
-    @Override
+    //Update ticks only required if IC2 is loaded
+    @RuntimeInterface(clazz = "net.minecraft.util.ITickable", modID = "IC2")
     public void update()
     {
-        if (!EnergyConfigHandler.isIndustrialCraft2Loaded())
-        {
-            return;
-        }
-
-        super.update();
-
         if (!this.isAddedToEnergyNet)
         {
             if (!this.worldObj.isRemote)

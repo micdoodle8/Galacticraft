@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
@@ -22,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Calclavia
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public abstract class TileBaseConductor extends TileEntityAdvanced implements IConductor
+public abstract class TileBaseConductor extends TileEntity implements IConductor
 {
     private IGridNetwork network;
 
@@ -55,13 +54,6 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
         super.invalidate();
         super.onChunkUnload();
     }
-
-
-//    @Override
-//    public boolean canUpdate()
-//    {
-//        return false;
-//    }
 
     @Override
     public IElectricityNetwork getNetwork()
