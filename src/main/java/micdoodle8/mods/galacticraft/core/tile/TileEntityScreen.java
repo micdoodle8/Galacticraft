@@ -656,7 +656,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     {
         if (up + down + left + right == 0 || up < 0 || down < 0 || left < 0 || right < 0)
         {
-            this.resetToSingle();
+       	    this.resetToSingle();
             return true;
         }
 
@@ -787,10 +787,6 @@ public class TileEntityScreen extends TileEntityAdvanced
      */
     public void resetToSingle()
     {
-        if (this.worldObj.isRemote)
-        {
-            this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-        }
         this.screenOffsetx = 0;
         this.screenOffsetz = 0;
         this.connectionsUp = 0;
@@ -805,7 +801,14 @@ public class TileEntityScreen extends TileEntityAdvanced
         this.setConnectedDown(false);
         this.refreshOnUpdate = false;
         this.markDirty();
-        this.updateClients();
+        if (this.worldObj.isRemote)
+        {
+            this.screen = new DrawGameScreen(1.0F, 1.0F, this);
+        }
+        else
+        {
+        	this.updateClients();
+        }
     }
 
     /**

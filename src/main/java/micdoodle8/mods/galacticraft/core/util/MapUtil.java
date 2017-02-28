@@ -53,6 +53,7 @@ public class MapUtil
     public static final int SIZE_STD2 = SIZE_STD * 2;
     private static LinkedList<MapGen> queuedMaps = new LinkedList();
     public static LinkedList<String> clientRequests = new LinkedList();
+    private static final int OVERWORLD_MAP_SCALE = 3;  //Recommended is 7.  For the BETA, lower numbers generate map much faster for testing
 
 
     static
@@ -181,7 +182,7 @@ public class MapUtil
 //			biomeMapFile.renameTo(new File("OWdiffread.jpg"));
 //		} catch (Exception e) { e.printStackTrace(); }
 
-        if (MapUtil.getBiomeMapForCoords(world, 0, 0, 7, 192, 48, baseFolder))
+        if (MapUtil.getBiomeMapForCoords(world, 0, 0, OVERWORLD_MAP_SCALE, 192, 48, baseFolder))
         {
             doneOverworldTexture = true;
         }
