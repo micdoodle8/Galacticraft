@@ -40,7 +40,7 @@ public class DrawGameScreen extends IScreenManager
     public String telemetryLastName;
     public Entity telemetryLastEntity;
     public Render telemetryLastRender;
-    public static DynamicTexture reusableMap;// = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+    public static DynamicTexture reusableMap;  //This will be set up in MapUtil.resetClientBody()
     public int[] localMap = null;
     public boolean mapDone = false;
     public boolean mapFirstTick = false;
@@ -65,7 +65,7 @@ public class DrawGameScreen extends IScreenManager
 
     private void makeMap()
     {
-        if (this.mapDone || this.reusableMap == null || this.driver.getWorld().provider.getDimensionId() != 0)
+        if (this.mapDone || reusableMap == null || this.driver.getWorld().provider.getDimensionId() != 0)
         {
             return;
         }

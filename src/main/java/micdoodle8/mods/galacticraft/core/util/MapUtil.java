@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -12,6 +13,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,12 +27,14 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.*;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -49,12 +53,22 @@ public class MapUtil
     private static MapGen slowMap = null;
     private static Random rand = new Random();
     //    public static int WORLD_BORDER = 14992;
-    private static final int SIZE_STD = 176;
-    public static final int SIZE_STD2 = SIZE_STD * 2;
     private static LinkedList<MapGen> queuedMaps = new LinkedList();
     public static LinkedList<String> clientRequests = new LinkedList();
+    
+    //Map size definitions
+    private static final int SIZE_STD = 176;
+    public static final int SIZE_STD2 = SIZE_STD * 2;
+    private static final int WIDTH_WORLD = 1536;
+    private static final int HEIGHT_WORLD = 384;
     private static final int OVERWORLD_MAP_SCALE = 3;  //Recommended is 7.  For the BETA, lower numbers generate map much faster for testing
+    private static final int WIDTH_STD = 192;
+    private static final int HEIGHT_STD = 48;
 
+    //Color related constants
+	private static final int OCEAN_HEIGHT = 63;
+	private static final int DEEP_OCEAN = 56;
+    
 
     static
     {
@@ -105,9 +119,9 @@ public class MapUtil
             }
         }
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
-//		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
-//		MapUtil.biomeColours.clear();
-//		setupColours();
+		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+		MapUtil.biomeColours.clear();
+		setupColours();
     }
 
     /**
@@ -286,7 +300,7 @@ public class MapUtil
         if (sizeX != sizeZ)
         {
             outputFile = new File(baseFolder, "Overworld" + sizeX + ".bin");
-            if (sizeX == 1536)
+            if (sizeX == WIDTH_WORLD)
             {
                 MapGen newGen = new MapGen(world, sizeX, sizeZ, cx, cz, 1 << scale, outputFile);
                 if (newGen.calculatingMap)
@@ -502,7 +516,7 @@ public class MapUtil
     @SideOnly(Side.CLIENT)
     public static void getOverworldImageFromRaw(File folder, int cx, int cz, byte[] raw) throws IOException
     {
-        if (raw.length == 18432 * 64)
+        if (raw.length == WIDTH_WORLD * HEIGHT_WORLD * 2)
         {
             File file0 = new File(folder, "overworldRaw.bin");
 
@@ -515,24 +529,26 @@ public class MapUtil
                 System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldRaw.bin");
             }
 
-            //raw is a 1536 x 384 byte array of biome types followed by heights
-            BufferedImage worldImageLarge = new BufferedImage(384 * 8, 96 * 8, BufferedImage.TYPE_INT_RGB);
+            //raw is a WIDTH_WORLD x HEIGHT_WORLD array of 2 byte entries: biome type followed by height
+            //Here we will make a texture from that, but twice as large: 4 pixels for each data point, it just looks better that way when the texture is used
+            BufferedImage worldImageLarge = new BufferedImage(WIDTH_WORLD * 2, HEIGHT_WORLD * 2, BufferedImage.TYPE_INT_RGB);
             ArrayList<Integer> cols = new ArrayList<Integer>();
             int lastcol = -1;
             int idx = 0;
-            for (int x = 0; x < 1536; x++)
+            for (int x = 0; x < WIDTH_WORLD; x++)
             {
-                for (int z = 0; z < 384; z++)
+                for (int z = 0; z < HEIGHT_WORLD; z++)
                 {
-                    int arrayIndex = (x * 384 + z) * 2;
+                    int arrayIndex = (x * HEIGHT_WORLD + z) * 2;
                     int biome = ((int) raw[arrayIndex]) & 255;
                     int height = ((int) raw[arrayIndex + 1]) & 255;
 
-                    if (height < 63 && biome != 10)
+                    if (height < OCEAN_HEIGHT && biome != 2 && biome != 10)
                     {
+                    	//Includes ponds, lakes and rivers in other biomes
                         biome = 0;
                     }
-                    if (height < 56 && biome == 0)
+                    if (height < DEEP_OCEAN && biome == 0)
                     {
                         biome = 24;
                     }
@@ -558,26 +574,27 @@ public class MapUtil
                 outputStream.close();
             }
         }
-        else if (raw.length == 18432)
+        else if (raw.length == WIDTH_STD * HEIGHT_STD * 2)
         {
-            //raw is a 192 x 48 byte array of biome types followed by heights
-            BufferedImage worldImage = new BufferedImage(192, 48, BufferedImage.TYPE_INT_RGB);
+            //raw is a WIDTH_STD x HEIGHT_STD array of 2 byte entries: biome type followed by height
+            BufferedImage worldImage = new BufferedImage(WIDTH_STD, HEIGHT_STD, BufferedImage.TYPE_INT_RGB);
             ArrayList<Integer> cols = new ArrayList<Integer>();
             int lastcol = -1;
             int idx = 0;
-            for (int x = 0; x < 192; x++)
+            for (int x = 0; x < WIDTH_STD; x++)
             {
-                for (int z = 0; z < 48; z++)
+                for (int z = 0; z < HEIGHT_STD; z++)
                 {
-                    int arrayIndex = (x * 48 + z) * 2;
+                    int arrayIndex = (x * HEIGHT_STD + z) * 2;
                     int biome = ((int) raw[arrayIndex]) & 255;
                     int height = ((int) raw[arrayIndex + 1]) & 255;
 
-                    if (height < 63 && biome != 10)
+                    if (height < OCEAN_HEIGHT && biome != 2 && biome != 10)
                     {
+                    	//Includes ponds, lakes and rivers in other biomes
                         biome = 0;
                     }
-                    if (height < 56 && biome == 0)
+                    if (height < DEEP_OCEAN && biome == 0)
                     {
                         biome = 24;
                     }
@@ -692,7 +709,7 @@ public class MapUtil
         {
             if (clientRequests.contains(filename.getName()))
             {
-                GCLog.debug("Still waiting for file " + filename.getName());
+                GCLog.debug("Still waiting for file " + baseFolder.getName() + "/" + filename.getName());
             }
             else
             {
@@ -747,12 +764,13 @@ public class MapUtil
                 int arrayIndex = (x * SIZE_STD + z) * 2;
                 int biome = ((int) raw[arrayIndex]) & 255;
                 int height = ((int) raw[arrayIndex + 1]) & 255;
-
-                if (height < 63 && biome != 10)
+              
+                if (height < OCEAN_HEIGHT && biome != 2 && biome != 10)
                 {
+                	//Includes ponds, lakes and rivers in other biomes
                     biome = 0;
                 }
-                if (height < 56 && biome == 0)
+                if (height < DEEP_OCEAN && biome == 0)
                 {
                     biome = 24;
                 }
@@ -811,7 +829,7 @@ public class MapUtil
         {
             rv = 0xbfa384;
         }
-        if (height < 63)
+        if (height < OCEAN_HEIGHT)
         {
             return rv;
         }
