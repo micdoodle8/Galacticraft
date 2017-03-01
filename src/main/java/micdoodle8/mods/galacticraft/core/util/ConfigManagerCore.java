@@ -633,6 +633,8 @@ public class ConfigManagerCore
             {
                 config.save();
             }
+            
+            challengeModeUpdate();
         }
         catch (final Exception e)
         {
@@ -723,6 +725,17 @@ public class ConfigManagerCore
         return foundCount > 0;
     }
 
+    private static void challengeModeUpdate()
+    {
+    	if (challengeMode)
+    	{
+    		challengeRecipes = true;
+    		challengeMobDropsAndSpawning = true;
+    		challengeSpawnHandling = true;
+    		challengeAsteroidPopulation = true;
+    	}
+    }
+    
     /**
      * Note for this to be effective, the prop = config.get() call has to provide a String[] as the default values
      * If you use an Integer[] then the config parser deletes all non-numerical lines from the config before GC even sees them
@@ -825,18 +838,18 @@ public class ConfigManagerCore
     	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
     	modeFlags += ConfigManagerCore.disableSpaceStationCreation ? 8 : 0;
     	modeFlags += ConfigManagerCore.recipesRequireGCAdvancedMetals ? 16 : 0;
+    	modeFlags += ConfigManagerCore.challengeRecipes ? 32 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
     	returnList.add(ConfigManagerCore.suffocationCooldown);
     	returnList.add(ConfigManagerCore.rocketFuelFactor);
     	returnList.add(ConfigManagerCore.otherModsSilicon);
-    	returnList.add(ConfigManagerCore.challengeRecipes);
+    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS
     	EnergyConfigHandler.serverConfigOverride(returnList);
     	
     	returnList.add(ConfigManagerCore.detectableIDs.clone());  	
     	//TODO Should this include any other client-side configurables too?
-    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS
     	return returnList;
     }
 
@@ -850,12 +863,13 @@ public class ConfigManagerCore
     	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
     	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
     	ConfigManagerCore.recipesRequireGCAdvancedMetals = (modeFlag & 16) != 0;
+    	ConfigManagerCore.challengeRecipes = (modeFlag & 32) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
     	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(4);
     	ConfigManagerCore.otherModsSilicon = (String) configs.get(5);
-    	ConfigManagerCore.challengeRecipes = (Boolean) configs.get(6);
+    	//If adding any additional data objects here, also remember to update the packet definition in PacketSimple and the indices for the Floats in the next line following here
     	
     	EnergyConfigHandler.setConfigOverride((Float) configs.get(6), (Float) configs.get(7), (Float) configs.get(8), (Float) configs.get(9), (Integer) configs.get(10));
     	
@@ -875,6 +889,7 @@ public class ConfigManagerCore
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
     	
+    	challengeModeUpdate();
     	RecipeManagerGC.setConfigurableRecipes();
     }
 
