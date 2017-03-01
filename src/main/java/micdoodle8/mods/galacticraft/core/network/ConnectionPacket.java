@@ -33,7 +33,6 @@ public class ConnectionPacket
     {
         int packetId = payload.readByte();
         List<Object> data = new ArrayList<Object>();
-        System.err.println(packetId);
         switch (packetId)
         {
         case 101:
