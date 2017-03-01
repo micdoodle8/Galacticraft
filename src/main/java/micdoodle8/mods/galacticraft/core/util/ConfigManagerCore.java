@@ -857,20 +857,20 @@ public class ConfigManagerCore
     	ConfigManagerCore.otherModsSilicon = (String) configs.get(5);
     	ConfigManagerCore.challengeRecipes = (Boolean) configs.get(6);
     	
-    	EnergyConfigHandler.setConfigOverride((Float) configs.get(6), (Float) configs.get(7), (Float) configs.get(8), (Float) configs.get(9), (Integer) configs.get(10));
+    	EnergyConfigHandler.setConfigOverride((Float) configs.get(7), (Float) configs.get(8), (Float) configs.get(9), (Float) configs.get(10), (Integer) configs.get(11));
     	
-    	int sizeIDs = configs.size() - 11;
+    	int sizeIDs = configs.size() - 12;
     	if (sizeIDs > 0)
     	{
-    		if (configs.get(11) instanceof String)
+    		if (configs.get(12) instanceof String)
     		{
     			ConfigManagerCore.detectableIDs = new String[sizeIDs];
 		    	for (int j = 0; j < sizeIDs; j++)
-		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(11 + j));
+		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(12 + j));
     		}
     		else if (configs.get(11) instanceof String[])
     		{
-    			ConfigManagerCore.detectableIDs = ((String[])configs.get(11));
+    			ConfigManagerCore.detectableIDs = ((String[])configs.get(12));
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
