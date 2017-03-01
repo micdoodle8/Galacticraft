@@ -92,7 +92,10 @@ public class RenderPlayerGC extends RenderPlayer
 
                         int padding = gearData.getThermalPadding(i);
 
-                        if (padding >= 0 && !par1EntityLivingBase.isInvisible())
+                        final EntityPlayerMP player = (EntityPlayerMP)par1EntityLivingBase;                        
+                        IInventoryGC inv = AccessInventoryGC.getGCInventoryForPlayer(player);
+                        
+                        if (padding >= 0 && inv.getStackInSlot(6 + i).getItem() == AsteroidsItems.thermalPadding && inv.getStackInSlot(6 + i).getItemDamage() == i && !par1EntityLivingBase.isInvisible())
                         {
                             GL11.glColor4f(1, 1, 1, 1);
                             Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.thermalPaddingTexture1);
