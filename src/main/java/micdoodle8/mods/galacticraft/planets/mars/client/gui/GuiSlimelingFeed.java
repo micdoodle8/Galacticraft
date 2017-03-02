@@ -64,6 +64,10 @@ public class GuiSlimelingFeed extends GuiScreen
     @Override
     protected void keyTyped(char keyChar, int keyID)
     {
+        if (!this.buttonGrowSlimeling.enabled && !this.buttonBreedSlimeling.enabled && !this.buttonStrengthenSlimeling.enabled && !this.buttonHealSlimeling.enabled)
+        {
+            super.keyTyped(keyChar, keyID);
+        }
         return;
     }
 
