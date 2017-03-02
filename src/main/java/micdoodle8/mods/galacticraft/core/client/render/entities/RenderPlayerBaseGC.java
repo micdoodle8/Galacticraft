@@ -9,13 +9,17 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerBaseGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
@@ -71,6 +75,16 @@ public class RenderPlayerBaseGC extends RenderPlayerBase
                     }
 
                     int padding = gearData.getThermalPadding(i);
+                    
+                    if (par1EntityLivingBase instanceof EntityPlayerMP)
+                    {
+                            ItemStack thermalItem = GCPlayerStats.get((EntityPlayerMP)par1EntityLivingBase).extendedInventory.getStackInSlot(6 + i);
+                            if (thermalItem.getItem() != AsteroidsItems.thermalPadding || thermalItem.getItemDamage() != i)
+                            {
+                                //Skip render if the thermal item is not the Asteroids thermal armor - needed for submods
+                                padding = -1;
+                            }
+                    }
 
                     if (padding >= 0 && !par1EntityLivingBase.isInvisible())
                     {
