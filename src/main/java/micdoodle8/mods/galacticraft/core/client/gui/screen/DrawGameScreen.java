@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -75,7 +74,6 @@ public class DrawGameScreen extends IScreenManager
         {
             TextureUtil.uploadTexture(reusableMap.getGlTextureId(), this.localMap, MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
             mapDone = true;
-            GCLog.debug("Created texture no:" + texCount++);
         }
     }
 
@@ -89,7 +87,7 @@ public class DrawGameScreen extends IScreenManager
 
         if (cornerBlock)
         {
-            if ((this.mapFirstTick || ((int) ticks) % 400 == 0) && !mapDone)
+            if ((this.mapFirstTick || ((int) ticks) % 99 == 0) && !mapDone)
             {
                 if (this.tickMapDone != (int) ticks)
                 {
