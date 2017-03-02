@@ -12,10 +12,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import org.lwjgl.opengl.GL11;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
@@ -25,7 +25,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     private float ySize_lo_2;
 
     private int potionOffsetLast;
-    private static float rotation = 150.0F;
+    private static float rotation = 0.0F;
 
     private boolean initWithPotion;
 
@@ -37,7 +37,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29, 51 - this.xSize_lo_2, 75 - 50 - this.ySize_lo_2);
+        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29, 51 - this.xSize_lo_2);
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(GuiExtendedInventory.inventoryTexture);
         final int k = this.guiLeft;
         final int l = this.guiTop;
@@ -107,35 +107,38 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         this.ySize_lo_2 = par2;
     }
 
-    public static void drawPlayerOnGui(Minecraft par0Minecraft, int par1, int par2, int par3, float par4, float par5)
+    public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale, float mouseX)
     {
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
-        GL11.glTranslatef(par1, par2, 50.0F);
-        GL11.glScalef(-par3, par3, par3);
-        GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-        float f2 = par0Minecraft.thePlayer.renderYawOffset;
-        float f3 = par0Minecraft.thePlayer.rotationYaw;
-        float f4 = par0Minecraft.thePlayer.rotationPitch;
-        float f5 = par0Minecraft.thePlayer.rotationYawHead;
-        par4 -= 19;
-        GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(x, y, 50.0F);
+        GlStateManager.scale(-scale, scale, scale);
+        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+        float f2 = mc.thePlayer.renderYawOffset;
+        float f3 = mc.thePlayer.rotationYaw;
+        float f4 = mc.thePlayer.rotationPitch;
+        float f5 = mc.thePlayer.rotationYawHead;
+        mouseX -= 19;
+        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
-        GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        // GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F,
-        // 0.0F, 0.0F);
-        par0Minecraft.thePlayer.renderYawOffset = GuiExtendedInventory.rotation;
-        par0Minecraft.thePlayer.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
-        par0Minecraft.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
-        par0Minecraft.thePlayer.rotationYawHead = par0Minecraft.thePlayer.rotationYaw;
-        par0Minecraft.thePlayer.rotationPitch = (float) Math.sin(par0Minecraft.getSystemTime() / 500.0F) * 3.0F;
-        GL11.glTranslatef(0.0F, (float) par0Minecraft.thePlayer.getYOffset(), 0.0F);
-        par0Minecraft.getRenderManager().playerViewY = 180.0F;
-        par0Minecraft.getRenderManager().renderEntityWithPosYaw(par0Minecraft.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        par0Minecraft.thePlayer.renderYawOffset = f2;
-        par0Minecraft.thePlayer.rotationYaw = f3;
-        par0Minecraft.thePlayer.rotationPitch = f4;
-        par0Minecraft.thePlayer.rotationYawHead = f5;
+        GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
+        mc.thePlayer.renderYawOffset = GuiExtendedInventory.rotation;
+        mc.thePlayer.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
+        mc.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
+        mc.thePlayer.rotationYawHead = mc.thePlayer.rotationYaw;
+        mc.thePlayer.rotationPitch = (float) Math.sin(mc.getSystemTime() / 500.0F) * 3.0F;
+        GlStateManager.translate(0.0F, (float) mc.thePlayer.getYOffset(), 0.0F);
+        mc.getRenderManager().playerViewY = 180.0F;
+        mc.getRenderManager().renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        rendermanager.setPlayerViewY(180.0F);
+        rendermanager.setRenderShadow(false);
+        rendermanager.renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        rendermanager.setRenderShadow(true);
+        mc.thePlayer.renderYawOffset = f2;
+        mc.thePlayer.rotationYaw = f3;
+        mc.thePlayer.rotationPitch = f4;
+        mc.thePlayer.rotationYawHead = f5;
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
