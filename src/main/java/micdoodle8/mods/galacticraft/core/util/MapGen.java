@@ -3,28 +3,40 @@ package micdoodle8.mods.galacticraft.core.util;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.GenLayerGCMap;
+import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
-//import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("unused")
-public class MapGen
+public class MapGen extends WorldChunkManager implements Runnable
 {
-    public boolean calculatingMap = false;
+    public boolean mapNeedsCalculating = false;
+    public AtomicBoolean finishedCalculating = new AtomicBoolean();
+    private AtomicBoolean paused = new AtomicBoolean();
+    private AtomicBoolean aborted = new AtomicBoolean();
+
+    private static final float[] parabolicField = new float[25];
+    
     private int ix = 0;
     private int iz = 0;
     private int biomeMapx0 = 0;
@@ -33,22 +45,37 @@ public class MapGen
     private int biomeMapCx;
     private int biomeMapCz;
     private int biomeMapFactor;
-    private WorldChunkManager biomeMapWCM;
-    private static GenLayer biomeMapGenLayer;
+
+    private BiomeGenBase[] biomeList; 
+    private BiomeCache biomeCache;
+    private GenLayer genBiomes;
+    private GenLayer biomeIndexLayer;
     public File biomeMapFile;
     private byte[] biomeAndHeightArray = null;
     private int biomeMapSizeX;
     private int biomeMapSizeZ;
+
     private Random rand = new Random();
-    //	private WeakReference<World> biomeMapWorld;
     private int[] heights = null;
     private double[] heighttemp = null;
-    private WorldType field_147435_p = WorldType.DEFAULT;
-    private BiomeGenBase[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
+    private WorldType worldType = WorldType.DEFAULT;
+    private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private BiomeGenBase[] biomesGridHeights = null;
     private int[] biomeCount = null;
     private final int dimID;
 
+    static
+    {
+        for (int j = -2; j <= 2; ++j)
+        {
+            for (int k = -2; k <= 2; ++k)
+            {
+                float f = 10.0F / MathHelper.sqrt_float((float) (j * j + k * k) + 0.2F);
+                parabolicField[j + 2 + (k + 2) * 5] = f;
+            }
+        }
+    }
+    
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
         this.biomeMapCx = cx >> 4;
@@ -56,14 +83,11 @@ public class MapGen
         this.dimID = world.provider.getDimensionId();
         if (file.exists())
         {
-//			try {
-//				this.sendToClient(FileUtils.readFileToByteArray(file));
-//			} catch (IOException e) { e.printStackTrace(); }
             return;
         }
 
+        this.mapNeedsCalculating = true;
         this.biomeMapFile = file;
-        this.calculatingMap = true;
         this.biomeMapSizeX = sx;
         this.biomeMapSizeZ = sz;
         this.biomeMapFactor = scale;
@@ -74,27 +98,45 @@ public class MapGen
         this.biomeMapz0 = this.biomeMapz00;
         this.ix = 0;
         this.iz = 0;
-        this.biomeMapWCM = world.getWorldChunkManager();
-        //  	this.biomeMapWorld = new WeakReference<World>(world);
-        try
-        {
-            this.biomeMapGenLayer = biomeMapWCM.biomeIndexLayer;
-        }
-        catch (Exception e)
-        {
-        }
-        if (this.biomeMapGenLayer == null)
-        {
-            this.calculatingMap = false;
-            GCLog.debug("Failed to get gen layer from World Chunk Manager.");
-            return;
-        }
+        long seed = world.getSeed();
+        this.biomeList = BiomeGenBase.getBiomeGenArray();
+        this.biomeCache = new BiomeCache(this);
+        this.worldType = world.getWorldInfo().getTerrainType();
+        GenLayerGCMap[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
+        GenLayer[] agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
+        this.genBiomes = agenlayer[0];
+        this.biomeIndexLayer = agenlayer[1];
 
         GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
-        field_147435_p = world.getWorldInfo().getTerrainType();
-        this.initialise(world.getSeed());
+        this.initialise(seed);
+    }
+  
+    public void run()
+    {
+    	//Allow some time for the pause on any other map gen thread to become effective 
+    	try {
+			Thread.currentThread().sleep(90);
+		} catch (InterruptedException e) {}
+    	//Now generate this map from start to finish
+    	while (!this.BiomeMapOneTick());
+       	this.finishedCalculating.set(true);
     }
 
+    public void pause()
+    {
+        this.paused.set(true);
+    }
+
+    public void resume()
+    {
+        this.paused.set(false);
+    }
+
+    public void abort()
+    {
+        this.aborted.set(true);
+    }
+    
     public void writeOutputFile(boolean flag)
     {
         try
@@ -117,7 +159,7 @@ public class MapGen
         this.biomeAndHeightArray = null;
     }
 
-    private void sendToClient(byte[] toSend)
+	private void sendToClient(byte[] toSend)
     {
         try
         {
@@ -133,9 +175,23 @@ public class MapGen
         }
     }
 
+	/*
+	 * Return false while there are further ticks to carry out 
+	 * Return true when completed
+	 */
     public boolean BiomeMapOneTick()
     {
-        int limit = Math.min(biomeMapFactor, 16);
+        if (this.aborted.get())
+        	return true;
+
+    	if (this.paused.get())
+        {
+        	try {
+				Thread.currentThread().sleep(1211);
+			} catch (InterruptedException e) {}
+        	return false;
+        }
+    	int limit = Math.min(biomeMapFactor, 16);
         if (this.biomeAndHeightArray == null)
         {
             this.biomeAndHeightArray = new byte[biomeMapSizeX * biomeMapSizeZ * 2];
@@ -159,9 +215,10 @@ public class MapGen
         if (iz > biomeMapSizeZ - imagefactor)
         {
             iz = 0;
+//Logging only required if generating large-scale world map
             if (ix % 25 == 8)
             {
-                GCLog.debug("Finished map column " + ix + " at " + (biomeMapCx + biomeMapx0) + "," + (biomeMapCz + biomeMapz0));
+                System.err.println("Finished map column " + ix + " at " + (biomeMapCx + biomeMapx0) + "," + (biomeMapCz + biomeMapz0));
             }
             ix += imagefactor;
             biomeMapz0 = biomeMapz00;
@@ -177,15 +234,12 @@ public class MapGen
 
     private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int factor, int limit)
     {
-//      IntCache.resetIntCache();
-//		int[] biomesGrid = biomeMapGenLayer.getInts(x0 << 4, z0 << 4, 16, 16);
-//		TODO: For some reason getInts() may not work in Minecraft 1.7.2, gives a banded result where part of the array is 0
-        biomesGrid = biomeMapWCM.getBiomeGenAt(biomesGrid, x0 << 4, z0 << 4, 16, 16, false);
+        biomesGrid = this.getBiomeGenAt(biomesGrid, x0 << 4, z0 << 4, 16, 16);
         if (biomesGrid == null)
         {
             return;
         }
-        getHeightMap(x0, z0);
+        this.getHeightMap(x0, z0);
         int halfFactor = limit * limit / 2;
         ArrayList<Integer> cols = new ArrayList<Integer>();
         for (int j = 0; j < biomeCount.length; j++)
@@ -215,15 +269,7 @@ public class MapGen
                         int height = heights[hidx + zz];
                         avgHeight += height;
                         divisor++;
-                        BiomeGenBase theBiome = biomesGrid[xx + x + ((zz + z) << 4)];
-                        if (theBiome != null)
-                        {
-                            biome = theBiome.biomeID;
-                        }
-                        else
-                        {
-                            biome = 9;
-                        }
+                        biome = biomesGrid[xx + x + ((zz + z) << 4)];
                         if (biome != lastcol)
                         {
                             idx = cols.indexOf(biome);
@@ -265,8 +311,8 @@ public class MapGen
     public void getHeightMap(int cx, int cz)
     {
         rand.setSeed((long) cx * 341873128712L + (long) cz * 132897987541L);
-        biomesGridHeights = this.biomeMapWCM.getBiomesForGeneration(biomesGridHeights, cx * 4 - 2, cz * 4 - 2, 10, 10);
-        func_147423_a(cx * 4, 0, cz * 4);
+        biomesGridHeights = this.getBiomesForGeneration(biomesGridHeights, cx * 4 - 2, cz * 4 - 2, 10, 10);
+        this.func_147423_a(cx * 4, 0, cz * 4);
 
         final double d0 = 0.125D;
         final double d9 = 0.25D;
@@ -363,7 +409,7 @@ public class MapGen
         int l = 2;
         int i1 = 0;
         double d4 = 8.5D;
-        boolean amplified = field_147435_p == WorldType.AMPLIFIED;
+        boolean amplified = this.worldType == WorldType.AMPLIFIED;
 
         for (int xx = 0; xx < 5; ++xx)
         {
@@ -372,7 +418,7 @@ public class MapGen
                 float f = 0.0F;
                 float f1 = 0.0F;
                 float f2 = 0.0F;
-                BiomeGenBase biomegenbase = biomesGridHeights[xx + 22 + zz * 10];
+                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].minHeight;
 
                 for (int x = -2; x <= 2; ++x)
                 {
@@ -389,9 +435,9 @@ public class MapGen
                             f4 = 1.0F + f4 * 4.0F;
                         }
 
-                        float f5 = MapUtil.parabolicField[x + 12 + z * 5] / (f3 + 2.0F);
+                        float f5 = parabolicField[x + 12 + z * 5] / (f3 + 2.0F);
 
-                        if (biomegenbase1.minHeight > biomegenbase.minHeight)
+                        if (biomegenbase1.minHeight > theMinHeight)
                         {
                             f5 /= 2.0F;
                         }
@@ -461,5 +507,58 @@ public class MapGen
                 l += 16;
             }
         }
+    }
+    
+    /**
+     *      REPLICATES method in WorldChunkManager
+     * Returns an array of biomes for the location input, used for generating the height map
+     */
+    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int width, int height)
+    {
+        IntCache.resetIntCache();
+        int[] aint = this.genBiomes.getInts(x, z, width, height);
+
+        int size = width * height;
+        if (biomes == null || biomes.length < size)
+        {
+            biomes = new BiomeGenBase[size];
+        }
+        for (int i = 0; i < size; ++i)
+        {
+        	int biomeId = aint[i];
+        	BiomeGenBase biomegenbase = null;
+        	if (biomeId >= 0 && biomeId <= biomeList.length)
+        	{
+        		biomegenbase = biomeList[biomeId];
+        	}
+//        	else
+//        		System.err.println("MapGen: Biome ID is out of bounds: " + biomeId + ", defaulting to 0 (Ocean)");
+        	biomes[i] = biomegenbase == null ? BiomeGenBase.ocean : biomegenbase;
+        }
+
+        return biomes;
+    }
+    
+    /**
+     *      REPLICATES method in WorldChunkManager
+     * Return a list of ints representing mapgen biomes at the specified coordinates. Args: listToReuse, x, y, width, height
+     * This is after all genlayers (oceans, islands, hills, rivers, etc)
+     */
+    public int[] getBiomeGenAt(int[] listToReuse, int x, int z, int width, int height)
+    {
+        IntCache.resetIntCache();
+        int[] aint = this.biomeIndexLayer.getInts(x, z, width, height);
+
+        int size = width * height;
+        if (listToReuse == null || listToReuse.length < size)
+        {
+            listToReuse = new int[size];
+        }
+        for (int i = 0; i < size; ++i)
+        {
+        	listToReuse[i] = aint[i];
+        }
+
+        return listToReuse;
     }
 }

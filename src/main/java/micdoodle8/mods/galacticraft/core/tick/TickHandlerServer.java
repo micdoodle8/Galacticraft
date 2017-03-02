@@ -278,7 +278,7 @@ public class TickHandlerServer
 
             if (MapUtil.calculatingMap.get())
             {
-                MapUtil.BiomeMapNextTick();
+                MapUtil.BiomeMapNextTick_MultiThreaded();
             }
             else if (!MapUtil.doneOverworldTexture)
             {
