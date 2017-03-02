@@ -216,10 +216,10 @@ public class MapGen extends WorldChunkManager implements Runnable
         {
             iz = 0;
 //Logging only required if generating large-scale world map
-            if (ix % 25 == 8)
-            {
-                System.err.println("Finished map column " + ix + " at " + (biomeMapCx + biomeMapx0) + "," + (biomeMapCz + biomeMapz0));
-            }
+//            if (ix % 25 == 8)
+//            {
+//                GCLog.debug("Finished map column " + ix + " at " + (biomeMapCx + biomeMapx0) + "," + (biomeMapCz + biomeMapz0));
+//            }
             ix += imagefactor;
             biomeMapz0 = biomeMapz00;
             biomeMapx0 += multifactor;
