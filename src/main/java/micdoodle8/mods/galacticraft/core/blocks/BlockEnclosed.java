@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import appeng.api.AEApi;
+import appeng.api.IAppEngApi;
+import appeng.api.parts.IPartHelper;
+import appeng.api.util.AEColor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
@@ -146,7 +150,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
 
         if (CompatibilityManager.isAppEngLoaded())
         {
-//            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
+            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()));
         }
     }
 
@@ -344,15 +348,21 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= EnumEnclosedBlock.ME_CABLE.getMetadata())
         {
-//            if (CompatibilityManager.isAppEngLoaded())
-//            {
-//                try
-//                {
-//                    Class<?> clazz = Class.forName("appeng.tile.networking.TileCableBus");
-//                    return (TileEntity) clazz.newInstance();
-//                }
-//                catch (Exception e) { e.printStackTrace(); }
-//            }
+            if (CompatibilityManager.isAppEngLoaded())
+            {
+            	//Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class.getName() )
+            	try
+                {
+                    Class<?> clazzApi = Class.forName("appeng.core.Api");
+                    IPartHelper apiPart = ((IAppEngApi) clazzApi.getField("INSTANCE").get(null)).partHelper();
+                    Class<?> clazzApiPart = Class.forName("appeng.core.api.ApiPart");
+                    Class clazz = (Class) clazzApiPart.getDeclaredMethod("getCombinedInstance", String.class).invoke(apiPart, "appeng.tile.networking.TileCableBus");
+                    System.err.println("SEALED DEBUG " + clazz.getName());
+                    //Needs to be: appeng.parts.layers.LayerITileStorageMonitorable_TileCableBus
+                    return (TileEntity) clazz.newInstance();
+                }
+                catch (Exception e) { e.printStackTrace(); }
+            }
         }
         else if (metadata <= EnumEnclosedBlock.ALUMINUM_WIRE.getMetadata())
         {
@@ -382,6 +392,19 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     public boolean showDescription(int meta)
     {
         return true;
+    }
+    
+    @Override
+    public void onPostBlockPlaced(World world, int x, int y, int z, int metadata)
+    {
+        if (metadata >= EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata() && metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
+        {
+        	EnumEnclosedBlock type = BlockEnclosed.getTypeFromMeta(metadata);
+        	if (CompatibilityManager.isBCraftLoaded() && type != null && type.getPipeType() != null)
+            {
+                BlockEnclosed.initialiseBCPipe(world, x, y, z, metadata);
+            }
+        }   	
     }
 
 	public static void initialiseBCPipe(World world, int i, int j, int k, int metadata)
