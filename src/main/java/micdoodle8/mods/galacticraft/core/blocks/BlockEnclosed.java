@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import appeng.api.AEApi;
 import appeng.api.IAppEngApi;
 import appeng.api.parts.IPartHelper;
-import appeng.api.util.AEColor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
@@ -357,7 +355,6 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
                     IPartHelper apiPart = ((IAppEngApi) clazzApi.getField("INSTANCE").get(null)).partHelper();
                     Class<?> clazzApiPart = Class.forName("appeng.core.api.ApiPart");
                     Class clazz = (Class) clazzApiPart.getDeclaredMethod("getCombinedInstance", String.class).invoke(apiPart, "appeng.tile.networking.TileCableBus");
-                    System.err.println("SEALED DEBUG " + clazz.getName());
                     //Needs to be: appeng.parts.layers.LayerITileStorageMonitorable_TileCableBus
                     return (TileEntity) clazz.newInstance();
                 }
