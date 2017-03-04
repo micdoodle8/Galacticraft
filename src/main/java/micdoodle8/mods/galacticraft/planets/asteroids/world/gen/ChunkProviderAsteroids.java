@@ -2,10 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
@@ -17,12 +13,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
@@ -876,13 +870,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     {
         if (par1EnumCreatureType == EnumCreatureType.monster)
         {
-            final List monsters = new ArrayList();
-            monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 3000, 1, 3));
-            monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
-            monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
-            monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) monsters.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
-            return monsters;
+        	return BiomeGenBaseAsteroids.asteroid.getSpawnableList(par1EnumCreatureType);
         }
         else
         {

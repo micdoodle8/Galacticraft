@@ -2,10 +2,6 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -17,13 +13,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -377,12 +371,7 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     {
         if (par1EnumCreatureType == EnumCreatureType.monster)
         {
-            final List monsters = new ArrayList();
-            monsters.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
-            monsters.add(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
-            monsters.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
-            monsters.add(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
-            return monsters;
+        	return BiomeGenBaseMoon.moonFlat.getSpawnableList(par1EnumCreatureType);
         }
         else
         {
