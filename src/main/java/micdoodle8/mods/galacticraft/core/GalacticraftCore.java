@@ -124,6 +124,8 @@ import micdoodle8.mods.galacticraft.core.util.ThreadRequirementMissing;
 import micdoodle8.mods.galacticraft.core.util.ThreadVersionCheck;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.block.Block;
@@ -136,6 +138,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -239,6 +242,10 @@ public class GalacticraftCore
         ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), GalacticraftCore.CONFIG_FILE));
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), GalacticraftCore.POWER_CONFIG_FILE));
         ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), GalacticraftCore.CHUNKLOADER_CONFIG_FILE));
+        
+        //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker
+        BiomeGenBase biomeOrbitPreInit = BiomeGenBaseOrbit.space;
+        BiomeGenBase biomeMoonPreInit = BiomeGenBaseMoon.moonFlat;
 
         this.registerOilandFuel();
 
