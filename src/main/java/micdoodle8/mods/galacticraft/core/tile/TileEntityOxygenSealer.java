@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.oxygen.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.oxygen.ThreadFindSeal;
@@ -47,12 +48,16 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     private static long ticksSave = 0L;
     private static boolean sealerCheckedThisTick = false;
     public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList();
+    private static final int UNSEALED_OXYGENPERTICK = 12;
 
 
     public TileEntityOxygenSealer()
     {
-        super(10000, 6);
+        super(10000, UNSEALED_OXYGENPERTICK);
         this.noRedstoneControl = true;
+        this.storage.setMaxExtract(5.0F);  //Half of a standard machine's power draw
+        this.storage.setMaxReceive(25.0F);
+        this.storage.setCapacity(EnergyStorageTile.STANDARD_CAPACITY * 2);  //Large capacity so it can keep working for a while even if chunk unloads affect its power supply
     }
 
     @Override
@@ -117,7 +122,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 	    	if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
 	    	{
 	    		IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-	    		float oxygenDraw = Math.min(this.oxygenPerTick * 2.5F, this.maxOxygen - this.storedOxygen);
+	    		float oxygenDraw = Math.min(UNSEALED_OXYGENPERTICK * 2.5F, this.maxOxygen - this.storedOxygen);
 	    		this.storedOxygen += oxygenItem.discharge(oxygenItemStack, oxygenDraw);
 	    		if (this.storedOxygen > this.maxOxygen) this.storedOxygen = this.maxOxygen;
 	    	}
@@ -129,12 +134,14 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                     this.storage.setMaxExtract(20.0F);
                 }
             }
-            else if (this.storage.getMaxExtract() != 10.0F)
+            else if (this.storage.getMaxExtract() != 5.0F)
             {
-                this.storage.setMaxExtract(10.0F);
+                this.storage.setMaxExtract(5.0F);
+                this.storage.setMaxReceive(25.0F);
             }
         }
     	
+		this.oxygenPerTick = this.sealed ? 2 : UNSEALED_OXYGENPERTICK;
         super.updateEntity();
         
         if (!this.worldObj.isRemote)
@@ -395,7 +402,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean shouldUseOxygen()
     {
-        return this.hasEnoughEnergyToRun && this.active && this.sealed;
+        return this.hasEnoughEnergyToRun && this.active;
     }
 
     @Override
