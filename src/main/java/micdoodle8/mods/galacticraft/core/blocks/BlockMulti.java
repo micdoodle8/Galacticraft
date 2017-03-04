@@ -188,7 +188,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(new BlockVec3(par2, par3, par4)))
             {
                 return mainBlockPosition.getBlock(par1World).getBlockHardness(par1World, par2, par3, par4);
             }
@@ -285,7 +285,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(new BlockVec3(x, y, z)))
 	        {
 	            Block mainBlockID = world.getBlock(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 	
@@ -307,7 +307,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-	        if (mainBlockPosition != null)
+	        if (mainBlockPosition != null && !mainBlockPosition.equals(new BlockVec3(x, y, z)))
 	        {
 	            return mainBlockPosition.getBlock(world).getBedDirection(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z);
 	        }
@@ -324,7 +324,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(new BlockVec3(x, y, z)))
 	        {
 	            return mainBlockPosition.getBlock(world).isBed(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player);
 	        }
@@ -339,7 +339,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-        if (mainBlockPosition != null)
+        if (mainBlockPosition != null && !mainBlockPosition.equals(new BlockVec3(x, y, z)))
         {
             mainBlockPosition.getBlock(world).setBedOccupied(world, mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, player, occupied);
         }
@@ -359,7 +359,7 @@ public class BlockMulti extends BlockContainer implements IPartialSealableBlock,
         {
             BlockVec3 mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(new BlockVec3(target.blockX, target.blockY, target.blockZ)))
             {
                 effectRenderer.addBlockHitEffects(mainBlockPosition.x, mainBlockPosition.y, mainBlockPosition.z, target);
             }
