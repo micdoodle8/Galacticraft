@@ -29,6 +29,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import appeng.api.AEApi;
+import appeng.api.util.AEColor;
+
 public class RecipeManagerGC
 {
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
@@ -43,6 +46,11 @@ public class RecipeManagerGC
         if (CompatibilityManager.isIc2Loaded())
         {
             RecipeManagerGC.addIndustrialCraft2Recipes();
+        }
+
+        if (CompatibilityManager.isAppEngLoaded())
+        {
+            RecipeManagerGC.addAppEngRecipes();
         }
 
         RecipeManagerGC.addUniversalRecipes();
@@ -646,6 +654,11 @@ public class RecipeManagerGC
         // } TODO IC2 recipes
     }
    
+    private static void addAppEngRecipes()
+    {
+         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.Transparent, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+    }
+
     private static void addExNihiloRecipes()
     {
     	try {
