@@ -351,7 +351,7 @@ public class GalacticraftCore
         {
         	FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
         	//And allow Buildcraft oil buckets to be filled with oilgc
-        	if (CompatibilityManager.isBCraftLoaded())
+        	if (CompatibilityManager.isBCraftEnergyLoaded())
         	{
         		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(Items.bucket)));
         	}

@@ -136,7 +136,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.IC2_LV_CABLE.getMetadata()));
         }
 
-        if (CompatibilityManager.isBCraftLoaded())
+        if (CompatibilityManager.isBCraftTransportLoaded())
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_COBBLESTONEPIPE.getMetadata()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata()));
@@ -164,25 +164,6 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
     		}
     		catch (Exception e) { e.printStackTrace(); }
         }
-    	//Now update the cached classes in CompatibilityManager
-    	//This is needed for BCCompat compatibility, as that overrides the basic BlockGenericPipe
-    	if (pipeItemsBC[0] != null)
-    	{
-    		try {
-			Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
-			blockPipeBC = (BlockContainer) clazzBC.getField("genericPipeBlock").get(null);
-    		CompatibilityManager.classBCBlockGenericPipe = blockPipeBC.getClass();
-            for (Method m : CompatibilityManager.classBCBlockGenericPipe.getDeclaredMethods())
-            {
-                if (m.getName().equals("getPipe"))
-                {
-                    CompatibilityManager.methodBCBlockPipe_getPipe = m;
-                    break;
-                }
-            }
-    		}
-    		catch (Exception e) { e.printStackTrace(); }
-    	}
 	}
 
 	@Override
@@ -255,7 +236,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= 12)
         {
-            if (CompatibilityManager.isBCraftLoaded())
+            if (CompatibilityManager.isBCraftTransportLoaded())
             {
             	if (blockPipeBC != null)
             	{
@@ -335,7 +316,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         }
         else if (metadata <= 12)
         {
-            if (CompatibilityManager.isBCraftLoaded())
+            if (CompatibilityManager.isBCraftTransportLoaded())
             {
             	try
             	{
@@ -397,7 +378,7 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
         if (metadata >= EnumEnclosedBlock.BC_ITEM_STONEPIPE.getMetadata() && metadata <= EnumEnclosedBlock.BC_POWER_GOLDPIPE.getMetadata())
         {
         	EnumEnclosedBlock type = BlockEnclosed.getTypeFromMeta(metadata);
-        	if (CompatibilityManager.isBCraftLoaded() && type != null && type.getPipeType() != null)
+        	if (CompatibilityManager.isBCraftTransportLoaded() && type != null && type.getPipeType() != null)
             {
                 BlockEnclosed.initialiseBCPipe(world, x, y, z, metadata);
             }
@@ -414,25 +395,16 @@ public class BlockEnclosed extends BlockContainer implements IPartialSealableBlo
             //  tilePipe.initialize(pipe);
             //	and optionally: tilePipe.sendUpdateToClient();
 
-            Item pipeItem = pipeItemsBC[metadata-7];     
+            Item pipeItem = pipeItemsBC[metadata-7];
             Class<?> clazzBlockPipe = CompatibilityManager.classBCBlockGenericPipe;
             TileEntity tilePipe = world.getTileEntity(i, j, k);
             Class<?> clazzTilePipe = tilePipe.getClass();
 
-            Method createPipe = null;
-            for (Method m : clazzBlockPipe.getDeclaredMethods())
+            if (CompatibilityManager.methodBCBlockPipe_createPipe != null)
             {
-                if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
-                {
-                    createPipe = m;
-                    break;
-                }
-            }
-            if (createPipe != null)
-            {
-                Object pipe = createPipe.invoke(null, pipeItem);
+                Object pipe = CompatibilityManager.methodBCBlockPipe_createPipe.invoke(null, pipeItem);
                 Method initializePipe = null;
-                for (Method m : clazzTilePipe.getDeclaredMethods())
+                for (Method m : clazzTilePipe.getMethods())
                 {
                     if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
                     {

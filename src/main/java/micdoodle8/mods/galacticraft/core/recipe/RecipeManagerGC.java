@@ -35,7 +35,7 @@ public class RecipeManagerGC
     
 	public static void loadRecipes()
     {
-        if (CompatibilityManager.isBCraftLoaded())
+        if (CompatibilityManager.isBCraftTransportLoaded())
         {
             RecipeManagerGC.addBuildCraftCraftingRecipes();
         }
