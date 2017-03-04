@@ -83,7 +83,7 @@ public enum Direction {
 			try {
 				return world.getTileEntity(pos);
 			} catch (Exception e) {
-				throw new RuntimeException("error getting TileEntity at dim "+world.provider.getDimensionId()+" "+pos);
+				throw new RuntimeException("error getting TileEntity at dim "+world.provider.getDimension()+" "+pos);
 			}
 		}
 

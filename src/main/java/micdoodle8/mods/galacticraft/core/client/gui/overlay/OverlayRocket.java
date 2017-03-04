@@ -7,7 +7,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -53,7 +53,7 @@ public class OverlayRocket extends Overlay
         float sizeScale = 0.65F;
 
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(var1 + 0, var2 + 242.0F * sizeScale, 0.0).tex((var3 + 0) * var7, (var4 + var6) * var8).endVertex();
         worldRenderer.pos(var1 + 20.0F * sizeScale, var2 + 242.0F * sizeScale, 0.0).tex((var3 + var5) * var7, (var4 + var6) * var8).endVertex();
@@ -63,7 +63,7 @@ public class OverlayRocket extends Overlay
 
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass());
+        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(OverlayRocket.minecraft.thePlayer.getRidingEntity().getClass());
 
         final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.thePlayer) / 10.5F);
         var1 = 2.5F;
@@ -77,7 +77,7 @@ public class OverlayRocket extends Overlay
         var8 = 1.0F / 32.0F;
 
         GL11.glPushMatrix();
-        final int i = OverlayRocket.minecraft.thePlayer.ridingEntity.getBrightnessForRender(1);
+        final int i = OverlayRocket.minecraft.thePlayer.getRidingEntity().getBrightnessForRender(1);
         final int j = i % 65536;
         final int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
@@ -90,7 +90,7 @@ public class OverlayRocket extends Overlay
 
         try
         {
-            spaceshipRender.doRender(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+            spaceshipRender.doRender(OverlayRocket.minecraft.thePlayer.getRidingEntity().getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {

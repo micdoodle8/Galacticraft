@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
@@ -603,7 +603,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
                 if (this.strikethroughStyle)
                 {
                     tessellator = Tessellator.getInstance();
-                    WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+                    VertexBuffer worldRenderer = tessellator.getBuffer();
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
                     worldRenderer.pos(this.posX, this.posY + this.FONT_HEIGHT / 2, 0.0D).endVertex();
@@ -617,7 +617,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener
                 if (this.underlineStyle)
                 {
                     tessellator = Tessellator.getInstance();
-                    WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+                    VertexBuffer worldRenderer = tessellator.getBuffer();
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
                     int l = this.underlineStyle ? -1 : 0;

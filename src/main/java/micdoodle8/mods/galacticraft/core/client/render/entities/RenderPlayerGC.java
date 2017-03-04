@@ -115,9 +115,9 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 final EntityPlayer player = (EntityPlayer) par1AbstractClientPlayer;
 
-                if (player.ridingEntity instanceof EntityTieredRocket)
+                if (player.getRidingEntity() instanceof EntityTieredRocket)
                 {
-                    EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
+                    EntityTieredRocket rocket = (EntityTieredRocket) player.getRidingEntity();
                     GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
                     float anglePitch = rocket.prevRotationPitch;
                     float angleYaw = rocket.prevRotationYaw;

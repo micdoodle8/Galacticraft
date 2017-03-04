@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -164,7 +164,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {

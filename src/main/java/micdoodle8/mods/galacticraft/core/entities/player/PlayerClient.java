@@ -71,7 +71,7 @@ public class PlayerClient implements IPlayerClient
             GCPlayerStatsClient.get(player).inFreefall = false;
             return false;
         }
-        return !(player.ridingEntity instanceof EntityLanderBase) && vanillaInside;
+        return !(player.getRidingEntity() instanceof EntityLanderBase) && vanillaInside;
     }
 
     @Override
@@ -158,7 +158,7 @@ public class PlayerClient implements IPlayerClient
             stats.inFreefall = false;
         }
 
-        boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
+        boolean ridingThirdPersonEntity = player.getRidingEntity() instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.getRidingEntity()).defaultThirdPerson();
 
         if (ridingThirdPersonEntity && !stats.lastRidingCameraZoomEntity)
         {
@@ -166,12 +166,12 @@ public class PlayerClient implements IPlayerClient
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
         }
 
-        if (player.ridingEntity != null && player.ridingEntity instanceof ICameraZoomEntity)
+        if (player.getRidingEntity() != null && player.getRidingEntity() instanceof ICameraZoomEntity)
         {
             if(!ConfigManagerCore.disableVehicleCameraChanges)
             {
                 stats.lastZoomed = true;
-                TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
+                TickHandlerClient.zoom(((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom());
             }
         }
         else if (stats.lastZoomed)
@@ -268,7 +268,7 @@ public class PlayerClient implements IPlayerClient
         double motionSqrd = motionX * motionX + motionZ * motionZ;
 
         // If the player is on the moon, not airbourne and not riding anything
-        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.ridingEntity == null && !player.capabilities.isFlying)
+        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.getRidingEntity() == null && !player.capabilities.isFlying)
         {
             int iPosX = (int) Math.floor(player.posX);
             int iPosY = (int) Math.floor(player.posY - 1);
@@ -302,8 +302,8 @@ public class PlayerClient implements IPlayerClient
 
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
-                        long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimensionId(), pos, player.rotationYaw, player.getName());
+                        long chunkKey = ChunkPos.asLong(pos.intX() >> 4, pos.intZ() >> 4);
+                        FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimension(), pos, player.rotationYaw, player.getName());
 
                         // Increment and cap step counter at 1
                         stats.lastStep++;
@@ -362,7 +362,7 @@ public class PlayerClient implements IPlayerClient
         }
         flag |= 1 << i;
         stats.buildFlags = (flag & 511) + (repeatCount << 9);
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, player.worldObj.provider.getDimensionId(), new Object[] { stats.buildFlags }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, player.worldObj.provider.getDimension(), new Object[] { stats.buildFlags }));
         switch (i)
         {
         case 0:
@@ -370,7 +370,7 @@ public class PlayerClient implements IPlayerClient
         case 2:
         case 3:
             player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/1" + "\"}}]"));
-            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
+            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
             break;
         case 4:
         case 5:

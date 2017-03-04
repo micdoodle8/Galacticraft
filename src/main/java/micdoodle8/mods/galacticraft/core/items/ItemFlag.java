@@ -16,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -77,7 +77,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
                 }
                 else
                 {
-                    par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.flag.already_placed")));
+                    par3EntityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.flag.already_placed")));
                 }
             }
 

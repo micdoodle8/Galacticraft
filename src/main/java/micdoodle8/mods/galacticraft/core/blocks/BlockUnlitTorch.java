@@ -6,14 +6,18 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -68,38 +72,34 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         }
     }
 
-    private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction, boolean nope)
-    {
-        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, direction);
-    }
-
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     private boolean canPlaceTorchOn(World world, BlockPos pos)
     {
-        if (World.doesBlockHaveSolidTopSurface(world, pos))
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock().isSideSolid(state, world, pos, EnumFacing.UP))
         {
             return true;
         }
         else
         {
-            return world.getBlockState(pos).getBlock().canPlaceTorchOnTop(world, pos);
+            return world.getBlockState(pos).getBlock().canPlaceTorchOnTop(state, world, pos);
         }
     }
 
@@ -126,14 +126,15 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 
     private boolean canPlaceOn(World worldIn, BlockPos pos)
     {
-        if (World.doesBlockHaveSolidTopSurface(worldIn, pos))
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getBlock().isSideSolid(state, worldIn, pos, EnumFacing.UP))
         {
             return true;
         }
         else
         {
             Block block = worldIn.getBlockState(pos).getBlock();
-            return block.canPlaceTorchOnTop(worldIn, pos);
+            return block.canPlaceTorchOnTop(state, worldIn, pos);
         }
     }
 
@@ -270,45 +271,43 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
      * Ray traces through the blocks collision from start vector to end vector
      * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
      */
-    @Override
-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
-    {
-        EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(FACING);
-        float f = 0.15F;
+//    @Override
+//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+//    {
+//        EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(FACING);
+//        float f = 0.15F;
+//
+//        if (enumfacing == EnumFacing.EAST)
+//        {
+//            this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
+//        }
+//        else if (enumfacing == EnumFacing.WEST)
+//        {
+//            this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+//        }
+//        else if (enumfacing == EnumFacing.SOUTH)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
+//        }
+//        else if (enumfacing == EnumFacing.NORTH)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
+//        }
+//        else
+//        {
+//            f = 0.1F;
+//            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
+//        }
+//
+//        return super.collisionRayTrace(worldIn, pos, start, end);
+//    }
 
-        if (enumfacing == EnumFacing.EAST)
-        {
-            this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
-        }
-        else if (enumfacing == EnumFacing.WEST)
-        {
-            this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
-        }
-        else if (enumfacing == EnumFacing.SOUTH)
-        {
-            this.setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
-        }
-        else if (enumfacing == EnumFacing.NORTH)
-        {
-            this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
-        }
-        else
-        {
-            f = 0.1F;
-            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
-        }
 
-        return super.collisionRayTrace(worldIn, pos, start, end);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random par5Random)
+    @Override
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        EnumFacing enumfacing = state.getValue(FACING);
+        EnumFacing enumfacing = stateIn.getValue(FACING);
         double d0 = (double) pos.getX() + 0.5D;
         double d1 = (double) pos.getY() + 0.7D;
         double d2 = (double) pos.getZ() + 0.5D;
@@ -425,7 +424,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()()
+    public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

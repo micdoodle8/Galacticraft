@@ -180,7 +180,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
         compound.setBoolean("isLocked", this.locked);
@@ -417,7 +417,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public IChatComponent getDisplayName()
     {
-        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (IChatComponent) (this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override
@@ -477,7 +477,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         {
             if (player.worldObj.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, this.worldObj.provider.getDimensionId(), new Object[] { this.getTierOfKeyRequired() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, this.worldObj.provider.getDimension(), new Object[] { this.getTierOfKeyRequired() }));
             }
             return true;
         }

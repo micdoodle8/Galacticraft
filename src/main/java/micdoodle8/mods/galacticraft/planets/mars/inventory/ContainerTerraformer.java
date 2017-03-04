@@ -40,7 +40,7 @@ public class ContainerTerraformer extends Container
 
             if (var6 == 0)
             {
-                stacks.add(new ItemStack(Items.dye, 1, 15));
+                stacks.add(new ItemStack(Items.DYE, 1, 15));
             }
             else if (var6 == 1)
             {
@@ -126,7 +126,7 @@ public class ContainerTerraformer extends Container
                         return null;
                     }
                 }
-                else if (var4.getItem() == Items.dye && var4.getItemDamage() == 15)
+                else if (var4.getItem() == Items.DYE && var4.getItemDamage() == 15)
                 {
                     if (!this.mergeItemStack(var4, 2, 6, false))
                     {
@@ -201,7 +201,7 @@ public class ContainerTerraformer extends Container
     private static void initSaplingList()
     {
         ContainerTerraformer.saplingList = new LinkedList();
-        Iterator iterator = Block.blockRegistry.iterator();
+        Iterator iterator = Block.REGISTRY.iterator();
 
         while (iterator.hasNext())
         {

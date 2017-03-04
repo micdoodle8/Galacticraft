@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,10 +16,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockDish extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortableBlock
@@ -49,7 +49,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
                     BlockPos pos1 = pos.add((y == 2 ? x : 0), y, (y == 2 ? z : 0));
                     Block block = world.getBlockState(pos1).getBlock();
 
-                    if (block.getMaterial() != Material.air && !block.isReplaceable(world, pos1))
+                    if (block.getMaterial(world.getBlockState(pos)) != Material.AIR && !block.isReplaceable(world, pos1))
                     {
                         return false;
                     }
@@ -109,7 +109,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
 //        IBlockState state = world.getBlockState(pos);
 //        int original = state.getBlock().getMetaFromState(state);
@@ -133,21 +133,13 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        int metadata = this.getDamageValue(world, pos);
-
-        return new ItemStack(this, 1, metadata);
-    }
-
-    @Override
     public TileEntity createTileEntity(World world, IBlockState metadata)
     {
         return new TileEntityDish();
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -165,7 +157,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }

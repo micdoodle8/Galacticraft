@@ -16,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
@@ -386,7 +386,7 @@ public class GCPlayerStats implements IExtendedEntityProperties
         final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
         if (!GCPlayer.receivedBedWarning)
         {
-            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
+            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.bed_fail.message")));
             GCPlayer.receivedBedWarning = true;
         }
     }

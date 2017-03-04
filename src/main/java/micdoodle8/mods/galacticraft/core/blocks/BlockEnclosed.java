@@ -13,17 +13,18 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -131,10 +132,10 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
     public BlockEnclosed(String assetName)
     {
-        super(Material.clay);
+        super(Material.CLAY);
         this.setResistance(0.2F);
         this.setHardness(0.4f);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
         this.setUnlocalizedName(assetName);
     }
 
@@ -215,18 +216,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    public int damageDropped(IBlockState state)
-    {
-        return state.getBlock().getMetaFromState(state);
-    }
-
-    @Override
-    public int getDamageValue(World worldIn, BlockPos pos)
-    {
-        return getMetaFromState(worldIn.getBlockState(pos));
-    }
-
-    @Override
     public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
         IBlockState state = worldIn.getBlockState(pos);
@@ -288,7 +277,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             super.onNeighborChange(worldIn, pos, neighborBlockPos);
             if (CompatibilityManager.isAppEngLoaded())
             {
-//                worldIn.markBlockForUpdate(pos); TODO
+//                worldIn.notifyBlockUpdate(pos); TODO
             }
         }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())

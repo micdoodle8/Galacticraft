@@ -1,22 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityFXEntityOxygen extends EntityFX
+public class ParticleOxygen extends Particle
 {
     private final float portalParticleScale;
     private final double portalPosX;
     private final double portalPosY;
     private final double portalPosZ;
 
-    public EntityFXEntityOxygen(World par1World, Vector3 position, Vector3 motion, Vector3 color)
+    public ParticleOxygen(World par1World, Vector3 position, Vector3 motion, Vector3 color)
     {
         super(par1World, position.x, position.y, position.z, motion.x, motion.y, motion.z);
         this.motionX = motion.x;
@@ -30,19 +30,19 @@ public class EntityFXEntityOxygen extends EntityFX
         this.particleGreen = color.floatY();
         this.particleBlue = color.floatZ();
         this.particleMaxAge = (int) (Math.random() * 10.0D) + 40;
-        this.noClip = true;
+        this.canCollide = false;
         this.setParticleTextureIndex((int) (Math.random() * 8.0D));
     }
 
     @Override
-    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
-        float var8 = (this.particleAge + f0) / this.particleMaxAge;
+        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
         this.particleScale = this.portalParticleScale * var8;
-        super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
+        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
     @Override
@@ -64,21 +64,15 @@ public class EntityFXEntityOxygen extends EntityFX
         return var4 | var5 << 16;
     }
 
-    /**
-     * Gets how bright this entity is.
-     */
-    @Override
-    public float getBrightness(float par1)
-    {
-        final float var2 = super.getBrightness(par1);
-        float var3 = (float) this.particleAge / (float) this.particleMaxAge;
-        var3 = var3 * var3 * var3 * var3;
-        return var2 * (1.0F - var3) + var3;
-    }
+    //    @Override
+//    public float getBrightness(float par1)
+//    {
+//        final float var2 = super.getBrightness(par1);
+//        float var3 = (float) this.particleAge / (float) this.particleMaxAge;
+//        var3 = var3 * var3 * var3 * var3;
+//        return var2 * (1.0F - var3) + var3;
+//    }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     @Override
     public void onUpdate()
     {
@@ -95,7 +89,7 @@ public class EntityFXEntityOxygen extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
     }
 }

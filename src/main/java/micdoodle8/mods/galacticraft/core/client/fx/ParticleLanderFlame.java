@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
@@ -15,12 +15,12 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class EntityFXLanderFlame extends EntityFX
+public class ParticleLanderFlame extends Particle
 {
     private float smokeParticleScale;
-    private EntityLivingBase ridingEntity;
+    private EntityLivingBase getRidingEntity();
 
-    public EntityFXLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityLivingBase ridingEntity)
+    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityLivingBase getRidingEntity())
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX *= 0.10000000149011612D;
@@ -34,16 +34,16 @@ public class EntityFXLanderFlame extends EntityFX
         this.particleScale *= 8F * 1.0F;
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int) 5.0D;
-        this.noClip = false;
-        this.ridingEntity = ridingEntity;
+        this.canCollide = true;
+        this.getRidingEntity() = getRidingEntity();
     }
 
     @Override
-    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        float var8 = (this.particleAge + f0) / this.particleMaxAge * 32.0F;
+        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
         {
@@ -56,7 +56,7 @@ public class EntityFXLanderFlame extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
+        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
     }
@@ -70,7 +70,7 @@ public class EntityFXLanderFlame extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
 
         this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
@@ -91,7 +91,7 @@ public class EntityFXLanderFlame extends EntityFX
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
 
-        final List<?> var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(1.0D, 0.5D, 1.0D));
+        final List<?> var3 = this.worldObj.getEntitiesWithinAABB(Entity.class, this.getEntityBoundingBox().expand(1.0D, 0.5D, 1.0D));
 
         if (var3 != null)
         {
@@ -101,10 +101,10 @@ public class EntityFXLanderFlame extends EntityFX
 
                 if (var5 instanceof EntityLivingBase)
                 {
-                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
+                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.getRidingEntity()))
                     {
                         var5.setFire(3);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, var5.worldObj.provider.getDimensionId(), new Object[] { var5.getEntityId() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, var5.worldObj.provider.getDimension(), new Object[] { var5.getEntityId() }));
                     }
                 }
             }
@@ -117,9 +117,9 @@ public class EntityFXLanderFlame extends EntityFX
         return 15728880;
     }
 
-    @Override
-    public float getBrightness(float par1)
-    {
-        return 1.0F;
-    }
+//    @Override
+//    public float getBrightness(float par1)
+//    {
+//        return 1.0F;
+//    }
 }

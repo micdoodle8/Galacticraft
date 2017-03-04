@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -28,7 +28,7 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
         TileEntityFluidTank tankAbove = tank.getNextTank(tank.getPos());
         TileEntityFluidTank tankBelow = tank.getPreviousTank(tank.getPos());
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(info[0].fluid.getFluid().getStill().toString());
         final double uMin = sprite.getMinU();
         final double uMax = sprite.getMaxU();
@@ -45,7 +45,7 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
 
         float level = 1.0F;
         float levelInv = 0.0F;

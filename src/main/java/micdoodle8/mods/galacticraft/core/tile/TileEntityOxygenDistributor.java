@@ -47,7 +47,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public void validate()
     {
         super.validate();
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimensionId()));
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimension()));
     }
 
     @Override
@@ -295,7 +295,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 

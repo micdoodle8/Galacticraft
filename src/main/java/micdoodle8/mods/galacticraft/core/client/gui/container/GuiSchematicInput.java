@@ -61,7 +61,7 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
                 SchematicRegistry.flipToNextPage(this.pageIndex);
                 break;
             case 2:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, mc.theWorld.provider.getDimensionId(), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, mc.theWorld.provider.getDimension(), new Object[] {}));
                 break;
             }
         }

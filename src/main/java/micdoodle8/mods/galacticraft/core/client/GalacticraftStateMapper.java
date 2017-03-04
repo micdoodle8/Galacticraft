@@ -18,7 +18,7 @@ public class GalacticraftStateMapper extends StateMapperBase
     @Override
     protected ModelResourceLocation getModelResourceLocation(IBlockState state)
     {
-        ResourceLocation loc = Block.blockRegistry.getNameForObject(state.getBlock());
+        ResourceLocation loc = Block.REGISTRY.getNameForObject(state.getBlock());
         loc = new ResourceLocation(loc.getResourceDomain().replace("|", ""), loc.getResourcePath());
         return new ModelResourceLocation(loc, getPropertyString(state));
     }

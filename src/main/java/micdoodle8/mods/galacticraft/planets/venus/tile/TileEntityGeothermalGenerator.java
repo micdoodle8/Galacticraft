@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
@@ -86,7 +86,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.worldObj.isRemote && this.validSpout != lastValidSpout)
             {
                 // Update active texture
-                this.worldObj.markBlockForUpdate(this.getPos());
+                this.worldObj.notifyBlockUpdate(this.getPos());
             }
         }
 
@@ -160,7 +160,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -234,7 +234,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.disabled != disabled && this.worldObj.isRemote)
             {
                 // Update active texture
-                this.worldObj.markBlockForUpdate(this.getPos());
+                this.worldObj.notifyBlockUpdate(this.getPos());
             }
 
             this.disabled = disabled;

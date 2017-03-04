@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -69,7 +69,7 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
         int texWidth = this.isSelected ? 12 : 9;
         int texHeight = this.isSelected ? 16 : 9;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + texHeight) * f1).endVertex();
         worldRenderer.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + texWidth) * f, (par4 + texHeight) * f1).endVertex();

@@ -8,7 +8,7 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -31,7 +31,7 @@ public class PathNavigateCeiling extends PathNavigate
     @Override
     protected boolean canNavigate()
     {
-        return this.theEntity.onGround || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie && this.theEntity.ridingEntity instanceof EntityChicken;
+        return this.theEntity.onGround || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie && this.theEntity.getRidingEntity() instanceof EntityChicken;
     }
 
     @Override
@@ -147,12 +147,12 @@ public class PathNavigateCeiling extends PathNavigate
                         Block block = this.worldObj.getBlockState(new BlockPos(k, y + 1, l)).getBlock();
                         Material material = block.getMaterial();
 
-                        if (material == Material.air)
+                        if (material == Material.AIR)
                         {
                             return false;
                         }
 
-                        if (material == Material.water && !this.theEntity.isInWater())
+                        if (material == Material.WATER && !this.theEntity.isInWater())
                         {
                             return false;
                         }

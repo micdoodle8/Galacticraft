@@ -7,7 +7,8 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
 
 public class CommandKeepDim extends CommandBase
 {
@@ -30,7 +31,7 @@ public class CommandKeepDim extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase;
 
@@ -66,17 +67,17 @@ public class CommandKeepDim extends CommandBase
 
                     if (ConfigManagerCore.setLoaded(dimID))
                     {
-                        playerBase.addChatMessage(new ChatComponentText("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
+                        playerBase.addChatMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
                     }
                     else
                     {
                         if (ConfigManagerCore.setUnloaded(dimID))
                         {
-                            playerBase.addChatMessage(new ChatComponentText("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
+                            playerBase.addChatMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
                         }
                         else
                         {
-                            playerBase.addChatMessage(new ChatComponentText("[GCKeepLoaded] Failed to set dimension as not static"));
+                            playerBase.addChatMessage(new TextComponentString("[GCKeepLoaded] Failed to set dimension as not static"));
                         }
                     }
                 }

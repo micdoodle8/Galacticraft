@@ -3,19 +3,19 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityFXOilDrip extends EntityFX
+public class ParticleOilDrip extends Particle
 {
     private int bobTimer;
 
-    public EntityFXOilDrip(World world, double x, double y, double z)
+    public ParticleOilDrip(World world, double x, double y, double z)
     {
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -58,19 +58,18 @@ public class EntityFXOilDrip extends EntityFX
 
         if (this.particleMaxAge-- <= 0)
         {
-            this.setDead();
+            this.setExpired();
         }
 
-        if (this.onGround)
+        if (this.isCollided)
         {
-            this.setDead();
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }
 
-        BlockPos pos = new BlockPos(this);
+        BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
         IBlockState state = this.worldObj.getBlockState(pos);
-        Material material = state.getBlock().getMaterial();
+        Material material = state.getBlock().getMaterial(state);
 
         if (material.isLiquid() || material.isSolid())
         {
@@ -85,7 +84,7 @@ public class EntityFXOilDrip extends EntityFX
 
             if (this.posY < d1)
             {
-                this.setDead();
+                this.setExpired();
             }
         }
     }

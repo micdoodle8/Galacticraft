@@ -97,7 +97,7 @@ public abstract class Identifier {
         public static Tile create(TileEntity tile) {
             if (tile.getWorld() == null) throw new NullPointerException("tile.getWorld() for the tile " + tile.getClass());
             if (tile.getPos() == null) throw new NullPointerException("tile.getPos() for the tile " + tile.getClass());
-            return new Tile(tile.getWorld().provider.getDimensionId(), tile.getPos());
+            return new Tile(tile.getWorld().provider.getDimension(), tile.getPos());
         }
 
         private Tile(int dimId, BlockPos pos) {
@@ -144,7 +144,7 @@ public abstract class Identifier {
         @SideOnly(Side.CLIENT)
         public TileEntity getByIdentifierClient() {
             World world = Minecraft.getMinecraft().theWorld;
-            if (world == null || world.provider.getDimensionId() != dimId) return null;
+            if (world == null || world.provider.getDimension() != dimId) return null;
             return world.getTileEntity(pos);
         }
 
@@ -152,7 +152,7 @@ public abstract class Identifier {
         @SideOnly(Side.CLIENT)
         public boolean isLoadedClient() {
             World world = Minecraft.getMinecraft().theWorld;
-            if (world == null || world.provider.getDimensionId() != dimId) return false;
+            if (world == null || world.provider.getDimension() != dimId) return false;
             return world.getTileEntity(pos) != null;
         }
 
@@ -164,7 +164,7 @@ public abstract class Identifier {
         public static MovableEntity create(Entity ent) {
             if (ent.getEntityWorld() == null) throw new NullPointerException("ent.getEntityWorld() for the entity " + ent.getClass());
             if (ent.getPersistentID() == null) throw new NullPointerException("ent.getPersistentID() for the entity " + ent.getClass());
-            return new MovableEntity(ent.getEntityWorld().provider.getDimensionId(), ent.getPersistentID());
+            return new MovableEntity(ent.getEntityWorld().provider.getDimension(), ent.getPersistentID());
         }
 
         private MovableEntity(int dimId, UUID uniqueId) {
@@ -184,14 +184,14 @@ public abstract class Identifier {
         @Override
         public Entity getByIdentifier(MinecraftServer server) {
             World world = server.worldServerForDimension(dimId);
-            if (world == null || world.provider.getDimensionId() != dimId) return null;
+            if (world == null || world.provider.getDimension() != dimId) return null;
             return get(world);
         }
 
         @Override
         public boolean isLoaded(MinecraftServer server) {
             World world = server.worldServerForDimension(dimId);
-            if (world == null || world.provider.getDimensionId() != dimId) return false;
+            if (world == null || world.provider.getDimension() != dimId) return false;
             return get(world) != null;
         }
 
@@ -199,7 +199,7 @@ public abstract class Identifier {
         @SideOnly(Side.CLIENT)
         public Entity getByIdentifierClient() {
             World world = Minecraft.getMinecraft().theWorld;
-            if (world == null || world.provider.getDimensionId() != dimId) return null;
+            if (world == null || world.provider.getDimension() != dimId) return null;
             return get(world);
         }
 
@@ -207,7 +207,7 @@ public abstract class Identifier {
         @SideOnly(Side.CLIENT)
         public boolean isLoadedClient() {
             World world = Minecraft.getMinecraft().theWorld;
-            if (world == null || world.provider.getDimensionId() != dimId) return false;
+            if (world == null || world.provider.getDimension() != dimId) return false;
             return get(world) != null;
         }
 

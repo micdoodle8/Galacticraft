@@ -71,7 +71,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList tagList = new NBTTagList();
 
@@ -96,7 +96,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
             GCLog.debug("Adding telepad with address " + telepad.address);
             if (telepad.addressValid)
             {
-                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimensionId(), new BlockVec3(telepad));
+                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimension(), new BlockVec3(telepad));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
                 GCLog.debug("Added telepad.");
 

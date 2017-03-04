@@ -67,7 +67,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         GlStateManager.rotate(-var25, 0.0F, 1.0F, 0.0F);
 
         this.updateModels();
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         GlStateManager.scale(0.65F, 0.6F, 0.65F);

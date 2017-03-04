@@ -16,7 +16,7 @@ public class CommonUtils {
 
     public static File getSaveLocation(World world) {
         File base = DimensionManager.getCurrentSaveRootDirectory();
-        return world.provider.getDimensionId() == 0 ? base : new File(base, world.provider.getSaveFolder());
+        return world.provider.getDimension() == 0 ? base : new File(base, world.provider.getSaveFolder());
     }
 
     public static File getSaveLocation(int dim) {
@@ -28,7 +28,7 @@ public class CommonUtils {
     }
 
     public static int getDimension(World world){
-        return world.provider.getDimensionId();
+        return world.provider.getDimension();
     }
 
     public static File getMinecraftDir() {

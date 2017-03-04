@@ -95,7 +95,7 @@ public class ChunkLoadingCallback implements LoadingCallback
             ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         }
 
-        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimensionId());
+        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimension());
 
         if (chunkLoaders == null)
         {
@@ -103,7 +103,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
 
         chunkLoaders.add(new BlockPos(x, y, z));
-        dimensionMap.put(world.provider.getDimensionId(), chunkLoaders);
+        dimensionMap.put(world.provider.getDimension(), chunkLoaders);
         ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         ChunkLoadingCallback.dirtyData = true;
     }
@@ -119,7 +119,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // if (tile instanceof IChunkLoader)
         // {
         // IChunkLoader chunkLoader = (IChunkLoader) tile;
-        // int dimID = world.provider.getDimensionId();
+        // int dimID = world.provider.getDimension();
         //
         // HashSet<IChunkLoader> chunkList = loadedChunks.get(dimID);
         //

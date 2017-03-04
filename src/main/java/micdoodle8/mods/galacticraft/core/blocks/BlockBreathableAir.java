@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -51,9 +50,9 @@ public class BlockBreathableAir extends BlockAir
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        final Block block = worldIn.getBlockState(pos).getBlock();
+        final Block block = blockAccess.getBlockState(pos).getBlock();
         if (block == this || block == GCBlocks.brightBreatheableAir)
         {
             return false;

@@ -66,12 +66,12 @@ public class NetworkRenderer
             GL11.glRotatef(-tileEntity.pitch, 1, 0, 0);
             GL11.glRotatef(tileEntity.ticks * 10, 0, 0, 1);
 
-            tess.getWorldRenderer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+            tess.getBuffer().begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
             for (EnumFacing dir : EnumFacing.values())
             {
-                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, dir.getFrontOffsetZ() / 40.0F).color(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F).endVertex();
-                tess.getWorldRenderer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, directionLength + dir.getFrontOffsetZ() / 40.0F).color(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F).endVertex();
+                tess.getBuffer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, dir.getFrontOffsetZ() / 40.0F).color(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F).endVertex();
+                tess.getBuffer().pos(dir.getFrontOffsetX() / 40.0F, dir.getFrontOffsetY() / 40.0F, directionLength + dir.getFrontOffsetZ() / 40.0F).color(tileEntity.getColor().floatX(), tileEntity.getColor().floatY(), tileEntity.getColor().floatZ(), 1.0F).endVertex();
             }
 
             tess.draw();

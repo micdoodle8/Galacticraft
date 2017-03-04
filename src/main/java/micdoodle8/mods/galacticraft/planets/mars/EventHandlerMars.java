@@ -34,7 +34,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -96,7 +96,7 @@ public class EventHandlerMars
 
                 if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, event.entityPlayer.worldObj.provider.getDimensionId(), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, event.entityPlayer.worldObj.provider.getDimension(), new Object[] {}));
                 }
             }
             else if (!event.flag1 && !event.flag2 && event.flag3)

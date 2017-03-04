@@ -67,7 +67,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
             GL11.glTranslatef((float) x, (float) y, (float) z);
 
             RenderHelper.disableStandardItemLighting();
-            this.bindTexture(TextureMap.locationBlocksTexture);
+            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             if (Minecraft.isAmbientOcclusionEnabled())
             {
                 GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -127,7 +127,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
         if (scale > 0.01)
         {
-            this.bindTexture(TextureMap.locationBlocksTexture);
+            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
@@ -318,7 +318,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         final double vMax = sprite.getMaxV();
 
         Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
 
         double uDiff = (uMax - uMin);
         double vDiff = (vMax - vMin);

@@ -31,7 +31,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -44,7 +44,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }

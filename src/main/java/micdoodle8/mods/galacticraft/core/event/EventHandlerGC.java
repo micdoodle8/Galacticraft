@@ -95,7 +95,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void playerJoinWorld(EntityJoinWorldEvent event)
     {
-        TickHandlerServer.markWorldNeedsUpdate(event.world.provider.getDimensionId());
+        TickHandlerServer.markWorldNeedsUpdate(event.world.provider.getDimension());
     }
 
     @SubscribeEvent
@@ -168,7 +168,7 @@ public class EventHandlerGC
         if (event.entityLiving instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            if (player.ridingEntity instanceof EntityAutoRocket || player.ridingEntity instanceof EntityLanderBase)
+            if (player.getRidingEntity() instanceof EntityAutoRocket || player.getRidingEntity() instanceof EntityLanderBase)
             {
                 event.distance = 0.0F;
                 event.setCanceled(true);
@@ -221,7 +221,7 @@ public class EventHandlerGC
                 EventHandlerGC.bedActivated = true;
 
                 //On planets allow the bed to be used to designate a player spawn point
-                event.entityPlayer.setSpawnChunk(event.pos, false, event.world.provider.getDimensionId());
+                event.entityPlayer.setSpawnChunk(event.pos, false, event.world.provider.getDimension());
             }
             else
             {
@@ -382,7 +382,7 @@ public class EventHandlerGC
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == world.provider.getDimensionId())
+            if (dim == world.provider.getDimension())
             {
                 doGen2 = true;
                 break;
@@ -557,7 +557,7 @@ public class EventHandlerGC
     private static boolean checkBlock(World w, BlockPos pos)
     {
         Block b = w.getBlockState(pos).getBlock();
-        if (b.getMaterial() == Material.air)
+        if (b.getMaterial() == Material.AIR)
         {
             return true;
         }
@@ -601,7 +601,7 @@ public class EventHandlerGC
                 List<Object> objList = new ArrayList<Object>();
                 objList.add(iArray);
 
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, event.player.worldObj.provider.getDimensionId(), objList), event.player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, event.player.worldObj.provider.getDimension(), objList), event.player);
             }
         }
     }
@@ -624,7 +624,7 @@ public class EventHandlerGC
 
         if (page != null)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { page.getPageID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { page.getPageID() }));
             FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
         }
     }
@@ -824,7 +824,7 @@ public class EventHandlerGC
         {
             WorldClient worldclient = Minecraft.getMinecraft().theWorld;
 
-            if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.air && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
+            if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.AIR && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
             {
                 Vec3 vec = worldclient.getFogColor(1.0F);
                 event.red = (float) vec.xCoord;

@@ -53,7 +53,7 @@ public class GCInvSaveData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound toSave)
+    public NBTTagCompound writeToNBT(NBTTagCompound toSave)
     {
         for (String name : CommandGCInv.savedata.keySet())
         {

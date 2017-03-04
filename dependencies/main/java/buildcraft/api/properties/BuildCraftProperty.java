@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.minecraft.block.properties.PropertyHelper;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 /** This class exists primarily to allow for a property to be used as either a normal IProperty, or an
  * IUnlistedProperty. It also exists to give IProperty's generic types. */

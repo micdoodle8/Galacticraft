@@ -64,7 +64,7 @@ public class DrawGameScreen extends IScreenManager
 
     private void makeMap()
     {
-        if (this.mapDone || reusableMap == null || this.driver.getWorld().provider.getDimensionId() != 0)
+        if (this.mapDone || reusableMap == null || this.driver.getWorld().provider.getDimension() != 0)
         {
             return;
         }

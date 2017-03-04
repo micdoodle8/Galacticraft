@@ -11,11 +11,11 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -45,7 +45,7 @@ public class SkyProviderMoon extends IRenderHandler
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
         float f = 16F;
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
@@ -86,7 +86,7 @@ public class SkyProviderMoon extends IRenderHandler
     {
         if (!ClientProxyCore.overworldTextureRequestSent)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, mc.theWorld.provider.getDimensionId(), new Object[] {}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, mc.theWorld.provider.getDimension(), new Object[] {}));
             ClientProxyCore.overworldTextureRequestSent = true;
         }
 
@@ -147,7 +147,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
         var12 = 20.0F / 3.5F;
-        WorldRenderer worldRenderer = var23.getWorldRenderer();
+        VertexBuffer worldRenderer = var23.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
         worldRenderer.pos(var12, 99.9D, -var12).endVertex();
@@ -256,7 +256,7 @@ public class SkyProviderMoon extends IRenderHandler
     {
         final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        WorldRenderer worldRenderer = var2.getWorldRenderer();
+        VertexBuffer worldRenderer = var2.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
@@ -305,9 +305,9 @@ public class SkyProviderMoon extends IRenderHandler
         var2.draw();
     }
 
-    private Vec3 getCustomSkyColor()
+    private Vec3d getCustomSkyColor()
     {
-        return new Vec3(0.26796875D, 0.1796875D, 0.0D);
+        return new Vec3d(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)

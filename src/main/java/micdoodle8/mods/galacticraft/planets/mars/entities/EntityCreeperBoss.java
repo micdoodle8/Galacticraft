@@ -70,7 +70,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             {
                 Entity entity = damageSource.getEntity();
 
-                if (this.riddenByEntity != entity && this.ridingEntity != entity)
+                if (this.riddenByEntity != entity && this.getRidingEntity() != entity)
                 {
                     if (entity != this && entity instanceof EntityLivingBase)
                     {
@@ -140,7 +140,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         {
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimension(), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 40.0D));
             }
         }
     }

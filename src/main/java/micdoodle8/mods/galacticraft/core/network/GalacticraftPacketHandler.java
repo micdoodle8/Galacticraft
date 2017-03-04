@@ -46,7 +46,7 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
     public void unload(World world)
     {
         Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
-        int dimId = world.provider.getDimensionId();
+        int dimId = world.provider.getDimension();
         Queue<PacketPlayerPair> queue = getQueue(side, dimId);
         queue.clear();
     }
@@ -55,7 +55,7 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
     {
         PacketPlayerPair pair;
         Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
-        int dimID = world.provider.getDimensionId();
+        int dimID = world.provider.getDimension();
         Queue<PacketPlayerPair> queue = getQueue(side, dimID);
         while ((pair = queue.poll()) != null)
         {

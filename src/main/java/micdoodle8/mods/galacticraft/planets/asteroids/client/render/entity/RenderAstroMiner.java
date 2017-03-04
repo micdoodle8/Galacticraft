@@ -13,14 +13,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
@@ -137,7 +137,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
 
         updateModels();
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {
@@ -227,7 +227,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
 	        	FMLClientHandler.instance().getClient().renderEngine.bindTexture(scanTexture);
 		        final Tessellator tess = Tessellator.getInstance();
 		        GL11.glColor4f(0, 0.6F, 1.0F, 0.2F);
-                WorldRenderer worldRenderer = tess.getWorldRenderer();
+                VertexBuffer worldRenderer = tess.getBuffer();
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		        worldRenderer.pos(15.6F, -0.6F, -20F).tex(0D, 0D).endVertex();
 		        worldRenderer.pos(37.8F, 31.4F, -45F - partBlock).tex(1D, 0D).endVertex();
@@ -310,7 +310,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         GL11.glPushMatrix();
         GL11.glTranslatef(blockLaser.x, blockLaser.y, blockLaser.z);
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.016667F * (12 - level));
         float cA = -0.01F;
         float cB = 1.01F;
@@ -360,7 +360,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         GL11.glPushMatrix();
         GL11.glTranslatef(blockLaser.x, blockLaser.y, blockLaser.z);
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         GL11.glColor4f(1.0F, 0.7F, 0.7F, 0.2F);
         float cA = -0.01F;
         float cB = 1.01F;
@@ -445,7 +445,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     private void drawLaserX(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(x1, y1 - 0.01F, z1 - 0.01F).endVertex();
         worldRenderer.pos(x2, y2 - LSIZE, z2 - LSIZE).endVertex();
@@ -475,7 +475,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     private void drawLaserY(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(x1 - 0.01F, y1, z1 - 0.01F).endVertex();
         worldRenderer.pos(x2 - LSIZE, y2, z2 - LSIZE).endVertex();
@@ -505,7 +505,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     private void drawLaserZ(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(x1 - 0.01F, y1 - 0.01F, z1).endVertex();
         worldRenderer.pos(x2 - LSIZE, y2 - LSIZE, z2).endVertex();

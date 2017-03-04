@@ -23,7 +23,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -333,7 +333,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(this.thePlayer.getGameProfile().getName());
                     if (race != null)
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, mc.theWorld.provider.getDimensionId(), new Object[] { playerToInvite.value, race.getSpaceRaceID() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, mc.theWorld.provider.getDimension(), new Object[] { playerToInvite.value, race.getSpaceRaceID() }));
                         this.recentlyInvited.put(playerToInvite.value, 20 * 60);
                     }
                 }
@@ -346,7 +346,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(this.thePlayer.getGameProfile().getName());
                     if (race != null)
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, mc.theWorld.provider.getDimensionId(), new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, mc.theWorld.provider.getDimension(), new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
                     }
                 }
             }
@@ -631,7 +631,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             objList.add(this.spaceRaceData.getFlagData());
             objList.add(this.spaceRaceData.getTeamColor());
             objList.add(this.spaceRaceData.getPlayerNames().toArray(new String[this.spaceRaceData.getPlayerNames().size()]));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, mc.theWorld.provider.getDimensionId(), objList));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, mc.theWorld.provider.getDimension(), objList));
         }
     }
 
@@ -689,7 +689,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 OpenGlHelper.glBlendFunc(770, 771, 1, 0);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 Tessellator tessellator = Tessellator.getInstance();
-                WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+                VertexBuffer worldRenderer = tessellator.getBuffer();
 
                 for (int x = 0; x < this.spaceRaceData.getFlagData().getWidth(); x++)
                 {
@@ -789,7 +789,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 }
 
                 tessellator = Tessellator.getInstance();
-                worldRenderer = tessellator.getWorldRenderer();
+                worldRenderer = tessellator.getBuffer();
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
                 worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();

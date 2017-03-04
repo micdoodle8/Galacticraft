@@ -360,7 +360,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("FacingSide", this.facing.ordinal());

@@ -48,7 +48,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.mc.theWorld.provider.getDimensionId(), new Object[] { this.sealer.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.mc.theWorld.provider.getDimension(), new Object[] { this.sealer.getPos(), 0 }));
             break;
         }
     }
@@ -139,8 +139,9 @@ public class GuiOxygenSealer extends GuiContainerGC
     {
         BlockPos blockPosAbove = this.sealer.getPos().up();
         Block blockAbove = this.sealer.getWorld().getBlockState(blockPosAbove).getBlock();
+        IBlockState state = this.sealer.getWorld().getBlockState(blockPosAbove);
 
-        if (!(blockAbove.isAir(this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, blockPosAbove, EnumFacing.UP))
+        if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, blockPosAbove, EnumFacing.UP))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }

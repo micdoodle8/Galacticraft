@@ -473,7 +473,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
                 {
-                    this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
+                    this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
                     this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
                     //Continue mining even though base was destroyed - maybe it will be replaced
                 }
@@ -491,7 +491,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.motionX = 0;
             this.motionY = 0;
             this.motionZ = 0;
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
             return;
         }
 
@@ -591,7 +591,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             break;
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
 
         this.posX += this.motionX;
         this.posY += this.motionY;
@@ -635,7 +635,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.motionZ = 0;
         if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
         {
-            this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner" + i + ".fail")));
+            this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + i + ".fail")));
             this.givenFailMessage += (1 << i);
         }
     }
@@ -756,7 +756,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
                 {
-                    this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
+                    this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
                     this.givenFailMessage += 64;
                 }
             }
@@ -1178,7 +1178,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             if (this.playerMP != null)
             {
-                this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
             }
             this.motionX = 0;
             this.motionY = 0;
@@ -1422,7 +1422,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         //Can move through liquids including flowing lava
         IBlockState state = this.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() == Material.air)
+        if (b.getMaterial() == Material.AIR)
         {
             return false;
         }
@@ -1534,7 +1534,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         //Add minable blocks to the laser fx list
         IBlockState state = this.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() == Material.air)
+        if (b.getMaterial() == Material.AIR)
         {
             return false;
         }
@@ -2058,7 +2058,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP == null && !this.spawnedInCreative)
                 {
-                    ((EntityPlayer) e).addChatMessage(new ChatComponentText("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
+                    ((EntityPlayer) e).addChatMessage(new TextComponentString("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
                 }
                 this.kill();
                 return true;

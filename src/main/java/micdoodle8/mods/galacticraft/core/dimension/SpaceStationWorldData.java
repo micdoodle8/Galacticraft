@@ -180,7 +180,7 @@ public class SpaceStationWorldData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound)
     {
         nbttagcompound.setString("owner", this.owner);
         nbttagcompound.setString("spaceStationName", this.spaceStationName);

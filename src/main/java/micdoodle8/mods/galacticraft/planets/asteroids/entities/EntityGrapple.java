@@ -203,7 +203,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             Block block = this.worldObj.getBlockState(this.hitVec).getBlock();
 
-            if (block.getMaterial() != Material.air)
+            if (block.getMaterial() != Material.AIR)
             {
                 block.setBlockBoundsBasedOnState(this.worldObj, this.hitVec);
                 AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, this.hitVec, this.worldObj.getBlockState(this.hitVec));
@@ -353,7 +353,7 @@ public class EntityGrapple extends Entity implements IProjectile
                     this.inGround = true;
                     this.arrowShake = 7;
 
-                    if (this.hitBlock.getMaterial() != Material.air)
+                    if (this.hitBlock.getMaterial() != Material.AIR)
                     {
                         this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.hitVec, this);
                     }
@@ -414,7 +414,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (!this.worldObj.isRemote && (this.ticksInGround - 1) % 10 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, this.worldObj.provider.getDimensionId(), new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 150));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, this.worldObj.provider.getDimension(), new Object[] { this.getEntityId(), new Vector3(this) }), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 150));
         }
     }
 

@@ -27,7 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
@@ -86,7 +86,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (ConfigManagerCore.enableDebug)
             {
-            	int dim = this.worldObj.provider.getDimensionId();
+            	int dim = this.worldObj.provider.getDimension();
             	Long tickCount = tickCounts.get(dim);
             	if (tickCount == null)
             	{
@@ -148,7 +148,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, this.worldObj.provider.getDimensionId(), new Object[] { 5, this.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, this.worldObj.provider.getDimension(), new Object[] { 5, this.getPos(), 0 }));
             }
         }
     }
@@ -255,7 +255,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         this.writeStandardItemsToNBT(nbt);

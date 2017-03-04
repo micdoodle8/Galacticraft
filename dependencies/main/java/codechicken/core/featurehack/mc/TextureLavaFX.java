@@ -2,7 +2,7 @@ package codechicken.core.featurehack.mc;
 
 import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.render.TextureFX;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

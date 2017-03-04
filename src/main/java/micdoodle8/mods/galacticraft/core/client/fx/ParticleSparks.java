@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
-public class EntityFXSparks extends EntityFX
+public class ParticleSparks extends Particle
 {
     float smokeParticleScale;
 
-    public EntityFXSparks(World par1World, double par2, double par4, double par6, double par8, double par12)
+    public ParticleSparks(World par1World, double par2, double par4, double par6, double par8, double par12)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -26,13 +26,13 @@ public class EntityFXSparks extends EntityFX
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int) 50.0D;
         this.particleMaxAge = (int) (this.particleMaxAge * 1.0F);
-        this.noClip = false;
+        this.canCollide = true;
     }
 
     @Override
-    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
-        float var8 = (this.particleAge + f0) / this.particleMaxAge * 32.0F;
+        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
         {
@@ -45,7 +45,7 @@ public class EntityFXSparks extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
+        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class EntityFXSparks extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
 
         this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);

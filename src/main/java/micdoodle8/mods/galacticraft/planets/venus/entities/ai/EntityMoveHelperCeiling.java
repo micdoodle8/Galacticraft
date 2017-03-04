@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityMoveHelperCeiling extends EntityMoveHelper
 {

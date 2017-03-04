@@ -95,7 +95,7 @@ public class RecipeManagerAsteroids
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
         //Green dye from yellow and blue
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.dye, 2, 2), new ItemStack(Items.dye, 1, 11), new ItemStack(Items.dye, 1, 4));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.DYE, 2, 2), new ItemStack(Items.DYE, 1, 11), new ItemStack(Items.DYE, 1, 4));
 
         //Cobblestone->Gravel, Gravel->Sand, Sand->Clay
         CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.gravel, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.cobblestone, 1));
@@ -110,7 +110,7 @@ public class RecipeManagerAsteroids
     	//Splintered ice into Ice
     	CompressorRecipes.addShapelessRecipe(new ItemStack(Blocks.ice), new ItemStack(AsteroidBlocks.blockDenseIce), new ItemStack(AsteroidBlocks.blockDenseIce));
     	//Slimeball
-    	RecipeUtil.addRecipe(new ItemStack(Items.slime_ball), new Object [] { "XFX", "FEF", "XFX", 'X', new ItemStack(Items.dye, 1, 2), 'E', new ItemStack(GCItems.cheeseCurd), 'F', new ItemStack(Items.sugar) } );
+    	RecipeUtil.addRecipe(new ItemStack(Items.slime_ball), new Object [] { "XFX", "FEF", "XFX", 'X', new ItemStack(Items.DYE, 1, 2), 'E', new ItemStack(GCItems.cheeseCurd), 'F', new ItemStack(Items.sugar) } );
     	
     	if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
     		CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 6), titaniumIngot, titaniumIngot);

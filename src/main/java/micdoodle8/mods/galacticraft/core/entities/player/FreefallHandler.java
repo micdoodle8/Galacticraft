@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,7 +44,7 @@ public class FreefallHandler
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
         IBlockState state = player.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
+        if (b.getMaterial() != Material.AIR && !(b instanceof BlockLiquid))
         {
             double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
             if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
@@ -87,9 +87,9 @@ public class FreefallHandler
             return false;
         }
 
-        if (p.ridingEntity != null)
+        if (p.getRidingEntity() != null)
         {
-            Entity e = p.ridingEntity;
+            Entity e = p.getRidingEntity();
             if (e instanceof EntitySpaceshipBase)
             {
                 return ((EntitySpaceshipBase) e).getLaunched();

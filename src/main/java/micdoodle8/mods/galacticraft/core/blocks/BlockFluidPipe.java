@@ -9,11 +9,11 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -23,9 +23,11 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,7 +50,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     {
         super(Material.GLASS);
         this.setHardness(0.3F);
-        this.setStepSound(Block.soundTypeGlass);
+        this.setSoundType(SoundType.GLASS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
         this.setUnlocalizedName(assetName);
         this.mode = mode;
@@ -78,7 +80,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
             final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
             final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.dye, 1, pipeColor));
+            final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, pipeColor));
             entityitem.setDefaultPickupDelay();
             worldIn.spawnEntityInWorld(entityitem);
         }
@@ -105,7 +107,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
@@ -142,7 +144,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
                     worldIn.setBlockState(pos, state.withProperty(COLOR, EnumDyeColor.byDyeDamage(dyeColor)));
 
-                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, worldIn.provider.getDimensionId(), new Object[] { pos }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 40.0));
+                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, worldIn.provider.getDimension(), new Object[] { pos }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 40.0));
 
                     if (colorBefore != (byte) dyeColor && !playerIn.capabilities.isCreativeMode && --playerIn.inventory.getCurrentItem().stackSize == 0)
                     {
@@ -155,7 +157,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
                         final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
                         final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
                         final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                        final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.dye, 1, colorBefore));
+                        final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, colorBefore));
                         entityitem.setDefaultPickupDelay();
                         worldIn.spawnEntityInWorld(entityitem);
                     }
@@ -183,19 +185,19 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -208,9 +210,9 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
     @SideOnly(Side.CLIENT)
     @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
-        return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
+        return this.getCollisionBoundingBox(worldIn.getBlockState(pos), worldIn, pos);
     }
 
     @Override
@@ -239,7 +241,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()()
+    public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

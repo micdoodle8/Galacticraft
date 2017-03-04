@@ -199,7 +199,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
@@ -219,7 +219,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -272,7 +272,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         final TileEntity te = worldIn.getTileEntity(pos);
 

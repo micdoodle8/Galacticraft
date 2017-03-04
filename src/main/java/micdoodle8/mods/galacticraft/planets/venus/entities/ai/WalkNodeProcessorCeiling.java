@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.pathfinder.NodeProcessor;
 
@@ -153,13 +153,13 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                     blockpos$mutableblockpos.set(i, j, k);
                     Block block = blockaccessIn.getBlockState(blockpos$mutableblockpos).getBlock();
 
-                    if (block.getMaterial() != Material.air)
+                    if (block.getMaterial() != Material.AIR)
                     {
                         if (block != Blocks.trapdoor && block != Blocks.iron_trapdoor)
                         {
                             if (block != Blocks.flowing_water && block != Blocks.water)
                             {
-                                if (block instanceof BlockDoor && block.getMaterial() == Material.wood)
+                                if (block instanceof BlockDoor && block.getMaterial() == Material.WOOD)
                                 {
                                     return 0;
                                 }

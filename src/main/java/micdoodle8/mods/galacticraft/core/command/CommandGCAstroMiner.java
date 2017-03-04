@@ -10,7 +10,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
     {
         return true;
     }
@@ -42,7 +42,7 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
         if (args.length == 1)
         {
@@ -50,14 +50,9 @@ public class CommandGCAstroMiner extends CommandBase
         }
         if (args.length == 2)
         {
-            return getListOfStringsMatchingLastWord(args, this.getPlayers());
+            return getListOfStringsMatchingLastWord(args, server.getAllUsernames());
         }
         return null;
-    }
-
-    protected String[] getPlayers()
-    {
-        return MinecraftServer.getServer().getAllUsernames();
     }
 
     @Override
@@ -67,7 +62,7 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length > 2)
         {
@@ -125,15 +120,15 @@ public class CommandGCAstroMiner extends CommandBase
                     switch (type)
                     {
                     case 1:
-                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.astroMinerCount)));
+                        sender.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.astroMinerCount)));
                         break;
                     case 2:
                         stats.astroMinerCount = 0;
-                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
+                        sender.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
                         break;
                     case 3:
                         stats.astroMinerCount = newvalue;
-                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
+                        sender.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
                         break;
                     }
                 }

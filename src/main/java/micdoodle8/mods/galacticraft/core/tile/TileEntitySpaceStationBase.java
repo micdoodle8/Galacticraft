@@ -25,7 +25,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setString("ownerUsername", this.ownerUsername);

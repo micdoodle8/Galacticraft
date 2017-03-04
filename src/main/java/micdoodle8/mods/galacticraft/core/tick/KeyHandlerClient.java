@@ -87,9 +87,9 @@ public class KeyHandlerClient extends KeyHandler
             }
             else if (kb.getKeyCode() == KeyHandlerClient.openFuelGui.getKeyCode())
             {
-                if (playerBase.ridingEntity instanceof EntitySpaceshipBase || playerBase.ridingEntity instanceof EntityBuggy)
+                if (playerBase.getRidingEntity() instanceof EntitySpaceshipBase || playerBase.getRidingEntity() instanceof EntityBuggy)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, mc.theWorld.provider.getDimensionId(), new Object[] { playerBase.getGameProfile().getName() }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, mc.theWorld.provider.getDimension(), new Object[] { playerBase.getGameProfile().getName() }));
                 }
             }
             else if (kb.getKeyCode() == KeyHandlerClient.toggleAdvGoggles.getKeyCode())
@@ -130,7 +130,7 @@ public class KeyHandlerClient extends KeyHandler
                 keyNum = 5;
             }
 
-            Entity entityTest = KeyHandlerClient.mc.thePlayer.ridingEntity;
+            Entity entityTest = KeyHandlerClient.mc.thePlayer.getRidingEntity();
             if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
             {
                 IControllableEntity entity = (IControllableEntity) entityTest;
@@ -151,13 +151,13 @@ public class KeyHandlerClient extends KeyHandler
                     if (kb == KeyHandlerClient.leftShiftKey)
                     {
                         autoRocket.motionY -= 0.02D;
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, mc.theWorld.provider.getDimensionId(), new Object[] { autoRocket.getEntityId(), false }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, mc.theWorld.provider.getDimension(), new Object[] { autoRocket.getEntityId(), false }));
                     }
 
                     if (kb == KeyHandlerClient.spaceKey)
                     {
                         autoRocket.motionY += 0.02D;
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, mc.theWorld.provider.getDimensionId(), new Object[] { autoRocket.getEntityId(), true }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, mc.theWorld.provider.getDimension(), new Object[] { autoRocket.getEntityId(), true }));
                     }
                 }
             }

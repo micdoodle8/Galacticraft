@@ -31,9 +31,9 @@ public class DungeonConfiguration
         this.treasureRoom = treasureRoom;
     }
 
-    public void writeToNBT(NBTTagCompound tagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setString("brickBlock", Block.blockRegistry.getNameForObject(this.brickBlock.getBlock()).toString());
+        tagCompound.setString("brickBlock", Block.REGISTRY.getNameForObject(this.brickBlock.getBlock()).toString());
         tagCompound.setInteger("brickBlockMeta", this.brickBlock.getBlock().getMetaFromState(this.brickBlock));
         tagCompound.setInteger("yPosition", this.yPosition);
         tagCompound.setInteger("hallwayLengthMin", this.hallwayLengthMin);

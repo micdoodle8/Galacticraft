@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -103,7 +103,7 @@ public class BlockVec3 implements Cloneable
         {
             // In a typical inner loop, 80% of the time consecutive calls to
             // this will be within the same chunk
-            if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+            if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
             {
                 return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
             }
@@ -111,7 +111,7 @@ public class BlockVec3 implements Cloneable
             {
                 final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                 BlockVec3.chunkCached = chunk;
-                BlockVec3.chunkCacheDim = world.provider.getDimensionId();
+                BlockVec3.chunkCacheDim = world.provider.getDimension();
                 BlockVec3.chunkCacheX = chunkx;
                 BlockVec3.chunkCacheZ = chunkz;
                 return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -150,7 +150,7 @@ public class BlockVec3 implements Cloneable
             {
                 // In a typical inner loop, 80% of the time consecutive calls to
                 // this will be within the same chunk
-                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
                 {
                     return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
                 }
@@ -158,7 +158,7 @@ public class BlockVec3 implements Cloneable
                 {
                     final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3.chunkCached = chunk;
-                    BlockVec3.chunkCacheDim = world.provider.getDimensionId();
+                    BlockVec3.chunkCacheDim = world.provider.getDimension();
                     BlockVec3.chunkCacheX = chunkx;
                     BlockVec3.chunkCacheZ = chunkz;
                     return chunk.getBlock(this.x & 15, this.y, this.z & 15);
@@ -206,7 +206,7 @@ public class BlockVec3 implements Cloneable
             {
                 // In a typical inner loop, 80% of the time consecutive calls to
                 // this will be within the same chunk
-                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
                 {
                     return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
                 }
@@ -214,7 +214,7 @@ public class BlockVec3 implements Cloneable
                 {
                     final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
                     BlockVec3.chunkCached = chunk;
-                    BlockVec3.chunkCacheDim = world.provider.getDimensionId();
+                    BlockVec3.chunkCacheDim = world.provider.getDimension();
                     BlockVec3.chunkCacheX = chunkx;
                     BlockVec3.chunkCacheZ = chunkz;
                     return chunk.getBlock(this.x & 15, this.y, this.z & 15);

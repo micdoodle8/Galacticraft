@@ -154,7 +154,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         ((EntityPlayerMP) e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, this.worldObj.provider.getDimensionId(), new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimensionId());
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, this.worldObj.provider.getDimension(), new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimension());
                                 }
 
                                 if (containedEntities.size() > 0)
@@ -172,7 +172,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText("Cannot Send client-side")); // No need for translation, since this should never happen
+                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString("Cannot Send client-side")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -181,7 +181,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText("Target address invalid")); // No need for translation, since this should never happen
+                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString("Target address invalid")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -190,7 +190,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString(GCCoreUtil.translate("gui.message.target_no_energy.name")));
                                         }
                                     }
                                     break;
@@ -236,7 +236,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         NBTTagList var2 = new NBTTagList();
@@ -390,7 +390,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public IChatComponent getDisplayName()
     {
-        return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override
@@ -490,7 +490,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         if (this.address >= 0)
         {
             ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.address);
-            this.addressValid = entry == null || (this.worldObj != null && (entry.dimensionID == this.worldObj.provider.getDimensionId() && entry.position.x == this.getPos().getX() && entry.position.y == this.getPos().getY() && entry.position.z == this.getPos().getZ()));
+            this.addressValid = entry == null || (this.worldObj != null && (entry.dimensionID == this.worldObj.provider.getDimension() && entry.position.x == this.getPos().getX() && entry.position.y == this.getPos().getY() && entry.position.z == this.getPos().getZ()));
         }
         else
         {
@@ -513,7 +513,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
             if (addressResult != null)
             {
-                if (this.worldObj.provider.getDimensionId() == addressResult.dimensionID)
+                if (this.worldObj.provider.getDimension() == addressResult.dimensionID)
                 {
                     double distance = this.getDistanceSq(addressResult.position.x + 0.5F, addressResult.position.y + 0.5F, addressResult.position.z + 0.5F);
 

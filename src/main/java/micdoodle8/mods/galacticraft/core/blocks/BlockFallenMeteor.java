@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,10 +18,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -31,9 +34,9 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     public BlockFallenMeteor(String assetName)
     {
         super(Material.ROCK);
-        this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
+//        this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         this.setHardness(50.0F);
-        this.setStepSound(Block.soundTypeStone);
+        this.setSoundType(SoundType.STONE);
         this.setUnlocalizedName(assetName);
     }
 
@@ -44,13 +47,13 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -68,7 +71,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, Entity entityIn)
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -85,7 +88,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
             {
                 final EntityLivingBase livingEntity = (EntityLivingBase) entityIn;
 
-                worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, "random.fizz", 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+                worldIn.playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.NEUTRAL, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
                 for (int var5 = 0; var5 < 8; ++var5)
                 {
@@ -153,22 +156,21 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     {
         Block block = world.getBlockState(pos).getBlock();
 
-        if (block.getMaterial() == Material.air)
+        if (block.getMaterial(world.getBlockState(pos)) == Material.AIR)
         {
             return true;
         }
-        else if (block == Blocks.fire)
+        else if (block == Blocks.FIRE)
         {
             return true;
         }
         else
         {
-            return block.getMaterial() == Material.water ? true : block.getMaterial() == Material.lava;
+            return block.getMaterial(world.getBlockState(pos)) == Material.WATER ? true : block.getMaterial(world.getBlockState(pos)) == Material.LAVA;
         }
     }
 
-    @Override
-    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
+    public static int colorMultiplier(IBlockAccess worldIn, BlockPos pos)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -185,7 +187,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
             return ColorUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
         }
 
-        return super.colorMultiplier(worldIn, pos, renderPass);
+        return 16777215;
     }
 
     @Override

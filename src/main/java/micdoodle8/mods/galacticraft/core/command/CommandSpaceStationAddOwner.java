@@ -11,7 +11,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class CommandSpaceStationAddOwner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
     {
         return true;
     }
@@ -37,7 +37,7 @@ public class CommandSpaceStationAddOwner extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         String var3 = null;
         EntityPlayerMP playerBase = null;
@@ -67,13 +67,13 @@ public class CommandSpaceStationAddOwner extends CommandBase
                             if (var3.equalsIgnoreCase("+all"))
                             {
                                 data.setAllowedAll(true);
-                                playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allow_all_true")));
+                                playerBase.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.allow_all_true")));
                                 return;
                             }
                             if (var3.equalsIgnoreCase("-all"))
                             {
                                 data.setAllowedAll(false);
-                                playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.allow_all_false", var3)));
+                                playerBase.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.allow_all_false", var3)));
                                 return;
                             }
 
@@ -89,7 +89,7 @@ public class CommandSpaceStationAddOwner extends CommandBase
 
                     if (playerToAdd != null)
                     {
-                        playerToAdd.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.added", playerBase.getGameProfile().getName())));
+                        playerToAdd.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.added", playerBase.getGameProfile().getName())));
                     }
                 }
             }
@@ -106,19 +106,14 @@ public class CommandSpaceStationAddOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.addsuccess", var3)));
+            playerBase.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.addsuccess", var3)));
         }
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers()) : null;
-    }
-
-    protected String[] getPlayers()
-    {
-        return MinecraftServer.getServer().getAllUsernames();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, server.getAllUsernames()) : null;
     }
 
     @Override

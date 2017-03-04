@@ -28,7 +28,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (!this.worldObj.isRemote)
         {
-            this.worldObj.markBlockForUpdate(this.getPos());
+            this.worldObj.notifyBlockUpdate(this.getPos());
         }
     }
 
@@ -120,7 +120,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 

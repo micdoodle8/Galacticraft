@@ -92,7 +92,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("TimeToHatch", this.timeToHatch);

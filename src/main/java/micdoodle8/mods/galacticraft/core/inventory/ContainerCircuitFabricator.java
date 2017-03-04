@@ -136,7 +136,7 @@ public class ContainerCircuitFabricator extends Container
                         return null;
                     }
                 }
-                else if (i == Items.repeater || i == new ItemStack(Blocks.redstone_torch).getItem() || i == Items.dye && i.getDamage(var4) == 4)
+                else if (i == Items.repeater || i == new ItemStack(Blocks.redstone_torch).getItem() || i == Items.DYE && i.getDamage(var4) == 4)
                 {
                     if (!this.mergeItemStack(var4, 5, 6, false))
                     {

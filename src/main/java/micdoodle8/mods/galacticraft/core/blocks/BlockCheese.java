@@ -59,7 +59,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
 //    {
 //        float f = 0.0625F;
 //        float f1 = (float) (1 + ((Integer) state.getValue(BITES)).intValue() * 2) / 16.0F;
@@ -69,19 +69,19 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 //
 //    @Override
 //    @SideOnly(Side.CLIENT)
-//    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 //    {
 //        return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
 //    }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -134,7 +134,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 
     private boolean canBlockStay(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock().getMaterial().isSolid();
+        return worldIn.getBlockState(pos.down()).getBlock().getMaterial(worldIn.getBlockState(pos)).isSolid();
     }
 
     @Override
@@ -168,10 +168,9 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos)
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return Items.cake;
+        return new ItemStack(Items.CAKE, 1, 0);
     }
 
     @Override
@@ -194,13 +193,13 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    public int getComparatorInputOverride(World worldIn, BlockPos pos)
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return (7 - ((Integer) worldIn.getBlockState(pos).getValue(BITES)).intValue()) * 2;
     }
 
     @Override
-    public boolean hasComparatorInputOverride()
+    public boolean hasComparatorInputOverride(IBlockState state)
     {
         return true;
     }

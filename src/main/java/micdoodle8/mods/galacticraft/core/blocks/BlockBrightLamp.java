@@ -18,8 +18,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -43,12 +45,12 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     }
 
     @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        Block block = world.getBlockState(pos).getBlock();
+        Block block = state.getBlock();
         if (block != this)
         {
-            return block.getLightValue(world, pos);
+            return block.getLightValue(state);
         }
         /**
          * Gets the light value of the specified block coords. Args: x, y, z
@@ -56,14 +58,14 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 
         if (world instanceof World)
         {
-            return RedstoneUtil.isBlockReceivingRedstone((World) world, pos) ? 0 : this.getLightValue();
+            return RedstoneUtil.isBlockReceivingRedstone((World) world, pos) ? 0 : this.lightValue;
         }
 
         return 0;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         double boundsMin = 0.2D;
         double boundsMax = 0.8D;
@@ -71,13 +73,13 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -89,7 +91,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         {
             BlockPos offsetPos = pos.offset(side);
             IBlockState state = worldIn.getBlockState(offsetPos);
-            if (state.getBlock().isSideSolid(worldIn, offsetPos, EnumFacing.getFront(side.getIndex() ^ 1)))
+            if (state.getBlock().isSideSolid(state, worldIn, offsetPos, side.getOpposite()))
             {
                 return true;
             }
@@ -103,7 +105,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         EnumFacing opposite = EnumFacing.values()[facing.getIndex() ^ 1];
         BlockPos offsetPos = pos.offset(opposite);
         IBlockState state = worldIn.getBlockState(offsetPos);
-        if (state.getBlock().isSideSolid(worldIn, offsetPos, facing))
+        if (state.getBlock().isSideSolid(state, worldIn, offsetPos, facing))
         {
             return this.getDefaultState().withProperty(FACING, opposite);
         }
@@ -168,7 +170,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {

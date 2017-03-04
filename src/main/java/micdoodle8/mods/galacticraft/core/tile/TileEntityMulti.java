@@ -36,7 +36,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 //
 //        if (!this.worldObj.isRemote)
 //        {
-//            this.worldObj.markBlockForUpdate(this.getPos());
+//            this.worldObj.notifyBlockUpdate(this.getPos());
 //        }
 //    }
 
@@ -109,7 +109,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 

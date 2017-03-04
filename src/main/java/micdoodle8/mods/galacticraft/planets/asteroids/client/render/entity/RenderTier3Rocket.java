@@ -10,14 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -86,7 +86,7 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         updateModel();
 
         RenderHelper.disableStandardItemLighting();
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {
@@ -101,7 +101,7 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         GL11.glScalef(0.8F, 0.8F, 0.8F);
 
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldrenderer = tessellator.getBuffer();
 
         worldrenderer.begin(GL11.GL_QUADS, rocketModel.getFormat());
 
@@ -137,7 +137,7 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         RenderHelper.enableStandardItemLighting();
     }
 
-    private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color)
+    private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color)
     {
         for (BakedQuad bakedquad : quads)
         {

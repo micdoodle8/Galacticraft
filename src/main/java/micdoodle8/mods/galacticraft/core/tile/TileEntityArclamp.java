@@ -50,7 +50,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         boolean initialLight = false;
         if (this.updateClientFlag)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimension());
             this.updateClientFlag = false;
         }
 
@@ -188,7 +188,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         this.thisAABB = null;
         if (this.worldObj.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos() }));
         }
         else
         {
@@ -344,7 +344,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -370,7 +370,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimension());
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();

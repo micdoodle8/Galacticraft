@@ -104,7 +104,7 @@ public class NEIServerUtils {
     }
 
     public static void advanceDisabledTimes(World world) {
-        int dim = world.provider.getDimensionId();
+        int dim = world.provider.getDimension();
         int hour = (int) (getTime(world) % 24000) / 1000;
         int newhour = hour;
         while (NEIServerConfig.isActionDisabled(dim, NEIActions.timeZones[newhour / 6])) {

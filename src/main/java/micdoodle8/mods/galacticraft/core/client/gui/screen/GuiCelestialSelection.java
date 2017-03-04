@@ -23,7 +23,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
@@ -609,7 +609,7 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         this.mc.gameSettings.thirdPersonView = 0;
                     }
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, mc.theWorld.provider.getDimensionId(), new Object[] { dimension }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, mc.theWorld.provider.getDimension(), new Object[] { dimension }));
                     //TODO   Some type of clientside "in Space" holding screen here while waiting for the server to do the teleport
                     //(Otherwise the client will be returned to the destination he was in until now, which looks weird)
                     mc.displayGuiScreen(null);
@@ -684,7 +684,7 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         if (recipe.matches(this.mc.thePlayer, false) || this.mc.thePlayer.capabilities.isCreativeMode)
                         {
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, this.mc.theWorld.provider.getDimensionId(), new Object[] { this.selectedBody.getDimensionID() }));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, this.mc.theWorld.provider.getDimension(), new Object[] { this.selectedBody.getDimensionID() }));
                             //Zoom in on Overworld to show the new SpaceStation if not already zoomed
                             if (this.selectionCount < 2)
                             {
@@ -751,7 +751,7 @@ public class GuiCelestialSelection extends GuiScreen
                         {
                             this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(strName).setStationName(this.renamingString);
 //	                    	this.spaceStationNames.put(strName, this.renamingString);
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, this.mc.theWorld.provider.getDimensionId(), new Object[] { this.renamingString, spacestationID }));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, this.mc.theWorld.provider.getDimension(), new Object[] { this.renamingString, spacestationID }));
                         }
                         this.renamingSpaceStation = false;
                     }
@@ -2210,7 +2210,7 @@ public class GuiCelestialSelection extends GuiScreen
         float texModX = 1F / texSizeX;
         float texModY = 1F / texSizeY;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         float height0 = invertY ? 0 : vHeight;
         float height1 = invertY ? vHeight : 0;
@@ -2231,7 +2231,7 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(0.0D, height, -90.0D).endVertex();

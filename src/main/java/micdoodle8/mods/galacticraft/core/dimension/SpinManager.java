@@ -24,7 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -293,7 +293,7 @@ public class SpinManager
                                     m = 30F;
                                 }
                                 //Wood items have a high hardness compared with their presumed mass
-                                if (b.getMaterial() == Material.wood)
+                                if (b.getMaterial() == Material.WOOD)
                                 {
                                     m /= 4;
                                 }
@@ -337,7 +337,7 @@ public class SpinManager
             if (!this.oneSSBlock.equals(baseBlock))
             {
                 this.oneSSBlock = baseBlock;
-                if (this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.air)
+                if (this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.AIR)
                 {
                     return this.refresh(baseBlock, true);
                 }
@@ -685,7 +685,7 @@ public class SpinManager
         }
         else
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, player.worldObj.provider.getDimensionId(), objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, player.worldObj.provider.getDimension(), objList), player);
         }
 
         objList = new ArrayList<>();
@@ -697,7 +697,7 @@ public class SpinManager
         }
         else
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, player.worldObj.provider.getDimensionId(), objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, player.worldObj.provider.getDimension(), objList), player);
         }
 
         objList = new ArrayList<>();
@@ -713,7 +713,7 @@ public class SpinManager
         }
         else
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, player.worldObj.provider.getDimensionId(), objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, player.worldObj.provider.getDimension(), objList), player);
         }
     }
 
@@ -756,7 +756,7 @@ public class SpinManager
         this.sendPackets(null);
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setBoolean("doSpinning", this.doSpinning);
         nbt.setFloat("omegaRad", this.angularVelocityRadians);

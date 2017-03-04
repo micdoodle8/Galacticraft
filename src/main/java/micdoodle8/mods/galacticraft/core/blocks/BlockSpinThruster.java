@@ -6,17 +6,21 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -40,23 +44,24 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 
     private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction)
     {
-        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, direction);
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock().isSideSolid(state, world, pos, direction);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -184,35 +189,35 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         }
     }
 
-    @Override
-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
-    {
-        float var8 = 0.3F;
-
-        EnumFacing facing = worldIn.getBlockState(pos).getValue(BlockMachine.FACING);
-
-        switch (facing)
-        {
-        case NORTH:
-            this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
-            break;
-        case EAST:
-            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
-            break;
-        case SOUTH:
-            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
-            break;
-        case WEST:
-            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
-            break;
-        }
-
-        return super.collisionRayTrace(worldIn, pos, start, end);
-    }
+//    @Override
+//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+//    {
+//        float var8 = 0.3F;
+//
+//        EnumFacing facing = worldIn.getBlockState(pos).getValue(BlockMachine.FACING);
+//
+//        switch (facing)
+//        {
+//        case NORTH:
+//            this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
+//            break;
+//        case EAST:
+//            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
+//            break;
+//        case SOUTH:
+//            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
+//            break;
+//        case WEST:
+//            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
+//            break;
+//        }
+//
+//        return super.collisionRayTrace(worldIn, pos, start, end);
+//    }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
         //Also make small thrust sounds
@@ -220,7 +225,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         {
             if (((WorldProviderZeroGravity) worldIn.provider).getSpinManager().thrustersFiring || rand.nextInt(80) == 0)
             {
-                final int var6 = getMetaFromState(state) & 7;
+                final int var6 = getMetaFromState(stateIn) & 7;
                 final double var7 = pos.getX() + 0.5F;
                 final double var9 = pos.getY() + 0.7F;
                 final double var11 = pos.getZ() + 0.5F;
@@ -248,7 +253,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         EnumFacing currentFacing = world.getBlockState(pos).getValue(FACING);
         for (EnumFacing nextFacing = currentFacing.rotateY(); ; nextFacing = nextFacing.rotateY())

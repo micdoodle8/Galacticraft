@@ -68,7 +68,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         if (FMLCommonHandler.instance().getEffectiveSide().isClient())
         {
             this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, this.worldObj.provider.getDimension(), new Object[] { this.getPos() }));
         }
     }
 
@@ -91,7 +91,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         {
             connectedFlags += 1;
         }
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.imageType, connectedFlags }), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.imageType, connectedFlags }), this.worldObj.provider.getDimension());
     }
 
     public EnumFacing getFront()
@@ -395,7 +395,7 @@ public class TileEntityScreen extends TileEntityAdvanced
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("type", this.imageType);

@@ -24,10 +24,10 @@ public class EventHandlerClient
 
         final EntityPlayer player = event.entityPlayer;
 
-        if (player.ridingEntity instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
+        if (player.getRidingEntity() instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
                 && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
+            EntityTieredRocket entity = (EntityTieredRocket) player.getRidingEntity();
             GL11.glTranslatef(0, -entity.getRotateOffset() - ClientProxyCore.PLAYER_Y_OFFSET, 0);
             float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
             float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
@@ -52,7 +52,7 @@ public class EventHandlerClient
         {
             if (!ClientProxyCore.overworldTextureRequestSent)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, mc.theWorld.provider.getDimensionId(), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, mc.theWorld.provider.getDimension(), new Object[] {}));
                 ClientProxyCore.overworldTextureRequestSent = true;
             }
 

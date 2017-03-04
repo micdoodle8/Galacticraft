@@ -30,7 +30,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(Entity entity)
     {
-        super(entity.worldObj.provider.getDimensionId());
+        super(entity.worldObj.provider.getDimension());
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
         this.data = new Object[] { entity.getEntityId() };
@@ -40,7 +40,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(TileEntity tile)
     {
-        super(tile.getWorld().provider.getDimensionId());
+        super(tile.getWorld().provider.getDimension());
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
         this.data = new Object[] { tile.getPos() };

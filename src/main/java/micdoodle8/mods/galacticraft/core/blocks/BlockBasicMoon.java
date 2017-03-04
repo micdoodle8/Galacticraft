@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -13,19 +14,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,6 +33,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -151,12 +152,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         }
 
         return this.blockHardness;
-    }
-
-    @Override
-    public int getDamageValue(World worldIn, BlockPos pos)
-    {
-        return getMetaFromState(worldIn.getBlockState(pos));
     }
 
     @Override
@@ -282,7 +277,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
         if (type == EnumBlockBasicMoon.MOON_TURF)
         {
-            return world.getBlockState(pos.offset(EnumFacing.UP)).getBlock().isAir(world, pos);
+            return world.getBlockState(pos.offset(EnumFacing.UP)).getBlock().isAir(world.getBlockState(pos), world, pos);
         }
 
         return false;
@@ -308,11 +303,11 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
         if (!worldIn.isRemote && type == EnumBlockBasicMoon.MOON_TURF)
         {
-            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(worldIn.provider.getDimensionId());
+            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(worldIn.provider.getDimension());
 
             if (footprintChunkMap != null)
             {
-                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.getX() >> 4, pos.getZ() >> 4);
+                long chunkKey = ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
                 List<Footprint> footprintList = footprintChunkMap.get(chunkKey);
 
                 if (footprintList != null && !footprintList.isEmpty())
@@ -336,12 +331,12 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
                 }
             }
 
-            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, worldIn.provider.getDimensionId()));
+            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, worldIn.provider.getDimension()));
         }
     }
 
     @Override
-    public boolean isReplaceableOreGen(World world, BlockPos pos, com.google.common.base.Predicate<IBlockState> target)
+    public boolean isReplaceableOreGen(IBlockState state, IBlockAccess world, BlockPos pos, Predicate<IBlockState> target)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
         return type == EnumBlockBasicMoon.MOON_STONE || type == EnumBlockBasicMoon.MOON_DIRT;

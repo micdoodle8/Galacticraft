@@ -181,7 +181,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                         GCPlayerStats stats = GCPlayerStats.get(playerMP);
                         if (stats.chatCooldown == 0)
                         {
-                            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));
+                            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));
                             stats.chatCooldown = 20;
                         }
                     }

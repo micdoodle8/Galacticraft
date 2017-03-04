@@ -48,13 +48,13 @@ public class BlockBrightAir extends BlockAir
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return false;
     }
 
     @Override
-    public int getLightValue(IBlockState state)
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return 15 - getMetaFromState(state);
     }

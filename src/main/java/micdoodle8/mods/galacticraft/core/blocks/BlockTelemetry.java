@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,10 +17,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -62,7 +63,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         final int metadata = getMetaFromState(world.getBlockState(pos));
         final int facing = metadata & 3;
@@ -107,7 +108,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
@@ -123,11 +124,11 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
                     {
                         UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
                         ((TileEntityTelemetry) tile).addTrackedEntity(uuid);
-                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_succeed.message")));
+                        entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.telemetry_succeed.message")));
                     }
                     else
                     {
-                        entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail.message")));
+                        entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.telemetry_fail.message")));
 
                         if (fmData == null)
                         {
@@ -138,7 +139,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
                     fmData.setInteger("teCoordX", pos.getX());
                     fmData.setInteger("teCoordY", pos.getY());
                     fmData.setInteger("teCoordZ", pos.getZ());
-                    fmData.setInteger("teDim", world.provider.getDimensionId());
+                    fmData.setInteger("teDim", world.provider.getDimension());
                     return true;
                 }
 
@@ -149,11 +150,11 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
                     {
                         return false;
                     }
-                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail_wearing_it.message")));
+                    entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.telemetry_fail_wearing_it.message")));
                 }
                 else
                 {
-                    entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.telemetry_fail_no_frequency_module.message")));
+                    entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.telemetry_fail_no_frequency_module.message")));
                 }
             }
         }

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,11 +10,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class EntityFXSmokeSmall extends EntityFX
+public class ParticleSmokeSmall extends Particle
 {
     float smokeParticleScale;
 
-    public EntityFXSmokeSmall(World par1World, Vector3 position, Vector3 motion)
+    public ParticleSmokeSmall(World par1World, Vector3 position, Vector3 motion)
     {
         super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.01D;
@@ -29,16 +29,16 @@ public class EntityFXSmokeSmall extends EntityFX
         this.particleScale *= 0.3F;
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = 110;
-        this.noClip = false;
+        this.canCollide = true;
     }
 
     @Override
-    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
         GL11.glPushMatrix();
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        float var8 = (this.particleAge + f0) / this.particleMaxAge * 32.0F;
+        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
 
         if (var8 < 0.0F)
         {
@@ -51,7 +51,7 @@ public class EntityFXSmokeSmall extends EntityFX
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(worldRenderer, entity, f0, f1, f2, f3, f4, f5);
+        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
@@ -67,7 +67,7 @@ public class EntityFXSmokeSmall extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
 
         this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);

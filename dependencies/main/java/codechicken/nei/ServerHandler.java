@@ -36,7 +36,7 @@ public class ServerHandler {
     @SubscribeEvent
     public void tickEvent(TickEvent.WorldTickEvent event) {
         if (event.phase == Phase.START && !event.world.isRemote &&
-                NEIServerConfig.dimTags.containsKey(event.world.provider.getDimensionId()))//fake worlds that don't call Load
+                NEIServerConfig.dimTags.containsKey(event.world.provider.getDimension()))//fake worlds that don't call Load
         {
             processDisabledProperties(event.world);
         }
@@ -65,7 +65,7 @@ public class ServerHandler {
 
     private void processDisabledProperties(World world) {
         NEIServerUtils.advanceDisabledTimes(world);
-        if (NEIServerUtils.isRaining(world) && NEIServerConfig.isActionDisabled(world.provider.getDimensionId(), "rain")) {
+        if (NEIServerUtils.isRaining(world) && NEIServerConfig.isActionDisabled(world.provider.getDimension(), "rain")) {
             NEIServerUtils.toggleRaining(world, false);
         }
     }

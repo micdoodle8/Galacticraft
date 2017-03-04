@@ -77,7 +77,7 @@ public class RenderLandingBalloons extends Render<EntityLandingBalloons>
 
         this.updateModels();
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

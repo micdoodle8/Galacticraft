@@ -32,7 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -139,7 +139,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
                     if (id == GCBlocks.landingPadFull)
                     {
-                        worldIn.markBlockForUpdate(pos1);
+                        worldIn.notifyBlockUpdate(pos1);
                     }
                 }
             }
@@ -157,7 +157,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
@@ -174,7 +174,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = getMetaFromState(worldIn.getBlockState(pos));
 
@@ -196,13 +196,13 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -239,7 +239,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
                     if (id == GCBlocks.landingPadFull)
                     {
-                        world.markBlockForUpdate(pos1);
+                        world.notifyBlockUpdate(pos1);
                     }
                 }
             }
@@ -342,7 +342,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -369,7 +369,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (state.getValue(TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {

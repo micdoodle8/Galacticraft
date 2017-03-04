@@ -57,7 +57,7 @@ public class NEIServerConfig {
             if (tag == null) {
                 tag = new NBTTagCompound();
             }
-            dimTags.put(world.provider.getDimensionId(), tag);
+            dimTags.put(world.provider.getDimension(), tag);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

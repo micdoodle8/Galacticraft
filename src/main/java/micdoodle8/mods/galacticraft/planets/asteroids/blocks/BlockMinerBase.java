@@ -59,7 +59,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -96,7 +96,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()()
+    public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

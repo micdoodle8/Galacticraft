@@ -25,7 +25,7 @@ public class OrbitSpinSaveData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         if (this.dim != 0)
         {
@@ -43,14 +43,14 @@ public class OrbitSpinSaveData extends WorldSavedData
             world.setItemData(OrbitSpinSaveData.saveDataID, worldData);
             if (world.provider instanceof WorldProviderZeroGravity)
             {
-                worldData.dim = world.provider.getDimensionId();
+                worldData.dim = world.provider.getDimension();
                 ((WorldProviderZeroGravity) world.provider).getSpinManager().writeToNBT(worldData.datacompound);
             }
             worldData.markDirty();
         }
         else if (world.provider instanceof WorldProviderZeroGravity)
         {
-            worldData.dim = world.provider.getDimensionId();
+            worldData.dim = world.provider.getDimension();
 
             worldData.datacompound = null;
             if (worldData.alldata != null)

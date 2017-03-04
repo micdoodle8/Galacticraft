@@ -7,27 +7,27 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
@@ -82,70 +82,70 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        int meta = getMetaFromState(worldIn.getBlockState(pos));
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+//    {
+//        int meta = getMetaFromState(worldIn.getBlockState(pos));
+//
+//        if (meta == 2 || meta == 6)
+//        {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+//        }
+//        else if (meta == 0 || meta == 4)
+//        {
+//            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
+//        }
+//        else
+//        {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//        }
+//    }
 
-        if (meta == 2 || meta == 6)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-        }
-        else if (meta == 0 || meta == 4)
-        {
-            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
-        }
-        else
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
-    {
-        int meta = getMetaFromState(state);
-
-        if (meta == 2 || meta == 6)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-        }
-        else if (meta == 0 || meta == 4)
-        {
-            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
-            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-        }
-        /*else if (meta == 7)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
-            super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
-        }*/
-        else
-        {
-            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-        }
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
-    }
+//    @SuppressWarnings("rawtypes")
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    {
+//        int meta = getMetaFromState(state);
+//
+//        if (meta == 2 || meta == 6)
+//        {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+//            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//        }
+//        else if (meta == 0 || meta == 4)
+//        {
+//            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
+//            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//        }
+//        /*else if (meta == 7)
+//        {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.38F, 1.0F);
+//            super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
+//        }*/
+//        else
+//        {
+//            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//        }
+//    }
+//
+//    @Override
+//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getCollisionBoundingBox(worldIn, pos, state);
+//    }
+//
+//    @Override
+//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getSelectedBoundingBox(worldIn, pos);
+//    }
 
     @Override
     public boolean canDropFromExplosion(Explosion par1Explosion)
@@ -171,7 +171,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null)
             {
-                return worldIn.getBlockState(mainBlockPosition).getBlock().getBlockHardness(worldIn, pos);
+                return worldIn.getBlockState(mainBlockPosition).getBlock().getBlockHardness(blockState, worldIn, pos);
             }
         }
 
@@ -219,10 +219,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) world.getTileEntity(pos);
-        return tileEntity.onBlockWrenched(world, pos, entityPlayer, side, hitX, hitY, hitZ);
+        return tileEntity.onBlockWrenched(world, pos, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
     /**
@@ -235,13 +235,13 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public int getRenderType()
+    public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return 3;
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -266,7 +266,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
                 if (Blocks.AIR != mainBlockID)
                 {
-                    return mainBlockID.getPickBlock(target, world, mainBlockPosition, player);
+                    return mainBlockID.getPickBlock(state, target, world, pos, player);
                 }
             }
         }
@@ -275,7 +275,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public EnumFacing getBedDirection(IBlockAccess world, BlockPos pos)
+    public EnumFacing getBedDirection(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -284,7 +284,8 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null)
             {
-                return world.getBlockState(mainBlockPosition).getBlock().getBedDirection(world, mainBlockPosition);
+                IBlockState mainState = world.getBlockState(mainBlockPosition);
+                return mainState.getBlock().getBedDirection(mainState, world, pos);
             }
         }
 
@@ -292,7 +293,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean isBed(IBlockAccess world, BlockPos pos, Entity player)
+    public boolean isBed(IBlockState state, IBlockAccess world, BlockPos pos, Entity player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -301,11 +302,12 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null)
             {
-                return world.getBlockState(mainBlockPosition).getBlock().isBed(world, mainBlockPosition, player);
+                IBlockState mainState = world.getBlockState(mainBlockPosition);
+                return mainState.getBlock().isBed(state, world, pos, player);
             }
         }
 
-        return super.isBed(world, pos, player);
+        return super.isBed(state, world, pos, player);
     }
 
     @Override
@@ -325,8 +327,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
+    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
     {
         TileEntity tileEntity = worldObj.getTileEntity(target.getBlockPos());
 
@@ -336,18 +337,11 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null)
             {
-                effectRenderer.addBlockHitEffects(mainBlockPosition, target);
+                manager.addBlockHitEffects(mainBlockPosition, target);
             }
         }
 
-        return super.addHitEffects(worldObj, target, effectRenderer);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addDestroyEffects(World world, BlockPos pos, net.minecraft.client.particle.EffectRenderer effectRenderer)
-    {
-        return super.addDestroyEffects(world, pos, effectRenderer);
+        return super.addHitEffects(state, worldObj, target, manager);
     }
 
     @Override

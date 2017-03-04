@@ -303,7 +303,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             if (this.targetVec != null)
             {
-                if (this.targetDimension != this.worldObj.provider.getDimensionId())
+                if (this.targetDimension != this.worldObj.provider.getDimension())
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                     if (targetDim != null && targetDim.worldObj instanceof WorldServer)
@@ -437,7 +437,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.worldObj.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimension(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
                 // Prevent player being dropped from the top of the rocket...
@@ -453,7 +453,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.worldObj.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.worldObj.provider.getDimension(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
                 stats.chatCooldown = 0;
                 par1EntityPlayer.mountEntity(this);

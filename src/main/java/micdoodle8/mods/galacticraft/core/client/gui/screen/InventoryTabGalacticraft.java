@@ -19,7 +19,7 @@ public class InventoryTabGalacticraft extends AbstractTab
     @Override
     public void onTabClicked()
     {
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_EXTENDED_INVENTORY, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_EXTENDED_INVENTORY, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] {}));
         ClientProxyCore.playerClientHandler.onBuild(0, FMLClientHandler.instance().getClientPlayerEntity());
     }
 

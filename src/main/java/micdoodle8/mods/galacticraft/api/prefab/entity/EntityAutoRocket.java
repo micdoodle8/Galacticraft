@@ -29,7 +29,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -282,7 +284,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
                 			if (doSet)
                 			{
-                				this.targetDimension = tile.getWorld().provider.getDimensionId();
+                				this.targetDimension = tile.getWorld().provider.getDimension();
                 			}
 
                 			if (!targetSet)
@@ -795,14 +797,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.timeUntilLaunch = 0;
         if (!this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayerMP)
         {
-            ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+            ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
         }
     }
     
     @Override
     public void onLaunch()
     {
-        if (!(this.worldObj.provider.getDimensionId() == GalacticraftCore.planetOverworld.getDimensionID() || this.worldObj.provider instanceof IGalacticraftWorldProvider))
+        if (!(this.worldObj.provider.getDimension() == GalacticraftCore.planetOverworld.getDimensionID() || this.worldObj.provider instanceof IGalacticraftWorldProvider))
         {
             if (ConfigManagerCore.disableRocketLaunchAllNonGC)
             {
@@ -813,7 +815,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             //No rocket flight in the Nether, the End etc
         	for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
             {
-                if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.worldObj.provider.getDimensionId())
+                if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.worldObj.provider.getDimension())
                 {
                 	this.cancelLaunch();
                     return;

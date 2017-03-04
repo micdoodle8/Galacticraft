@@ -116,7 +116,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
                 PacketDynamic packet = new PacketDynamic(this);
 //                if (networkDataChanged)
                 {
-                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, this.getPacketRange()));
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, this.getPacketRange()));
                 }
             }
 

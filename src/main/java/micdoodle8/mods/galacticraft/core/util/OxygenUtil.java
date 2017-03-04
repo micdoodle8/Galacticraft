@@ -31,7 +31,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -219,7 +219,7 @@ public class OxygenUtil
             return block.getMetaFromState(world.getBlockState(pos));
         }
 
-        if (block == null || block.getMaterial() == Material.air)
+        if (block == null || block.getMaterial() == Material.AIR)
         {
             return -1;
         }
@@ -500,7 +500,7 @@ public class OxygenUtil
     {
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
-            if (blockVec != null && blockVec.dim == worldObj.provider.getDimensionId())
+            if (blockVec != null && blockVec.dim == worldObj.provider.getDimension())
             {
                 TileEntity tile = blockVec.getTileEntity();
                 if (tile instanceof TileEntityOxygenDistributor)

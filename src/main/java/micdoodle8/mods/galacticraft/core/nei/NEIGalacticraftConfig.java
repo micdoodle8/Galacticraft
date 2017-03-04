@@ -271,7 +271,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), 147, 91));
 
         HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(4, new PositionedStack(new ItemStack(Items.dye, 1, 4), 140, 25));
+        input2.put(4, new PositionedStack(new ItemStack(Items.DYE, 1, 4), 140, 25));
         this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, 9, 12), 147, 91));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);

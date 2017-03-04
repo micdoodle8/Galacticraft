@@ -12,6 +12,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandJoinSpaceRace extends CommandBase
 {
@@ -34,7 +35,7 @@ public class CommandJoinSpaceRace extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 
@@ -49,7 +50,7 @@ public class CommandJoinSpaceRace extends CommandBase
                     if (stats.spaceRaceInviteTeamID > 0)
                     {
                         SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.spaceRaceInviteTeamID));
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, playerBase.worldObj.provider.getDimensionId(), new Object[] { stats.spaceRaceInviteTeamID }), playerBase);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, playerBase.worldObj.provider.getDimension(), new Object[] { stats.spaceRaceInviteTeamID }), playerBase);
                     }
                     else
                     {

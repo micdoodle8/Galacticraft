@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -44,19 +45,19 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -84,14 +85,15 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
 
     private boolean canPlaceOn(World worldIn, BlockPos pos)
     {
-        if (World.doesBlockHaveSolidTopSurface(worldIn, pos))
+        IBlockState state = worldIn.getBlockState(pos);
+        if (state.getBlock().isSideSolid(state, worldIn, pos, EnumFacing.UP))
         {
             return true;
         }
         else
         {
             Block block = worldIn.getBlockState(pos).getBlock();
-            return block.canPlaceTorchOnTop(worldIn, pos);
+            return block.canPlaceTorchOnTop(worldIn.getBlockState(pos), worldIn, pos);
         }
     }
 
@@ -282,7 +284,7 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()()
+    public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

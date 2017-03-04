@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -80,7 +80,7 @@ public class MapGen extends WorldChunkManager implements Runnable
     {
         this.biomeMapCx = cx >> 4;
         this.biomeMapCz = cz >> 4;
-        this.dimID = world.provider.getDimensionId();
+        this.dimID = world.provider.getDimension();
         if (file.exists())
         {
             return;
@@ -165,7 +165,7 @@ public class MapGen extends WorldChunkManager implements Runnable
         {
             for (WorldServer server : MinecraftServer.getServer().worldServers)
             {
-                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimensionId(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimensionId());
+                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimension(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimension());
             }
         }
         catch (Exception ex)

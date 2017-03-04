@@ -271,7 +271,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
             {
                 if (particleID.equals("sludgeDrip"))
                 {
-//                    particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.water); TODO
+//                    particle = new EntityDropParticleFX(mc.theWorld, position.x, position.y, position.z, Material.WATER); TODO
                 }
                 else if (particleID.equals("bacterialDrip"))
                 {

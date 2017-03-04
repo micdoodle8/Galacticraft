@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
@@ -51,7 +51,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glPopMatrix();
 
         final Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
@@ -113,7 +113,7 @@ public class SkyProviderMars extends IRenderHandler
 
         GL11.glColor3f(f1, f2, f3);
         Tessellator tessellator1 = Tessellator.getInstance();
-        WorldRenderer worldRenderer1 = tessellator1.getWorldRenderer();
+        VertexBuffer worldRenderer1 = tessellator1.getBuffer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(f1, f2, f3);
@@ -336,7 +336,7 @@ public class SkyProviderMars extends IRenderHandler
     {
         final Random rand = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        WorldRenderer worldRenderer = var2.getWorldRenderer();
+        VertexBuffer worldRenderer = var2.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int starIndex = 0; starIndex < (ConfigManagerCore.moreStars ? 35000 : 6000); ++starIndex)

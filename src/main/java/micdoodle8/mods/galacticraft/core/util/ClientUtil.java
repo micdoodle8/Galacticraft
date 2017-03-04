@@ -15,20 +15,19 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -95,7 +94,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -112,7 +111,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -122,7 +121,7 @@ public class ClientUtil
     public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
     {
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, "inventory");
-        IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+        IBakedModel object = event.getModelRegistry().getObject(modelResourceLocation);
         if (object != null)
         {
             IBakedModel newModel;
@@ -151,17 +150,17 @@ public class ClientUtil
                 throw new RuntimeException(e);
             }
 
-            event.modelRegistry.putObject(modelResourceLocation, newModel);
+            event.getModelRegistry().putObject(modelResourceLocation, newModel);
         }
     }
 
-    public static void drawBakedModel(IFlexibleBakedModel model)
+    public static void drawBakedModel(IBakedModel model)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+        VertexBuffer worldrenderer = tessellator.getBuffer();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-        for (BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getQuads(null, null, 0))
         {
             worldrenderer.addVertexData(bakedquad.getVertexData());
         }
@@ -169,13 +168,13 @@ public class ClientUtil
         tessellator.draw();
     }
 
-    public static void drawBakedModelColored(IFlexibleBakedModel model, int color)
+    public static void drawBakedModelColored(IBakedModel model, int color)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+        VertexBuffer worldrenderer = tessellator.getBuffer();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-        for (BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getQuads(null, null, 0))
         {
             int[] data = bakedquad.getVertexData();
             data[3] = color;

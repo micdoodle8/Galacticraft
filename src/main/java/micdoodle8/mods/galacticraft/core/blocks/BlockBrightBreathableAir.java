@@ -51,9 +51,9 @@ public class BlockBrightBreathableAir extends BlockAir
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        final Block block = worldIn.getBlockState(pos).getBlock();
+        final Block block = blockAccess.getBlockState(pos).getBlock();
         if (block == this || block == GCBlocks.breatheableAir)
         {
             return false;

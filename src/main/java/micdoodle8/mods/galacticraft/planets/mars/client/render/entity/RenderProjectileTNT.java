@@ -59,6 +59,6 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
     @Override
     protected ResourceLocation getEntityTexture(EntityProjectileTNT entity)
     {
-        return TextureMap.locationBlocksTexture;
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

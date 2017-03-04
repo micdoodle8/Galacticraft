@@ -44,6 +44,6 @@ public class RenderWebShot extends Render<EntityWebShot>
     @Override
     protected ResourceLocation getEntityTexture(EntityWebShot entity)
     {
-        return TextureMap.locationBlocksTexture;
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

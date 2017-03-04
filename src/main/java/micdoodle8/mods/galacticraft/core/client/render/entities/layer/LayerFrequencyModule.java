@@ -74,7 +74,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                     this.updateModels();
                     GlStateManager.pushMatrix();
                     RenderHelper.disableStandardItemLighting();
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
                     if (Minecraft.isAmbientOcclusionEnabled())
                     {

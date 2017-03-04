@@ -17,7 +17,7 @@ public class PacketRotateRocket extends PacketBase
 
     public PacketRotateRocket(Entity rotateableEntity)
     {
-        super(rotateableEntity.worldObj.provider.getDimensionId());
+        super(rotateableEntity.worldObj.provider.getDimension());
         this.entityID = rotateableEntity.getEntityId();
         this.entityPitch = rotateableEntity.rotationPitch;
         this.entityYaw = rotateableEntity.rotationYaw;

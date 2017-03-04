@@ -76,7 +76,7 @@ public class BiomeGenBaseVenus extends BiomeGenBase
             {
                 IBlockState iblockstate2 = chunkPrimerIn.getBlockState(i1, j1, l);
 
-                if (iblockstate2.getBlock().getMaterial() == Material.air)
+                if (iblockstate2.getBlock().getMaterial() == Material.AIR)
                 {
                     j = -1;
                 }

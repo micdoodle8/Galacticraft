@@ -57,7 +57,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return super.shouldSideBeRendered(world, pos, EnumFacing.getFront(1 - side.getIndex()));
     }
@@ -86,7 +86,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
         }
         else
         {
-            if (worldIn.provider.getDimensionId() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
                 worldIn.setBlockToAir(pos);
                 return;
@@ -116,7 +116,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
     {
         if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - this.getLightOpacity())
         {
-            if (worldIn.provider.getDimensionId() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
                 worldIn.setBlockToAir(pos);
                 return;

@@ -392,11 +392,11 @@ public class ThreadFindSeal
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlock(world), metadata, 3));
             }
 
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
+            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimensionId(), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimension(), this.torchesToUpdate);
         }
     }
 
@@ -413,11 +413,11 @@ public class ThreadFindSeal
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0, 2));
             }
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
+            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimensionId(), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimension(), this.torchesToUpdate);
         }
     }
 
@@ -427,7 +427,7 @@ public class ThreadFindSeal
         Block breatheableAirID = GCBlocks.breatheableAir;
         Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
         Block oxygenSealerID = GCBlocks.oxygenSealer;
-        Block fireBlock = Blocks.fire;
+        Block fireBlock = Blocks.FIRE;
         HashSet<BlockVec3> checkedLocal = this.checked;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
         World world = this.world;
@@ -514,7 +514,7 @@ public class ThreadFindSeal
         Block breatheableAirID = GCBlocks.breatheableAir;
         Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
         Block oxygenSealerID = GCBlocks.oxygenSealer;
-        Block fireBlock = Blocks.fire;
+        Block fireBlock = Blocks.FIRE;
         HashSet<BlockVec3> checkedLocal = this.checked;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
         int bits;
@@ -1036,7 +1036,7 @@ public class ThreadFindSeal
         }
 
         //Easy case: airblock, return without checking other sides
-        if (block.getMaterial() == Material.air)
+        if (block.getMaterial() == Material.AIR)
         {
             return true;
         }

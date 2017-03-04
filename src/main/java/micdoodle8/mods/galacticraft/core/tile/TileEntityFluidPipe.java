@@ -81,7 +81,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         {
             if (!this.dataRequest)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, this.worldObj.provider.getDimensionId(), new Object[] { this.worldObj.provider.getDimensionId(), this.getPos() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, this.worldObj.provider.getDimension(), new Object[] { this.worldObj.provider.getDimension(), this.getPos() }));
                 this.dataRequest = true;
             }
         }
@@ -147,7 +147,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public void onAdjacentColorChanged(EnumFacing direction)
     {
-        this.worldObj.markBlockForUpdate(this.getPos());
+        this.worldObj.notifyBlockUpdate(this.getPos());
 
         if (!this.worldObj.isRemote)
         {

@@ -25,7 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -267,7 +267,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         this.writeStandardItemsToNBT(nbt);
@@ -380,7 +380,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         super.validate();
         if (this.worldObj.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
         }
     }
 
@@ -607,7 +607,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             z = this.mainBlockPosition.getZ();
         }
         int link = (this.linkedMinerID != null) ? 1 : 0;
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), this.facing, x, y, z, link }), this.worldObj.provider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.facing, x, y, z, link }), this.worldObj.provider.getDimension());
     }
 
     @Override

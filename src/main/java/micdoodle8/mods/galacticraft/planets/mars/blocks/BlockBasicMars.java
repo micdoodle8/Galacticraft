@@ -219,7 +219,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (rand.nextInt(10) == 0)
         {

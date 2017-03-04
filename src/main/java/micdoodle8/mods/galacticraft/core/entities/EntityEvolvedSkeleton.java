@@ -19,7 +19,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -167,6 +167,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
         //Drop lapis as semi-rare drop if player hit and if dropping bones
         if (p_70628_1_ && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
-            this.entityDropItem(new ItemStack(Items.dye, 1, 4), 0.0F);
+            this.entityDropItem(new ItemStack(Items.DYE, 1, 4), 0.0F);
     }
 }

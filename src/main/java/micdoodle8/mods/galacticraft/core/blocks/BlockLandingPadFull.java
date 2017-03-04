@@ -5,8 +5,10 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -65,7 +68,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         this.setResistance(10.0F);
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
-        this.maxY = 0.25F;
+//        this.maxY = 0.25F;
     }
 
     @Override
@@ -100,13 +103,13 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        switch (getMetaFromState(state))
+        switch (getMetaFromState(blockState))
         {
-        case 0:
-            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
-                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
+//        case 0:
+//            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+//                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ); TODO
 //        case 2:
 //            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
 //                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
@@ -117,14 +120,13 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
         switch (getMetaFromState(worldIn.getBlockState(pos)))
         {
-        case 0:
-            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
-                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
+//        case 0:
+//            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+//                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ); TODO
 //        case 2:
 //            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
 //                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
@@ -177,24 +179,25 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     @Override
     public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
     {
-        ((World) worldIn).markBlockForUpdate(pos);
+        IBlockState state = worldIn.getBlockState(pos);
+        ((World) worldIn).notifyBlockUpdate(pos, state, state, 3);
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }

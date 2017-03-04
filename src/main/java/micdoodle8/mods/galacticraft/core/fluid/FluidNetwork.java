@@ -299,7 +299,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     private IPacket getAddTransmitterUpdate()
     {
         BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-        return PacketFluidNetworkUpdate.getAddTransmitterUpdate(this.worldObj.provider.getDimensionId(), pos, this.firstUpdate, this.pipesAdded);
+        return PacketFluidNetworkUpdate.getAddTransmitterUpdate(this.worldObj.provider.getDimension(), pos, this.firstUpdate, this.pipesAdded);
     }
 
     public void onUpdate()
@@ -339,7 +339,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 if (this.updateDelay == 0)
                 {
                     BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 30.0));
+                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 30.0));
                     this.firstUpdate = false;
                     this.pipesAdded.clear();
                     this.needsUpdate = true;
@@ -369,7 +369,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             if (this.didTransfer != this.prevTransfer || this.needsUpdate)
             {
                 BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(this.worldObj.provider.getDimensionId(), pos, this.buffer, this.didTransfer), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 20.0));
+                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(this.worldObj.provider.getDimension(), pos, this.buffer, this.didTransfer), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20.0));
                 this.needsUpdate = false;
             }
 

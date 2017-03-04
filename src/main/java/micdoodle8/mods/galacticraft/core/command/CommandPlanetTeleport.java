@@ -32,7 +32,7 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
@@ -51,8 +51,7 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
-                    MinecraftServer server = MinecraftServer.getServer();
-                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimensionId());
+                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimension());
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.rocketStacks = new ItemStack[2];
@@ -72,7 +71,7 @@ public class CommandPlanetTeleport extends CommandBase
                         throw e;
                     }
 
-                    CommandBase.notifyOperators(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
+                    CommandBase.notifyCommandListener(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {
