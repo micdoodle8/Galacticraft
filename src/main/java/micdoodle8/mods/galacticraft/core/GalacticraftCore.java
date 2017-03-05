@@ -465,6 +465,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "Galacticraft Coal Generator");
         GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
         GameRegistry.registerTileEntity(TileEntityAluminumWire.class, "Galacticraft Aluminum Wire");
+        GameRegistry.registerTileEntity(TileEntityAluminumWireSwitch.class, "Galacticraft Switchable Aluminum Wire");
         GameRegistry.registerTileEntity(TileEntityFallenMeteor.class, "Fallen Meteor");
         GameRegistry.registerTileEntity(TileEntityIngotCompressor.class, "Ingot Compressor");
         GameRegistry.registerTileEntity(TileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");

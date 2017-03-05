@@ -8,6 +8,7 @@ import ic2.api.energy.tile.*;
 import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
@@ -51,7 +52,12 @@ public class EnergyUtil
         BlockVec3 thisVec = new BlockVec3(tile);
         for (EnumFacing direction : EnumFacing.values())
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+        	if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
+            {
+                continue;
+            }
+        	
+        	TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity == null)
             {

@@ -10,6 +10,7 @@ import mekanism.api.energy.EnergizedItemManager;
 import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
@@ -79,7 +80,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                         continue;
                     }
 
-                    if (tileAdj instanceof TileBaseConductor)
+                    if (tileAdj instanceof TileBaseConductor && ((TileBaseConductor)tileAdj).canConnect(direction.getOpposite(), NetworkType.POWER))
                     {
                         IElectricityNetwork network = ((IConductor) tileAdj).getNetwork();
                         if (network != null)
