@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.WorldChunkManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeProviderAsteroids;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -81,9 +81,9 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    public Class<? extends WorldChunkManager> getBiomeProviderClass()
     {
-        return WorldChunkManagerAsteroids.class;
+        return BiomeProviderAsteroids.class;
     }
 
     @Override

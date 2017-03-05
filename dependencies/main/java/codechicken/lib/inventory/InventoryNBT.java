@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 
 /**
  * IInventory implementation which saves and loads from an NBT tag
@@ -117,7 +117,7 @@ public class InventoryNBT implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return new ChatComponentText(getName());
     }
 }

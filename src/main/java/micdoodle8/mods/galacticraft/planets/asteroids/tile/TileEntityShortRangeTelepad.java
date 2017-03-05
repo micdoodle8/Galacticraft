@@ -388,7 +388,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return (this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }

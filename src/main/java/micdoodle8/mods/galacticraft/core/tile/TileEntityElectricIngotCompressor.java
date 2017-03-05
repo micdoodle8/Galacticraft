@@ -512,7 +512,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

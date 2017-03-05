@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -525,7 +526,7 @@ public class WorldUtil
      * IMPORTANT: GalacticraftRegistry.registerProvider() must always be called in parallel with this
      * meaning the CelestialBodies are iterated in the same order when registered there and here.
      */
-    public static boolean registerPlanet(int planetID, boolean initialiseDimensionAtServerInit, int defaultID)
+    public static boolean registerPlanet(DimensionType type, boolean initialiseDimensionAtServerInit, int defaultID)
     {
         if (WorldUtil.registeredPlanets == null)
         {
@@ -534,26 +535,26 @@ public class WorldUtil
 
         if (initialiseDimensionAtServerInit)
         {
-            if (!DimensionManager.isDimensionRegistered(planetID))
+            if (!DimensionManager.isDimensionRegistered(type.getId()))
             {
-                DimensionManager.registerDimension(planetID, planetID);
-                GCLog.info("Registered Dimension: " + planetID);
-                WorldUtil.registeredPlanets.add(planetID);
+                DimensionManager.registerDimension(type.getId(), type);
+                GCLog.info("Registered Dimension: " + type);
+                WorldUtil.registeredPlanets.add(type.getId());
             }
             else
             {
-                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + planetID);
+                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + type);
                 //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
                 WorldUtil.registeredPlanets.add(defaultID);
                 return false;
             }
-            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(planetID);
-            WorldUtil.dimNames.put(planetID, getDimensionName(w.provider));
+            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(type.getId());
+            WorldUtil.dimNames.put(type.getId(), getDimensionName(w.provider));
             return true;
         }
 
         //Not to be initialised - still add to the registered planets list (for hotloading later?)
-        WorldUtil.registeredPlanets.add(planetID);
+        WorldUtil.registeredPlanets.add(type.getId());
         return true;
     }
 
@@ -754,7 +755,7 @@ public class WorldUtil
                     try
                     {
                         GCLog.info("DEBUG: Attempting to remove player from old dimension " + oldDimID);
-                        ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+                        ((WorldServer) worldOld).getPlayerChunkMap().removePlayer(player);
                         GCLog.info("DEBUG: Successfully removed player from old dimension " + oldDimID);
                     }
                     catch (Exception e)
@@ -766,7 +767,7 @@ public class WorldUtil
                 {
                     try
                     {
-                        ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
+                        ((WorldServer) worldOld).getPlayerChunkMap().removePlayer(player);
                     }
                     catch (Exception e)
                     {
@@ -1225,10 +1226,10 @@ public class WorldUtil
         }
     }
 
-    public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)
+    public static void toCelestialSelection(EntityPlayerMP player, IStatsCapability stats, int tier)
     {
-        player.mountEntity(null);
-        stats.spaceshipTier = tier;
+        player.dismountRidingEntity();
+        stats.setSpaceshipTier(tier);
 
         HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(tier, player);
         String dimensionList = "";
@@ -1240,11 +1241,11 @@ public class WorldUtil
         }
 
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, player.worldObj.provider.getDimension(), new Object[] { player.getGameProfile().getName(), dimensionList }), player);
-        stats.usingPlanetSelectionGui = true;
-        stats.savedPlanetList = dimensionList;
+        stats.setUsingPlanetSelectionGui(true);
+        stats.setSavedPlanetList(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);
         player.worldObj.spawnEntityInWorld(fakeEntity);
-        player.mountEntity(fakeEntity);
+        player.startRiding(fakeEntity);
     }
 
     public static Vector3 getFootprintPosition(World world, float rotation, Vector3 startPosition, BlockVec3 playerCenter)

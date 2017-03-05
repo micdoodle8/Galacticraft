@@ -72,8 +72,8 @@ public class RenderPlayerGC extends RenderPlayer
                 @Override
                 protected void initArmor()
                 {
-                    this.field_177189_c = new ModelBipedGC(0.5F);
-                    this.field_177186_d = new ModelBipedGC(1.0F);
+                    this.modelLeggings = new ModelBipedGC(0.5F);
+                    this.modelArmor = new ModelBipedGC(1.0F);
                 }
             };
             this.addLayer(playerArmor);

@@ -393,7 +393,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

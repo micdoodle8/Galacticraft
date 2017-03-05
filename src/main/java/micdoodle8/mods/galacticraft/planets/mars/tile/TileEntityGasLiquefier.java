@@ -833,7 +833,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

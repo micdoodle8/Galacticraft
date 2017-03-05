@@ -15,8 +15,8 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.TextFormatting;
+import net.minecraft.util.ITextComponent;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -63,7 +63,7 @@ public class GuiItemIconDumper extends GuiScreen {
 
     }
 
-    private void returnScreen(IChatComponent msg) {
+    private void returnScreen(ITextComponent msg) {
         Minecraft.getMinecraft().displayGuiScreen(opt.slot.getGui());
         NEIClientUtils.printChatMessage(msg);
     }
@@ -144,7 +144,7 @@ public class GuiItemIconDumper extends GuiScreen {
     }
 
     private void exportImage(File dir, BufferedImage img, ItemStack stack) throws IOException {
-        String name = EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack));
+        String name = TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack));
         name = cleanFileName(name);
         File file = new File(dir, name + ".png");
         for (int i = 2; file.exists(); i++) {

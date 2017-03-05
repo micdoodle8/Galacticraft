@@ -23,7 +23,7 @@ public class WorldDataSpaceRaces extends WorldSavedData
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        SpaceRaceManager.saveSpaceRaces(nbt);
+        return SpaceRaceManager.saveSpaceRaces(nbt);
     }
 
     public static WorldDataSpaceRaces initWorldData(World world)

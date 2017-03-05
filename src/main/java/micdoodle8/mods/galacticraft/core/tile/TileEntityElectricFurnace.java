@@ -296,7 +296,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

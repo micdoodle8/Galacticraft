@@ -907,7 +907,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

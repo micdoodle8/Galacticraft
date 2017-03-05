@@ -399,7 +399,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

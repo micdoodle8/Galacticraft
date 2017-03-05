@@ -6,7 +6,7 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
 
 public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLayer
@@ -182,10 +182,10 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
         {
             return true;
         }
-        else if (biomeIDA != BiomeGenBase.mesaPlateau_F.biomeID && biomeIDA != BiomeGenBase.mesaPlateau.biomeID)
+        else if (biomeIDA != Biome.mesaPlateau_F.biomeID && biomeIDA != Biome.mesaPlateau.biomeID)
         {
-            final BiomeGenBase biomegenbase = BiomeGenBase.getBiome(biomeIDA);
-            final BiomeGenBase biomegenbase1 = BiomeGenBase.getBiome(biomeIDB);
+            final Biome biomegenbase = Biome.getBiome(biomeIDA);
+            final Biome biomegenbase1 = Biome.getBiome(biomeIDB);
 
             try
             {
@@ -216,7 +216,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
         }
         else
         {
-            return biomeIDB == BiomeGenBase.mesaPlateau_F.biomeID || biomeIDB == BiomeGenBase.mesaPlateau.biomeID;
+            return biomeIDB == Biome.mesaPlateau_F.biomeID || biomeIDB == Biome.mesaPlateau.biomeID;
         }
     }
 
@@ -225,7 +225,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
      */
     protected static boolean isBiomeOceanic(int p_151618_0_)
     {
-        return net.minecraftforge.common.BiomeManager.oceanBiomes.contains(BiomeGenBase.getBiome(p_151618_0_));
+        return net.minecraftforge.common.BiomeManager.oceanBiomes.contains(Biome.getBiome(p_151618_0_));
     }
 
     /**

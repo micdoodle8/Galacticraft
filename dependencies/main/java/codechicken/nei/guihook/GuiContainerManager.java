@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -176,7 +176,7 @@ public class GuiContainerManager {
             }
             sb.append(name);
         }
-        return EnumChatFormatting.getTextWithoutFormattingCodes(sb.toString());
+        return TextFormatting.getTextWithoutFormattingCodes(sb.toString());
     }
 
     public static void drawItem(int i, int j, ItemStack itemstack) {

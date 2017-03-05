@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -548,7 +548,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
         for (int var6 = 0; var6 < var5.length; ++var6)
         {
-            var5[var6] = (byte) BiomeGenBaseAsteroids.asteroid.biomeID;
+            var5[var6] = (byte) BiomeAsteroids.asteroid.biomeID;
         }
 
 //        long time3 = System.nanoTime();
@@ -964,9 +964,9 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        Biome biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
         return biomegenbase.getSpawnableList(creatureType);
     }
 

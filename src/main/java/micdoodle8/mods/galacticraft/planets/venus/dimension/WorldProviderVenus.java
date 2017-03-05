@@ -78,7 +78,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    public Class<? extends WorldChunkManager> getBiomeProviderClass()
     {
         return WorldChunkManagerVenus.class;
     }

@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
@@ -117,7 +117,7 @@ public class WorldGenLakesVenus extends WorldGenerator
 
                             if (worldIn.getBlockState(blockpos).getBlock() == Blocks.dirt && worldIn.getLightFor(EnumSkyBlock.SKY, position.add(i2, j4, j3)) > 0)
                             {
-                                BiomeGenBase biomegenbase = worldIn.getBiomeGenForCoords(blockpos);
+                                Biome biomegenbase = worldIn.getBiomeGenForCoords(blockpos);
 
                                 if (biomegenbase.topBlock.getBlock() == Blocks.mycelium)
                                 {

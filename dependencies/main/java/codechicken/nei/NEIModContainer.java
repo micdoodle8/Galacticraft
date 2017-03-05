@@ -6,7 +6,7 @@ import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.asm.NEICorePlugin;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.fml.client.FMLFileResourcePack;
 import net.minecraftforge.fml.client.FMLFolderResourcePack;
 import net.minecraftforge.fml.common.*;
@@ -46,16 +46,16 @@ public class NEIModContainer extends DummyModContainer {
     private String description;
 
     private void loadMetadata() {
-        description = super.getMetadata().description.replace("Supporters:", EnumChatFormatting.AQUA + "Supporters:");
+        description = super.getMetadata().description.replace("Supporters:", TextFormatting.AQUA + "Supporters:");
     }
 
     @Override
     public ModMetadata getMetadata() {
         String s_plugins = "";
         if (plugins.size() == 0) {
-            s_plugins += EnumChatFormatting.RED + "No installed plugins.";
+            s_plugins += TextFormatting.RED + "No installed plugins.";
         } else {
-            s_plugins += EnumChatFormatting.GREEN + "Installed plugins: ";
+            s_plugins += TextFormatting.GREEN + "Installed plugins: ";
             for (int i = 0; i < plugins.size(); i++) {
                 if (i > 0) {
                     s_plugins += ", ";

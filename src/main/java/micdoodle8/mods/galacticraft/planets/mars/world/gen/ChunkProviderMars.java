@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -38,9 +38,9 @@ public class ChunkProviderMars extends ChunkProviderSpace
     }
 
     @Override
-    protected BiomeGenBase[] getBiomesForGeneration()
+    protected Biome[] getBiomesForGeneration()
     {
-        return new BiomeGenBase[] { BiomeGenBaseMars.marsFlat };
+        return new Biome[] { BiomeMars.marsFlat };
     }
 
     @Override

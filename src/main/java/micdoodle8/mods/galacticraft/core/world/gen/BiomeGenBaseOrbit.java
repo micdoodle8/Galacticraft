@@ -3,14 +3,14 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
-public class BiomeGenBaseOrbit extends BiomeGenBase
+public class BiomeOrbit extends Biome
 {
-    public static final BiomeGenBase space = new BiomeGenBaseOrbit(ConfigManagerCore.biomeIDbase + 3).setBiomeName("Space");
+    public static final Biome space = new BiomeOrbit(ConfigManagerCore.biomeIDbase + 3).setBiomeName("Space");
 
     @SuppressWarnings("unchecked")
-    private BiomeGenBaseOrbit(int var1)
+    private BiomeOrbit(int var1)
     {
         super(var1);
         this.spawnableMonsterList.clear();
@@ -23,9 +23,9 @@ public class BiomeGenBaseOrbit extends BiomeGenBase
     }
 
     @Override
-    public BiomeGenBaseOrbit setColor(int var1)
+    public BiomeOrbit setColor(int var1)
     {
-        return (BiomeGenBaseOrbit) super.setColor(var1);
+        return (BiomeOrbit) super.setColor(var1);
     }
 
     @Override

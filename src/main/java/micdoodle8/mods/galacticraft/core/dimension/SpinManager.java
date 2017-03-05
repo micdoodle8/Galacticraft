@@ -398,7 +398,7 @@ public class SpinManager
         List<Object> objList = new ArrayList<Object>();
         objList.add(Double.valueOf(this.spinCentreX));
         objList.add(Double.valueOf(this.spinCentreZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, this.worldProvider.getDimension(), objList), this.worldProvider.getDimension());
 
         objList = new ArrayList<Object>();
         objList.add(Integer.valueOf(this.ssBoundsMinX));
@@ -407,7 +407,7 @@ public class SpinManager
         objList.add(Integer.valueOf(this.ssBoundsMaxY));
         objList.add(Integer.valueOf(this.ssBoundsMinZ));
         objList.add(Integer.valueOf(this.ssBoundsMaxZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, this.worldProvider.getDimension(), objList), this.worldProvider.getDimension());
 
         this.updateSpinSpeed();
 
@@ -544,7 +544,7 @@ public class SpinManager
                     List<Object> objList = new ArrayList<Object>();
                     objList.add(Float.valueOf(this.angularVelocityRadians));
                     objList.add(Boolean.valueOf(this.thrustersFiring));
-                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, this.worldProvider.getDimension(), objList), this.worldProvider.getDimension());
                 }
 
                 //Update entity positions if in freefall
@@ -681,7 +681,7 @@ public class SpinManager
         objList.add(this.thrustersFiring);
         if (player == null)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, this.worldProvider.getDimension(), objList), this.worldProvider.getDimension());
         }
         else
         {
@@ -693,7 +693,7 @@ public class SpinManager
         objList.add(this.spinCentreZ);
         if (player == null)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, this.worldProvider.getDimension(), objList), this.worldProvider.getDimension());
         }
         else
         {
@@ -709,7 +709,7 @@ public class SpinManager
         objList.add(this.ssBoundsMaxZ);
         if (player == null)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, this.worldProvider.getDimension(), objList), this.worldProvider.getDimension());
         }
         else
         {

@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -36,7 +36,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
     protected final World worldObj;
 
-    private BiomeGenBase[] biomesForGeneration = this.getBiomesForGeneration();
+    private Biome[] biomesForGeneration = this.getBiomesForGeneration();
 
     private final double TERRAIN_HEIGHT_MOD = this.getHeightModifier();
     private final double SMALL_FEATURE_HEIGHT_MOD = this.getSmallFeatureHeightModifier();
@@ -146,7 +146,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
     }
 
     @Override
-    public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+    public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, Biome[] par4ArrayOfBiome)
     {
         final int var5 = 20;
         final float var6 = 0.03125F;
@@ -386,9 +386,9 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
     }
 
     @Override
-    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        Biome biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
         return biomegenbase.getSpawnableList(creatureType);
     }
 
@@ -405,7 +405,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
      *
      * @return Biome instance for generation
      */
-    protected abstract BiomeGenBase[] getBiomesForGeneration();
+    protected abstract Biome[] getBiomesForGeneration();
 
     /**
      * @return The average terrain level. Default is 64.

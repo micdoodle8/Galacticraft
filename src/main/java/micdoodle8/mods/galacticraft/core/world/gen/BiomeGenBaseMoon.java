@@ -6,13 +6,13 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
-public class BiomeGenBaseMoon extends BiomeGenBase
+public class BiomeMoon extends Biome
 {
-    public static final BiomeGenBase moonFlat = new BiomeGenFlatMoon(ConfigManagerCore.biomeIDbase).setBiomeName("Moon");
+    public static final Biome moonFlat = new BiomeGenFlatMoon(ConfigManagerCore.biomeIDbase).setBiomeName("Moon");
 
-    BiomeGenBaseMoon(int var1)
+    BiomeMoon(int var1)
     {
         super(var1);
         this.spawnableMonsterList.clear();
@@ -33,9 +33,9 @@ public class BiomeGenBaseMoon extends BiomeGenBase
     }
 
     @Override
-    public BiomeGenBaseMoon setColor(int var1)
+    public BiomeMoon setColor(int var1)
     {
-        return (BiomeGenBaseMoon) super.setColor(var1);
+        return (BiomeMoon) super.setColor(var1);
     }
 
     @Override

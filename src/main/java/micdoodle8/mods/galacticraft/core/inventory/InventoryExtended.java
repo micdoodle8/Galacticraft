@@ -128,7 +128,7 @@ public class InventoryExtended implements IInventoryGC
 
             if (stack != null)
             {
-                player.dropPlayerItemWithRandomChoice(stack, true);
+                player.dropItem(stack, true);
             }
 
             this.inventoryStacks[i] = null;
@@ -226,7 +226,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

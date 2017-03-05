@@ -9,7 +9,7 @@ import codechicken.nei.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -70,7 +70,7 @@ public class GuiHighlightTips extends GuiScreenWidget {
     public void drawScreen(int mousex, int mousey, float f) {
         super.drawScreen(mousex, mousey, f);
         if (show()) {
-            HUDRenderer.renderOverlay(new ItemStack(Blocks.redstone_block), Arrays.asList("RedstoneBlock", EnumChatFormatting.RED + "Sample"), renderPos());
+            HUDRenderer.renderOverlay(new ItemStack(Blocks.redstone_block), Arrays.asList("RedstoneBlock", TextFormatting.RED + "Sample"), renderPos());
         }
     }
 

@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
@@ -22,7 +22,7 @@ public class WorldChunkManagerVenus extends WorldChunkManager
     private GenLayer unzoomedBiomes;
     private GenLayer zoomedBiomes;
     private BiomeCache biomeCache;
-    private List<BiomeGenBase> biomesToSpawnIn;
+    private List<Biome> biomesToSpawnIn;
 
     protected WorldChunkManagerVenus()
     {
@@ -45,15 +45,15 @@ public class WorldChunkManagerVenus extends WorldChunkManager
     }
 
     @Override
-    public List<BiomeGenBase> getBiomesToSpawnIn()
+    public List<Biome> getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }
 
     @Override
-    public BiomeGenBase getBiomeGenerator(BlockPos pos, BiomeGenBase biomeGenBaseIn)
+    public Biome getBiomeGenerator(BlockPos pos, Biome biomeGenBaseIn)
     {
-        return this.biomeCache.func_180284_a(pos.getX(), pos.getZ(), BiomeGenBaseVenus.venusFlat);
+        return this.biomeCache.func_180284_a(pos.getX(), pos.getZ(), BiomeVenus.venusFlat);
     }
 
     @Override
@@ -76,13 +76,13 @@ public class WorldChunkManagerVenus extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int length, int width)
+    public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int length, int width)
     {
         IntCache.resetIntCache();
 
         if (biomes == null || biomes.length < length * width)
         {
-            biomes = new BiomeGenBase[length * width];
+            biomes = new Biome[length * width];
         }
 
         int[] intArray = unzoomedBiomes.getInts(x, z, length, width);
@@ -91,11 +91,11 @@ public class WorldChunkManagerVenus extends WorldChunkManager
         {
             if (intArray[i] >= 0)
             {
-                biomes[i] = BiomeGenBase.getBiome(intArray[i]);
+                biomes[i] = Biome.getBiome(intArray[i]);
             }
             else
             {
-                biomes[i] = BiomeGenBaseVenus.venusFlat;
+                biomes[i] = BiomeVenus.venusFlat;
             }
         }
 
@@ -103,24 +103,24 @@ public class WorldChunkManagerVenus extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] oldBiomeList, int x, int z, int length, int width)
+    public Biome[] loadBlockGeneratorData(Biome[] oldBiomeList, int x, int z, int length, int width)
     {
         return getBiomeGenAt(oldBiomeList, x, z, length, width, true);
     }
 
     @Override
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] listToReuse, int x, int z, int length, int width, boolean cacheFlag)
+    public Biome[] getBiomeGenAt(Biome[] listToReuse, int x, int z, int length, int width, boolean cacheFlag)
     {
         IntCache.resetIntCache();
 
         if (listToReuse == null || listToReuse.length < length * width)
         {
-            listToReuse = new BiomeGenBase[width * length];
+            listToReuse = new Biome[width * length];
         }
 
         if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (z & 15) == 0)
         {
-            BiomeGenBase[] cached = this.biomeCache.getCachedBiomes(x, z);
+            Biome[] cached = this.biomeCache.getCachedBiomes(x, z);
             System.arraycopy(cached, 0, listToReuse, 0, width * length);
             return listToReuse;
         }
@@ -131,11 +131,11 @@ public class WorldChunkManagerVenus extends WorldChunkManager
         {
             if (zoomed[i] >= 0)
             {
-                listToReuse[i] = BiomeGenBase.getBiome(zoomed[i]);
+                listToReuse[i] = Biome.getBiome(zoomed[i]);
             }
             else
             {
-                listToReuse[i] = BiomeGenBase.beach; // TODO Replace with venus default
+                listToReuse[i] = Biome.beach; // TODO Replace with venus default
             }
         }
 
@@ -143,7 +143,7 @@ public class WorldChunkManagerVenus extends WorldChunkManager
     }
 
     @Override
-    public boolean areBiomesViable(int x, int z, int range, List<BiomeGenBase> viables)
+    public boolean areBiomesViable(int x, int z, int range, List<Biome> viables)
     {
         int i = x - range >> 2;
         int j = z - range >> 2;
@@ -155,7 +155,7 @@ public class WorldChunkManagerVenus extends WorldChunkManager
 
         for (int a = 0; a < diffX * diffZ; ++a)
         {
-            BiomeGenBase biome = BiomeGenBase.getBiome(unzoomed[a]);
+            Biome biome = Biome.getBiome(unzoomed[a]);
 
             if (!viables.contains(biome))
             {
@@ -167,7 +167,7 @@ public class WorldChunkManagerVenus extends WorldChunkManager
     }
 
     @Override
-    public BlockPos findBiomePosition(int x, int z, int range, List<BiomeGenBase> biomes, Random random)
+    public BlockPos findBiomePosition(int x, int z, int range, List<Biome> biomes, Random random)
     {
         int i = x - range >> 2;
         int j = z - range >> 2;
@@ -183,7 +183,7 @@ public class WorldChunkManagerVenus extends WorldChunkManager
         {
             int x0 = i + a % diffX << 2;
             int z0 = j + a / diffX << 2;
-            BiomeGenBase biome = BiomeGenBase.getBiome(unzoomed[a]);
+            Biome biome = Biome.getBiome(unzoomed[a]);
 
             if (biomes.contains(biome) && (blockPos == null || random.nextInt(count + 1) == 0))
             {

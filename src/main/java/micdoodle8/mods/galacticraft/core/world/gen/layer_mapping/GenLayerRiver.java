@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class GenLayerRiver extends GenLayerGCMap
 {
@@ -39,7 +39,7 @@ public class GenLayerRiver extends GenLayerGCMap
                 }
                 else
                 {
-                    aint1[j1 + i1 * areaWidth] = BiomeGenBase.river.biomeID;
+                    aint1[j1 + i1 * areaWidth] = Biome.river.biomeID;
                 }
             }
         }

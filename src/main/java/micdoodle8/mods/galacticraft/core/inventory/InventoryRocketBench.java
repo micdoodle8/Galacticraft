@@ -174,7 +174,7 @@ public class InventoryRocketBench implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

@@ -154,7 +154,7 @@ public class InventorySchematic implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

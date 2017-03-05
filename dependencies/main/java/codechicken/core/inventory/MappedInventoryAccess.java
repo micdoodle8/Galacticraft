@@ -3,7 +3,7 @@ package codechicken.core.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,7 +135,7 @@ public class MappedInventoryAccess implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return inv.getDisplayName();
     }
 

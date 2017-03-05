@@ -20,6 +20,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -49,7 +51,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         boolean padFound = false;
         TileEntity tile = null;
@@ -57,7 +59,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
         if (worldIn.isRemote && playerIn instanceof EntityPlayerSP)
         {
             ClientProxyCore.playerClientHandler.onBuild(8, (EntityPlayerSP) playerIn);
-            return false;
+            return EnumActionResult.FAIL;
         }
         else
         {
@@ -100,12 +102,12 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
                 {
                     if (((TileEntityLandingPad) tile).getDockedEntity() != null)
                     {
-                        return false;
+                        return EnumActionResult.FAIL;
                     }
                 }
                 else
                 {
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 final EntityTier1Rocket spaceship = new EntityTier1Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
@@ -135,10 +137,10 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
             }
             else
             {
-                return false;
+                return EnumActionResult.FAIL;
             }
         }
-        return true;
+        return EnumActionResult.PASS;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

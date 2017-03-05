@@ -9,7 +9,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
-public class BiomeGenVenusMountain extends BiomeGenBaseVenus
+public class BiomeGenVenusMountain extends BiomeVenus
 {
     public BiomeGenVenusMountain(int par1)
     {

@@ -8,12 +8,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -55,21 +55,14 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      */
     public abstract long getDayLength();
 
-    public abstract Class<? extends IChunkProvider> getChunkProviderClass();
+    public abstract Class<? extends IChunkGenerator> getChunkProviderClass();
 
-    public abstract Class<? extends WorldChunkManager> getWorldChunkManagerClass();
+    public abstract Class<? extends BiomeProvider> getBiomeProviderClass();
 
     @Override
     public void setDimension(int var1)
     {
-        this.dimensionId = var1;
         super.setDimension(var1);
-    }
-
-    @Override
-    public String getDimensionName()
-    {
-        return this.getCelestialBody().getLocalizedName();
     }
 
     @Override
@@ -161,17 +154,17 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Vec3 getFogColor(float var1, float var2)
+    public Vec3d getFogColor(float var1, float var2)
     {
         Vector3 fogColor = this.getFogColor();
-        return new Vec3(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
+        return new Vec3d(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
     }
 
     @Override
-    public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+    public Vec3d getSkyColor(Entity cameraEntity, float partialTicks)
     {
         Vector3 skyColor = this.getSkyColor();
-        return new Vec3(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
+        return new Vec3d(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
     }
 
     @Override
@@ -216,7 +209,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
     {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
+        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
     /**
@@ -251,11 +244,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
-    public IChunkProvider createChunkGenerator()
+    public IChunkGenerator createChunkGenerator()
     {
         try
         {
-            Class<? extends IChunkProvider> chunkProviderClass = this.getChunkProviderClass();
+            Class<? extends IChunkGenerator> chunkProviderClass = this.getChunkProviderClass();
 
             Constructor<?>[] constructors = chunkProviderClass.getConstructors();
             for (int i = 0; i < constructors.length; i++)
@@ -263,11 +256,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 Constructor<?> constr = constructors[i];
                 if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
                 {
-                    return (IChunkProvider) constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+                    return (IChunkGenerator) constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
                 }
                 else if (constr.getParameterTypes().length == 0)
                 {
-                    return (IChunkProvider) constr.newInstance();
+                    return (IChunkGenerator) constr.newInstance();
                 }
             }
         }
@@ -280,28 +273,28 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
-    public void registerWorldChunkManager()
+    protected void createBiomeProvider()
     {
-        if (this.getWorldChunkManagerClass() == null)
+        if (this.getBiomeProviderClass() == null)
         {
-            super.registerWorldChunkManager();
+            super.createBiomeProvider();
         }
         else
         {
             try
             {
-                Class<? extends WorldChunkManager> chunkManagerClass = this.getWorldChunkManagerClass();
+                Class<? extends BiomeProvider> chunkManagerClass = this.getBiomeProviderClass();
 
                 Constructor<?>[] constructors = chunkManagerClass.getConstructors();
                 for (Constructor<?> constr : constructors)
                 {
                     if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class }))
                     {
-                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance(this.worldObj);
+                        this.biomeProvider = (BiomeProvider) constr.newInstance(this.worldObj);
                     }
                     else if (constr.getParameterTypes().length == 0)
                     {
-                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance();
+                        this.biomeProvider = (BiomeProvider) constr.newInstance();
                     }
                 }
             }

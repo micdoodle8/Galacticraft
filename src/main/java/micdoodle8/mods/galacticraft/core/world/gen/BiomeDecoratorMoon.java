@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -35,7 +35,7 @@ public class BiomeDecoratorMoon extends BiomeDecorator
     }
 
     @Override
-    public void decorate(World worldIn, Random random, BiomeGenBase p_180292_3_, BlockPos pos)
+    public void decorate(World worldIn, Random random, Biome p_180292_3_, BlockPos pos)
     {
         if (this.worldObj != null)
         {

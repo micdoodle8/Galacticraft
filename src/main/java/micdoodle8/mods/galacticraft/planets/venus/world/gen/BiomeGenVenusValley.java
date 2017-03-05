@@ -12,7 +12,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
-public class BiomeGenVenusValley extends BiomeGenBaseVenus
+public class BiomeGenVenusValley extends BiomeVenus
 {
     public BiomeGenVenusValley(int par1)
     {

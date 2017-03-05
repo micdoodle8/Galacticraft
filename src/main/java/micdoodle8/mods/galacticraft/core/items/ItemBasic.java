@@ -2,21 +2,28 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -154,21 +161,24 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
         if (stack.getItemDamage() > 14 && stack.getItemDamage() < 19)
         {
             --stack.stackSize;
-            playerIn.getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
-            worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+            if (entityLiving instanceof EntityPlayer)
+            {
+                ((EntityPlayer) entityLiving).getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
+            }
+            worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
             if (!worldIn.isRemote)
             {
-                playerIn.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
+                entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
             }
             return stack;
         }
 
-        return super.onItemUseFinish(stack, worldIn, playerIn);
+        return super.onItemUseFinish(stack, worldIn, entityLiving);
     }
 
     @Override
@@ -194,27 +204,29 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-        if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19 && par3EntityPlayer.canEat(false))
+        if (itemStackIn.getItemDamage() > 14 && itemStackIn.getItemDamage() < 19 && playerIn.canEat(false))
         {
-            par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+            playerIn.setActiveHand(hand);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }
-        if (par1ItemStack.getItemDamage() == 19)
+        else if (itemStackIn.getItemDamage() == 19)
         {
-            if (par3EntityPlayer instanceof EntityPlayerMP)
+            if (playerIn instanceof EntityPlayerMP)
             {
-                GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par3EntityPlayer);
-                ItemStack gear = stats.extendedInventory.getStackInSlot(5);
+                IStatsCapability stats = playerIn.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                ItemStack gear = stats.getExtendedInventory().getStackInSlot(5);
 
                 if (gear == null)
                 {
-                    stats.extendedInventory.setInventorySlotContents(5, par1ItemStack.copy());
-                    par1ItemStack.stackSize = 0;
+                    stats.getExtendedInventory().setInventorySlotContents(5, itemStackIn.copy());
+                    itemStackIn.stackSize = 0;
                 }
             }
         }
-        return par1ItemStack;
+
+        return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
     }
 
     @Override

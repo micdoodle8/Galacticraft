@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
@@ -46,7 +46,7 @@ public class MapGen extends WorldChunkManager implements Runnable
     private int biomeMapCz;
     private int biomeMapFactor;
 
-    private BiomeGenBase[] biomeList; 
+    private Biome[] biomeList;
     private BiomeCache biomeCache;
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;
@@ -60,7 +60,7 @@ public class MapGen extends WorldChunkManager implements Runnable
     private double[] heighttemp = null;
     private WorldType worldType = WorldType.DEFAULT;
     private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
-    private BiomeGenBase[] biomesGridHeights = null;
+    private Biome[] biomesGridHeights = null;
     private int[] biomeCount = null;
     private final int dimID;
 
@@ -99,7 +99,7 @@ public class MapGen extends WorldChunkManager implements Runnable
         this.ix = 0;
         this.iz = 0;
         long seed = world.getSeed();
-        this.biomeList = BiomeGenBase.getBiomeGenArray();
+        this.biomeList = Biome.getBiomeGenArray();
         this.biomeCache = new BiomeCache(this);
         this.worldType = world.getWorldInfo().getTerrainType();
         GenLayerGCMap[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
@@ -425,7 +425,7 @@ public class MapGen extends WorldChunkManager implements Runnable
                     int baseIndex = xx + x + 22 + zz * 10;
                     for (int z = -2; z <= 2; ++z)
                     {
-                        BiomeGenBase biomegenbase1 = biomesGridHeights[baseIndex + z * 10];
+                        Biome biomegenbase1 = biomesGridHeights[baseIndex + z * 10];
                         float f3 = biomegenbase1.minHeight;
                         float f4 = biomegenbase1.maxHeight;
 
@@ -513,7 +513,7 @@ public class MapGen extends WorldChunkManager implements Runnable
      *      REPLICATES method in WorldChunkManager
      * Returns an array of biomes for the location input, used for generating the height map
      */
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int width, int height)
+    public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
     {
         IntCache.resetIntCache();
         int[] aint = this.genBiomes.getInts(x, z, width, height);
@@ -521,19 +521,19 @@ public class MapGen extends WorldChunkManager implements Runnable
         int size = width * height;
         if (biomes == null || biomes.length < size)
         {
-            biomes = new BiomeGenBase[size];
+            biomes = new Biome[size];
         }
         for (int i = 0; i < size; ++i)
         {
         	int biomeId = aint[i];
-        	BiomeGenBase biomegenbase = null;
+        	Biome biomegenbase = null;
         	if (biomeId >= 0 && biomeId <= biomeList.length)
         	{
         		biomegenbase = biomeList[biomeId];
         	}
 //        	else
 //        		System.err.println("MapGen: Biome ID is out of bounds: " + biomeId + ", defaulting to 0 (Ocean)");
-        	biomes[i] = biomegenbase == null ? BiomeGenBase.ocean : biomegenbase;
+        	biomes[i] = biomegenbase == null ? Biome.ocean : biomegenbase;
         }
 
         return biomes;

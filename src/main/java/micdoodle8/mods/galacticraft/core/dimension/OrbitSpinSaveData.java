@@ -31,6 +31,8 @@ public class OrbitSpinSaveData extends WorldSavedData
         {
             nbt.setTag("" + this.dim, this.datacompound);
         }
+
+        return nbt;
     }
 
     public static OrbitSpinSaveData initWorldData(World world)

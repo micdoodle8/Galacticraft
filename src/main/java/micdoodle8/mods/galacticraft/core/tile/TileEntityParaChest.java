@@ -416,7 +416,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

@@ -148,7 +148,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

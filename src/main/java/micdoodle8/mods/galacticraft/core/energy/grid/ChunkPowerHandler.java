@@ -28,7 +28,7 @@ public class ChunkPowerHandler
     @SubscribeEvent
     public void onChunkLoad(ChunkEvent.Load event)
     {
-        if (!event.world.isRemote && event.getChunk() != null)
+        if (!event.getWorld().isRemote && event.getChunk() != null)
         {
             try
             {
@@ -53,9 +53,9 @@ public class ChunkPowerHandler
                 e.printStackTrace();
             }
 
-            if (ConfigManagerCore.retrogenOil && event.world.provider.getDimension() == 0)
+            if (ConfigManagerCore.retrogenOil && event.getWorld().provider.getDimension() == 0)
             {
-                EventHandlerGC.retrogenOil(event.world, event.getChunk());
+                EventHandlerGC.retrogenOil(event.getWorld(), event.getChunk());
             }
         }
     }

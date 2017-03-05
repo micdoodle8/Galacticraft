@@ -18,8 +18,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.TextFormatting;
+import net.minecraft.util.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings.GameType;
@@ -120,9 +120,9 @@ public class NEIServerUtils {
         return InventoryUtils.insertItem(new InventoryRange(player.inventory, 0, 36), itemstack, true) == 0;
     }
 
-    public static void sendNotice(ICommandSender sender, IChatComponent msg, String permission) {
+    public static void sendNotice(ICommandSender sender, ITextComponent msg, String permission) {
         ChatComponentTranslation notice = new ChatComponentTranslation("chat.type.admin", sender.getName(), msg.createCopy());
-        notice.getChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true);
+        notice.getChatStyle().setColor(TextFormatting.GRAY).setItalic(true);
 
         if (NEIServerConfig.canPlayerPerformAction("CONSOLE", permission)) {
             MinecraftServer.getServer().addChatMessage(notice);
@@ -189,14 +189,14 @@ public class NEIServerUtils {
         return compareStacks(stack1, stack2) == 0;
     }
 
-    public static IChatComponent setColour(IChatComponent msg, EnumChatFormatting colour) {
+    public static ITextComponent setColour(ITextComponent msg, TextFormatting colour) {
         msg.getChatStyle().setColor(colour);
         return msg;
     }
 
     public static void givePlayerItem(EntityPlayerMP player, ItemStack stack, boolean infinite, boolean doGive) {
         if (stack.getItem() == null) {
-            player.addChatComponentMessage(setColour(new ChatComponentTranslation("nei.chat.give.noitem"), EnumChatFormatting.WHITE));
+            player.addChatComponentMessage(setColour(new ChatComponentTranslation("nei.chat.give.noitem"), TextFormatting.WHITE));
             return;
         }
 

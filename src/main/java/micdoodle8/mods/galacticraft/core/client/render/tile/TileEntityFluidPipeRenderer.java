@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -18,7 +19,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fluids.Fluid;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileEntityFluidPipe>
 {
     private static HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
-    private static IFlexibleBakedModel[] pullConnectorModel = new IFlexibleBakedModel[6];
+    private static IBakedModel[] pullConnectorModel = new IBakedModel[6];
 
     private final int stages = 100;
 

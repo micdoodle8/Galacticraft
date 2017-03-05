@@ -471,7 +471,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

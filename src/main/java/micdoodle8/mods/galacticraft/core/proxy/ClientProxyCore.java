@@ -53,7 +53,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -106,7 +106,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static boolean lastSpacebarDown;
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
-    public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", EnumChatFormatting.BLUE, "Space");
+    public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", TextFormatting.BLUE, "Space");
     public static Map<String, String> capeMap = new HashMap<>();
     public static InventoryExtended dummyInventory = new InventoryExtended();
     public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();

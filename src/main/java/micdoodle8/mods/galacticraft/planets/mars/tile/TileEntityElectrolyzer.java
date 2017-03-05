@@ -754,7 +754,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

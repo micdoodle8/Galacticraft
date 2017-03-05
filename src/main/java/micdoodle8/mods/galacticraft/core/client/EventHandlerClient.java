@@ -22,15 +22,15 @@ public class EventHandlerClient
     {
         GL11.glPushMatrix();
 
-        final EntityPlayer player = event.entityPlayer;
+        final EntityPlayer player = event.getEntityPlayer();
 
         if (player.getRidingEntity() instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
                 && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
             EntityTieredRocket entity = (EntityTieredRocket) player.getRidingEntity();
             GL11.glTranslatef(0, -entity.getRotateOffset() - ClientProxyCore.PLAYER_Y_OFFSET, 0);
-            float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
-            float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
+            float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.getPartialRenderTick();
+            float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.getPartialRenderTick();
             GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
             GL11.glTranslatef(0, entity.getRotateOffset() + ClientProxyCore.PLAYER_Y_OFFSET, 0);

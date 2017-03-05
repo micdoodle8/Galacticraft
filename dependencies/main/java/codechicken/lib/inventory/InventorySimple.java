@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 
 /**
  * Simple IInventory implementation with an array of items, name and maximum stack size
@@ -130,7 +130,7 @@ public class InventorySimple implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return new ChatComponentText(getName());
     }
 }

@@ -13,8 +13,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -71,13 +74,13 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        return false;
+        return EnumActionResult.PASS;
     }
 
     @Override
-    public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player)
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
         return true;
     }
@@ -92,26 +95,26 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         if (world.isRemote)
         {
-            return false;
+            return EnumActionResult.FAIL;
         }
         IBlockState state = world.getBlockState(pos);
         Block blockID = state.getBlock();
 
-        if (blockID == Blocks.furnace || blockID == Blocks.lit_furnace || blockID == Blocks.dropper || blockID == Blocks.hopper || blockID == Blocks.dispenser || blockID == Blocks.piston || blockID == Blocks.sticky_piston)
+        if (blockID == Blocks.FURNACE || blockID == Blocks.LIT_FURNACE || blockID == Blocks.DROPPER || blockID == Blocks.HOPPER || blockID == Blocks.DISPENSER || blockID == Blocks.PISTON || blockID == Blocks.STICKY_PISTON)
         {
             int metadata = blockID.getMetaFromState(state);
 
             world.setBlockState(pos, blockID.getStateFromMeta(EnumFacing.getHorizontal((metadata + 1) % 4).ordinal()), 3);
             this.wrenchUsed(player, pos);
 
-            return true;
+            return EnumActionResult.PASS;
         }
 
-        return false;
+        return EnumActionResult.FAIL;
     }
 
     @Override

@@ -5,8 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerProfileCache.ProfileEntry;
-import net.minecraft.util.IChatComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +69,7 @@ public class ServerUtils extends CommonUtils {
         return mc().isSinglePlayer() && mc().getServerOwner().equalsIgnoreCase(username);
     }
 
-    public static void sendChatToAll(IChatComponent msg) {
+    public static void sendChatToAll(ITextComponent msg) {
         for (EntityPlayer p : getPlayers()) {
             p.addChatComponentMessage(msg);
         }

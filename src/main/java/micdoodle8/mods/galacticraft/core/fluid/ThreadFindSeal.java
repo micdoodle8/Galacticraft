@@ -68,10 +68,10 @@ public class ThreadFindSeal
         {
             if (checkCount > 0)
             {
-                Block headBlock = this.world.getBlockState(head).getBlock();
-                if (headBlock != null && !(headBlock.isAir(world, head)))
+                IBlockState headState = this.world.getBlockState(head);
+                if (!(headState.getBlock().isAir(headState, world, head)))
                 {
-                    this.canBlockPassAirCheck(headBlock, this.head, EnumFacing.UP);
+                    this.canBlockPassAirCheck(headState.getBlock(), this.head, EnumFacing.UP);
                     //reset the checkCount as canBlockPassAirCheck might have changed it
                     this.checkCount = checkCount;
                 }
@@ -906,15 +906,16 @@ public class ThreadFindSeal
     {
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
-        if (block instanceof BlockLeavesBase)
+        if (block instanceof BlockLeaves)
         {
             return true;
         }
 
-        if (block.isOpaqueCube())
+        IBlockState state = world.getBlockState(vec.toBlockPos());
+        if (block.isOpaqueCube(state))
         {
             //Gravel, wool and sponge are porous
-            return block instanceof BlockGravel || block.getMaterial() == Material.CLOTH || block instanceof BlockSponge;
+            return block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge;
 
         }
 
@@ -1003,10 +1004,9 @@ public class ThreadFindSeal
         if (block instanceof BlockPistonBase)
         {
             BlockPistonBase piston = (BlockPistonBase) block;
-            IBlockState state = this.world.getBlockState(new BlockPos(vec.x, vec.y, vec.z));
-            if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+            if (state.getValue(BlockPistonBase.EXTENDED).booleanValue())
             {
-                EnumFacing facing = (EnumFacing) state.getValue(BlockPistonBase.FACING);
+                EnumFacing facing = state.getValue(BlockPistonBase.FACING);
                 if (side == facing)
                 {
                     this.checked.remove(vec);
@@ -1022,10 +1022,10 @@ public class ThreadFindSeal
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        if (block.isSideSolid(this.world, new BlockPos(vec.x, vec.y, vec.z), EnumFacing.getFront(side.getIndex() ^ 1)))
+        if (block.isSideSolid(state, this.world, new BlockPos(vec.x, vec.y, vec.z), side.getOpposite()))
         {
             //Solid on all sides
-            if (block.getMaterial().blocksMovement() && block.isFullCube())
+            if (block.getMaterial(state).blocksMovement() && block.isFullCube(state))
             {
                 return false;
             }
@@ -1036,7 +1036,7 @@ public class ThreadFindSeal
         }
 
         //Easy case: airblock, return without checking other sides
-        if (block.getMaterial() == Material.AIR)
+        if (block.getMaterial(state) == Material.AIR)
         {
             return true;
         }
@@ -1049,7 +1049,7 @@ public class ThreadFindSeal
             {
                 continue;
             }
-            if (block.isSideSolid(this.world, new BlockPos(vec.x, vec.y, vec.z), EnumFacing.getFront(i)))
+            if (block.isSideSolid(state, this.world, new BlockPos(vec.x, vec.y, vec.z), EnumFacing.getFront(i)))
             {
                 vec.setSideDone(i);
             }

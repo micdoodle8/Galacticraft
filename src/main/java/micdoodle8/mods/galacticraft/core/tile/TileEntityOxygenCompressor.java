@@ -341,7 +341,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

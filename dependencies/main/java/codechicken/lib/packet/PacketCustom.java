@@ -474,7 +474,7 @@ public final class PacketCustom extends PacketBuffer implements MCDataInput, MCD
     }
 
     public static void sendToChunk(Packet packet, World world, int chunkX, int chunkZ) {
-        PlayerInstance p = ((WorldServer) world).getPlayerManager().getPlayerInstance(chunkX, chunkZ, false);
+        PlayerInstance p = ((WorldServer) world).getPlayerChunkMap().getPlayerInstance(chunkX, chunkZ, false);
         if (p != null) {
             p.sendToAllPlayersWatchingChunk(packet);
         }

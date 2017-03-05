@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class GenLayerBiomeEdge extends GenLayerGCMap
 {
@@ -26,45 +26,45 @@ public class GenLayerBiomeEdge extends GenLayerGCMap
                 this.initChunkSeed((long)(j + areaX), (long)(i + areaY));
                 int k = aint[j + 1 + (i + 1) * (areaWidth + 2)];
 
-                if (!this.replaceBiomeEdgeIfNecessary(aint, aint1, j, i, areaWidth, k, BiomeGenBase.extremeHills.biomeID, BiomeGenBase.extremeHillsEdge.biomeID) && !this.replaceBiomeEdge(aint, aint1, j, i, areaWidth, k, BiomeGenBase.mesaPlateau_F.biomeID, BiomeGenBase.mesa.biomeID) && !this.replaceBiomeEdge(aint, aint1, j, i, areaWidth, k, BiomeGenBase.mesaPlateau.biomeID, BiomeGenBase.mesa.biomeID) && !this.replaceBiomeEdge(aint, aint1, j, i, areaWidth, k, BiomeGenBase.megaTaiga.biomeID, BiomeGenBase.taiga.biomeID))
+                if (!this.replaceBiomeEdgeIfNecessary(aint, aint1, j, i, areaWidth, k, Biome.extremeHills.biomeID, Biome.extremeHillsEdge.biomeID) && !this.replaceBiomeEdge(aint, aint1, j, i, areaWidth, k, Biome.mesaPlateau_F.biomeID, Biome.mesa.biomeID) && !this.replaceBiomeEdge(aint, aint1, j, i, areaWidth, k, Biome.mesaPlateau.biomeID, Biome.mesa.biomeID) && !this.replaceBiomeEdge(aint, aint1, j, i, areaWidth, k, Biome.megaTaiga.biomeID, Biome.taiga.biomeID))
                 {
-                    if (k == BiomeGenBase.desert.biomeID)
+                    if (k == Biome.desert.biomeID)
                     {
                         int l1 = aint[j + 1 + (i + 1 - 1) * (areaWidth + 2)];
                         int i2 = aint[j + 1 + 1 + (i + 1) * (areaWidth + 2)];
                         int j2 = aint[j + 1 - 1 + (i + 1) * (areaWidth + 2)];
                         int k2 = aint[j + 1 + (i + 1 + 1) * (areaWidth + 2)];
 
-                        if (l1 != BiomeGenBase.icePlains.biomeID && i2 != BiomeGenBase.icePlains.biomeID && j2 != BiomeGenBase.icePlains.biomeID && k2 != BiomeGenBase.icePlains.biomeID)
+                        if (l1 != Biome.icePlains.biomeID && i2 != Biome.icePlains.biomeID && j2 != Biome.icePlains.biomeID && k2 != Biome.icePlains.biomeID)
                         {
                             aint1[j + i * areaWidth] = k;
                         }
                         else
                         {
-                            aint1[j + i * areaWidth] = BiomeGenBase.extremeHillsPlus.biomeID;
+                            aint1[j + i * areaWidth] = Biome.extremeHillsPlus.biomeID;
                         }
                     }
-                    else if (k == BiomeGenBase.swampland.biomeID)
+                    else if (k == Biome.swampland.biomeID)
                     {
                         int l = aint[j + 1 + (i + 1 - 1) * (areaWidth + 2)];
                         int i1 = aint[j + 1 + 1 + (i + 1) * (areaWidth + 2)];
                         int j1 = aint[j + 1 - 1 + (i + 1) * (areaWidth + 2)];
                         int k1 = aint[j + 1 + (i + 1 + 1) * (areaWidth + 2)];
 
-                        if (l != BiomeGenBase.desert.biomeID && i1 != BiomeGenBase.desert.biomeID && j1 != BiomeGenBase.desert.biomeID && k1 != BiomeGenBase.desert.biomeID && l != BiomeGenBase.coldTaiga.biomeID && i1 != BiomeGenBase.coldTaiga.biomeID && j1 != BiomeGenBase.coldTaiga.biomeID && k1 != BiomeGenBase.coldTaiga.biomeID && l != BiomeGenBase.icePlains.biomeID && i1 != BiomeGenBase.icePlains.biomeID && j1 != BiomeGenBase.icePlains.biomeID && k1 != BiomeGenBase.icePlains.biomeID)
+                        if (l != Biome.desert.biomeID && i1 != Biome.desert.biomeID && j1 != Biome.desert.biomeID && k1 != Biome.desert.biomeID && l != Biome.coldTaiga.biomeID && i1 != Biome.coldTaiga.biomeID && j1 != Biome.coldTaiga.biomeID && k1 != Biome.coldTaiga.biomeID && l != Biome.icePlains.biomeID && i1 != Biome.icePlains.biomeID && j1 != Biome.icePlains.biomeID && k1 != Biome.icePlains.biomeID)
                         {
-                            if (l != BiomeGenBase.jungle.biomeID && k1 != BiomeGenBase.jungle.biomeID && i1 != BiomeGenBase.jungle.biomeID && j1 != BiomeGenBase.jungle.biomeID)
+                            if (l != Biome.jungle.biomeID && k1 != Biome.jungle.biomeID && i1 != Biome.jungle.biomeID && j1 != Biome.jungle.biomeID)
                             {
                                 aint1[j + i * areaWidth] = k;
                             }
                             else
                             {
-                                aint1[j + i * areaWidth] = BiomeGenBase.jungleEdge.biomeID;
+                                aint1[j + i * areaWidth] = Biome.jungleEdge.biomeID;
                             }
                         }
                         else
                         {
-                            aint1[j + i * areaWidth] = BiomeGenBase.plains.biomeID;
+                            aint1[j + i * areaWidth] = Biome.plains.biomeID;
                         }
                     }
                     else
@@ -148,14 +148,14 @@ public class GenLayerBiomeEdge extends GenLayerGCMap
         }
         else
         {
-            BiomeGenBase biomegenbase = BiomeGenBase.getBiome(p_151634_1_);
-            BiomeGenBase biomegenbase1 = BiomeGenBase.getBiome(p_151634_2_);
+            Biome biomegenbase = Biome.getBiome(p_151634_1_);
+            Biome biomegenbase1 = Biome.getBiome(p_151634_2_);
 
             if (biomegenbase != null && biomegenbase1 != null)
             {
-                BiomeGenBase.TempCategory biomegenbase$tempcategory = biomegenbase.getTempCategory();
-                BiomeGenBase.TempCategory biomegenbase$tempcategory1 = biomegenbase1.getTempCategory();
-                return biomegenbase$tempcategory == biomegenbase$tempcategory1 || biomegenbase$tempcategory == BiomeGenBase.TempCategory.MEDIUM || biomegenbase$tempcategory1 == BiomeGenBase.TempCategory.MEDIUM;
+                Biome.TempCategory biomegenbase$tempcategory = biomegenbase.getTempCategory();
+                Biome.TempCategory biomegenbase$tempcategory1 = biomegenbase1.getTempCategory();
+                return biomegenbase$tempcategory == biomegenbase$tempcategory1 || biomegenbase$tempcategory == Biome.TempCategory.MEDIUM || biomegenbase$tempcategory1 == Biome.TempCategory.MEDIUM;
             }
             else
             {

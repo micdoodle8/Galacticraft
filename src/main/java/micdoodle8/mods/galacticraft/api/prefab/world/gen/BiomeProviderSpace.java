@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.IntCache;
 
 import java.util.ArrayList;
@@ -16,15 +16,15 @@ import java.util.Random;
  * <p/>
  * This chunk manager is used for single-biome dimensions, which is common on basic planets.
  */
-public abstract class WorldChunkManagerSpace extends WorldChunkManager
+public abstract class BiomeProviderSpace extends BiomeProvider
 {
     private final BiomeCache biomeCache;
-    private final List<BiomeGenBase> biomesToSpawnIn;
+    private final List<Biome> biomesToSpawnIn;
 
-    public WorldChunkManagerSpace()
+    public BiomeProviderSpace()
     {
         this.biomeCache = new BiomeCache(this);
-        this.biomesToSpawnIn = new ArrayList<BiomeGenBase>();
+        this.biomesToSpawnIn = new ArrayList<Biome>();
         this.biomesToSpawnIn.add(this.getBiome());
     }
 
@@ -34,21 +34,10 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
         return this.biomesToSpawnIn;
     }
 
-    public BiomeGenBase func_180300_a(BlockPos p_180300_1_, BiomeGenBase p_180300_2_)
+    @Override
+    public Biome getBiome(BlockPos pos, Biome defaultBiome)
     {
         return this.getBiome();
-    }
-
-    @Override
-    public float[] getRainfall(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
-    {
-        if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5)
-        {
-            par1ArrayOfFloat = new float[par4 * par5];
-        }
-
-        Arrays.fill(par1ArrayOfFloat, 0, par4 * par5, 0.0F);
-        return par1ArrayOfFloat;
     }
 
     @Override
@@ -58,42 +47,44 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5)
+    public Biome[] getBiomesForGeneration(Biome[] par1ArrayOfBiome, int par2, int par3, int par4, int par5)
     {
         IntCache.resetIntCache();
 
-        if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5)
+        if (par1ArrayOfBiome == null || par1ArrayOfBiome.length < par4 * par5)
         {
-            par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+            par1ArrayOfBiome = new Biome[par4 * par5];
         }
 
         for (int var7 = 0; var7 < par4 * par5; ++var7)
         {
-            par1ArrayOfBiomeGenBase[var7] = this.getBiome();
+            par1ArrayOfBiome[var7] = this.getBiome();
         }
 
-        return par1ArrayOfBiomeGenBase;
+        return par1ArrayOfBiome;
     }
 
+
+
     @Override
-    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5)
+    public Biome[] getBiomes(Biome[] par1ArrayOfBiome, int par2, int par3, int par4, int par5)
     {
-        return this.getBiomeGenAt(par1ArrayOfBiomeGenBase, par2, par3, par4, par5, true);
+        return this.getBiomes(par1ArrayOfBiome, par2, par3, par4, par5, true);
     }
 
     @Override
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] listToReuse, int x, int z, int width, int length, boolean cacheFlag)
+    public Biome[] getBiomes(Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag)
     {
         IntCache.resetIntCache();
 
         if (listToReuse == null || listToReuse.length < width * length)
         {
-            listToReuse = new BiomeGenBase[width * length];
+            listToReuse = new Biome[width * length];
         }
 
         if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (z & 15) == 0)
         {
-            final BiomeGenBase[] var9 = this.biomeCache.getCachedBiomes(x, z);
+            final Biome[] var9 = this.biomeCache.getCachedBiomes(x, z);
             System.arraycopy(var9, 0, listToReuse, 0, width * length);
             return listToReuse;
         }
@@ -136,5 +127,5 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
         this.biomeCache.cleanupCache();
     }
 
-    public abstract BiomeGenBase getBiome();
+    public abstract Biome getBiome();
 }

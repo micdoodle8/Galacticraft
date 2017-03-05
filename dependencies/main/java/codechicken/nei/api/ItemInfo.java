@@ -26,7 +26,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.world.World;
@@ -484,7 +484,7 @@ public class ItemInfo {
     public static String getSearchName(ItemStack stack) {
         String s = itemSearchNames.get(stack);
         if (s == null) {
-            s = EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.concatenatedDisplayName(stack, true).toLowerCase());
+            s = TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.concatenatedDisplayName(stack, true).toLowerCase());
             itemSearchNames.put(stack, s);
         }
         return s;

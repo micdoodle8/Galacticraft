@@ -13,7 +13,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,7 +71,7 @@ public class ItemBlockDesc extends ItemBlockGC
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)
                         {
-                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                            info.add(TextFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                         }
                     }
                 }
@@ -83,7 +83,7 @@ public class ItemBlockDesc extends ItemBlockGC
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)
                         {
-                            info.add(EnumChatFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                            info.add(TextFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                         }
                     }
                 }

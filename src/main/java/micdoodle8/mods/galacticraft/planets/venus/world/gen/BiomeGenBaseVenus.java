@@ -12,19 +12,19 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
-public class BiomeGenBaseVenus extends BiomeGenBase
+public class BiomeVenus extends Biome
 {
-    public static final BiomeGenBase venusFlat = new BiomeGenFlatVenus(ConfigManagerCore.biomeIDbase + 4).setBiomeName("Venus Flat");
-    public static final BiomeGenBase venusMountain = new BiomeGenVenusMountain(ConfigManagerCore.biomeIDbase + 5).setBiomeName("Venus Mountain");
-    public static final BiomeGenBase venusValley = new BiomeGenVenusValley(ConfigManagerCore.biomeIDbase + 6).setBiomeName("Venus Valley");
+    public static final Biome venusFlat = new BiomeGenFlatVenus(ConfigManagerCore.biomeIDbase + 4).setBiomeName("Venus Flat");
+    public static final Biome venusMountain = new BiomeGenVenusMountain(ConfigManagerCore.biomeIDbase + 5).setBiomeName("Venus Mountain");
+    public static final Biome venusValley = new BiomeGenVenusValley(ConfigManagerCore.biomeIDbase + 6).setBiomeName("Venus Valley");
 
     @SuppressWarnings("unchecked")
-    BiomeGenBaseVenus(int var1)
+    BiomeVenus(int var1)
     {
         super(var1);
         this.spawnableMonsterList.clear();

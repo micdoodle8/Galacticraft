@@ -6,15 +6,15 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
-public class BiomeGenBaseAsteroids extends BiomeGenBase
+public class BiomeAsteroids extends Biome
 {
-    public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("Asteroids");
+    public static final Biome asteroid = new BiomeAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("Asteroids");
 
     @SuppressWarnings("unchecked")
-    private BiomeGenBaseAsteroids(int var1)
+    private BiomeAsteroids(int var1)
     {
         super(var1);
         this.spawnableMonsterList.clear();
@@ -37,9 +37,9 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
     }
 
     @Override
-    public BiomeGenBaseAsteroids setColor(int var1)
+    public BiomeAsteroids setColor(int var1)
     {
-        return (BiomeGenBaseAsteroids) super.setColor(var1);
+        return (BiomeAsteroids) super.setColor(var1);
     }
 
     @Override

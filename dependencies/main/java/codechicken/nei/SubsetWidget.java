@@ -16,7 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 
 import java.awt.*;
 import java.util.*;
@@ -136,7 +136,7 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
 
         public SubsetTag(String fullname, ItemFilter filter) {
             assert filter != null : "Filter cannot be null";
-            this.fullname = EnumChatFormatting.getTextWithoutFormattingCodes(fullname);
+            this.fullname = TextFormatting.getTextWithoutFormattingCodes(fullname);
             this.filter = filter;
 
             if (fullname != null) {

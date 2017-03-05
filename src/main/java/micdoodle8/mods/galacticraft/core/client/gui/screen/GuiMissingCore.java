@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,7 +37,7 @@ public class GuiMissingCore extends GuiScreen
         offset += 20;
         this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.missing_core.name.2"), this.width / 2, offset, 0x999999);
         offset += 20;
-        String s = EnumChatFormatting.UNDERLINE + GCCoreUtil.translate("gui.missing_core.name.3");
+        String s = TextFormatting.UNDERLINE + GCCoreUtil.translate("gui.missing_core.name.3");
         this.urlX = this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2 - 10;
         this.urlY = offset - 2;
         this.urlWidth = this.fontRendererObj.getStringWidth(s) + 20;

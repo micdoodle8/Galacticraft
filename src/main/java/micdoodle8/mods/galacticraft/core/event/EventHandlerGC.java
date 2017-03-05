@@ -58,7 +58,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
@@ -394,9 +394,9 @@ public class EventHandlerGC
             return false;
         }
 
-        final BiomeGenBase biomegenbase = world.getBiomeGenForCoords(new BlockPos(x + 8, 0, z + 8));
+        final Biome biomegenbase = world.getBiomeGenForCoords(new BlockPos(x + 8, 0, z + 8));
 
-        if (biomegenbase.biomeID == BiomeGenBase.sky.biomeID || biomegenbase.biomeID == BiomeGenBase.hell.biomeID)
+        if (biomegenbase.biomeID == Biome.sky.biomeID || biomegenbase.biomeID == Biome.hell.biomeID)
         {
             return false;
         }

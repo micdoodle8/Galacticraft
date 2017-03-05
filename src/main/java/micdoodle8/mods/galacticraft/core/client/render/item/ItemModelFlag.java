@@ -2,8 +2,9 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Timer;
 
 import javax.vecmath.Matrix4f;
@@ -37,7 +38,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -46,23 +47,24 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.rotY((float) -(Math.PI / 3.0F));
             ret.mul(mul);
             mul.setIdentity();
-            if (Minecraft.getMinecraft().thePlayer.getItemInUseDuration() > 0)
+            EntityLivingBase player = Minecraft.getMinecraft().thePlayer;
+            if (player.isHandActive() && player.getActiveItemStack() != null)
             {
-                final int useTime = Minecraft.getMinecraft().thePlayer.getItemInUseDuration();
-                float var7 = useTime / 20.0F;
-                var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
+                final int useTime = Minecraft.getMinecraft().thePlayer.getItemInUseMaxCount();
+                float interpolate0 = useTime / 20.0F;
+                interpolate0 = (interpolate0 * interpolate0 + interpolate0 * 2.0F) / 3.0F;
 
-                if (var7 > 1.0F)
+                if (interpolate0 > 1.0F)
                 {
-                    var7 = 1.0F;
+                    interpolate0 = 1.0F;
                 }
-                final int useTimeFuture = Minecraft.getMinecraft().thePlayer.getItemInUseDuration() + 1;
-                float var72 = useTimeFuture / 20.0F;
-                var72 = (var72 * var72 + var72 * 2.0F) / 3.0F;
+                final int useTimeFuture = Minecraft.getMinecraft().thePlayer.getItemInUseMaxCount() + 1;
+                float interpolate1 = useTimeFuture / 20.0F;
+                interpolate1 = (interpolate1 * interpolate1 + interpolate1 * 2.0F) / 3.0F;
 
-                if (var72 > 1.0F)
+                if (interpolate1 > 1.0F)
                 {
-                    var72 = 1.0F;
+                    interpolate1 = 1.0F;
                 }
 
                 try
@@ -71,7 +73,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                     Field f = c.getDeclaredField("timer");
                     f.setAccessible(true);
                     Timer t = (Timer) f.get(Minecraft.getMinecraft());
-                    mul.rotX(((var7 + (var72 - var7) * t.renderPartialTicks) * 75.0F) * (float) (Math.PI / 180.0F));
+                    mul.rotX(((interpolate0 + (interpolate1 - interpolate0) * t.renderPartialTicks) * 75.0F) * (float) (Math.PI / 180.0F));
                 }
                 catch (Exception e)
                 {
@@ -82,7 +84,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

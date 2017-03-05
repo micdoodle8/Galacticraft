@@ -230,7 +230,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

@@ -7,17 +7,24 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeProviderOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
-import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrbitDimension, ISolarLevel, IExitHeight
 {
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCDimensions.ORBIT;
+    }
+
     @Override
     public void setDimension(int var1)
     {
@@ -61,15 +68,15 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderOrbit.class;
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
     {
-        return WorldChunkManagerOrbit.class;
+        return BiomeProviderOrbit.class;
     }
 
     @Override
@@ -151,7 +158,7 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
     {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
+        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
 //	@Override
@@ -165,12 +172,6 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
 //	{
 //		return "Leaving Earth Orbit";
 //	}
-
-    @Override
-    public String getDimensionName()
-    {
-        return "Space Station " + this.dimensionId;
-    }
 
     @Override
     public float getGravity()
@@ -211,7 +212,7 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     @Override
     public String getSaveFolder()
     {
-        return "DIM_SPACESTATION" + this.dimensionId;
+        return "DIM_SPACESTATION" + this.getDimension();
     }
 
     @Override
@@ -254,12 +255,6 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     public float getWindLevel()
     {
         return 0.1F;
-    }
-
-    @Override
-    public String getInternalNameSuffix()
-    {
-        return "_orbit";
     }
 
     @Override

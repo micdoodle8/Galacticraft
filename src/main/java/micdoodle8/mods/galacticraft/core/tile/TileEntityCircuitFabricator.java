@@ -199,7 +199,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

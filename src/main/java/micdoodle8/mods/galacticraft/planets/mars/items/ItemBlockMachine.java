@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.TextComponentString;
 import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -51,7 +51,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
                 {
                     if (world.isRemote)
                     {
-                        FMLClientHandler.instance().getClient().ingameGUI.setRecordPlaying(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)).getFormattedText(), false);
+                        FMLClientHandler.instance().getClient().ingameGUI.setRecordPlaying(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setChatStyle(new ChatStyle().setColor(TextFormatting.RED)).getFormattedText(), false);
                     }
                     return false;
                 }

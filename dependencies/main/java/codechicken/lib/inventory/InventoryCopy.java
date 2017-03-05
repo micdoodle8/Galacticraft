@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 
 /**
  * Creates a copy of an IInventory for extended simulation
@@ -128,7 +128,7 @@ public class InventoryCopy implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return new ChatComponentText(getName());
     }
 }

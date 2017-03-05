@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ItemInWorldManager;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 
@@ -18,7 +18,7 @@ import net.minecraft.world.WorldServer;
  */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
-    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
+    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager itemInWorldManager)
     {
         super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
         if (this.worldObj != world)
@@ -45,12 +45,14 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     }
 
     @Override
-    public void mountEntity(Entity par1Entity)
+    public boolean startRiding(Entity entityIn, boolean force)
     {
-        if (!GalacticraftCore.proxy.player.mountEntity(this, par1Entity))
+        if (!GalacticraftCore.proxy.player.mountEntity(this, entityIn))
         {
-            super.mountEntity(par1Entity);
+            return super.startRiding(entityIn, force);
         }
+
+        return false;
     }
 
     @Override

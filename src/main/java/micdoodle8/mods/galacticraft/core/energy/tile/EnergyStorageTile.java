@@ -32,9 +32,9 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-
         super.writeToNBT(nbt);
         this.storage.writeToNBT(nbt);
+        return nbt;
     }
 
     public abstract ReceiverMode getModeFromDirection(EnumFacing direction);

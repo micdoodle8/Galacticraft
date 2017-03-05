@@ -173,7 +173,7 @@ public class InventorySchematicTier2Rocket implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

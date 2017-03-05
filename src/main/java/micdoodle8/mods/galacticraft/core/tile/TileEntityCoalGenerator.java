@@ -321,7 +321,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

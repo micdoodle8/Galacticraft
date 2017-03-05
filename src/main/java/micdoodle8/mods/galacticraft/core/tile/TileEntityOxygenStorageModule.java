@@ -385,7 +385,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

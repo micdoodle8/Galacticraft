@@ -408,7 +408,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

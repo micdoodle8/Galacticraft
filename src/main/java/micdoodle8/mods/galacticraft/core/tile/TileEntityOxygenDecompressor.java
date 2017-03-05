@@ -337,7 +337,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

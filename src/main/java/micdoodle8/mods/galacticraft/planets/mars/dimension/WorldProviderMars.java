@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
-import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldChunkManagerMars;
+import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeProviderMars;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
@@ -60,9 +60,9 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    public Class<? extends WorldChunkManager> getBiomeProviderClass()
     {
-        return WorldChunkManagerMars.class;
+        return BiomeProviderMars.class;
     }
 
 //    @Override

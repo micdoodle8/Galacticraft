@@ -170,7 +170,7 @@ public class InventoryBuggyBench implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

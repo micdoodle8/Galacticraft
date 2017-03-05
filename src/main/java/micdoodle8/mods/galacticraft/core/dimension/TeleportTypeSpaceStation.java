@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 

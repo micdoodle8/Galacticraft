@@ -3,7 +3,7 @@ package codechicken.nei;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ExtendedCreativeInv implements IInventory {
@@ -128,7 +128,7 @@ public class ExtendedCreativeInv implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

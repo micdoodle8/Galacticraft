@@ -20,7 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -74,7 +74,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EnumStatus.OTHER_PROBLEM;
             }
 
-            if (this.worldObj.getBiomeGenForCoords(new BlockPos(par1, par2, par3)) == BiomeGenBase.hell)
+            if (this.worldObj.getBiomeGenForCoords(new BlockPos(par1, par2, par3)) == Biome.hell)
             {
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }

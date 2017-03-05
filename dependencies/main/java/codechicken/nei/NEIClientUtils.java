@@ -16,7 +16,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -37,7 +37,7 @@ public class NEIClientUtils extends NEIServerUtils {
         return lang.format(key, params);
     }
 
-    public static void printChatMessage(IChatComponent msg) {
+    public static void printChatMessage(ITextComponent msg) {
         if (mc().ingameGUI != null) {
             mc().ingameGUI.getChatGUI().printChatMessage(msg);
         }

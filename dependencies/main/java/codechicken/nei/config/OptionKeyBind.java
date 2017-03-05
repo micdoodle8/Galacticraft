@@ -1,6 +1,6 @@
 package codechicken.nei.config;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 import org.lwjgl.input.Keyboard;
 
 public class OptionKeyBind extends OptionButton {
@@ -66,11 +66,11 @@ public class OptionKeyBind extends OptionButton {
     @Override
     public String getButtonText() {
         if (hasFocus) {
-            return EnumChatFormatting.WHITE + "> " + EnumChatFormatting.YELLOW + "??? " + EnumChatFormatting.WHITE + "<";
+            return TextFormatting.WHITE + "> " + TextFormatting.YELLOW + "??? " + TextFormatting.WHITE + "<";
         }
 
         if (conflicted()) {
-            return EnumChatFormatting.RED + Keyboard.getKeyName(getValue());
+            return TextFormatting.RED + Keyboard.getKeyName(getValue());
         }
 
         return Keyboard.getKeyName(getValue());

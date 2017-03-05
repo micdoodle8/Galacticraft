@@ -6,7 +6,7 @@ import codechicken.nei.ItemList.PatternItemFilter;
 import codechicken.nei.api.API;
 import codechicken.nei.api.ItemFilter;
 import codechicken.nei.api.ItemFilter.ItemFilterProvider;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -97,7 +97,7 @@ public class SearchField extends TextField implements ItemFilterProvider {
 
     @Override
     public String filterText(String s) {
-        return EnumChatFormatting.getTextWithoutFormattingCodes(s);
+        return TextFormatting.getTextWithoutFormattingCodes(s);
     }
 
     public static Pattern getPattern(String search) {

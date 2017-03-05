@@ -4,11 +4,15 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -43,20 +47,21 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = this.getMetadata(stack.getItemDamage());
         BlockEnclosed.EnumEnclosedBlockType type = BlockEnclosed.EnumEnclosedBlockType.byMetadata(metadata);
 
         if (type != null && type.getBCPipeType() != null)
         {
-            Block block = worldIn.getBlockState(pos).getBlock();
+            IBlockState state = worldIn.getBlockState(pos);
+            Block block = state.getBlock();
 
-            if (block == Blocks.snow)
+            if (block == Blocks.SNOW)
             {
                 side = EnumFacing.UP;
             }
-            else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(worldIn, pos))
+            else if (block != Blocks.VINE && block != Blocks.TALLGRASS && block != Blocks.DEADBUSH && !block.isReplaceable(worldIn, pos))
             {
                 pos = pos.offset(side);
 //                if (side == EnumFacing.DOWN)
@@ -87,16 +92,16 @@ public class ItemBlockEnclosed extends ItemBlockDesc
 
             if (stack.stackSize == 0)
             {
-                return false;
+                return EnumActionResult.FAIL;
             }
 
             if (!playerIn.canPlayerEdit(pos, side, stack))
             {
-                return false;
+                return EnumActionResult.FAIL;
             }
-            else if (pos.getY() == 255 && this.getBlock().getMaterial().isSolid())
+            else if (pos.getY() == 255 && this.getBlock().getMaterial(state).isSolid())
             {
-                return false;
+                return EnumActionResult.FAIL;
             }
             else if (worldIn.canBlockBePlaced(block, pos, false, side, playerIn, stack))
             {
@@ -106,7 +111,8 @@ public class ItemBlockEnclosed extends ItemBlockDesc
 
                 if (placeBlockAt(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, j1))
                 {
-                    worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, this.getBlock().stepSound.getPlaceSound(), (this.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, 1.0F * 0.8F);
+                    SoundType soundType = this.getBlock().getSoundType(state, worldIn, pos, playerIn);
+                    worldIn.playSound(playerIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
                     --stack.stackSize;
 
                     if (metadata >= BlockEnclosed.EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta() && metadata <= BlockEnclosed.EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta())
@@ -130,17 +136,17 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                     }
                 }
 
-                return true;
+                return EnumActionResult.SUCCESS;
 
             }
             else
             {
-                return false;
+                return EnumActionResult.FAIL;
             }
         }
         else
         {
-            return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
+            return super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
         }
     }
 

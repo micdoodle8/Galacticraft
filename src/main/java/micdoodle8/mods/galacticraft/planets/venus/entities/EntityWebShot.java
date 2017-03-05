@@ -4,10 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -225,7 +225,7 @@ public class EntityWebShot extends Entity implements IProjectile
                 {
                     if (movingobjectposition.entityHit instanceof EntityLivingBase)
                     {
-                        ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 180, 2, true, true));
+                        ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 180, 2, true, true));
                         this.setDead();
                     }
                     else

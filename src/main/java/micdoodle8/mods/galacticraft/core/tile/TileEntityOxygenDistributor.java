@@ -594,7 +594,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

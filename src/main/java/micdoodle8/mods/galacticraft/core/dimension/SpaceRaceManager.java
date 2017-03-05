@@ -16,11 +16,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.TextComponentString;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.server.management.PlayerList;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,28 +50,24 @@ public class SpaceRaceManager
         {
             boolean playerOnline = false;
 
-            for (int j = 0; j < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); j++)
+            PlayerList playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
+            for (int j = 0; j < playerList.getPlayerList().size(); j++)
             {
-                Object o = MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(j);
+                EntityPlayer player = playerList.getPlayerList().get(j);
 
-                if (o instanceof EntityPlayer)
+                if (race.getPlayerNames().contains(player.getGameProfile().getName()))
                 {
-                    EntityPlayer player = (EntityPlayer) o;
+                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.getDimension());
 
-                    if (race.getPlayerNames().contains(player.getGameProfile().getName()))
+                    if (body != null)
                     {
-                        CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.getDimension());
-
-                        if (body != null)
+                        if (!race.getCelestialBodyStatusList().containsKey(body))
                         {
-                            if (!race.getCelestialBodyStatusList().containsKey(body))
-                            {
-                                race.setCelestialBodyReached(body);
-                            }
+                            race.setCelestialBodyReached(body);
                         }
-
-                        playerOnline = true;
                     }
+
+                    playerOnline = true;
                 }
             }
 
@@ -94,7 +91,7 @@ public class SpaceRaceManager
         }
     }
 
-    public static void saveSpaceRaces(NBTTagCompound nbt)
+    public static NBTTagCompound saveSpaceRaces(NBTTagCompound nbt)
     {
         NBTTagList tagList = new NBTTagList();
 
@@ -106,6 +103,7 @@ public class SpaceRaceManager
         }
 
         nbt.setTag("SpaceRaceList", tagList);
+        return nbt;
     }
 
     public static SpaceRace getSpaceRaceFromPlayer(String username)
@@ -151,7 +149,7 @@ public class SpaceRaceManager
             }
             else
             {
-                for (WorldServer server : MinecraftServer.getServer().worldServers)
+                for (WorldServer server : toPlayer.worldObj.getMinecraftServer().worldServers)
                 {
                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, server.provider.getDimension(), objList), server.provider.getDimension());
                 }
@@ -168,11 +166,11 @@ public class SpaceRaceManager
     {
         for (String member : race.getPlayerNames())
         {
-            EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(MinecraftServer.getServer(), member);
+            EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(FMLCommonHandler.instance().getMinecraftServerInstance(), member);
 
             if (memberObj != null)
             {
-                memberObj.addChatMessage(new TextComponentString(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.remove_success", EnumColor.RED + player + EnumColor.DARK_AQUA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                memberObj.addChatMessage(new TextComponentString(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.remove_success", EnumColor.RED + player + EnumColor.DARK_AQUA)).setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
             }
         }
 

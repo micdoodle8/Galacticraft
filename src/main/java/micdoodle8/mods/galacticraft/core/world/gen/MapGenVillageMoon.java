@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureStart;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class MapGenVillageMoon extends MapGenStructure
 {
-    public static List<BiomeGenBase> villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] { BiomeGenBaseMoon.moonFlat });
+    public static List<Biome> villageSpawnBiomes = Arrays.asList(new Biome[] { BiomeMoon.moonFlat });
     private final int terrainType;
     private static boolean initialized;
 

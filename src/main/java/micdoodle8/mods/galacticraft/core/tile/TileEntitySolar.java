@@ -605,7 +605,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

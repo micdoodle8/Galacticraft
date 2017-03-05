@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -916,13 +916,13 @@ public class MapUtil
 
     private static int getBiomeBaseColour(int biomeId)
     {
-        BiomeGenBase[] biomeList = BiomeGenBase.getBiomeGenArray();
-    	BiomeGenBase biomegenbase = null;
+        Biome[] biomeList = Biome.getBiomeGenArray();
+    	Biome biomegenbase = null;
     	if (biomeId >= 0 && biomeId <= biomeList.length)
     	{
     		biomegenbase = biomeList[biomeId];
     	}
-    	return biomegenbase == null ? BiomeGenBase.ocean.color : biomegenbase.color;
+    	return biomegenbase == null ? Biome.ocean.color : biomegenbase.color;
     }
     
     public static int convertBiomeColour(int in, int height)

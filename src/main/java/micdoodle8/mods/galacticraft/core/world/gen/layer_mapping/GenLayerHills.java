@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +42,7 @@ public class GenLayerHills extends GenLayerGCMap
 
                 if (k != 0 && l >= 2 && (l - 2) % 29 == 1 && k < 128)
                 {
-                    if (BiomeGenBase.getBiome(k + 128) != null)
+                    if (Biome.getBiome(k + 128) != null)
                     {
                         aint2[j + i * areaWidth] = k + 128;
                     }
@@ -59,86 +59,86 @@ public class GenLayerHills extends GenLayerGCMap
                 {
                     int i1 = k;
 
-                    if (k == BiomeGenBase.desert.biomeID)
+                    if (k == Biome.desert.biomeID)
                     {
-                        i1 = BiomeGenBase.desertHills.biomeID;
+                        i1 = Biome.desertHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.forest.biomeID)
+                    else if (k == Biome.forest.biomeID)
                     {
-                        i1 = BiomeGenBase.forestHills.biomeID;
+                        i1 = Biome.forestHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.birchForest.biomeID)
+                    else if (k == Biome.birchForest.biomeID)
                     {
-                        i1 = BiomeGenBase.birchForestHills.biomeID;
+                        i1 = Biome.birchForestHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.roofedForest.biomeID)
+                    else if (k == Biome.roofedForest.biomeID)
                     {
-                        i1 = BiomeGenBase.plains.biomeID;
+                        i1 = Biome.plains.biomeID;
                     }
-                    else if (k == BiomeGenBase.taiga.biomeID)
+                    else if (k == Biome.taiga.biomeID)
                     {
-                        i1 = BiomeGenBase.taigaHills.biomeID;
+                        i1 = Biome.taigaHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.megaTaiga.biomeID)
+                    else if (k == Biome.megaTaiga.biomeID)
                     {
-                        i1 = BiomeGenBase.megaTaigaHills.biomeID;
+                        i1 = Biome.megaTaigaHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.coldTaiga.biomeID)
+                    else if (k == Biome.coldTaiga.biomeID)
                     {
-                        i1 = BiomeGenBase.coldTaigaHills.biomeID;
+                        i1 = Biome.coldTaigaHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.plains.biomeID)
+                    else if (k == Biome.plains.biomeID)
                     {
                         if (this.nextInt(3) == 0)
                         {
-                            i1 = BiomeGenBase.forestHills.biomeID;
+                            i1 = Biome.forestHills.biomeID;
                         }
                         else
                         {
-                            i1 = BiomeGenBase.forest.biomeID;
+                            i1 = Biome.forest.biomeID;
                         }
                     }
-                    else if (k == BiomeGenBase.icePlains.biomeID)
+                    else if (k == Biome.icePlains.biomeID)
                     {
-                        i1 = BiomeGenBase.iceMountains.biomeID;
+                        i1 = Biome.iceMountains.biomeID;
                     }
-                    else if (k == BiomeGenBase.jungle.biomeID)
+                    else if (k == Biome.jungle.biomeID)
                     {
-                        i1 = BiomeGenBase.jungleHills.biomeID;
+                        i1 = Biome.jungleHills.biomeID;
                     }
-                    else if (k == BiomeGenBase.ocean.biomeID)
+                    else if (k == Biome.ocean.biomeID)
                     {
-                        i1 = BiomeGenBase.deepOcean.biomeID;
+                        i1 = Biome.deepOcean.biomeID;
                     }
-                    else if (k == BiomeGenBase.extremeHills.biomeID)
+                    else if (k == Biome.extremeHills.biomeID)
                     {
-                        i1 = BiomeGenBase.extremeHillsPlus.biomeID;
+                        i1 = Biome.extremeHillsPlus.biomeID;
                     }
-                    else if (k == BiomeGenBase.savanna.biomeID)
+                    else if (k == Biome.savanna.biomeID)
                     {
-                        i1 = BiomeGenBase.savannaPlateau.biomeID;
+                        i1 = Biome.savannaPlateau.biomeID;
                     }
-                    else if (biomesEqualOrMesaPlateau(k, BiomeGenBase.mesaPlateau_F.biomeID))
+                    else if (biomesEqualOrMesaPlateau(k, Biome.mesaPlateau_F.biomeID))
                     {
-                        i1 = BiomeGenBase.mesa.biomeID;
+                        i1 = Biome.mesa.biomeID;
                     }
-                    else if (k == BiomeGenBase.deepOcean.biomeID && this.nextInt(3) == 0)
+                    else if (k == Biome.deepOcean.biomeID && this.nextInt(3) == 0)
                     {
                         int j1 = this.nextInt(2);
 
                         if (j1 == 0)
                         {
-                            i1 = BiomeGenBase.plains.biomeID;
+                            i1 = Biome.plains.biomeID;
                         }
                         else
                         {
-                            i1 = BiomeGenBase.forest.biomeID;
+                            i1 = Biome.forest.biomeID;
                         }
                     }
 
                     if (flag && i1 != k)
                     {
-                        if (BiomeGenBase.getBiome(i1 + 128) != null)
+                        if (Biome.getBiome(i1 + 128) != null)
                         {
                             i1 += 128;
                         }

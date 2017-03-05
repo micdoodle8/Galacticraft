@@ -6,7 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 
 public class ContainerRecipe extends Container {
     private class RecipeInventory implements IInventory {
@@ -98,7 +98,7 @@ public class ContainerRecipe extends Container {
         }
 
         @Override
-        public IChatComponent getDisplayName() {
+        public ITextComponent getDisplayName() {
             return null;
         }
     }

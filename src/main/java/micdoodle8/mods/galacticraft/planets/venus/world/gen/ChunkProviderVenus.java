@@ -18,7 +18,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -50,7 +50,7 @@ public class ChunkProviderVenus implements IChunkProvider
     private double[] stoneNoise = new double[256];
     private MapGenBaseMeta caveGenerator = new MapGenCaveVenus();
     private MapGenBaseMeta lavaCaveGenerator = new MapGenLavaVenus();
-    private BiomeGenBase[] biomesForGeneration;
+    private Biome[] biomesForGeneration;
     private double[] octaves1;
     private double[] octaves2;
     private double[] octaves3;
@@ -160,7 +160,7 @@ public class ChunkProviderVenus implements IChunkProvider
         }
     }
 
-    private void replaceBlocksForBiome(int p_180517_1_, int p_180517_2_, ChunkPrimer p_180517_3_, BiomeGenBase[] p_180517_4_)
+    private void replaceBlocksForBiome(int p_180517_1_, int p_180517_2_, ChunkPrimer p_180517_3_, Biome[] p_180517_4_)
     {
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.func_151599_a(this.stoneNoise, (double) (p_180517_1_ * 16), (double) (p_180517_2_ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
@@ -169,7 +169,7 @@ public class ChunkProviderVenus implements IChunkProvider
         {
             for (int j = 0; j < 16; ++j)
             {
-                BiomeGenBase biomegenbase = p_180517_4_[j + i * 16];
+                Biome biomegenbase = p_180517_4_[j + i * 16];
                 biomegenbase.genTerrainBlocks(this.worldObj, this.rand, p_180517_3_, p_180517_1_ * 16 + i, p_180517_2_ * 16 + j, this.stoneNoise[j + i * 16]);
             }
         }
@@ -219,13 +219,13 @@ public class ChunkProviderVenus implements IChunkProvider
                 float f3 = 0.0F;
                 float f4 = 0.0F;
                 int i1 = 2;
-                BiomeGenBase biomegenbase = this.biomesForGeneration[k + 2 + (l + 2) * 10];
+                Biome biomegenbase = this.biomesForGeneration[k + 2 + (l + 2) * 10];
 
                 for (int j1 = -i1; j1 <= i1; ++j1)
                 {
                     for (int k1 = -i1; k1 <= i1; ++k1)
                     {
-                        BiomeGenBase biomegenbase1 = this.biomesForGeneration[k + j1 + 2 + (l + k1 + 2) * 10];
+                        Biome biomegenbase1 = this.biomesForGeneration[k + j1 + 2 + (l + k1 + 2) * 10];
                         float f5 = biomegenbase1.minHeight;
                         float f6 = biomegenbase1.maxHeight;
 
@@ -331,7 +331,7 @@ public class ChunkProviderVenus implements IChunkProvider
         int i = x * 16;
         int j = z * 16;
         BlockPos blockpos = new BlockPos(i, 0, j);
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
+        Biome biomegenbase = this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
         this.rand.setSeed(this.worldObj.getSeed());
         long k = this.rand.nextLong() / 2L * 2L + 1L;
         long l = this.rand.nextLong() / 2L * 2L + 1L;
@@ -411,9 +411,9 @@ public class ChunkProviderVenus implements IChunkProvider
     }
 
     @Override
-    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        Biome biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
 
         return biomegenbase.getSpawnableList(creatureType);
     }

@@ -1,19 +1,20 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class GCPlayerStatsClient implements IExtendedEntityProperties
 {
-    public static final String GC_PLAYER_PROP = "GCPlayerStatsClient";
+    public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.ASSET_PREFIX, "player_stats_client");
 
     public WeakReference<EntityPlayerSP> player;
 

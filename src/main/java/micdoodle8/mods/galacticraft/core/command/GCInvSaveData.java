@@ -72,5 +72,7 @@ public class GCInvSaveData extends WorldSavedData
             }
             toSave.setTag(name, par1NBTTagList);
         }
+
+        return toSave;
     }
 }

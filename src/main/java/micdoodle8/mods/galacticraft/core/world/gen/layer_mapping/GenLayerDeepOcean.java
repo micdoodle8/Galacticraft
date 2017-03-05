@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class GenLayerDeepOcean extends GenLayerGCMap
 {
@@ -56,7 +56,7 @@ public class GenLayerDeepOcean extends GenLayerGCMap
 
                 if (k2 == 0 && l2 > 3)
                 {
-                    aint1[j1 + i1 * areaWidth] = BiomeGenBase.deepOcean.biomeID;
+                    aint1[j1 + i1 * areaWidth] = Biome.deepOcean.biomeID;
                 }
                 else
                 {

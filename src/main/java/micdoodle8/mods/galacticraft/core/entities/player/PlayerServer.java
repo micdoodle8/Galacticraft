@@ -29,7 +29,9 @@ public class PlayerServer implements IPlayerServer
     {
         if (oldPlayer instanceof EntityPlayerMP)
         {
-            GCPlayerStats.get(player).copyFrom(GCPlayerStats.get((EntityPlayerMP) oldPlayer), keepInv || player.worldObj.getGameRules().getBoolean("keepInventory"));
+            IStatsCapability oldCapability = oldPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            IStatsCapability newCapability = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            newCapability.copyFrom(oldCapability, keepInv || player.worldObj.getGameRules().getBoolean("keepInventory"));
             TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, player);
         }
     }
@@ -139,7 +141,7 @@ public class PlayerServer implements IPlayerServer
             }
         }
 
-        if (player.getRNG().nextDouble() >= player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue())
+        if (player.getRNG().nextDouble() >= player.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue())
         {
             player.isAirBorne = deshCount < 2;
             float f1 = MathHelper.sqrt_double(impulseX * impulseX + impulseZ * impulseZ);
@@ -158,6 +160,8 @@ public class PlayerServer implements IPlayerServer
             }
         }
     }
+
+
 
     public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3, boolean bypass)
     {

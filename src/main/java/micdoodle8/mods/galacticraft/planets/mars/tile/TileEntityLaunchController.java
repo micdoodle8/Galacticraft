@@ -495,7 +495,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

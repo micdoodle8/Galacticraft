@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.TextFormatting;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +36,7 @@ public class ItemPanelDumper extends DataDumper {
     public Iterable<String[]> dump(int mode) {
         LinkedList<String[]> list = new LinkedList<String[]>();
         for (ItemStack stack : ItemPanel.items) {
-            list.add(new String[] { Item.itemRegistry.getNameForObject(stack.getItem()).toString(), Integer.toString(Item.getIdFromItem(stack.getItem())), Integer.toString(InventoryUtils.actualDamage(stack)), stack.getTagCompound() == null ? "false" : "true", EnumChatFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack)) });
+            list.add(new String[] { Item.itemRegistry.getNameForObject(stack.getItem()).toString(), Integer.toString(Item.getIdFromItem(stack.getItem())), Integer.toString(InventoryUtils.actualDamage(stack)), stack.getTagCompound() == null ? "false" : "true", TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack)) });
         }
 
         return list;

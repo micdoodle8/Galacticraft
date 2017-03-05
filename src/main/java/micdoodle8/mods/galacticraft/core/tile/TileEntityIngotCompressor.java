@@ -602,7 +602,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

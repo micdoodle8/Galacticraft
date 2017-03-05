@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraftforge.common.BiomeDictionary;
 
-public class BiomeGenFlatMoon extends BiomeGenBaseMoon
+public class BiomeGenFlatMoon extends BiomeMoon
 {
     public BiomeGenFlatMoon(int par1)
     {

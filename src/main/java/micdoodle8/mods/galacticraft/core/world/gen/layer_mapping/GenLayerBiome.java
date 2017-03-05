@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
 
 public class GenLayerBiome extends GenLayerGCMap
@@ -27,19 +27,19 @@ public class GenLayerBiome extends GenLayerGCMap
 
         int desertIdx = net.minecraftforge.common.BiomeManager.BiomeType.DESERT.ordinal();
 
-        biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.desert, 30));
-        biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.savanna, 20));
-        biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.plains, 10));
+        biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.desert, 30));
+        biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.savanna, 20));
+        biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.plains, 10));
 
         if (p_i45560_4_ == WorldType.DEFAULT_1_1)
         {
             biomes[desertIdx].clear();
-            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.desert, 10));
-            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.forest, 10));
-            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.extremeHills, 10));
-            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.swampland, 10));
-            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.plains, 10));
-            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(BiomeGenBase.taiga, 10));
+            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.desert, 10));
+            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.forest, 10));
+            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.extremeHills, 10));
+            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.swampland, 10));
+            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.plains, 10));
+            biomes[desertIdx].add(new net.minecraftforge.common.BiomeManager.BiomeEntry(Biome.taiga, 10));
             this.field_175973_g = null;
         }
         else if (p_i45560_4_ == WorldType.CUSTOMIZED)
@@ -78,7 +78,7 @@ public class GenLayerBiome extends GenLayerGCMap
                 {
                     aint1[j + i * areaWidth] = k;
                 }
-                else if (k == BiomeGenBase.mushroomIsland.biomeID)
+                else if (k == Biome.mushroomIsland.biomeID)
                 {
                     aint1[j + i * areaWidth] = k;
                 }
@@ -88,11 +88,11 @@ public class GenLayerBiome extends GenLayerGCMap
                     {
                         if (this.nextInt(3) == 0)
                         {
-                            aint1[j + i * areaWidth] = BiomeGenBase.mesaPlateau.biomeID;
+                            aint1[j + i * areaWidth] = Biome.mesaPlateau.biomeID;
                         }
                         else
                         {
-                            aint1[j + i * areaWidth] = BiomeGenBase.mesaPlateau_F.biomeID;
+                            aint1[j + i * areaWidth] = Biome.mesaPlateau_F.biomeID;
                         }
                     }
                     else
@@ -104,7 +104,7 @@ public class GenLayerBiome extends GenLayerGCMap
                 {
                     if (l > 0)
                     {
-                        aint1[j + i * areaWidth] = BiomeGenBase.jungle.biomeID;
+                        aint1[j + i * areaWidth] = Biome.jungle.biomeID;
                     }
                     else
                     {
@@ -115,7 +115,7 @@ public class GenLayerBiome extends GenLayerGCMap
                 {
                     if (l > 0)
                     {
-                        aint1[j + i * areaWidth] = BiomeGenBase.megaTaiga.biomeID;
+                        aint1[j + i * areaWidth] = Biome.megaTaiga.biomeID;
                     }
                     else
                     {
@@ -128,7 +128,7 @@ public class GenLayerBiome extends GenLayerGCMap
                 }
                 else
                 {
-                    aint1[j + i * areaWidth] = BiomeGenBase.mushroomIsland.biomeID;
+                    aint1[j + i * areaWidth] = Biome.mushroomIsland.biomeID;
                 }
             }
         }

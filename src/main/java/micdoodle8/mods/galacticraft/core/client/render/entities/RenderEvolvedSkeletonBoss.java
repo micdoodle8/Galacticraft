@@ -5,8 +5,6 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,7 +39,7 @@ public class RenderEvolvedSkeletonBoss extends RenderLiving<EntitySkeletonBoss>
     @Override
     public void doRender(EntitySkeletonBoss par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
+//        BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false); TODO
 
         super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
     }

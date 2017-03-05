@@ -671,7 +671,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }
