@@ -106,7 +106,7 @@ public class MapUtil
         ClientProxyCore.overworldTexturesValid = false;
         clientRequests.clear();
         overworldImageBytesPart = null;
-        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
         if (baseFolder.exists() && baseFolder.isDirectory())
         {
             for (File f : baseFolder.listFiles())
@@ -577,7 +577,7 @@ public class MapUtil
     {
         if (GalacticraftCore.enableJPEG)
         {
-            File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+            File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
 
             try
             {
@@ -642,7 +642,7 @@ public class MapUtil
             }
             else
             {
-                System.err.println("Cannot read/write to file %minecraftDir%/assets/temp/overworldRaw.bin");
+                System.err.println("Cannot read/write to file %minecraftDir%/assets/galacticraftMaps/overworldRaw.bin");
             }
 
             //raw is a WIDTH_WORLD x HEIGHT_WORLD array of 2 byte entries: biome type followed by height
@@ -773,7 +773,7 @@ public class MapUtil
         int cx = convertMap(xCoord);
         int cz = convertMap(zCoord);
 
-        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
             GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
