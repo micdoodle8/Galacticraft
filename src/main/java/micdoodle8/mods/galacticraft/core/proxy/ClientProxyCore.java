@@ -622,7 +622,7 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("buggymat", "wheel", "seat", "storage");
         addCoreVariant("basic_item", "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
         addCoreVariant("item_basic_moon", "meteoric_iron_ingot", "compressed_meteoric_iron", "lunar_sapphire");
-        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
+        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy", "aluminum_wire_switch", "aluminum_wire_switch_heavy");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");
         addCoreVariant("slab_gc_half", "slab_tin_1", "slab_tin_2", "slab_moon_stone", "slab_moon_dungeon_brick", "slab_mars_cobblestone", "slab_mars_dungeon_brick");
