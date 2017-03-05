@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy.tile;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySource;
+import ic2.api.energy.tile.IEnergyTile;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -15,14 +16,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-import java.lang.reflect.Constructor;
-
 public abstract class TileBaseUniversalConductor extends TileBaseConductor
 {
     protected boolean isAddedToEnergyNet;
-    protected Object powerHandlerBC;
-
-    //	public float buildcraftBuffer = EnergyConfigHandler.BC3_RATIO * 50;
     private float IC2surplusJoules = 0F;
 
     @Override
@@ -73,9 +69,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             try
             {
                 Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
-                Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
-                Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
-                Object o = constr.newInstance(this);
+                Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
 
                 if (o != null && o instanceof Event)
                 {
@@ -98,9 +92,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
                 try
                 {
                     Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
-                    Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
-                    Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
-                    Object o = constr.newInstance(this);
+                    Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
 
                     if (o != null && o instanceof Event)
                     {
@@ -182,8 +174,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         //Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
         try
         {
-            Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
-            if (conductorIC2.isInstance(emitter))
+            if (EnergyUtil.clazzIC2Cable != null && EnergyUtil.clazzIC2Cable.isInstance(emitter))
             {
                 return false;
             }
@@ -208,8 +199,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         //Don't make connection with IC2 wires [don't want risk of multiple connections + there is a graphical glitch in IC2]
         try
         {
-            Class<?> conductorIC2 = Class.forName("ic2.api.energy.tile.IEnergyConductor");
-            if (conductorIC2.isInstance(receiver))
+            if (EnergyUtil.clazzIC2Cable != null && EnergyUtil.clazzIC2Cable.isInstance(receiver))
             {
                 return false;
             }
@@ -248,6 +238,10 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         try
         {
             if (EnergyUtil.clazzEnderIOCable != null && EnergyUtil.clazzEnderIOCable.isInstance(tile))
+            {
+                return false;
+            }
+            if (EnergyUtil.clazzMekCable != null && EnergyUtil.clazzMekCable.isInstance(tile))
             {
                 return false;
             }
@@ -297,7 +291,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
         try
         {
-            if (Class.forName("codechicken.multipart.TileMultipart").isInstance(te))
+            if (EnergyUtil.clazzMekCable != null && EnergyUtil.clazzMekCable.isInstance(te))
             {
                 return false;
             }

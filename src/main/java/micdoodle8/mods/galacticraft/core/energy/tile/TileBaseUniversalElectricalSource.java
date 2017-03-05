@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -162,23 +163,11 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing direction)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
-        if (receiver instanceof IElectrical || receiver instanceof IConductor)
+        if (receiver instanceof IElectrical || receiver instanceof IConductor || !(receiver instanceof IEnergyTile))
         {
             return false;
         }
 
-        try
-        {
-            Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
-            if (!energyTile.isInstance(receiver))
-            {
-                return false;
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
         return this.getElectricalOutputDirections().contains(direction);
     }
 

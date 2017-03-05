@@ -35,7 +35,8 @@ public class EnergyUtil
     public static Method injectEnergyIC2 = null;
     public static Method offeredEnergyIC2 = null;
     public static Method drawEnergyIC2 = null;
-    private static Class<?> clazzMekCable = null;
+    public static Class<?> clazzIC2Cable = null;
+    public static Class<?> clazzMekCable = null;
     public static Class<?> clazzEnderIOCable = null;
     public static Class<?> clazzMFRRednetEnergyCable = null;
     public static Class<?> clazzRailcraftEngine = null;
@@ -407,7 +408,8 @@ public class EnergyUtil
 
             try
             {
-                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
+               clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+               Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
                 GCLog.debug("Found IC2 IEnergySink class OK");
 
