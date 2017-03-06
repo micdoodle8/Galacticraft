@@ -1,0 +1,8 @@
+{
+    "defaults": {
+        "textures": { "all": "galacticraftcore:breatheableAir" },
+        "model": "cube_all",
+        "uvlock": true
+    },
+    "variants": { }
+}

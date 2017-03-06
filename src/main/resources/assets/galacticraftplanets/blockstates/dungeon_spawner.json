@@ -1,0 +1,8 @@
+{
+    "defaults": {
+        "textures": { "all": "galacticraftcore:space_station_side" },
+        "model": "cube_all",
+        "uvlock": true
+    },
+    "variants": { }
+}
