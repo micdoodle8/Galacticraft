@@ -1,6 +1,6 @@
 {
 "textures": {
-    "particle": "galacticraftplanets:blocks/treasure",
+    "particle": "galacticraftplanets:blocks/treasureChestMars",
     "texture": "galacticraftplanets:model/treasure"
 },
 "elements": [ 

@@ -1,6 +1,6 @@
 {
 "textures": {
-    "particle": "galacticraftplanets:blocks/treasure_venus",
+    "particle": "galacticraftplanets:blocks/treasureChestVenus",
     "texture": "galacticraftplanets:model/treasure_venus"
 },
 "elements": [ 
