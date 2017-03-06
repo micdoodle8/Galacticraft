@@ -9,7 +9,5 @@
         "particle": "galacticraftplanets:blocks/machineframe"
 	}
   },
-  "textures": {
-	"particle": "galacticraftplanets:blocks/machineframe"
-  }
+  "variants": { }
 }

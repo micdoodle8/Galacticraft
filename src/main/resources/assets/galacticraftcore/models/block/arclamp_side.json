@@ -1,7 +1,7 @@
 {
 "__comment": "Designed by Micdoodle8 with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
 "textures": {
-    "texture": "blocks/arc_lamp_on"
+    "texture": "galacticraftcore:blocks/arc_lamp_on"
 },
 "elements": [ 
 {
