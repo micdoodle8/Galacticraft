@@ -478,6 +478,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityScreen.class, "View Screen");
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "Telemetry Unit");
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "Galacticraft Fluid Tank");
+        GameRegistry.registerTileEntity(TileEntityNull.class, "Galacticraft Null Tile");
     }
 
     private void registerCreatures()

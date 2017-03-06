@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNull;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -135,7 +136,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             return new TileEntityAluminumWire(2);
         }
 
-        return null;
+        return new TileEntityNull();
     }
 
     @Override
