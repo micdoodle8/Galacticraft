@@ -1,7 +1,8 @@
 {
     "forge_marker": 1,
     "variants": {
-        "normal": { "model": "galacticraftplanets:telepad_fake" },
+        "normal": { "model": "galacticraftcore:block_multi_model" },
+        "inventory": { "model": "galacticraftcore:block_multi_model" },
         "connectable": {
             "true": { },
             "false": { }

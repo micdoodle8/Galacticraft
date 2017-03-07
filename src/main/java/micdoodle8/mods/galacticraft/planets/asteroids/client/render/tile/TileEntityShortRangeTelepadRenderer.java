@@ -32,7 +32,7 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRender
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "telepadShort.obj"));
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "block/telepadShort.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
                 Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()

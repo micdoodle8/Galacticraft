@@ -3,6 +3,7 @@
   "variants": {
      "normal": {
          "model": "galacticraftplanets:telepadShort.obj",
+         "textures": { "particle": "galacticraftcore:blocks/buggy_pad_full" },
          "custom": { "flip-v": true  }
         }
     }

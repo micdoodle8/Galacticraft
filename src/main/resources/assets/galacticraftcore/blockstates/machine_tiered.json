@@ -1,6 +1,8 @@
 {
     "forge_marker": 1,
     "variants": {
+        "inventory": [{ "model": "galacticraftcore:electric_furnace_model" }],
+
         "facing" : {
            "north": { },
            "east":  { "y": 90 },

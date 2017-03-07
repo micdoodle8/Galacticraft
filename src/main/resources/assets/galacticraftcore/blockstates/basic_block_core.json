@@ -1,5 +1,7 @@
 {
+    "forge_marker": 1,
     "variants": {
+        "inventory": [{ "model": "galacticraftcore:deco_block_0_model" }],
         "basictype=deco_block_0": { "model": "galacticraftcore:deco_block_0_model" },
         "basictype=deco_block_1": { "model": "galacticraftcore:deco_block_1_model" },
         "basictype=ore_copper_gc": { "model": "galacticraftcore:ore_copper_gc_model" },

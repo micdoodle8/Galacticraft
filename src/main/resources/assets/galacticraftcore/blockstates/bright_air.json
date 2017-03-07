@@ -1,12 +1,7 @@
 {
     "forge_marker": 1,
-    "defaults": {
-          "textures": { "all": "galacticraftcore:blocks/breatheableAir" },
-          "model": "minecraft:cube_all",
-          "uvlock": true
-    },
     "variants": {
-       "normal": [{ }],
-       "inventory": [{ }]
+        "normal": { "model": "galacticraftcore:breatheable_air" },
+        "inventory": { "model": "galacticraftcore:breatheable_air" }
     }
 }

@@ -23,6 +23,8 @@
             "5": { "model": "galacticraftcore:cryo_2", "y": 90 },
             "6": { "model": "galacticraftcore:cryo_2", "y": 180 },
             "7": { "model": "galacticraftcore:cryo_2", "y": 270 }
-        }
+        },
+
+        "inventory": [{ "model": "galacticraftcore:block_multi_model" }]
     }
 }
