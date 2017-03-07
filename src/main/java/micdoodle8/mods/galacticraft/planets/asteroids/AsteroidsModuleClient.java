@@ -164,8 +164,8 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     public void postInit(FMLPostInitializationEvent event)
     {
         addPlanetVariants("asteroids_block", "asteroid_rock_0", "asteroid_rock_1", "asteroid_rock_2", "ore_aluminum_asteroids", "ore_ilmenite_asteroids", "ore_iron_asteroids");
-        addPlanetVariants("thermal_padding", "thermal_helm", "thermal_chestplate", "thermal_leggings", "thermal_boots");
-        addPlanetVariants("item_basic_asteroids", "reinforced_plate_t3", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core");
+        addPlanetVariants("thermal_padding", "thermal_padding", "thermal_chestplate", "thermal_leggings", "thermal_boots");
+        addPlanetVariants("item_basic_asteroids", "item_basic_asteroids", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core");
         addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
 
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner());
@@ -194,11 +194,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockDenseIce);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.blockMinerBase);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidBlocks.minerBaseFull);
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 0, "thermal_helm");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 0, "thermal_padding");  //helm
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 1, "thermal_chestplate");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 2, "thermal_leggings");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 3, "thermal_boots");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 0, "reinforced_plate_t3");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 0, "item_basic_asteroids");  //reinforced_plate_t3
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 1, "engine_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 2, "rocket_fins_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 3, "shard_iron");
