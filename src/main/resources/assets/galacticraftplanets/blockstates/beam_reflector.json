@@ -6,5 +6,7 @@
       "flip-v": true
     }
   },
-  "variants": { }
+  "variants": {
+     "normal" : [{}]
+  }
 }

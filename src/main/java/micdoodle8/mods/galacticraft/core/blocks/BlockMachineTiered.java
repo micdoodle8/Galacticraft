@@ -33,7 +33,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
-    public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 16);
+    public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
@@ -249,8 +249,9 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         {
             return state.withProperty(FILL_VALUE, 0);
         }
-        TileEntityEnergyStorageModule storageModule = (TileEntityEnergyStorageModule) tile;
-        return state.withProperty(FILL_VALUE, storageModule.scaledEnergyLevel);
+        int energyLevel = ((TileEntityEnergyStorageModule) tile).scaledEnergyLevel;
+        if (state.getValue(TYPE) == EnumTieredMachineType.STORAGE_CLUSTER) energyLevel += 17;
+        return state.withProperty(FILL_VALUE, energyLevel);
     }
 
     @Override

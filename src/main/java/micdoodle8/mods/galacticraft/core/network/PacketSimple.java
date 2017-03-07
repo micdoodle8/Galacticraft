@@ -789,14 +789,14 @@ public class PacketSimple extends PacketBase implements Packet
 
                 try
                 {
-                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
                     if (folder.exists() || folder.mkdir())
                     {
                         MapUtil.getOverworldImageFromRaw(folder, cx, cz, bytes);
                     }
                     else
                     {
-                        System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
+                        System.err.println("Cannot create directory %minecraftDir%/assets/galacticraftMaps!");
                     }
                 }
                 catch (Exception e)

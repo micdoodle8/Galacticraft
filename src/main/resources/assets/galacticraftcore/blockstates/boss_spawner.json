@@ -1,8 +1,12 @@
 {
+    "forge_marker": 1,
     "defaults": {
-        "textures": { "all": "galacticraftcore:space_station_side" },
-        "model": "cube_all",
-        "uvlock": true
+          "textures": { "all": "galacticraftcore:blocks/space_station_side" },
+          "model": "minecraft:cube_all",
+          "uvlock": true
     },
-    "variants": { }
+    "variants": {
+       "normal": [{ }],
+       "inventory": [{ }]
+    }
 }

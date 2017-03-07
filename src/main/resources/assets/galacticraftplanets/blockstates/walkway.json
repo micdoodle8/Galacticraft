@@ -115,6 +115,25 @@
 		
         "down=true,east=false,north=false,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_d", "y": 0 },
 		
-        "down=true,east=true,north=true,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_neswd", "y": 0 }
+        "down=true,east=true,north=true,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_neswd", "y": 0 },
+
+
+
+        "down=true,east=false,north=false,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=true,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=false,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=false,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=false,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=true,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=false,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=true,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=false,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=true,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=true,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=true,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=false,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=false,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=false,north=true,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
+        "down=true,east=true,north=true,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" }
     }
 }

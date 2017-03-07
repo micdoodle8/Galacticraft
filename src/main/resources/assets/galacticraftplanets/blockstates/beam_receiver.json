@@ -8,6 +8,8 @@
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{}]
+    "facing": {
+       "up":{}, "down":{}, "east":{}, "west":{}, "north":{}, "south": {}
+    }
   }
 }
