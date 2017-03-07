@@ -1,8 +1,9 @@
 {
     "forge_marker": 1,
+    "defaults": { "model": "galacticraftcore:block_multi_model" },
     "variants": {
-        "normal": { "model": "galacticraftcore:block_multi_model" },
-        "inventory": { "model": "galacticraftcore:block_multi_model" },
+        "normal": [{ }],
+        "inventory": [{ }],
         "connectable": {
             "true": { },
             "false": { }
