@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.File;
@@ -845,7 +847,7 @@ public class ConfigManagerCore
     	returnList.add(ConfigManagerCore.suffocationCooldown);
     	returnList.add(ConfigManagerCore.rocketFuelFactor);
     	returnList.add(ConfigManagerCore.otherModsSilicon);
-    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS
+    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS - see comment in setConfigOverride() below
     	EnergyConfigHandler.serverConfigOverride(returnList);
     	
     	returnList.add(ConfigManagerCore.detectableIDs.clone());  	
@@ -856,35 +858,37 @@ public class ConfigManagerCore
     @SideOnly(Side.CLIENT)
     public static void setConfigOverride(List<Object> configs)
     {
-
-    	int modeFlag = (Integer) configs.get(0);
+        int dataCount = 0;
+    	int modeFlag = (Integer) configs.get(dataCount++);
     	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
     	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
     	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
     	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
     	ConfigManagerCore.recipesRequireGCAdvancedMetals = (modeFlag & 16) != 0;
     	ConfigManagerCore.challengeRecipes = (modeFlag & 32) != 0;
-    	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
-    	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
-    	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
-    	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(4);
-    	ConfigManagerCore.otherModsSilicon = (String) configs.get(5);
-    	//If adding any additional data objects here, also remember to update the packet definition in PacketSimple and the indices for the Floats in the next line following here
+    	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(dataCount++);
+    	ConfigManagerCore.suffocationDamage = (Integer) configs.get(dataCount++);
+    	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(dataCount++);
+    	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(dataCount++);
+    	ConfigManagerCore.otherModsSilicon = (String) configs.get(dataCount++);
+    	//If adding any additional data objects here, also remember to update the packet definition of EnumSimplePacket.C_UPDATE_CONFIGS in PacketSimple
+    	//Current working packet definition: Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class
     	
-    	EnergyConfigHandler.setConfigOverride((Float) configs.get(7), (Float) configs.get(8), (Float) configs.get(9), (Float) configs.get(10), (Integer) configs.get(11));
+    	EnergyConfigHandler.setConfigOverride((Float) configs.get(dataCount++), (Float) configs.get(dataCount++), (Float) configs.get(dataCount++), (Float) configs.get(dataCount++), (Integer) configs.get(dataCount++));
     	
-    	int sizeIDs = configs.size() - 12;
+    	int sizeIDs = configs.size() - dataCount;
     	if (sizeIDs > 0)
     	{
-    		if (configs.get(12) instanceof String)
+    	    Object dataLast = configs.get(dataCount); 
+    		if (dataLast instanceof String)
     		{
     			ConfigManagerCore.detectableIDs = new String[sizeIDs];
 		    	for (int j = 0; j < sizeIDs; j++)
-		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(12 + j));
+		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(dataCount++));
     		}
-    		else if (configs.get(11) instanceof String[])
+    		else if (dataLast instanceof String[])
     		{
-    			ConfigManagerCore.detectableIDs = ((String[])configs.get(12));
+    			ConfigManagerCore.detectableIDs = ((String[])dataLast);
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
