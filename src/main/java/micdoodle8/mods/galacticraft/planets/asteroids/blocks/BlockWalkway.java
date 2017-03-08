@@ -320,7 +320,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                 BlockPos neighbour = pos.offset(direction);
                 Block block = worldIn.getBlockState(neighbour).getBlock();
 
-                if (block == this || block.isSideSolid(worldIn, neighbour, direction))
+                if (block == this || block.isSideSolid(worldIn, neighbour, direction.getOpposite()))
                 {
                     connectable[direction.ordinal()] = block;
                 }
