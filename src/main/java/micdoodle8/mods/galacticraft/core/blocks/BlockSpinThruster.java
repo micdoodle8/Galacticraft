@@ -190,7 +190,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
 //    @Override
-//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        float var8 = 0.3F;
 //

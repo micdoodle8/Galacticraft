@@ -6,6 +6,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+import java.lang.ref.WeakReference;
+
 public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCompound>
 {
     private EntityPlayerMP owner;
@@ -15,6 +17,7 @@ public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCo
     {
         this.owner = owner;
         this.statsCapability = CapabilityStatsHandler.GC_STATS_CAPABILITY.getDefaultInstance();
+        this.statsCapability.setPlayer(new WeakReference<>(this.owner));
     }
 
     @Override

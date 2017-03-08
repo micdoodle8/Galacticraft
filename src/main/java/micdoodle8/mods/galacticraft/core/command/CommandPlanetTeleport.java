@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -53,13 +54,13 @@ public class CommandPlanetTeleport extends CommandBase
                 {
                     WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimension());
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
-                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
-                    stats.rocketStacks = new ItemStack[2];
-                    stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
-                    stats.rocketItem = GCItems.rocketTier1;
-                    stats.fuelLevel = 1000;
-                    stats.coordsTeleportedFromX = spawnPoint.getX();
-                    stats.coordsTeleportedFromZ = spawnPoint.getZ();
+                    IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                    stats.setRocketStacks(new ItemStack[2]);
+                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
+                    stats.setRocketItem(GCItems.rocketTier1);
+                    stats.setFuelLevel(1000);
+                    stats.setCoordsTeleportedFromX(spawnPoint.getX());
+                    stats.setCoordsTeleportedFromZ(spawnPoint.getZ());
 
                     try
                     {

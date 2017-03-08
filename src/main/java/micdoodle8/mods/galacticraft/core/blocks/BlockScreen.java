@@ -137,7 +137,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
 //    @Override
-//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        final int metadata = getMetaFromState(worldIn.getBlockState(pos)) & 7;
 //        float boundsFront = 0.094F;

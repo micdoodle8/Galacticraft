@@ -203,10 +203,10 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
         this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 6, yLevel, 1, par3StructureBoundingBox);
         this.setBlockState(par1World, GCBlocks.basicBlock.getStateFromMeta(4), 5, yLevel, 1, par3StructureBoundingBox);
 
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode), 8, yLevel, 2, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.rotateYCCW()), 14, yLevel, 8, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.getOpposite()), 8, yLevel, 14, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.coordBaseMode.rotateY()), 2, yLevel, 8, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode()), 8, yLevel, 2, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateYCCW()), 14, yLevel, 8, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().getOpposite()), 8, yLevel, 14, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateY()), 2, yLevel, 8, par3StructureBoundingBox);
 
         yLevel = 5;
 

@@ -29,7 +29,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         super(world);
         this.moveHelper = new EntityMoveHelperCeiling(this);
         this.setSize(1F, 0.6F);
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, EntityPlayer.class, 1.0, true));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -42,28 +42,28 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, (byte)0);
-        this.dataWatcher.addObject(17, (byte)0);
+        this.dataManager.addObject(16, (byte)0);
+        this.dataManager.addObject(17, (byte)0);
     }
 
     public boolean isHanging()
     {
-        return this.dataWatcher.getWatchableObjectByte(16) != 0;
+        return this.dataManager.getWatchableObjectByte(16) != 0;
     }
 
     public void setHanging(boolean hanging)
     {
-        this.dataWatcher.updateObject(16, (byte)(hanging ? 1 : 0));
+        this.dataManager.set(16, (byte)(hanging ? 1 : 0));
     }
 
     public boolean isFalling()
     {
-        return this.dataWatcher.getWatchableObjectByte(17) != 0;
+        return this.dataManager.getWatchableObjectByte(17) != 0;
     }
 
     public void setFalling(boolean falling)
     {
-        this.dataWatcher.updateObject(17, (byte)(falling ? 1 : 0));
+        this.dataManager.set(17, (byte)(falling ? 1 : 0));
     }
 
     @Override
@@ -142,7 +142,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                     if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                             blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                     {
-                        MovingObjectPosition hit = this.worldObj.rayTraceBlocks(new Vec3(this.posX, this.posY, this.posZ), new Vec3(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
+                        MovingObjectPosition hit = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
 
                         if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                         {

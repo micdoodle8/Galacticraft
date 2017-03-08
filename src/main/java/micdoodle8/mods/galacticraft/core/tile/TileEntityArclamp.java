@@ -20,7 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     private HashSet<BlockVec3> airToRestore = new HashSet();
     private boolean isActive = false;
     private AxisAlignedBB thisAABB;
-    private Vec3 thisPos;
+    private Vec3d thisPos;
     private int facingSide = 0;
     public boolean updateClientFlag;
 
@@ -144,9 +144,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                         }
                         EntityCreature e = (EntityCreature) entry;
                         //Check whether the mob can actually *see* the arclamp tile
-                        //if (this.worldObj.func_147447_a(thisPos, Vec3.createVectorHelper(e.posX, e.posY, e.posZ), true, true, false) != null) continue;
+                        //if (this.worldObj.func_147447_a(thisPos, Vec3d.createVectorHelper(e.posX, e.posY, e.posZ), true, true, false) != null) continue;
 
-                        Vec3 vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(e, 16, 7, this.thisPos);
+                        Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(e, 16, 7, this.thisPos);
                         if (vecNewTarget == null)
                         {
                             continue;
@@ -156,16 +156,16 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                         {
                             continue;
                         }
-                        Vec3 vecOldTarget = null;
+                        Vec3d vecOldTarget = null;
                         if (nav.getPath() != null && !nav.getPath().isFinished())
                         {
                             vecOldTarget = nav.getPath().getPosition(e);
                         }
-                        double distanceNew = vecNewTarget.distanceTo(new Vec3(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
+                        double distanceNew = vecNewTarget.distanceTo(new Vec3d(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
 
                         if (distanceNew > e.getDistanceSq(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()))
                         {
-                            if (vecOldTarget == null || distanceNew > vecOldTarget.squareDistanceTo(new Vec3(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ())))
+                            if (vecOldTarget == null || distanceNew > vecOldTarget.squareDistanceTo(new Vec3d(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ())))
                             {
                                 e.getNavigator().tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 0.3D);
                                 //System.out.println("Debug: Arclamp repelling entity: "+e.getClass().getSimpleName());
@@ -183,7 +183,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     public void validate()
     {
         super.validate();
-        this.thisPos = new Vec3(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
+        this.thisPos = new Vec3d(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
         if (this.worldObj.isRemote)

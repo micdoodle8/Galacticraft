@@ -18,14 +18,20 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -39,6 +45,9 @@ import java.util.UUID;
 
 public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
+    private static final DataParameter<Integer> CURRENT_DAMAGE = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> ROCK_DIRECTION = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     public static final int tankCapacity = 1000;
     public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
     protected long ticks = 0;
@@ -68,14 +77,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         super(var1);
         this.setSize(0.98F, 1F);
-        this.currentDamage = 18;
-        this.timeSinceHit = 19;
-        this.rockDirection = 20;
         this.speed = 0.0D;
         this.preventEntitySpawning = true;
-        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
-        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
-        this.dataWatcher.addObject(this.rockDirection, new Integer(1));
+        this.dataManager.register(CURRENT_DAMAGE, 0);
+        this.dataManager.register(TIME_SINCE_HIT, 0);
+        this.dataManager.register(ROCK_DIRECTION, 1);
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
     }
@@ -101,7 +107,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public ItemStack getPickedResult(MovingObjectPosition target)
+    public ItemStack getPickedResult(RayTraceResult target)
     {
         return new ItemStack(GCItems.buggy, 1, this.buggyType);
     }
@@ -146,13 +152,13 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public void updateRiderPosition()
+    public void updatePassenger(Entity passenger)
     {
-        if (this.riddenByEntity != null)
+        if (this.isPassenger(passenger))
         {
-            final double var1 = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            final double var3 = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            this.riddenByEntity.setPosition(this.posX + var1, this.posY + 0.4F + this.riddenByEntity.getYOffset(), this.posZ + var3);
+            final double offsetX = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            final double offsetZ = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            passenger.setPosition(this.posX + offsetX, this.posY + 0.4F + passenger.getYOffset(), this.posZ + offsetZ);
         }
     }
 
@@ -184,9 +190,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public void performHurtAnimation()
     {
-        this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
-        this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-        this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) * 5));
+        this.dataManager.set(ROCK_DIRECTION, -this.dataManager.get(ROCK_DIRECTION));
+        this.dataManager.set(TIME_SINCE_HIT, 10);
+        this.dataManager.set(CURRENT_DAMAGE, this.dataManager.get(CURRENT_DAMAGE) * 5);
     }
 
     @Override
@@ -207,30 +213,23 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             }
             else
             {
-                this.dataWatcher.updateObject(this.rockDirection, Integer.valueOf(-this.dataWatcher.getWatchableObjectInt(this.rockDirection)));
-                this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-                this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + var2 * 10)));
+                this.dataManager.set(ROCK_DIRECTION, -this.dataManager.get(ROCK_DIRECTION));
+                this.dataManager.set(TIME_SINCE_HIT, 10);
+                this.dataManager.set(CURRENT_DAMAGE, (int) (this.dataManager.get(CURRENT_DAMAGE) + var2 * 10));
                 this.setBeenAttacked();
 
                 if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
                 {
-                    this.dataWatcher.updateObject(this.currentDamage, 100);
+                    this.dataManager.set(CURRENT_DAMAGE, 100);
                 }
 
-                if (flag || this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 2)
+                if (flag || this.dataManager.get(CURRENT_DAMAGE) > 2)
                 {
-                    if (this.riddenByEntity != null)
+                    if (!this.getPassengers().isEmpty())
                     {
-                        this.riddenByEntity.mountEntity(this);
+                        this.removePassengers();
                     }
 
-                    if (!this.worldObj.isRemote)
-                    {
-                        if (this.riddenByEntity != null)
-                        {
-                            this.riddenByEntity.mountEntity(this);
-                        }
-                    }
                     if (flag)
                     {
                         this.setDead();
@@ -292,18 +291,18 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
-        if (this.riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
-            if (this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().thePlayer))
             {
             }
             else
             {
                 this.boatPosRotationIncrements = posRotationIncrements + 5;
                 this.boatX = x;
-                this.boatY = y + (this.riddenByEntity == null ? 1 : 0);
+                this.boatY = y;
                 this.boatZ = z;
                 this.boatYaw = yaw;
                 this.boatPitch = pitch;
@@ -341,7 +340,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 x = this.posX + (this.boatX - this.posX) / this.boatPosRotationIncrements;
                 y = this.posY + (this.boatY - this.posY) / this.boatPosRotationIncrements;
                 z = this.posZ + (this.boatZ - this.posZ) / this.boatPosRotationIncrements;
-                var12 = MathHelper.wrapAngleTo180_double(this.boatYaw - this.rotationYaw);
+                var12 = MathHelper.wrapDegrees(this.boatYaw - this.rotationYaw);
                 this.rotationYaw = (float) (this.rotationYaw + var12 / this.boatPosRotationIncrements);
                 this.rotationPitch = (float) (this.rotationPitch + (this.boatPitch - this.rotationPitch) / this.boatPosRotationIncrements);
                 --this.boatPosRotationIncrements;
@@ -353,7 +352,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 x = this.posX + this.motionX;
                 y = this.posY + this.motionY;
                 z = this.posZ + this.motionZ;
-                if (this.riddenByEntity != null)
+                if (!this.getPassengers().isEmpty())
                 {
                     this.setPosition(x, y, z);
                 }
@@ -372,14 +371,14 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             return;
         }
 
-        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
+        if (this.dataManager.get(TIME_SINCE_HIT) > 0)
         {
-            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
+            this.dataManager.set(TIME_SINCE_HIT, this.dataManager.get(TIME_SINCE_HIT) - 1);
         }
 
-        if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 0)
+        if (this.dataManager.get(CURRENT_DAMAGE) > 0)
         {
-            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
+            this.dataManager.set(CURRENT_DAMAGE, this.dataManager.get(CURRENT_DAMAGE) - 1);
         }
 
         if (!this.onGround)
@@ -389,7 +388,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         if (this.inWater && this.speed > 0.2D)
         {
-            this.worldObj.playSoundEffect((float) this.posX, (float) this.posY, (float) this.posZ, "random.fizz", 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
+            this.worldObj.playSound(null, (float) this.posX, (float) this.posY, (float) this.posZ, SoundEvents.ENTITY_GENERIC_BURN, SoundCategory.NEUTRAL, 0.5F, 2.6F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.8F);
         }
 
         this.speed *= 0.98D;
@@ -626,30 +625,30 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
         if (this.worldObj.isRemote)
         {
-            if (this.riddenByEntity == null)
+            if (this.getPassengers().isEmpty())
             {
-                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
-                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
-                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
-                var1.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
+                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
+                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
+                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
+                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
             }
 
             return true;
         }
         else
         {
-            if (this.riddenByEntity != null)
+            if (this.getPassengers().contains(player))
             {
-                var1.mountEntity(null);
+                this.removePassenger(player);
                 return true;
             }
             else
             {
-                var1.mountEntity(this);
+                player.startRiding(this);
                 return true;
             }
         }
@@ -840,12 +839,12 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public UUID getOwnerUUID()
     {
-        if (this.riddenByEntity != null && !(this.riddenByEntity instanceof EntityPlayer))
+        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof EntityPlayer))
         {
             return null;
         }
 
-        return this.riddenByEntity != null ? ((EntityPlayer) this.riddenByEntity).getPersistentID() : null;
+        return !this.getPassengers().isEmpty() ? this.getPassengers().get(0).getPersistentID() : null;
     }
 
     @Override

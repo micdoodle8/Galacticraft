@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -110,6 +111,10 @@ public class GCPlayerHandler
         if (event.getObject() instanceof EntityPlayerMP)
         {
             event.addCapability(CapabilityStatsHandler.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
+        }
+        else if (event.getObject() instanceof EntityPlayerSP)
+        {
+            event.addCapability(CapabilityStatsClientHandler.GC_PLAYER_CLIENT_PROP, new CapabilityProviderStatsClient((EntityPlayerSP) event.getObject()));
         }
     }
 

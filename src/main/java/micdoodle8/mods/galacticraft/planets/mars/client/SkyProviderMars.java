@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -95,7 +95,7 @@ public class SkyProviderMars extends IRenderHandler
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        Vec3 vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
+        Vec3d vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
         float f1 = (float) vec3.xCoord;
         float f2 = (float) vec3.yCoord;
         float f3 = (float) vec3.zCoord;
@@ -385,9 +385,9 @@ public class SkyProviderMars extends IRenderHandler
         var2.draw();
     }
 
-    private Vec3 getCustomSkyColor()
+    private Vec3d getCustomSkyColor()
     {
-        return new Vec3(0.26796875D, 0.1796875D, 0.0D);
+        return new Vec3d(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)

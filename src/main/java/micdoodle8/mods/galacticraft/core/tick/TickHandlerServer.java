@@ -12,7 +12,8 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
@@ -93,7 +94,7 @@ public class TickHandlerServer
     {
         for (GalacticraftPacketHandler packetHandler : packetHandlers)
         {
-            packetHandler.unload(event.world);
+            packetHandler.unload(event.getWorld());
         }
     }
 
@@ -252,7 +253,7 @@ public class TickHandlerServer
             {
                 try
                 {
-                    final GCPlayerStats stats = GCPlayerStats.get(change.getPlayer());
+                    IStatsCapability stats = change.getPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                     final WorldProvider provider = WorldUtil.getProviderForNameServer(change.getDimensionName());
                     final Integer dim = provider.getDimension();
                     GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
@@ -264,7 +265,7 @@ public class TickHandlerServer
                         WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
                     }
 
-                    stats.teleportCooldown = 10;
+                    stats.setTeleportCooldown(10);
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, change.getPlayer().worldObj.provider.getDimension(), new Object[] {}), change.getPlayer());
                 }
                 catch (Exception e)
@@ -288,7 +289,7 @@ public class TickHandlerServer
             if (TickHandlerServer.spaceRaceData == null)
             {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
                 {
@@ -306,7 +307,7 @@ public class TickHandlerServer
                 for (int i = 0; i < worlds.length; i++)
                 {
                     WorldServer world = worlds[i];
-                    ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
+                    ChunkProviderServer chunkProviderServer = world.getChunkProvider();
 
                     Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.getDimension());
 
@@ -316,7 +317,7 @@ public class TickHandlerServer
 
                         if (chunkProviderServer != null)
                         {
-                            Iterator iterator = chunkProviderServer.loadedChunks.iterator();
+                            Iterator iterator = chunkProviderServer.getLoadedChunks().iterator();
 
                             while (iterator.hasNext())
                             {
@@ -395,7 +396,7 @@ public class TickHandlerServer
             {
                 if (!playersRequestingMapData.isEmpty())
                 {
-                    File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                    File baseFolder = new File(server.worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
                     if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
 
@@ -407,8 +408,8 @@ public class TickHandlerServer
                         BufferedImage reusable = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
                         for (EntityPlayerMP playerMP : copy)
                         {
-                            GCPlayerStats stats = GCPlayerStats.get(playerMP);
-                            MapUtil.makeVanillaMap(playerMP.dimension, (int) Math.floor(stats.coordsTeleportedFromX) >> 4, (int) Math.floor(stats.coordsTeleportedFromZ) >> 4, baseFolder, reusable);
+                            IStatsCapability stats = playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                            MapUtil.makeVanillaMap(playerMP.dimension, (int) Math.floor(stats.getCoordsTeleportedFromX()) >> 4, (int) Math.floor(stats.getCoordsTeleportedFromZ()) >> 4, baseFolder, reusable);
                         }
                         playersRequestingMapData.removeAll(copy);
                     }
@@ -591,7 +592,7 @@ public class TickHandlerServer
                                 int dim = 0;
                                 try
                                 {
-                                    dim = WorldUtil.getProviderForNameServer(dimension.getPlanetToOrbit()).getDimensionId();
+                                    dim = WorldUtil.getProviderForNameServer(dimension.getPlanetToOrbit()).getDimension();
                                 }
                                 catch (Exception ex)
                                 {

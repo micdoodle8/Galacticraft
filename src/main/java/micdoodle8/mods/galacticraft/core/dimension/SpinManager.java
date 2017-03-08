@@ -189,7 +189,7 @@ public class SpinManager
      */
     public boolean refresh(BlockPos baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().isAir(this.worldProvider.worldObj, this.oneSSBlock))
+        if (this.oneSSBlock == null || this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().isAir(this.worldProvider.worldObj.getBlockState(this.oneSSBlock), this.worldProvider.worldObj, this.oneSSBlock))
         {
             if (baseBlock != null)
             {
@@ -269,11 +269,12 @@ public class SpinManager
                     if (!this.checked.contains(sideVec))
                     {
                         this.checked.add(sideVec);
-                        Block b = sideVec.getBlockID(this.worldProvider.worldObj);
-                        if (b != null && !b.isAir(this.worldProvider.worldObj, sideVec.toBlockPos()))
+                        IBlockState state = sideVec.getBlockState(this.worldProvider.worldObj);
+                        Block b = state.getBlock();
+                        if (b != null && !b.isAir(this.worldProvider.worldObj.getBlockState(sideVec.toBlockPos()), this.worldProvider.worldObj, sideVec.toBlockPos()))
                         {
                             nextLayer.add(sideVec);
-                            if (bStart.isAir(this.worldProvider.worldObj, this.oneSSBlock))
+                            if (bStart.isAir(this.worldProvider.worldObj.getBlockState(this.oneSSBlock), this.worldProvider.worldObj, this.oneSSBlock))
                             {
                                 this.oneSSBlock = sideVec.toBlockPos();
                                 bStart = b;
@@ -283,7 +284,7 @@ public class SpinManager
                             if (!(b instanceof BlockLiquid))
                             {
                                 //For most blocks, hardness gives a good idea of mass
-                                m = b.getBlockHardness(this.worldProvider.worldObj, sideVec.toBlockPos());
+                                m = b.getBlockHardness(this.worldProvider.worldObj.getBlockState(sideVec.toBlockPos()), this.worldProvider.worldObj, sideVec.toBlockPos());
                                 if (m < 0.1F)
                                 {
                                     m = 0.1F;
@@ -293,7 +294,7 @@ public class SpinManager
                                     m = 30F;
                                 }
                                 //Wood items have a high hardness compared with their presumed mass
-                                if (b.getMaterial() == Material.WOOD)
+                                if (b.getMaterial(state) == Material.WOOD)
                                 {
                                     m /= 4;
                                 }
@@ -337,7 +338,8 @@ public class SpinManager
             if (!this.oneSSBlock.equals(baseBlock))
             {
                 this.oneSSBlock = baseBlock;
-                if (this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.AIR)
+                IBlockState state = this.worldProvider.worldObj.getBlockState(this.oneSSBlock);
+                if (state.getBlock().getMaterial(state) != Material.AIR)
                 {
                     return this.refresh(baseBlock, true);
                 }
@@ -771,5 +773,6 @@ public class SpinManager
             oneBlock.setInteger("z", this.oneSSBlock.getZ());
             nbt.setTag("oneBlock", oneBlock);
         }
+        return nbt;
     }
 }

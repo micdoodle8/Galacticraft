@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiBuggy;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiParaChest;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -38,10 +39,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.*;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
@@ -65,6 +63,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -92,7 +91,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class PacketSimple extends PacketBase implements Packet
+public class PacketSimple extends PacketBase implements Packet<INetHandler>
 {
     public enum EnumSimplePacket
     {
@@ -264,12 +263,12 @@ public class PacketSimple extends PacketBase implements Packet
     public void handleClientSide(EntityPlayer player)
     {
         EntityPlayerSP playerBaseClient = null;
-        GCPlayerStatsClient stats = null;
+        IStatsClientCapability stats = null;
 
         if (player instanceof EntityPlayerSP)
         {
             playerBaseClient = (EntityPlayerSP) player;
-            stats = GCPlayerStatsClient.get(playerBaseClient);
+            stats = playerBaseClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
         }
         else
         {
@@ -479,7 +478,7 @@ public class PacketSimple extends PacketBase implements Packet
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
             break;
         case C_RESET_THIRD_PERSON:
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
+            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.getThirdPersonView();
             break;
         case C_UPDATE_SPACESTATION_LIST:
             WorldUtil.decodeSpaceStationListClient(data);
@@ -500,9 +499,9 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case C_ADD_NEW_SCHEMATIC:
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
-            if (!stats.unlockedSchematics.contains(page))
+            if (!stats.getUnlockedSchematics().contains(page))
             {
-                stats.unlockedSchematics.add(page);
+                stats.getUnlockedSchematics().add(page);
             }
             break;
         case C_UPDATE_SCHEMATIC_LIST:
@@ -512,29 +511,29 @@ public class PacketSimple extends PacketBase implements Packet
 
                 if (schematicID != -2)
                 {
-                    Collections.sort(stats.unlockedSchematics);
+                    Collections.sort(stats.getUnlockedSchematics());
 
-                    if (!stats.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
+                    if (!stats.getUnlockedSchematics().contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
                     {
-                        stats.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(schematicID));
+                        stats.getUnlockedSchematics().add(SchematicRegistry.getMatchingRecipeForID(schematicID));
                     }
                 }
             }
             break;
         case C_PLAY_SOUND_BOSS_DEATH:
-            player.playSound(Constants.TEXTURE_PREFIX + "entity.bossdeath", 10.0F, (Float) this.data.get(0));
+            player.playSound(GCSounds.bossDeath, 10.0F, (Float) this.data.get(0));
             break;
         case C_PLAY_SOUND_EXPLODE:
-            player.playSound("random.explode", 10.0F, 0.7F);
+            player.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 10.0F, 0.7F);
             break;
         case C_PLAY_SOUND_BOSS_LAUGH:
-            player.playSound(Constants.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 1.1F);
+            player.playSound(GCSounds.bossLaugh, 10.0F, 1.1F);
             break;
         case C_PLAY_SOUND_BOW:
-            player.playSound("random.bow", 10.0F, 0.2F);
+            player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 10.0F, 0.2F);
             break;
         case C_UPDATE_OXYGEN_VALIDITY:
-            stats.oxygenSetupValid = (Boolean) this.data.get(0);
+            stats.setOxygenSetupValid((Boolean) this.data.get(0));
             break;
         case C_OPEN_PARACHEST_GUI:
             switch ((Integer) this.data.get(1))
@@ -565,7 +564,7 @@ public class PacketSimple extends PacketBase implements Packet
             if (tile instanceof TileBaseConductor)
             {
                 ((TileBaseConductor) tile).adjacentConnections = null;
-                player.worldObj.getBlockState(tile.getPos()).getBlock().setBlockBoundsBasedOnState(player.worldObj, tile.getPos());
+//                player.worldObj.getBlockState(tile.getPos()).getBlock().setBlockBoundsBasedOnState(player.worldObj, tile.getPos()); TODO
             }
             break;
         case C_OPEN_SPACE_RACE_GUI:
@@ -598,7 +597,7 @@ public class PacketSimple extends PacketBase implements Packet
             SpaceRaceManager.addSpaceRace(race);
             break;
         case C_OPEN_JOIN_RACE_GUI:
-            stats.spaceRaceInviteTeamID = (Integer) this.data.get(0);
+            stats.setSpaceRaceInviteTeamID((Integer) this.data.get(0));
             player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
             break;
         case C_UPDATE_FOOTPRINT_LIST:
@@ -657,8 +656,8 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_UPDATE_THERMAL_LEVEL:
-            stats.thermalLevel = (Integer) this.data.get(0);
-            stats.thermalLevelNormalising = (Boolean) this.data.get(1);
+            stats.setThermalLevel((Integer) this.data.get(0));
+            stats.setThermalLevelNormalising((Boolean) this.data.get(1));
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
             player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
@@ -715,7 +714,7 @@ public class PacketSimple extends PacketBase implements Packet
 //            }
 //            break;
         case C_UPDATE_STATS:
-            stats.buildFlags = (Integer) this.data.get(0);
+            stats.setBuildFlags((Integer) this.data.get(0));
             break;
         case C_UPDATE_VIEWSCREEN:
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));

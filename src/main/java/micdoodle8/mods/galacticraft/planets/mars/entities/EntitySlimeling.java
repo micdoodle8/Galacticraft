@@ -63,7 +63,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.aiSit = new EntityAISitGC(this);
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
@@ -210,24 +210,24 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     @Override
     protected void updateAITick()
     {
-        this.dataWatcher.updateObject(18, Float.valueOf(this.getHealth()));
+        this.dataManager.set(18, Float.valueOf(this.getHealth()));
     }
 
     @Override
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(18, new Float(this.getHealth()));
-        this.dataWatcher.addObject(19, new Float(this.colorRed));
-        this.dataWatcher.addObject(20, new Float(this.colorGreen));
-        this.dataWatcher.addObject(21, new Float(this.colorBlue));
-        this.dataWatcher.addObject(22, new Integer(this.age));
-        this.dataWatcher.addObject(23, "");
-        this.dataWatcher.addObject(24, new Integer(this.favFoodID));
-        this.dataWatcher.addObject(25, new Float(this.attackDamage));
-        this.dataWatcher.addObject(26, new Integer(this.kills));
-        this.dataWatcher.addObject(27, new ItemStack(Blocks.stone));
-        this.dataWatcher.addObject(28, "");
+        this.dataManager.addObject(18, new Float(this.getHealth()));
+        this.dataManager.addObject(19, new Float(this.colorRed));
+        this.dataManager.addObject(20, new Float(this.colorGreen));
+        this.dataManager.addObject(21, new Float(this.colorBlue));
+        this.dataManager.addObject(22, new Integer(this.age));
+        this.dataManager.addObject(23, "");
+        this.dataManager.addObject(24, new Integer(this.favFoodID));
+        this.dataManager.addObject(25, new Float(this.attackDamage));
+        this.dataManager.addObject(26, new Integer(this.kills));
+        this.dataManager.addObject(27, new ItemStack(Blocks.stone));
+        this.dataManager.addObject(28, "");
         this.setName(GCCoreUtil.translate("gui.message.unnamed.name"));
     }
 
@@ -513,13 +513,13 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
     public String getOwnerUsername()
     {
-        String s = this.dataWatcher.getWatchableObjectString(28);
+        String s = this.dataManager.getWatchableObjectString(28);
         return s == null || s.length() == 0 ? "" : s;
     }
 
     public void setOwnerUsername(String username)
     {
-        this.dataWatcher.updateObject(28, username);
+        this.dataManager.set(28, username);
     }
 
     @Override
@@ -609,84 +609,84 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
     public float getColorRed()
     {
-        return this.dataWatcher.getWatchableObjectFloat(19);
+        return this.dataManager.getWatchableObjectFloat(19);
     }
 
     public void setColorRed(float color)
     {
-        this.dataWatcher.updateObject(19, color);
+        this.dataManager.set(19, color);
     }
 
     public float getColorGreen()
     {
-        return this.dataWatcher.getWatchableObjectFloat(20);
+        return this.dataManager.getWatchableObjectFloat(20);
     }
 
     public void setColorGreen(float color)
     {
-        this.dataWatcher.updateObject(20, color);
+        this.dataManager.set(20, color);
     }
 
     public float getColorBlue()
     {
-        return this.dataWatcher.getWatchableObjectFloat(21);
+        return this.dataManager.getWatchableObjectFloat(21);
     }
 
     public void setColorBlue(float color)
     {
-        this.dataWatcher.updateObject(21, color);
+        this.dataManager.set(21, color);
     }
 
     @Override
     public int getAge()
     {
-        return this.dataWatcher.getWatchableObjectInt(22);
+        return this.dataManager.get(22);
     }
 
     public void setAge(int age)
     {
-        this.dataWatcher.updateObject(22, age);
+        this.dataManager.set(22, age);
     }
 
     @Override
     public String getName()
     {
-        return this.dataWatcher.getWatchableObjectString(23);
+        return this.dataManager.getWatchableObjectString(23);
     }
 
     public void setName(String name)
     {
-        this.dataWatcher.updateObject(23, name);
+        this.dataManager.set(23, name);
     }
 
     public Item getFavoriteFood()
     {
-        return Item.getItemById(this.dataWatcher.getWatchableObjectInt(24));
+        return Item.getItemById(this.dataManager.get(24));
     }
 
     public void setFavoriteFood(int foodID)
     {
-        this.dataWatcher.updateObject(24, foodID);
+        this.dataManager.set(24, foodID);
     }
 
     public float getAttackDamage()
     {
-        return this.dataWatcher.getWatchableObjectFloat(25);
+        return this.dataManager.getWatchableObjectFloat(25);
     }
 
     public void setAttackDamage(float damage)
     {
-        this.dataWatcher.updateObject(25, damage);
+        this.dataManager.set(25, damage);
     }
 
     public int getKillCount()
     {
-        return this.dataWatcher.getWatchableObjectInt(26);
+        return this.dataManager.get(26);
     }
 
     public void setKillCount(int damage)
     {
-        this.dataWatcher.updateObject(26, damage);
+        this.dataManager.set(26, damage);
     }
 
     @Override
@@ -707,17 +707,17 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
     public ItemStack getCargoSlot()
     {
-        return this.dataWatcher.getWatchableObjectItemStack(27);
+        return this.dataManager.getWatchableObjectItemStack(27);
     }
 
     public void setCargoSlot(ItemStack stack)
     {
-        ItemStack stack2 = this.dataWatcher.getWatchableObjectItemStack(27);
+        ItemStack stack2 = this.dataManager.getWatchableObjectItemStack(27);
 
         if (stack != stack2)
         {
-            this.dataWatcher.updateObject(27, stack);
-            this.dataWatcher.setObjectWatched(27);
+            this.dataManager.set(27, stack);
+            this.dataManager.setObjectWatched(27);
         }
     }
 

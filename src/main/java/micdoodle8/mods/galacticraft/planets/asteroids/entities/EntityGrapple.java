@@ -14,6 +14,7 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
@@ -81,8 +82,8 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(10, 0);
-        this.dataWatcher.addObject(11, 0);
+        this.dataManager.addObject(10, 0);
+        this.dataManager.addObject(11, 0);
     }
 
     @Override
@@ -109,7 +110,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
@@ -208,7 +209,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 block.setBlockBoundsBasedOnState(this.worldObj, this.hitVec);
                 AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, this.hitVec, this.worldObj.getBlockState(this.hitVec));
 
-                if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3(this.posX, this.posY, this.posZ)))
+                if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
                 {
                     this.inGround = true;
                 }
@@ -277,15 +278,15 @@ public class EntityGrapple extends Entity implements IProjectile
                 this.setDead();
             }
 
-            Vec3 vec31 = new Vec3(this.posX, this.posY, this.posZ);
-            Vec3 vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3d vec31 = new Vec3d(this.posX, this.posY, this.posZ);
+            Vec3d vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3, false, true, false);
-            vec31 = new Vec3(this.posX, this.posY, this.posZ);
-            vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            vec31 = new Vec3d(this.posX, this.posY, this.posZ);
+            vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (movingobjectposition != null)
             {
-                vec3 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                vec3 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
@@ -473,7 +474,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
             if (flag)
             {
-                this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 par1EntityPlayer.onItemPickup(this, 1);
                 this.setDead();
             }
@@ -503,13 +504,13 @@ public class EntityGrapple extends Entity implements IProjectile
     {
         if (this.shootingEntity != null)
         {
-            this.dataWatcher.updateObject(10, this.shootingEntity.getEntityId());
+            this.dataManager.set(10, this.shootingEntity.getEntityId());
         }
     }
 
     public EntityPlayer getShootingEntity()
     {
-        Entity entity = this.worldObj.getEntityByID(this.dataWatcher.getWatchableObjectInt(10));
+        Entity entity = this.worldObj.getEntityByID(this.dataManager.get(10));
 
         if (entity instanceof EntityPlayer)
         {
@@ -521,11 +522,11 @@ public class EntityGrapple extends Entity implements IProjectile
 
     public void updatePullingEntity(boolean pulling)
     {
-        this.dataWatcher.updateObject(11, pulling ? 1 : 0);
+        this.dataManager.set(11, pulling ? 1 : 0);
     }
 
     public boolean getPullingEntity()
     {
-        return this.dataWatcher.getWatchableObjectInt(11) == 1;
+        return this.dataManager.get(11) == 1;
     }
 }

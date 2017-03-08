@@ -18,9 +18,9 @@ import java.util.List;
 public class ParticleLanderFlame extends Particle
 {
     private float smokeParticleScale;
-    private EntityLivingBase getRidingEntity();
+    private EntityLivingBase ridingEntity;
 
-    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityLivingBase getRidingEntity())
+    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityLivingBase ridingEntity)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX *= 0.10000000149011612D;
@@ -35,7 +35,7 @@ public class ParticleLanderFlame extends Particle
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int) 5.0D;
         this.canCollide = true;
-        this.getRidingEntity() = getRidingEntity();
+        this.ridingEntity = ridingEntity;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ParticleLanderFlame extends Particle
 
                 if (var5 instanceof EntityLivingBase)
                 {
-                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.getRidingEntity()))
+                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, var5.worldObj.provider.getDimension(), new Object[] { var5.getEntityId() }));

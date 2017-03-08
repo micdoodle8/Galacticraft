@@ -6,7 +6,8 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -16,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     }
 
     @Override
-    public ItemStack getPickedResult(MovingObjectPosition target)
+    public ItemStack getPickedResult(RayTraceResult target)
     {
         return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
     }
@@ -139,20 +140,20 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
         if (playerBase != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
             if (this.cargoItems == null || this.cargoItems.length == 0)
             {
-                stats.rocketStacks = new ItemStack[2];
+                stats.setRocketStacks(new ItemStack[2]);
             }
             else
             {
-                stats.rocketStacks = this.cargoItems;
+                stats.setRocketStacks(this.cargoItems);
             }
 
-            stats.rocketType = this.rocketType.getIndex();
-            stats.rocketItem = GCItems.rocketTier1;
-            stats.fuelLevel = this.fuelTank.getFluidAmount();
+            stats.setRocketType(this.rocketType.getIndex());
+            stats.setRocketItem(GCItems.rocketTier1);
+            stats.setFuelLevel(this.fuelTank.getFluidAmount());
         }
     }
 
@@ -178,7 +179,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             final double x2 = this.posX + x1;
             final double z2 = this.posZ + z1;
 
-            EntityLivingBase riddenByEntity = this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase) this.riddenByEntity : null;
+            EntityLivingBase riddenByEntity = !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityLivingBase ? (EntityLivingBase) this.getPassengers().get(0) : null;
 
             if (this.getLaunched())
             {

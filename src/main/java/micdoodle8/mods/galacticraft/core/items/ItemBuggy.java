@@ -14,8 +14,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,15 +59,15 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         final float var4 = 1.0F;
-        final float var5 = par3EntityPlayer.prevRotationPitch + (par3EntityPlayer.rotationPitch - par3EntityPlayer.prevRotationPitch) * var4;
-        final float var6 = par3EntityPlayer.prevRotationYaw + (par3EntityPlayer.rotationYaw - par3EntityPlayer.prevRotationYaw) * var4;
-        final double var7 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * var4;
-        final double var9 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.getYOffset();
-        final double var11 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
-        final Vec3 var13 = new Vec3(var7, var9, var11);
+        final float var5 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * var4;
+        final float var6 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * var4;
+        final double var7 = playerIn.prevPosX + (playerIn.posX - playerIn.prevPosX) * var4;
+        final double var9 = playerIn.prevPosY + (playerIn.posY - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
+        final double var11 = playerIn.prevPosZ + (playerIn.posZ - playerIn.prevPosZ) * var4;
+        final Vec3d var13 = new Vec3d(var7, var9, var11);
         final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float) Math.PI);
         final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float) Math.PI);
         final float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -73,19 +75,19 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final float var18 = var15 * var16;
         final float var20 = var14 * var16;
         final double var21 = 5.0D;
-        final Vec3 var23 = var13.addVector(var18 * var21, var17 * var21, var20 * var21);
-        final MovingObjectPosition var24 = par2World.rayTraceBlocks(var13, var23, true);
+        final Vec3d var23 = var13.addVector(var18 * var21, var17 * var21, var20 * var21);
+        final RayTraceResult var24 = worldIn.rayTraceBlocks(var13, var23, true);
 
         if (var24 == null)
         {
-            return par1ItemStack;
+            return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
         }
         else
         {
-            final Vec3 var25 = par3EntityPlayer.getLook(var4);
+            final Vec3d var25 = playerIn.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = par2World.getEntitiesWithinAABBExcludingEntity(par3EntityPlayer, par3EntityPlayer.getEntityBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
+            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
             int var29;
 
             for (var29 = 0; var29 < var28.size(); ++var29)
@@ -106,45 +108,45 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
             if (var26)
             {
-                return par1ItemStack;
+                return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
             }
             else
             {
-                if (var24.typeOfHit == MovingObjectType.BLOCK)
+                if (var24.typeOfHit == RayTraceResult.Type.BLOCK)
                 {
                     var29 = var24.getBlockPos().getX();
                     int var33 = var24.getBlockPos().getY();
                     final int var34 = var24.getBlockPos().getZ();
 
-                    if (par2World.getBlockState(new BlockPos(var29, var33, var34)) == Blocks.snow)
+                    if (worldIn.getBlockState(new BlockPos(var29, var33, var34)) == Blocks.SNOW)
                     {
                         --var33;
                     }
 
-                    final EntityBuggy var35 = new EntityBuggy(par2World, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, par1ItemStack.getItemDamage());
+                    final EntityBuggy var35 = new EntityBuggy(worldIn, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, itemStackIn.getItemDamage());
 
-                    if (!par2World.getCollidingBoundingBoxes(var35, var35.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
+                    if (!worldIn.getCollisionBoxes(var35, var35.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
                     {
-                        return par1ItemStack;
+                        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
                     }
 
-                    if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("BuggyFuel"))
+                    if (itemStackIn.hasTagCompound() && itemStackIn.getTagCompound().hasKey("BuggyFuel"))
                     {
-                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, par1ItemStack.getTagCompound().getInteger("BuggyFuel")));
+                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, itemStackIn.getTagCompound().getInteger("BuggyFuel")));
                     }
 
-                    if (!par2World.isRemote)
+                    if (!worldIn.isRemote)
                     {
-                        par2World.spawnEntityInWorld(var35);
+                        worldIn.spawnEntityInWorld(var35);
                     }
 
-                    if (!par3EntityPlayer.capabilities.isCreativeMode)
+                    if (!playerIn.capabilities.isCreativeMode)
                     {
-                        --par1ItemStack.stackSize;
+                        --itemStackIn.stackSize;
                     }
                 }
 
-                return par1ItemStack;
+                return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
             }
         }
     }

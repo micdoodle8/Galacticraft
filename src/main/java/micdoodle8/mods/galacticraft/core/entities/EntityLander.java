@@ -5,12 +5,14 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,7 +78,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
         if (this.worldObj.isRemote)
         {
@@ -85,27 +87,27 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
                 return false;
             }
 
-            if (this.riddenByEntity != null)
+            if (!this.getPassengers().isEmpty())
             {
-                this.riddenByEntity.mountEntity(this);
+                this.removePassengers();
             }
 
             return true;
         }
 
-        if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
+        if (this.getPassengers().isEmpty() && player instanceof EntityPlayerMP)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
+            GCCoreUtil.openParachestInv((EntityPlayerMP) player, this);
             return true;
         }
-        else if (var1 instanceof EntityPlayerMP)
+        else if (player instanceof EntityPlayerMP)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            var1.mountEntity(null);
+            this.removePassengers();
             return true;
         }
         else
@@ -175,9 +177,10 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
-        return new ParticleLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase) this.riddenByEntity : null);
+        EntityLivingBase passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityLivingBase) ? null : (EntityLivingBase) this.getPassengers().get(0);
+        return new ParticleLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, passenger);
     }
 
     @Override
@@ -213,11 +216,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         {
             if (Math.abs(this.lastMotionY) > 2.0D)
             {
-                if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
-                {
-                    this.riddenByEntity.mountEntity(this);
-                }
-
+                this.removePassengers();
                 this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
 
                 this.setDead();

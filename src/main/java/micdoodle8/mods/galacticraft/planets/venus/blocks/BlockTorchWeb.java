@@ -77,7 +77,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
     {
         EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
         float f = 0.15F;

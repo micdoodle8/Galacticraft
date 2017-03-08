@@ -86,7 +86,7 @@ public class RoomBossMars extends RoomBoss
                     {
                         if ((i <= 2 || k <= 2 || i >= this.sizeX - 2 || k >= this.sizeZ - 2) && random.nextInt(4) == 0)
                         {
-                            this.setBlockState(worldIn, Blocks.glowstone.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, boundingBox);
                         }
                         else
                         {

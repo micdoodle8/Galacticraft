@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -268,9 +268,9 @@ public class SkyProviderAsteroids extends IRenderHandler
         var2.draw();
     }
 
-    private Vec3 getCustomSkyColor()
+    private Vec3d getCustomSkyColor()
     {
-        return new Vec3(0.26796875D, 0.1796875D, 0.0D);
+        return new Vec3d(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)

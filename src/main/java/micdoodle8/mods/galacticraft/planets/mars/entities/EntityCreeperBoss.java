@@ -168,7 +168,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             this.headsRemaining = 2;
         }
 
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
@@ -241,7 +241,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(2);
         int range = 2;
         //If player seems to have Tier 3 rocket already then add Astro Miner to the loot
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);

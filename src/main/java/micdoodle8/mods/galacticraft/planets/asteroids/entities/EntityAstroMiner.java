@@ -204,8 +204,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.height = cWIDTH;
         this.setSize(cLENGTH, cWIDTH);
 //        this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
-//        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
-//        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
+//        this.dataManager.addObject(this.currentDamage, new Integer(0));
+//        this.dataManager.addObject(this.timeSinceHit, new Integer(0));
         this.isImmuneToFire = true;
         this.noClip = true;
     }
@@ -213,7 +213,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(19, new Float(0.0F));
+        this.dataManager.addObject(19, new Float(0.0F));
     }
 
     @Override
@@ -597,14 +597,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.posY += this.motionY;
         this.posZ += this.motionZ;
         setEntityBoundingBox(getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
-/*        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
+/*        if (this.dataManager.get(this.timeSinceHit) > 0)
         {
-            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
+            this.dataManager.set(this.timeSinceHit, Integer.valueOf(this.dataManager.get(this.timeSinceHit) - 1));
         }
 
-        if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 0)
+        if (this.dataManager.get(this.currentDamage) > 0)
         {
-            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
+            this.dataManager.set(this.currentDamage, Integer.valueOf(this.dataManager.get(this.currentDamage) - 1));
         }       
 */
     }
@@ -2072,14 +2072,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             else
             {
                 this.setBeenAttacked();
-//                this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-//                this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + par2 * 10)));
+//                this.dataManager.set(this.timeSinceHit, Integer.valueOf(10));
+//                this.dataManager.set(this.currentDamage, Integer.valueOf((int) (this.dataManager.get(this.currentDamage) + par2 * 10)));
                 this.shipDamage += par2 * 10;
 
                 if (e instanceof EntityPlayer)
                 {
                     this.shipDamage += par2 * 21;
-//                    this.dataWatcher.updateObject(this.currentDamage, 100);
+//                    this.dataManager.set(this.currentDamage, 100);
                 }
 
                 if (this.shipDamage > 90)
@@ -2119,18 +2119,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void performHurtAnimation()
     {
-//	    this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-//	    this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) * 5));
+//	    this.dataManager.set(this.timeSinceHit, Integer.valueOf(10));
+//	    this.dataManager.set(this.currentDamage, Integer.valueOf(this.dataManager.get(this.currentDamage) * 5));
     }
 
     public float getDamage()
     {
-        return this.dataWatcher.getWatchableObjectFloat(19);
+        return this.dataManager.getWatchableObjectFloat(19);
     }
 
     public void setDamage(float p_70492_1_)
     {
-        this.dataWatcher.updateObject(19, Float.valueOf(p_70492_1_));
+        this.dataManager.set(19, Float.valueOf(p_70492_1_));
     }
 
     @Override
@@ -2144,7 +2144,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.minecartX = x;
         this.minecartY = y;

@@ -21,7 +21,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
@@ -48,9 +49,9 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -59,7 +60,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -101,7 +101,7 @@ public class TickHandlerClient
     {
         for (GalacticraftPacketHandler packetHandler : packetHandlers)
         {
-            packetHandler.unload(event.world);
+            packetHandler.unload(event.getWorld());
         }
     }
 
@@ -161,11 +161,11 @@ public class TickHandlerClient
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayerSP player = minecraft.thePlayer;
         final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
-        GCPlayerStatsClient stats = null;
+        IStatsClientCapability stats = null;
 
         if (player != null)
         {
-            stats = GCPlayerStatsClient.get(playerBaseClient);
+            stats = playerBaseClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
         }
 
         if (event.phase == Phase.END)
@@ -176,11 +176,6 @@ public class TickHandlerClient
                 int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
 
                 int k = Mouse.getEventButton();
-
-                if (Minecraft.isRunningOnMac && k == 0 && (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)))
-                {
-                    k = 1;
-                }
 
                 int deltaColor = 0;
 
@@ -279,11 +274,11 @@ public class TickHandlerClient
                     var7 = 90;
                 }
 
-                int thermalLevel = stats.thermalLevel + 22;
-                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.thermalLevelNormalising);
+                int thermalLevel = stats.getThermalLevel() + 22;
+                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
             }
 
-            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.oxygenSetupValid && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode && !playerBaseClient.isSpectator())
+            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode && !playerBaseClient.isSpectator())
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
@@ -388,7 +383,7 @@ public class TickHandlerClient
                                 IBlockState state = player.worldObj.getBlockState(pos);
                                 final Block block = state.getBlock();
 
-                                if (block.getMaterial() != Material.AIR)
+                                if (block.getMaterial(state) != Material.AIR)
                                 {
                                     int metadata = block.getMetaFromState(state);
                                     boolean isDetectable = false;
@@ -481,7 +476,8 @@ public class TickHandlerClient
                     {
                         world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
                         ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderZeroGravity) world.provider).getSpinManager().getSpinRate();
-                        GCPlayerStatsClient.get(player).inFreefallFirstCheck = false;
+                        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+                        stats.setInFreefallFirstCheck(false);
                     }
 
                     if (world.provider.getCloudRenderer() == null)
@@ -623,8 +619,8 @@ public class TickHandlerClient
 
     public static void zoom(float value)
     {
-        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
-        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistanceTemp = value;
+//        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
+        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistancePrev = value;
     }
 
     private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)

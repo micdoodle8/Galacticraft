@@ -74,7 +74,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 //    }
 //
 //    @Override
-//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
 //

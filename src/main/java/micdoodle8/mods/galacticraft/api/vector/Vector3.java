@@ -176,11 +176,11 @@ public class Vector3 implements Cloneable
     }
 
     /**
-     * Converts this vector three into a Minecraft Vec3 object
+     * Converts this vector three into a Minecraft Vec3d object
      */
-    public Vec3 toVec3()
+    public Vec3d toVec3()
     {
-        return new Vec3(this.x, this.y, this.z);
+        return new Vec3d(this.x, this.y, this.z);
     }
 
     /**
@@ -710,10 +710,10 @@ public class Vector3 implements Cloneable
     public MovingObjectPosition rayTraceEntities(World world, Vector3 target)
     {
         MovingObjectPosition pickedEntity = null;
-        Vec3 startingPosition = this.toVec3();
-        Vec3 look = target.toVec3();
+        Vec3d startingPosition = this.toVec3();
+        Vec3d look = target.toVec3();
         double reachDistance = this.distance(target);
-        Vec3 reachPoint = new Vec3(startingPosition.xCoord + look.xCoord * reachDistance, startingPosition.yCoord + look.yCoord * reachDistance, startingPosition.zCoord + look.zCoord * reachDistance);
+        Vec3d reachPoint = new Vec3d(startingPosition.xCoord + look.xCoord * reachDistance, startingPosition.yCoord + look.yCoord * reachDistance, startingPosition.zCoord + look.zCoord * reachDistance);
 
         double checkBorder = 1.1 * reachDistance;
         AxisAlignedBB boxToScan = new AxisAlignedBB(-checkBorder, -checkBorder, -checkBorder, checkBorder, checkBorder, checkBorder).offset(this.x, this.y, this.z);

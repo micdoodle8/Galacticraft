@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -89,15 +90,15 @@ public class CommandSpaceStationChangeOwner extends CommandBase
                 final EntityPlayerMP newPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(newOwner, true);
                 if (oldPlayer != null)
                 {
-                    final GCPlayerStats stats = GCPlayerStats.get(oldPlayer);
+                    IStatsCapability stats = oldPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                     SpaceStationWorldData.updateSSOwnership(oldPlayer, oldOwner, stats, stationID, stationData);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimension(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), oldPlayer);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimension(), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), oldPlayer);
                 }
                 if (newPlayer != null)
                 {
-                    final GCPlayerStats stats = GCPlayerStats.get(newPlayer);
+                    IStatsCapability stats = newPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                     SpaceStationWorldData.updateSSOwnership(newPlayer, newOwner.replace(".", ""), stats, stationID, stationData);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimension(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), newPlayer);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, oldPlayer.worldObj.provider.getDimension(), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), newPlayer);
                 }
             }
             catch (final Exception var6)

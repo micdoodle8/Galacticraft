@@ -166,6 +166,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     {
         super.writeToNBT(nbt);
         //		nbt.setFloat("energyStored", this.energyStored);
+        return nbt;
     }
 
     public void discharge(ItemStack itemStack)

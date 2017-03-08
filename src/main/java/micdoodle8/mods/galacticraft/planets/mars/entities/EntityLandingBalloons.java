@@ -98,7 +98,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
         if (this.worldObj.isRemote)
         {

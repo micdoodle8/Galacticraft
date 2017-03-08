@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -24,7 +24,7 @@ public class RenderGrapple extends Render<EntityGrapple>
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
 
-        Vec3 vec3 = new Vec3(0.0D, -0.2D, 0.0D);
+        Vec3d vec3 = new Vec3d(0.0D, -0.2D, 0.0D);
         EntityPlayer shootingEntity = grapple.getShootingEntity();
 
         if (shootingEntity != null && grapple.getPullingEntity())

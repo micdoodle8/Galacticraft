@@ -101,15 +101,15 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 
 //	@SideOnly(Side.CLIENT)
 //	@Override
-//	public Vec3 getFogColor(float var1, float var2)
+//	public Vec3d getFogColor(float var1, float var2)
 //	{
-//		return Vec3.createVectorHelper((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
+//		return Vec3d.createVectorHelper((double) 0F / 255F, (double) 0F / 255F, (double) 0F / 255F);
 //	}
 
 //	@Override
-//	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+//	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks)
 //	{
-//		return Vec3.createVectorHelper(0, 0, 0);
+//		return Vec3d.createVectorHelper(0, 0, 0);
 //	}
 
 //	@Override

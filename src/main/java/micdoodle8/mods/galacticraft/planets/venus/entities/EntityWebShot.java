@@ -116,7 +116,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean p_180426_10_)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean p_180426_10_)
     {
         this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
@@ -164,15 +164,15 @@ public class EntityWebShot extends Entity implements IProjectile
         }
 
         ++this.ticksInAir;
-        Vec3 vec31 = new Vec3(this.posX, this.posY, this.posZ);
-        Vec3 vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3d vec31 = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
         MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3, false, true, false);
-        vec31 = new Vec3(this.posX, this.posY, this.posZ);
-        vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        vec31 = new Vec3d(this.posX, this.posY, this.posZ);
+        vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
         if (movingobjectposition != null)
         {
-            vec3 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
         }
 
         Entity entity = null;

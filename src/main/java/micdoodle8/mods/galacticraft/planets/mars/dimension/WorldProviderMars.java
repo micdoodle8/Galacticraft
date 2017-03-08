@@ -98,15 +98,15 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 
 //	@SideOnly(Side.CLIENT)
 //	@Override
-//	public Vec3 getFogColor(float var1, float var2)
+//	public Vec3d getFogColor(float var1, float var2)
 //	{
-//		return Vec3.createVectorHelper((double) 210F / 255F, (double) 120F / 255F, (double) 59F / 255F);
+//		return Vec3d.createVectorHelper((double) 210F / 255F, (double) 120F / 255F, (double) 59F / 255F);
 //	}
 //
 //	@Override
-//	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+//	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks)
 //	{
-//		return Vec3.createVectorHelper(154 / 255.0F, 114 / 255.0F, 66 / 255.0F);
+//		return Vec3d.createVectorHelper(154 / 255.0F, 114 / 255.0F, 66 / 255.0F);
 //	}
 
     @Override

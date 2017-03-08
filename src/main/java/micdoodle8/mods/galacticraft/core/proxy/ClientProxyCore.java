@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.*;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
@@ -40,31 +41,32 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.TextFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -132,7 +134,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.registerEntityRenderers();
 
-        OBJLoader.instance.addDomain(Constants.ASSET_PREFIX);
+        OBJLoader.INSTANCE.addDomain(Constants.ASSET_PREFIX);
     }
 
     @Override
@@ -142,7 +144,7 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                         { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
                 };
-        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(Constants.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
+        MUSIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new Class[] { SoundEvent.class, Integer.TYPE, Integer.TYPE }, GCSounds.music, 12000, 24000);
         ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
         ClientProxyCore.updateCapeList();
@@ -330,16 +332,16 @@ public class ClientProxyCore extends CommonProxyCore
     @SubscribeEvent
     public void onTextureStitchedPre(TextureStitchEvent.Pre event)
     {
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocketT1"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyMain"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyStorage"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyWheels"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/frequencyModule"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/rocketT1"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/buggyMain"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/buggyStorage"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/buggyWheels"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/frequencyModule"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
     }
 
     @SubscribeEvent
@@ -376,9 +378,9 @@ public class ClientProxyCore extends CommonProxyCore
             for (int i = 0; i < container.getTextureCount(); ++i)
             {
                 ModelResourceLocation modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_" + i, "inventory");
-                IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+                IBakedModel object = event.getModelRegistry().getObject(modelResourceLocation);
                 ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
-                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+                event.getModelRegistry().putObject(modelResourceLocation, modelFinal);
             }
         }
     }

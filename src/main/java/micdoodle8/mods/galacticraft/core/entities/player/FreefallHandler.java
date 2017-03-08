@@ -44,9 +44,9 @@ public class FreefallHandler
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
         IBlockState state = player.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() != Material.AIR && !(b instanceof BlockLiquid))
+        if (b.getMaterial(state) != Material.AIR && !(b instanceof BlockLiquid))
         {
-            double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
+            double blockYmax = playerFeetOnY + b.getBoundingBox(state, player.worldObj, pos).maxY;
             if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
@@ -57,7 +57,8 @@ public class FreefallHandler
                 }
                 else if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
                 {
-                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.worldObj, new BlockPos(xx, playerFeetOnY, zz), state);
+                    BlockPos offsetPos = new BlockPos(xx, playerFeetOnY, zz);
+                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.worldObj.getBlockState(offsetPos), player.worldObj, offsetPos);
                     if (collisionBox != null && collisionBox.intersectsWith(player.getEntityBoundingBox()))
                     {
                         player.posY -= player.getEntityBoundingBox().minY - blockYmax;
@@ -81,8 +82,8 @@ public class FreefallHandler
         }
         WorldProviderZeroGravity worldProviderOrbit = (WorldProviderZeroGravity) worldProvider;
         SpinManager spinManager = worldProviderOrbit.getSpinManager();
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-        if (this.pjumpticks > 0 || (stats.ssOnGroundLast && p.movementInput.jump))
+        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        if (this.pjumpticks > 0 || (stats.isSsOnGroundLast() && p.movementInput.jump))
         {
             return false;
         }
@@ -252,12 +253,13 @@ public class FreefallHandler
         double posOffsetZ = -p.motionZ;
         //if (p.capabilities.isFlying)
 
+        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
         ///Undo whatever vanilla tried to do to our y motion
         if (dY < 0D && p.motionY != 0.0D)
         {
             p.motionY = pPrevMotionY;
         }
-        else if (dY > 0.01D && GCPlayerStatsClient.get(p).inFreefallLast)
+        else if (dY > 0.01D && stats.isInFreefallLast())
         {
             //Impulse upwards - it's probably a jetpack from another mod
             if (dX < 0.01D && dZ < 0.01D)
@@ -376,8 +378,8 @@ public class FreefallHandler
     public void preVanillaMotion(EntityPlayerSP p)
     {
         this.setupFreefallPre(p);
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-        stats.ssOnGroundLast = p.onGround;
+        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        stats.setSsOnGroundLast(p.onGround);
     }
 
     @SideOnly(Side.CLIENT)
@@ -391,12 +393,12 @@ public class FreefallHandler
         }
         WorldProviderZeroGravity worldProviderOrbit = (WorldProviderZeroGravity) worldProvider;
         SpinManager spinManager = worldProviderOrbit.getSpinManager();
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-        boolean freefall = stats.inFreefall;
+        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        boolean freefall = stats.isInFreefall();
 //        if (freefall) p.ySize = 0F;  //Undo the sneak height adjust TODO Fix this for 1.8
         freefall = this.testFreefall(p, freefall);
-        stats.inFreefall = freefall;
-        stats.inFreefallFirstCheck = true;
+        stats.setInFreefall(freefall);
+        stats.setInFreefallFirstCheck(true);
 
         boolean doGravity = true;
 
@@ -433,13 +435,13 @@ public class FreefallHandler
 
                 //Check for block collisions here - if so move the player appropriately
                 //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
-                if (world.getCollidingBoundingBoxes(p, p.getEntityBoundingBox()).size() == 0)
+                if (world.getCollisionBoxes(p, p.getEntityBoundingBox()).size() == 0)
                 {
                     //Now check for collisions in the new direction and if there are some, try reducing the movement
                     int collisions = 0;
                     do
                     {
-                        List<AxisAlignedBB> list = world.getCollidingBoundingBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
+                        List<AxisAlignedBB> list = world.getCollisionBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
                         collisions = list.size();
                         if (collisions > 0)
                         {
@@ -555,7 +557,7 @@ public class FreefallHandler
             //if (p.motionY != 0) p.motionY = this.pPrevMotionY;
             if (p.movementInput.jump)
             {
-                if (p.onGround || stats.ssOnGroundLast)
+                if (p.onGround || stats.isSsOnGroundLast())
                 {
                     this.pjumpticks = 20;
                     p.motionY -= 0.015D;

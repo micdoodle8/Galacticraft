@@ -3,7 +3,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
@@ -45,11 +46,11 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     }
 
     @Override
-    public void updateRiderPosition()
+    public void updatePassenger(Entity passenger)
     {
-        if (this.riddenByEntity != null)
+        if (this.isPassenger(passenger))
         {
-            this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+            passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ);
         }
     }
 
@@ -83,15 +84,15 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
 
-        GCPlayerStats stats = GCPlayerStats.get(player);
-        this.containedItems = new ItemStack[stats.rocketStacks.length + 1];
-        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.fuelLevel));
+        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        this.containedItems = new ItemStack[stats.getRocketStacks().length + 1];
+        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.getFuelLevel()));
 
-        for (int i = 0; i < stats.rocketStacks.length; i++)
+        for (int i = 0; i < stats.getRocketStacks().length; i++)
         {
-            if (stats.rocketStacks[i] != null)
+            if (stats.getRocketStacks()[i] != null)
             {
-                this.containedItems[i] = stats.rocketStacks[i].copy();
+                this.containedItems[i] = stats.getRocketStacks()[i].copy();
             }
             else
             {
@@ -101,7 +102,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
-        player.mountEntity(this);
+        player.startRiding(this, true);
     }
 
     @Override
@@ -111,13 +112,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         if (this.ticks < 40 && this.posY > 150)
         {
-            if (this.riddenByEntity == null)
+            if (this.getPassengers().isEmpty())
             {
                 final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
-                    player.mountEntity(this);
+                    player.startRiding(this);
                 }
             }
         }
@@ -135,7 +136,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             for (Entity entity : var15)
             {
-                if (entity != this.riddenByEntity)
+                if (!this.getPassengers().contains(entity))
                 {
                     this.pushEntityAway(entity);
                 }
@@ -151,7 +152,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     private void pushEntityAway(Entity entityToPush)
     {
-        if (this.riddenByEntity != entityToPush && this.getRidingEntity() != entityToPush)
+        if (!this.getPassengers().contains(entityToPush) && this.getRidingEntity() != entityToPush)
         {
             double d0 = this.posX - entityToPush.posX;
             double d1 = this.posZ - entityToPush.posZ;
@@ -261,7 +262,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             return false;
         }
 
-        return this.riddenByEntity != null && !this.onGround;
+        return !this.getPassengers().isEmpty() && !this.onGround;
     }
 
     public abstract double getInitialMotionY();
@@ -307,7 +308,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             this.shouldMoveServer = this.shouldMove();
             objList.add(this.shouldMoveServer);
             //Server send rider information for client to check
-            objList.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
+            objList.add(this.getPassengers().isEmpty() ? -1 : this.getPassengers().get(0).getEntityId());
         }
 
         return objList;
@@ -352,7 +353,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
                 //Check has correct rider on client
                 int shouldBeMountedId = buffer.readInt();
-                if (this.riddenByEntity == null)
+                if (this.getPassengers().isEmpty())
                 {
                     if (shouldBeMountedId > -1)
                     {
@@ -363,22 +364,22 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                             {
                                 if (e instanceof EntityPlayer)
                                 {
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
-                                    e.mountEntity(this);
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
+                                    e.startRiding(this);
                                 }
                             }
                             else
                             {
-                                e.mountEntity(this);
+                                e.startRiding(this);
                             }
                         }
                     }
                 }
-                else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
+                else if (this.getPassengers().get(0).getEntityId() != shouldBeMountedId)
                 {
                     if (shouldBeMountedId == -1)
                     {
-                        this.riddenByEntity.mountEntity(null);
+                        this.removePassengers();
                     }
                     else
                     {
@@ -389,13 +390,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                             {
                                 if (e instanceof EntityPlayer)
                                 {
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
-                                    e.mountEntity(this);
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
+                                    e.startRiding(this, true);
                                 }
                             }
                             else
                             {
-                                e.mountEntity(this);
+                                e.startRiding(this, true);
                             }
                         }
                     }
@@ -451,21 +452,18 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public UUID getOwnerUUID()
     {
-        if (this.riddenByEntity != null && !(this.riddenByEntity instanceof EntityPlayer))
+        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof EntityPlayer))
         {
             return null;
         }
 
         UUID id;
 
-        if (riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
-            id = ((EntityPlayer) this.riddenByEntity).getPersistentID();
+            id = this.getPassengers().get(0).getPersistentID();
 
-            if (id != null)
-            {
-                this.persistantRiderUUID = id;
-            }
+            this.persistantRiderUUID = id;
         }
         else
         {

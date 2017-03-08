@@ -9,6 +9,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -30,9 +31,9 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(22.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(ConfigManagerCore.hardMode ? 0.40000001192092896D : 0.30000001192092896D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(ConfigManagerCore.hardMode ? 4.0D : 2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(22.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(ConfigManagerCore.hardMode ? 0.40000001192092896D : 0.30000001192092896D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(ConfigManagerCore.hardMode ? 4.0D : 2.0D);
     }
 
     @Override
@@ -50,38 +51,38 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
     {
-        Object p_180482_2_1 = super.onInitialSpawn(difficulty, livingdata);
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
 
         if (this.worldObj.rand.nextInt(100) == 0)
         {
             EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData) null);
+            entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
             this.worldObj.spawnEntityInWorld(entityskeleton);
-            entityskeleton.mountEntity(this);
+            entityskeleton.startRiding(this);
         }
 
-        if (p_180482_2_1 == null)
+        if (livingdata == null)
         {
-            p_180482_2_1 = new EntitySpider.GroupData();
+            livingdata = new EntitySpider.GroupData();
 
             if (this.worldObj.getDifficulty() == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
             {
-                ((EntitySpider.GroupData) p_180482_2_1).func_111104_a(this.worldObj.rand);
+                ((EntitySpider.GroupData)livingdata).setRandomEffect(this.worldObj.rand);
             }
         }
 
-        if (p_180482_2_1 instanceof EntitySpider.GroupData)
+        if (livingdata instanceof EntitySpider.GroupData)
         {
-            int i = ((EntitySpider.GroupData) p_180482_2_1).potionEffectId;
+            Potion potion = ((EntitySpider.GroupData)livingdata).effect;
 
-            if (i > 0 && Potion.potionTypes[i] != null)
+            if (potion != null)
             {
-                this.addPotionEffect(new PotionEffect(i, Integer.MAX_VALUE));
+                this.addPotionEffect(new PotionEffect(potion, Integer.MAX_VALUE));
             }
         }
 
-        return (IEntityLivingData) p_180482_2_1;
+        return livingdata;
     }
 
     @Override
@@ -93,9 +94,9 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             this.motionY = 0.26D;
         }
 
-        if (this.isPotionActive(Potion.jump))
+        if (this.isPotionActive(MobEffects.JUMP_BOOST))
         {
-            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+            this.motionY += (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())
@@ -109,7 +110,6 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         ForgeHooks.onLivingJump(this);
     }
 
-    @Override
     protected void addRandomDrop()
     {
         switch (this.rand.nextInt(14))
@@ -122,7 +122,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         case 3:
         case 4:
         case 5:
-            this.dropItem(Items.fermented_spider_eye, 1);
+            this.dropItem(Items.FERMENTED_SPIDER_EYE, 1);
             break;
         case 6:
         case 7:
@@ -136,8 +136,19 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             this.dropItem(GCItems.oxygenConcentrator, 1);
             break;
         default:
-            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.nether_wart, 1);
+            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.NETHER_WART, 1);
             break;
+        }
+    }
+
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        super.dropFewItems(wasRecentlyHit, lootingModifier);
+
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.01F)
+        {
+            this.addRandomDrop();
         }
     }
 }

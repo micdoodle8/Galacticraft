@@ -4,15 +4,15 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -31,15 +31,6 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     {
         super(var1);
         this.setSize(3.0F, 1.0F);
-    }
-
-    @Override
-    public void updateRiderPosition()
-    {
-        if (this.riddenByEntity != null)
-        {
-            this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
-        }
     }
 
     @Override
@@ -66,8 +57,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
-        this.riddenByEntity = player;
-        player.getRidingEntity() = this;
+        player.startRiding(this, true);
     }
 
     @Override
@@ -77,13 +67,13 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
         if (this.ticks < 40 && this.posY > 150)
         {
-            if (this.riddenByEntity == null)
+            if (this.getPassengers().isEmpty())
             {
                 final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
-                    player.mountEntity(this);
+                    player.startRiding(this, true);
                 }
             }
         }
@@ -96,7 +86,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         {
             for (Entity entity : var15)
             {
-                if (entity != this.riddenByEntity)
+                if (!this.getPassengers().contains(entity))
                 {
                     this.pushEntityAway(entity);
                 }
@@ -106,7 +96,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
     private void pushEntityAway(Entity entityToPush)
     {
-        if (this.riddenByEntity != entityToPush && this.getRidingEntity() != entityToPush)
+        if (!this.getPassengers().contains(entityToPush) && this.getRidingEntity() != entityToPush)
         {
             double d0 = this.posX - entityToPush.posX;
             double d1 = this.posZ - entityToPush.posZ;
@@ -190,7 +180,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             this.shouldMoveServer = this.shouldMove();
             objList.add(this.shouldMoveServer);
             //Server send rider information for client to check
-            objList.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
+            objList.add(this.getPassengers().isEmpty() ? -1 : this.getPassengers().get(0).getEntityId());
         }
 
         return objList;
@@ -226,29 +216,29 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
                 //Check has correct rider on client
                 int shouldBeMountedId = buffer.readInt();
-                if (this.riddenByEntity == null)
+                if (this.getPassengers().isEmpty())
                 {
                     if (shouldBeMountedId > -1)
                     {
                         Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
                         if (e != null)
                         {
-                            e.mountEntity(this);
+                            e.startRiding(this, true);
                         }
                     }
                 }
-                else if (this.riddenByEntity.getEntityId() != shouldBeMountedId)
+                else if (this.getPassengers().get(0).getEntityId() != shouldBeMountedId)
                 {
                     if (shouldBeMountedId == -1)
                     {
-                        this.riddenByEntity.mountEntity(null);
+                        this.removePassengers();
                     }
                     else
                     {
                         Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
                         if (e != null)
                         {
-                            e.mountEntity(this);
+                            e.startRiding(this, true);
                         }
                     }
                 }
@@ -291,21 +281,18 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public UUID getOwnerUUID()
     {
-        if (this.riddenByEntity != null && !(this.riddenByEntity instanceof EntityPlayer))
+        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof EntityPlayer))
         {
             return null;
         }
 
         UUID id;
 
-        if (riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
-            id = ((EntityPlayer) this.riddenByEntity).getPersistentID();
+            id = this.getPassengers().get(0).getPersistentID();
 
-            if (id != null)
-            {
-                this.persistantRiderUUID = id;
-            }
+            this.persistantRiderUUID = id;
         }
         else
         {
@@ -352,7 +339,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z,
+    public Particle getParticle(Random rand, double x, double y, double z,
                                 double motX, double motY, double motZ)
     {
         return null;

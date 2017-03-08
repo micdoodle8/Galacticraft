@@ -144,6 +144,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         super.writeToNBT(nbt);
 
         nbt.setBoolean("isDisabled", this.getDisabled(0));
+        return nbt;
     }
 
     @Override
@@ -194,7 +195,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();
-        drops.add(this.getBlockType().getPickBlock(null, this.worldObj, this.getPos(), player));
+        drops.add(this.getBlockType().getPickBlock(this.worldObj.getBlockState(this.getPos()), null, this.worldObj, this.getPos(), player));
         return drops;
     }
 

@@ -79,7 +79,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
 
         if (var4 && par3Random.nextInt(3) > 0)
         {
-            switch (this.coordBaseMode.getHorizontalIndex())
+            switch (this.getCoordBaseMode().getHorizontalIndex())
             {
             case 0:
                 StructureVillagePiecesMoon.getNextStructureComponentVillagePath((StructureComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.getHorizontal(1), this.getComponentType());
@@ -97,7 +97,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
 
         if (var4 && par3Random.nextInt(3) > 0)
         {
-            switch (this.coordBaseMode.getHorizontalIndex())
+            switch (this.getCoordBaseMode().getHorizontalIndex())
             {
             case 0:
                 StructureVillagePiecesMoon.getNextStructureComponentVillagePath((StructureComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.getHorizontal(3), this.getComponentType());

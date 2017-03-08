@@ -5,21 +5,23 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.projectile.EntityTippedArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -28,31 +30,14 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     public EntityEvolvedSkeleton(World worldIn)
     {
         super(worldIn);
-        this.tasks.taskEntries.clear();
-        this.targetTasks.taskEntries.clear();
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIRestrictSun(this));
-        this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityWolf.class, 6.0F, 1.0D, 1.2D));
-        this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
-
-        if (worldIn != null && !worldIn.isRemote)
-        {
-            this.setCombatTask();
-        }
     }
 
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35F);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35F);
     }
 
     @Override
@@ -62,30 +47,50 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
     {
-        EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 0.4F, 17 - this.worldObj.getDifficulty().getDifficultyId() * 4);
-        int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
-        int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
-        entityarrow.setDamage(par2 * 2.0F + this.rand.nextGaussian() * 0.25D + this.worldObj.getDifficulty().getDifficultyId() * 0.11F);
+        EntityTippedArrow entitytippedarrow = new EntityTippedArrow(this.worldObj, this);
+        double d0 = target.posX - this.posX;
+        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entitytippedarrow.posY;
+        double d2 = target.posZ - this.posZ;
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+        entitytippedarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
+        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.POWER, this);
+        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.PUNCH, this);
+        DifficultyInstance difficultyinstance = this.worldObj.getDifficultyForLocation(new BlockPos(this));
+        entitytippedarrow.setDamage((double)(distanceFactor * 2.0F) + this.rand.nextGaussian() * 0.25D + (double)((float)this.worldObj.getDifficulty().getDifficultyId() * 0.11F));
 
         if (i > 0)
         {
-            entityarrow.setDamage(entityarrow.getDamage() + i * 0.5D + 0.5D);
+            entitytippedarrow.setDamage(entitytippedarrow.getDamage() + (double)i * 0.5D + 0.5D);
         }
 
         if (j > 0)
         {
-            entityarrow.setKnockbackStrength(j);
+            entitytippedarrow.setKnockbackStrength(j);
         }
 
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0 || this.getSkeletonType() == 1)
+        boolean flag = this.isBurning() && difficultyinstance.isHard() && this.rand.nextBoolean() || this.getSkeletonType() == SkeletonType.WITHER;
+        flag = flag || EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FLAME, this) > 0;
+
+        if (flag)
         {
-            entityarrow.setFire(100);
+            entitytippedarrow.setFire(100);
         }
 
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
+        ItemStack itemstack = this.getHeldItem(EnumHand.OFF_HAND);
+
+        if (itemstack != null && itemstack.getItem() == Items.TIPPED_ARROW)
+        {
+            entitytippedarrow.setPotionEffect(itemstack);
+        }
+        else if (this.getSkeletonType() == SkeletonType.STRAY)
+        {
+            entitytippedarrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 600));
+        }
+
+        this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.worldObj.spawnEntityInWorld(entitytippedarrow);
     }
 
     @Override
@@ -97,9 +102,9 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             this.motionY = 0.24D;
         }
 
-        if (this.isPotionActive(Potion.jump))
+        if (this.isPotionActive(MobEffects.JUMP_BOOST))
         {
-            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+            this.motionY += (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())
@@ -113,7 +118,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         ForgeHooks.onLivingJump(this);
     }
 
-    @Override
     protected void addRandomDrop()
     {
         int r = this.rand.nextInt(12);
@@ -136,13 +140,13 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             this.dropItem(GCItems.canister, 1);
             break;
         default:
-            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.pumpkin_seeds, 1);
+            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.PUMPKIN_SEEDS, 1);
             break;
         }
     }
 
     @Override
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
         Item item = this.getDropItem();
 
@@ -150,9 +154,9 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
         if (item != null)
         {
-            if (p_70628_2_ > 0)
+            if (lootingModifier > 0)
             {
-                j += this.rand.nextInt(p_70628_2_ + 1);
+                j += this.rand.nextInt(lootingModifier + 1);
             }
 
             for (int k = 1; k < j; ++k)
@@ -161,12 +165,17 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             }
         }
 
-        j = this.rand.nextInt(3 + p_70628_2_);
+        j = this.rand.nextInt(3 + lootingModifier);
         if (j > 1)
-            this.dropItem(Items.bone, 1);
+            this.dropItem(Items.BONE, 1);
 
         //Drop lapis as semi-rare drop if player hit and if dropping bones
-        if (p_70628_1_ && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
+        if (wasRecentlyHit && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
             this.entityDropItem(new ItemStack(Items.DYE, 1, 4), 0.0F);
+
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.01F)
+        {
+            this.addRandomDrop();
+        }
     }
 }

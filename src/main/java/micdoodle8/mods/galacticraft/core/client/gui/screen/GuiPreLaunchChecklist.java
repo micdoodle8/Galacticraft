@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -142,7 +143,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, mc.thePlayer.worldObj.provider.getDimension(), new Object[] { this.tagCompound }));
 
         // Update client item
-        ItemStack stack = mc.thePlayer.getHeldItem();
+        ItemStack stack = mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND /* TODO Support off-hand use */);
         NBTTagCompound tagCompound = stack.getTagCompound();
         if (tagCompound == null)
         {

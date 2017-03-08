@@ -197,7 +197,7 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
     }
 
 //    @Override
-//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        int l = getMetaFromState(worldIn.getBlockState(pos)) & 7;
 //        float f = 0.15F;

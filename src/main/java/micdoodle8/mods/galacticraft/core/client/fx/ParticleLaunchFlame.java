@@ -20,9 +20,9 @@ public class ParticleLaunchFlame extends Particle
 {
     private float smokeParticleScale;
     private boolean spawnSmokeShort;
-    private EntityLivingBase getRidingEntity();
+    private EntityLivingBase ridingEntity;
 
-    public ParticleLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched, EntityLivingBase getRidingEntity())
+    public ParticleLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched, EntityLivingBase ridingEntity)
     {
         super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -40,7 +40,7 @@ public class ParticleLaunchFlame extends Particle
         this.particleMaxAge = (int) (this.particleMaxAge * 1F);
         this.canCollide = true;
         this.spawnSmokeShort = launched;
-        this.getRidingEntity() = getRidingEntity();
+        this.ridingEntity = ridingEntity;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ParticleLaunchFlame extends Particle
 
                 if (var5 instanceof EntityLivingBase)
                 {
-                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.getRidingEntity()))
+                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, var5.worldObj.provider.getDimension(), new Object[] { var5.getEntityId() }));

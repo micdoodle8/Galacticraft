@@ -105,9 +105,8 @@ public class PlayerServer implements IPlayerServer
                 int titaniumCount = 0;
                 if (player.inventory != null)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (ItemStack armorPiece : player.getArmorInventoryList())
                     {
-                        ItemStack armorPiece = player.getCurrentArmor(i);
                         if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
                         {
                             titaniumCount++;
@@ -133,10 +132,12 @@ public class PlayerServer implements IPlayerServer
         {
             for (int i = 0; i < 4; i++)
             {
-                ItemStack armorPiece = player.getCurrentArmor(i);
-                if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
+                for (ItemStack armorPiece : player.getArmorInventoryList())
                 {
-                    deshCount++;
+                    if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
+                    {
+                        deshCount++;
+                    }
                 }
             }
         }
@@ -161,18 +162,16 @@ public class PlayerServer implements IPlayerServer
         }
     }
 
-
-
     public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3, boolean bypass)
     {
-        BlockPos c = player.playerLocation;
+        BlockPos c = player.bedLocation;
 
         if (c != null)
         {
             EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (bypass || event.result == null || event.result == EntityPlayer.EnumStatus.OK)
+            if (bypass || event.result == null || event.result == EntityPlayer.SleepResult.OK)
             {
                 return false;
             }

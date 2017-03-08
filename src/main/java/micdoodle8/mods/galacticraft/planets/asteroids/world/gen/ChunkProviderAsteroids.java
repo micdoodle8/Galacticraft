@@ -44,7 +44,7 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     final byte DIRT_META = 0;
     final Block GRASS = Blocks.grass;
     final byte GRASS_META = 0;
-    final Block LIGHT = Blocks.glowstone;
+    final Block LIGHT = Blocks.GLOWSTONE;
     final byte LIGHT_META = 0;
     BlockTallGrass.EnumType GRASS_TYPE = BlockTallGrass.EnumType.GRASS;
     final BlockFlower FLOWER = Blocks.red_flower;

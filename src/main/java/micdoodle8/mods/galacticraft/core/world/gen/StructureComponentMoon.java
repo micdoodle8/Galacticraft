@@ -87,7 +87,7 @@ public abstract class StructureComponentMoon extends StructureComponent
     @Override
     protected int getXWithOffset(int var1, int var2)
     {
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minX + var1;
@@ -115,7 +115,7 @@ public abstract class StructureComponentMoon extends StructureComponent
     @Override
     protected int getZWithOffset(int var1, int var2)
     {
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minZ + var2;
@@ -136,13 +136,13 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getXWithOffsetAsIfRotated(int var1, int var2, int var3)
     {
-        if (this.coordBaseMode.getHorizontalIndex() < 0)
+        if (this.getCoordBaseMode().getHorizontalIndex() < 0)
         {
             return var1;
         }
         else
         {
-            switch ((this.coordBaseMode.getHorizontalIndex() + var3) % 4)
+            switch ((this.getCoordBaseMode().getHorizontalIndex() + var3) % 4)
             {
             case 0:
                 return this.boundingBox.minX + var1;
@@ -164,13 +164,13 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getZWithOffsetAsIfRotated(int var1, int var2, int var3)
     {
-        if (this.coordBaseMode.getHorizontalIndex() < 0)
+        if (this.getCoordBaseMode().getHorizontalIndex() < 0)
         {
             return var1;
         }
         else
         {
-            switch ((this.coordBaseMode.getHorizontalIndex() + var3) % 4)
+            switch ((this.getCoordBaseMode().getHorizontalIndex() + var3) % 4)
             {
             case 0:
                 return this.boundingBox.minZ + var2;
@@ -229,7 +229,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getStairMeta(int var1)
     {
-        switch ((this.coordBaseMode.getHorizontalIndex() + var1) % 4)
+        switch ((this.getCoordBaseMode().getHorizontalIndex() + var1) % 4)
         {
         case 0:
             return 0;
@@ -250,7 +250,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getLadderMeta(int var1)
     {
-        switch ((this.coordBaseMode.getHorizontalIndex() + var1) % 4)
+        switch ((this.getCoordBaseMode().getHorizontalIndex() + var1) % 4)
         {
         case 0:
             return 4;

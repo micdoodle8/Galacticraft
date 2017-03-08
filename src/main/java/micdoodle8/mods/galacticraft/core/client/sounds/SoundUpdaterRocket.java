@@ -7,7 +7,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 
 /**
  * This file is part of the Galacticraft project
@@ -23,7 +23,7 @@ public class SoundUpdaterRocket extends MovingSound
 
     public SoundUpdaterRocket(EntityPlayerSP par1EntityPlayerSP, EntityAutoRocket par2Entity)
     {
-        super(new ResourceLocation(Constants.TEXTURE_PREFIX + "shuttle.shuttle"));
+        super(GCSounds.shuttle, SoundCategory.NEUTRAL);
         this.theRocket = par2Entity;
         this.thePlayer = par1EntityPlayerSP;
         this.attenuationType = ISound.AttenuationType.NONE;

@@ -189,7 +189,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
         if (this.worldObj.isRemote)
         {

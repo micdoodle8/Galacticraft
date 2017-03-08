@@ -295,11 +295,12 @@ public class ThreadFindSeal
 
             if (!this.sealed)
             {
-                if (this.head.getBlockID(this.world) == GCBlocks.breatheableAir)
+                Block block = this.head.getBlockState(this.world).getBlock();
+                if (block == GCBlocks.breatheableAir)
                 {
                     this.breatheableToReplace.add(this.head);
                 }
-                if (this.head.getBlockID(this.world) == GCBlocks.brightBreatheableAir)
+                if (block == GCBlocks.brightBreatheableAir)
                 {
                     this.breatheableToReplaceBright.add(this.head);
                 }

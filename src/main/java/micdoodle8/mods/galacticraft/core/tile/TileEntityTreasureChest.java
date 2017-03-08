@@ -9,6 +9,7 @@ import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
@@ -17,11 +18,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, IPacketReceiver
 {
@@ -31,6 +43,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public float prevLidAngle;
     public int numPlayersUsing;
     private int ticksSinceSync;
+
+    protected ResourceLocation lootTable;
+    protected long lootTableSeed;
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean locked = true;
@@ -177,6 +192,8 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                 this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
+
+        checkLootAndRead(compound);
     }
 
     @Override
@@ -199,6 +216,10 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
 
         compound.setTag("Items", nbttaglist);
+
+        checkLootAndWrite(compound);
+
+        return compound;
     }
 
     /**
@@ -276,7 +297,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             double d1 = (double) i + 0.5D;
             d2 = (double) k + 0.5D;
 
-            this.worldObj.playSoundEffect(d1, (double) j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSound(null, d1, (double)j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (((this.numPlayersUsing == 0 || this.locked) && this.lidAngle > 0.0F) || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
@@ -304,7 +325,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                 d2 = (double) i + 0.5D;
                 double d0 = (double) k + 0.5D;
 
-                this.worldObj.playSoundEffect(d2, (double) j + 0.5D, d0, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSound(null, d2, (double)j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -417,7 +438,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public ITextComponent getDisplayName()
     {
-        return (ITextComponent) (this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (ITextComponent) (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override
@@ -518,5 +539,77 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
 
         return chest;
+    }
+
+    protected boolean checkLootAndRead(NBTTagCompound compound)
+    {
+        if (compound.hasKey("LootTable", 8))
+        {
+            this.lootTable = new ResourceLocation(compound.getString("LootTable"));
+            this.lootTableSeed = compound.getLong("LootTableSeed");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected boolean checkLootAndWrite(NBTTagCompound compound)
+    {
+        if (this.lootTable != null)
+        {
+            compound.setString("LootTable", this.lootTable.toString());
+
+            if (this.lootTableSeed != 0L)
+            {
+                compound.setLong("LootTableSeed", this.lootTableSeed);
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void fillWithLoot(EntityPlayer player)
+    {
+        if (this.lootTable != null)
+        {
+            LootTable loottable = this.worldObj.getLootTableManager().getLootTableFromLocation(this.lootTable);
+            this.lootTable = null;
+            Random random;
+
+            if (this.lootTableSeed == 0L)
+            {
+                random = new Random();
+            }
+            else
+            {
+                random = new Random(this.lootTableSeed);
+            }
+
+            LootContext.Builder builder = new LootContext.Builder((WorldServer)this.worldObj);
+
+            if (player != null)
+            {
+                builder.withLuck(player.getLuck());
+            }
+
+            loottable.fillInventory(this, random, builder.build());
+        }
+    }
+
+    public ResourceLocation getLootTable()
+    {
+        return this.lootTable;
+    }
+
+    public void setLootTable(ResourceLocation lootTable, long lootTableSeed)
+    {
+        this.lootTable = lootTable;
+        this.lootTableSeed = lootTableSeed;
     }
 }

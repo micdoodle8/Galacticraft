@@ -7,7 +7,8 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -17,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.EnumPacketDirection;
+import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -36,13 +38,13 @@ public class ConnectionEvents
         registerPacket(EnumPacketDirection.CLIENTBOUND, PacketSimple.class);
     }
 
-    protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet> packetClass)
+    protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet<? extends INetHandler>> packetClass)
     {
-        BiMap<Integer, Class<? extends Packet>> bimap = (BiMap) EnumConnectionState.PLAY.directionMaps.get(direction);
+        BiMap<Integer, Class<? extends Packet<? extends INetHandler>>> bimap = (BiMap) EnumConnectionState.PLAY.directionMaps.get(direction);
 
         if (bimap == null)
         {
-            bimap = HashBiMap.<Integer, Class<? extends Packet>>create();
+            bimap = HashBiMap.create();
             EnumConnectionState.PLAY.directionMaps.put(direction, bimap);
         }
 
@@ -73,9 +75,9 @@ public class ConnectionEvents
         if (event.player instanceof EntityPlayerMP)
         {
             EntityPlayerMP thePlayer = (EntityPlayerMP) event.player;
-            GCPlayerStats stats = GCPlayerStats.get(thePlayer);
+            IStatsCapability stats = thePlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
             SpaceStationWorldData.checkAllStations(thePlayer, stats);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, thePlayer.worldObj.provider.getDimension(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), thePlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, thePlayer.worldObj.provider.getDimension(), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), thePlayer);
             SpaceRace raceForPlayer = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
             if (raceForPlayer != null)
             {
@@ -102,15 +104,15 @@ public class ConnectionEvents
             }
             GCLog.info("Galacticraft server sending dimension IDs to connecting client: " + ids);
         }
-        event.manager.sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
-        event.manager.sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
-        event.manager.sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
+        event.getManager().sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
+        event.getManager().sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
+        event.getManager().sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
     }
 
     @SubscribeEvent
     public void onConnectionOpened(ClientConnectedToServerEvent event)
     {
-        if (!event.isLocal)
+        if (!event.isLocal())
         {
             ConnectionEvents.clientConnected = true;
         }

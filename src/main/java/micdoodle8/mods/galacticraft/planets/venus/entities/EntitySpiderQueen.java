@@ -45,7 +45,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         super(worldIn);
         this.setSize(1.4F, 0.9F);
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, EntityPlayer.class, 1.0, true));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -78,17 +78,17 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, (byte)-1);
+        this.dataManager.addObject(16, (byte)-1);
     }
 
     public byte getBurrowedCount()
     {
-        return this.dataWatcher.getWatchableObjectByte(16);
+        return this.dataManager.getWatchableObjectByte(16);
     }
 
     public void setBurrowedCount(byte count)
     {
-        this.dataWatcher.updateObject(16, count);
+        this.dataManager.set(16, count);
     }
 
     @Override

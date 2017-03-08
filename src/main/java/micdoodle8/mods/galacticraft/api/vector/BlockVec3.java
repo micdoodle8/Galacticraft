@@ -90,7 +90,7 @@ public class BlockVec3 implements Cloneable
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
      */
-    public Block getBlockID(World world)
+    public IBlockState getBlockState(World world)
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -105,7 +105,7 @@ public class BlockVec3 implements Cloneable
             // this will be within the same chunk
             if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
             {
-                return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+                return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
             }
             else
             {
@@ -114,7 +114,7 @@ public class BlockVec3 implements Cloneable
                 BlockVec3.chunkCacheDim = world.provider.getDimension();
                 BlockVec3.chunkCacheX = chunkx;
                 BlockVec3.chunkCacheZ = chunkz;
-                return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+                return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
             }
         }
         catch (Throwable throwable)

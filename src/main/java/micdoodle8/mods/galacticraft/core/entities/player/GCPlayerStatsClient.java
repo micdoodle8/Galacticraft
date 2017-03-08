@@ -1,260 +1,223 @@
-package micdoodle8.mods.galacticraft.core.entities.player;
-
-import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-
-public class GCPlayerStatsClient implements IExtendedEntityProperties
-{
-    public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.ASSET_PREFIX, "player_stats_client");
-
-    public WeakReference<EntityPlayerSP> player;
-
-    public boolean usingParachute;
-    public boolean lastUsingParachute;
-    public boolean usingAdvancedGoggles;
-    public int thermalLevel;
-    public boolean thermalLevelNormalising;
-    public int thirdPersonView = 0;
-    public long tick;
-    public boolean oxygenSetupValid = true;
-    AxisAlignedBB boundingBoxBefore;
-    public boolean lastOnGround;
-
-    public double distanceSinceLastStep;
-    public int lastStep;
-    public boolean inFreefall;
-    public boolean inFreefallLast;
-    public boolean inFreefallFirstCheck;
-    public double downMotionLast;
-    public boolean lastRidingCameraZoomEntity;
-    public int landingTicks;
-
-    public EnumGravity gdir = EnumGravity.down;
-    public float gravityTurnRate;
-    public float gravityTurnRatePrev;
-    public float gravityTurnVecX;
-    public float gravityTurnVecY;
-    public float gravityTurnVecZ;
-    public float gravityTurnYaw;
-
-    public int spaceRaceInviteTeamID;
-    public boolean lastZoomed;
-    public int buildFlags = -1;
-
-    public boolean ssOnGroundLast;
-
-    public FreefallHandler freefallHandler = new FreefallHandler();
-
-    public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
-
-    public GCPlayerStatsClient(EntityPlayerSP player)
-    {
-        this.player = new WeakReference<EntityPlayerSP>(player);
-    }
-
-    public void setGravity(EnumGravity newGravity)
-    {
-        if (this.gdir == newGravity)
-        {
-            return;
-        }
-        this.gravityTurnRatePrev = this.gravityTurnRate = 0.0F;
-        float turnSpeed = 0.05F;
-        this.gravityTurnVecX = 0.0F;
-        this.gravityTurnVecY = 0.0F;
-        this.gravityTurnVecZ = 0.0F;
-        this.gravityTurnYaw = 0.0F;
-
-        switch (this.gdir.getIntValue())
-        {
-        case 1:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                break;
-            case 2:
-                this.gravityTurnVecX = -2.0F;
-                break;
-            case 3:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 4:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 6:
-                this.gravityTurnVecX = -1.0F;
-            }
-
-            break;
-        case 2:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = -2.0F;
-                break;
-            case 2:
-                break;
-            case 3:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 4:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 6:
-                this.gravityTurnVecX = 1.0F;
-            }
-
-            break;
-        case 3:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 2:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 3:
-                break;
-            case 4:
-                this.gravityTurnVecZ = -2.0F;
-                break;
-            case 5:
-                this.gravityTurnVecZ = -1.0F;
-                this.gravityTurnYaw = -180.0F;
-                break;
-            case 6:
-                this.gravityTurnVecZ = 1.0F;
-            }
-
-            break;
-        case 4:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 2:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = -2.0F;
-                break;
-            case 4:
-                break;
-            case 5:
-                this.gravityTurnVecZ = 1.0F;
-                this.gravityTurnYaw = -180.0F;
-                break;
-            case 6:
-                this.gravityTurnVecZ = -1.0F;
-            }
-
-            break;
-        case 5:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 2:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = 1.0F;
-                this.gravityTurnYaw = 180.0F;
-                break;
-            case 4:
-                this.gravityTurnVecZ = -1.0F;
-                this.gravityTurnYaw = 180.0F;
-                break;
-            case 5:
-                break;
-            case 6:
-                this.gravityTurnVecX = -2.0F;
-            }
-
-            break;
-        case 6:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 2:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = -1.0F;
-                break;
-            case 4:
-                this.gravityTurnVecZ = 1.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = -2.0F;
-            case 6:
-            }
-            break;
-        }
-
-        this.gdir = newGravity;
-    }
-
-    public void setParachute(boolean tf)
-    {
-        this.usingParachute = tf;
-
-        if (!tf)
-        {
-            this.lastUsingParachute = false;
-        }
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound nbt)
-    {
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound nbt)
-    {
-    }
-
-    @Override
-    public void init(Entity entity, World world)
-    {
-    }
-
-    public static void register(EntityPlayerSP player)
-    {
-        player.registerExtendedProperties(GCPlayerStatsClient.GC_PLAYER_PROP, new GCPlayerStatsClient(player));
-    }
-
-    public static GCPlayerStatsClient get(EntityPlayerSP player)
-    {
-        return (GCPlayerStatsClient) player.getExtendedProperties(GCPlayerStatsClient.GC_PLAYER_PROP);
-    }
-}
+//package micdoodle8.mods.galacticraft.core.entities.player;
+//
+//import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+//import micdoodle8.mods.galacticraft.core.Constants;
+//import net.minecraft.client.entity.EntityPlayerSP;
+//import net.minecraft.entity.Entity;
+//import net.minecraft.nbt.NBTTagCompound;
+//import net.minecraft.util.ResourceLocation;
+//import net.minecraft.util.math.AxisAlignedBB;
+//import net.minecraft.world.World;
+//
+//import java.lang.ref.WeakReference;
+//import java.util.ArrayList;
+//
+//public class GCPlayerStatsClient
+//{
+//    public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.ASSET_PREFIX, "player_stats_client");
+//
+//    public WeakReference<EntityPlayerSP> player;
+//
+//
+//    public GCPlayerStatsClient(EntityPlayerSP player)
+//    {
+//        this.player = new WeakReference<EntityPlayerSP>(player);
+//    }
+//
+//    public void setGravity(EnumGravity newGravity)
+//    {
+//        if (this.gdir == newGravity)
+//        {
+//            return;
+//        }
+//        this.gravityTurnRatePrev = this.gravityTurnRate = 0.0F;
+//        float turnSpeed = 0.05F;
+//        this.gravityTurnVecX = 0.0F;
+//        this.gravityTurnVecY = 0.0F;
+//        this.gravityTurnVecZ = 0.0F;
+//        this.gravityTurnYaw = 0.0F;
+//
+//        switch (this.gdir.getIntValue())
+//        {
+//        case 1:
+//            switch (newGravity.getIntValue())
+//            {
+//            case 1:
+//                break;
+//            case 2:
+//                this.gravityTurnVecX = -2.0F;
+//                break;
+//            case 3:
+//                this.gravityTurnVecY = -1.0F;
+//                this.gravityTurnYaw = -90.0F;
+//                break;
+//            case 4:
+//                this.gravityTurnVecY = 1.0F;
+//                this.gravityTurnYaw = 90.0F;
+//                break;
+//            case 5:
+//                this.gravityTurnVecX = 1.0F;
+//                break;
+//            case 6:
+//                this.gravityTurnVecX = -1.0F;
+//            }
+//
+//            break;
+//        case 2:
+//            switch (newGravity.getIntValue())
+//            {
+//            case 1:
+//                this.gravityTurnVecX = -2.0F;
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                this.gravityTurnVecY = 1.0F;
+//                this.gravityTurnYaw = 90.0F;
+//                break;
+//            case 4:
+//                this.gravityTurnVecY = -1.0F;
+//                this.gravityTurnYaw = -90.0F;
+//                break;
+//            case 5:
+//                this.gravityTurnVecX = -1.0F;
+//                break;
+//            case 6:
+//                this.gravityTurnVecX = 1.0F;
+//            }
+//
+//            break;
+//        case 3:
+//            switch (newGravity.getIntValue())
+//            {
+//            case 1:
+//                this.gravityTurnVecY = 1.0F;
+//                this.gravityTurnYaw = 90.0F;
+//                break;
+//            case 2:
+//                this.gravityTurnVecY = -1.0F;
+//                this.gravityTurnYaw = -90.0F;
+//                break;
+//            case 3:
+//                break;
+//            case 4:
+//                this.gravityTurnVecZ = -2.0F;
+//                break;
+//            case 5:
+//                this.gravityTurnVecZ = -1.0F;
+//                this.gravityTurnYaw = -180.0F;
+//                break;
+//            case 6:
+//                this.gravityTurnVecZ = 1.0F;
+//            }
+//
+//            break;
+//        case 4:
+//            switch (newGravity.getIntValue())
+//            {
+//            case 1:
+//                this.gravityTurnVecY = -1.0F;
+//                this.gravityTurnYaw = -90.0F;
+//                break;
+//            case 2:
+//                this.gravityTurnVecY = 1.0F;
+//                this.gravityTurnYaw = 90.0F;
+//                break;
+//            case 3:
+//                this.gravityTurnVecZ = -2.0F;
+//                break;
+//            case 4:
+//                break;
+//            case 5:
+//                this.gravityTurnVecZ = 1.0F;
+//                this.gravityTurnYaw = -180.0F;
+//                break;
+//            case 6:
+//                this.gravityTurnVecZ = -1.0F;
+//            }
+//
+//            break;
+//        case 5:
+//            switch (newGravity.getIntValue())
+//            {
+//            case 1:
+//                this.gravityTurnVecX = -1.0F;
+//                break;
+//            case 2:
+//                this.gravityTurnVecX = 1.0F;
+//                break;
+//            case 3:
+//                this.gravityTurnVecZ = 1.0F;
+//                this.gravityTurnYaw = 180.0F;
+//                break;
+//            case 4:
+//                this.gravityTurnVecZ = -1.0F;
+//                this.gravityTurnYaw = 180.0F;
+//                break;
+//            case 5:
+//                break;
+//            case 6:
+//                this.gravityTurnVecX = -2.0F;
+//            }
+//
+//            break;
+//        case 6:
+//            switch (newGravity.getIntValue())
+//            {
+//            case 1:
+//                this.gravityTurnVecX = 1.0F;
+//                break;
+//            case 2:
+//                this.gravityTurnVecX = -1.0F;
+//                break;
+//            case 3:
+//                this.gravityTurnVecZ = -1.0F;
+//                break;
+//            case 4:
+//                this.gravityTurnVecZ = 1.0F;
+//                break;
+//            case 5:
+//                this.gravityTurnVecX = -2.0F;
+//            case 6:
+//            }
+//            break;
+//        }
+//
+//        this.gdir = newGravity;
+//    }
+//
+////    public void setParachute(boolean tf)
+////    {
+////        this.usingParachute = tf;
+////
+////        if (!tf)
+////        {
+////            this.lastUsingParachute = false;
+////        }
+////    }
+//
+//    @Override
+//    public void saveNBTData(NBTTagCompound nbt)
+//    {
+//    }
+//
+//    @Override
+//    public void loadNBTData(NBTTagCompound nbt)
+//    {
+//    }
+//
+//    @Override
+//    public void init(Entity entity, World world)
+//    {
+//    }
+//
+//    public static void register(EntityPlayerSP player)
+//    {
+//        player.registerExtendedProperties(GCPlayerStatsClient.GC_PLAYER_PROP, new GCPlayerStatsClient(player));
+//    }
+//
+//    public static GCPlayerStatsClient get(EntityPlayerSP player)
+//    {
+//        return (GCPlayerStatsClient) player.getExtendedProperties(GCPlayerStatsClient.GC_PLAYER_PROP);
+//    }
+//}

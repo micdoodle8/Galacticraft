@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -45,12 +46,12 @@ public class CommandJoinSpaceRace extends CommandBase
             {
                 if (playerBase != null)
                 {
-                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
+                    IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-                    if (stats.spaceRaceInviteTeamID > 0)
+                    if (stats.getSpaceRaceInviteTeamID() > 0)
                     {
-                        SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.spaceRaceInviteTeamID));
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, playerBase.worldObj.provider.getDimension(), new Object[] { stats.spaceRaceInviteTeamID }), playerBase);
+                        SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.getSpaceRaceInviteTeamID()));
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, playerBase.worldObj.provider.getDimension(), new Object[] { stats.getSpaceRaceInviteTeamID() }), playerBase);
                     }
                     else
                     {

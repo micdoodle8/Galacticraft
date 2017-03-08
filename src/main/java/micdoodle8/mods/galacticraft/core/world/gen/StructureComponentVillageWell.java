@@ -23,9 +23,9 @@ public class StructureComponentVillageWell extends StructureComponentVillage
     public StructureComponentVillageWell(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, int par4, int par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.coordBaseMode = EnumFacing.getFront(par3Random.nextInt(4));
+        this.getCoordBaseMode() = EnumFacing.getFront(par3Random.nextInt(4));
 
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
         case 2:

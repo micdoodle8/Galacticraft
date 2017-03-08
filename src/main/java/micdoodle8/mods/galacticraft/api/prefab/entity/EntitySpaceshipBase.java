@@ -416,7 +416,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.setRotation(yaw, pitch);
     }

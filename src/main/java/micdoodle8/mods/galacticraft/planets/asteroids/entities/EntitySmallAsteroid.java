@@ -69,9 +69,9 @@ public class EntitySmallAsteroid extends Entity
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(10, 0.0F);
-        this.dataWatcher.addObject(11, 0.0F);
-        this.dataWatcher.addObject(12, 0);
+        this.dataManager.addObject(10, 0.0F);
+        this.dataManager.addObject(11, 0.0F);
+        this.dataManager.addObject(12, 0);
     }
 
     @Override
@@ -92,31 +92,31 @@ public class EntitySmallAsteroid extends Entity
 
     public float getSpinPitch()
     {
-        return this.dataWatcher.getWatchableObjectFloat(10);
+        return this.dataManager.getWatchableObjectFloat(10);
     }
 
     public float getSpinYaw()
     {
-        return this.dataWatcher.getWatchableObjectFloat(11);
+        return this.dataManager.getWatchableObjectFloat(11);
     }
 
     public void setSpinPitch(float pitch)
     {
-        this.dataWatcher.updateObject(10, pitch);
+        this.dataManager.set(10, pitch);
     }
 
     public void setSpinYaw(float yaw)
     {
-        this.dataWatcher.updateObject(11, yaw);
+        this.dataManager.set(11, yaw);
     }
 
     public int getAsteroidType()
     {
-        return this.dataWatcher.getWatchableObjectInt(12);
+        return this.dataManager.get(12);
     }
 
     public void setAsteroidType(int type)
     {
-        this.dataWatcher.updateObject(12, type);
+        this.dataManager.set(12, type);
     }
 }

@@ -23,7 +23,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
         if (this.worldObj != world)
         {
-            GCPlayerStats.get(this).startAdventure(WorldUtil.getDimensionName(this.worldObj.provider));
+            this.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
         }
     }
 

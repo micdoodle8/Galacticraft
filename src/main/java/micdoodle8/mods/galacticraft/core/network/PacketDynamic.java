@@ -5,7 +5,6 @@ import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -97,7 +96,7 @@ public class PacketDynamic extends PacketBase
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
-            world = MinecraftServer.getServer().worldServerForDimension(this.getDimensionID());
+            world = world.getMinecraftServer().worldServerForDimension(this.getDimensionID());
         }
 
         if (world == null)

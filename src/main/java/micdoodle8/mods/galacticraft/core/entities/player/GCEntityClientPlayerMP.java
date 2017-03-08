@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.stats.StatFileWriter;
+import net.minecraft.stats.StatisticsManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GCEntityClientPlayerMP extends EntityPlayerSP
 {
-    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
+    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFileWriter)
     {
         super(mcIn, worldIn, netHandler, statFileWriter);
     }
@@ -68,16 +68,16 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         if (this.worldObj.provider instanceof WorldProviderZeroGravity)
         {
-            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
-            if (stats.freefallHandler.testFreefall(this))
+            IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            if (stats.getFreefallHandler().testFreefall(this))
             {
                 return false;
             }
-            if (stats.inFreefall)
+            if (stats.isInFreefall())
             {
                 return false;
             }
-            if (stats.landingTicks > 0)
+            if (stats.getLandingTicks() > 0)
             {
                 return true;
             }
