@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+
 import micdoodle8.mods.galacticraft.core.blocks.*;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -48,7 +50,9 @@ public class GCBlocks
     public static Block basicBlock;
     public static Block airLockFrame;
     public static Block airLockSeal;
-    public static Block spaceGlass;
+    public static Block spaceGlassClear;
+    public static Block spaceGlassVanilla;
+    public static Block spaceGlassStrong;
     public static Block crudeOil;
     public static Block fuel;
     public static Block refinery;
@@ -108,7 +112,9 @@ public class GCBlocks
         GCBlocks.basicBlock = new BlockBasic("basic_block_core");
         GCBlocks.airLockFrame = new BlockAirLockFrame("air_lock_frame");
         GCBlocks.airLockSeal = new BlockAirLockWall("air_lock_seal");
-        GCBlocks.spaceGlass = new BlockSpaceGlass("space_glass");
+        GCBlocks.spaceGlassClear = new BlockSpaceGlass("space_glass_clear", GlassType.CLEAR).setHardness(0.3F).setResistance(9F);
+        GCBlocks.spaceGlassVanilla = new BlockSpaceGlass("space_glass_vanilla", GlassType.VANILLA).setHardness(0.3F).setResistance(9F);
+        GCBlocks.spaceGlassStrong = new BlockSpaceGlass("space_glass_strong", GlassType.STRONG).setHardness(4F).setResistance(80F);;
         GCBlocks.refinery = new BlockRefinery("refinery");
         GCBlocks.oxygenCompressor = new BlockOxygenCompressor(false, "oxygen_compressor");
         GCBlocks.fuelLoader = new BlockFuelLoader("fuel_loader");
@@ -350,7 +356,9 @@ public class GCBlocks
         registerBlock(GCBlocks.basicBlock, ItemBlockBase.class);
         registerBlock(GCBlocks.airLockFrame, ItemBlockAirLock.class);
         registerBlock(GCBlocks.airLockSeal, ItemBlockGC.class);
-        registerBlock(GCBlocks.spaceGlass, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassClear, ItemBlockGC.class);
+        registerBlock(GCBlocks.spaceGlassVanilla, ItemBlockGC.class);
+        registerBlock(GCBlocks.spaceGlassStrong, ItemBlockGC.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);

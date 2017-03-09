@@ -3,18 +3,14 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -27,55 +23,52 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSpaceGlass extends Block implements IPartialSealableBlock
 {
-    public static final PropertyEnum TYPE  = PropertyEnum.create("type", GlassType.class);
     public static final PropertyEnum MODEL = PropertyEnum.create("modeltype", GlassModel.class);
     public static final PropertyEnum ROTATION  = PropertyEnum.create("rot", GlassRotation.class);
     //public static final PropertyInteger PLACING  = PropertyInteger.create("placing", 0, 2);
     //This will define whether originally placed by the player facing NS - EW - or UD
 
-    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
-    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
+    private final int typeValue;
 
 
-    public BlockSpaceGlass(String assetName)
+    public BlockSpaceGlass(String assetName, GlassType type)
     {
         super(Material.glass);
-        this.setHardness(0.3F);
-        this.setResistance(30F);
+        this.typeValue = type.ordinal();
         this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeGlass);
         this.isBlockContainer = true;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, GlassType.CLEAR).withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));//.withProperty(ROT_X, EnumGlassRotation.EN).withProperty(ROT_Z, EnumGlassRotation.EN));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
     }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {TYPE, MODEL, ROTATION});
+        return new BlockState(this, new IProperty[] {MODEL, ROTATION});
     }
     
-    @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
-    {
-        list.add(new ItemStack(itemIn, 1, 0));
-        list.add(new ItemStack(itemIn, 1, 1));
-        list.add(new ItemStack(itemIn, 1, 2));
-    }
-
-    @Override
-    public int damageDropped(IBlockState state)
-    {
-        return this.getMetaFromState(state);
-    }
-    //TODO: override get itemDropped for broken Space Glass...
+//    @Override
+//    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+//    {
+//        list.add(new ItemStack(itemIn, 1, 0));
+//        list.add(new ItemStack(itemIn, 1, 1));
+//        list.add(new ItemStack(itemIn, 1, 2));
+//    }
+//
+//    @Override
+//    public int damageDropped(IBlockState state)
+//    {
+//        return this.getMetaFromState(state);
+//    }
+//    //TODO: override getItemDropped() if we make a broken Space Glass variant...
     
-    @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
-    {
-        GlassType type = (GlassType) worldIn.getBlockState(pos).getValue(TYPE);
-        if (type == GlassType.STRONG) return 3.0F;
-
-        return this.blockHardness;
-    }
+//    @Override
+//    public float getBlockHardness(World worldIn, BlockPos pos)
+//    {
+//        GlassType type = (GlassType) worldIn.getBlockState(pos).getValue(TYPE);
+//        if (type == GlassType.STRONG) return 3.0F;
+//
+//        return this.blockHardness;
+//    }
 
     @Override
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
@@ -97,6 +90,21 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
     public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
     {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    {
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+         if (this.typeValue == 0)
+             return EnumWorldBlockLayer.CUTOUT_MIPPED;
+         
+         return EnumWorldBlockLayer.TRANSLUCENT;
     }
 
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
@@ -236,13 +244,6 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         return this.buildSolidSide(otherBlock, thisBlock);
     }
 
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
-    {
-        //TODO = yes if solid on side
-        return false; //worldIn.getBlockState(pos).getBlock() == this ? false : super.shouldSideBeRendered(worldIn, pos, side);
-    }
-
     protected boolean isConnectedEW(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState west = worldIn.getBlockState(pos.west());
@@ -270,12 +271,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
     
     protected boolean canPaneConnectToBlock(IBlockState off, IBlockState blockState)
     {
-        return off.getBlock() == this && off.getValue(TYPE) == blockState.getValue(TYPE);
+        return off.getBlock() == this;
     }
 
     protected boolean buildSolidSide(IBlockState off, IBlockState blockState)
     {
-        return off.getBlock() != this;
+        return !(off.getBlock() instanceof BlockSpaceGlass);
     }
 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
@@ -292,7 +293,6 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         boolean connectW = this.canPaneConnectToBlock(west, state);
         boolean connectE = this.canPaneConnectToBlock(east, state);
         
-        //TODO: if connections < 2 and there is a SpaceGlass block above or below, match its connections
         boolean plateD = this.buildSolidSide(below, state);
         boolean plateU = this.buildSolidSide(above, state);
         boolean plateN = this.buildSolidSide(north, state);
@@ -401,7 +401,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
             if (plateD)
                 return state.withProperty(MODEL, GlassModel.CORNER_S).withProperty(ROTATION, rot.get(y, 0));
             if (plateU)
-                return state.withProperty(MODEL, GlassModel.CORNER_S).withProperty(ROTATION, rot.get(y ^ 1, 2));
+                return state.withProperty(MODEL, GlassModel.CORNER_S).withProperty(ROTATION, rot.get((y + 3) % 4, 2));
             
             return state.withProperty(MODEL, GlassModel.CORNER).withProperty(ROTATION, rot.get(y, 0));
         case 3:
@@ -409,30 +409,26 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
                 return state.withProperty(MODEL, GlassModel.T_JUNCTION_S).withProperty(ROTATION, rot.get(y, 0));
             if (plateU)
                 return state.withProperty(MODEL, GlassModel.T_JUNCTION_S).withProperty(ROTATION, rot.get(y ^ 2, 2));
+            //TODO: both up and down - two baseplates - for T-junction
                 
             return state.withProperty(MODEL, GlassModel.T_JUNCTION).withProperty(ROTATION, rot.get(y, x));
         case 4:
+            //TODO: baseplate variations for crossroads
         default:
             return state.withProperty(MODEL, GlassModel.CROSSROADS).withProperty(ROTATION, rot.get(y, x));
         }
     }
     
-    @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
-    {
-        return EnumWorldBlockLayer.TRANSLUCENT;
-    }
-
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(TYPE, GlassType.byMetadata(meta));
+        return this.getDefaultState();
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((GlassType) state.getValue(TYPE)).getMeta();
+        return 0;
     }
 
     public enum GlassModel implements IStringSerializable
@@ -472,9 +468,9 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         S("yy"),
         W("yyy"),
         UN("u"),
-        UE("uy"),
+        UE("uyyy"),
         US("uyy"),
-        UW("uyyy"),
+        UW("uy"),
         UUN("uuyy"),
         UUE("uuyyy"),
         UUS("uu"),
@@ -511,27 +507,15 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
 
     public enum GlassType implements IStringSerializable
     {
-        CLEAR(0, "clear"),
-        VANILLA(1, "vanilla"),
-        STRONG(2, "strong");
+        CLEAR("clear"),
+        VANILLA("vanilla"),
+        STRONG("strong");
 
-        private final int meta;
         private final String name;
 
-        private GlassType (int meta, String name)
+        private GlassType (String name)
         {
-            this.meta = meta;
             this.name = name;
-        }
-
-        public int getMeta()
-        {
-            return this.meta;
-        }
-
-        public static GlassType byMetadata(int meta)
-        {
-            return values()[meta];
         }
 
         @Override
