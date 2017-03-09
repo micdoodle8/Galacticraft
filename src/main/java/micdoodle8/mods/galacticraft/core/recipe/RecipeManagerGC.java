@@ -453,6 +453,10 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Items.milk_bucket, 'Y', GCItems.cheeseCurd });
 
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlass, 5, 0), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "ingotAluminum" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlass, 5, 1), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "ingotTin" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlass, 5, 2), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "compressedBronze" });
+
 //		// Tin Stairs 1
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.tinStairs1, 4), new Object[] { "  X", " XX", "XXX", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.tinStairs1, 4), new Object[] { "X  ", "XX ", "XXX", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });

@@ -1,0 +1,25 @@
+{
+    "ambientocclusion": false,
+    "elements": [
+        {
+            "name": "Element",
+            "from": [ 6.0, 0.0, 0.0 ], 
+            "to": [ 7.0, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#0", "uv": [ 16.0, 0.0, 0.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 9.0, 0.0, 0.0 ], 
+            "to": [ 10.0, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#0", "uv": [ 16.0, 0.0, 0.0, 16.0 ] }
+            }
+        }
+    ]
+}

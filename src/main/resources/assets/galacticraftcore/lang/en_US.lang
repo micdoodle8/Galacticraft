@@ -659,6 +659,7 @@ tile.solar.advanced_solar.name=Advanced Solar Panel
 tile.solar.basic_solar.name=Basic Solar Panel
 tile.solar_adv.description=Advanced Solar Panels will collect energy from the sun, storing it for further use. Automatically adjusts panel angle for optimal energy collection.
 tile.solar_basic.description=Basic Solar Panels will collect energy from the sun, storing it for further use. Collects most energy at mid-day (non-adjustable).
+tile.space_glass.name=Space Glass
 tile.space_station_base.name=Space Station Arrival Block
 tile.spin_thruster.description=Spin Thrusters are used to make space stations rotate.
 tile.spin_thruster.name=Spin Thruster

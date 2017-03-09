@@ -538,6 +538,9 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockSeal, 0, "air_lock_seal");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlass, 0, "space_glass");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlass, 1, "space_glass_vanilla");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlass, 2, "space_glass_strong");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.refinery);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fuelLoader);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");
@@ -614,6 +617,7 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor");
         addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
         addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "moon_stone", "moon_turf", "ore_sapphire_moon", "moon_dungeon_brick");
+        addCoreVariant("space_glass", "space_glass", "space_glass_vanilla", "space_glass_strong");
         //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
         addCoreVariant("canister", "canister", "canister_copper");
         addCoreVariant("engine", "engine", "tier1booster");
