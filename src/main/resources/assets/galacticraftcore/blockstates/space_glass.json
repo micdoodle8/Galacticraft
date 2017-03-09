@@ -39,9 +39,16 @@
            "standard": { "model": "galacticraftcore:glass/spaceglass_ns" },
            "standards1": { "model": "galacticraftcore:glass/spaceglass_ns_solid1" },
            "standards2": { "model": "galacticraftcore:glass/spaceglass_ns_solid2" },
+           "standards2a": { "model": "galacticraftcore:glass/spaceglass_ns_solid2a" },
+           "standards3": { "model": "galacticraftcore:glass/spaceglass_ns_solid3" },
+           "standards4": { "model": "galacticraftcore:glass/spaceglass_ns_solid4" },
            "corner": { "model": "galacticraftcore:glass/spaceglass_ne" },
            "joint": { "model": "galacticraftcore:glass/spaceglass_nse" },
-           "joinx": { "model": "galacticraftcore:glass/spaceglass_nsew" }
+           "joinx": { "model": "galacticraftcore:glass/spaceglass_nsew" },
+           "corner_s": { "model": "galacticraftcore:glass/spaceglass_ne_solid" },
+           "corner_s2": { "model": "galacticraftcore:glass/spaceglass_ne_solid2" },
+           "joint_s": { "model": "galacticraftcore:glass/spaceglass_nse_solid" },
+           "joinx_s": { "model": "galacticraftcore:glass/spaceglass_nsew_solid" }
         }
     }
 }

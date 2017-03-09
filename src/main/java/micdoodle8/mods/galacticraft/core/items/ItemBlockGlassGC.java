@@ -20,9 +20,9 @@ public class ItemBlockGlassGC extends ItemBlockGC
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        int index = Math.min(Math.max(par1ItemStack.getItemDamage(), 0), BlockSpaceGlass.EnumGlassType.values().length);
+        int index = Math.min(Math.max(par1ItemStack.getItemDamage(), 0), BlockSpaceGlass.GlassType.values().length);
 
-        String name = BlockSpaceGlass.EnumGlassType.values()[index].getName();
+        String name = BlockSpaceGlass.GlassType.values()[index].getName();
 
         return this.getBlock().getUnlocalizedName() + "." + name;
     }
