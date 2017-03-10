@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class SimpleProperties {
+
     public HashMap<String, String> propertyMap = new HashMap<String, String>();
     public File propertyFile;
     public boolean saveOnChange = false;

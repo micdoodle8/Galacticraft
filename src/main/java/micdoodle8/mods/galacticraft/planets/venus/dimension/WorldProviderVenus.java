@@ -7,13 +7,15 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.WorldChunkManagerVenus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -72,15 +74,15 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderVenus.class;
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getBiomeProviderClass()
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
     {
-        return WorldChunkManagerVenus.class;
+        return BiomeProviderVenus.class;
     }
 
     @Override
@@ -146,7 +148,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
     {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
+        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
     @Override
@@ -221,12 +223,6 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public String getInternalNameSuffix()
-    {
-        return "_venus";
-    }
-
-    @Override
     public boolean shouldDisablePrecipitation()
     {
         return true;
@@ -236,5 +232,11 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     public boolean shouldCorrodeArmor()
     {
         return true;
+    }
+
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCPlanetDimensions.VENUS;
     }
 }

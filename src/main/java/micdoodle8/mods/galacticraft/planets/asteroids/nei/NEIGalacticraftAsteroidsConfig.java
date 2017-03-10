@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.nei;
 
-import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import codechicken.nei.api.stack.PositionedStack;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -89,36 +89,36 @@ public class NEIGalacticraftAsteroidsConfig implements IConfigureNEI
         this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), 139, 87 + changeY));
 
         ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), 139, 87 + changeY));
 
         input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 26, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 26, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), 139, 87 + changeY));
 
         input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 52, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 52, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), 139, 87 + changeY));
 
         input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90, -15 + changeY));
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 26, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 26, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), 139, 87 + changeY));
 
         input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 26, -15 + changeY));
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 52, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 26, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 52, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), 139, 87 + changeY));
 
         input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90, -15 + changeY));
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 52, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 52, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), 139, 87 + changeY));
 
         input2 = new ArrayList<PositionedStack>(input1);
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90, -15 + changeY));
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 26, -15 + changeY));
-        input2.add(new PositionedStack(new ItemStack(Blocks.chest), 90 + 52, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 26, -15 + changeY));
+        input2.add(new PositionedStack(new ItemStack(Blocks.CHEST), 90 + 52, -15 + changeY));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), 139, 87 + changeY));
 
         input1 = new ArrayList<PositionedStack>();

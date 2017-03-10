@@ -205,9 +205,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
         if (this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
             this.setTier2();
@@ -217,20 +217,21 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             this.initialised = false;
         }
-        this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-        this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.containingItems = this.readStandardItemsFromNBT(nbt);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
             this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
         }
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
+        this.writeStandardItemsToNBT(nbt);
+        return nbt;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class RoomTreasureVenus extends SizedPieceVenus
     public RoomTreasureVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.coordBaseMode = EnumFacing.SOUTH;
+        this.setCoordBaseMode(EnumFacing.SOUTH);
         int yPos = configuration.getYPosition();
 
         this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);

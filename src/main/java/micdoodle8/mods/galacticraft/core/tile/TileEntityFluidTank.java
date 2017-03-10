@@ -7,11 +7,10 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.DelayTimer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -222,31 +221,32 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(compound);
+        super.readFromNBT(nbt);
 
-        if (compound.hasKey("fuelTank"))
+        if (nbt.hasKey("fuelTank"))
         {
-            this.fluidTank.readFromNBT(compound.getCompoundTag("fuelTank"));
+            this.fluidTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
 
         this.updateClient = true;
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(compound);
+        super.writeToNBT(nbt);
 
         if (this.fluidTank.getFluid() != null)
         {
-            compound.setTag("fuelTank", this.fluidTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.fluidTank.writeToNBT(new NBTTagCompound()));
         }
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("net-type", "desc-packet");
@@ -256,12 +256,12 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         nbt.setByteArray("net-data", bytes);
-        S35PacketUpdateTileEntity tileUpdate = new S35PacketUpdateTileEntity(getPos(), 0, nbt);
+        SPacketUpdateTileEntity tileUpdate = new SPacketUpdateTileEntity(getPos(), 0, nbt);
         return tileUpdate;
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         if (!worldObj.isRemote)
         {

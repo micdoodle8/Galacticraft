@@ -166,21 +166,19 @@ public class MapGenCavesMoon extends MapGenBaseMeta
 
                                     if (xfactorSq + zfactorSq < 1.0D)
                                     {
-                                        final int coords = (localX * 16 + localZ) * 256 + localY;
-
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            IBlockState state = primer.getBlockState(coords);
+                                            IBlockState state = primer.getBlockState(localX, localY, localZ);
                                             if (state.getBlock() == GCBlocks.blockMoon)
                                             {
                                                 if (state.getBlock().getMetaFromState(state) == 3 || state.getBlock().getMetaFromState(state) == 4)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
 //                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                                 else if (state.getBlock().getMetaFromState(state) == 5)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
 //                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                             }

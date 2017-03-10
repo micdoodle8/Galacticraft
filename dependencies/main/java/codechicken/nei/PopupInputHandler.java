@@ -1,10 +1,11 @@
 package codechicken.nei;
 
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.IContainerInputHandler;
+import codechicken.nei.network.NEIClientPacketHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 import static codechicken.nei.NEIClientConfig.canPerformAction;
-import static codechicken.nei.NEIClientConfig.getKeyBinding;
 
 public class PopupInputHandler implements IContainerInputHandler {
     @Override
@@ -23,12 +24,12 @@ public class PopupInputHandler implements IContainerInputHandler {
 
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-        if (keyID == getKeyBinding("gui.enchant") && canPerformAction("enchant")) {
-            NEICPH.sendOpenEnchantmentWindow();
+        if (KeyBindings.get("nei.options.keys.gui.enchant").isActiveAndMatches(keyID) && canPerformAction("enchant")) {
+            NEIClientPacketHandler.sendOpenEnchantmentWindow();
             return true;
         }
-        if (keyID == getKeyBinding("gui.potion") && canPerformAction("potion")) {
-            NEICPH.sendOpenPotionWindow();
+        if (KeyBindings.get("nei.options.keys.gui.potion").isActiveAndMatches(keyID) && canPerformAction("potion")) {
+            NEIClientPacketHandler.sendOpenPotionWindow();
             return true;
         }
         return false;

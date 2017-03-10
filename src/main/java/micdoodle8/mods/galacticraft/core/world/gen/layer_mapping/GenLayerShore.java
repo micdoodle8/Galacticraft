@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeGenJungle;
-import net.minecraft.world.biome.BiomeGenMesa;
+import net.minecraft.world.biome.BiomeJungle;
+import net.minecraft.world.biome.BiomeMesa;
 
 public class GenLayerShore extends GenLayerGCMap
 {
@@ -27,25 +28,25 @@ public class GenLayerShore extends GenLayerGCMap
             {
                 this.initChunkSeed((long)(j + areaX), (long)(i + areaY));
                 int k = aint[j + 1 + (i + 1) * (areaWidth + 2)];
-                Biome biomegenbase = Biome.getBiome(k);
+                Biome biomegenbase = Biome.getBiomeForId(k);
 
-                if (k == Biome.mushroomIsland.biomeID)
+                if (k == Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND))
                 {
                     int j2 = aint[j + 1 + (i + 1 - 1) * (areaWidth + 2)];
                     int i3 = aint[j + 1 + 1 + (i + 1) * (areaWidth + 2)];
                     int l3 = aint[j + 1 - 1 + (i + 1) * (areaWidth + 2)];
                     int k4 = aint[j + 1 + (i + 1 + 1) * (areaWidth + 2)];
 
-                    if (j2 != Biome.ocean.biomeID && i3 != Biome.ocean.biomeID && l3 != Biome.ocean.biomeID && k4 != Biome.ocean.biomeID)
+                    if (j2 != Biome.getIdForBiome(Biomes.OCEAN) && i3 != Biome.getIdForBiome(Biomes.OCEAN) && l3 != Biome.getIdForBiome(Biomes.OCEAN) && k4 != Biome.getIdForBiome(Biomes.OCEAN))
                     {
                         aint1[j + i * areaWidth] = k;
                     }
                     else
                     {
-                        aint1[j + i * areaWidth] = Biome.mushroomIslandShore.biomeID;
+                        aint1[j + i * areaWidth] = Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND_SHORE);
                     }
                 }
-                else if (biomegenbase != null && biomegenbase.getBiomeClass() == BiomeGenJungle.class)
+                else if (biomegenbase != null && biomegenbase.getBiomeClass() == BiomeJungle.class)
                 {
                     int i2 = aint[j + 1 + (i + 1 - 1) * (areaWidth + 2)];
                     int l2 = aint[j + 1 + 1 + (i + 1) * (areaWidth + 2)];
@@ -60,23 +61,23 @@ public class GenLayerShore extends GenLayerGCMap
                         }
                         else
                         {
-                            aint1[j + i * areaWidth] = Biome.beach.biomeID;
+                            aint1[j + i * areaWidth] = Biome.getIdForBiome(Biomes.BEACH);
                         }
                     }
                     else
                     {
-                        aint1[j + i * areaWidth] = Biome.jungleEdge.biomeID;
+                        aint1[j + i * areaWidth] = Biome.getIdForBiome(Biomes.JUNGLE_EDGE);
                     }
                 }
-                else if (k != Biome.extremeHills.biomeID && k != Biome.extremeHillsPlus.biomeID && k != Biome.extremeHillsEdge.biomeID)
+                else if (k != Biome.getIdForBiome(Biomes.EXTREME_HILLS) && k != Biome.getIdForBiome(Biomes.EXTREME_HILLS_WITH_TREES) && k != Biome.getIdForBiome(Biomes.EXTREME_HILLS_EDGE))
                 {
                     if (biomegenbase != null && biomegenbase.isSnowyBiome())
                     {
-                        this.func_151632_a(aint, aint1, j, i, areaWidth, k, Biome.coldBeach.biomeID);
+                        this.func_151632_a(aint, aint1, j, i, areaWidth, k, Biome.getIdForBiome(Biomes.COLD_BEACH));
                     }
-                    else if (k != Biome.mesa.biomeID && k != Biome.mesaPlateau_F.biomeID)
+                    else if (k != Biome.getIdForBiome(Biomes.MESA) && k != Biome.getIdForBiome(Biomes.MESA_ROCK))
                     {
-                        if (k != Biome.ocean.biomeID && k != Biome.deepOcean.biomeID && k != Biome.river.biomeID && k != Biome.swampland.biomeID)
+                        if (k != Biome.getIdForBiome(Biomes.OCEAN) && k != Biome.getIdForBiome(Biomes.DEEP_OCEAN) && k != Biome.getIdForBiome(Biomes.RIVER) && k != Biome.getIdForBiome(Biomes.SWAMPLAND))
                         {
                             int l1 = aint[j + 1 + (i + 1 - 1) * (areaWidth + 2)];
                             int k2 = aint[j + 1 + 1 + (i + 1) * (areaWidth + 2)];
@@ -89,7 +90,7 @@ public class GenLayerShore extends GenLayerGCMap
                             }
                             else
                             {
-                                aint1[j + i * areaWidth] = Biome.beach.biomeID;
+                                aint1[j + i * areaWidth] = Biome.getIdForBiome(Biomes.BEACH);
                             }
                         }
                         else
@@ -112,7 +113,7 @@ public class GenLayerShore extends GenLayerGCMap
                             }
                             else
                             {
-                                aint1[j + i * areaWidth] = Biome.desert.biomeID;
+                                aint1[j + i * areaWidth] = Biome.getIdForBiome(Biomes.DESERT);
                             }
                         }
                         else
@@ -123,7 +124,7 @@ public class GenLayerShore extends GenLayerGCMap
                 }
                 else
                 {
-                    this.func_151632_a(aint, aint1, j, i, areaWidth, k, Biome.stoneBeach.biomeID);
+                    this.func_151632_a(aint, aint1, j, i, areaWidth, k, Biome.getIdForBiome(Biomes.STONE_BEACH));
                 }
             }
         }
@@ -157,11 +158,11 @@ public class GenLayerShore extends GenLayerGCMap
 
     private boolean func_151631_c(int p_151631_1_)
     {
-        return Biome.getBiome(p_151631_1_) != null && Biome.getBiome(p_151631_1_).getBiomeClass() == BiomeGenJungle.class ? true : p_151631_1_ == Biome.jungleEdge.biomeID || p_151631_1_ == Biome.jungle.biomeID || p_151631_1_ == Biome.jungleHills.biomeID || p_151631_1_ == Biome.forest.biomeID || p_151631_1_ == Biome.taiga.biomeID || isBiomeOceanic(p_151631_1_);
+        return Biome.getBiomeForId(p_151631_1_) != null && Biome.getBiomeForId(p_151631_1_).getBiomeClass() == BiomeJungle.class || (p_151631_1_ == Biome.getIdForBiome(Biomes.JUNGLE_EDGE) || p_151631_1_ == Biome.getIdForBiome(Biomes.JUNGLE) || p_151631_1_ == Biome.getIdForBiome(Biomes.JUNGLE_HILLS) || p_151631_1_ == Biome.getIdForBiome(Biomes.FOREST) || p_151631_1_ == Biome.getIdForBiome(Biomes.TAIGA) || isBiomeOceanic(p_151631_1_));
     }
 
     private boolean func_151633_d(int p_151633_1_)
     {
-        return Biome.getBiome(p_151633_1_) instanceof BiomeGenMesa;
+        return Biome.getBiomeForId(p_151633_1_) instanceof BiomeMesa;
     }
 }

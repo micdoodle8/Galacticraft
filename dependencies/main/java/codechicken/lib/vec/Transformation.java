@@ -1,13 +1,15 @@
 package codechicken.lib.vec;
 
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.pipeline.IVertexOperation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Abstract supertype for any 3D vector transformation
  */
-public abstract class Transformation extends ITransformation<Vector3, Transformation> implements CCRenderState.IVertexOperation {
+public abstract class Transformation extends ITransformation<Vector3, Transformation> implements IVertexOperation {
+
     public static final int operationIndex = CCRenderState.registerOperation();
 
     /**
@@ -32,20 +34,20 @@ public abstract class Transformation extends ITransformation<Vector3, Transforma
         return new TransformationList(this, t);
     }
 
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public abstract void glApply();
 
     @Override
-    public boolean load() {
-        CCRenderState.pipeline.addRequirement(CCRenderState.normalAttrib.operationID());
+    public boolean load(CCRenderState state) {
+        state.pipeline.addRequirement(state.normalAttrib.operationID());
         return !isRedundant();
     }
 
     @Override
-    public void operate() {
-        apply(CCRenderState.vert.vec);
-        if (CCRenderState.normalAttrib.active) {
-            applyN(CCRenderState.normal);
+    public void operate(CCRenderState state) {
+        apply(state.vert.vec);
+        if (state.normalAttrib.active) {
+            applyN(state.normal);
         }
     }
 

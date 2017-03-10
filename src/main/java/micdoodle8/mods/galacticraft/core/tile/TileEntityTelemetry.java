@@ -6,7 +6,8 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -21,8 +22,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -93,11 +94,11 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 {
                     if (linkedEntity instanceof EntityPlayerMP)
                     {
-                        name = "$" + ((EntityPlayerMP) linkedEntity).getName();
+                        name = "$" + linkedEntity.getName();
                     }
                     else
                     {
-                        name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
+                        name = EntityList.CLASS_TO_NAME.get(linkedEntity.getClass());
                     }
 
                     if (name == null)
@@ -150,8 +151,8 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         if (eLiving instanceof EntityPlayerMP)
                         {
                             data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
-                            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
-                            data[4] = stats.airRemaining * 4096 + stats.airRemaining2;
+                            IStatsCapability stats = eLiving.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                            data[4] = stats.getAirRemaining() * 4096 + stats.getAirRemaining2();
                             UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
                             if (uuid != null)
                             {
@@ -222,6 +223,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
             nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
         }
+        return nbt;
     }
 
     public void addTrackedEntity(UUID uuid)

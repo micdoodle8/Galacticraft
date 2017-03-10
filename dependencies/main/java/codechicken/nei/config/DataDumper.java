@@ -1,13 +1,13 @@
 package codechicken.nei.config;
 
-import codechicken.core.CommonUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.LayoutManager;
-import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ITextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public abstract class DataDumper extends Option {
 
             NEIClientUtils.printChatMessage(dumpMessage(file));
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error dumping " + renderName() + " mode: " + getMode(), e);
+            LogHelper.errorError("Error dumping " + renderName() + " mode: " + getMode(), e);
         }
     }
 
@@ -56,7 +56,7 @@ public abstract class DataDumper extends Option {
     }
 
     public ITextComponent dumpMessage(File file) {
-        return new ChatComponentTranslation("nei.options.tools.dump.dumped", translateN(name), "dumps/" + file.getName());
+        return new TextComponentTranslation("nei.options.tools.dump.dumped", translateN(name), "dumps/" + file.getName());
     }
 
     public void dumpTo(File file) throws IOException {

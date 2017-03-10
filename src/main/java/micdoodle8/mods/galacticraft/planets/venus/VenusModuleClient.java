@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
-import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidExhaustFX;
-import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidVaporFX;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidExhaust;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidVapor;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderEntryPodVenus;
@@ -26,23 +26,23 @@ import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGener
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -118,7 +118,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
-        event.map.registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
+        event.getMap().registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }
 
     @SubscribeEvent
@@ -207,27 +207,24 @@ public class VenusModuleClient implements IPlanetsModuleClient
             double dX = mc.getRenderViewEntity().posX - position.x;
             double dY = mc.getRenderViewEntity().posY - position.y;
             double dZ = mc.getRenderViewEntity().posZ - position.z;
-            EntityFX particle = null;
+            Particle particle = null;
             double viewDistance = 64.0D;
 
             if (particleID.equals("acidVapor"))
             {
-                particle = new EntityAcidVaporFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
+                particle = new ParticleAcidVapor(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
             }
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
                 if (particleID.equals("acidExhaust"))
                 {
-                    particle = new EntityAcidExhaustFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
+                    particle = new ParticleAcidExhaust(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
                 }
             }
 
             if (particle != null)
             {
-                particle.prevPosX = particle.posX;
-                particle.prevPosY = particle.posY;
-                particle.prevPosZ = particle.posZ;
                 mc.effectRenderer.addEffect(particle);
             }
         }

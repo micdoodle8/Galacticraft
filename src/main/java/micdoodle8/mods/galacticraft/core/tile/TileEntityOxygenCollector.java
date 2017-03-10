@@ -7,16 +7,16 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.EnumPlantType;
@@ -158,13 +158,14 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                         // chunk.getBlockID is like world.getBlock
                                         // but faster - needs to be given
                                         // intra-chunk coordinates though
-                                        final Block block = chunk.getBlock(intrachunkx, y, z & 15);
+                                        final IBlockState state = chunk.getBlockState(intrachunkx, y, z & 15);
                                         // Test for the two most common blocks (air
                                         // and breatheable air) without looking up
                                         // in the blocksList
-                                        if (!(block instanceof BlockAir))
+                                        if (!(state.getBlock() instanceof BlockAir))
                                         {
-                                            if (block.isLeaves(this.worldObj, new BlockPos(x, y, z)) || block instanceof IPlantable && ((IPlantable) block).getPlantType(this.worldObj, new BlockPos(x, y, z)) == EnumPlantType.Crop)
+                                            BlockPos pos = new BlockPos(x, y, z);
+                                            if (state.getBlock().isLeaves(state, this.worldObj, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.worldObj, pos) == EnumPlantType.Crop)
                                             {
                                                 nearbyLeaves += 0.075F * 10F;
                                             }
@@ -194,11 +195,11 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
 
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        final NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -214,9 +215,9 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
 
         final NBTTagList list = new NBTTagList();
 
@@ -231,7 +232,8 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
             }
         }
 
-        par1NBTTagCompound.setTag("Items", list);
+        nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

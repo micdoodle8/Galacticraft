@@ -3,13 +3,14 @@ package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PathNavigateCeiling extends PathNavigate
@@ -144,8 +145,8 @@ public class PathNavigateCeiling extends PathNavigate
 
                     if (d0 * distanceX + d1 * distanceZ >= 0.0D)
                     {
-                        Block block = this.worldObj.getBlockState(new BlockPos(k, y + 1, l)).getBlock();
-                        Material material = block.getMaterial();
+                        IBlockState state = this.worldObj.getBlockState(new BlockPos(k, y + 1, l));
+                        Material material = state.getBlock().getMaterial(state);
 
                         if (material == Material.AIR)
                         {
@@ -157,7 +158,7 @@ public class PathNavigateCeiling extends PathNavigate
                             return false;
                         }
 
-                        if (material == Material.lava)
+                        if (material == Material.LAVA)
                         {
                             return false;
                         }

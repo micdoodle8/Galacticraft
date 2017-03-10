@@ -4,13 +4,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ITextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 /**
  * IInventory implementation which saves and loads from an NBT tag
  */
 public class InventoryNBT implements IInventory {
+
     protected ItemStack[] items;
     protected NBTTagCompound tag;
 
@@ -47,7 +48,7 @@ public class InventoryNBT implements IInventory {
 
     @Override
     public ItemStack removeStackFromSlot(int slot) {
-        return InventoryUtils.getStackInSlotOnClosing(this, slot);
+        return InventoryUtils.removeStackFromSlot(this, slot);
     }
 
     @Override
@@ -118,6 +119,6 @@ public class InventoryNBT implements IInventory {
 
     @Override
     public ITextComponent getDisplayName() {
-        return new ChatComponentText(getName());
+        return new TextComponentString(getName());
     }
 }

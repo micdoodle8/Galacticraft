@@ -27,8 +27,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -138,7 +138,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                         if (block != GCBlocks.landingPadFull)
                         {
                             this.connectedPads.remove(i);
-                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.getX() >> 4, coords.getZ() >> 4));
+                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkPos(coords.getX() >> 4, coords.getZ() >> 4));
                         }
                     }
                 }
@@ -266,6 +266,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         nbt.setBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
         nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
         nbt.setBoolean("HideTargetDestination", this.hideTargetDestination);
+        return nbt;
     }
 
     @Override

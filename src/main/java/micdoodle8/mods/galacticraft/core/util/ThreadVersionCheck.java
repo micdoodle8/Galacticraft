@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;

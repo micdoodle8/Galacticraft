@@ -1,10 +1,11 @@
 package codechicken.nei;
 
-import codechicken.core.ClientUtils;
-import codechicken.core.GuiModListScroll;
 import codechicken.lib.packet.PacketCustom;
-import codechicken.nei.api.API;
+import codechicken.lib.util.ClientUtils;
 import codechicken.nei.api.ItemInfo;
+import codechicken.nei.config.KeyBindings;
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.*;
@@ -14,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.CustomModLoadingErrorDisplayException;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -112,15 +112,18 @@ public class ClientHandler {
     public static void init() {
         instance = new ClientHandler();
 
-        GuiModListScroll.register("NotEnoughItems");
-        PacketCustom.assignHandler(NEICPH.channel, new NEICPH());
-        FMLCommonHandler.instance().bus().register(instance);
+        //GuiModListScroll.register("NotEnoughItems");
+        PacketCustom.assignHandler(NEIClientPacketHandler.channel, new NEIClientPacketHandler());
+
+//        MinecraftForge.EVENT_BUS.register(new ContainerEventHandler());
         MinecraftForge.EVENT_BUS.register(instance);
 
         ItemInfo.init();
-        API.registerHighlightHandler(new DefaultHighlightHandler(), ItemInfo.Layout.HEADER);
-        HUDRenderer.load();
+        //API.registerHighlightHandler(new DefaultHighlightHandler(), ItemInfo.Layout.HEADER);
+        //HUDRenderer.load();
         WorldOverlayRenderer.load();
+
+        KeyBindings.register();
     }
 
     @SubscribeEvent
@@ -135,7 +138,7 @@ public class ClientHandler {
                 NEIClientConfig.setHasSMPCounterPart(false);
                 NEIClientConfig.setInternalEnabled(false);
 
-                if (!Minecraft.getMinecraft().isSingleplayer())//wait for server to initiate in singleplayer
+                if (!Minecraft.getMinecraft().isSingleplayer() && ClientUtils.inWorld())//wait for server to initiate in singleplayer
                 {
                     NEIClientConfig.loadWorld("remote/" + ClientUtils.getServerIP().replace(':', '~'));
                 }
@@ -159,7 +162,7 @@ public class ClientHandler {
         if (gui != lastGui) {
             if (gui instanceof GuiMainMenu) {
                 lastworld = null;
-            } else if (gui instanceof GuiSelectWorld) {
+            } else if (gui instanceof GuiWorldSelection) {
                 NEIClientConfig.reloadSaves();
             }
         }
@@ -168,15 +171,15 @@ public class ClientHandler {
 
     @SubscribeEvent
     public void tickEvent(TickEvent.RenderTickEvent event) {
-        if (event.phase == Phase.END && NEIClientConfig.isEnabled()) {
-            HUDRenderer.renderOverlay();
-        }
+        //if (event.phase == Phase.END && NEIClientConfig.isEnabled()) {
+            //HUDRenderer.renderOverlay();
+        //}
     }
 
     @SubscribeEvent
     public void renderLastEvent(RenderWorldLastEvent event) {
         if (NEIClientConfig.isEnabled()) {
-            WorldOverlayRenderer.render(event.partialTicks);
+            WorldOverlayRenderer.render(event.getPartialTicks());
         }
     }
 

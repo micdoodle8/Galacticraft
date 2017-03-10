@@ -15,6 +15,10 @@ public class GCSounds
     public static SoundEvent astroMiner;
     public static SoundEvent shuttle;
     public static SoundEvent parachute;
+    public static SoundEvent openAirLock;
+    public static SoundEvent closeAirLock;
+    public static SoundEvent singleDrip;
+    public static SoundEvent scaryScape;
 
     public static SoundEvent music;
 
@@ -28,6 +32,10 @@ public class GCSounds
         astroMiner = registerSound("entity.astrominer");
         shuttle = registerSound("shuttle.shuttle");
         parachute = registerSound("player.parachute");
+        openAirLock = registerSound("player.openairlock");
+        closeAirLock = registerSound("player.closeairlock");
+        singleDrip = registerSound("ambience.singledrip");
+        scaryScape = registerSound("ambience.scaryscape");
         music = registerSound("galacticraft.musicSpace");
     }
 

@@ -3,13 +3,19 @@ package codechicken.lib.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ITextComponent;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 /**
  * Simple IInventory implementation with an array of items, name and maximum stack size
  */
-public class InventorySimple implements IInventory {
+public class InventorySimple implements IInventory, ICapabilityProvider {
+
     public ItemStack[] items;
     public int limit;
     public String name;
@@ -65,7 +71,7 @@ public class InventorySimple implements IInventory {
 
     @Override
     public ItemStack removeStackFromSlot(int slot) {
-        return InventoryUtils.getStackInSlotOnClosing(this, slot);
+        return InventoryUtils.removeStackFromSlot(this, slot);
     }
 
     @Override
@@ -117,6 +123,9 @@ public class InventorySimple implements IInventory {
 
     @Override
     public void clear() {
+        for (int i = 0; i < items.length; i++) {
+            items[i] = null;
+        }
     }
 
     @Override
@@ -131,6 +140,20 @@ public class InventorySimple implements IInventory {
 
     @Override
     public ITextComponent getDisplayName() {
-        return new ChatComponentText(getName());
+        return new TextComponentString(getName());
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    }
+
+    @SuppressWarnings ("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) new InvWrapper(this);
+        }
+        return null;
     }
 }

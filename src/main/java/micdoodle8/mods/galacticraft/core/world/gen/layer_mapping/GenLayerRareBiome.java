@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 
 public class GenLayerRareBiome extends GenLayerGCMap
@@ -28,9 +29,9 @@ public class GenLayerRareBiome extends GenLayerGCMap
 
                 if (this.nextInt(57) == 0)
                 {
-                    if (k == Biome.plains.biomeID)
+                    if (k == Biome.getIdForBiome(Biomes.PLAINS))
                     {
-                        aint1[j + i * areaWidth] = Biome.plains.biomeID + 128;
+                        aint1[j + i * areaWidth] = Biome.getIdForBiome(Biomes.PLAINS) + 128;
                     }
                     else
                     {

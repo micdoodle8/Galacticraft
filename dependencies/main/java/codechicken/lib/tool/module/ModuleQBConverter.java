@@ -9,6 +9,7 @@ import java.io.File;
 import static java.util.Arrays.asList;
 
 public class ModuleQBConverter extends JOptModule {
+
     public ModuleQBConverter() {
         parser.acceptsAll(asList("?", "h", "help"), "Show the help");
         parser.acceptsAll(asList("i", "input"), "comma separated list of paths to models (.qb or directories)").withRequiredArg().ofType(File.class).withValuesSeparatedBy(',').required();

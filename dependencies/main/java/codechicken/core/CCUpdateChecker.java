@@ -3,7 +3,8 @@ package codechicken.core;
 import codechicken.core.launch.CodeChickenCorePlugin;
 import com.google.common.base.Function;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
@@ -57,8 +58,8 @@ public class CCUpdateChecker {
         }
 
         synchronized (updates) {
-            for (String s : updates) {
-                mc.thePlayer.addChatMessage(new ChatComponentText(s));
+            for (String updateMessage : updates) {
+                mc.thePlayer.addChatMessage(new TextComponentString(updateMessage));
             }
             updates.clear();
         }
@@ -84,9 +85,10 @@ public class CCUpdateChecker {
                     CodeChickenCorePlugin.logger.error("Failed to check update for " + mod + " returned: " + ret);
                     return null;
                 }
-                ComparableVersion newversion = new ComparableVersion(ret.substring(5));
-                if (newversion.compareTo(new ComparableVersion(version)) > 0) {
-                    addUpdateMessage("Version " + newversion + " of " + mod + " is available");
+                ComparableVersion newVersion = new ComparableVersion(ret.substring(5));
+                if (newVersion.compareTo(new ComparableVersion(version)) > 0) {
+                    ModDescriptionEnhancer.setUpdateStatus(mod, ForgeVersion.Status.OUTDATED, newVersion);
+                    addUpdateMessage("Version " + newVersion + " of " + mod + " is available");
                 }
                 return null;
             }

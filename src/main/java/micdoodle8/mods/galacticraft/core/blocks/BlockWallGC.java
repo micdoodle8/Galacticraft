@@ -185,12 +185,19 @@ public class BlockWallGC extends Block /* Do not extend BlockWall */ implements 
 
     public enum BlockType implements IStringSerializable
     {
-        TIN_1_WALL,
-        TIN_2_WALL,
-        MOON_STONE_WALL,
-        MOON_DUNGEON_BRICK_WALL,
-        MARS_COBBLESTONE_WALL,
-        MARS_DUNGEON_BRICK_WALL;
+        TIN_1_WALL("tin_1_wall"),
+        TIN_2_WALL("tin_2_wall"),
+        MOON_STONE_WALL("moon_stone_wall"),
+        MOON_DUNGEON_BRICK_WALL("moon_dungeon_brick_wall"),
+        MARS_COBBLESTONE_WALL("mars_cobblestone_wall"),
+        MARS_DUNGEON_BRICK_WALL("mars_dungeon_brick_wall");
+
+        private String name;
+
+        BlockType(String name)
+        {
+            this.name = name;
+        }
 
         @Override
         public String toString()
@@ -201,7 +208,7 @@ public class BlockWallGC extends Block /* Do not extend BlockWall */ implements 
         @Override
         public String getName()
         {
-            return this.name();
+            return this.name;
         }
     }
 }

@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.nei;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.FurnaceRecipeHandler.FuelPair;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.util.NEIServerUtils;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -162,11 +162,11 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     private static void removeFuels()
     {
         IngotCompressorRecipeHandler.efuels = new TreeSet<Integer>();
-        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.brown_mushroom));
-        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.brown_mushroom_block));
-        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.wall_sign));
-        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.standing_sign));
-        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.trapped_chest));
+        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.BROWN_MUSHROOM));
+        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.BROWN_MUSHROOM_BLOCK));
+        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.WALL_SIGN));
+        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.STANDING_SIGN));
+        IngotCompressorRecipeHandler.efuels.add(Block.getIdFromBlock(Blocks.TRAPPED_CHEST));
     }
 
     private static void findFuels()

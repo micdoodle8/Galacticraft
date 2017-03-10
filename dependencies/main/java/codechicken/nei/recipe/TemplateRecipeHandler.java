@@ -1,16 +1,16 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
 import codechicken.nei.api.DefaultOverlayRenderer;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.api.IStackPositioner;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -214,9 +214,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
                 return false;
             }
 
-            if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
+            if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(keyCode)) {
                 return transferRect(gui, false);
-            } else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
+            } else if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(keyCode)) {
                 return transferRect(gui, true);
             }
 
@@ -561,9 +561,9 @@ public abstract class TemplateRecipeHandler implements ICraftingHandler, IUsageH
 
     @Override
     public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe) {
-        if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
+        if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(keyCode)) {
             return transferRect(gui, recipe, false);
-        } else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
+        } else if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(keyCode)) {
             return transferRect(gui, recipe, true);
         }
 

@@ -14,11 +14,9 @@ import java.util.Random;
 
 public class BiomeGenVenusValley extends BiomeVenus
 {
-    public BiomeGenVenusValley(int par1)
+    public BiomeGenVenusValley(BiomeProperties properties)
     {
-        super(par1);
-        this.setColor(100 << 16 | 100 << 8 | 100);
-        this.setHeight(new Height(-0.4F, 0.2F));
+        super(properties);
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
             BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
@@ -45,13 +43,13 @@ public class BiomeGenVenusValley extends BiomeVenus
         {
             if (j1 <= rand.nextInt(5))
             {
-                chunkPrimerIn.setBlockState(i1, j1, l, Blocks.bedrock.getDefaultState());
+                chunkPrimerIn.setBlockState(i1, j1, l, Blocks.BEDROCK.getDefaultState());
             }
             else
             {
                 IBlockState iblockstate2 = chunkPrimerIn.getBlockState(i1, j1, l);
 
-                if (iblockstate2.getBlock().getMaterial() == Material.AIR)
+                if (iblockstate2.getBlock().getMaterial(iblockstate2) == Material.AIR)
                 {
                     j = -1;
                 }

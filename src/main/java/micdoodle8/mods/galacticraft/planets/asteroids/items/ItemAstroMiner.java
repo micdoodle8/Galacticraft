@@ -4,7 +4,8 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
@@ -22,9 +23,11 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,13 +60,13 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = null;
 
         if (worldIn.isRemote || playerIn == null)
         {
-            return false;
+            return EnumActionResult.PASS;
         }
         else
         {
@@ -89,45 +92,46 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 if (worldIn.provider instanceof WorldProviderZeroGravity)
                 {
                     playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 if (((TileEntityMinerBase) tile).getLinkedMiner() != null)
                 {
                     playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner.fail")));
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 //Gives a chance for any loaded Astro Miner to link itself
                 if (((TileEntityMinerBase) tile).ticks < 15L)
                 {
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
 
-                int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;
+                IStatsCapability stats = playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                int astroCount = stats.getAstroMinerCount();
                 if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
                 {
                     playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 if (!((TileEntityMinerBase) tile).spawnMiner(playerMP))
                 {
                     playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 if (!playerIn.capabilities.isCreativeMode)
                 {
-                    GCPlayerStats.get(playerMP).astroMinerCount++;
+                    stats.setAstroMinerCount(stats.getAstroMinerCount() + 1);
                     --stack.stackSize;
                 }
-                return true;
+                return EnumActionResult.SUCCESS;
             }
         }
-        return false;
+        return EnumActionResult.PASS;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

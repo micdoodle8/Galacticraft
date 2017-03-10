@@ -11,7 +11,8 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenGear;
@@ -28,9 +29,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -103,7 +104,7 @@ public class OxygenUtil
 
         if (testThermal)
         {
-            return OxygenUtil.isInOxygenAndThermalBlock(world, bb.contract(0.001D, 0.001D, 0.001D));
+            return OxygenUtil.isInOxygenAndThermalBlock(world, bb.contract(0.001D));
         }
 
         if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ))
@@ -111,7 +112,7 @@ public class OxygenUtil
             return true;
         }
 
-        return OxygenUtil.isInOxygenBlock(world, bb.contract(0.001D, 0.001D, 0.001D));
+        return OxygenUtil.isInOxygenBlock(world, bb.contract(0.001D));
     }
 
     public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
@@ -194,8 +195,8 @@ public class OxygenUtil
         for (int side = 0; side < 6; side++)
         {
             BlockVec3 sidevec = vec.newVecSide(side);
-            Block newblock = sidevec.getBlockID_noChunkLoad(world);
-            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.toBlockPos(), 1) >= 0)
+            IBlockState state = sidevec.getBlockState_noChunkLoad(world);
+            if (OxygenUtil.testContactWithBreathableAir(world, state.getBlock(), sidevec.toBlockPos(), 1) >= 0)
             {
                 return true;
             }
@@ -219,18 +220,19 @@ public class OxygenUtil
             return block.getMetaFromState(world.getBlockState(pos));
         }
 
-        if (block == null || block.getMaterial() == Material.AIR)
+        IBlockState state = world.getBlockState(pos);
+        if (block == null || block.getMaterial(state) == Material.AIR)
         {
             return -1;
         }
 
         //Test for non-sided permeable or solid blocks first
         boolean permeableFlag = false;
-        if (!(block instanceof BlockLeavesBase))
+        if (!(block instanceof BlockLeaves))
         {
-            if (block.isOpaqueCube())
+            if (block.isOpaqueCube(state))
             {
-                if (block instanceof BlockGravel || block.getMaterial() == Material.CLOTH || block instanceof BlockSponge)
+                if (block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge)
                 {
                     permeableFlag = true;
                 }
@@ -250,7 +252,6 @@ public class OxygenUtil
             else if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
             {
                 ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
-                IBlockState state = world.getBlockState(pos);
                 if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(state.getBlock().getMetaFromState(state)))
                 {
                     return -1;
@@ -312,7 +313,7 @@ public class OxygenUtil
         if (block instanceof BlockPistonBase)
         {
             IBlockState state = world.getBlockState(vec);
-            if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+            if ((Boolean) state.getValue(BlockPistonBase.EXTENDED))
             {
                 int meta0 = state.getBlock().getMetaFromState(state);
                 EnumFacing facing = BlockPistonBase.getFacing(meta0);
@@ -321,7 +322,7 @@ public class OxygenUtil
             return false;
         }
 
-        return !block.isSideSolid(world, vec, EnumFacing.getFront(side.getIndex() ^ 1));
+        return !block.isSideSolid(world.getBlockState(vec), world, vec, EnumFacing.getFront(side.getIndex() ^ 1));
     }
 
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
@@ -341,9 +342,9 @@ public class OxygenUtil
     {
         boolean missingComponent = false;
 
-        GCPlayerStats stats = GCPlayerStats.get(player);
+        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-        if (stats.extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, stats.extendedInventory.getStackInSlot(0)))
+        if (stats.getExtendedInventory().getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, stats.getExtendedInventory().getStackInSlot(0)))
         {
             boolean handled = false;
 
@@ -369,7 +370,7 @@ public class OxygenUtil
             }
         }
 
-        if (stats.extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, stats.extendedInventory.getStackInSlot(1)))
+        if (stats.getExtendedInventory().getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, stats.getExtendedInventory().getStackInSlot(1)))
         {
             boolean handled = false;
 
@@ -395,7 +396,7 @@ public class OxygenUtil
             }
         }
 
-        if ((stats.extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, stats.extendedInventory.getStackInSlot(2))) && (stats.extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, stats.extendedInventory.getStackInSlot(3))))
+        if ((stats.getExtendedInventory().getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, stats.getExtendedInventory().getStackInSlot(2))) && (stats.getExtendedInventory().getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, stats.getExtendedInventory().getStackInSlot(3))))
         {
             boolean handled = false;
 

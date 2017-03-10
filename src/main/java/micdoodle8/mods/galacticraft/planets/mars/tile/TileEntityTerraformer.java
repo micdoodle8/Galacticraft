@@ -143,7 +143,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                                 continue;
                             }
 
-                            if (!(blockID.isAir(this.worldObj, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
+                            if (!(blockID.isAir(this.worldObj.getBlockState(pos), this.worldObj, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
                                 if (doGrass && blockID instanceof ITerraformableBlock && ((ITerraformableBlock) blockID).isTerraformable(this.worldObj, pos))
                                 {
@@ -152,7 +152,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                                 else if (doTrees)
                                 {
                                     Block blockIDAbove = this.worldObj.getBlockState(pos.up()).getBlock();
-                                    if (blockID == Blocks.grass && blockIDAbove.isAir(this.worldObj, pos.up()))
+                                    if (blockID == Blocks.GRASS && blockIDAbove.isAir(this.worldObj.getBlockState(pos.up()), this.worldObj, pos.up()))
                                     {
                                         this.grassBlockList.add(new BlockPos(x, y, z));
                                     }
@@ -180,27 +180,27 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 case 0:
                     if (this.worldObj.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
                     {
-                        id = Blocks.flowing_water;
+                        id = Blocks.FLOWING_WATER;
                     }
                     else
                     {
-                        id = Blocks.grass;
+                        id = Blocks.GRASS;
                     }
                     break;
                 default:
-                    id = Blocks.grass;
+                    id = Blocks.GRASS;
                     break;
                 }
 
                 this.worldObj.setBlockState(vec, id.getDefaultState());
 
-                if (id == Blocks.grass)
+                if (id == Blocks.GRASS)
                 {
                     this.useCount[0]++;
                     this.waterTank.drain(1, true);
                     this.checkUsage(1);
                 }
-                else if (id == Blocks.flowing_water)
+                else if (id == Blocks.FLOWING_WATER)
                 {
                     this.checkUsage(2);
                 }
@@ -214,7 +214,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             int randomIndex = this.worldObj.rand.nextInt(this.grassBlockList.size());
             BlockPos vecGrass = grassBlockList.get(randomIndex);
 
-            if (this.worldObj.getBlockState(vecGrass).getBlock() == Blocks.grass)
+            if (this.worldObj.getBlockState(vecGrass).getBlock() == Blocks.GRASS)
             {
                 BlockPos vecSapling = vecGrass.add(0, 1, 0);
                 ItemStack sapling = this.getFirstSaplingStack();
@@ -486,6 +486,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         }
 
         nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
+        return nbt;
     }
 
     @Override
@@ -558,7 +559,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         case 11:
         case 12:
         case 13:
-            return itemstack.getItem() == Items.wheat_seeds;
+            return itemstack.getItem() == Items.WHEAT_SEEDS;
         }
         return false;
     }

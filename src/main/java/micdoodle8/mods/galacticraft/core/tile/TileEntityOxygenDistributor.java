@@ -17,8 +17,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -103,7 +106,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            if (MinecraftServer.getServer().isDedicatedServer())
+            if (this.worldObj.getMinecraftServer().isDedicatedServer())
             {
                 networkedList.add(loadedTiles.size());
                 //TODO: Limit this to ones in the same dimension as this tile?
@@ -317,6 +320,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

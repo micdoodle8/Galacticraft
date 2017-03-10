@@ -9,6 +9,7 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
@@ -84,7 +86,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
                 if (this.processTicks % 40 == 0 && this.processTicks > TileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
                 {
-                    this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_land", 0.2F, 0.5F);
+                    this.worldObj.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                 }
 
                 if (this.processTicks == TileEntityIngotCompressor.PROCESS_TIME_REQUIRED)
@@ -259,9 +261,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.water_bucket)
+                if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.WATER_BUCKET)
                 {
-                    this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.bucket));
+                    this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.BUCKET));
                 }
                 else
                 {
@@ -299,10 +301,10 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
         NBTTagList var2 = new NBTTagList();
         int var3;
 
@@ -328,7 +330,8 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             }
         }
 
-        par1NBTTagCompound.setTag("Items", var2);
+        nbt.setTag("Items", var2);
+        return nbt;
     }
 
     @Override

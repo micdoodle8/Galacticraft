@@ -1,12 +1,13 @@
 package codechicken.nei.guihook;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 
 public interface IContainerSlotClickHandler {
-    public void beforeSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier);
+    void beforeSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType clickType);
 
-    public boolean handleSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier, boolean eventconsumed);
+    boolean handleSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType clickType, boolean eventConsumed);
 
-    public void afterSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier);
+    void afterSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType clickType);
 }

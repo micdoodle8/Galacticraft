@@ -7,13 +7,13 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class NEICreativeGuiHandler extends INEIGuiAdapter {
     @Override
-    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) {
+    public VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility) {
         if (!(gui instanceof GuiContainerCreative)) {
             return currentVisibility;
         }
 
-        if (((GuiContainerCreative) gui).getSelectedTabIndex() != CreativeTabs.tabInventory.getTabIndex()) {
-            currentVisibility.showItemSection = currentVisibility.enableDeleteMode = false;
+        if (((GuiContainerCreative) gui).getSelectedTabIndex() != CreativeTabs.INVENTORY.getTabIndex()) {
+            currentVisibility.showItemPanel = currentVisibility.enableDeleteMode = false;
         }
 
         return currentVisibility;

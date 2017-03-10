@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockCavernousVine;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
-import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityBacterialDripFX;
+import micdoodle8.mods.galacticraft.planets.mars.client.fx.ParticleDrip;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
@@ -28,24 +28,24 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -142,7 +142,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
-        event.map.registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
+        event.getMap().registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }
 
     @SubscribeEvent
@@ -264,7 +264,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
             final double dPosX = mc.getRenderViewEntity().posX - position.x;
             final double dPosY = mc.getRenderViewEntity().posY - position.y;
             final double dPosZ = mc.getRenderViewEntity().posZ - position.z;
-            EntityFX particle = null;
+            Particle particle = null;
             final double maxDistSqrd = 64.0D;
 
             if (dPosX * dPosX + dPosY * dPosY + dPosZ * dPosZ < maxDistSqrd * maxDistSqrd)
@@ -275,15 +275,12 @@ public class MarsModuleClient implements IPlanetsModuleClient
                 }
                 else if (particleID.equals("bacterialDrip"))
                 {
-                    particle = new EntityBacterialDripFX(mc.theWorld, position.x, position.y, position.z);
+                    particle = new ParticleDrip(mc.theWorld, position.x, position.y, position.z);
                 }
             }
 
             if (particle != null)
             {
-                particle.prevPosX = particle.posX;
-                particle.prevPosY = particle.posY;
-                particle.prevPosZ = particle.posZ;
                 mc.effectRenderer.addEffect(particle);
             }
         }

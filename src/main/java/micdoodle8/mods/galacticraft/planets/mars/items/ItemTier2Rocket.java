@@ -24,6 +24,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -59,14 +61,14 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         boolean padFound = false;
         TileEntity tile = null;
 
         if (world.isRemote)
         {
-            return false;
+            return EnumActionResult.PASS;
         }
         else
         {
@@ -109,12 +111,12 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 {
                     if (((TileEntityLandingPad) tile).getDockedEntity() != null)
                     {
-                        return false;
+                        return EnumActionResult.PASS;
                     }
                 }
                 else
                 {
-                    return false;
+                    return EnumActionResult.PASS;
                 }
 
                 EntityAutoRocket rocket;
@@ -160,10 +162,10 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
             }
             else
             {
-                return false;
+                return EnumActionResult.PASS;
             }
         }
-        return true;
+        return EnumActionResult.SUCCESS;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -1,6 +1,6 @@
 package ic2.api.energy;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import ic2.api.energy.tile.IEnergyTile;
@@ -53,7 +53,7 @@ public interface IEnergyNet {
 	 *
 	 * The statistics apply to the last simulated tick.
 	 *
-	 * @param te Tile entity to check.
+	 * @param tile Tile entity to check.
 	 * @return Statistics for the tile entity.
 	 */
 	NodeStats getNodeStats(IEnergyTile tile);

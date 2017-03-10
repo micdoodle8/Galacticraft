@@ -136,7 +136,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     }
 
 //    @Override
-//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
+//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        EnumFacing side = worldIn.getBlockState(pos).getValue(FACING);
 //        float var8 = 0.3F;

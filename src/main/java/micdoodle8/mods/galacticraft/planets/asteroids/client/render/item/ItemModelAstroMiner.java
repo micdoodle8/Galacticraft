@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.resources.model.IBakedModel;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
@@ -46,7 +46,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
         {
             Vector3f trans = new Vector3f(0.5F, -0.2F, -1.1F);
             Matrix4f ret = new Matrix4f();
@@ -70,7 +70,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
         {
             Vector3f trans = new Vector3f(-0.2F, -0.0F, 0.7F);
             Matrix4f ret = new Matrix4f();

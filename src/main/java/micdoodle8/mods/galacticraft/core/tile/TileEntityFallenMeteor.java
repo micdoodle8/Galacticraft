@@ -68,6 +68,7 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacke
     {
         super.writeToNBT(nbt);
         nbt.setInteger("MeteorHeatLevel", this.heatLevel);
+        return nbt;
     }
 
     @Override

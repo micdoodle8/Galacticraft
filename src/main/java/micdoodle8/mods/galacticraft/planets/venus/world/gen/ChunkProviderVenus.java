@@ -12,16 +12,15 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.IProgressUpdate;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -29,7 +28,7 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderVenus implements IChunkProvider
+public class ChunkProviderVenus implements IChunkGenerator
 {
     public static final IBlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
 
@@ -97,7 +96,7 @@ public class ChunkProviderVenus implements IChunkProvider
     private void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.noiseGenSmooth1.setFrequency(0.015F);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
+        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
         this.createLandPerBiome(chunkX * 4, chunkZ * 4);
 
         for (int i = 0; i < 4; ++i)
@@ -163,7 +162,7 @@ public class ChunkProviderVenus implements IChunkProvider
     private void replaceBlocksForBiome(int p_180517_1_, int p_180517_2_, ChunkPrimer p_180517_3_, Biome[] p_180517_4_)
     {
         double d0 = 0.03125D;
-        this.stoneNoise = this.noiseGen4.func_151599_a(this.stoneNoise, (double) (p_180517_1_ * 16), (double) (p_180517_2_ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
+        this.stoneNoise = this.noiseGen4.getRegion(this.stoneNoise, (double) (p_180517_1_ * 16), (double) (p_180517_2_ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
 
         for (int i = 0; i < 16; ++i)
         {
@@ -181,21 +180,21 @@ public class ChunkProviderVenus implements IChunkProvider
         this.rand.setSeed((long) x * 341873128712L + (long) z * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
         this.setBlocksInChunk(x, z, chunkprimer);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
+        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16, 16);
 
-        this.lavaCaveGenerator.generate(this, this.worldObj, x, z, chunkprimer);
+        this.lavaCaveGenerator.generate(this.worldObj, x, z, chunkprimer);
 
         this.replaceBlocksForBiome(x, z, chunkprimer, this.biomesForGeneration);
 
-        this.caveGenerator.generate(this, this.worldObj, x, z, chunkprimer);
-        this.dungeonGenerator.generate(this, this.worldObj, x, z, chunkprimer);
+        this.caveGenerator.generate(this.worldObj, x, z, chunkprimer);
+        this.dungeonGenerator.generate(this.worldObj, x, z, chunkprimer);
 
         Chunk chunk = new Chunk(this.worldObj, chunkprimer, x, z);
         byte[] abyte = chunk.getBiomeArray();
 
         for (int i = 0; i < abyte.length; ++i)
         {
-            abyte[i] = (byte) this.biomesForGeneration[i].biomeID;
+            abyte[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
         }
 
         chunk.generateSkylightMap();
@@ -226,8 +225,8 @@ public class ChunkProviderVenus implements IChunkProvider
                     for (int k1 = -i1; k1 <= i1; ++k1)
                     {
                         Biome biomegenbase1 = this.biomesForGeneration[k + j1 + 2 + (l + k1 + 2) * 10];
-                        float f5 = biomegenbase1.minHeight;
-                        float f6 = biomegenbase1.maxHeight;
+                        float f5 = biomegenbase1.getBaseHeight();
+                        float f6 = biomegenbase1.getHeightVariation();
 
                         if (this.worldType == WorldType.AMPLIFIED && f5 > 0.0F)
                         {
@@ -237,7 +236,7 @@ public class ChunkProviderVenus implements IChunkProvider
 
                         float f7 = this.parabolicField[j1 + 2 + (k1 + 2) * 5] / (f5 + 2.0F);
 
-                        if (biomegenbase1.minHeight > biomegenbase.minHeight)
+                        if (biomegenbase1.getBaseHeight() > biomegenbase.getBaseHeight())
                         {
                             f7 /= 2.0F;
                         }
@@ -319,19 +318,13 @@ public class ChunkProviderVenus implements IChunkProvider
     }
 
     @Override
-    public boolean chunkExists(int x, int z)
-    {
-        return true;
-    }
-
-    @Override
-    public void populate(IChunkProvider provider, int x, int z)
+    public void populate(int x, int z)
     {
         BlockFalling.fallInstantly = true;
         int i = x * 16;
         int j = z * 16;
         BlockPos blockpos = new BlockPos(i, 0, j);
-        Biome biomegenbase = this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
+        Biome biomegenbase = this.worldObj.getBiome(blockpos.add(16, 0, 16));
         this.rand.setSeed(this.worldObj.getSeed());
         long k = this.rand.nextLong() / 2L * 2L + 1L;
         long l = this.rand.nextLong() / 2L * 2L + 1L;
@@ -367,53 +360,18 @@ public class ChunkProviderVenus implements IChunkProvider
             }
         }
 
-        this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(x, z));
+        this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(x, z));
 
         biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(i, 0, j));
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, i + 8, j + 8, 16, 16, this.rand);
+        WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biomegenbase, i + 8, j + 8, 16, 16, this.rand);
 
         BlockFalling.fallInstantly = false;
     }
 
     @Override
-    public boolean func_177460_a(IChunkProvider p_177460_1_, Chunk p_177460_2_, int p_177460_3_, int p_177460_4_)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean saveChunks(boolean p_73151_1_, IProgressUpdate progressCallback)
-    {
-        return true;
-    }
-
-    @Override
-    public void saveExtraData()
-    {
-    }
-
-    @Override
-    public boolean unloadQueuedChunks()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    @Override
-    public String makeString()
-    {
-        return "VenusLevelSource";
-    }
-
-    @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        Biome biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        Biome biomegenbase = this.worldObj.getBiome(pos);
 
         return biomegenbase.getSpawnableList(creatureType);
     }
@@ -425,20 +383,14 @@ public class ChunkProviderVenus implements IChunkProvider
     }
 
     @Override
-    public int getLoadedChunkCount()
-    {
-        return 0;
-    }
-
-    @Override
     public void recreateStructures(Chunk chunk, int x, int z)
     {
-        this.dungeonGenerator.generate(this, this.worldObj, x, z, null);
+        this.dungeonGenerator.generate(this.worldObj, x, z, null);
     }
 
     @Override
-    public Chunk provideChunk(BlockPos blockPosIn)
+    public boolean generateStructures(Chunk chunkIn, int x, int z)
     {
-        return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package codechicken.nei;
 
+import codechicken.nei.util.NEIClientUtils;
+
 public class ItemQuantityField extends TextField {
     public ItemQuantityField(String ident) {
         super(ident);

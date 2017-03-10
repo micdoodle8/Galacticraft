@@ -23,7 +23,7 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
     public StructureComponentVillageTorch(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.coordBaseMode = par5;
+        this.setCoordBaseMode(par5);
         this.boundingBox = par4StructureBoundingBox;
     }
 
@@ -70,10 +70,10 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
         }
 
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 2, 3, 1, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
-        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 0, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 1, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, Blocks.dark_oak_fence.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, Blocks.wool.getStateFromMeta(15), 1, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.DARK_OAK_FENCE.getDefaultState(), 1, 0, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.DARK_OAK_FENCE.getDefaultState(), 1, 1, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.DARK_OAK_FENCE.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, Blocks.WOOL.getStateFromMeta(15), 1, 3, 0, par3StructureBoundingBox);
         boolean flag = this.getCoordBaseMode() == EnumFacing.EAST || this.getCoordBaseMode() == EnumFacing.NORTH;
         this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateY()), flag ? 2 : 0, 3, 0, par3StructureBoundingBox);
         this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode()), 1, 3, 1, par3StructureBoundingBox);

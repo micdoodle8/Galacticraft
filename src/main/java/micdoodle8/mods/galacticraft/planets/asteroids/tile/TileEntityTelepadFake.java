@@ -3,12 +3,13 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.ref.WeakReference;
@@ -28,7 +29,8 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (!this.worldObj.isRemote)
         {
-            this.worldObj.notifyBlockUpdate(this.getPos());
+            IBlockState state = this.worldObj.getBlockState(this.getPos());
+            this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
         }
     }
 
@@ -132,6 +134,8 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
             tagCompound.setInteger("z", this.mainBlockPosition.getZ());
             nbt.setTag("mainBlockPosition", tagCompound);
         }
+
+        return nbt;
     }
 
     @Override

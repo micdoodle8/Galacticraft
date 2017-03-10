@@ -50,9 +50,9 @@ public abstract class StructureComponentMoon extends StructureComponent
         final int var10 = this.getYWithOffset(var4);
         final int var11 = this.getZWithOffset(var3, var5);
 
-        if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.mob_spawner)
+        if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.MOB_SPAWNER)
         {
-            var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.mob_spawner.getDefaultState(), 2);
+            var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.MOB_SPAWNER.getDefaultState(), 2);
             var8 = (TileEntityMobSpawner) var1.getTileEntity(new BlockPos(var9, var10, var11));
 
             if (var8 != null)

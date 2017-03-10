@@ -1,16 +1,19 @@
 package codechicken.nei.recipe;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.lib.render.CCRenderState;
-import codechicken.nei.*;
+import codechicken.lib.texture.TextureUtils;
+import codechicken.nei.GuiNEIButton;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.api.IGuiContainerOverlay;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.guihook.IGuiClientSide;
 import codechicken.nei.guihook.IGuiHandleMouseWheel;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -89,9 +92,9 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
             }
         }
 
-        if (i == mc.gameSettings.keyBindInventory.getKeyCode()) {
+        if (mc.gameSettings.keyBindInventory.isActiveAndMatches(i)) {
             mc.displayGuiScreen(firstGui);
-        } else if (i == NEIClientConfig.getKeyBinding("gui.back")) {
+        } else if (KeyBindings.get("nei.options.keys.gui.back").isActiveAndMatches(i)) {
             mc.displayGuiScreen(prevGui);
         }
 
@@ -273,7 +276,7 @@ public abstract class GuiRecipe extends GuiContainer implements IGuiContainerOve
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
         GlStateManager.color(1, 1, 1, 1);
-        CCRenderState.changeTexture("nei:textures/gui/recipebg.png");
+        TextureUtils.changeTexture("nei:textures/gui/recipebg.png");
         int j = (width - xSize) / 2;
         int k = (height - ySize) / 2;
         drawTexturedModalRect(j, k, 0, 0, xSize, ySize);

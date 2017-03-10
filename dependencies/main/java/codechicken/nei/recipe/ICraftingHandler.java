@@ -10,5 +10,5 @@ public interface ICraftingHandler extends IRecipeHandler {
      * @param results  Objects representing the results that matching recipes must produce.
      * @return An instance of {@link ICraftingHandler} configured with a list of recipes that produce matching output.
      */
-    public ICraftingHandler getRecipeHandler(String outputId, Object... results);
+    ICraftingHandler getRecipeHandler(String outputId, Object... results);
 }

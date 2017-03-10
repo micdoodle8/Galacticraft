@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -13,6 +12,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -76,7 +76,7 @@ public class GuiSlimelingInventory extends GuiContainer
     {
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+            this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.mc.displayGuiScreen(new GuiSlimeling(this.slimeling));
         }
 
@@ -106,7 +106,7 @@ public class GuiSlimelingInventory extends GuiContainer
         slimeling.rotationYawHead = slimeling.rotationYaw;
         GL11.glTranslatef(0.0F, (float) slimeling.getYOffset(), 0.0F);
         FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
-        FMLClientHandler.instance().getClient().getRenderManager().renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        FMLClientHandler.instance().getClient().getRenderManager().doRenderEntity(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;
@@ -163,7 +163,7 @@ public class GuiSlimelingInventory extends GuiContainer
         this.drawTexturedModalRect(var5 + 8, var6 + 8, 176, 9, 18, 18);
         this.drawTexturedModalRect(var5 + 8, var6 + 29, 176, 9, 18, 18);
 
-        ItemStack stack = this.slimeling.getCargoSlot();
+        ItemStack stack = this.slimeling.slimelingInventory.getStackInSlot(1);
 
         if (stack != null && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
         {

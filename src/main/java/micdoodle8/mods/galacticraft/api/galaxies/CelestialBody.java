@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.galaxies;
 
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.WorldProvider;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -20,8 +20,9 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected ScalableDistance relativeDistanceFromCenter = new ScalableDistance(1.0F, 1.0F);
     protected float relativeOrbitTime = 1.0F;
     protected float phaseShift = 0.0F;
-    protected int dimensionID = 0;
+    protected int dimensionID = -1;
     protected Class<? extends WorldProvider> providerClass;
+    protected String dimensionSuffix;
     protected boolean autoRegisterDimension = false;
     protected boolean isReachable = false;
     protected boolean forceStaticLoad = true;
@@ -60,7 +61,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public String getLocalizedName()
     {
         String s = this.getUnlocalizedName();
-        s = s == null ? "" : StatCollector.translateToLocal(s);
+        s = s == null ? "" : I18n.translateToLocal(s);
         int comment = s.indexOf('#');
         return (comment > 0) ? s.substring(0, comment).trim() : s;
     }
@@ -298,4 +299,14 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 	{
 		this.isReachable = false;
 	}
+
+    public String getDimensionSuffix()
+    {
+        return dimensionSuffix;
+    }
+
+    public void setDimensionSuffix(String dimensionSuffix)
+    {
+        this.dimensionSuffix = dimensionSuffix;
+    }
 }

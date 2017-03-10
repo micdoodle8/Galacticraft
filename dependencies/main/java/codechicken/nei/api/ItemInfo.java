@@ -1,42 +1,49 @@
 package codechicken.nei.api;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.*;
 import codechicken.nei.ItemList.ItemsLoadedCallback;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
-import codechicken.nei.config.ArrayDumper;
 import codechicken.nei.config.ItemPanelDumper;
-import codechicken.nei.config.RegistryDumper;
+import codechicken.nei.config.dumps.FluidRegistryDumper;
+import codechicken.nei.config.dumps.ForgeRegistryDumper;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.BrewingRecipeHandler;
 import codechicken.nei.recipe.RecipeItemInputHandler;
+import codechicken.nei.recipe.potion.PotionRecipeHelper;
+import codechicken.nei.thirdparty.colossalchests.ColossalChestsConfig;
+import codechicken.nei.util.LogHelper;
 import com.google.common.collect.ArrayListMultimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityList.EntityEggInfo;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.TextFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.RegistryNamespaced;
+import net.minecraft.potion.PotionHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -45,10 +52,13 @@ import java.util.Map.Entry;
  * This is an internal class for storing information about items, to be accessed by the API
  */
 public class ItemInfo {
-    public static enum Layout {
-        HEADER, BODY, FOOTER
+    public enum Layout {
+        HEADER,
+        BODY,
+        FOOTER
     }
 
+    @Deprecated
     public static final ArrayListMultimap<Layout, IHighlightHandler> highlightHandlers = ArrayListMultimap.create();
     public static final ItemStackMap<String> nameOverrides = new ItemStackMap<String>();
     public static final ItemStackSet hiddenItems = new ItemStackSet();
@@ -57,8 +67,10 @@ public class ItemInfo {
     public static final ArrayListMultimap<Item, ItemStack> itemVariants = ArrayListMultimap.create();
 
     public static final LinkedList<IInfiniteItemHandler> infiniteHandlers = new LinkedList<IInfiniteItemHandler>();
+    @Deprecated
     public static final ArrayListMultimap<Block, IHighlightHandler> highlightIdentifiers = ArrayListMultimap.create();
     public static final HashSet<Class<? extends Slot>> fastTransferExemptions = new HashSet<Class<? extends Slot>>();
+    public static final HashSet<Class<? extends GuiContainer>> fastTransferContainerExemptions = new HashSet<Class<? extends GuiContainer>>();
 
     public static final HashMap<Item, String> itemOwners = new HashMap<Item, String>();
 
@@ -98,6 +110,8 @@ public class ItemInfo {
     }
 
     public static void load(World world) {
+        ColossalChestsConfig.init();
+        PotionRecipeHelper.init();
         addVanillaBlockProperties();
         addDefaultDropDowns();
         searchItems();
@@ -112,8 +126,8 @@ public class ItemInfo {
     }
 
     private static void addVanillaBlockProperties() {
-        API.hideItem(new ItemStack(Blocks.farmland));
-        API.hideItem(new ItemStack(Blocks.lit_furnace));
+        API.hideItem(new ItemStack(Blocks.FARMLAND));
+        API.hideItem(new ItemStack(Blocks.LIT_FURNACE));
     }
 
     private static void addSearchOptimisation() {
@@ -126,10 +140,10 @@ public class ItemInfo {
     }
 
     private static void addHiddenItemFilter() {
-        API.addItemFilter(new ItemFilterProvider() {
+        API.addItemFilter(new IItemFilterProvider() {
             @Override
-            public ItemFilter getFilter() {
-                return new ItemFilter() {
+            public IItemFilter getFilter() {
+                return new IItemFilter() {
                     @Override
                     public boolean matches(ItemStack item) {
                         return !hiddenItems.contains(item);
@@ -140,77 +154,71 @@ public class ItemInfo {
     }
 
     private static void addIDDumps() {
-        API.addOption(new RegistryDumper<Item>("tools.dump.item") {
+        API.addOption(new ForgeRegistryDumper<Item>("tools.dump.item") {
+            @Override
+            public IForgeRegistry<Item> registry() {
+                return ForgeRegistries.ITEMS;
+            }
+
+            @Override
+            public String[] dump(Item obj, ResourceLocation registryName) {
+                int id = Item.getIdFromItem(obj);
+                boolean hasBlock = Block.getBlockFromItem(obj) != null && Block.getBlockFromItem(obj) != Blocks.AIR;
+                return new String[] { registryName.toString(), Integer.toString(id), Boolean.toString(hasBlock), obj.getClass().getCanonicalName() };
+            }
+
             @Override
             public String[] header() {
-                return new String[] { "Name", "ID", "Has Block", "Mod", "Class" };
-            }
-
-            @Override
-            public String[] dump(Item item, int id, String name) {
-                return new String[] { name, Integer.toString(id), Boolean.toString(Block.getBlockFromItem(item) != Blocks.AIR), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
-            }
-
-            @Override
-            public RegistryNamespaced registry() {
-                return Item.itemRegistry;
+                return new String[] { "Registry Name", "ID", "Has Block", "Class" };
             }
         });
-        API.addOption(new RegistryDumper<Block>("tools.dump.block") {
+        API.addOption(new ForgeRegistryDumper<Block>("tools.dump.block") {
+            @Override
+            public IForgeRegistry<Block> registry() {
+                return ForgeRegistries.BLOCKS;
+            }
+
+            @Override
+            public String[] dump(Block obj, ResourceLocation registryName) {
+                int id = Block.getIdFromBlock(obj);
+                boolean hasBlock = Item.getItemFromBlock(obj) != null; //&& Block.getBlockFromItem(obj) != Blocks.AIR;
+                return new String[] { registryName.toString(), Integer.toString(id), Boolean.toString(hasBlock), obj.getClass().getCanonicalName() };
+            }
+
             @Override
             public String[] header() {
-                return new String[] { "Name", "ID", "Has Item", "Mod", "Class" };
-            }
-
-            @Override
-            public String[] dump(Block item, int id, String name) {
-                return new String[] { name, Integer.toString(id), Boolean.toString(Item.getItemFromBlock(item) != null), ItemInfo.itemOwners.get(item), item.getClass().getCanonicalName() };
-            }
-
-            @Override
-            public RegistryNamespaced registry() {
-                return Block.blockRegistry;
+                return new String[] { "Registry Name", "ID", "Has Item", "Class" };
             }
         });
-        API.addOption(new ArrayDumper<Potion>("tools.dump.potion") {
+        API.addOption(new FluidRegistryDumper());
+        API.addOption(new ForgeRegistryDumper<Potion>("tools.dump.potion") {
+            @Override
+            public IForgeRegistry<Potion> registry() {
+                return ForgeRegistries.POTIONS;
+            }
+
+            @Override
+            public String[] dump(Potion obj, ResourceLocation registryName) {
+                int id = Potion.getIdFromPotion(obj);
+                return new String[] { registryName.toString(), Integer.toString(id), Boolean.toString(obj.isBadEffect()), Boolean.toString(obj.isBeneficial()), obj.getClass().getCanonicalName() };
+            }
+
+            @Override
             public String[] header() {
-                return new String[] { "ID", "Unlocalised name", "Class" };
-            }
-
-            @Override
-            public String[] dump(Potion potion, int id) {
-                return new String[] { Integer.toString(id), potion.getName(), potion.getClass().getCanonicalName() };
-            }
-
-            @Override
-            public Potion[] array() {
-                return Potion.potionTypes;
+                return new String[] { "Registry Name", "ID", "Is bad Effect", "Is beneficial", "Class" };
             }
         });
-        API.addOption(new ArrayDumper<Enchantment>("tools.dump.enchantment") {
-            public String[] header() {
-                return new String[] { "ID", "Unlocalised name", "Type", "Min Level", "Max Level", "Class" };
+        API.addOption(new ForgeRegistryDumper<Biome>("tools.dump.biome") {
+            @Override
+            public IForgeRegistry<Biome> registry() {
+                return ForgeRegistries.BIOMES;
             }
 
             @Override
-            public String[] dump(Enchantment ench, int id) {
-                return new String[] { Integer.toString(id), ench.getName(), ench.type.toString(), Integer.toString(ench.getMinLevel()), Integer.toString(ench.getMaxLevel()), ench.getClass().getCanonicalName() };
-            }
+            public String[] dump(Biome obj, ResourceLocation registryName) {
+                int id = Biome.getIdForBiome(obj);
 
-            @Override
-            public Enchantment[] array() {
-                return Enchantment.enchantmentsList;
-            }
-        });
-        API.addOption(new ArrayDumper<BiomeGenBase>("tools.dump.biome") {
-            @Override
-            public String[] header() {
-                return new String[] { "ID", "Name", "Temperature", "Rainfall", "Spawn Chance", "Root Height", "Height Variation", "Types", "Class" };
-            }
-
-            @Override
-            public String[] dump(BiomeGenBase biome, int id) {
-                BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(biome);
+                BiomeDictionary.Type[] types = BiomeDictionary.getTypesForBiome(obj);
                 StringBuilder s_types = new StringBuilder();
                 for (BiomeDictionary.Type t : types) {
                     if (s_types.length() > 0) {
@@ -218,28 +226,67 @@ public class ItemInfo {
                     }
                     s_types.append(t.name());
                 }
-
-                return new String[] { Integer.toString(id), biome.biomeName, Float.toString(biome.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(biome.getFloatRainfall()), Float.toString(biome.getSpawningChance()), Float.toString(biome.minHeight), Float.toString(biome.maxHeight), s_types.toString(), biome.getClass().getCanonicalName() };
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getBiomeName(), Float.toString(obj.getFloatTemperature(BlockPos.ORIGIN)), Float.toString(obj.getRainfall()), Float.toString(obj.getSpawningChance()), Float.toString(obj.getBaseHeight()), Float.toString(obj.getHeightVariation()), s_types.toString(), obj.getClass().getCanonicalName() };
             }
 
             @Override
-            public BiomeGenBase[] array() {
-                return BiomeGenBase.getBiomeGenArray();
+            public String[] header() {
+                return new String[] { "Registry Name", "ID", "Name", "Temperature", "Rainfall", "Spawn Chance", "Root Height", "Height Variation", "Types", "Class" };
+            }
+        });
+        API.addOption(new ForgeRegistryDumper<SoundEvent>("tools.dump.sound_event") {
+            @Override
+            public IForgeRegistry<SoundEvent> registry() {
+                return ForgeRegistries.SOUND_EVENTS;
+            }
+
+            @Override
+            public String[] dump(SoundEvent obj, ResourceLocation registryName) {
+                int id = SoundEvent.REGISTRY.getIDForObject(obj);
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getClass().getCanonicalName() };
+            }
+
+            @Override
+            public String[] header() {
+                return new String[] { "Registry Name", "ID", "Class" };
+            }
+        });
+        API.addOption(new ForgeRegistryDumper<Enchantment>("tools.dump.enchantment") {
+            @Override
+            public IForgeRegistry<Enchantment> registry() {
+                return null;
+            }
+
+            @Override
+            public String[] dump(Enchantment obj, ResourceLocation registryName) {
+                int id = Enchantment.getEnchantmentID(obj);
+                StringBuilder s_slots = new StringBuilder();
+                for (EntityEquipmentSlot slot : obj.applicableEquipmentTypes) {
+                    if (s_slots.length() > 0) {
+                        s_slots.append(", ");
+                    }
+                    s_slots.append(slot.getName());
+                }
+                return new String[] { registryName.toString(), Integer.toString(id), obj.getName(), obj.type.toString(), Integer.toString(obj.getMinLevel()), Integer.toString(obj.getMinLevel()), obj.getRarity().name(), s_slots.toString(), obj.getClass().getCanonicalName() };
+            }
+
+            @Override
+            public String[] header() {
+                return new String[] { "Registry Name", "ID", "Name", "Type", "Min Level", "Max Level", "Rarity", "Slots", "Class" };
             }
         });
         API.addOption(new ItemPanelDumper("tools.dump.itempanel"));
-        //TODO Fluid registry Dumper.
     }
 
     private static void parseModItems() {
         HashMap<String, ItemStackSet> modSubsets = new HashMap<String, ItemStackSet>();
-        for (Item item : (Iterable<Item>) Item.itemRegistry) {
-            UniqueIdentifier ident = GameRegistry.findUniqueIdentifierFor(item);
+        for (Item item : Item.REGISTRY) {
+            ResourceLocation ident = Item.REGISTRY.getNameForObject(item);
             if (ident == null) {
-                NEIClientConfig.logger.error("Failed to find identifier for: " + item);
+                LogHelper.error("Failed to find identifier for: " + item);
                 continue;
             }
-            String modId = GameRegistry.findUniqueIdentifierFor(item).modId;
+            String modId = ident.getResourceDomain();
             itemOwners.put(item, modId);
             ItemStackSet itemset = modSubsets.get(modId);
             if (itemset == null) {
@@ -252,7 +299,7 @@ public class ItemInfo {
         for (Entry<String, ItemStackSet> entry : modSubsets.entrySet()) {
             ModContainer mc = FMLCommonHandler.instance().findContainerFor(entry.getKey());
             if (mc == null) {
-                NEIClientConfig.logger.error("Missing container for " + entry.getKey());
+                LogHelper.error("Missing container for " + entry.getKey());
             } else {
                 API.addSubset("Mod." + mc.getName(), entry.getValue());
             }
@@ -270,19 +317,19 @@ public class ItemInfo {
     }
 
     private static void addDefaultDropDowns() {
-        API.addSubset("Items", new ItemFilter() {
+        API.addSubset("Items", new IItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
                 return Block.getBlockFromItem(item.getItem()) == Blocks.AIR;
             }
         });
-        API.addSubset("Blocks", new ItemFilter() {
+        API.addSubset("Blocks", new IItemFilter() {
             @Override
             public boolean matches(ItemStack item) {
                 return Block.getBlockFromItem(item.getItem()) != Blocks.AIR;
             }
         });
-        API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.mob_spawner));
+        API.addSubset("Blocks.MobSpawners", ItemStackSet.of(Blocks.MOB_SPAWNER));
     }
 
     private static void searchItems() {
@@ -301,10 +348,10 @@ public class ItemInfo {
         ItemStackSet food = new ItemStackSet();
         ItemStackSet potioningredients = new ItemStackSet();
 
-        ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<ItemStackSet>(CreativeTabs.creativeTabArray.length);
+        ArrayList<ItemStackSet> creativeTabRanges = new ArrayList<ItemStackSet>(CreativeTabs.CREATIVE_TAB_ARRAY.length);
         List<ItemStack> stackList = new LinkedList<ItemStack>();
 
-        for (Item item : (Iterable<Item>) Item.itemRegistry) {
+        for (Item item : Item.REGISTRY) {
             if (item == null) {
                 continue;
             }
@@ -326,6 +373,7 @@ public class ItemInfo {
                 }
             }
 
+            //TODO EntityEquipmentSlot
             if (item.isDamageable()) {
                 tools.with(item);
                 if (item instanceof ItemPickaxe) {
@@ -340,22 +388,22 @@ public class ItemInfo {
                     swords.with(item);
                 } else if (item instanceof ItemArmor) {
                     switch (((ItemArmor) item).armorType) {
-                    case 0:
-                        helmets.with(item);
-                        break;
-                    case 1:
-                        chest.with(item);
-                        break;
-                    case 2:
-                        legs.with(item);
-                        break;
-                    case 3:
-                        boots.with(item);
-                        break;
+                        case HEAD:
+                            helmets.with(item);
+                            break;
+                        case CHEST:
+                            chest.with(item);
+                            break;
+                        case LEGS:
+                            legs.with(item);
+                            break;
+                        case FEET:
+                            boots.with(item);
+                            break;
                     }
-                } else if (item == Items.arrow || item == Items.bow) {
+                } else if (item == Items.ARROW || item == Items.BOW) {
                     ranged.with(item);
-                } else if (item == Items.fishing_rod || item == Items.flint_and_steel || item == Items.shears) {
+                } else if (item == Items.FISHING_ROD || item == Items.FLINT_AND_STEEL || item == Items.SHEARS) {
                     other.with(item);
                 }
             }
@@ -368,14 +416,14 @@ public class ItemInfo {
                 LinkedList<ItemStack> subItems = new LinkedList<ItemStack>();
                 item.getSubItems(item, null, subItems);
                 for (ItemStack stack : subItems) {
-                    if (item.isPotionIngredient(stack)) {
+                    if (PotionHelper.isReagent(stack)) {
                         BrewingRecipeHandler.ingredients.add(stack);
                         potioningredients.add(stack);
                     }
                 }
 
             } catch (Exception e) {
-                NEIClientConfig.logger.error("Error loading brewing ingredients for: " + item, e);
+                LogHelper.errorError("Error loading brewing ingredients for: " + item, e);
             }
         }
         API.addSubset("Items.Tools.Pickaxes", picks);
@@ -392,7 +440,7 @@ public class ItemInfo {
         API.addSubset("Items.Food", food);
         API.addSubset("Items.Potions.Ingredients", potioningredients);
 
-        for (CreativeTabs tab : CreativeTabs.creativeTabArray) {
+        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
             if (tab.getTabIndex() >= creativeTabRanges.size()) {
                 continue;
             }
@@ -405,17 +453,19 @@ public class ItemInfo {
         BrewingRecipeHandler.searchPotions();
     }
 
+    //TODO
     private static void addSpawnEggs() {
-        addEntityEgg(EntitySnowman.class, 0xEEFFFF, 0xffa221);
-        addEntityEgg(EntityIronGolem.class, 0xC5C2C1, 0xffe1cc);
+        //addEntityEgg(EntitySnowman.class, 0xEEFFFF, 0xffa221);
+        //addEntityEgg(EntityIronGolem.class, 0xC5C2C1, 0xffe1cc);
     }
 
-    private static void addEntityEgg(Class<?> entity, int i, int j) {
-        int id = (Integer) EntityList.classToIDMapping.get(entity);
-        EntityList.entityEggs.put(id, new EntityEggInfo(id, i, j));
+    private static void addEntityEgg(Class<? extends Entity> entity, int i, int j) {
+        String id = EntityList.getEntityStringFromClass(entity);
+        EntityList.ENTITY_EGGS.put(id, new EntityEggInfo(id, i, j));
     }
 
-    public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, MovingObjectPosition hit) {
+    @Deprecated
+    public static ArrayList<ItemStack> getIdentifierItems(World world, EntityPlayer player, RayTraceResult hit) {
         BlockPos pos = hit.getBlockPos();
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
@@ -440,7 +490,7 @@ public class ItemInfo {
             return items;
         }
 
-        ItemStack pick = block.getPickBlock(hit, world, pos);
+        ItemStack pick = block.getPickBlock(state, hit, world, pos, player);
         if (pick != null) {
             items.add(pick);
         }
@@ -451,8 +501,8 @@ public class ItemInfo {
         }
         if (block instanceof IShearable) {
             IShearable shearable = (IShearable) block;
-            if (shearable.isShearable(new ItemStack(Items.shears), world, pos)) {
-                items.addAll(shearable.onSheared(new ItemStack(Items.shears), world, pos, 0));
+            if (shearable.isShearable(new ItemStack(Items.SHEARS), world, pos)) {
+                items.addAll(shearable.onSheared(new ItemStack(Items.SHEARS), world, pos, 0));
             }
         }
 
@@ -463,18 +513,20 @@ public class ItemInfo {
         return items;
     }
 
+    @Deprecated
     public static void registerHighlightHandler(IHighlightHandler handler, ItemInfo.Layout... layouts) {
         for (ItemInfo.Layout layout : layouts) {
             ItemInfo.highlightHandlers.get(layout).add(handler);
         }
     }
 
-    public static List<String> getText(ItemStack itemStack, World world, EntityPlayer player, MovingObjectPosition mop) {
+    @Deprecated
+    public static List<String> getText(ItemStack itemStack, World world, EntityPlayer player, RayTraceResult rayTraceResult) {
         List<String> retString = new ArrayList<String>();
 
         for (ItemInfo.Layout layout : ItemInfo.Layout.values()) {
             for (IHighlightHandler handler : ItemInfo.highlightHandlers.get(layout)) {
-                retString = handler.handleTextData(itemStack, world, player, mop, retString, layout);
+                retString = handler.handleTextData(itemStack, world, player, rayTraceResult, retString, layout);
             }
         }
 

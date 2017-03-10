@@ -115,17 +115,18 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
+        this.containingItems = this.readStandardItemsFromNBT(nbt);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        this.writeStandardItemsToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt);
+        return nbt;
     }
 
     @Override

@@ -238,6 +238,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             nbt.setInteger("chestY", this.chestPos.getY());
             nbt.setInteger("chestZ", this.chestPos.getZ());
         }
+        return nbt;
     }
 
     @Override

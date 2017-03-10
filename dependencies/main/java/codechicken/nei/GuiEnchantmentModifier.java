@@ -1,6 +1,6 @@
 package codechicken.nei;
 
-import codechicken.lib.render.CCRenderState;
+import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import java.io.IOException;
 
-import static codechicken.nei.NEIClientUtils.translate;
+import static codechicken.nei.util.NEIClientUtils.translate;
 
 public class GuiEnchantmentModifier extends GuiContainer {
     ContainerEnchantmentModifier container;
@@ -29,7 +29,7 @@ public class GuiEnchantmentModifier extends GuiContainer {
 
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
         GlStateManager.color(1, 1, 1, 1);
-        CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
+        TextureUtils.changeTexture("textures/gui/container/enchanting_table.png");
         GlStateManager.translate(guiLeft, guiTop, 0);
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
@@ -78,8 +78,8 @@ public class GuiEnchantmentModifier extends GuiContainer {
 
     private void changeLevel(int i) {
         container.level += i;
-        ((GuiButton) buttonList.get(0)).enabled = container.level != 1;
-        ((GuiButton) buttonList.get(1)).enabled = container.level != 10;
+        buttonList.get(0).enabled = container.level != 1;
+        buttonList.get(1).enabled = container.level != 10;
     }
 
     @Override

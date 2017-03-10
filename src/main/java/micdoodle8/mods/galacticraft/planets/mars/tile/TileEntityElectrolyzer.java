@@ -224,6 +224,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
             nbt.setTag("gasTank2", this.liquidTank2.writeToNBT(new NBTTagCompound()));
         }
+
+        return nbt;
     }
 
     @Override
@@ -262,7 +264,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             case 0:
                 return ItemElectricBase.isElectricItem(itemstack.getItem());
             case 1:
-                return itemstack.getItem() == Items.water_bucket;
+                return itemstack.getItem() == Items.WATER_BUCKET;
             default:
                 return false;
             }
@@ -280,7 +282,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             case 0:
                 return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
             case 1:
-                return itemstack.getItem() == Items.bucket;
+                return itemstack.getItem() == Items.BUCKET;
             default:
                 return false;
             }
@@ -297,7 +299,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         case 0:
             return ItemElectricBase.isElectricItem(item);
         case 1:
-            return item == Items.bucket || item == Items.water_bucket;
+            return item == Items.BUCKET || item == Items.WATER_BUCKET;
         }
 
         return false;

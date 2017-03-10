@@ -75,7 +75,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                         this.validSpout = true;
                         break;
                     }
-                    else if (!state.getBlock().isAir(this.worldObj, pos1))
+                    else if (!state.getBlock().isAir(this.worldObj.getBlockState(pos1), this.worldObj, pos1))
                     {
                         // Not valid
                         break;
@@ -86,7 +86,8 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.worldObj.isRemote && this.validSpout != lastValidSpout)
             {
                 // Update active texture
-                this.worldObj.notifyBlockUpdate(this.getPos());
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
         }
 
@@ -178,6 +179,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override
@@ -234,7 +236,8 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.disabled != disabled && this.worldObj.isRemote)
             {
                 // Update active texture
-                this.worldObj.notifyBlockUpdate(this.getPos());
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
 
             this.disabled = disabled;

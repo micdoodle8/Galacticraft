@@ -8,14 +8,17 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -29,7 +32,7 @@ import java.util.Random;
 
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webType", EnumWebType.class);
+    public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webtype", EnumWebType.class);
 
     public enum EnumWebType implements IStringSerializable
     {
@@ -64,7 +67,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     public BlockTorchWeb(String assetName)
     {
-        super(Material.vine);
+        super(Material.VINE);
         this.setLightLevel(1.0F);
         this.setUnlocalizedName(assetName);
     }
@@ -76,26 +79,26 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         list.add(new ItemStack(itemIn, 1, 1));
     }
 
+//    @Override
+//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
+//    {
+//        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
+//        float f = 0.15F;
+//
+//        if (type == EnumWebType.WEB_0)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+//        }
+//        else if (type == EnumWebType.WEB_1)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.25F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+//        }
+//
+//        return super.collisionRayTrace(worldIn, pos, start, end);
+//    }
+
     @Override
-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
-    {
-        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
-        float f = 0.15F;
-
-        if (type == EnumWebType.WEB_0)
-        {
-            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
-        }
-        else if (type == EnumWebType.WEB_1)
-        {
-            this.setBlockBounds(0.5F - f, 0.25F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
-        }
-
-        return super.collisionRayTrace(worldIn, pos, start, end);
-    }
-
-    @Override
-    public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         if (world.setBlockToAir(pos))
         {
@@ -114,8 +117,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     public boolean canBlockStay(World worldIn, BlockPos pos)
     {
-        Block blockAbove = worldIn.getBlockState(pos.up()).getBlock();
-        return (blockAbove == this || blockAbove.getMaterial().isSolid());
+        IBlockState stateAbove = worldIn.getBlockState(pos.up());
+        Block blockAbove = stateAbove.getBlock();
+        return (blockAbove == this || blockAbove.getMaterial(stateAbove).isSolid());
     }
 
     @Override
@@ -130,9 +134,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getValue(WEB_TYPE) == EnumWebType.WEB_1)
+        if (state.getValue(WEB_TYPE) == EnumWebType.WEB_1)
         {
             return 15;
         }

@@ -166,18 +166,16 @@ public class MapGenCaveVenus extends MapGenBaseMeta
 
                                     if (xfactorSq + zfactorSq < 1.0D)
                                     {
-                                        final int coords = (localX * 16 + localZ) * 256 + localY;
-
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            IBlockState state = primer.getBlockState(coords);
+                                            IBlockState state = primer.getBlockState(localX, localY, localZ);
                                             Block block = state.getBlock();
                                             int metadata = state.getBlock().getMetaFromState(state);
                                             if (block == VenusBlocks.venusBlock)
                                             {
                                                 if (metadata == 1)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.AIR.getDefaultState());
+                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
                                                 }
                                             }
                                         }

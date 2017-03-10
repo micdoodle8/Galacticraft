@@ -6,6 +6,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -40,7 +42,7 @@ public class AsteroidsItems
     public static Item titaniumSword;
 
     public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 3, 520, 8.0F, 3.0F, 10);
-    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 10, 7, 5 }, 10);
+    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 10, 7, 5 }, 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
 
     public static void initItems()
     {
@@ -56,10 +58,10 @@ public class AsteroidsItems
         AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmospheric_valve");
         AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavy_nose_cone");
         AsteroidsItems.orionDrive = new ItemOrionDrive("orion_drive");
-        AsteroidsItems.titaniumHelmet = new ItemArmorAsteroids(0, "helmet");
-        AsteroidsItems.titaniumChestplate = new ItemArmorAsteroids(1, "chestplate");
-        AsteroidsItems.titaniumLeggings = new ItemArmorAsteroids(2, "leggings");
-        AsteroidsItems.titaniumBoots = new ItemArmorAsteroids(3, "boots");
+        AsteroidsItems.titaniumHelmet = new ItemArmorAsteroids(EntityEquipmentSlot.HEAD, "helmet");
+        AsteroidsItems.titaniumChestplate = new ItemArmorAsteroids(EntityEquipmentSlot.CHEST, "chestplate");
+        AsteroidsItems.titaniumLeggings = new ItemArmorAsteroids(EntityEquipmentSlot.LEGS, "leggings");
+        AsteroidsItems.titaniumBoots = new ItemArmorAsteroids(EntityEquipmentSlot.FEET, "boots");
         AsteroidsItems.titaniumAxe = new ItemAxeAsteroids("titanium_axe");
         AsteroidsItems.titaniumPickaxe = new ItemPickaxeAsteroids("titanium_pickaxe");
         AsteroidsItems.titaniumSpade = new ItemSpadeAsteroids("titanium_shovel");

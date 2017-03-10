@@ -2,6 +2,7 @@ package codechicken.core.inventory;
 
 import codechicken.lib.inventory.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -18,9 +19,9 @@ public class SlotDummy extends SlotHandleClicks {
     }
 
     @Override
-    public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, int modifier) {
+    public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, ClickType clickType) {
         ItemStack held = player.inventory.getItemStack();
-        boolean shift = modifier == 1;
+        boolean shift = clickType == ClickType.QUICK_MOVE;
         slotClick(held, button, shift);
         return null;
     }

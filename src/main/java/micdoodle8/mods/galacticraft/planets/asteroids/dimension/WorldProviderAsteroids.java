@@ -8,15 +8,17 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -75,13 +77,13 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderAsteroids.class;
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getBiomeProviderClass()
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
     {
         return BiomeProviderAsteroids.class;
     }
@@ -154,7 +156,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
     {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
+        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
     @Override
@@ -443,9 +445,9 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public void registerWorldChunkManager()
+    protected void createBiomeProvider()
     {
-        super.registerWorldChunkManager();
+        super.createBiomeProvider();
         this.hasNoSky = true;
     }
 
@@ -458,12 +460,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
         }
         return this.solarMultiplier;
-    }
-
-    @Override
-    public String getInternalNameSuffix()
-    {
-        return "_asteroids";
     }
 
     private static class AsteroidData
@@ -561,5 +557,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     public boolean shouldCorrodeArmor()
     {
         return false;
+    }
+
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCPlanetDimensions.ASTEROIDS;
     }
 }

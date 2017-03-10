@@ -147,7 +147,8 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public void onAdjacentColorChanged(EnumFacing direction)
     {
-        this.worldObj.notifyBlockUpdate(this.getPos());
+        IBlockState state = this.worldObj.getBlockState(this.getPos());
+        this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
 
         if (!this.worldObj.isRemote)
         {

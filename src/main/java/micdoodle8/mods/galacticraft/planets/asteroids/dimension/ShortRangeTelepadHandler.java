@@ -87,6 +87,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         }
 
         nbt.setTag("TelepadList", tagList);
+        return nbt;
     }
 
     public static void addShortRangeTelepad(TileEntityShortRangeTelepad telepad)

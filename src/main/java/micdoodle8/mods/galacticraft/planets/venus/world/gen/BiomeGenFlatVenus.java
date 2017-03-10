@@ -11,11 +11,9 @@ import java.util.Random;
 
 public class BiomeGenFlatVenus extends BiomeVenus
 {
-    public BiomeGenFlatVenus(int par1)
+    public BiomeGenFlatVenus(BiomeProperties properties)
     {
-        super(par1);
-        this.setColor(180 << 16 | 180 << 8 | 180);
-        this.setHeight(new Height(0.5F, 0.4F));
+        super(properties);
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
             BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);

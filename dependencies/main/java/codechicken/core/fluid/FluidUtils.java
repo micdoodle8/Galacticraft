@@ -4,7 +4,9 @@ import codechicken.lib.inventory.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class FluidUtils {
     public static int B = FluidContainerRegistry.BUCKET_VOLUME;
@@ -12,18 +14,18 @@ public class FluidUtils {
     public static FluidStack lava = new FluidStack(FluidRegistry.LAVA, 1000);
 
     public static boolean fillTankWithContainer(IFluidHandler tank, EntityPlayer player) {
-        ItemStack stack = player.getCurrentEquippedItem();
+        ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
         FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(stack);
 
         if (liquid == null) {
             return false;
         }
 
-        if (tank.fill(null, liquid, false) != liquid.amount && !player.capabilities.isCreativeMode) {
+        if (tank.fill(liquid, false) != liquid.amount && !player.capabilities.isCreativeMode) {
             return false;
         }
 
-        tank.fill(null, liquid, true);
+        tank.fill(liquid, true);
 
         if (!player.capabilities.isCreativeMode) {
             InventoryUtils.consumeItem(player.inventory, player.inventory.currentItem);
@@ -34,7 +36,7 @@ public class FluidUtils {
     }
 
     public static boolean emptyTankIntoContainer(IFluidHandler tank, EntityPlayer player, FluidStack tankLiquid) {
-        ItemStack stack = player.getCurrentEquippedItem();
+        ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 
         if (!FluidContainerRegistry.isEmptyContainer(stack)) {
             return false;
@@ -47,7 +49,7 @@ public class FluidUtils {
             return false;
         }
 
-        tank.drain(null, liquid.amount, true);
+        tank.drain(liquid.amount, true);
 
         if (!player.capabilities.isCreativeMode) {
             if (stack.stackSize == 1) {
@@ -84,9 +86,13 @@ public class FluidUtils {
             return 0;
         }
         int light = fluid.getLuminosity(stack);
-	    if (fluid.isGaseous()) {
-		    light = (int) (light * density);
-	    }
+        if (fluid.isGaseous()) {
+            light = (int) (light * density);
+        }
         return light;
+    }
+
+    public static FluidStack emptyFluid() {
+        return new FluidStack(water, 0);
     }
 }

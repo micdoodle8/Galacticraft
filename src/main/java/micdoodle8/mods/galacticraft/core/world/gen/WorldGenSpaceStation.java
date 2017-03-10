@@ -135,8 +135,8 @@ public class WorldGenSpaceStation extends WorldGenerator
         world.setBlockState(pos.add(8, 1, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(8, 2, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(8, 2, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
-        world.setBlockState(pos.add(8, 3, 0), Blocks.glass_pane.getDefaultState(), 3);
-        world.setBlockState(pos.add(8, 3, 6), Blocks.glass_pane.getDefaultState(), 3);
+        world.setBlockState(pos.add(8, 3, 0), Blocks.GLASS_PANE.getDefaultState(), 3);
+        world.setBlockState(pos.add(8, 3, 6), Blocks.GLASS_PANE.getDefaultState(), 3);
         world.setBlockState(pos.add(8, 4, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(8, 4, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(8, 5, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
@@ -208,8 +208,8 @@ public class WorldGenSpaceStation extends WorldGenerator
         world.setBlockState(pos.add(12, 1, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(12, 2, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(12, 2, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
-        world.setBlockState(pos.add(12, 3, 0), Blocks.glass_pane.getDefaultState(), 3);
-        world.setBlockState(pos.add(12, 3, 6), Blocks.glass_pane.getDefaultState(), 3);
+        world.setBlockState(pos.add(12, 3, 0), Blocks.GLASS_PANE.getDefaultState(), 3);
+        world.setBlockState(pos.add(12, 3, 6), Blocks.GLASS_PANE.getDefaultState(), 3);
         world.setBlockState(pos.add(12, 4, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(12, 4, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(12, 5, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
@@ -233,8 +233,8 @@ public class WorldGenSpaceStation extends WorldGenerator
         world.setBlockState(pos.add(13, 2, 5), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(13, 2, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(13, 3, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
-        world.setBlockState(pos.add(13, 3, 1), Blocks.glass_pane.getDefaultState(), 3);
-        world.setBlockState(pos.add(13, 3, 5), Blocks.glass_pane.getDefaultState(), 3);
+        world.setBlockState(pos.add(13, 3, 1), Blocks.GLASS_PANE.getDefaultState(), 3);
+        world.setBlockState(pos.add(13, 3, 5), Blocks.GLASS_PANE.getDefaultState(), 3);
         world.setBlockState(pos.add(13, 3, 6), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(13, 4, 0), GCBlocks.basicBlock.getStateFromMeta(4), 2);
         world.setBlockState(pos.add(13, 4, 1), GCBlocks.basicBlock.getStateFromMeta(4), 2);

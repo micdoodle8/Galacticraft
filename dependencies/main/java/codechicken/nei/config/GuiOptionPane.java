@@ -4,6 +4,7 @@ import codechicken.core.gui.GuiCCButton;
 import codechicken.core.gui.GuiScreenWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -12,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 public abstract class GuiOptionPane extends GuiScreenWidget {
     public class ScrollPane extends OptionScrollPane {
@@ -57,7 +57,7 @@ public abstract class GuiOptionPane extends GuiScreenWidget {
     @Override
     public void addWidgets() {
         add(pane = new ScrollPane());
-        add(backButton = new GuiCCButton(0, 0, 0, 20, translateToLocal("nei.options.back")).setActionCommand("back"));
+        add(backButton = new GuiCCButton(0, 0, 0, 20, I18n.translateToLocal("nei.options.back")).setActionCommand("back"));
         initGui();
     }
 

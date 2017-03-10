@@ -23,7 +23,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
     public StructureComponentVillageHouse(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.coordBaseMode = par5;
+        this.setCoordBaseMode(par5);
         this.boundingBox = par4StructureBoundingBox;
     }
 
@@ -449,7 +449,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
                 {
                     if (i >= 7 && i <= 9 && j >= 7 && j <= 9)
                     {
-                        this.setBlockState(par1World, Blocks.glass.getDefaultState(), i, yLevel, j, par3StructureBoundingBox);
+                        this.setBlockState(par1World, Blocks.GLASS.getDefaultState(), i, yLevel, j, par3StructureBoundingBox);
                     }
                     else
                     {

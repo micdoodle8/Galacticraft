@@ -12,10 +12,12 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidTank;
@@ -217,6 +219,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         }
 
         nbt.setInteger("color", this.color.getDyeDamage());
+        return nbt;
     }
 
     @Override
@@ -271,7 +274,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
             double d1 = this.getPos().getX() + 0.5D;
             d0 = this.getPos().getZ() + 0.5D;
 
-            this.worldObj.playSoundEffect(d1, this.getPos().getY() + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSound(null, d1, this.getPos().getY() + 0.5D, d0, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -299,7 +302,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
                 d0 = this.getPos().getX() + 0.5D;
                 double d2 = this.getPos().getZ() + 0.5D;
 
-                this.worldObj.playSoundEffect(d0, this.getPos().getY() + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSound(null, d0, this.getPos().getY() + 0.5D, d2, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)

@@ -12,10 +12,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -96,20 +96,20 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
         ItemStack stack = player.inventory.getCurrentItem();
         if (stack == null)
         {
-            return player.canHarvestBlock(this);
+            return player.canHarvestBlock(world.getBlockState(pos));
         }
         return stack.getItem() == MarsItems.deshPickSlime;
     }
 
     @Override
-    public float getPlayerRelativeBlockHardness(EntityPlayer playerIn, World worldIn, BlockPos pos)
+    public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos)
     {
-        ItemStack stack = playerIn.inventory.getCurrentItem();
+        ItemStack stack = player.inventory.getCurrentItem();
         if (stack != null && stack.getItem() == MarsItems.deshPickSlime)
         {
             return 0.2F;
         }
-        return super.getPlayerRelativeBlockHardness(playerIn, worldIn, pos);
+        return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
     }
 
     @Override

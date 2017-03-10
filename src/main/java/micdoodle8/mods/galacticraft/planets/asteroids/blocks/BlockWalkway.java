@@ -12,18 +12,20 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -117,9 +119,10 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         return false;
     }
 
-    public boolean isNormalCube(Block block)
+    @Override
+    public boolean isNormalCube(IBlockState state)
     {
-        return block.getMaterial().blocksMovement() && block.isFullCube();
+        return state.getBlock().getMaterial(state).blocksMovement() && state.getBlock().isFullCube(state);
     }
 
     @Override
@@ -154,122 +157,122 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         return null;
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        TileEntity[] connectable = new TileEntity[6];
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+//    {
+//        TileEntity tileEntity = worldIn.getTileEntity(pos);
+//        TileEntity[] connectable = new TileEntity[6];
+//
+//        if (tileEntity != null)
+//        {
+//            IBlockState state = worldIn.getBlockState(pos);
+//            if (this.getNetworkType(state) != null)
+//            {
+//                switch (this.getNetworkType(state))
+//                {
+//                case FLUID:
+//                    connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
+//                    break;
+//                case POWER:
+//                    connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+//                    break;
+//                default:
+//                    break;
+//                }
+//            }
+//
+//            float minX = 0.0F;
+//            float minY = 0.32F;
+//            float minZ = 0.0F;
+//            float maxX = 1.0F;
+//            float maxY = 1.0F;
+//            float maxZ = 1.0F;
+//
+//            if (connectable[0] != null)
+//            {
+//                minY = 0.0F;
+//            }
+//
+//            this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+//        }
+//    }
 
-        if (tileEntity != null)
-        {
-            IBlockState state = worldIn.getBlockState(pos);
-            if (this.getNetworkType(state) != null)
-            {
-                switch (this.getNetworkType(state))
-                {
-                case FLUID:
-                    connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
-                    break;
-                case POWER:
-                    connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
-                    break;
-                default:
-                    break;
-                }
-            }
+//    private void addCollisionBox(World worldIn, BlockPos pos, AxisAlignedBB aabb, List list)
+//    {
+//        AxisAlignedBB mask1 = this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
+//
+//        if (mask1 != null && aabb.intersectsWith(mask1))
+//        {
+//            list.add(mask1);
+//        }
+//    }
 
-            float minX = 0.0F;
-            float minY = 0.32F;
-            float minZ = 0.0F;
-            float maxX = 1.0F;
-            float maxY = 1.0F;
-            float maxZ = 1.0F;
-
-            if (connectable[0] != null)
-            {
-                minY = 0.0F;
-            }
-
-            this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
-        }
-    }
-
-    private void addCollisionBox(World worldIn, BlockPos pos, AxisAlignedBB aabb, List list)
-    {
-        AxisAlignedBB mask1 = this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
-
-        if (mask1 != null && aabb.intersectsWith(mask1))
-        {
-            list.add(mask1);
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
-    {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        TileEntity[] connectable = new TileEntity[6];
-
-        if (this.getNetworkType(state) != null)
-        {
-            switch (this.getNetworkType(state))
-            {
-            case FLUID:
-                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
-                break;
-            case POWER:
-                connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
-                break;
-            default:
-                break;
-            }
-        }
-
-        this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
-        this.addCollisionBox(worldIn, pos, mask, list);
-
-        this.setBlockBounds(0.0F, 0.9F, 0.0F, 1.0F, 1.0F, 1.0F);
-        this.addCollisionBox(worldIn, pos, mask, list);
-
-        if (connectable[4] != null)
-        {
-            this.setBlockBounds(0, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
-            this.addCollisionBox(worldIn, pos, mask, list);
-        }
-
-        if (connectable[5] != null)
-        {
-            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, 1, (float) this.maxVector.y, (float) this.maxVector.z);
-            this.addCollisionBox(worldIn, pos, mask, list);
-        }
-
-        if (connectable[0] != null)
-        {
-            this.setBlockBounds((float) this.minVector.x, 0, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
-            this.addCollisionBox(worldIn, pos, mask, list);
-        }
-
-        if (connectable[1] != null)
-        {
-            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, 1, (float) this.maxVector.z);
-            this.addCollisionBox(worldIn, pos, mask, list);
-        }
-
-        if (connectable[2] != null)
-        {
-            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, 0, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
-            this.addCollisionBox(worldIn, pos, mask, list);
-        }
-
-        if (connectable[3] != null)
-        {
-            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, 1);
-            this.addCollisionBox(worldIn, pos, mask, list);
-        }
-
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-    }
+//    @SuppressWarnings("rawtypes")
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    {
+//        TileEntity tileEntity = worldIn.getTileEntity(pos);
+//        TileEntity[] connectable = new TileEntity[6];
+//
+//        if (this.getNetworkType(state) != null)
+//        {
+//            switch (this.getNetworkType(state))
+//            {
+//            case FLUID:
+//                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
+//                break;
+//            case POWER:
+//                connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+//                break;
+//            default:
+//                break;
+//            }
+//        }
+//
+//        this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+//        this.addCollisionBox(worldIn, pos, mask, list);
+//
+//        this.setBlockBounds(0.0F, 0.9F, 0.0F, 1.0F, 1.0F, 1.0F);
+//        this.addCollisionBox(worldIn, pos, mask, list);
+//
+//        if (connectable[4] != null)
+//        {
+//            this.setBlockBounds(0, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+//            this.addCollisionBox(worldIn, pos, mask, list);
+//        }
+//
+//        if (connectable[5] != null)
+//        {
+//            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, 1, (float) this.maxVector.y, (float) this.maxVector.z);
+//            this.addCollisionBox(worldIn, pos, mask, list);
+//        }
+//
+//        if (connectable[0] != null)
+//        {
+//            this.setBlockBounds((float) this.minVector.x, 0, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+//            this.addCollisionBox(worldIn, pos, mask, list);
+//        }
+//
+//        if (connectable[1] != null)
+//        {
+//            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, 1, (float) this.maxVector.z);
+//            this.addCollisionBox(worldIn, pos, mask, list);
+//        }
+//
+//        if (connectable[2] != null)
+//        {
+//            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, 0, (float) this.maxVector.x, (float) this.maxVector.y, (float) this.maxVector.z);
+//            this.addCollisionBox(worldIn, pos, mask, list);
+//        }
+//
+//        if (connectable[3] != null)
+//        {
+//            this.setBlockBounds((float) this.minVector.x, (float) this.minVector.y, (float) this.minVector.z, (float) this.maxVector.x, (float) this.maxVector.y, 1);
+//            this.addCollisionBox(worldIn, pos, mask, list);
+//        }
+//
+//        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//    }
 
     @Override
     public String getShiftDescription(int meta)
@@ -316,11 +319,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
             if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY)
             {
-                Block block = worldIn.getBlockState(pos.offset(direction)).getBlock();
+                BlockPos pos1 = pos.offset(direction);
+                IBlockState state1 = worldIn.getBlockState(pos1);
 
-                if (!block.isAir(worldIn, pos.offset(direction)))
+                if (!state1.getBlock().isAir(state1, worldIn, pos1))
                 {
-                    connectable[direction.ordinal()] = block;
+                    connectable[direction.ordinal()] = state1.getBlock();
                 }
             }
             else if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)

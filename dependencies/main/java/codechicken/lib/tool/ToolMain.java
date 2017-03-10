@@ -3,12 +3,14 @@ package codechicken.lib.tool;
 import codechicken.lib.tool.module.ModuleQBConverter;
 
 public class ToolMain {
-    public static interface Module {
-        public void main(String[] args);
 
-        public String name();
+    public interface Module {
 
-        public void printHelp();
+        void main(String[] args);
+
+        String name();
+
+        void printHelp();
     }
 
     public static Module[] modules = new Module[] { new ModuleQBConverter() };

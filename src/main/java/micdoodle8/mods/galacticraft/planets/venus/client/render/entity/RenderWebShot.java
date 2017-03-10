@@ -34,7 +34,7 @@ public class RenderWebShot extends Render<EntityWebShot>
         GL11.glRotatef((entity.ticksExisted + partialTicks) * 50.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
         GlStateManager.translate(-0.5F, -1F, 0.5F);
-        blockrendererdispatcher.renderBlockBrightness(Blocks.web.getDefaultState(), 1.0F);
+        blockrendererdispatcher.renderBlockBrightness(Blocks.WEB.getDefaultState(), 1.0F);
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
 
         GlStateManager.popMatrix();

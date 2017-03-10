@@ -190,13 +190,14 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             }
             else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
             {
-                if (item instanceof ISpecialElectricItem)
+                if (item instanceof ISpecialElectricItem && item instanceof IElectricItem)
                 {
-                    ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+                    IElectricItem electricItem = (IElectricItem) item;
+                    ISpecialElectricItem specialElectricItem = (ISpecialElectricItem) item;
                     if (electricItem.canProvideEnergy(itemStack))
                     {
                         double energyDischargeIC2 = energyToDischarge / EnergyConfigHandler.IC2_RATIO;
-                        double result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false);
+                        double result = specialElectricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false);
                         float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
                         this.storage.receiveEnergyGC(energyDischarged);
                     }

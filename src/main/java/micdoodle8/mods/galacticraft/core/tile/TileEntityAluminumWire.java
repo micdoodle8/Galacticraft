@@ -34,6 +34,7 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     {
         super.writeToNBT(nbt);
         nbt.setInteger("tier", this.tier);
+        return nbt;
     }
 
     @Override

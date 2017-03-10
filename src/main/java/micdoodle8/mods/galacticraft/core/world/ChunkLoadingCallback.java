@@ -3,10 +3,9 @@ package micdoodle8.mods.galacticraft.core.world;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -111,7 +110,7 @@ public class ChunkLoadingCallback implements LoadingCallback
     public static void forceChunk(Ticket ticket, World world, int x, int y, int z, String playerName)
     {
         ChunkLoadingCallback.addToList(world, x, y, z, playerName);
-        ChunkCoordIntPair chunkPos = new ChunkCoordIntPair(x >> 4, z >> 4);
+        ChunkPos chunkPos = new ChunkPos(x >> 4, z >> 4);
         ForgeChunkManager.forceChunk(ticket, chunkPos);
         //
         // TileEntity tile = world.getTileEntity(x, y, z);
@@ -327,7 +326,7 @@ public class ChunkLoadingCallback implements LoadingCallback
 
                     if (ChunkLoadingCallback.loadOnLogin)
                     {
-                        MinecraftServer.getServer().worldServerForDimension(dimID);
+                        player.worldObj.getMinecraftServer().worldServerForDimension(dimID);
                     }
                 }
             }

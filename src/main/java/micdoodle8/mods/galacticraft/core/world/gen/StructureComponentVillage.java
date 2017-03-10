@@ -90,17 +90,17 @@ public abstract class StructureComponentVillage extends StructureComponent
     {
         int i = 0;
         int j = 0;
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
         for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k)
         {
             for (int l = this.boundingBox.minX; l <= this.boundingBox.maxX; ++l)
             {
-                blockpos$mutableblockpos.set(l, 64, k);
+                mutableBlockPos.setPos(l, 64, k);
 
-                if (boundingBox.isVecInside(blockpos$mutableblockpos))
+                if (boundingBox.isVecInside(mutableBlockPos))
                 {
-                    i += world.getTopSolidOrLiquidBlock(blockpos$mutableblockpos).getY();
+                    i += world.getTopSolidOrLiquidBlock(mutableBlockPos).getY();
                     ++j;
                 }
             }

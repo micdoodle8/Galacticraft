@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.nei.api.INEIGuiAdapter;
 import codechicken.nei.api.TaggedInventoryArea;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.ContainerChest;

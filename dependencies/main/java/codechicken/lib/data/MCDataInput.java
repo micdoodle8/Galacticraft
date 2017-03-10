@@ -1,46 +1,47 @@
 package codechicken.lib.data;
 
-import codechicken.lib.vec.BlockCoord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface MCDataInput {
-    public long readLong();
 
-    public int readInt();
+    long readLong();
 
-    public short readShort();
+    int readInt();
 
-    public int readUShort();
+    short readShort();
 
-    public byte readByte();
+    int readUShort();
 
-    public short readUByte();
+    byte readByte();
 
-    public double readDouble();
+    short readUByte();
 
-    public float readFloat();
+    double readDouble();
 
-    public boolean readBoolean();
+    float readFloat();
 
-    public char readChar();
+    boolean readBoolean();
 
-    public int readVarShort();
+    char readChar();
 
-    public int readVarInt();
+    int readVarShort();
 
-    public long readVarLong();
+    int readVarInt();
 
-    public byte[] readArray(int length);
+    long readVarLong();
 
-    public String readString();
+    byte[] readArray(int length);
 
-    public BlockCoord readCoord();
+    String readString();
 
-    public NBTTagCompound readNBTTagCompound();
+    BlockPos readPos();
 
-    public ItemStack readItemStack();
+    NBTTagCompound readNBTTagCompound();
 
-    public FluidStack readFluidStack();
+    ItemStack readItemStack();
+
+    FluidStack readFluidStack();
 }

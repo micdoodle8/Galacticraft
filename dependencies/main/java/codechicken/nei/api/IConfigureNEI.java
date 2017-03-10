@@ -5,9 +5,9 @@ package codechicken.nei.api;
  * loadConfig will only be called when NEI is installed.
  */
 public interface IConfigureNEI {
-    public void loadConfig();
+    void loadConfig();
 
-    public String getName();
+    String getName();
 
-    public String getVersion();
+    String getVersion();
 }

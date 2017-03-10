@@ -10,15 +10,15 @@ import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -107,8 +107,8 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             return 0;
         }
         BlockPos posAbove = new BlockPos(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
-        Block blockAbove = this.worldObj.getBlockState(posAbove).getBlock();
-        if (!(blockAbove.isAir(this.worldObj, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, blockAbove, this.getPos().up(), EnumFacing.UP))
+        IBlockState stateAbove = this.worldObj.getBlockState(posAbove);
+        if (!(stateAbove.getBlock().isAir(stateAbove, this.worldObj, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, stateAbove.getBlock(), this.getPos().up(), EnumFacing.UP))
         {
             // The vent is blocked
             return 0;
@@ -197,11 +197,11 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
 
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        final NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -217,9 +217,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
 
         final NBTTagList list = new NBTTagList();
 
@@ -234,7 +234,8 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             }
         }
 
-        par1NBTTagCompound.setTag("Items", list);
+        nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

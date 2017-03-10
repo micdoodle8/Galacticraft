@@ -4,15 +4,15 @@ import codechicken.core.gui.GuiCCButton;
 import codechicken.core.gui.GuiCCTextField;
 import codechicken.core.gui.GuiScrollSlot;
 import codechicken.core.inventory.GuiContainerWidget;
-import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.FontUtils;
+import codechicken.lib.util.FontUtils;
+import codechicken.lib.texture.TextureUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
 
         public GuiSlotPotionEffects(int x, int y) {
             super(x, y, 108, 76);
-            for (Potion p : Potion.potionTypes) {
+            for (Potion p : Potion.REGISTRY) {
                 if (p != null) {
                     validPotions.add(p);
                 }
@@ -65,24 +65,24 @@ public class GuiPotionCreator extends GuiContainerWidget {
         protected void drawSlot(int slot, int x, int y, int mx, int my, float frame) {
             GlStateManager.color(1, 1, 1, 1);
             Potion potion = validPotions.get(slot);
-            PotionEffect effect = getEffect(potion.id);
+            PotionEffect effect = getEffect(potion);
             boolean blank = effect == null;
             if (effect == null) {
-                effect = new PotionEffect(potion.id, 1200, 0);
+                effect = new PotionEffect(potion, 1200, 0);
             }
             int shade = selectedslot == slot ? 2 : blank ? 1 : 0;
 
-            CCRenderState.changeTexture("textures/gui/container/enchanting_table.png");
+            TextureUtils.changeTexture("textures/gui/container/enchanting_table.png");
             drawTexturedModalRect(x, y, 0, 166 + getSlotHeight(slot) * shade, width - 30, getSlotHeight(slot));
             drawTexturedModalRect(x + width - 30, y, width - 23, 166 + getSlotHeight(slot) * shade, 30, getSlotHeight(slot));
 
             if (potion.hasStatusIcon()) {
-                CCRenderState.changeTexture("textures/gui/container/inventory.png");
+                TextureUtils.changeTexture("textures/gui/container/inventory.png");
                 int icon = potion.getStatusIconIndex();
                 drawTexturedModalRect(x + 1, y + 1, icon % 8 * 18, 198 + icon / 8 * 18, 18, 18);
             }
 
-            String name = StatCollector.translateToLocal(potion.getName());
+            String name = I18n.translateToLocal(potion.getName());
             String amp = effect.getAmplifier() > 0 ? " " + translateAmplifier(effect.getAmplifier()) : "";
             int textColour = shade == 0 ? 0x685e4a : shade == 1 ? 0x407f10 : 0xffff80;
             if (fontRenderer.getStringWidth(name + amp) < width - 20) {
@@ -92,18 +92,18 @@ public class GuiPotionCreator extends GuiContainerWidget {
                 FontUtils.drawRightString(amp, x + width - 10, y + 10, textColour);
             }
 
-            String duration = Potion.getDurationString(effect);
+            String duration = Potion.getPotionDurationString(effect, 1.0F);
             textColour = shade == 0 ? 0xA0A0A0 : shade == 1 ? 0x808080 : 0xCCCCCC;
             fontRenderer.drawStringWithShadow(duration, x + 20, y + 10, textColour);
         }
 
-        private PotionEffect getEffect(int id) {
-            ItemStack potion = container.potionInv.getStackInSlot(0);
-            if (potion != null && potion.hasTagCompound() && potion.getTagCompound().hasKey("CustomPotionEffects")) {
-                NBTTagList potionTagList = potion.getTagCompound().getTagList("CustomPotionEffects", 10);
+        private PotionEffect getEffect(Potion potion) {
+            ItemStack potionStack = container.potionInv.getStackInSlot(0);
+            if (potionStack != null && potionStack.hasTagCompound() && potionStack.getTagCompound().hasKey("CustomPotionEffects")) {
+                NBTTagList potionTagList = potionStack.getTagCompound().getTagList("CustomPotionEffects", 10);
                 for (int i = 0; i < potionTagList.tagCount(); i++) {
                     PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(potionTagList.getCompoundTagAt(i));
-                    if (effect.getPotionID() == id) {
+                    if (effect.getPotion() == potion) {
                         return effect;
                     }
                 }
@@ -127,7 +127,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
                 applyEffect();
             } else if (button == 1) {
                 deselect();
-                container.removePotionEffect(validPotions.get(slot).id);
+                container.removePotionEffect(validPotions.get(slot));
             }
         }
 
@@ -158,9 +158,9 @@ public class GuiPotionCreator extends GuiContainerWidget {
         private void select(int slot) {
             selectedslot = slot;
             durationField.setEnabled(true);
-            PotionEffect effect = getEffect(validPotions.get(slot).id);
+            PotionEffect effect = getEffect(validPotions.get(slot));
             if (effect == null) {
-                effect = new PotionEffect(validPotions.get(slot).id, 1200, 0);
+                effect = new PotionEffect(validPotions.get(slot), 1200, 0);
             }
             durationField.setDurationTicks(effect.getDuration());
             amplifier = effect.getAmplifier();
@@ -174,8 +174,8 @@ public class GuiPotionCreator extends GuiContainerWidget {
             ampUp.setEnabled(false);
         }
 
-        public int selectedPotion() {
-            return validPotions.get(selectedslot).id;
+        public Potion selectedPotion() {
+            return validPotions.get(selectedslot);
         }
     }
 
@@ -303,7 +303,7 @@ public class GuiPotionCreator extends GuiContainerWidget {
 
     @Override
     public void drawBackground() {
-        CCRenderState.changeTexture("nei:textures/gui/potion.png");
+        TextureUtils.changeTexture("nei:textures/gui/potion.png");
         drawTexturedModalRect(0, 0, 0, 0, xSize, ySize);
 
         FontUtils.drawCenteredString("Favourite Potions", xSize / 2, 4, 0x404040);

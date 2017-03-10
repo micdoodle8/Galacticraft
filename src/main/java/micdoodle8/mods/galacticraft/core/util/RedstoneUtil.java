@@ -43,7 +43,7 @@ public class RedstoneUtil
      */
     public static int isBlockProvidingPowerTo(World w, BlockPos pos, EnumFacing side)
     {
-        return w.getBlockState(pos).getBlock().getStrongPower(w, pos, w.getBlockState(pos), side);
+        return w.getBlockState(pos).getBlock().getStrongPower(w.getBlockState(pos), w, pos, side);
     }
 
     public static int isBlockProvidingPowerTo_NoChunkLoad(World w, BlockPos pos, EnumFacing side)
@@ -52,6 +52,6 @@ public class RedstoneUtil
         {
             return 0;
         }
-        return w.getBlockState(pos).getBlock().getStrongPower(w, pos, w.getBlockState(pos), side);
+        return w.getBlockState(pos).getBlock().getStrongPower(w.getBlockState(pos), w, pos, side);
     }
 }

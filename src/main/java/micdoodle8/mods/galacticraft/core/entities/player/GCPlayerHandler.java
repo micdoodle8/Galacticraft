@@ -1268,7 +1268,7 @@ public class GCPlayerHandler
 
 		/*		if (isInGCDimension || player.usingPlanetSelectionGui)
                 {
-					player.playerNetServerHandler.ticksForFloatKick = 0;
+					player.connection.ticksForFloatKick = 0;
 				}	
 		*/
         if (stats.getDamageCounter() > 0)

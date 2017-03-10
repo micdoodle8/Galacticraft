@@ -211,9 +211,9 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
-            if (item instanceof ic2.api.item.ISpecialElectricItem)
+            if (item instanceof ic2.api.item.IElectricItem)
             {
-                return !((ic2.api.item.ISpecialElectricItem) item).canProvideEnergy(itemstack);
+                return !((ic2.api.item.IElectricItem) item).canProvideEnergy(itemstack);
             }
         }
 

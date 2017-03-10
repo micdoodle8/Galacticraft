@@ -1,13 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
-import java.util.concurrent.Callable;
-
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.init.Biomes;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
+
+import java.util.concurrent.Callable;
 
 public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLayer
 {
@@ -50,7 +51,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
 
         if (p_180781_2_ == WorldType.CUSTOMIZED && p_180781_3_.length() > 0)
         {
-            chunkprovidersettings = ChunkProviderSettings.Factory.jsonToFactory(p_180781_3_).func_177864_b();
+            chunkprovidersettings = ChunkProviderSettings.Factory.jsonToFactory(p_180781_3_).build();
             i = chunkprovidersettings.biomeSize;
             j = chunkprovidersettings.riverSize;
         }
@@ -182,14 +183,14 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
         {
             return true;
         }
-        else if (biomeIDA != Biome.mesaPlateau_F.biomeID && biomeIDA != Biome.mesaPlateau.biomeID)
+        else if (biomeIDA != Biome.getIdForBiome(Biomes.MESA_ROCK) && biomeIDA != Biome.getIdForBiome(Biomes.MESA_CLEAR_ROCK))
         {
-            final Biome biomegenbase = Biome.getBiome(biomeIDA);
-            final Biome biomegenbase1 = Biome.getBiome(biomeIDB);
+            final Biome biome = Biome.getBiome(biomeIDA);
+            final Biome biome1 = Biome.getBiome(biomeIDB);
 
             try
             {
-                return biomegenbase != null && biomegenbase1 != null ? biomegenbase.isEqualTo(biomegenbase1) : false;
+                return (biome != null && biome1 != null) && biome == biome1;
             }
             catch (Throwable throwable)
             {
@@ -197,18 +198,18 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Biomes being compared");
                 crashreportcategory.addCrashSection("Biome A ID", Integer.valueOf(biomeIDA));
                 crashreportcategory.addCrashSection("Biome B ID", Integer.valueOf(biomeIDB));
-                crashreportcategory.addCrashSectionCallable("Biome A", new Callable<String>()
+                crashreportcategory.addCrashSection("Biome A", new Object()
                 {
-                    public String call() throws Exception
+                    public String toString()
                     {
-                        return String.valueOf((Object)biomegenbase);
+                        return String.valueOf((Object)biome);
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Biome B", new Callable<String>()
+                crashreportcategory.addCrashSection("Biome B", new Object()
                 {
-                    public String call() throws Exception
+                    public String toString()
                     {
-                        return String.valueOf((Object)biomegenbase1);
+                        return String.valueOf((Object)biome1);
                     }
                 });
                 throw new ReportedException(crashreport);
@@ -216,7 +217,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
         }
         else
         {
-            return biomeIDB == Biome.mesaPlateau_F.biomeID || biomeIDB == Biome.mesaPlateau.biomeID;
+            return biomeIDB == Biome.getIdForBiome(Biomes.MESA_ROCK) || biomeIDB == Biome.getIdForBiome(Biomes.MESA_CLEAR_ROCK);
         }
     }
 
@@ -263,7 +264,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
     {
         net.minecraftforge.event.terraingen.WorldTypeEvent.BiomeSize event = new net.minecraftforge.event.terraingen.WorldTypeEvent.BiomeSize(worldType, original);
         net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS.post(event);
-        return event.newSize;
+        return event.getNewSize();
     }
     /* ========================================= FORGE END ======================================*/
 }

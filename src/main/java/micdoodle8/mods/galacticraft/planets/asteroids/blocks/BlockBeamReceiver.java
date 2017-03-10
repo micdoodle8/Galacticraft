@@ -14,18 +14,19 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceive
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -91,48 +92,48 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         }
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
-    {
-        int meta = getMetaFromState(world.getBlockState(pos));
-
-        if (meta != -1)
-        {
-            EnumFacing dir = EnumFacing.getFront(meta);
-
-            switch (dir)
-            {
-            case UP:
-                this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
-                break;
-            case DOWN:
-                this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
-                break;
-            case EAST:
-                this.setBlockBounds(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-                break;
-            case WEST:
-                this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
-                break;
-            case NORTH:
-                this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
-                break;
-            case SOUTH:
-                this.setBlockBounds(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-    }
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
+//    {
+//        int meta = getMetaFromState(world.getBlockState(pos));
+//
+//        if (meta != -1)
+//        {
+//            EnumFacing dir = EnumFacing.getFront(meta);
+//
+//            switch (dir)
+//            {
+//            case UP:
+//                this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+//                break;
+//            case DOWN:
+//                this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+//                break;
+//            case EAST:
+//                this.setBlockBounds(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+//                break;
+//            case WEST:
+//                this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+//                break;
+//            case NORTH:
+//                this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+//                break;
+//            case SOUTH:
+//                this.setBlockBounds(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
+//                break;
+//            default:
+//                break;
+//            }
+//        }
+//    }
+//
+//    @SuppressWarnings("rawtypes")
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//    }
 
     private int getMetadataFromAngle(World world, BlockPos pos, EnumFacing side)
     {
@@ -227,7 +228,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return -1;
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
@@ -251,13 +252,13 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityBeamReceiver)
         {
-            return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
+            return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
         }
 
         return false;

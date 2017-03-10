@@ -153,7 +153,7 @@ public class ContainerSchematicTier3Rocket extends Container
                 }
                 else
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.chest))
+                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST))
                     {
                         if (!this.mergeOneItemTestValid(var4, 19, 22, false))
                         {

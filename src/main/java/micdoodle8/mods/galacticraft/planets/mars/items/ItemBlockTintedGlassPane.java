@@ -34,7 +34,7 @@ public class ItemBlockTintedGlassPane extends ItemBlock
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        return this.getBlock().getUnlocalizedName() + "." + ItemDye.dyeColors[~itemstack.getItemDamage() & 15];
+        return this.getBlock().getUnlocalizedName() + "." + ItemDye.DYE_COLORS[~itemstack.getItemDamage() & 15];
     }
 
     @Override

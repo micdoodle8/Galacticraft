@@ -32,7 +32,7 @@ import java.util.Random;
 
 public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeAsteroids", EnumBlockBasic.class);
+    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basictypeasteroids", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
     {
@@ -162,7 +162,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         return false;
     }

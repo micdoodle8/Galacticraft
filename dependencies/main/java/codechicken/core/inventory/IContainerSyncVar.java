@@ -3,11 +3,11 @@ package codechicken.core.inventory;
 import codechicken.lib.packet.PacketCustom;
 
 public interface IContainerSyncVar {
-    public boolean changed();
+    boolean changed();
 
-    public void reset();
+    void reset();
 
-    public void writeChange(PacketCustom packet);
+    void writeChange(PacketCustom packet);
 
-    public void readChange(PacketCustom packet);
+    void readChange(PacketCustom packet);
 }

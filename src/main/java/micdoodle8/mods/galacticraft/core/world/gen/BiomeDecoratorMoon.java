@@ -5,12 +5,12 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -45,7 +45,7 @@ public class BiomeDecoratorMoon extends BiomeDecorator
         {
             this.worldObj = worldIn;
             this.randomGenerator = random;
-            this.field_180294_c = pos;
+            this.chunkPos = pos;
             this.generateMoon();
             this.worldObj = null;
             this.randomGenerator = null;
@@ -56,14 +56,14 @@ public class BiomeDecoratorMoon extends BiomeDecorator
     {
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
-            BlockPos blockpos = this.field_180294_c.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
+            BlockPos blockpos = this.chunkPos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
             worldGenerator.generate(this.worldObj, this.randomGenerator, blockpos);
         }
     }
 
     private void generateMoon()
     {
-        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, this.randomGenerator, field_180294_c));
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, this.randomGenerator, chunkPos));
         this.genStandardOre(20, this.dirtGen, 0, 200);
         if (!ConfigManagerCore.disableCopperMoon)
         {
@@ -82,16 +82,16 @@ public class BiomeDecoratorMoon extends BiomeDecorator
             int count = 3 + this.randomGenerator.nextInt(6);
             for (int i = 0; i < count; i++)
             {
-                BlockPos blockpos = this.field_180294_c.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(28) + 4, this.randomGenerator.nextInt(16));
+                BlockPos blockpos = this.chunkPos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(28) + 4, this.randomGenerator.nextInt(16));
 
                 IBlockState toReplace = worldObj.getBlockState(blockpos);
 
-                if (toReplace.getBlock() == GCBlocks.blockMoon && toReplace.getBlock().isReplaceableOreGen(worldObj, blockpos, BlockHelper.forBlock(Blocks.stone)))
+                if (toReplace.getBlock() == GCBlocks.blockMoon && toReplace.getBlock().isReplaceableOreGen(toReplace, worldObj, blockpos, BlockMatcher.forBlock(Blocks.STONE)))
                 {
                     worldObj.setBlockState(blockpos, GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.ORE_SAPPHIRE), 2);
                 }
             }
         }
-        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, this.randomGenerator, field_180294_c));
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, this.randomGenerator, chunkPos));
     }
 }

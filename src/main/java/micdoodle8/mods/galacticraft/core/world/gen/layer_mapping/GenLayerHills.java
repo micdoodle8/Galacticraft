@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,7 +43,7 @@ public class GenLayerHills extends GenLayerGCMap
 
                 if (k != 0 && l >= 2 && (l - 2) % 29 == 1 && k < 128)
                 {
-                    if (Biome.getBiome(k + 128) != null)
+                    if (Biome.getBiomeForId(k + 128) != null)
                     {
                         aint2[j + i * areaWidth] = k + 128;
                     }
@@ -59,86 +60,86 @@ public class GenLayerHills extends GenLayerGCMap
                 {
                     int i1 = k;
 
-                    if (k == Biome.desert.biomeID)
+                    if (k == Biome.getIdForBiome(Biomes.DESERT))
                     {
-                        i1 = Biome.desertHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.DESERT_HILLS);
                     }
-                    else if (k == Biome.forest.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.FOREST))
                     {
-                        i1 = Biome.forestHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.FOREST_HILLS);
                     }
-                    else if (k == Biome.birchForest.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.BIRCH_FOREST))
                     {
-                        i1 = Biome.birchForestHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.BIRCH_FOREST_HILLS);
                     }
-                    else if (k == Biome.roofedForest.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.ROOFED_FOREST))
                     {
-                        i1 = Biome.plains.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.PLAINS);
                     }
-                    else if (k == Biome.taiga.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.TAIGA))
                     {
-                        i1 = Biome.taigaHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.TAIGA_HILLS);
                     }
-                    else if (k == Biome.megaTaiga.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.REDWOOD_TAIGA))
                     {
-                        i1 = Biome.megaTaigaHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.REDWOOD_TAIGA_HILLS);
                     }
-                    else if (k == Biome.coldTaiga.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.COLD_TAIGA))
                     {
-                        i1 = Biome.coldTaigaHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.COLD_TAIGA_HILLS);
                     }
-                    else if (k == Biome.plains.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.PLAINS))
                     {
                         if (this.nextInt(3) == 0)
                         {
-                            i1 = Biome.forestHills.biomeID;
+                            i1 = Biome.getIdForBiome(Biomes.FOREST_HILLS);
                         }
                         else
                         {
-                            i1 = Biome.forest.biomeID;
+                            i1 = Biome.getIdForBiome(Biomes.FOREST);
                         }
                     }
-                    else if (k == Biome.icePlains.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.ICE_PLAINS))
                     {
-                        i1 = Biome.iceMountains.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.ICE_MOUNTAINS);
                     }
-                    else if (k == Biome.jungle.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.JUNGLE))
                     {
-                        i1 = Biome.jungleHills.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.JUNGLE_HILLS);
                     }
-                    else if (k == Biome.ocean.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.OCEAN))
                     {
-                        i1 = Biome.deepOcean.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.DEEP_OCEAN);
                     }
-                    else if (k == Biome.extremeHills.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.EXTREME_HILLS))
                     {
-                        i1 = Biome.extremeHillsPlus.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.EXTREME_HILLS_WITH_TREES);
                     }
-                    else if (k == Biome.savanna.biomeID)
+                    else if (k == Biome.getIdForBiome(Biomes.SAVANNA))
                     {
-                        i1 = Biome.savannaPlateau.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.SAVANNA_PLATEAU);
                     }
-                    else if (biomesEqualOrMesaPlateau(k, Biome.mesaPlateau_F.biomeID))
+                    else if (biomesEqualOrMesaPlateau(k, Biome.getIdForBiome(Biomes.MESA_ROCK)))
                     {
-                        i1 = Biome.mesa.biomeID;
+                        i1 = Biome.getIdForBiome(Biomes.MESA);
                     }
-                    else if (k == Biome.deepOcean.biomeID && this.nextInt(3) == 0)
+                    else if (k == Biome.getIdForBiome(Biomes.DEEP_OCEAN) && this.nextInt(3) == 0)
                     {
                         int j1 = this.nextInt(2);
 
                         if (j1 == 0)
                         {
-                            i1 = Biome.plains.biomeID;
+                            i1 = Biome.getIdForBiome(Biomes.PLAINS);
                         }
                         else
                         {
-                            i1 = Biome.forest.biomeID;
+                            i1 = Biome.getIdForBiome(Biomes.FOREST);
                         }
                     }
 
                     if (flag && i1 != k)
                     {
-                        if (Biome.getBiome(i1 + 128) != null)
+                        if (Biome.getBiomeForId(i1 + 128) != null)
                         {
                             i1 += 128;
                         }

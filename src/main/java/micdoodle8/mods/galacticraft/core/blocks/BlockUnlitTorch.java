@@ -272,7 +272,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
      * returning a ray trace hit. Args: world, x, y, z, startVec, endVec
      */
 //    @Override
-//    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
+//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(FACING);
 //        float f = 0.15F;

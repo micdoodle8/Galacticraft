@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
@@ -27,13 +27,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.potion.Potion;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -49,9 +46,9 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingDeath(LivingDeathEvent event)
     {
-        if (event.source.damageType.equals("slimeling") && event.source instanceof EntityDamageSource)
+        if (event.getSource().damageType.equals("slimeling") && event.getSource() instanceof EntityDamageSource)
         {
-            EntityDamageSource source = (EntityDamageSource) event.source;
+            EntityDamageSource source = (EntityDamageSource) event.getSource();
 
             if (source.getEntity() instanceof EntitySlimeling && !source.getEntity().worldObj.isRemote)
             {
@@ -63,9 +60,9 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.entity.isEntityInvulnerable(event.source) && !event.entity.worldObj.isRemote && event.entityLiving.getHealth() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
+        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().worldObj.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(MobEffects.FIRE_RESISTANCE)))
         {
-            Entity entity = event.source.getEntity();
+            Entity entity = event.getSource().getEntity();
 
             if (entity instanceof EntitySlimeling)
             {
@@ -83,8 +80,8 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        BlockPos c = event.entityPlayer.playerLocation;
-        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c);
+        BlockPos c = event.getEntityPlayer().bedLocation;
+        IBlockState state = event.getEntityPlayer().getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
         int metadata = blockID.getMetaFromState(state);
 
@@ -92,21 +89,21 @@ public class EventHandlerMars
         {
             if (!event.flag1 && event.flag2 && event.flag3)
             {
-                event.result = EnumStatus.NOT_POSSIBLE_HERE;
+                event.result = EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
 
-                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
+                if (event.getEntityPlayer().worldObj.isRemote && event.bypassed && event.getEntityPlayer() instanceof EntityPlayerSP)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, event.entityPlayer.worldObj.provider.getDimension(), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, event.getEntityPlayer().worldObj.provider.getDimension(), new Object[] {}));
                 }
             }
             else if (!event.flag1 && !event.flag2 && event.flag3)
             {
-                if (!event.entityPlayer.worldObj.isRemote)
+                if (!event.getEntityPlayer().worldObj.isRemote)
                 {
-                    event.entityPlayer.heal(5.0F);
-                    GCPlayerStats.get((EntityPlayerMP) event.entityPlayer).cryogenicChamberCooldown = 6000;
+                    event.getEntityPlayer().heal(5.0F);
+                    event.getEntityPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setCryogenicChamberCooldown(6000);
 
-                    for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
+                    for (WorldServer worldServer : event.getEntity().getServer().worldServers)
                     {
                         worldServer.setWorldTime(0);
                     }
@@ -119,14 +116,14 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
-        BlockPos blockPos = event.entityPlayer.playerLocation;
-        IBlockState state = event.entityPlayer.worldObj.getBlockState(blockPos);
+        BlockPos blockPos = event.getEntityPlayer().bedLocation;
+        IBlockState state = event.getEntityPlayer().worldObj.getBlockState(blockPos);
         if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
         {
-            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(blockPos);
+            TileEntity tile = event.getEntityPlayer().worldObj.getTileEntity(blockPos);
             if (tile instanceof TileEntityMulti)
             {
-                state = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                state = event.getEntityPlayer().worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
             }
         }
 

@@ -3,12 +3,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +17,11 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,6 +31,8 @@ import java.util.List;
 
 public class EntityGrapple extends Entity implements IProjectile
 {
+    private static final DataParameter<Integer> PULLING_ENTITY_ID = EntityDataManager.createKey(EntityGrapple.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IS_PULLING = EntityDataManager.createKey(EntityGrapple.class, DataSerializers.BOOLEAN);
     private BlockPos hitVec;
     private Block hitBlock;
     private int inData;
@@ -43,7 +49,6 @@ public class EntityGrapple extends Entity implements IProjectile
     public EntityGrapple(World par1World)
     {
         super(par1World);
-        this.renderDistanceWeight = 10.0D;
         this.ignoreFrustumCheck = false;
 //        this.yOffset = -1.5F;
         this.setSize(0.75F, 0.75F);
@@ -52,7 +57,6 @@ public class EntityGrapple extends Entity implements IProjectile
     public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3)
     {
         super(par1World);
-        this.renderDistanceWeight = 10.0D;
         this.shootingEntity = shootingEntity;
         this.setSize(0.75F, 0.75F);
 
@@ -74,6 +78,20 @@ public class EntityGrapple extends Entity implements IProjectile
     }
 
     @Override
+    public boolean isInRangeToRenderDist(double distance)
+    {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+
+        if (Double.isNaN(d0))
+        {
+            d0 = 1.0D;
+        }
+
+        d0 = d0 * 64.0D * 10.0;
+        return distance < d0 * d0;
+    }
+
+    @Override
     public double getYOffset()
     {
         return -1.5F;
@@ -82,8 +100,8 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     protected void entityInit()
     {
-        this.dataManager.addObject(10, 0);
-        this.dataManager.addObject(11, 0);
+        this.dataManager.register(PULLING_ENTITY_ID, 0);
+        this.dataManager.register(IS_PULLING, false);
     }
 
     @Override
@@ -186,8 +204,8 @@ public class EntityGrapple extends Entity implements IProjectile
                     shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
                     if (shootingEntity.worldObj.isRemote && shootingEntity.worldObj.provider instanceof WorldProviderZeroGravity)
                     {
-                        GCPlayerStatsClient stats = GCPlayerStatsClient.get((EntityPlayerSP) shootingEntity);
-                        stats.freefallHandler.updateFreefall(shootingEntity);
+                        IStatsClientCapability stats = shootingEntity.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+                        stats.getFreefallHandler().updateFreefall(shootingEntity);
                     }
                 }
             }
@@ -202,12 +220,11 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (this.hitVec != null)
         {
-            Block block = this.worldObj.getBlockState(this.hitVec).getBlock();
+            IBlockState state = this.worldObj.getBlockState(this.hitVec);
 
-            if (block.getMaterial() != Material.AIR)
+            if (state.getBlock().getMaterial(state) != Material.AIR)
             {
-                block.setBlockBoundsBasedOnState(this.worldObj, this.hitVec);
-                AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, this.hitVec, this.worldObj.getBlockState(this.hitVec));
+                AxisAlignedBB axisalignedbb = state.getBlock().getCollisionBoundingBox(state, this.worldObj, this.hitVec);
 
                 if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
                 {
@@ -280,7 +297,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
             Vec3d vec31 = new Vec3d(this.posX, this.posY, this.posZ);
             Vec3d vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3, false, true, false);
+            RayTraceResult movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3, false, true, false);
             vec31 = new Vec3d(this.posX, this.posY, this.posZ);
             vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -303,7 +320,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 {
                     f1 = 0.3F;
                     AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
-                    MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                    RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
                     {
@@ -320,7 +337,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
             if (entity != null)
             {
-                movingobjectposition = new MovingObjectPosition(entity);
+                movingobjectposition = new RayTraceResult(entity);
             }
 
             if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
@@ -350,13 +367,13 @@ public class EntityGrapple extends Entity implements IProjectile
                     this.posX -= this.motionX / motion * 0.05000000074505806D;
                     this.posY -= this.motionY / motion * 0.05000000074505806D;
                     this.posZ -= this.motionZ / motion * 0.05000000074505806D;
-                    this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                    this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.arrowShake = 7;
 
-                    if (this.hitBlock.getMaterial() != Material.AIR)
+                    if (this.hitBlock.getMaterial(state) != Material.AIR)
                     {
-                        this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.hitVec, this);
+                        this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.hitVec, state, this);
                     }
                 }
             }
@@ -467,7 +484,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.string, 1)))
+            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.STRING, 1)))
             {
                 flag = false;
             }
@@ -494,8 +511,9 @@ public class EntityGrapple extends Entity implements IProjectile
 //        return 0.0F;
 //    }
 
+
     @Override
-    public boolean canAttackWithItem()
+    public boolean canBeAttackedWithItem()
     {
         return false;
     }
@@ -504,13 +522,13 @@ public class EntityGrapple extends Entity implements IProjectile
     {
         if (this.shootingEntity != null)
         {
-            this.dataManager.set(10, this.shootingEntity.getEntityId());
+            this.dataManager.set(PULLING_ENTITY_ID, this.shootingEntity.getEntityId());
         }
     }
 
     public EntityPlayer getShootingEntity()
     {
-        Entity entity = this.worldObj.getEntityByID(this.dataManager.get(10));
+        Entity entity = this.worldObj.getEntityByID(this.dataManager.get(PULLING_ENTITY_ID));
 
         if (entity instanceof EntityPlayer)
         {
@@ -522,11 +540,11 @@ public class EntityGrapple extends Entity implements IProjectile
 
     public void updatePullingEntity(boolean pulling)
     {
-        this.dataManager.set(11, pulling ? 1 : 0);
+        this.dataManager.set(IS_PULLING, pulling);
     }
 
     public boolean getPullingEntity()
     {
-        return this.dataManager.get(11) == 1;
+        return this.dataManager.get(IS_PULLING);
     }
 }

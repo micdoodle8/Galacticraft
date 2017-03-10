@@ -26,7 +26,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     public StructureComponentVillagePathGen(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.coordBaseMode = par5;
+        this.setCoordBaseMode(par5);
         this.boundingBox = par4StructureBoundingBox;
         this.averageGroundLevel = Math.max(par4StructureBoundingBox.getXSize(), par4StructureBoundingBox.getZSize());
     }
@@ -137,7 +137,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     @Override
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        final Block var4 = Blocks.planks;
+        final Block var4 = Blocks.PLANKS;
 
         for (int var5 = this.boundingBox.minX; var5 <= this.boundingBox.maxX; ++var5)
         {

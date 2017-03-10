@@ -19,15 +19,15 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -148,8 +148,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                     //Air -> Air tank
                     if (this.gasTankType == -1 || (this.gasTankType == TankGases.AIR.index && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
                     {
-                        Block blockAbove = this.worldObj.getBlockState(getPos().up()).getBlock();
-                        if (blockAbove != null && blockAbove.getMaterial() == Material.AIR && blockAbove != GCBlocks.breatheableAir && blockAbove != GCBlocks.brightBreatheableAir)
+                        IBlockState stateAbove = this.worldObj.getBlockState(getPos().up());
+                        if (stateAbove.getBlock().getMaterial(stateAbove) == Material.AIR && stateAbove.getBlock() != GCBlocks.breatheableAir && stateAbove.getBlock() != GCBlocks.brightBreatheableAir)
                         {
                             FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
                             this.gasTank.fill(gcAtmosphere, true);
@@ -538,6 +538,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         {
             nbt.setTag("liquidTank2", this.liquidTank2.writeToNBT(new NBTTagCompound()));
         }
+
+        return nbt;
     }
 
     @Override

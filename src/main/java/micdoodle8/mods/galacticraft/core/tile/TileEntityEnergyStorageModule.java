@@ -128,13 +128,10 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     {
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
         if (this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {
             this.setTier2();
@@ -145,7 +142,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             this.initialised = false;
         }
 
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -160,18 +157,15 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {
             this.storage.setEnergyStored(BASE_CAPACITY);
         }
 
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.containingItems.length; ++var3)
@@ -185,7 +179,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             }
         }
 
-        par1NBTTagCompound.setTag("Items", var2);
+        nbt.setTag("Items", var2);
+        return nbt;
     }
 
     @Override

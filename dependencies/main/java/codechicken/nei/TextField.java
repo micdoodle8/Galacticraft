@@ -1,5 +1,6 @@
 package codechicken.nei;
 
+import codechicken.nei.widget.Widget;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
@@ -10,6 +11,13 @@ public abstract class TextField extends Widget {
     public TextField(String ident) {
         identifier = ident;
     }
+
+    private String text = "";
+    public boolean centered;
+    public long backdowntime;
+    public int backs;
+    public String identifier;
+    public int cursorCounter;
 
     public int getTextColour() {
         return focused() ? 0xFFE0E0E0 : 0xFF909090;
@@ -121,6 +129,14 @@ public abstract class TextField extends Widget {
         onTextChange(oldText);
     }
 
+    public void setText(String s, boolean updateJEI) {
+        if (updateJEI) {
+            setText(s);
+        } else {
+            text = filterText(s);
+        }
+    }
+
     public String filterText(String s) {
         return s;
     }
@@ -140,11 +156,4 @@ public abstract class TextField extends Widget {
     public String text() {
         return text;
     }
-
-    private String text = "";
-    public boolean centered;
-    public long backdowntime;
-    public int backs;
-    public String identifier;
-    public int cursorCounter;
 }

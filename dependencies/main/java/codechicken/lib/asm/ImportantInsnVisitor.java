@@ -6,7 +6,9 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodNode;
 
 public class ImportantInsnVisitor extends ClassVisitor {
+
     public class ImportantInsnMethodVisitor extends MethodVisitor {
+
         MethodVisitor delegate;
 
         public ImportantInsnMethodVisitor(int access, String name, String desc, String signature, String[] exceptions) {

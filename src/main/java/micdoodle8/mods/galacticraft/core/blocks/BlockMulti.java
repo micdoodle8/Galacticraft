@@ -33,7 +33,7 @@ import java.util.Random;
 public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
 {
     public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
-    public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("renderType", 0, 7);
+    public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("rendertype", 0, 7);
 
     public enum EnumBlockMultiType implements IStringSerializable
     {

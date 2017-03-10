@@ -91,7 +91,7 @@ public class BlockVec3Dim implements Cloneable
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
      */
-    public Block getBlockID()
+    public IBlockState getBlockState()
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -109,7 +109,7 @@ public class BlockVec3Dim implements Cloneable
             // this will be within the same chunk
             if (BlockVec3Dim.chunkCacheX == chunkx && BlockVec3Dim.chunkCacheZ == chunkz && BlockVec3Dim.chunkCacheDim == world.provider.getDimension() && BlockVec3Dim.chunkCached.isLoaded())
             {
-                return BlockVec3Dim.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+                return BlockVec3Dim.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
             }
             else
             {
@@ -119,7 +119,7 @@ public class BlockVec3Dim implements Cloneable
                 BlockVec3Dim.chunkCacheDim = world.provider.getDimension();
                 BlockVec3Dim.chunkCacheX = chunkx;
                 BlockVec3Dim.chunkCacheZ = chunkz;
-                return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+                return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
             }
         }
         catch (Throwable throwable)
@@ -136,10 +136,10 @@ public class BlockVec3Dim implements Cloneable
      *
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
-     * Returns Blocks.bedrock if the coordinates being checked are in an
+     * Returns Blocks.BEDROCK if the coordinates being checked are in an
      * unloaded chunk
      */
-    public Block getBlockID_noChunkLoad()
+    public IBlockState getBlockState_noChunkLoad()
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -153,13 +153,13 @@ public class BlockVec3Dim implements Cloneable
         int chunkz = this.z >> 4;
         try
         {
-            if (world.getChunkProvider().chunkExists(chunkx, chunkz))
+            if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
             {
                 // In a typical inner loop, 80% of the time consecutive calls to
                 // this will be within the same chunk
                 if (BlockVec3Dim.chunkCacheX == chunkx && BlockVec3Dim.chunkCacheZ == chunkz && BlockVec3Dim.chunkCacheDim == world.provider.getDimension() && BlockVec3Dim.chunkCached.isLoaded())
                 {
-                    return BlockVec3Dim.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+                    return BlockVec3Dim.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
                 }
                 else
                 {
@@ -169,11 +169,11 @@ public class BlockVec3Dim implements Cloneable
                     BlockVec3Dim.chunkCacheDim = world.provider.getDimension();
                     BlockVec3Dim.chunkCacheX = chunkx;
                     BlockVec3Dim.chunkCacheZ = chunkz;
-                    return chunk.getBlock(this.x & 15, this.y, this.z & 15);
+                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
                 }
             }
             //Chunk doesn't exist - meaning, it is not loaded
-            return Blocks.bedrock;
+            return Blocks.BEDROCK.getDefaultState();
         }
         catch (Throwable throwable)
         {

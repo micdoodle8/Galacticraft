@@ -20,7 +20,7 @@ public class RoomEntranceVenus extends SizedPieceVenus
     public RoomEntranceVenus(World world, DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
     {
         super(configuration, rand.nextInt(4) + 6, rand.nextInt(2) + 5, rand.nextInt(4) + 6, EnumFacing.Plane.HORIZONTAL.random(rand));
-        this.coordBaseMode = EnumFacing.SOUTH;
+        this.setCoordBaseMode(EnumFacing.SOUTH);
 
         this.boundingBox = new StructureBoundingBox(blockPosX - range, configuration.getYPosition(), blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
         System.out.println("Generating dungeon at " + blockPosX + " " + configuration.getYPosition() + " " + blockPosZ);

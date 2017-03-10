@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,14 +38,7 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
     {
         if (rocketModel == null)
         {
-            Function<ResourceLocation, TextureAtlasSprite> textureGetter = new Function<ResourceLocation, TextureAtlasSprite>()
-            {
-                @Override
-                public TextureAtlasSprite apply(ResourceLocation input)
-                {
-                    return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
-                }
-            };
+            Function<ResourceLocation, TextureAtlasSprite> textureGetter = input -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
 
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
             rocketModel = (ItemModelRocketT2) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
@@ -94,13 +87,7 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.8F, 0.8F, 0.8F);
 
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldrenderer = tessellator.getBuffer();
-
-        worldrenderer.begin(GL11.GL_QUADS, rocketModel.getFormat());
-
         ClientUtil.drawBakedModel(rocketModel);
-        tessellator.draw();
 
         GL11.glPopMatrix();
 

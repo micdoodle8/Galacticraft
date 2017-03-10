@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TransformationList extends Transformation {
+
     private ArrayList<Transformation> transformations = new ArrayList<Transformation>();
     private Matrix4 mat;
 
@@ -147,7 +148,7 @@ public class TransformationList extends Transformation {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glApply() {
         for (int i = transformations.size() - 1; i >= 0; i--) {
             transformations.get(i).glApply();

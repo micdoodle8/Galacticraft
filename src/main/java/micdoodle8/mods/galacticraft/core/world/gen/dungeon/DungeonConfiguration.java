@@ -42,6 +42,7 @@ public class DungeonConfiguration
         tagCompound.setInteger("roomHeight", this.roomHeight);
         tagCompound.setString("bossRoom", this.bossRoom.getName());
         tagCompound.setString("treasureRoom", this.treasureRoom.getName());
+        return tagCompound;
     }
 
     public void readFromNBT(NBTTagCompound tagCompound)

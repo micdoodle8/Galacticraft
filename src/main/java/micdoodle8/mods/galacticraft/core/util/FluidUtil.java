@@ -394,7 +394,7 @@ public class FluidUtil
     {
         if (FluidContainerRegistry.isBucket(container) && FluidContainerRegistry.isFilledContainer(container))
         {
-            return new ItemStack(Items.bucket, container.stackSize);
+            return new ItemStack(Items.BUCKET, container.stackSize);
         }
         else
         {

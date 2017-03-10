@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.api.client.tabs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.network.play.client.C0DPacketCloseWindow;
+import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -37,14 +37,14 @@ public class TabRegistry
 	@SubscribeEvent
 	public void guiPostInit (GuiScreenEvent.InitGuiEvent.Post event)
 	{
-		if (event.gui instanceof GuiInventory)
+		if (event.getGui() instanceof GuiInventory)
 		{
-			int guiLeft = (event.gui.width - 176) / 2;
-			int guiTop = (event.gui.height - 166) / 2;
+			int guiLeft = (event.getGui().width - 176) / 2;
+			int guiTop = (event.getGui().height - 166) / 2;
 			guiLeft += getPotionOffset();
 
 			TabRegistry.updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
-			TabRegistry.addTabsToList(event.buttonList);
+			TabRegistry.addTabsToList(event.getButtonList());
 		}
 	}
 
@@ -53,7 +53,7 @@ public class TabRegistry
 
 	public static void openInventoryGui()
 	{
-		TabRegistry.mc.thePlayer.sendQueue.addToSendQueue(new C0DPacketCloseWindow(mc.thePlayer.openContainer.windowId));
+		TabRegistry.mc.thePlayer.connection.sendPacket(new CPacketCloseWindow(mc.thePlayer.openContainer.windowId));
 		GuiInventory inventory = new GuiInventory(TabRegistry.mc.thePlayer);
 		TabRegistry.mc.displayGuiScreen(inventory);
 	}

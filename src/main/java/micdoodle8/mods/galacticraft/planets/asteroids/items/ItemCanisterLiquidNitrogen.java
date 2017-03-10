@@ -8,10 +8,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -81,50 +86,50 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
 
     private Block canFreeze(Block b)
     {
-        if (b == Blocks.water)
+        if (b == Blocks.WATER)
         {
-            return Blocks.ice;
+            return Blocks.ICE;
         }
-        if (b == Blocks.lava)
+        if (b == Blocks.LAVA)
         {
-            return Blocks.obsidian;
+            return Blocks.OBSIDIAN;
         }
         return null;
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         int damage = itemStack.getItemDamage() + 125;
         if (damage > itemStack.getMaxDamage())
         {
-            return itemStack;
+            return new ActionResult<>(EnumActionResult.PASS, itemStack);
         }
 
-        MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+        RayTraceResult movingobjectposition = this.rayTrace(worldIn, playerIn, true);
 
-        if (movingobjectposition == null)
+        if (movingobjectposition.typeOfHit == RayTraceResult.Type.MISS)
         {
-            return itemStack;
+            return new ActionResult<>(EnumActionResult.PASS, itemStack);
         }
         else
         {
-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+            if (movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK)
             {
                 BlockPos pos = movingobjectposition.getBlockPos();
 
-                if (!par2World.canMineBlockBody(par3EntityPlayer, pos))
+                if (!worldIn.canMineBlockBody(playerIn, pos))
                 {
-                    return itemStack;
+                    return new ActionResult<>(EnumActionResult.PASS, itemStack);
                 }
 
-                if (!par3EntityPlayer.canPlayerEdit(pos, movingobjectposition.sideHit, itemStack))
+                if (!playerIn.canPlayerEdit(pos, movingobjectposition.sideHit, itemStack))
                 {
-                    return itemStack;
+                    return new ActionResult<>(EnumActionResult.PASS, itemStack);
                 }
 
                 //Material material = par2World.getBlock(i, j, k).getMaterial();
-                IBlockState state = par2World.getBlockState(pos);
+                IBlockState state = worldIn.getBlockState(pos);
                 Block b = state.getBlock();
                 int meta = b.getMetaFromState(state);
 
@@ -132,13 +137,13 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
                 if (result != null)
                 {
                     this.setNewDamage(itemStack, damage);
-                    par2World.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "fire.ignite", 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
-                    par2World.setBlockState(pos, result.getDefaultState(), 3);
-                    return itemStack;
+                    worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.NEUTRAL, 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+                    worldIn.setBlockState(pos, result.getDefaultState(), 3);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
                 }
             }
 
-            return itemStack;
+            return new ActionResult<>(EnumActionResult.PASS, itemStack);
         }
     }
 

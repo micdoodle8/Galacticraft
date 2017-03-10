@@ -3,14 +3,15 @@ package codechicken.lib.world;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.HashSet;
 
 public abstract class ChunkExtension {
+
     public final Chunk chunk;
-    public final ChunkCoordIntPair coord;
+    public final ChunkPos coord;
     public final WorldExtension world;
     public HashSet<EntityPlayerMP> watchedPlayers;
 
@@ -35,7 +36,7 @@ public abstract class ChunkExtension {
 
     public final void sendPacketToPlayers(Packet packet) {
         for (EntityPlayerMP player : watchedPlayers) {
-            player.playerNetServerHandler.sendPacket(packet);
+            player.connection.sendPacket(packet);
         }
     }
 
@@ -65,8 +66,6 @@ public abstract class ChunkExtension {
 
     @Override
     public boolean equals(Object o) {
-        return (o instanceof ChunkExtension && ((ChunkExtension) o).coord.equals(coord)) ||
-                (o instanceof ChunkCoordIntPair && coord.equals(o)) ||
-                (o instanceof Long && (Long) o == (((long) coord.chunkXPos) << 32 | coord.chunkZPos));
+        return (o instanceof ChunkExtension && ((ChunkExtension) o).coord.equals(coord)) || (o instanceof ChunkPos && coord.equals(o)) || (o instanceof Long && (Long) o == (((long) coord.chunkXPos) << 32 | coord.chunkZPos));
     }
 }

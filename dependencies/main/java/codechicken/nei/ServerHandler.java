@@ -1,6 +1,9 @@
 package codechicken.nei;
 
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -8,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -25,11 +27,11 @@ public class ServerHandler {
     public static void init() {
         instance = new ServerHandler();
 
-        PacketCustom.assignHandler(NEICPH.channel, new NEISPH());
-        FMLCommonHandler.instance().bus().register(instance);
+        PacketCustom.assignHandler(NEIClientPacketHandler.channel, new NEIServerPacketHandler());
+        //FMLCommonHandler.instance().bus().register(instance);
         MinecraftForge.EVENT_BUS.register(instance);
 
-        Item.getItemFromBlock(Blocks.mob_spawner).setHasSubtypes(true);
+        Item.getItemFromBlock(Blocks.MOB_SPAWNER).setHasSubtypes(true);
         NEIActions.init();
     }
 
@@ -44,8 +46,8 @@ public class ServerHandler {
 
     @SubscribeEvent
     public void loadEvent(WorldEvent.Load event) {
-        if (!event.world.isRemote) {
-            NEIServerConfig.load(event.world);
+        if (!event.getWorld().isRemote) {
+            NEIServerConfig.load(event.getWorld());
         }
     }
 
@@ -90,7 +92,7 @@ public class ServerHandler {
                 continue;
             }
             if (save.magneticItems.add(item)) {
-                NEISPH.sendAddMagneticItemTo(player, item);
+                NEIServerPacketHandler.sendAddMagneticItemTo(player, item);
             }
 
             double dx = player.posX - item.posX;
@@ -142,7 +144,7 @@ public class ServerHandler {
     @SubscribeEvent
     public void loginEvent(PlayerLoggedInEvent event) {
         NEIServerConfig.loadPlayer(event.player);
-        NEISPH.sendHasServerSideTo((EntityPlayerMP) event.player);
+        NEIServerPacketHandler.sendHasServerSideTo((EntityPlayerMP) event.player);
     }
 
     @SubscribeEvent

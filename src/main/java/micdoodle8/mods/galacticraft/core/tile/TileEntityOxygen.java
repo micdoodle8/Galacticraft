@@ -102,6 +102,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         super.writeToNBT(nbt);
         this.tank.writeToNBT(nbt);
+        return nbt;
     }
 
     @Override

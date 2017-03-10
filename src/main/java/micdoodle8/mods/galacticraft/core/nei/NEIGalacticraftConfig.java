@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.nei;
 
-import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.ItemInfo;
+import codechicken.nei.api.stack.PositionedStack;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Set;
 
 public class NEIGalacticraftConfig implements IConfigureNEI
@@ -106,27 +106,27 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         NEIGalacticraftConfig.refineryRecipes.put(input, output);
     }
 
-    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getIngotCompressorRecipes()
+    public static Set<Map.Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getIngotCompressorRecipes()
     {
         return NEIGalacticraftConfig.ingotCompressorRecipes.entrySet();
     }
 
-    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getCircuitFabricatorRecipes()
+    public static Set<Map.Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getCircuitFabricatorRecipes()
     {
         return NEIGalacticraftConfig.circuitFabricatorRecipes.entrySet();
     }
 
-    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getRocketBenchRecipes()
+    public static Set<Map.Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getRocketBenchRecipes()
     {
         return NEIGalacticraftConfig.rocketBenchRecipes.entrySet();
     }
 
-    public static Set<Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getBuggyBenchRecipes()
+    public static Set<Map.Entry<HashMap<Integer, PositionedStack>, PositionedStack>> getBuggyBenchRecipes()
     {
         return NEIGalacticraftConfig.buggyBenchRecipes.entrySet();
     }
 
-    public static Set<Entry<PositionedStack, PositionedStack>> getRefineryRecipes()
+    public static Set<Map.Entry<PositionedStack, PositionedStack>> getRefineryRecipes()
     {
         return NEIGalacticraftConfig.refineryRecipes.entrySet();
     }
@@ -220,43 +220,43 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 0), 139, 92));
 
         HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(14, new PositionedStack(new ItemStack(Blocks.chest), 90, 8));
+        input2.put(14, new PositionedStack(new ItemStack(Blocks.CHEST), 90, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 1), 139, 92));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(15, new PositionedStack(new ItemStack(Blocks.chest), 116, 8));
+        input2.put(15, new PositionedStack(new ItemStack(Blocks.CHEST), 116, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 1), 139, 92));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(16, new PositionedStack(new ItemStack(Blocks.chest), 142, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Blocks.CHEST), 142, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 1), 139, 92));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(14, new PositionedStack(new ItemStack(Blocks.chest), 90, 8));
-        input2.put(15, new PositionedStack(new ItemStack(Blocks.chest), 116, 8));
+        input2.put(14, new PositionedStack(new ItemStack(Blocks.CHEST), 90, 8));
+        input2.put(15, new PositionedStack(new ItemStack(Blocks.CHEST), 116, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 2), 139, 92));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(15, new PositionedStack(new ItemStack(Blocks.chest), 116, 8));
-        input2.put(16, new PositionedStack(new ItemStack(Blocks.chest), 142, 8));
+        input2.put(15, new PositionedStack(new ItemStack(Blocks.CHEST), 116, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Blocks.CHEST), 142, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 2), 139, 92));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(14, new PositionedStack(new ItemStack(Blocks.chest), 90, 8));
-        input2.put(16, new PositionedStack(new ItemStack(Blocks.chest), 142, 8));
+        input2.put(14, new PositionedStack(new ItemStack(Blocks.CHEST), 90, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Blocks.CHEST), 142, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 2), 139, 92));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(14, new PositionedStack(new ItemStack(Blocks.chest), 90, 8));
-        input2.put(15, new PositionedStack(new ItemStack(Blocks.chest), 116, 8));
-        input2.put(16, new PositionedStack(new ItemStack(Blocks.chest), 142, 8));
+        input2.put(14, new PositionedStack(new ItemStack(Blocks.CHEST), 90, 8));
+        input2.put(15, new PositionedStack(new ItemStack(Blocks.CHEST), 116, 8));
+        input2.put(16, new PositionedStack(new ItemStack(Blocks.CHEST), 142, 8));
         this.registerRocketBenchRecipe(input2, new PositionedStack(new ItemStack(GCItems.rocketTier1, 1, 3), 139, 92));
     }
 
     private void addCircuitFabricatorRecipes()
     {
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
-        input1.put(0, new PositionedStack(new ItemStack(Items.diamond), 10, 22));
+        input1.put(0, new PositionedStack(new ItemStack(Items.DIAMOND), 10, 22));
         int siliconCount = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).size();
         ItemStack[] silicons = new ItemStack[siliconCount + 1];
         silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
@@ -266,8 +266,8 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         }
         input1.put(1, new PositionedStack(silicons, 69, 51));
         input1.put(2, new PositionedStack(silicons, 69, 69));
-        input1.put(3, new PositionedStack(new ItemStack(Items.redstone), 117, 51));
-        input1.put(4, new PositionedStack(new ItemStack(Blocks.redstone_torch), 140, 25));
+        input1.put(3, new PositionedStack(new ItemStack(Items.REDSTONE), 117, 51));
+        input1.put(4, new PositionedStack(new ItemStack(Blocks.REDSTONE_TORCH), 140, 25));
         this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), 147, 91));
 
         HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
@@ -275,7 +275,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, 9, 12), 147, 91));
 
         input2 = new HashMap<Integer, PositionedStack>(input1);
-        input2.put(4, new PositionedStack(new ItemStack(Items.repeater), 140, 25));
+        input2.put(4, new PositionedStack(new ItemStack(Items.REPEATER), 140, 25));
         this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 2 : 1, 14), 147, 91));
     }
 

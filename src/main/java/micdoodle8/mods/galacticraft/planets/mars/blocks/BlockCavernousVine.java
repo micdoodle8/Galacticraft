@@ -6,20 +6,24 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,7 +37,7 @@ import java.util.Random;
 
 public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum VINE_TYPE = PropertyEnum.create("vineType", EnumVineType.class);
+    public static final PropertyEnum VINE_TYPE = PropertyEnum.create("vinetype", EnumVineType.class);
 
     public enum EnumVineType implements IStringSerializable
     {
@@ -69,15 +73,15 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 
     public BlockCavernousVine(String assetName)
     {
-        super(Material.vine);
+        super(Material.VINE);
         this.setLightLevel(1.0F);
         this.setTickRandomly(true);
-        this.setStepSound(soundTypeGrass);
+        this.setSoundType(SoundType.PLANT);
         this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         if (world.setBlockToAir(pos))
         {
@@ -96,8 +100,8 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 
     public boolean canBlockStay(World worldIn, BlockPos pos)
     {
-        Block blockAbove = worldIn.getBlockState(pos.up()).getBlock();
-        return (blockAbove == this || blockAbove.getMaterial().isSolid());
+        IBlockState stateAbove = worldIn.getBlockState(pos.up());
+        return (stateAbove.getBlock() == this || stateAbove.getBlock().getMaterial(stateAbove).isSolid());
     }
 
     @Override
@@ -124,15 +128,12 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
             entityIn.motionY = 0.06F;
             entityIn.rotationYaw += 0.4F;
 
-            if (!((EntityLivingBase) entityIn).getActivePotionEffects().contains(Potion.poison))
-            {
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(Potion.poison.id, 5, 20, false, true));
-            }
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 5, 20, false, true));
         }
     }
 
     @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return this.getVineLight(world, pos);
     }
@@ -212,7 +213,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
                 BlockPos pos1 = new BlockPos(pos.getX(), y2, pos.getZ());
                 Block blockID = worldIn.getBlockState(pos1).getBlock();
 
-                if (!blockID.isAir(worldIn, pos1))
+                if (!blockID.isAir(worldIn.getBlockState(pos1), worldIn, pos1))
                 {
                     return;
                 }
@@ -261,7 +262,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public boolean isLadder(IBlockAccess world, BlockPos pos, EntityLivingBase entity)
+    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity)
     {
         return true;
     }

@@ -9,7 +9,9 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -36,8 +38,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
@@ -53,6 +64,8 @@ import java.util.UUID;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
+    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.FLOAT);
+
     public static final int MINE_LENGTH = 24;
     public static final int MINE_LENGTH_AST = 12;
     private static final int MAXENERGY = 12000;
@@ -169,17 +182,17 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         // railtrack, levers, redstone dust, GC walkways,
         //Anything with a tileEntity will also be avoided:
         // spawners, chests, oxygen pipes, hydrogen pipes, wires
-        noMineList.add(Blocks.bedrock);
-        noMineList.add(Blocks.lava);
-        noMineList.add(Blocks.mossy_cobblestone);
-        noMineList.add(Blocks.end_portal);
-        noMineList.add(Blocks.end_portal_frame);
-        noMineList.add(Blocks.portal);
-        noMineList.add(Blocks.stonebrick);
-        noMineList.add(Blocks.farmland);
-        noMineList.add(Blocks.rail);
-        noMineList.add(Blocks.lever);
-        noMineList.add(Blocks.redstone_wire);
+        noMineList.add(Blocks.BEDROCK);
+        noMineList.add(Blocks.LAVA);
+        noMineList.add(Blocks.MOSSY_COBBLESTONE);
+        noMineList.add(Blocks.END_PORTAL);
+        noMineList.add(Blocks.END_PORTAL_FRAME);
+        noMineList.add(Blocks.PORTAL);
+        noMineList.add(Blocks.STONEBRICK);
+        noMineList.add(Blocks.FARMLAND);
+        noMineList.add(Blocks.RAIL);
+        noMineList.add(Blocks.LEVER);
+        noMineList.add(Blocks.REDSTONE_WIRE);
         noMineList.add(AsteroidBlocks.blockWalkway);
         //TODO:
         //Add configurable blacklist
@@ -199,7 +212,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
-        this.renderDistanceWeight = 5.0D;
         this.width = cLENGTH;
         this.height = cWIDTH;
         this.setSize(cLENGTH, cWIDTH);
@@ -211,9 +223,23 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @Override
+    public boolean isInRangeToRenderDist(double distance)
+    {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+
+        if (Double.isNaN(d0))
+        {
+            d0 = 1.0D;
+        }
+
+        d0 = d0 * 64.0D * 5.0;
+        return distance < d0 * d0;
+    }
+
+    @Override
     protected void entityInit()
     {
-        this.dataManager.addObject(19, new Float(0.0F));
+        this.dataManager.register(DAMAGE, 0.0F);
     }
 
     @Override
@@ -1422,7 +1448,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         //Can move through liquids including flowing lava
         IBlockState state = this.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() == Material.AIR)
+        if (b.getMaterial(state) == Material.AIR)
         {
             return false;
         }
@@ -1444,14 +1470,14 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         boolean gtFlag = false;
         if (b != GCBlocks.fallenMeteor)
         {
-            if (b instanceof IPlantable && b != Blocks.tallgrass && b != Blocks.deadbush && b != Blocks.double_plant && b != Blocks.waterlily && !(b instanceof BlockFlower))
+            if (b instanceof IPlantable && b != Blocks.TALLGRASS && b != Blocks.DEADBUSH && b != Blocks.DOUBLE_PLANT && b != Blocks.WATERLILY && !(b instanceof BlockFlower))
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = b.getMetaFromState(state);
                 return true;
             }
             int meta = b.getMetaFromState(state);
-            if (b.getBlockHardness(this.worldObj, pos) < 0)
+            if (b.getBlockHardness(state, this.worldObj, pos) < 0)
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = meta;
@@ -1476,7 +1502,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             return false;
         }
-        int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, pos);
+        int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.interactionManager.getGameType(), this.playerMP, pos);
         if (result < 0)
         {
             return true;
@@ -1534,7 +1560,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         //Add minable blocks to the laser fx list
         IBlockState state = this.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() == Material.AIR)
+        if (b.getMaterial(state) == Material.AIR)
         {
             return false;
         }
@@ -1554,8 +1580,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             return true;
         }
-        int meta = b.getMetaFromState(state);
-        if (b.hasTileEntity(state) || b.getBlockHardness(this.worldObj, pos) < 0)
+        if (b.hasTileEntity(state) || b.getBlockHardness(state, this.worldObj, pos) < 0)
         {
             return true;
         }
@@ -2125,12 +2150,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     public float getDamage()
     {
-        return this.dataManager.getWatchableObjectFloat(19);
+        return this.dataManager.get(DAMAGE);
     }
 
     public void setDamage(float p_70492_1_)
     {
-        this.dataManager.set(19, Float.valueOf(p_70492_1_));
+        this.dataManager.set(DAMAGE, Float.valueOf(p_70492_1_));
     }
 
     @Override
@@ -2187,10 +2212,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         if (!this.worldObj.isRemote && this.playerMP != null && !this.spawnedInCreative)
         {
-            int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
+            IStatsCapability stats = this.playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            int astroCount = stats.getAstroMinerCount();
             if (astroCount > 0)
             {
-                GCPlayerStats.get(this.playerMP).astroMinerCount--;
+                stats.setAstroMinerCount(astroCount - 1);
             }
         }
 

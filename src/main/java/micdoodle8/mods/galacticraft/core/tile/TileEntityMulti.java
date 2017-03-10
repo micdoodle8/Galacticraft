@@ -121,6 +121,8 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
             tag.setInteger("z", this.mainBlockPosition.getZ());
             nbt.setTag("mainBlockPosition", tag);
         }
+
+        return nbt;
     }
 
     @Override

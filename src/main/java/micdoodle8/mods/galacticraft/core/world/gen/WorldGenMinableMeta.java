@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -26,7 +26,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
 
     public WorldGenMinableMeta(Block placeBlock, int blockCount, int placeMeta, boolean metaActive, Block replaceBlock, int replaceMeta)
     {
-        super(placeBlock.getStateFromMeta(placeMeta), blockCount, BlockHelper.forBlock(replaceBlock));
+        super(placeBlock.getStateFromMeta(placeMeta), blockCount, BlockMatcher.forBlock(replaceBlock));
         this.minableBlockId = placeBlock;
         this.numberOfBlocks = blockCount;
         this.metadata = placeMeta;

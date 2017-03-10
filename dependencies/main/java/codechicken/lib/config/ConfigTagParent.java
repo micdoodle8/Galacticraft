@@ -7,7 +7,9 @@ import java.util.*;
 import java.util.Map.Entry;
 
 public abstract class ConfigTagParent {
+
     public static class TagOrderComparator implements Comparator<ConfigTag> {
+
         int sortMode;
 
         public TagOrderComparator(int sortMode) {
@@ -22,19 +24,19 @@ public abstract class ConfigTagParent {
                 return o1.brace ? 1 : -1;//braced one goes after
             }
             switch (sortMode) {
-            case 1:
-                if (o1.value == o2.value) {
-                    return 0;
-                }
-                if (o1.value == null) {
-                    return 1;
-                }
-                if (o2.value == null) {
-                    return -1;
-                }
-                return o1.value.compareTo(o2.value);
-            default:
-                return o1.name.compareTo(o2.name);
+                case 1:
+                    if (o1.value.equals(o2.value)) {
+                        return 0;
+                    }
+                    if (o1.value == null) {
+                        return 1;
+                    }
+                    if (o2.value == null) {
+                        return -1;
+                    }
+                    return o1.value.compareTo(o2.value);
+                default:
+                    return o1.name.compareTo(o2.name);
             }
         }
 

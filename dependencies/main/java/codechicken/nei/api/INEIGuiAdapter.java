@@ -1,6 +1,6 @@
 package codechicken.nei.api;
 
-import codechicken.nei.VisiblityData;
+import codechicken.nei.VisibilityData;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class INEIGuiAdapter implements INEIGuiHandler {
     @Override
-    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) {
+    public VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility) {
         return currentVisibility;
     }
 

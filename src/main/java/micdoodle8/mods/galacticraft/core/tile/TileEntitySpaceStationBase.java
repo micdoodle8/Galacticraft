@@ -18,17 +18,18 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     public String ownerUsername = "bobby";
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.ownerUsername = par1NBTTagCompound.getString("ownerUsername");
+        super.readFromNBT(nbt);
+        this.ownerUsername = nbt.getString("ownerUsername");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setString("ownerUsername", this.ownerUsername);
+        super.writeToNBT(nbt);
+        nbt.setString("ownerUsername", this.ownerUsername);
+        return nbt;
     }
 
     public void setOwner(String username)

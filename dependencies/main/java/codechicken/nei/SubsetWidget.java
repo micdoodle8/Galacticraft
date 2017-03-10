@@ -2,21 +2,24 @@ package codechicken.nei;
 
 import codechicken.core.gui.GuiScrollSlot;
 import codechicken.lib.gui.GuiDraw;
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
+import codechicken.lib.thread.RestartableTask;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.ItemList.AnyMultiItemFilter;
 import codechicken.nei.ItemList.ItemsLoadedCallback;
 import codechicken.nei.ItemList.NothingItemFilter;
 import codechicken.nei.SearchField.ISearchProvider;
 import codechicken.nei.api.API;
-import codechicken.nei.api.ItemFilter;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 import java.util.*;
@@ -24,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoadedCallback, ISearchProvider {
+public class SubsetWidget extends codechicken.nei.widget.Button implements IItemFilterProvider, ItemsLoadedCallback, ISearchProvider {
     public static class SubsetState {
         int state = 2;
         ArrayList<ItemStack> items = new ArrayList<ItemStack>();
@@ -52,7 +55,11 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
                 if (slot < sorted.size()) {
                     SubsetTag tag = sorted.get(slot);
                     if (NEIClientUtils.shiftKey()) {
-                        LayoutManager.searchField.setText("@" + tag.fullname);
+                        String searchTag = tag.fullname;//TODO
+                        if (searchTag.startsWith("Mod.")/* && JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI*/){
+                            searchTag = searchTag.replace("Mod.", "").replace(" ", "");
+                        }
+                        LayoutManager.searchField.setText("@" + searchTag);
                     } else if (button == 0 && count >= 2) {
                         SubsetWidget.showOnly(tag);
                     } else {
@@ -119,7 +126,7 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
         }
 
         public final String fullname;
-        public final ItemFilter filter;
+        public final IItemFilter filter;
         public TreeMap<String, SubsetTag> children = new TreeMap<String, SubsetTag>();
         public List<SubsetTag> sorted = Collections.emptyList();
         private int childwidth;
@@ -134,7 +141,7 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
             this(fullname, new NothingItemFilter());
         }
 
-        public SubsetTag(String fullname, ItemFilter filter) {
+        public SubsetTag(String fullname, IItemFilter filter) {
             assert filter != null : "Filter cannot be null";
             this.fullname = TextFormatting.getTextWithoutFormattingCodes(fullname);
             this.filter = filter;
@@ -207,7 +214,7 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
             }
         }
 
-        public void addFilters(List<ItemFilter> filters) {
+        public void addFilters(List<IItemFilter> filters) {
             if (filter != null) {
                 filters.add(filter);
             }
@@ -476,7 +483,7 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
                 itemList.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
             }
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading hiddenItems", e);
+            LogHelper.errorError("Error loading hiddenItems", e);
             return;
         }
 
@@ -738,8 +745,8 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
     }
 
     @Override
-    public ItemFilter getFilter() {
-        return new ItemFilter()//synchronise access on hiddenItems
+    public IItemFilter getFilter() {
+        return new IItemFilter()//synchronise access on hiddenItems
         {
             @Override
             public boolean matches(ItemStack item) {
@@ -756,7 +763,7 @@ public class SubsetWidget extends Button implements ItemFilterProvider, ItemsLoa
     }
 
     @Override
-    public ItemFilter getFilter(String searchText) {
+    public IItemFilter getFilter(String searchText) {
         if (!searchText.startsWith("@")) {
             return null;
         }

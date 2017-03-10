@@ -1,8 +1,9 @@
 package codechicken.nei;
 
-import codechicken.lib.render.CCRenderState;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -20,7 +21,7 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
         GlStateManager.color(1, 1, 1, 1);
-        CCRenderState.changeTexture("nei:textures/gui/inv.png");
+        TextureUtils.changeTexture("nei:textures/gui/inv.png");
 
         int x = guiLeft;
         int y = guiTop - 4;
@@ -29,7 +30,7 @@ public class GuiExtendedCreativeInv extends GuiContainer implements INEIGuiHandl
     }
 
     @Override
-    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) {
+    public VisibilityData modifyVisiblity(GuiContainer gui, VisibilityData currentVisibility) {
         return currentVisibility;
     }
 

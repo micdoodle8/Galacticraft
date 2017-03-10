@@ -1,7 +1,7 @@
 package codechicken.nei.config;
 
-import codechicken.nei.NEIClientConfig;
 import codechicken.nei.config.GuiOptionList.OptionScrollSlot;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -111,7 +111,7 @@ public class OptionList extends OptionButton {
         }
 
         if (options.containsKey(subName)) {
-            NEIClientConfig.logger.warn("Replacing option: " + fullName);
+            LogHelper.warn("Replacing option: " + fullName);
         }
 
         options.put(subName, o);

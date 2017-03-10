@@ -12,26 +12,27 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
@@ -70,7 +71,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     public BlockSlimelingEgg(String assetName)
     {
         super(Material.ROCK);
-        this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.625F, 0.75F);
+//        this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.625F, 0.75F);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
     }
@@ -138,9 +139,9 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
-        ItemStack currentStack = player.getCurrentEquippedItem();
+        ItemStack currentStack = player.getActiveItemStack();
         if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
         {
             return world.setBlockToAir(pos);
@@ -163,23 +164,23 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack)
     {
-        ItemStack currentStack = player.getCurrentEquippedItem();
+        ItemStack currentStack = player.getActiveItemStack();
 
         if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
         {
-            player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
+            player.addStat(StatList.getBlockStats(this));
             player.addExhaustion(0.025F);
             this.dropBlockAsItem(worldIn, pos, state.getBlock().getStateFromMeta(state.getBlock().getMetaFromState(state) % 3), 0);
-            if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getSilkTouchModifier(player))
+            if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0)
             {
                 ItemStack itemstack = new ItemStack(MarsItems.deshPickSlime, 1, currentStack.getItemDamage());
                 if (currentStack.getTagCompound() != null)
                 {
-                    itemstack.setTagCompound((NBTTagCompound) currentStack.getTagCompound().copy());
+                    itemstack.setTagCompound(currentStack.getTagCompound().copy());
                 }
-                player.setCurrentItemOrArmor(0, itemstack);
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, itemstack);
             }
         }
     }
@@ -241,7 +242,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        IBlockState state = world.getBlockState(pos);
         int metadata = state.getBlock().getMetaFromState(state);
 
         if (metadata == 3)
@@ -256,7 +256,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, 2);
         }
-        return super.getPickBlock(target, world, pos, player);
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override

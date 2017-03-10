@@ -17,11 +17,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +53,7 @@ public class GCCoreUtil
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, player.worldObj.provider.getDimension(), new Object[] { id, 0, 0 }), player);
         player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
         player.openContainer.windowId = id;
-        player.openContainer.onCraftGuiOpened(player);
+        player.openContainer.addListener(player);
     }
 
     public static void openParachestInv(EntityPlayerMP player, EntityLanderBase landerInv)
@@ -67,7 +64,7 @@ public class GCCoreUtil
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, player.worldObj.provider.getDimension(), new Object[] { windowId, 1, landerInv.getEntityId() }), player);
         player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
         player.openContainer.windowId = windowId;
-        player.openContainer.onCraftGuiOpened(player);
+        player.openContainer.addListener(player);
     }
 
     public static int nextInternalID()
@@ -76,19 +73,19 @@ public class GCCoreUtil
         return GCCoreUtil.nextID - 1;
     }
 
-    public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
+    public static void registerGalacticraftCreature(Class<? extends Entity> clazz, String name, int back, int fore)
     {
-        registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
-        int nextEggID = getNextValidEggID();
+        registerGalacticraftNonMobEntity(clazz, name, 80, 3, true);
+        int nextEggID = getNextValidID();
         if (nextEggID < 65536)
         {
-            EntityList.idToClassMapping.put(nextEggID, var0);
-            EntityList.classToIDMapping.put(var0, nextEggID);
-            EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+            EntityList.ID_TO_CLASS.put(nextEggID, clazz);
+            EntityList.CLASS_TO_ID.put(clazz, nextEggID);
+            EntityList.ENTITY_EGGS.put(name, new EntityList.EntityEggInfo(name, back, fore));
         }
     }
 
-    public static int getNextValidEggID()
+    public static int getNextValidID()
     {
         int eggID = 255;
 
@@ -106,11 +103,6 @@ public class GCCoreUtil
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
-            LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", "en_US", GCCoreUtil.translate("entity." + var1 + ".name"));
-            LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-        }
         EntityRegistry.registerModEntity(var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
     }
 
@@ -146,7 +138,7 @@ public class GCCoreUtil
 
     public static String translate(String key)
     {
-        String result = StatCollector.translateToLocal(key);
+        String result = I18n.translateToLocal(key);
         int comment = result.indexOf('#');
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)
@@ -170,7 +162,7 @@ public class GCCoreUtil
 
     public static String translateWithFormat(String key, Object... values)
     {
-        String result = StatCollector.translateToLocalFormatted(key, values);
+        String result = I18n.translateToLocalFormatted(key, values);
         int comment = result.indexOf('#');
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)

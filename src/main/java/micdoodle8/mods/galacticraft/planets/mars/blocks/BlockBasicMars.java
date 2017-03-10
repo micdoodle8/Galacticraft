@@ -5,9 +5,9 @@ import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -15,17 +15,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,7 +39,7 @@ import java.util.Random;
 
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basicTypeMars", EnumBlockBasic.class);
+    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basictypemars", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
     {
@@ -90,14 +91,14 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
         {
-            return MapColor.greenColor;
+            return MapColor.GREEN;
         }
         else if (state.getValue(BASIC_TYPE) == EnumBlockBasic.SURFACE)
         {
-            return MapColor.dirtColor;
+            return MapColor.DIRT;
         }
 
-        return MapColor.redColor;
+        return MapColor.RED;
     }
 
     @Override
@@ -200,7 +201,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canSustainPlant(IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
+    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
     {
         return false;
     }
@@ -219,7 +220,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void randomDisplayTick(IBlockState state, World worldIn, BlockPos pos, Random rand)
     {
         if (rand.nextInt(10) == 0)
         {
@@ -229,7 +230,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
                 if (rand.nextInt(100) == 0)
                 {
-                    worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), Constants.TEXTURE_PREFIX + "ambience.singledrip", 1, 0.8F + rand.nextFloat() / 5.0F, false);
+                    worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), GCSounds.singleDrip, SoundCategory.AMBIENT, 1, 0.8F + rand.nextFloat() / 5.0F);
                 }
             }
         }
@@ -239,13 +240,13 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     public boolean isTerraformable(World world, BlockPos pos)
     {
         IBlockState state = world.getBlockState(pos);
-        return state.getValue(BASIC_TYPE) == EnumBlockBasic.SURFACE && !world.getBlockState(pos.up()).getBlock().isFullCube();
+        IBlockState stateAbove = world.getBlockState(pos.up());
+        return state.getValue(BASIC_TYPE) == EnumBlockBasic.SURFACE && !stateAbove.getBlock().isFullCube(stateAbove);
     }
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        IBlockState state = world.getBlockState(pos);
         int metadata = state.getBlock().getMetaFromState(state);
         if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH)
         {
@@ -256,13 +257,12 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
         }
 
-        return super.getPickBlock(target, world, pos, player);
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override
-    public boolean isReplaceableOreGen(World world, BlockPos pos, Predicate<IBlockState> target)
+    public boolean isReplaceableOreGen(IBlockState state, IBlockAccess world, BlockPos pos, Predicate<IBlockState> target)
     {
-        IBlockState state = world.getBlockState(pos);
         return (state.getValue(BASIC_TYPE) == EnumBlockBasic.MIDDLE || state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE);
     }
 

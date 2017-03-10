@@ -29,7 +29,7 @@ public class RoomBoss extends SizedPiece
     public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.coordBaseMode = EnumFacing.SOUTH;
+        this.setCoordBaseMode(EnumFacing.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
         this.sizeY = sizeY;
@@ -93,12 +93,12 @@ public class RoomBoss extends SizedPiece
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.flowing_lava.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.FLOWING_LAVA.getDefaultState(), i, j, k, boundingBox);
                     }
                     else if (j % 3 == 0 && j >= 2 && ((i == 1 || i == this.sizeX - 1 || k == 1 || k == this.sizeZ - 1) || (i == 2 && k == 2) || (i == 2 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == 2) || (i == this.sizeX - 2 && k == this.sizeZ - 2)))
                     {
                         // Horizontal bars
-                        this.setBlockState(worldIn, Blocks.iron_bars.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, boundingBox);
                     }
                     else if ((i == 1 && k == 2) || (i == 2 && k == 1) ||
                             (i == 1 && k == this.sizeZ - 2) || (i == 2 && k == this.sizeZ - 1) ||
@@ -106,7 +106,7 @@ public class RoomBoss extends SizedPiece
                             (i == this.sizeX - 1 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == this.sizeZ - 1))
                     {
                         // Vertical bars
-                        this.setBlockState(worldIn, Blocks.iron_bars.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, boundingBox);
                     }
                     else
                     {

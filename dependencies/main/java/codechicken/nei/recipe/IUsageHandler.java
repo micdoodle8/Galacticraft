@@ -10,5 +10,5 @@ public interface IUsageHandler extends IRecipeHandler {
      * @param ingredients Objects representing the ingredients that matching recipes must contain.
      * @return An instance of {@link IUsageHandler} configured with a list of recipes that contain matching input
      */
-    public IUsageHandler getUsageHandler(String inputId, Object... ingredients);
+    IUsageHandler getUsageHandler(String inputId, Object... ingredients);
 }

@@ -10,11 +10,14 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,16 +55,22 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     @Override
     public void onUpdate()
     {
-        if (this.riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
-            this.riddenByEntity.onGround = false;
+            for (Entity entity : this.getPassengers())
+            {
+                entity.onGround = false;
+            }
         }
 
         super.onUpdate();
 
-        if (this.riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
-            this.riddenByEntity.onGround = false;
+            for (Entity entity : this.getPassengers())
+            {
+                entity.onGround = false;
+            }
         }
 
         if (!this.onGround)
@@ -107,26 +116,23 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
                 return false;
             }
 
-            if (this.riddenByEntity != null)
-            {
-                this.riddenByEntity.mountEntity(this);
-            }
+            this.removePassengers();
 
             return true;
         }
-        else if (this.riddenByEntity == null && this.groundHitCount >= 14 && var1 instanceof EntityPlayerMP)
+        else if (this.getPassengers().isEmpty() && this.groundHitCount >= 14 && player instanceof EntityPlayerMP)
         {
-            MarsUtil.openParachestInventory((EntityPlayerMP) var1, this);
+            MarsUtil.openParachestInventory((EntityPlayerMP) player, this);
             return true;
         }
-        else if (var1 instanceof EntityPlayerMP)
+        else if (player instanceof EntityPlayerMP)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            var1.mountEntity(null);
+            this.removePassengers();
             return true;
         }
         else
@@ -174,7 +180,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
             return false;
         }
 
-        return ((this.riddenByEntity != null && this.groundHitCount < 14) || !this.onGround);
+        return ((!this.getPassengers().isEmpty() && this.groundHitCount < 14) || !this.onGround);
     }
 
     @Override
@@ -191,7 +197,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
         return null;
     }

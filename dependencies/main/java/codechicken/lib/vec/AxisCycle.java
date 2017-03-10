@@ -1,6 +1,7 @@
 package codechicken.lib.vec;
 
 public class AxisCycle {
+
     public static Transformation[] cycles = new Transformation[] { new RedundantTransformation(), new VariableTransformation(new Matrix4(0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1)) {
         @Override
         public void apply(Vector3 vec) {

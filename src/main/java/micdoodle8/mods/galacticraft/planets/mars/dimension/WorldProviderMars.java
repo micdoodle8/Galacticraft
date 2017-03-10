@@ -7,13 +7,15 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,13 +56,13 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderMars.class;
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getBiomeProviderClass()
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
     {
         return BiomeProviderMars.class;
     }
@@ -200,7 +202,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
     {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
+        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
 //	@Override
@@ -323,12 +325,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public String getInternalNameSuffix()
-    {
-        return "_mars";
-    }
-
-    @Override
     public boolean shouldDisablePrecipitation()
     {
         return true;
@@ -338,5 +334,11 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public boolean shouldCorrodeArmor()
     {
         return false;
+    }
+
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCPlanetDimensions.MARS;
     }
 }

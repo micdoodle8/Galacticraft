@@ -3,12 +3,11 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.core.blocks.BlockT1TreasureChest;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.Random;
 
@@ -31,22 +30,14 @@ public class RoomChestVenus extends RoomEmptyVenus
             int chestX = this.sizeX / 2;
             int chestY = 1;
             int chestZ = this.sizeZ / 2;
-            this.setBlockState(worldIn, Blocks.chest.getDefaultState().withProperty(BlockT1TreasureChest.FACING, this.getDirection().getOpposite()), chestX, chestY, chestZ, boundingBox);
+            this.setBlockState(worldIn, Blocks.CHEST.getDefaultState().withProperty(BlockT1TreasureChest.FACING, this.getDirection().getOpposite()), chestX, chestY, chestZ, boundingBox);
 
             BlockPos blockpos = new BlockPos(this.getXWithOffset(chestX, chestZ), this.getYWithOffset(chestY), this.getZWithOffset(chestX, chestZ));
             TileEntityChest chest = (TileEntityChest) worldIn.getTileEntity(blockpos);
 
             if (chest != null)
             {
-                for (int i = 0; i < chest.getSizeInventory(); ++i)
-                {
-                    // Clear contents
-                    chest.setInventorySlotContents(i, null);
-                }
-
-                ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
-
-                WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), chest, info.getCount(rand));
+                chest.setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, rand.nextLong());
             }
 
             return true;

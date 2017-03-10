@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -24,8 +23,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -136,9 +137,9 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
                                     for (int y = this.getPos().getY() + 3; y < 256; y++)
                                     {
-                                        Block block = this.worldObj.getBlockState(new BlockPos(this.getPos().getX() + x, y, this.getPos().getZ() + z)).getBlock();
+                                        IBlockState state = this.worldObj.getBlockState(new BlockPos(this.getPos().getX() + x, y, this.getPos().getZ() + z));
 
-                                        if (block.isOpaqueCube())
+                                        if (state.getBlock().isOpaqueCube(state))
                                         {
                                             valid = false;
                                             break;
@@ -159,9 +160,9 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                                 for (double d = 0.0D; d < distance; d++)
                                 {
                                     BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
-                                    Block block = blockAt.getBlock(this.worldObj);
+                                    IBlockState state = blockAt.getBlockState(this.worldObj);
 
-                                    if (block.isOpaqueCube())
+                                    if (state.getBlock().isOpaqueCube(state))
                                     {
                                         valid = false;
                                         break;
@@ -258,11 +259,12 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         return (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
     }
 
-//    @Override TODO
-//    public boolean onActivated(EntityPlayer entityPlayer)
-//    {
+    @Override
+    public boolean onActivated(EntityPlayer entityPlayer)
+    {
+        return false; // TODO
 //        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-//    }
+    }
 
 //    @Override
 //    public boolean canUpdate()
@@ -314,7 +316,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                     {
                         BlockMulti.EnumBlockMultiType type = (BlockMulti.EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE);
                         if ((type == BlockMulti.EnumBlockMultiType.SOLAR_PANEL_0 || type == BlockMulti.EnumBlockMultiType.SOLAR_PANEL_1) &&
-                                ((x == 0 && z == 0) || (stateBelow.getBlock().isAir(this.worldObj, pos.down()))))
+                                ((x == 0 && z == 0) || (stateBelow.getBlock().isAir(this.worldObj.getBlockState(pos.down()), this.worldObj, pos.down()))))
                         {
                             if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                             {
@@ -382,6 +384,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
 	/*@Override

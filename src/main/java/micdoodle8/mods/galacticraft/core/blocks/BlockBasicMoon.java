@@ -33,7 +33,6 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ import java.util.Random;
 
 public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
+    public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basictypemoon", EnumBlockBasicMoon.class);
 
     public enum EnumBlockBasicMoon implements IStringSerializable
     {

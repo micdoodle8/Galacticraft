@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,8 +16,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -72,22 +71,22 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, BlockPos pos, EntityLivingBase playerIn)
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-        boolean ret = super.onBlockDestroyed(stack, worldIn, blockIn, pos, playerIn);
+        boolean ret = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
 
-        if (!(playerIn instanceof EntityPlayer))
+        if (!(entityLiving instanceof EntityPlayer))
         {
             return ret;
         }
 
-        EnumFacing facing = playerIn.getHorizontalFacing();
+        EnumFacing facing = entityLiving.getHorizontalFacing();
 
-        if (playerIn.rotationPitch < -45.0F)
+        if (entityLiving.rotationPitch < -45.0F)
         {
             facing = EnumFacing.UP;
         }
-        else if (playerIn.rotationPitch > 45.0F)
+        else if (entityLiving.rotationPitch > 45.0F)
         {
             facing = EnumFacing.DOWN;
         }
@@ -114,12 +113,12 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                 {
                     pos1 = pos.add(i, j, 0);
                 }
-                IBlockState state = worldIn.getBlockState(pos1);
+                IBlockState state1 = worldIn.getBlockState(pos1);
                 if (worldIn.getBlockState(pos).equals(state))
                 {
                     worldIn.setBlockState(pos1, Blocks.AIR.getDefaultState());
-                    state.getBlock().harvestBlock(worldIn, (EntityPlayer) playerIn, pos1, state, worldIn.getTileEntity(pos1));
-                    stack.damageItem(1, playerIn);
+                    state.getBlock().harvestBlock(worldIn, (EntityPlayer) entityLiving, pos1, state1, worldIn.getTileEntity(pos1), stack);
+                    stack.damageItem(1, entityLiving);
                 }
             }
         }

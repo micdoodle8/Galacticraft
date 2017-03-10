@@ -8,7 +8,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
@@ -24,9 +25,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -66,7 +67,20 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.launchPhase = EnumLaunchPhase.UNIGNITED.ordinal();
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
-        this.renderDistanceWeight = 5.0D;
+    }
+
+    @Override
+    public boolean isInRangeToRenderDist(double distance)
+    {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+
+        if (Double.isNaN(d0))
+        {
+            d0 = 1.0D;
+        }
+
+        d0 = d0 * 64.0D * 5.0;
+        return distance < d0 * d0;
     }
 
     public abstract int getMaxFuel();
@@ -128,10 +142,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
                 if (flag || this.shipDamage > 90 && !this.worldObj.isRemote)
                 {
-                    if (this.riddenByEntity != null)
-                    {
-                        this.riddenByEntity.mountEntity(null);
-                    }
+                    this.removePassengers();
 
 					if (flag)
 					{
@@ -218,10 +229,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 				}		
 			}
         }
-        
-        if (this.riddenByEntity != null)
+
+        for (Entity e : this.getPassengers())
         {
-            this.riddenByEntity.fallDistance = 0.0F;
+            e.fallDistance = 0.0F;
         }
 
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
@@ -250,16 +261,21 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        else
 	        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
 	        {
-	        	if (this.riddenByEntity instanceof EntityPlayerMP)
-	        	{
-	        		GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) this.riddenByEntity);
-	        		if (stats.usingPlanetSelectionGui)
-	        		{
-	        			this.kill();
-	        		}
-	        	}
-	        	else
-	        		this.kill();
+                for (Entity e : this.getPassengers())
+                {
+                    if (e instanceof EntityPlayerMP)
+                    {
+                        IStatsCapability stats = e.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                        if (stats.isUsingPlanetSelectionGui())
+                        {
+                            this.kill();
+                        }
+                    }
+                    else
+                    {
+                        this.kill();
+                    }
+                }
 	        }
         }
         
@@ -282,9 +298,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.timeUntilLaunch--;
         }
 
-        AxisAlignedBB box = null;
-
-        box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
 
         final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -294,7 +308,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             {
                 final Entity var17 = (Entity) var15.get(var52);
 
-                if (var17 != this.riddenByEntity)
+                if (this.getPassengers().contains(var17))
                 {
                     var17.applyEntityCollision(this);
                 }
@@ -401,9 +415,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     protected void failRocket()
     {
-        if (this.riddenByEntity != null)
+        for (Entity passenger : this.getPassengers())
         {
-            this.riddenByEntity.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
+            passenger.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
         }
 
         if (!ConfigManagerCore.disableSpaceshipGrief)

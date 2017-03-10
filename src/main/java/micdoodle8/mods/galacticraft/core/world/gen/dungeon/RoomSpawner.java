@@ -34,14 +34,14 @@ public class RoomSpawner extends RoomEmpty
                     {
                         if (random.nextFloat() < 0.05F)
                         {
-                            this.setBlockState(worldIn, Blocks.web.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.WEB.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                 }
             }
 
-            this.setBlockState(worldIn, Blocks.mob_spawner.getDefaultState(), 1, 0, 1, boundingBox);
-            this.setBlockState(worldIn, Blocks.mob_spawner.getDefaultState(), this.sizeX - 1, 0, this.sizeZ - 1, boundingBox);
+            this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), 1, 0, 1, boundingBox);
+            this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), this.sizeX - 1, 0, this.sizeZ - 1, boundingBox);
 
             BlockPos blockpos = new BlockPos(this.getXWithOffset(1, 1), this.getYWithOffset(0), this.getZWithOffset(1, 1));
             TileEntityMobSpawner spawner = (TileEntityMobSpawner) worldIn.getTileEntity(blockpos);

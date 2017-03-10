@@ -25,7 +25,7 @@ public class BiomeDecoratorMars extends BiomeDecoratorSpace
         this.deshGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 6, 2, true, MarsBlocks.marsBlock, 9);
         this.ironGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 8, 3, true, MarsBlocks.marsBlock, 9);
         this.dirtGen = new WorldGenMinableMeta(MarsBlocks.marsBlock, 32, 6, true, MarsBlocks.marsBlock, 9);
-        this.iceGen = new WorldGenMinableMeta(Blocks.ice, 18, 0, true, MarsBlocks.marsBlock, 6);
+        this.iceGen = new WorldGenMinableMeta(Blocks.ICE, 18, 0, true, MarsBlocks.marsBlock, 6);
     }
 
     @Override

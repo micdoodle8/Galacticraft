@@ -30,7 +30,7 @@ public class GenLayerVenusBiomes extends GenLayer
             for (int i = 0; i < width; ++i)
             {
                 initChunkSeed(x + i, z + k);
-                dest[i + k * width] = biomes[nextInt(biomes.length)].biomeID;
+                dest[i + k * width] = Biome.getIdForBiome(biomes[nextInt(biomes.length)]);
             }
         }
 

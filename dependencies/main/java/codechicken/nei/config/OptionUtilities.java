@@ -44,13 +44,13 @@ public class OptionUtilities extends OptionStringSet {
         x += 24;
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.enableRescaleNormal();
-        ItemStack sword = new ItemStack(Items.diamond_sword);
-        sword.addEnchantment(Enchantment.sharpness, 1);
+        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+        sword.addEnchantment(Enchantment.getEnchantmentByLocation("sharpness"), 1);
         GuiContainerManager.drawItem(x + 2, 2, sword);
         x += 24;
-        GuiContainerManager.drawItem(x + 2, 2, new ItemStack(Items.potionitem));
+        GuiContainerManager.drawItem(x + 2, 2, new ItemStack(Items.POTIONITEM));
         x += 24;
-        GuiContainerManager.drawItem(x + 2, 2, new ItemStack(Blocks.stone));
+        GuiContainerManager.drawItem(x + 2, 2, new ItemStack(Blocks.STONE));
         x += 24;
     }
 }

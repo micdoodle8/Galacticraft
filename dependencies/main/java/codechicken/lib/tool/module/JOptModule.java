@@ -8,6 +8,7 @@ import joptsimple.OptionSet;
 import java.io.IOException;
 
 public abstract class JOptModule implements ToolMain.Module {
+
     OptionParser parser = new OptionParser();
 
     @Override

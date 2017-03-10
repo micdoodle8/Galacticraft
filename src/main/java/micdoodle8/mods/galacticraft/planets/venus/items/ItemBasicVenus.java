@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.items.ItemDesc;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -13,6 +14,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -78,20 +82,20 @@ public class ItemBasicVenus extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
     {
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-            ItemStack gear = stats.extendedInventory.getStackInSlot(10);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            ItemStack gear = stats.getExtendedInventory().getStackInSlot(10);
 
             if (gear == null)
             {
-                stats.extendedInventory.setInventorySlotContents(10, itemStack.copy());
+                stats.getExtendedInventory().setInventorySlotContents(10, itemStack.copy());
                 itemStack.stackSize = 0;
             }
         }
-        return itemStack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
     }
 
     @Override

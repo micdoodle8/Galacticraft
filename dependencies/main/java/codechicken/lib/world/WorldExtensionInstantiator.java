@@ -4,6 +4,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public abstract class WorldExtensionInstantiator {
+
     public int instantiatorID;
 
     public abstract WorldExtension createWorldExtension(World world);

@@ -1,12 +1,15 @@
 package codechicken.nei;
 
 import codechicken.lib.inventory.InventoryUtils;
+import codechicken.lib.util.ServerUtils;
+import codechicken.nei.network.NEIServerPacketHandler;
+import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 
 import java.io.File;
 import java.util.HashSet;
@@ -28,7 +31,7 @@ public class PlayerSave {
 
     public PlayerSave(EntityPlayerMP player, File saveLocation) {
         this.player = player;
-        wasOp = MinecraftServer.getServer().getConfigurationManager().canSendCommands(player.getGameProfile());
+        wasOp = ServerUtils.mc().getPlayerList().canSendCommands(player.getGameProfile());
 
         saveFile = new File(saveLocation, player.getName() + ".dat");
         if (!saveFile.getParentFile().exists()) {
@@ -47,7 +50,7 @@ public class PlayerSave {
                 nbt = NEIServerUtils.readNBT(saveFile);
             }
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error loading player save: " + player, e);
+            LogHelper.errorError("Error loading player save: " + player, e);
         }
 
         loadCreativeInv();
@@ -74,7 +77,7 @@ public class PlayerSave {
             NEIServerUtils.writeNBT(nbt, saveFile);
             isDirty = false;
         } catch (Exception e) {
-            NEIClientConfig.logger.error("Error saving player: " + player, e);
+            LogHelper.errorError("Error saving player: " + player, e);
         }
     }
 
@@ -94,9 +97,9 @@ public class PlayerSave {
     }
 
     public void updateOpChange() {
-        boolean isOp = MinecraftServer.getServer().getConfigurationManager().canSendCommands(player.getGameProfile());
+        boolean isOp = ServerUtils.mc().getPlayerList().canSendCommands(player.getGameProfile());
         if (isOp != wasOp) {
-            NEISPH.sendHasServerSideTo(player);
+            NEIServerPacketHandler.sendHasServerSideTo(player);
             wasOp = isOp;
         }
     }
@@ -115,12 +118,12 @@ public class PlayerSave {
 
     public void enableAction(String name, boolean enabled) {
         getEnabledActions().setBoolean(name, enabled);
-        NEISPH.sendActionEnabled(player, name, enabled);
+        NEIServerPacketHandler.sendActionEnabled(player, name, enabled);
         setDirty();
     }
 
     public void onWorldReload() {
-        NEISPH.sendHasServerSideTo(player);
+        NEIServerPacketHandler.sendHasServerSideTo(player);
         magneticItems.clear();
     }
 }

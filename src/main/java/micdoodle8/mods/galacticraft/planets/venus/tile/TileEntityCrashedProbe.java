@@ -52,6 +52,7 @@ public class TileEntityCrashedProbe extends TileEntity implements IInventory
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

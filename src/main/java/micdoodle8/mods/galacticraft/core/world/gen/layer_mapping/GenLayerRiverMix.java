@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 
 public class GenLayerRiverMix extends GenLayerGCMap
@@ -37,21 +38,21 @@ public class GenLayerRiverMix extends GenLayerGCMap
 
         for (int i = 0; i < areaWidth * areaHeight; ++i)
         {
-            if (aint[i] != Biome.ocean.biomeID && aint[i] != Biome.deepOcean.biomeID)
+            if (aint[i] != Biome.getIdForBiome(Biomes.OCEAN) && aint[i] != Biome.getIdForBiome(Biomes.DEEP_OCEAN))
             {
-                if (aint1[i] == Biome.river.biomeID)
+                if (aint1[i] == Biome.getIdForBiome(Biomes.RIVER))
                 {
-                    if (aint[i] == Biome.icePlains.biomeID)
+                    if (aint[i] == Biome.getIdForBiome(Biomes.ICE_PLAINS))
                     {
-                        aint2[i] = Biome.frozenRiver.biomeID;
+                        aint2[i] = Biome.getIdForBiome(Biomes.FROZEN_RIVER);
                     }
-                    else if (aint[i] != Biome.mushroomIsland.biomeID && aint[i] != Biome.mushroomIslandShore.biomeID)
+                    else if (aint[i] != Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND) && aint[i] != Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND_SHORE))
                     {
                         aint2[i] = aint1[i] & 255;
                     }
                     else
                     {
-                        aint2[i] = Biome.mushroomIslandShore.biomeID;
+                        aint2[i] = Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND_SHORE);
                     }
                 }
                 else

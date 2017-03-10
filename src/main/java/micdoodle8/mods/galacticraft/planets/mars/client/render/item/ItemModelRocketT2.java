@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.resources.model.IBakedModel;
 import org.lwjgl.Sys;
 
 import javax.vecmath.Matrix4f;
@@ -52,7 +52,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
         {
             Vector3f trans = new Vector3f(0.5F, 1.2F, -1.2F);
             Matrix4f ret = new Matrix4f();
@@ -76,7 +76,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
         {
             Vector3f trans = new Vector3f(0.0F, -0.9F, -0.3F);
             Matrix4f ret = new Matrix4f();

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class LibDownloader {
+
     private static String[] libs = new String[] { "org/ow2/asm/asm-debug-all/5.0.3/asm-debug-all-5.0.3.jar", "com/google/guava/guava/14.0/guava-14.0.jar", "net/sf/jopt-simple/jopt-simple/4.5/jopt-simple-4.5.jar", "org/apache/logging/log4j/log4j-core/2.0-beta9/log4j-core-2.0-beta9.jar", "org/apache/logging/log4j/log4j-api/2.0-beta9/log4j-api-2.0-beta9.jar" };
     private static File libDir = new File("lib");
 
@@ -35,7 +36,7 @@ public class LibDownloader {
     private static void addPaths(String[] libs) {
         try {
             URLClassLoader cl = (URLClassLoader) ClassLoader.getSystemClassLoader();
-            Method m_addURL = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class });
+            Method m_addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
             m_addURL.setAccessible(true);
             for (String lib : libs) {
                 m_addURL.invoke(cl, new File(libDir, fileName(lib)).toURI().toURL());
@@ -76,7 +77,7 @@ public class LibDownloader {
         while ((bytesRead = is.read(smallBuffer)) >= 0) {
             downloadBuffer.put(smallBuffer, 0, bytesRead);
             fullLength += bytesRead;
-            System.out.format("\rDownloading lib %s %d%%", name, (int) (fullLength * 100 / sizeGuess));
+            System.out.format("\rDownloading lib %s %d%%", name, fullLength * 100 / sizeGuess);
         }
         System.out.format("\rDownloaded lib %s         \n", name);
         is.close();

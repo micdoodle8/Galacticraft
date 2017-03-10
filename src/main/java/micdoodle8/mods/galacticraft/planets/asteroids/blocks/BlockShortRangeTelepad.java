@@ -12,26 +12,24 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription, ISortableBlock
@@ -54,7 +52,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return -1;
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
@@ -75,19 +73,19 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         return new TileEntityShortRangeTelepad();
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
-    }
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+//    {
+//        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
+//    }
 
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
-    {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
-        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-    }
+//    @SuppressWarnings("rawtypes")
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    {
+//        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
+//        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
@@ -106,9 +104,9 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
                 {
                     if (!(x == 0 && y == 0 && z == 0))
                     {
-                        Block blockAt = worldIn.getBlockState(pos.add(x, y, z)).getBlock();
+                        IBlockState stateAt = worldIn.getBlockState(pos.add(x, y, z));
 
-                        if (!blockAt.getMaterial().isReplaceable())
+                        if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable())
                         {
                             validSpot = false;
                         }
@@ -141,7 +139,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return ((IMultiBlock) worldIn.getTileEntity(pos)).onActivated(playerIn);
     }

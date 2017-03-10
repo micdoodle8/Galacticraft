@@ -1,12 +1,12 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ITextComponent;
+import net.minecraft.util.text.ITextComponent;
 
 public class ContainerRecipe extends Container {
     private class RecipeInventory implements IInventory {
@@ -25,7 +25,7 @@ public class ContainerRecipe extends Container {
             if (i < 0 || i > inventoryItemStacks.size()) {
                 return null;
             }
-            return (ItemStack) inventoryItemStacks.get(i);
+            return inventoryItemStacks.get(i);
         }
 
         @Override
@@ -118,9 +118,15 @@ public class ContainerRecipe extends Container {
         ItemStack stack = recipeInventory.getStackInSlot(slot);
         if (stack != null) {
             if (button == 0) {
-                GuiCraftingRecipe.openRecipeGui("item", stack);
+                boolean opened = GuiCraftingRecipe.openRecipeGui("item", stack);
+                if (!opened) {
+//                    JEIIntegrationManager.openRecipeGui(stack);
+                }
             } else if (button == 1) {
-                GuiUsageRecipe.openRecipeGui("item", stack);
+                boolean opened = GuiUsageRecipe.openRecipeGui("item", stack);
+                if (!opened) {
+//                    JEIIntegrationManager.openUsageGui(stack);
+                }
             }
         }
         return null;
@@ -139,7 +145,7 @@ public class ContainerRecipe extends Container {
 
     public Slot getSlotWithStack(PositionedStack stack, int recipex, int recipey) {
         for (int i = 0; i < inventorySlots.size(); i++) {
-            Slot slot = (Slot) inventorySlots.get(i);
+            Slot slot = inventorySlots.get(i);
             if (slot.xDisplayPosition == (stack.relx + recipex) && slot.yDisplayPosition == (stack.rely + recipey)) {
                 return slot;
             }

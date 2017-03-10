@@ -8,12 +8,20 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 import static codechicken.lib.asm.ASMHelper.*;
 
+//TODO Java doc all the internal class constructors.
 public class ModularASMTransformer {
+
+    /**
+     * Contains a list of transformers for a given class.
+     * Also contains some basic logic for doing the actual transform.
+     */
     public static class ClassNodeTransformerList {
+
         List<ClassNodeTransformer> transformers = new LinkedList<ClassNodeTransformer>();
         HashSet<ObfMapping> methodsToSort = new HashSet<ObfMapping>();
 
@@ -39,18 +47,29 @@ public class ModularASMTransformer {
                 }
 
                 bytes = createBytes(cnode, writeFlags);
-                if (config.getTag("dump_asm").getBooleanValue(true)) {
+                if (config.getTag("dump_asm_raw").getBooleanValue(false)) {
+                    File file = new File("asm/ccl_modular/" + cnode.name.replace('/', '#') + ".class");
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(bytes);
+                    fos.flush();
+                    fos.close();
+
+                } else if (config.getTag("dump_asm").getBooleanValue(true)) {
                     dump(bytes, new File("asm/ccl_modular/" + cnode.name.replace('/', '#') + ".txt"), false, false);
                 }
                 return bytes;
-            } catch (RuntimeException e) {
+            } catch (Exception e) {
                 dump(bytes, new File("asm/ccl_modular/" + cnode.name.replace('/', '#') + ".txt"), false, false);
-                throw e;
+                throw new RuntimeException(e);
             }
         }
     }
 
+    /**
+     * Parent to all transformer's.
+     */
     public static abstract class ClassNodeTransformer {
+
         public int writeFlags;
 
         public ClassNodeTransformer(int writeFlags) {
@@ -69,7 +88,11 @@ public class ModularASMTransformer {
         }
     }
 
+    /**
+     * Base Method transformer.
+     */
     public static abstract class MethodTransformer extends ClassNodeTransformer {
+
         public final ObfMapping method;
 
         public MethodTransformer(ObfMapping method) {
@@ -98,7 +121,11 @@ public class ModularASMTransformer {
         public abstract void transform(MethodNode mv);
     }
 
+    /**
+     * Writes a method containing the provided InsnList with the ObfMapping as the method name and desc.
+     */
     public static class MethodWriter extends ClassNodeTransformer {
+
         public final int access;
         public final ObfMapping method;
         public final String[] exceptions;
@@ -161,7 +188,12 @@ public class ModularASMTransformer {
         }
     }
 
+    /**
+     * Injects a call before or after the needle.
+     * If needle is null it will inject at the start or end of the method.
+     */
     public static class MethodInjector extends MethodTransformer {
+
         public ASMBlock needle;
         public ASMBlock injection;
         public boolean before;
@@ -214,7 +246,12 @@ public class ModularASMTransformer {
         }
     }
 
+    /**
+     * Replaces a specific needle with a specific replacement.
+     * Can replace more than one needle.
+     */
     public static class MethodReplacer extends MethodTransformer {
+
         public ASMBlock needle;
         public ASMBlock replacement;
 
@@ -243,7 +280,12 @@ public class ModularASMTransformer {
         }
     }
 
+    /**
+     * Writes a field to a class.
+     * ObfMapping contains the class to put the field.
+     */
     public static class FieldWriter extends ClassNodeTransformer {
+
         public final ObfMapping field;
         public final int access;
         public final Object value;
@@ -271,6 +313,11 @@ public class ModularASMTransformer {
 
     public HashMap<String, ClassNodeTransformerList> transformers = new HashMap<String, ClassNodeTransformerList>();
 
+    /**
+     * Adds a ClassNodeTransformer to this transformer.
+     *
+     * @param t Transformer to add.
+     */
     public void add(ClassNodeTransformer t) {
         ClassNodeTransformerList list = transformers.get(t.className());
         if (list == null) {
@@ -279,6 +326,14 @@ public class ModularASMTransformer {
         list.add(t);
     }
 
+    /**
+     * Runs the transform.
+     *
+     * @param name  name of the class being loaded.
+     * @param bytes Class bytes.
+     * @return Returns null if the class passed is null, returns original class if there are no transformers for a given class.
+     * Otherwise returns transformed class.
+     */
     public byte[] transform(String name, byte[] bytes) {
         if (bytes == null) {
             return null;

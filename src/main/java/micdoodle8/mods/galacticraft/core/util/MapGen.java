@@ -5,20 +5,17 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.GenLayerGCMap;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeCache;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
-
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -28,7 +25,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("unused")
-public class MapGen extends WorldChunkManager implements Runnable
+public class MapGen extends BiomeProvider implements Runnable
 {
     public boolean mapNeedsCalculating = false;
     public AtomicBoolean finishedCalculating = new AtomicBoolean();
@@ -46,7 +43,6 @@ public class MapGen extends WorldChunkManager implements Runnable
     private int biomeMapCz;
     private int biomeMapFactor;
 
-    private Biome[] biomeList;
     private BiomeCache biomeCache;
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;
@@ -99,7 +95,6 @@ public class MapGen extends WorldChunkManager implements Runnable
         this.ix = 0;
         this.iz = 0;
         long seed = world.getSeed();
-        this.biomeList = Biome.getBiomeGenArray();
         this.biomeCache = new BiomeCache(this);
         this.worldType = world.getWorldInfo().getTerrainType();
         GenLayerGCMap[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
@@ -163,7 +158,7 @@ public class MapGen extends WorldChunkManager implements Runnable
     {
         try
         {
-            for (WorldServer server : MinecraftServer.getServer().worldServers)
+            for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
             {
                 GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimension(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimension());
             }
@@ -418,7 +413,7 @@ public class MapGen extends WorldChunkManager implements Runnable
                 float f = 0.0F;
                 float f1 = 0.0F;
                 float f2 = 0.0F;
-                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].minHeight;
+                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].getBaseHeight();
 
                 for (int x = -2; x <= 2; ++x)
                 {
@@ -426,8 +421,8 @@ public class MapGen extends WorldChunkManager implements Runnable
                     for (int z = -2; z <= 2; ++z)
                     {
                         Biome biomegenbase1 = biomesGridHeights[baseIndex + z * 10];
-                        float f3 = biomegenbase1.minHeight;
-                        float f4 = biomegenbase1.maxHeight;
+                        float f3 = biomegenbase1.getBaseHeight();
+                        float f4 = biomegenbase1.getBaseHeight();
 
                         if (amplified && f3 > 0.0F)
                         {
@@ -437,7 +432,7 @@ public class MapGen extends WorldChunkManager implements Runnable
 
                         float f5 = parabolicField[x + 12 + z * 5] / (f3 + 2.0F);
 
-                        if (biomegenbase1.minHeight > theMinHeight)
+                        if (biomegenbase1.getBaseHeight() > theMinHeight)
                         {
                             f5 /= 2.0F;
                         }
@@ -519,21 +514,17 @@ public class MapGen extends WorldChunkManager implements Runnable
         int[] aint = this.genBiomes.getInts(x, z, width, height);
 
         int size = width * height;
-        if (biomes == null || biomes.length < size)
+        if (biomes.length < size)
         {
             biomes = new Biome[size];
         }
         for (int i = 0; i < size; ++i)
         {
         	int biomeId = aint[i];
-        	Biome biomegenbase = null;
-        	if (biomeId >= 0 && biomeId <= biomeList.length)
-        	{
-        		biomegenbase = biomeList[biomeId];
-        	}
+        	Biome biomegenbase = Biome.getBiome(biomeId, Biomes.DEFAULT);
 //        	else
 //        		System.err.println("MapGen: Biome ID is out of bounds: " + biomeId + ", defaulting to 0 (Ocean)");
-        	biomes[i] = biomegenbase == null ? Biome.ocean : biomegenbase;
+        	biomes[i] = biomegenbase == null ? Biomes.OCEAN : biomegenbase;
         }
 
         return biomes;

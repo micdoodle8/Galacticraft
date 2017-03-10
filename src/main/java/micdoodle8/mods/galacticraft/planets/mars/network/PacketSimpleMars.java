@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.network;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketBase;
@@ -176,7 +177,7 @@ public class PacketSimpleMars extends PacketBase
     public void handleServerSide(EntityPlayer player)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        GCPlayerStats stats = GCPlayerStats.get(playerBase);
+        IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
         switch (this.type)
         {
@@ -241,7 +242,7 @@ public class PacketSimpleMars extends PacketBase
             }
             break;
         case S_WAKE_PLAYER:
-            BlockPos c = playerBase.playerLocation;
+            BlockPos c = playerBase.bedLocation;
 
             if (c != null)
             {

@@ -404,6 +404,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         nbt.setInteger("connectionsLeft", this.connectionsLeft);
         nbt.setInteger("connectionsRight", this.connectionsRight);
         nbt.setBoolean("multiscreen", this.isMultiscreen);
+        return nbt;
     }
 
     public void checkScreenSize()

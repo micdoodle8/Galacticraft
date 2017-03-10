@@ -1,45 +1,44 @@
 package codechicken.lib.data;
 
-import codechicken.lib.vec.BlockCoord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface MCDataOutput {
-    public MCDataOutput writeLong(long l);
 
-    public MCDataOutput writeInt(int i);
+    MCDataOutput writeLong(long l);
 
-    public MCDataOutput writeShort(int s);
+    MCDataOutput writeInt(int i);
 
-    public MCDataOutput writeByte(int b);
+    MCDataOutput writeShort(int s);
 
-    public MCDataOutput writeDouble(double d);
+    MCDataOutput writeByte(int b);
 
-    public MCDataOutput writeFloat(float f);
+    MCDataOutput writeDouble(double d);
 
-    public MCDataOutput writeBoolean(boolean b);
+    MCDataOutput writeFloat(float f);
 
-    public MCDataOutput writeChar(char c);
+    MCDataOutput writeBoolean(boolean b);
 
-    public MCDataOutput writeVarInt(int i);
+    MCDataOutput writeChar(char c);
 
-    public MCDataOutput writeVarShort(int s);
+    MCDataOutput writeVarInt(int i);
 
-    public MCDataOutput writeArray(byte[] array);
+    MCDataOutput writeVarShort(int s);
 
-    public MCDataOutput writeString(String s);
+    MCDataOutput writeArray(byte[] array);
 
-    public MCDataOutput writeCoord(int x, int y, int z);
+    MCDataOutput writeString(String s);
 
-    public MCDataOutput writeCoord(BlockCoord coord);
+    MCDataOutput writePos(BlockPos pos);
 
-    public MCDataOutput writeNBTTagCompound(NBTTagCompound tag);
+    MCDataOutput writeNBTTagCompound(NBTTagCompound tag);
 
     /**
      * Supports large stacks by writing stackSize as a varInt
      */
-    public MCDataOutput writeItemStack(ItemStack stack);
+    MCDataOutput writeItemStack(ItemStack stack);
 
-    public MCDataOutput writeFluidStack(FluidStack liquid);
+    MCDataOutput writeFluidStack(FluidStack liquid);
 }

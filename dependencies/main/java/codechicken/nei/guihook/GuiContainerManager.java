@@ -6,12 +6,13 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -30,7 +31,7 @@ import static codechicken.lib.gui.GuiDraw.*;
 public class GuiContainerManager {
     public GuiContainer window;
 
-    public static RenderItem drawItems = Minecraft.getMinecraft().getRenderItem();
+    //public static RenderItem drawItems = Minecraft.getMinecraft().getRenderItem();
     public static final LinkedList<IContainerTooltipHandler> tooltipHandlers = new LinkedList<IContainerTooltipHandler>();
     public static final LinkedList<IContainerInputHandler> inputHandlers = new LinkedList<IContainerInputHandler>();
     public static final LinkedList<IContainerDrawHandler> drawHandlers = new LinkedList<IContainerDrawHandler>();
@@ -49,6 +50,10 @@ public class GuiContainerManager {
     public static GuiContainerManager getManager(GuiContainer gui) {
         //gets GuiContainer.manager using ASM
         return null;
+    }
+
+    public static RenderItem getRenderItem() {
+        return Minecraft.getMinecraft().getRenderItem();
     }
 
     /**
@@ -188,6 +193,7 @@ public class GuiContainerManager {
 
     public static void drawItem(int i, int j, ItemStack itemstack, FontRenderer fontRenderer) {
         enable3DRender();
+        RenderItem drawItems = getRenderItem();
         float zLevel = drawItems.zLevel += 100F;
         try {
             drawItems.renderItemAndEffectIntoGUI(itemstack, i, j);
@@ -196,7 +202,7 @@ public class GuiContainerManager {
             if (!checkMatrixStack()) {
                 throw new IllegalStateException("Modelview matrix stack too deep");
             }
-            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
+            if (Tessellator.getInstance().getBuffer().isDrawing) {
                 throw new IllegalStateException("Still drawing");
             }
         } catch (Exception e) {
@@ -210,12 +216,12 @@ public class GuiContainerManager {
             }
 
             restoreMatrixStack();
-            if (Tessellator.getInstance().getWorldRenderer().isDrawing) {
+            if (Tessellator.getInstance().getBuffer().isDrawing) {
                 Tessellator.getInstance().draw();
             }
 
             drawItems.zLevel = zLevel;
-            drawItems.renderItemIntoGUI(new ItemStack(Blocks.fire), i, j);
+            drawItems.renderItemIntoGUI(new ItemStack(Blocks.STONE), i, j);
         }
 
         enable2DRender();
@@ -430,6 +436,7 @@ public class GuiContainerManager {
 
     public void renderToolTips(int mousex, int mousey) {
         List<String> tooltip = new LinkedList<String>();
+        ItemStack stack = null;
 
         for (IContainerTooltipHandler handler : instanceTooltipHandlers) {
             tooltip = handler.handleTooltip(window, mousex, mousey, tooltip);
@@ -437,7 +444,7 @@ public class GuiContainerManager {
 
         if (tooltip.isEmpty() && shouldShowTooltip(window))//mouseover tip, not holding an item
         {
-            ItemStack stack = getStackMouseOver(window);
+            stack = getStackMouseOver(window);
             if (stack != null) {
                 tooltip = itemDisplayNameMultiline(stack, window, true);
             }
@@ -450,7 +457,7 @@ public class GuiContainerManager {
         if (tooltip.size() > 0) {
             tooltip.set(0, tooltip.get(0) + GuiDraw.TOOLTIP_LINESPACE);//add space after 'title'
         }
-        drawMultilineTip(mousex + 12, mousey - 12, tooltip);
+        drawMultilineTip(stack, mousex + 12, mousey - 12, tooltip);
     }
 
     public static boolean shouldShowTooltip(GuiContainer window) {
@@ -489,18 +496,18 @@ public class GuiContainerManager {
         return false;
     }
 
-    public void handleMouseClick(Slot slot, int slotIndex, int button, int modifier) {
+    public void handleMouseClick(Slot slot, int slotIndex, int button, ClickType clickType) {
         for (IContainerSlotClickHandler handler : slotClickHandlers) {
-            handler.beforeSlotClick(window, slotIndex, button, slot, modifier);
+            handler.beforeSlotClick(window, slotIndex, button, slot, clickType);
         }
 
         boolean eventHandled = false;
         for (IContainerSlotClickHandler handler : slotClickHandlers) {
-            eventHandled = handler.handleSlotClick(window, slotIndex, button, slot, modifier, eventHandled);
+            eventHandled = handler.handleSlotClick(window, slotIndex, button, slot, clickType, eventHandled);
         }
 
         for (IContainerSlotClickHandler handler : slotClickHandlers) {
-            handler.afterSlotClick(window, slotIndex, button, slot, modifier);
+            handler.afterSlotClick(window, slotIndex, button, slot, clickType);
         }
     }
 
@@ -535,6 +542,7 @@ public class GuiContainerManager {
         if (window instanceof IGuiSlotDraw) {
             ((IGuiSlotDraw) window).drawSlotItem(slot, stack, x, y, quantity);
         } else {
+            RenderItem drawItems = getRenderItem();
             drawItems.renderItemAndEffectIntoGUI(stack, x, y);
             drawItems.renderItemOverlayIntoGUI(fontRenderer, stack, x, y, quantity);
         }
@@ -543,16 +551,18 @@ public class GuiContainerManager {
     /**
      * Implementation for handleMouseClick
      */
-    public void handleSlotClick(int slotIndex, int button, int modifiers) {
+    public void handleSlotClick(int slotIndex, int button, ClickType clickType) {
         if (slotIndex == -1) {
             return;
         }
 
         if (window instanceof IGuiClientSide)//send the calls directly to the container bypassing the MPController window send
         {
-            window.mc.thePlayer.openContainer.slotClick(slotIndex, button, modifiers, window.mc.thePlayer);
+            //slotClick
+            window.mc.thePlayer.openContainer.slotClick(slotIndex, button, clickType, window.mc.thePlayer);
         } else {
-            window.mc.playerController.windowClick(window.inventorySlots.windowId, slotIndex, button, modifiers, window.mc.thePlayer);
+            //windowClick
+            window.mc.playerController.windowClick(window.inventorySlots.windowId, slotIndex, button, clickType, window.mc.thePlayer);
         }
     }
 

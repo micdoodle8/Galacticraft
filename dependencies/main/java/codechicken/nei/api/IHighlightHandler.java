@@ -2,13 +2,14 @@ package codechicken.nei.api;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.List;
 
+@Deprecated
 public interface IHighlightHandler {
-    public ItemStack identifyHighlight(World world, EntityPlayer player, MovingObjectPosition mop);
+    ItemStack identifyHighlight(World world, EntityPlayer player, RayTraceResult rayTraceResult);
 
-    public List<String> handleTextData(ItemStack itemStack, World world, EntityPlayer player, MovingObjectPosition mop, List<String> currenttip, ItemInfo.Layout layout);
+    List<String> handleTextData(ItemStack itemStack, World world, EntityPlayer player, RayTraceResult rayTraceResult, List<String> currentTip, ItemInfo.Layout layout);
 }

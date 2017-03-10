@@ -133,9 +133,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
 
         final NBTTagList list = new NBTTagList();
 
@@ -150,7 +150,8 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
             }
         }
 
-        par1NBTTagCompound.setTag("Items", list);
+        nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

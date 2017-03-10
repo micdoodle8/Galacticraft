@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class StripClassLoader extends URLClassLoader {
+
     public StripClassLoader() {
         super(new URL[0], StripClassLoader.class.getClassLoader());
     }

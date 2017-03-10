@@ -292,6 +292,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             mpList.appendTag(this.targetPoints.get(j).writeToNBT(new NBTTagCompound()));
         }
         nbt.setTag("TargetPoints", mpList);
+        return nbt;
     }
 
     @Override
@@ -477,7 +478,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         if (this.isMaster)
         {
-            ItemStack holding = entityPlayer.getCurrentEquippedItem();
+            ItemStack holding = entityPlayer.getActiveItemStack();
             if (holding != null && holding.getItem() == AsteroidsItems.astroMiner)
             {
                 return false;

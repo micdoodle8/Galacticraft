@@ -2,17 +2,17 @@ package codechicken.nei.config;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.vec.Rectangle4i;
-import codechicken.nei.ItemPanel;
-import codechicken.nei.NEIClientUtils;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.widget.ItemPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.TextFormatting;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +36,7 @@ public class ItemPanelDumper extends DataDumper {
     public Iterable<String[]> dump(int mode) {
         LinkedList<String[]> list = new LinkedList<String[]>();
         for (ItemStack stack : ItemPanel.items) {
-            list.add(new String[] { Item.itemRegistry.getNameForObject(stack.getItem()).toString(), Integer.toString(Item.getIdFromItem(stack.getItem())), Integer.toString(InventoryUtils.actualDamage(stack)), stack.getTagCompound() == null ? "false" : "true", TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack)) });
+            list.add(new String[] { Item.REGISTRY.getNameForObject(stack.getItem()).toString(), Integer.toString(Item.getIdFromItem(stack.getItem())), Integer.toString(InventoryUtils.actualDamage(stack)), stack.getTagCompound() == null ? "false" : "true", TextFormatting.getTextWithoutFormattingCodes(GuiContainerManager.itemDisplayNameShort(stack)) });
         }
 
         return list;
@@ -93,8 +93,8 @@ public class ItemPanelDumper extends DataDumper {
     }
 
     @Override
-    public ChatComponentTranslation dumpMessage(File file) {
-        return new ChatComponentTranslation(namespaced(name + ".dumped"), "dumps/" + file.getName());
+    public TextComponentTranslation dumpMessage(File file) {
+        return new TextComponentTranslation(namespaced(name + ".dumped"), "dumps/" + file.getName());
     }
 
     @Override

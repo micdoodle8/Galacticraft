@@ -157,8 +157,8 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
 
     public enum BlockType implements IStringSerializable
     {
-        TIN_SLAB_1(0, "tin_slab"),
-        TIN_SLAB_2(1, "tin_slab"),
+        TIN_SLAB_1(0, "tin_slab_1"),
+        TIN_SLAB_2(1, "tin_slab_2"),
         MOON_STONE_SLAB(2, "moon_slab"),
         MOON_DUNGEON_BRICK_SLAB(3, "moon_bricks_slab"),
         MARS_COBBLESTONE_SLAB(4, "mars_slab"),
@@ -183,7 +183,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
         @Override
         public String getName()
         {
-            return this.name();
+            return this.langName;
         }
 
         public int getMetadata()

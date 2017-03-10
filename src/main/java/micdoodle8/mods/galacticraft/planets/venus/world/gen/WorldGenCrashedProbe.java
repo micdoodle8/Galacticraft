@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.ChestGenHooks;
 
 import java.util.Random;
 
@@ -42,7 +39,7 @@ public class WorldGenCrashedProbe extends WorldGenerator
                 for (int poolZ = -radius; poolZ <= radius; poolZ++)
                 {
                     BlockPos pos = new BlockPos(poolX + position.getX(), poolY + position.getY(), poolZ + position.getZ());
-                    if (poolY > 15 && !worldIn.getBlockState(pos).getBlock().isAir(worldIn, pos))
+                    if (poolY > 15 && !worldIn.getBlockState(pos).getBlock().isAir(worldIn.getBlockState(pos), worldIn, pos))
                     {
                         return false;
                     }
@@ -83,9 +80,10 @@ public class WorldGenCrashedProbe extends WorldGenerator
                 probe.setInventorySlotContents(i, null);
             }
 
-            ChestGenHooks info = ChestGenHooks.getInfo(BlockCrashedProbe.CRASHED_PROBE);
-
-            WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), probe, info.getCount(rand));
+            // TODO
+//            ChestGenHooks info = ChestGenHooks.getInfo(BlockCrashedProbe.CRASHED_PROBE);
+//
+//            WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), probe, info.getCount(rand));
         }
 
         return true;

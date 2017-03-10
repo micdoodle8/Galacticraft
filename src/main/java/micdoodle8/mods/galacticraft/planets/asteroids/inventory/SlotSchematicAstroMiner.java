@@ -76,7 +76,7 @@ public class SlotSchematicAstroMiner extends Slot
         //Chest
         case 7:
         case 8:
-            return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.chest);
+            return par1ItemStack.getItem() == Item.getItemFromBlock(Blocks.CHEST);
         //Laser: beam core
         case 13:
             return par1ItemStack.getItem() == AsteroidsItems.basicItem && par1ItemStack.getItemDamage() == 8;

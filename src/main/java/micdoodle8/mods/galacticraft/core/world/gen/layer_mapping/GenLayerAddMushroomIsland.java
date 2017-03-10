@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.layer_mapping;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 
 public class GenLayerAddMushroomIsland extends GenLayerGCMap
@@ -36,7 +37,7 @@ public class GenLayerAddMushroomIsland extends GenLayerGCMap
 
                 if (k2 == 0 && k1 == 0 && l1 == 0 && i2 == 0 && j2 == 0 && this.nextInt(100) == 0)
                 {
-                    aint1[j1 + i1 * areaWidth] = Biome.mushroomIsland.biomeID;
+                    aint1[j1 + i1 * areaWidth] = Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND);
                 }
                 else
                 {

@@ -8,6 +8,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Quat implements Copyable<Quat> {
+
     public double x;
     public double y;
     public double z;

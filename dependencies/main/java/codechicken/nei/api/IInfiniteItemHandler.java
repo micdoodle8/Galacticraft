@@ -12,7 +12,7 @@ public interface IInfiniteItemHandler {
 
     boolean isItemInfinite(ItemStack stack);
 
-    public void replenishInfiniteStack(InventoryPlayer inventory, int slotNo);
+    void replenishInfiniteStack(InventoryPlayer inventory, int slotNo);
 
-    public ItemStack getInfiniteItem(ItemStack typeStack);
+    ItemStack getInfiniteItem(ItemStack typeStack);
 }

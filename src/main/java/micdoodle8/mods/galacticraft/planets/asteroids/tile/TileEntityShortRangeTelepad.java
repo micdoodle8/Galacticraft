@@ -26,7 +26,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -152,7 +157,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     this.worldObj.updateEntityWithOptionalForce(e, true);
                                     if (e instanceof EntityPlayerMP)
                                     {
-                                        ((EntityPlayerMP) e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
+                                        ((EntityPlayerMP) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
                                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, this.worldObj.provider.getDimension(), new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimension());
                                 }
@@ -257,6 +262,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         nbt.setInteger("TargetAddress", this.targetAddress);
         nbt.setInteger("Address", this.address);
         nbt.setString("Owner", this.owner);
+        return nbt;
     }
 
     @Override
@@ -390,7 +396,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public ITextComponent getDisplayName()
     {
-        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

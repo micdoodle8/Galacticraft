@@ -179,45 +179,45 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), input));
 
         HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
         input2.put(20, null);
         input2.put(21, null);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, null);
-        input2.put(20, new ItemStack(Blocks.chest));
+        input2.put(20, new ItemStack(Blocks.CHEST));
         input2.put(21, null);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, null);
         input2.put(20, null);
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
-        input2.put(20, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
+        input2.put(20, new ItemStack(Blocks.CHEST));
         input2.put(21, null);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
         input2.put(20, null);
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, null);
-        input2.put(20, new ItemStack(Blocks.chest));
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(20, new ItemStack(Blocks.CHEST));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
-        input2.put(20, new ItemStack(Blocks.chest));
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
+        input2.put(20, new ItemStack(Blocks.CHEST));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
 
         input = new HashMap<Integer, ItemStack>();
@@ -231,8 +231,8 @@ public class AsteroidsModule implements IPlanetsModule
         input.put(10, new ItemStack(AsteroidsItems.orionDrive));
         input.put(12, new ItemStack(AsteroidsItems.orionDrive));
         input.put(6, new ItemStack(GCItems.basicItem, 1, 14));
-        input.put(7, new ItemStack(Blocks.chest));
-        input.put(8, new ItemStack(Blocks.chest));
+        input.put(7, new ItemStack(Blocks.CHEST));
+        input.put(8, new ItemStack(Blocks.CHEST));
         input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 8));
         input.put(14, new ItemStack(GCItems.flagPole));
         GalacticraftRegistry.addAstroMinerRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.astroMiner, 1, 0), input));

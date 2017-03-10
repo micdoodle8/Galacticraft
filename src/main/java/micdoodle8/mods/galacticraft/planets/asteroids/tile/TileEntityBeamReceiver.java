@@ -364,5 +364,6 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     {
         super.writeToNBT(nbt);
         nbt.setInteger("FacingSide", this.facing.ordinal());
+        return nbt;
     }
 }

@@ -15,9 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -94,11 +94,12 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
         this.currentAngle += difference / 20.0F;
     }
 
-//    @Override TODO
-//    public boolean onActivated(EntityPlayer entityPlayer)
-//    {
+    @Override
+    public boolean onActivated(EntityPlayer entityPlayer)
+    {
+        return false; // TODO
 //        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(this.getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-//    }
+    }
 
     @Override
     public void onCreate(World world, BlockPos placedPosition)
@@ -204,6 +205,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

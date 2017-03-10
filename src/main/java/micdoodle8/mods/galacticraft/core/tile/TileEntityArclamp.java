@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -17,10 +18,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -132,7 +133,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
 
             if (this.worldObj.rand.nextInt(20) == 0)
             {
-                List<Entity> moblist = this.worldObj.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.mobSelector);
+                List<Entity> moblist = this.worldObj.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.MOB_SELECTOR);
 
                 if (!moblist.isEmpty())
                 {
@@ -226,8 +227,8 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             if (i != sideskip1 && i != sideskip2 && i != (sideskip1 ^ 1) && i != (sideskip2 ^ 1))
             {
                 BlockVec3 onEitherSide = thisvec.newVecSide(i);
-                Block b = onEitherSide.getBlockIDsafe_noChunkLoad(world);
-                if (b != null && b.getLightOpacity() < 15)
+                IBlockState state = onEitherSide.getBlockStateSafe_noChunkLoad(world);
+                if (state.getBlock().getLightOpacity(state) < 15)
                 {
                     currentLayer.add(onEitherSide);
                 }
@@ -237,8 +238,8 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         for (int i = 0; i < 5; i++)
         {
             inFront = inFront.newVecSide(this.facingSide).newVecSide(sideskip1 ^ 1);
-            Block b = inFront.getBlockIDsafe_noChunkLoad(world);
-            if (b != null && b.getLightOpacity() < 15)
+            IBlockState state = inFront.getBlockStateSafe_noChunkLoad(world);
+            if (state.getBlock().getLightOpacity(state) < 15)
             {
                 currentLayer.add(inFront);
             }
@@ -266,8 +267,8 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                         {
                             checked.add(sideVec);
 
-                            Block b = sideVec.getBlockIDsafe_noChunkLoad(world);
-                            if (b instanceof BlockAir)
+                            IBlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
+                            if (state.getBlock() instanceof BlockAir)
                             {
                                 if (side != sideskip1 && side != sideskip2)
                                 {
@@ -277,7 +278,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                             else
                             {
                                 allAir = false;
-                                if (b != null && b.getLightOpacity(world, sideVecPos) == 0)
+                                if (state.getBlock().getLightOpacity(state, world, sideVecPos) == 0)
                                 {
                                     if (side != sideskip1 && side != sideskip2)
                                     {
@@ -293,16 +294,16 @@ public class TileEntityArclamp extends TileEntity implements ITickable
 
                 if (!allAir)
                 {
-                    Block id = vec.getBlockIDsafe_noChunkLoad(world);
-                    if (id.isAir(world, vec.toBlockPos()))
+                    IBlockState state = vec.getBlockStateSafe_noChunkLoad(world);
+                    if (state.getBlock().isAir(state, world, vec.toBlockPos()))
                     {
-                        if (Blocks.AIR == id)
+                        if (Blocks.AIR == state.getBlock())
                         {
                             world.setBlockState(vec.toBlockPos(), brightAir.getDefaultState(), 2);
                             this.airToRestore.add(vec);
                             this.markDirty();
                         }
-                        else if (id == breatheableAirID)
+                        else if (state.getBlock() == breatheableAirID)
                         {
                             world.setBlockState(vec.toBlockPos(), brightBreatheableAir.getDefaultState(), 2);
                             this.airToRestore.add(vec);
@@ -359,6 +360,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             airBlocks.appendTag(tag);
         }
         nbt.setTag("AirBlocks", airBlocks);
+        return nbt;
     }
 
     public void facingChanged()
@@ -382,12 +384,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
         for (BlockVec3 vec : this.airToRestore)
         {
-            Block b = vec.getBlock(this.worldObj);
-            if (b == brightAir)
+            IBlockState b = vec.getBlockState(this.worldObj);
+            if (b.getBlock() == brightAir)
             {
                 this.worldObj.setBlockState(vec.toBlockPos(), Blocks.AIR.getDefaultState(), 2);
             }
-            else if (b == brightBreatheableAir)
+            else if (b.getBlock() == brightBreatheableAir)
             {
                 this.worldObj.setBlockState(vec.toBlockPos(), GCBlocks.breatheableAir.getDefaultState(), 2);
                 //No block update - not necessary for changing air to air, also must not trigger a sealer edge check

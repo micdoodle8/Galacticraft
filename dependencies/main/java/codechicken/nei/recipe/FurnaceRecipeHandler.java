@@ -1,9 +1,9 @@
 package codechicken.nei.recipe;
 
 import codechicken.nei.ItemList;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -137,11 +137,11 @@ public class FurnaceRecipeHandler extends TemplateRecipeHandler {
 
     private static Set<Item> excludedFuels() {
         Set<Item> efuels = new HashSet<Item>();
-        efuels.add(Item.getItemFromBlock(Blocks.brown_mushroom));
-        efuels.add(Item.getItemFromBlock(Blocks.red_mushroom));
-        efuels.add(Item.getItemFromBlock(Blocks.standing_sign));
-        efuels.add(Item.getItemFromBlock(Blocks.wall_sign));
-        efuels.add(Item.getItemFromBlock(Blocks.trapped_chest));
+        efuels.add(Item.getItemFromBlock(Blocks.BROWN_MUSHROOM));
+        efuels.add(Item.getItemFromBlock(Blocks.RED_MUSHROOM));
+        efuels.add(Item.getItemFromBlock(Blocks.STANDING_SIGN));
+        efuels.add(Item.getItemFromBlock(Blocks.WALL_SIGN));
+        efuels.add(Item.getItemFromBlock(Blocks.TRAPPED_CHEST));
         return efuels;
     }
 

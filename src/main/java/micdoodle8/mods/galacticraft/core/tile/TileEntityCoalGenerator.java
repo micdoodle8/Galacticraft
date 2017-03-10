@@ -85,12 +85,12 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
             if (this.itemCookTime <= 0 && this.containingItems[0] != null)
             {
-                if (this.containingItems[0].getItem() == Items.coal && this.containingItems[0].stackSize > 0)
+                if (this.containingItems[0].getItem() == Items.COAL && this.containingItems[0].stackSize > 0)
                 {
                     this.itemCookTime = 320;
                     this.decrStackSize(0, 1);
                 }
-                else if (this.containingItems[0].getItem() == Item.getItemFromBlock(Blocks.coal_block) && this.containingItems[0].stackSize > 0)
+                else if (this.containingItems[0].getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && this.containingItems[0].stackSize > 0)
                 {
                     this.itemCookTime = 320 * 10;
                     this.decrStackSize(0, 1);
@@ -118,16 +118,13 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     {
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
-        this.heatGJperTick = par1NBTTagCompound.getInteger("generateRateInt");
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        super.readFromNBT(nbt);
+        this.itemCookTime = nbt.getInteger("itemCookTime");
+        this.heatGJperTick = nbt.getInteger("generateRateInt");
+        NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -142,15 +139,12 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("itemCookTime", this.itemCookTime);
-        par1NBTTagCompound.setFloat("generateRate", this.heatGJperTick);
+        super.writeToNBT(nbt);
+        nbt.setInteger("itemCookTime", this.itemCookTime);
+        nbt.setFloat("generateRate", this.heatGJperTick);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.containingItems.length; ++var3)
@@ -164,7 +158,8 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
             }
         }
 
-        par1NBTTagCompound.setTag("Items", var2);
+        nbt.setTag("Items", var2);
+        return nbt;
     }
 
     @Override
@@ -263,7 +258,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return itemstack.getItem() == Items.coal || itemstack.getItem() == Item.getItemFromBlock(Blocks.coal_block);
+        return itemstack.getItem() == Items.COAL || itemstack.getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK);
     }
 
 //    @Override

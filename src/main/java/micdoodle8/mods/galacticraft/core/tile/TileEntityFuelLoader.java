@@ -93,7 +93,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                                     {
                                         this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                                     }
-                                    this.containingItems[1] = new ItemStack(Items.bucket, amount);
+                                    this.containingItems[1] = new ItemStack(Items.BUCKET, amount);
                                 }
                                 else
                                 {
@@ -164,15 +164,16 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        this.writeStandardItemsToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt);
 
         if (this.fuelTank.getFluid() != null)
         {
-            par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+        return nbt;
     }
 
     @Override

@@ -79,7 +79,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
                                     {
                                         this.oilTank.fill(new FluidStack(GCFluids.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                                     }
-                                    this.containingItems[1] = new ItemStack(Items.bucket, amount);
+                                    this.containingItems[1] = new ItemStack(Items.BUCKET, amount);
                                 }
                                 else
                                 {
@@ -208,6 +208,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+        return nbt;
     }
 
 
