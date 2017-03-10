@@ -5,7 +5,7 @@
            "edge": "blocks/glass_pane_top",
            "particle": "blocks/glass",
            "0": "galacticraftcore:blocks/spaceGlass_vanilla",
-           "1": "galacticraftcore:blocks/deco_block"
+           "1": "galacticraftcore:blocks/spaceGlass_frame_white"
       }
     },
     "variants": {
@@ -43,6 +43,7 @@
            "corner_s": { "model": "galacticraftcore:glass/spaceglass_ne_solid" },
            "corner_s2": { "model": "galacticraftcore:glass/spaceglass_ne_solid2" },
            "joint_s": { "model": "galacticraftcore:glass/spaceglass_nse_solid" },
+           "joint_s2": { "model": "galacticraftcore:glass/spaceglass_nse_solid2" },
            "joinx_s": { "model": "galacticraftcore:glass/spaceglass_nsew_solid" }
         }
     }

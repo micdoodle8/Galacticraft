@@ -128,12 +128,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         boolean plateW = this.buildSolidSide(west, state);
         boolean plateE = this.buildSolidSide(east, state);
         
-        float xMin = plateU || plateD || plateN || plateS ? 0.125F : 0.375F;
-        float xMax = plateU || plateD || plateN || plateS ? 0.875F : 0.625F;
-        float yMin = plateE || plateW || plateN || plateS ? 0.125F : 0.375F;
-        float yMax = plateE || plateW || plateN || plateS ? 0.875F : 0.625F;
-        float zMin = plateU || plateD || plateE || plateW ? 0.125F : 0.375F;
-        float zMax = plateU || plateD || plateE || plateW  ? 0.875F : 0.625F;
+        float xMin = plateU || plateD || plateN || plateS ? 0.225F : 0.375F;
+        float xMax = plateU || plateD || plateN || plateS ? 0.775F : 0.625F;
+        float yMin = plateE || plateW || plateN || plateS ? 0.225F : 0.375F;
+        float yMax = plateE || plateW || plateN || plateS ? 0.775F : 0.625F;
+        float zMin = plateU || plateD || plateE || plateW ? 0.225F : 0.375F;
+        float zMax = plateU || plateD || plateE || plateW  ? 0.775F : 0.625F;
         
         if (connectW) xMin = 0F;
         if (connectE) xMax = 1F;
@@ -405,15 +405,19 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
             
             return state.withProperty(MODEL, GlassModel.CORNER).withProperty(ROTATION, rot.get(y, 0));
         case 3:
+            if (plateD && plateU)
+                return state.withProperty(MODEL, GlassModel.T_JUNCTION_S2).withProperty(ROTATION, rot.get(y, 0));
             if (plateD)
                 return state.withProperty(MODEL, GlassModel.T_JUNCTION_S).withProperty(ROTATION, rot.get(y, 0));
             if (plateU)
                 return state.withProperty(MODEL, GlassModel.T_JUNCTION_S).withProperty(ROTATION, rot.get(y ^ 2, 2));
-            //TODO: both up and down - two baseplates - for T-junction
                 
             return state.withProperty(MODEL, GlassModel.T_JUNCTION).withProperty(ROTATION, rot.get(y, x));
         case 4:
-            //TODO: baseplate variations for crossroads
+            if (plateD)
+                return state.withProperty(MODEL, GlassModel.CROSSROADS_S).withProperty(ROTATION, rot.get(y, 0));
+            if (plateU)
+                return state.withProperty(MODEL, GlassModel.CROSSROADS_S).withProperty(ROTATION, rot.get(y ^ 2, 2));
         default:
             return state.withProperty(MODEL, GlassModel.CROSSROADS).withProperty(ROTATION, rot.get(y, x));
         }
@@ -445,6 +449,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         CORNER_S("corner_s"),
         CORNER_S2("corner_s2"),
         T_JUNCTION_S("joint_s"),
+        T_JUNCTION_S2("joint_s2"),
         CROSSROADS_S("joinx_s");
 
         private final String name;
