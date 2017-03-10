@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import micdoodle8.mods.galacticraft.core.blocks.*;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -53,6 +54,9 @@ public class GCBlocks
     public static Block spaceGlassClear;
     public static Block spaceGlassVanilla;
     public static Block spaceGlassStrong;
+    public static Block spaceGlassTinClear;
+    public static Block spaceGlassTinVanilla;
+    public static Block spaceGlassTinStrong;
     public static Block crudeOil;
     public static Block fuel;
     public static Block refinery;
@@ -112,9 +116,12 @@ public class GCBlocks
         GCBlocks.basicBlock = new BlockBasic("basic_block_core");
         GCBlocks.airLockFrame = new BlockAirLockFrame("air_lock_frame");
         GCBlocks.airLockSeal = new BlockAirLockWall("air_lock_seal");
-        GCBlocks.spaceGlassClear = new BlockSpaceGlass("space_glass_clear", GlassType.CLEAR).setHardness(0.3F).setResistance(9F);
-        GCBlocks.spaceGlassVanilla = new BlockSpaceGlass("space_glass_vanilla", GlassType.VANILLA).setHardness(0.3F).setResistance(9F);
-        GCBlocks.spaceGlassStrong = new BlockSpaceGlass("space_glass_strong", GlassType.STRONG).setHardness(4F).setResistance(80F);;
+        GCBlocks.spaceGlassClear = new BlockSpaceGlass("space_glass_clear", GlassType.CLEAR, GlassFrame.PLAIN, null).setHardness(0.3F).setResistance(3F);
+        GCBlocks.spaceGlassVanilla = new BlockSpaceGlass("space_glass_vanilla", GlassType.VANILLA, GlassFrame.PLAIN, null).setHardness(0.3F).setResistance(3F);
+        GCBlocks.spaceGlassStrong = new BlockSpaceGlass("space_glass_strong", GlassType.STRONG, GlassFrame.PLAIN, null).setHardness(4F).setResistance(22F);
+        GCBlocks.spaceGlassTinClear = new BlockSpaceGlass("space_glass_clear_tin", GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear).setHardness(0.3F).setResistance(4F);
+        GCBlocks.spaceGlassTinVanilla = new BlockSpaceGlass("space_glass_vanilla_tin", GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla).setHardness(0.3F).setResistance(4F);
+        GCBlocks.spaceGlassTinStrong = new BlockSpaceGlass("space_glass_strong_tin", GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong).setHardness(4F).setResistance(25F);
         GCBlocks.refinery = new BlockRefinery("refinery");
         GCBlocks.oxygenCompressor = new BlockOxygenCompressor(false, "oxygen_compressor");
         GCBlocks.fuelLoader = new BlockFuelLoader("fuel_loader");
@@ -356,9 +363,12 @@ public class GCBlocks
         registerBlock(GCBlocks.basicBlock, ItemBlockBase.class);
         registerBlock(GCBlocks.airLockFrame, ItemBlockAirLock.class);
         registerBlock(GCBlocks.airLockSeal, ItemBlockGC.class);
-        registerBlock(GCBlocks.spaceGlassClear, ItemBlockGC.class);
-        registerBlock(GCBlocks.spaceGlassVanilla, ItemBlockGC.class);
-        registerBlock(GCBlocks.spaceGlassStrong, ItemBlockGC.class);
+        registerBlock(GCBlocks.spaceGlassClear, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassVanilla, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassStrong, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassTinClear, null);  //The corresponding item is already registered
+        registerBlock(GCBlocks.spaceGlassTinVanilla, null);  //The corresponding item is already registered
+        registerBlock(GCBlocks.spaceGlassTinStrong, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);

@@ -1,15 +1,13 @@
 {
     "forge_marker": 1,
     "defaults": {
+       "model": "forge:multi-layer",
        "textures": {
-           "edge": "blocks/glass_pane_top",
-           "particle": "blocks/glass",
            "0": "galacticraftcore:blocks/spaceGlass_vanilla",
            "1": "galacticraftcore:blocks/spaceGlass_frame_white"
       }
     },
     "variants": {
-        "inventory": [ { } ],
 
 	"rot": {
            "0": { },
@@ -31,20 +29,67 @@
         },
 
 	"modeltype": {
-           "standard": { "model": "galacticraftcore:glass/spaceglass_ns" },
-           "standards1": { "model": "galacticraftcore:glass/spaceglass_ns_solid1" },
-           "standards2": { "model": "galacticraftcore:glass/spaceglass_ns_solid2" },
-           "standards2a": { "model": "galacticraftcore:glass/spaceglass_ns_solid2a" },
-           "standards3": { "model": "galacticraftcore:glass/spaceglass_ns_solid3" },
-           "standards4": { "model": "galacticraftcore:glass/spaceglass_ns_solid4" },
-           "corner": { "model": "galacticraftcore:glass/spaceglass_ne" },
-           "joint": { "model": "galacticraftcore:glass/spaceglass_nse" },
-           "joinx": { "model": "galacticraftcore:glass/spaceglass_nsew" },
-           "corner_s": { "model": "galacticraftcore:glass/spaceglass_ne_solid" },
-           "corner_s2": { "model": "galacticraftcore:glass/spaceglass_ne_solid2" },
-           "joint_s": { "model": "galacticraftcore:glass/spaceglass_nse_solid" },
-           "joint_s2": { "model": "galacticraftcore:glass/spaceglass_nse_solid2" },
-           "joinx_s": { "model": "galacticraftcore:glass/spaceglass_nsew_solid" }
-        }
+           "standard": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#none", "Translucent": "galacticraftcore:space_glass_vanilla#ns_g" }},
+           "standards1": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s1_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s1_g" }},
+           "standards2": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s2_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s2_g" }},
+           "standards2a": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s2a_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s2a_g" }},
+           "standards3": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s3_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s3_g" }},
+           "standards4": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s4_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s4_g" }},
+           "corner": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#none", "Translucent": "galacticraftcore:space_glass_vanilla#ne_g" }},
+           "joint": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#none", "Translucent": "galacticraftcore:space_glass_vanilla#nse_g" }},
+           "joinx": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#none", "Translucent": "galacticraftcore:space_glass_vanilla#nsew_g" }},
+           "corner_s": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ne_s1_s", "Translucent": "galacticraftcore:space_glass_vanilla#ne_s1_g" }},
+           "corner_s2": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ne_s2_s", "Translucent": "galacticraftcore:space_glass_vanilla#ne_s2_g" }},
+           "joint_s": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#nse_s1_s", "Translucent": "galacticraftcore:space_glass_vanilla#nse_s1_g" }},
+           "joint_s2": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#nse_s2_s", "Translucent": "galacticraftcore:space_glass_vanilla#nse_s2_g" }},
+           "joinx_s": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#nsew_s1_s", "Translucent": "galacticraftcore:space_glass_vanilla#nsew_s1_g" }},
+           "joinx_s2": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#nsew_s2_s", "Translucent": "galacticraftcore:space_glass_vanilla#nsew_s2_g" }}
+        },
+
+        "base": [{  "model": "minecraft:cube_all", "textures": { "all": "blocks/glass" }  }],
+
+        "none": [{  "model": "forge:multi-layer"  }],
+
+        "ns_g": [{  "model": "galacticraftcore:glass/glass_ns" }],
+
+        "ns_s1_s": [{  "model": "galacticraftcore:glass/base_ns_s1"  }],
+        "ns_s1_g": [{  "model": "galacticraftcore:glass/glass_ns_s1" }],
+
+        "ns_s2_s": [{  "model": "galacticraftcore:glass/base_ns_s2"  }],
+        "ns_s2_g": [{  "model": "galacticraftcore:glass/glass_ns_s2" }],
+
+        "ns_s2a_s": [{  "model": "galacticraftcore:glass/base_ns_s2a"  }],
+        "ns_s2a_g": [{  "model": "galacticraftcore:glass/glass_ns_s2a" }],
+
+        "ns_s3_s": [{  "model": "galacticraftcore:glass/base_ns_s3"  }],
+        "ns_s3_g": [{  "model": "galacticraftcore:glass/glass_ns_s3" }],
+
+        "ns_s4_s": [{  "model": "galacticraftcore:glass/base_ns_s4"  }],
+        "ns_s4_g": [{  "model": "galacticraftcore:glass/glass_ns_s4" }],
+
+        "ne_g": [{  "model": "galacticraftcore:glass/glass_ne" }],
+
+        "ne_s1_s": [{  "model": "galacticraftcore:glass/base_ne_s1"  }],
+        "ne_s1_g": [{  "model": "galacticraftcore:glass/glass_ne_s1" }],
+
+        "ne_s2_s": [{  "model": "galacticraftcore:glass/base_ne_s2"  }],
+        "ne_s2_g": [{  "model": "galacticraftcore:glass/glass_ne_s2" }],
+
+        "nse_g": [{  "model": "galacticraftcore:glass/glass_nse" }],
+
+        "nse_s1_s": [{  "model": "galacticraftcore:glass/base_nse_s1"  }],
+        "nse_s1_g": [{  "model": "galacticraftcore:glass/glass_nse_s1" }],
+
+        "nse_s2_s": [{  "model": "galacticraftcore:glass/base_nse_s2"  }],
+        "nse_s2_g": [{  "model": "galacticraftcore:glass/glass_nse_s2" }],
+
+        "nsew_g": [{  "model": "galacticraftcore:glass/glass_nsew" }],
+
+        "nsew_s1_s": [{  "model": "galacticraftcore:glass/base_nsew_s1"  }],
+        "nsew_s1_g": [{  "model": "galacticraftcore:glass/glass_nsew_s1" }],
+
+        "nsew_s2_s": [{  "model": "galacticraftcore:glass/base_nsew_s2"  }],
+        "nsew_s2_g": [{  "model": "galacticraftcore:glass/glass_nsew_s2" }]
+
     }
 }

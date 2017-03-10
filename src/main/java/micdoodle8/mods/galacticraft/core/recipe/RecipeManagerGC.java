@@ -455,7 +455,10 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassClear, 5), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "ingotAluminum" });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassVanilla, 5), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "ingotTin" });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassStrong, 5), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "compressedBronze" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassStrong, 5), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "compressedAluminum" });  //https://en.wikipedia.org/wiki/List_of_Star_Trek_materials#Transparent_aluminum
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassTinClear, 5), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassClear, 'Y', GCBlocks.basicBlock });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassTinVanilla, 5), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassVanilla, 'Y', GCBlocks.basicBlock  });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassTinStrong, 5), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassStrong, 'Y', GCBlocks.basicBlock  });
 
 //		// Tin Stairs 1
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.tinStairs1, 4), new Object[] { "  X", " XX", "XXX", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });

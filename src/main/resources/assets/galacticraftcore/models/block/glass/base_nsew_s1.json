@@ -1,0 +1,68 @@
+{
+    "elements": [
+        {
+            "name": "base",
+            "from": [ 4.0, 0.0, 0.0 ], 
+            "to": [ 12.0, 2.0, 16.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] },
+                "down": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "grout",
+            "from": [ 5.0, 2.0, 0.0 ], 
+            "to": [ 11.0, 3.0, 16.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 0.0, 14.0, 16.0 ], "rotation": 90 },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 0.0, 14.0, 16.0 ], "rotation": 90 },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 0.0, 11.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "base2",
+            "from": [ 12.0, 0.0, 4.0 ], 
+            "to": [ 16.0, 2.0, 12.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 4.0 ], "rotation": 90 },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 12.0, 16.0, 16.0 ], "rotation": 90 },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 12.0, 4.0, 16.0, 12.0 ] },
+                "down": { "tintindex": 0, "texture": "#1", "uv": [ 12.0, 4.0, 16.0, 12.0 ] }
+            }
+        },
+        {
+            "name": "grout2",
+            "from": [ 11.0, 2.0, 5.0 ], 
+            "to": [ 16.0, 3.0, 11.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 13.0, 5.0, 14.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 11.0, 13.0, 16.0, 14.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 11.0, 5.0, 16.0, 11.0 ] }
+            }
+        },
+        {
+            "name": "base3",
+            "from": [ 0.0, 0.0, 4.0 ], 
+            "to": [ 4.0, 2.0, 12.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 4.0 ], "rotation": 90 },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 12.0, 16.0, 16.0 ], "rotation": 90 },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 12.0, 4.0, 16.0, 12.0 ] },
+                "down": { "tintindex": 0, "texture": "#1", "uv": [ 12.0, 4.0, 16.0, 12.0 ] }
+            }
+        },
+        {
+            "name": "grout3",
+            "from": [ 0.0, 2.0, 5.0 ], 
+            "to": [ 5.0, 3.0, 11.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 13.0, 5.0, 14.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 11.0, 13.0, 16.0, 14.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 11.0, 5.0, 16.0, 11.0 ] }
+            }
+        }
+
+    ]
+}

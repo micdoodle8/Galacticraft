@@ -538,9 +538,12 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockSeal, 0, "air_lock_seal");
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassClear);  //, 0, "space_glass");
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassVanilla);  //, 0, "space_glass_vanilla");
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassStrong);  //, 0, "space_glass_strong");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassClear, 0, "space_glass_clear");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassVanilla, 0, "space_glass_vanilla");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassStrong, 0, "space_glass_strong");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassClear, 1, "space_glass_tin_clear");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassVanilla, 1, "space_glass_tin_vanilla");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassStrong, 1, "space_glass_tin_strong");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.refinery);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fuelLoader);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");
@@ -605,6 +608,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     private static void addVariants()
     {
+        //BlockItem variants: 
         addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
         addCoreVariant("basic_block_core", "deco_block_0", "deco_block_1", "ore_copper_gc", "ore_tin_gc", "ore_aluminum_gc", "ore_silicon", "block_copper_gc", "block_tin_gc", "block_aluminum_gc", "block_meteoric_iron_gc");
         addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
@@ -617,7 +621,13 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor");
         addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
         addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "moon_stone", "moon_turf", "ore_sapphire_moon", "moon_dungeon_brick");
-//        addCoreVariant("space_glass", "space_glass", "space_glass_vanilla", "space_glass_strong");
+        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy", "aluminum_wire_switch", "aluminum_wire_switch_heavy");
+        addCoreVariant("slab_gc_half", "slab_tin_1", "slab_tin_2", "slab_moon_stone", "slab_moon_dungeon_brick", "slab_mars_cobblestone", "slab_mars_dungeon_brick");
+        addCoreVariant("wall_gc", "wall_tin_1", "wall_tin_2", "wall_moon_stone", "wall_moon_dungeon_brick", "wall_mars_cobblestone", "wall_mars_dungeon_brick");
+        addCoreVariant("space_glass_clear", "space_glass_clear", "space_glass_tin_clear");
+        addCoreVariant("space_glass_vanilla", "space_glass_vanilla", "space_glass_tin_vanilla");
+        addCoreVariant("space_glass_strong", "space_glass_strong", "space_glass_tin_strong");
+
         //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
         addCoreVariant("canister", "canister", "canister_copper");
         addCoreVariant("engine", "engine", "tier1booster");
@@ -627,11 +637,8 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("buggymat", "buggymat", "seat", "storage");
         addCoreVariant("basic_item", "basic_item", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
         addCoreVariant("item_basic_moon", "item_basic_moon", "compressed_meteoric_iron", "lunar_sapphire");
-        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy", "aluminum_wire_switch", "aluminum_wire_switch_heavy");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy", "buggy_1", "buggy_2", "buggy_3");
-        addCoreVariant("slab_gc_half", "slab_tin_1", "slab_tin_2", "slab_moon_stone", "slab_moon_dungeon_brick", "slab_mars_cobblestone", "slab_mars_dungeon_brick");
-        addCoreVariant("wall_gc", "wall_tin_1", "wall_tin_2", "wall_moon_stone", "wall_moon_dungeon_brick", "wall_mars_cobblestone", "wall_mars_dungeon_brick");
 
         for (PartialCanister container : ClientProxyCore.canisters)
         {

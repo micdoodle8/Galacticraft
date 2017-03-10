@@ -1,16 +1,23 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -28,13 +35,18 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
     //public static final PropertyInteger PLACING  = PropertyInteger.create("placing", 0, 2);
     //This will define whether originally placed by the player facing NS - EW - or UD
 
-    private final int typeValue;
-
-
-    public BlockSpaceGlass(String assetName, GlassType type)
+    private final GlassType type;
+    private final GlassFrame frame; //frameValue corresponds to the damage of the placing item
+    private int color = 0xFFFFFF;
+    private final Block baseBlock;
+    
+    public BlockSpaceGlass(String assetName, GlassType newType, GlassFrame newFrame, Block base)
     {
         super(Material.glass);
-        this.typeValue = type.ordinal();
+        this.type = newType;
+        this.frame = newFrame;
+        this.baseBlock = base == null ? this : base;
+        this.color = frame.getDefaultColor();
         this.setUnlocalizedName(assetName);
         this.setStepSound(Block.soundTypeGlass);
         this.isBlockContainer = true;
@@ -46,30 +58,60 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         return new BlockState(this, new IProperty[] {MODEL, ROTATION});
     }
     
-//    @Override
-//    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
-//    {
-//        list.add(new ItemStack(itemIn, 1, 0));
-//        list.add(new ItemStack(itemIn, 1, 1));
-//        list.add(new ItemStack(itemIn, 1, 2));
-//    }
-//
-//    @Override
-//    public int damageDropped(IBlockState state)
-//    {
-//        return this.getMetaFromState(state);
-//    }
-//    //TODO: override getItemDropped() if we make a broken Space Glass variant...
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+    {
+        for (int i = 0; i < GlassFrame.values().length; i++)
+            list.add(new ItemStack(itemIn, 1, i));
+    }
     
-//    @Override
-//    public float getBlockHardness(World worldIn, BlockPos pos)
-//    {
-//        GlassType type = (GlassType) worldIn.getBlockState(pos).getValue(TYPE);
-//        if (type == GlassType.STRONG) return 3.0F;
-//
-//        return this.blockHardness;
-//    }
+    @Override
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int damage, EntityLivingBase placer)
+    {
+        //This allows the different item damage values to place different instances of the block - the instances of the block are constructed in GCBlocks
+        if (damage >= GlassFrame.values().length) damage = 0;
+        switch (GlassFrame.values()[damage])
+        {
+        case TIN_DECO:
+        {
+            switch (this.type)
+            {
+            case STRONG:
+                return GCBlocks.spaceGlassTinStrong.getDefaultState();
+            case VANILLA:
+                return GCBlocks.spaceGlassTinVanilla.getDefaultState();
+            default:
+                return GCBlocks.spaceGlassTinClear.getDefaultState();
+            }
+        }
+        case PLAIN:
+        default:
+            return this.getDefaultState();
+        }
+        //TODO: Add PLACING direction
+    }
 
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return this.frame.ordinal();
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+        return Item.getItemFromBlock(this.baseBlock);
+        //TODO: override getItemDropped() to return null if we make a broken Space Glass variant...
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        ret.add(new ItemStack(this.getItemDropped(state, null, fortune), 1, this.frame.ordinal()));
+        return ret;
+    }
+    
     @Override
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
@@ -98,13 +140,24 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         return true;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public EnumWorldBlockLayer getBlockLayer()
     {
-         if (this.typeValue == 0)
-             return EnumWorldBlockLayer.CUTOUT_MIPPED;
-         
          return EnumWorldBlockLayer.TRANSLUCENT;
+    }
+
+    @Override
+    public boolean canRenderInLayer(EnumWorldBlockLayer layer)
+    {
+        return layer == EnumWorldBlockLayer.TRANSLUCENT || layer == EnumWorldBlockLayer.SOLID;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPasss)
+    {
+        return this.color;
     }
 
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
@@ -128,17 +181,56 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         boolean plateW = this.buildSolidSide(west, state);
         boolean plateE = this.buildSolidSide(east, state);
         
-        float xMin = plateU || plateD || plateN || plateS ? 0.225F : 0.375F;
-        float xMax = plateU || plateD || plateN || plateS ? 0.775F : 0.625F;
-        float yMin = plateE || plateW || plateN || plateS ? 0.225F : 0.375F;
-        float yMax = plateE || plateW || plateN || plateS ? 0.775F : 0.625F;
-        float zMin = plateU || plateD || plateE || plateW ? 0.225F : 0.375F;
-        float zMax = plateU || plateD || plateE || plateW  ? 0.775F : 0.625F;
+        if (connectW || connectE)
+        {
+            plateN = false;
+            plateS = false;
+        }
+        if (connectN || connectS)
+        {
+            plateW = false;
+            plateE = false;
+        }
         
-        if (connectW) xMin = 0F;
-        if (connectE) xMax = 1F;
-        if (connectN) zMin = 0F;
-        if (connectS) zMax = 1F;
+        float posGlass = 0.375F;
+        float posBase = 0.225F;
+        float xMin = plateU || plateD || plateN || plateS ? posBase : posGlass;
+        float xMax = plateU || plateD || plateN || plateS ? 1F - posBase : 1F - posGlass;
+        float yMin = 0F; //plateE || plateW || plateN || plateS ? posBase : 0.375F;
+        float yMax = 1F; //plateE || plateW || plateN || plateS ? 0.775F : 0.625F;
+        float zMin = plateU || plateD || plateE || plateW ? posBase : posGlass;
+        float zMax = plateU || plateD || plateE || plateW ? 1F - posBase : 1F - posGlass;
+
+        if (plateW || connectW) xMin = 0F;
+        if (plateE || connectE) xMax = 1F;
+        if (plateN || connectN) zMin = 0F;
+        if (plateS || connectS) zMax = 1F;           
+
+        //Special for corner diagonals
+        if ((connectW ^ connectE) && (connectN ^ connectS) && !(plateU && plateD))
+        {
+            float diag = 0.25F;
+            if (connectW)
+            {
+                xMin = diag - 0.01F;
+                xMax = diag;
+            }
+            else
+            {
+                xMin = 1F - diag;
+                xMax = 1.01F - diag;
+            }
+            if (connectN)
+            {
+                zMin = diag - 0.01F;
+                zMax = diag;
+            }
+            else
+            {
+                zMin = 1F - diag;
+                zMax = 1.01F - diag;
+            }
+        }
         
         this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
@@ -230,7 +322,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         if (plateE) f1 = 1F;
         if (plateN) f2 = 0F;
         if (plateS) f3 = 1F;
-
+        
         this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
     }
 
@@ -414,6 +506,8 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
                 
             return state.withProperty(MODEL, GlassModel.T_JUNCTION).withProperty(ROTATION, rot.get(y, x));
         case 4:
+            if (plateD && plateU)
+                return state.withProperty(MODEL, GlassModel.CROSSROADS_S2).withProperty(ROTATION, rot.get(y, 0));
             if (plateD)
                 return state.withProperty(MODEL, GlassModel.CROSSROADS_S).withProperty(ROTATION, rot.get(y, 0));
             if (plateU)
@@ -450,7 +544,8 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
         CORNER_S2("corner_s2"),
         T_JUNCTION_S("joint_s"),
         T_JUNCTION_S2("joint_s2"),
-        CROSSROADS_S("joinx_s");
+        CROSSROADS_S("joinx_s"),
+        CROSSROADS_S2("joinx_s2");
 
         private final String name;
 
@@ -509,6 +604,33 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock
             return GlassRotation.values()[i];
         }
 }
+
+    public enum GlassFrame implements IStringSerializable
+    {
+        PLAIN("plain", 0xfafaf7),
+        TIN_DECO("tin_deco", 0xFFFFFF);
+        //TODO - more frame textures can be added in future - maybe only on Asteroids?
+
+        private final String name;
+        private final int defaultColor;
+        
+        private GlassFrame (String name, int color)
+        {
+            this.name = name;
+            this.defaultColor = color;
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public int getDefaultColor()
+        {
+            return this.defaultColor;
+        }
+    }
 
     public enum GlassType implements IStringSerializable
     {
