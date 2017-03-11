@@ -67,7 +67,7 @@ public class ItemBlockMachine extends ItemBlockDesc
                 return "tile.machine.8";
             }
         }
-        else
+        else if (this.getBlock() == GCBlocks.machineBase2)
         {
             if (typenum == BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
             {
@@ -81,6 +81,10 @@ public class ItemBlockMachine extends ItemBlockDesc
             {
                 index = 4;
             }
+        }
+        else //machineBase3
+        {
+            index = 9;
         }
 
         return this.getBlock().getUnlocalizedName() + "." + index;

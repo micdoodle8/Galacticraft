@@ -477,6 +477,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityArclamp.class, "Arc Lamp");
         GameRegistry.registerTileEntity(TileEntityScreen.class, "View Screen");
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "Telemetry Unit");
+        GameRegistry.registerTileEntity(TileEntityPainter.class, "Galacticraft Painter");
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "Galacticraft Fluid Tank");
         GameRegistry.registerTileEntity(TileEntityNull.class, "Galacticraft Null Tile");
     }

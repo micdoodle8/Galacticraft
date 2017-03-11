@@ -35,6 +35,7 @@
            "standards1": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#ns_s1_s", "Translucent": "galacticraftcore:space_glass_strong_tin#ns_s1_g" }},
            "standards2": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#ns_s2_s", "Translucent": "galacticraftcore:space_glass_strong_tin#ns_s2_g" }},
            "standards2a": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#ns_s2a_s", "Translucent": "galacticraftcore:space_glass_strong_tin#ns_s2a_g" }},
+           "standards2b": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#ns_s2b_s", "Translucent": "galacticraftcore:space_glass_strong_tin#ns_s2b_g" }},
            "standards3": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#ns_s3_s", "Translucent": "galacticraftcore:space_glass_strong_tin#ns_s3_g" }},
            "standards4": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#ns_s4_s", "Translucent": "galacticraftcore:space_glass_strong_tin#ns_s4_g" }},
            "corner": { "custom": { "base": "galacticraftcore:space_glass_strong_tin#base", "Solid": "galacticraftcore:space_glass_strong_tin#none", "Translucent": "galacticraftcore:space_glass_strong_tin#ne_g" }},
@@ -62,6 +63,9 @@
 
         "ns_s2a_s": [{  "model": "galacticraftcore:glass/base_ns_s2a"  }],
         "ns_s2a_g": [{  "model": "galacticraftcore:glass/glass_ns_s2a" }],
+
+        "ns_s2b_s": [{  "model": "galacticraftcore:glass/base_ns_s2b"  }],
+        "ns_s2b_g": [{  "model": "galacticraftcore:glass/glass_ns_s2" }],
 
         "ns_s3_s": [{  "model": "galacticraftcore:glass/base_ns_s3"  }],
         "ns_s3_g": [{  "model": "galacticraftcore:glass/glass_ns_s3" }],
