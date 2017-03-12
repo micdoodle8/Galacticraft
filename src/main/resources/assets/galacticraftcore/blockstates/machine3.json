@@ -13,7 +13,7 @@
         
         "type":
         {
-           "painter": {        "model": "galacticraftcore:telemetry_model"
+           "painter": {        "model": "galacticraftcore:painter_model"
            }
         }
     }

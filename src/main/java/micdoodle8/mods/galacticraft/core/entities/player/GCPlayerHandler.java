@@ -152,6 +152,7 @@ public class GCPlayerHandler
             stats.buildFlags &= 1536;
         }
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, player.worldObj.provider.getDimensionId(), new Object[] { stats.buildFlags }), player);
+        ColorUtil.sendUpdatedColorsToPlayer(stats);
     }
 
     private void onPlayerLogout(EntityPlayerMP player)

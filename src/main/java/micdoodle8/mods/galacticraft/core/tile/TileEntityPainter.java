@@ -1,24 +1,45 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 //import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TileEntityPainter extends TileEntity
 {
-    public void setAllGlassColors(ItemStack itemStack)
+    private static final int RANGE_DEFAULT = 96;
+    public static Map<Integer, Set<BlockVec3>> loadedTilesForDim = new HashMap<Integer, Set<BlockVec3>>();
+
+    public int range = RANGE_DEFAULT;  //currently unused
+    
+    public int glassColor1 = -1;
+    public int glassColor2 = -1;
+    public int glassColor3 = -1;
+
+    //For proof of concept and testing
+    public void setAllGlassColors(ItemStack itemStack, EntityPlayerMP player)
     {
         Item item = itemStack.getItem();
-        int color = 0x333333;
+        int color = -1;
         if (item == Items.dye)
         {
             color = ItemDye.dyeColors[itemStack.getItemDamage()];
@@ -31,13 +52,141 @@ public class TileEntityPainter extends TileEntity
             color = mc.colorValue;
         }
 
-        color = ColorUtil.lighten(color, 0.03F);
-        
-        //For proof of concept and testing
-        GCBlocks.spaceGlassClear.setColor(color);
-        GCBlocks.spaceGlassVanilla.setColor(color);
-        GCBlocks.spaceGlassStrong.setColor(color);
-        
-        //TODO: anyway to force all chunks to rebuild?
+        if (color >= 0)
+        {
+            color = ColorUtil.lighten(color, 0.03F);
+            this.setGlassColors(color, color, color);
+
+            //GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+        }
     }
+    
+    private void setGlassColors(int color1, int color2, int color3)
+    {
+        boolean changes = false;
+        if (this.glassColor1 != color1)
+        {
+            changes = true;
+            this.glassColor1 = color1;
+        }
+        if (this.glassColor2 != color2)
+        {
+            changes = true;
+            this.glassColor2 = color2;
+        }
+        if (this.glassColor3 != color3)
+        {
+            changes = true;
+            this.glassColor3 = color3;
+        }
+
+//        if (changes)
+//            ColorUtil.updateColorsForArea(this.worldObj.provider.getDimensionId(), this.pos, this.range, this.glassColor1, this.glassColor2, this.glassColor3);;
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        if (nbt.hasKey("Glass1"))
+        {
+            this.glassColor1 = nbt.getInteger("Glass1");
+            this.glassColor2 = nbt.getInteger("Glass2");
+            this.glassColor3 = nbt.getInteger("Glass3");
+            this.range = nbt.getInteger("Range");
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setInteger("Glass1", this.glassColor1);
+        nbt.setInteger("Glass2", this.glassColor2);
+        nbt.setInteger("Glass3", this.glassColor3);
+        nbt.setInteger("Range", this.range);
+    }
+
+    private static Set<BlockVec3> getLoadedTiles(World world)
+    {
+        int dimID = world.provider.getDimensionId();
+        Set<BlockVec3> loaded = loadedTilesForDim.get(dimID);
+        
+        if (loaded == null)
+        {
+            loaded = new HashSet<BlockVec3>();
+            loadedTilesForDim.put(dimID, loaded);
+        }
+        
+        return loaded;
+    }
+    
+    @Override
+    public void validate()
+    {
+        super.validate();
+        if (!this.worldObj.isRemote)
+        {
+            this.getLoadedTiles(this.worldObj).add(new BlockVec3(this.pos));
+        }
+    }
+
+    @Override
+    public void onChunkUnload()
+    {
+        this.getLoadedTiles(this.worldObj).remove(new BlockVec3(this.pos));
+        super.onChunkUnload();
+    }
+
+    @Override
+    public void invalidate()
+    {
+        if (!this.worldObj.isRemote)
+            this.getLoadedTiles(this.worldObj).remove(new BlockVec3(this.pos));
+        super.invalidate();
+    }
+
+    public static void onServerTick(World world)
+    {
+        Set<BlockVec3> loaded = getLoadedTiles(world);
+        int dimID = world.provider.getDimensionId();
+        List<EntityPlayerMP> allPlayers = (List<EntityPlayerMP>)FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
+        for (final EntityPlayerMP player : allPlayers)
+        {
+            if (player.dimension != dimID) continue;
+
+            BlockVec3 playerPos = new BlockVec3(player);
+            BlockVec3 nearest = null;
+            int shortestDistance = RANGE_DEFAULT * RANGE_DEFAULT;
+            for (final BlockVec3 bv : loaded)
+            {
+                int distance = bv.distanceSquared(playerPos);
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    nearest = bv;
+                }
+            }
+            
+            if (nearest != null)
+            {
+                TileEntity te = nearest.getTileEntity(world);
+                if (te instanceof TileEntityPainter)
+                {
+                    ((TileEntityPainter)te).dominantToPlayer(player);
+                }
+            }
+
+            //TODO
+            //Make sure this works in a way so that the nearest Painter quickly takes priority, but there is no race condition...
+            //Also maybe some hysteresis?
+        }
+    }
+
+    private void dominantToPlayer(EntityPlayerMP player)
+    {
+        GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+    }
+
+    //TODO: create a GUI and inventory, place specific colourable items (glass, flags etc) in this
 }

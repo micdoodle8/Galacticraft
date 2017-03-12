@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -133,6 +134,10 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public int incrementalDamage = 0;
 
     public String startDimension = "";
+    public int glassColor1 = -1;
+    public int glassColor2 = -1;
+    public int glassColor3 = -1;
+  
 
     public GCPlayerStats(EntityPlayerMP player)
     {
@@ -210,11 +215,15 @@ public class GCPlayerStats implements IExtendedEntityProperties
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         nbt.setInteger("AstroMinerCount", this.astroMinerCount);
+        nbt.setInteger("GlassColor1", this.glassColor1);
+        nbt.setInteger("GlassColor2", this.glassColor2);
+        nbt.setInteger("GlassColor3", this.glassColor3);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt)
     {
+        try {
         this.airRemaining = nbt.getInteger("playerAirRemaining");
         this.damageCounter = nbt.getInteger("damageCounter");
         this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
@@ -360,10 +369,20 @@ public class GCPlayerStats implements IExtendedEntityProperties
         }
 
         this.sentFlags = false;
-        if (ConfigManagerCore.enableDebug)
+        if (nbt.hasKey("GlassColor1"))
         {
-            GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+            this.glassColor1 = nbt.getInteger("GlassColor1");
+            this.glassColor2 = nbt.getInteger("GlassColor2");
+            this.glassColor3 = nbt.getInteger("GlassColor3");
         }
+        }
+        catch (Exception e)
+        {
+            GCLog.severe("Found error in saved Galacticraft player data for " + player.get().getGameProfile().getName() + " - this should fix itself next relog.");
+            e.printStackTrace();
+        }
+
+        GCLog.debug("Finished loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
     @Override
@@ -412,5 +431,27 @@ public class GCPlayerStats implements IExtendedEntityProperties
     public void startAdventure(String worldName)
     {
         this.startDimension = worldName;
+    }
+    
+    public void setGlassColors(int color1, int color2, int color3)
+    {
+        boolean changes = false;
+        if (this.glassColor1 != color1)
+        {
+            changes = true;
+            this.glassColor1 = color1;
+        }
+        if (this.glassColor2 != color2)
+        {
+            changes = true;
+            this.glassColor2 = color2;
+        }
+        if (this.glassColor3 != color3)
+        {
+            changes = true;
+            this.glassColor3 = color3;
+        }
+        if (changes)
+            ColorUtil.sendUpdatedColorsToPlayer(this);
     }
 }

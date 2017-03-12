@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -131,13 +132,12 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     @Override
     public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        //Client side only!!!
-        if (world.isRemote)
+        if (!world.isRemote)
         {
             TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof TileEntityPainter)
+            if (tile instanceof TileEntityPainter && entityPlayer instanceof EntityPlayerMP)
             {
-                ((TileEntityPainter) tile).setAllGlassColors(entityPlayer.getCurrentEquippedItem());
+                ((TileEntityPainter) tile).setAllGlassColors(entityPlayer.getCurrentEquippedItem(), (EntityPlayerMP) entityPlayer);
             }
         }
 

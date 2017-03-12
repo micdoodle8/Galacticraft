@@ -596,9 +596,14 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return 0;
     }
 
-    public void setColor(int newColor)
+    public int setColor(int newColor)
     {
-        this.color = newColor;
+        if (newColor >= 0 && this.color != newColor)
+        {
+            this.color = newColor;
+            return 1;
+        }
+        return 0;
     }
 
     @Override

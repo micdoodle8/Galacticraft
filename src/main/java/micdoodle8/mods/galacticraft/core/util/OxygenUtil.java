@@ -498,9 +498,10 @@ public class OxygenUtil
 
     public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
     {
+        int dimID = worldObj.provider.getDimensionId();
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
-            if (blockVec != null && blockVec.dim == worldObj.provider.getDimensionId())
+            if (blockVec != null && blockVec.dim == dimID)
             {
                 TileEntity tile = blockVec.getTileEntity();
                 if (tile instanceof TileEntityOxygenDistributor)

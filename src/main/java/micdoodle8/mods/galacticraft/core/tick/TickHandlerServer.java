@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -21,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTransmitter;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -129,7 +131,9 @@ public class TickHandlerServer
         if (footprintMap == null)
         {
             footprintMap = new HashMap<Long, List<Footprint>>();
+            TickHandlerServer.serverFootprintMap.put(dimID, footprintMap);
             footprints = new ArrayList<Footprint>();
+            footprintMap.put(chunkKey, footprints);
         }
         else
         {
@@ -138,12 +142,11 @@ public class TickHandlerServer
             if (footprints == null)
             {
                 footprints = new ArrayList<Footprint>();
+                footprintMap.put(chunkKey, footprints);
             }
         }
 
         footprints.add(print);
-        footprintMap.put(chunkKey, footprints);
-        TickHandlerServer.serverFootprintMap.put(dimID, footprintMap);
     }
 
     public static void scheduleNewBlockChange(int dimID, ScheduledBlockChange change)
@@ -299,6 +302,16 @@ public class TickHandlerServer
 
             SpaceRaceManager.tick();
 
+            if (TickHandlerServer.tickCount % 33 == 0)
+            {
+                WorldServer[] worlds = server.worldServers;
+
+                for (int i = worlds.length - 1; i >= 0; i--)
+                {
+                    WorldServer world = worlds[i];
+                    TileEntityPainter.onServerTick(world);
+                }                    
+            }
             if (TickHandlerServer.tickCount % 100 == 0)
             {
                 WorldServer[] worlds = server.worldServers;
