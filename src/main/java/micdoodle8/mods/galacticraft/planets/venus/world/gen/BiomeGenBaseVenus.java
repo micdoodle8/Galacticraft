@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
@@ -13,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
@@ -31,10 +29,12 @@ public class BiomeGenBaseVenus extends BiomeGenBase
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 100, 4, 4));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 100, 4, 4));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 100, 4, 4));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 100, 4, 4));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedEnderman.class, 10, 1, 4));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedWitch.class, 5, 1, 1));
         this.rainfall = 0F;
     }
 
