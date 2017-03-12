@@ -33,11 +33,20 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
     {
         super.preRenderCallback(slimeling, par2);
 
-        GL11.glRotatef(180.0F, 0, 1, 0);
+        GL11.glRotatef(180.0F, 0F, 1F, 0F);
 
         GL11.glColor3f(slimeling.getColorRed(), slimeling.getColorGreen(), slimeling.getColorBlue());
         GL11.glScalef(slimeling.getScale(), slimeling.getScale(), slimeling.getScale());
         GL11.glTranslatef(0.0F, 1.10F, 0.0F);
+    }
+
+    @Override
+    protected void renderLayers(EntitySlimeling slimeling, float p_177093_2_, float p_177093_3_, float partialTicks, float p_177093_5_, float p_177093_6_, float p_177093_7_, float p_177093_8_)
+    {
+        super.renderLayers(slimeling, p_177093_2_, p_177093_3_, partialTicks, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_);
+
+        //After rendering the slimeling, reset the color tint to none
+        GL11.glColor3f(1F, 1F, 1F);
     }
 
 //    @Override
