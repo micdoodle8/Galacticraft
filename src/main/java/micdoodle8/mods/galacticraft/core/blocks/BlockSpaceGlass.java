@@ -183,17 +183,42 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         boolean plateW = this.buildSolidSide(west, state);
         boolean plateE = this.buildSolidSide(east, state);
         
-        if (connectW || connectE)
-        {
-            plateN = false;
-            plateS = false;
-        }
+        //No plate on the sides which glass is facing
         if (connectN || connectS)
         {
-            plateW = false;
-            plateE = false;
+            plateW = plateE = false;
+        }
+        if (connectW || connectE)
+        {
+            plateN = plateS = false;
         }
         
+        //Singleton
+        if (!connectE && !connectW && !connectN && !connectS)
+        {
+            boolean prefEW = false;
+            if (below.getBlock() == this)
+            {
+                prefEW = (isConnectedEW(below, worldIn, pos.down()) || isPreferenceEW(below, worldIn, pos.down()));
+            }
+            else if (above.getBlock() == this)
+            {
+                prefEW = (isConnectedEW(above, worldIn, pos.up()) || isPreferenceEW(above, worldIn, pos.up()));
+            }
+
+            if (this.isPreferenceEW(state, worldIn, pos))
+                prefEW = true;
+
+            if (prefEW)
+            {
+                plateN = plateS = false;
+            }
+            else
+            {
+                plateW = plateE = false;
+            }
+        }
+             
         float posGlass = 0.375F;
         float posBase = 0.225F;
         float xMin = plateU || plateD || plateN || plateS ? posBase : posGlass;
@@ -381,7 +406,21 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
     protected boolean buildSolidSide(IBlockState off, IBlockState blockState)
     {
-        return !(off.getBlock() instanceof BlockSpaceGlass);
+        return !(off.getBlock() == this);
+    }
+
+    protected boolean buildSolidSideUD(BlockPos pos, EnumFacing testUD, IBlockAccess worldIn, IBlockState blockState)
+    {
+        BlockPos offPos = pos.offset(testUD, 1);
+        IBlockState off = worldIn.getBlockState(offPos);
+        if (off.getBlock() != this) return true;
+        int connThis = (isConnectedEW(blockState, worldIn, pos) ? 2 : 0) + (isConnectedNS(blockState, worldIn, pos) ? 1 : 0);
+        int connOther = (isConnectedEW(off, worldIn, offPos) ? 2 : 0) + (isConnectedNS(off, worldIn, offPos) ? 1 : 0);
+        if (connThis == 0 || connOther == 0)
+            return false;
+        if (connThis != connOther)
+            return true;
+        return false;
     }
 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
@@ -398,8 +437,8 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         boolean connectW = this.canPaneConnectToBlock(west, state);
         boolean connectE = this.canPaneConnectToBlock(east, state);
         
-        boolean plateD = this.buildSolidSide(below, state);
-        boolean plateU = this.buildSolidSide(above, state);
+        boolean plateD = buildSolidSideUD(pos, EnumFacing.DOWN, worldIn, state);
+        boolean plateU = buildSolidSideUD(pos, EnumFacing.UP, worldIn, state);
         boolean plateN = this.buildSolidSide(north, state);
         boolean plateS = this.buildSolidSide(south, state);
         boolean plateW = this.buildSolidSide(west, state);
@@ -440,62 +479,60 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             return getModel(state, 1, rot, plateD, plateS, plateN, plateU, 0);
         }
         
+//        EnumFacing testUD = EnumFacing.UP;
+//        if (plateU && !plateD)           
+//        {
+//            testUD = EnumFacing.DOWN;
+//        }
+//        if (plateD && !plateU)           
+//        {
+//            testUD = EnumFacing.UP;
+//        }
+
         // Two glass connections in a flat plane - this also covers connected flat on one side only
         if (connectW && connectE || connections == 1 && (connectW || connectE))
         {
             rot = GlassRotation.E;
-            if (plateU && !plateD)           
+            if (connectW && !plateU && buildSolidSideUD(pos.west(), EnumFacing.UP, worldIn, west))
             {
-                if (connectW && !(worldIn.getBlockState(pos.west().down()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece = 1;
-                }
-                if (connectE && !(worldIn.getBlockState(pos.east().down()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece++;
-                    if (connectW && connectE) rot = GlassRotation.W;
-                }
+                cornerPiece++;
             }
-            if (plateD && !plateU)           
+            if (connectW && !plateD && buildSolidSideUD(pos.west(), EnumFacing.DOWN, worldIn, west))
             {
-                if (connectW && !(worldIn.getBlockState(pos.west().up()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece = 1;
-                }
-                if (connectE && !(worldIn.getBlockState(pos.east().up()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece++;
-                    if (connectW && connectE) rot = GlassRotation.W;
-                }
+                cornerPiece+=5;
+            }
+            if (connectE && !plateU && buildSolidSideUD(pos.east(), EnumFacing.UP, worldIn, east))
+            {
+                cornerPiece++;
+                if (connectW) rot = GlassRotation.W;
+            }
+            if (connectE && !plateD && buildSolidSideUD(pos.east(), EnumFacing.DOWN, worldIn, east))
+            {
+                cornerPiece+=5;
+                if (connectW) rot = GlassRotation.W;
             }
             return getModel(state, 1, rot, plateD, plateW, plateE, plateU, cornerPiece);
         }
 
         if (connectN && connectS || connections == 1)
         {
-            if (plateU && !plateD)           
+            if (connectN && !plateU && buildSolidSideUD(pos.north(), EnumFacing.UP, worldIn, north))
             {
-                if (connectN && !(worldIn.getBlockState(pos.north().down()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece = 1;
-                    if (connectN && connectS) rot = GlassRotation.S;
-                }
-                if (connectS && !(worldIn.getBlockState(pos.south().down()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece++;
-                }
+                cornerPiece++;
+                if (connectN && connectS) rot = GlassRotation.S;
             }
-            if (plateD && !plateU)           
+            if (connectN && !plateD && buildSolidSideUD(pos.north(), EnumFacing.DOWN, worldIn, north))
             {
-                if (connectN && !(worldIn.getBlockState(pos.north().up()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece = 1;
-                    if (connectN && connectS) rot = GlassRotation.S;
-                }
-                if (connectS && !(worldIn.getBlockState(pos.south().up()).getBlock() instanceof BlockSpaceGlass))
-                {
-                    cornerPiece++;
-                }
+                cornerPiece+=5;
+                if (connectN && connectS) rot = GlassRotation.S;
+            }
+            if (connectS && !plateU && buildSolidSideUD(pos.south(), EnumFacing.UP, worldIn, south))
+            {
+                cornerPiece++;
+            }
+            if (connectS && !plateD && buildSolidSideUD(pos.south(), EnumFacing.DOWN, worldIn, south))
+            {
+                cornerPiece+=5;
             }
             return getModel(state, 1, rot, plateD, plateS, plateN, plateU, cornerPiece);
         }
@@ -546,12 +583,10 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             }
 
             if (plateU || plateD)
-                //TODO: two corner case
-                return state.withProperty(MODEL, cornerPiece > 0 ? GlassModel.STANDARD_S1B : GlassModel.STANDARD_S1).withProperty(ROTATION, rot.get(y, plateU ? 2 : 0));
+                return state.withProperty(MODEL, getCornerModel(cornerPiece)).withProperty(ROTATION, rot.get(y, (plateU || cornerPiece > 4) ? 2 : 0));
 
             if (plateR || plateL)
-                //TODO: two corner case
-                return state.withProperty(MODEL, cornerPiece > 0 ? GlassModel.STANDARD_S1B : GlassModel.STANDARD_S1).withProperty(ROTATION, rot.get(plateL ? (y ^ 2) : y, 1));
+                return state.withProperty(MODEL, getCornerModel(cornerPiece)).withProperty(ROTATION, rot.get(plateL ? (y ^ 2) : y, 1 + ( cornerPiece > 4 ? 2 : 0)));
             
             return state.withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, rot.get(y, 0));
         case 2:
@@ -584,6 +619,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         }
     }
     
+    private Comparable getCornerModel(int cornerPiece)
+    {
+        if ((cornerPiece & 2) == 2)
+            return GlassModel.STANDARD_S1BB;
+        return cornerPiece > 0 ? GlassModel.STANDARD_S1B : GlassModel.STANDARD_S1;
+    }
+
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -636,6 +678,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         CROSSROADS("joinx"),
         STANDARD_S1("standards1"),
         STANDARD_S1B("standards1b"),
+        STANDARD_S1BB("standards1bb"),
         STANDARD_S2("standards2"),
         STANDARD_S2A("standards2a"),
         STANDARD_S2B("standards2b"),

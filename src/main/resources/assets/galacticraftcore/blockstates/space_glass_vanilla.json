@@ -32,6 +32,7 @@
            "standard": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#none", "Translucent": "galacticraftcore:space_glass_vanilla#ns_g" }},
            "standards1": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s1_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s1_g" }},
            "standards1b": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s1b_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s1b_g" }},
+           "standards1bb": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s1bb_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s1bb_g" }},
            "standards2": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s2_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s2_g" }},
            "standards2a": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s2a_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s2a_g" }},
            "standards2b": { "custom": { "base": "galacticraftcore:space_glass_vanilla#base", "Solid": "galacticraftcore:space_glass_vanilla#ns_s2b_s", "Translucent": "galacticraftcore:space_glass_vanilla#ns_s2b_g" }},
@@ -58,7 +59,10 @@
         "ns_s1_g": [{  "model": "galacticraftcore:glass/glass_ns_s1" }],
 
         "ns_s1b_s": [{  "model": "galacticraftcore:glass/base_ns_s1b"  }],
-        "ns_s1b_g": [{  "model": "galacticraftcore:glass/glass_ns_s1" }],
+        "ns_s1b_g": [{  "model": "galacticraftcore:glass/glass_ns_s1b" }],
+
+        "ns_s1bb_s": [{  "model": "galacticraftcore:glass/base_ns_s1bb"  }],
+        "ns_s1bb_g": [{  "model": "galacticraftcore:glass/glass_ns_s1bb" }],
 
         "ns_s2_s": [{  "model": "galacticraftcore:glass/base_ns_s2"  }],
         "ns_s2_g": [{  "model": "galacticraftcore:glass/glass_ns_s2" }],
