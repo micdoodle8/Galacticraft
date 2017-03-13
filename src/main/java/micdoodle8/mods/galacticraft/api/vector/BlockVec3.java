@@ -396,7 +396,7 @@ public class BlockVec3 implements Cloneable
             return null;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.isBlockLoaded(pos) ? world.getTileEntity(pos) : null;
+        return world.isBlockLoaded(pos, false) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -431,7 +431,7 @@ public class BlockVec3 implements Cloneable
             return null;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.isBlockLoaded(pos) ? world.getTileEntity(pos) : null;
+        return world.isBlockLoaded(pos, false) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -501,7 +501,7 @@ public class BlockVec3 implements Cloneable
             return null;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.isBlockLoaded(pos) ? world.getBlockState(pos).getBlock() : null;
+        return world.isBlockLoaded(pos, false) ? world.getBlockState(pos).getBlock() : null;
     }
 
     public int getBlockMetadata(IBlockAccess world)
@@ -567,7 +567,7 @@ public class BlockVec3 implements Cloneable
 
     public boolean blockExists(World world)
     {
-        return world.isBlockLoaded(new BlockPos(this.x, this.y, this.z));
+        return world.isBlockLoaded(new BlockPos(this.x, this.y, this.z), false);
     }
 
     public void setSideDone(int side)

@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+//import appeng.api.AEApi;
+//import appeng.api.parts.IPartHelper;
+//import cpw.mods.fml.relauncher.Side;
+//import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -8,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNull;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -18,6 +23,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -159,7 +165,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()));
         }
 
-        if (CompatibilityManager.isBCraftLoaded() || GCBlocks.registeringSorted)
+        if (CompatibilityManager.isBCraftTransportLoaded() || GCBlocks.registeringSorted)
         {
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_ITEM_COBBLESTONEPIPE.getMeta()));
             par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta()));
@@ -185,20 +191,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 String pipeName = EnumEnclosedBlockType.values()[i + 7].getBCPipeType();
                 pipeName = pipeName.substring(0, 1).toLowerCase() + pipeName.substring(1);
                 pipeItemsBC[i] = (Item) clazzBC.getField(pipeName).get(null);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        //Now update the cached classes in CompatibilityManager
-        //This is needed for BCCompat compatibility, as that overrides the basic BlockGenericPipe
-        if (pipeItemsBC[0] != null)
-        {
-            try
-            {
-                Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
-                blockPipeBC = (Block) clazzBC.getField("genericPipeBlock").get(null);
             }
             catch (Exception e)
             {
@@ -262,7 +254,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
         else if (metadata <= 12)
         {
-            if (CompatibilityManager.isBCraftLoaded())
+            if (CompatibilityManager.isBCraftTransportLoaded())
             {
                 if (blockPipeBC != null)
                 {
@@ -363,7 +355,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
         else if (metadata <= 12)
         {
-            if (CompatibilityManager.isBCraftLoaded())
+            if (CompatibilityManager.isBCraftTransportLoaded())
             {
                 try
                 {
@@ -377,15 +369,19 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
         else if (metadata <= EnumEnclosedBlockType.ME_CABLE.getMeta())
         {
-//            if (CompatibilityManager.isAppEngLoaded())
-//            {
-//                try
+            if (CompatibilityManager.isAppEngLoaded())
+            {
+//            	//Emulate Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class.getName() )
+//            	try
 //                {
-//                    Class<?> clazz = Class.forName("appeng.tile.networking.TileCableBus");
+//                    IPartHelper apiPart = AEApi.instance().partHelper();
+//                    Class<?> clazzApiPart = Class.forName("appeng.core.api.ApiPart");
+//                    Class clazz = (Class) clazzApiPart.getDeclaredMethod("getCombinedInstance", String.class).invoke(apiPart, "appeng.tile.networking.TileCableBus");
+//                    //Needs to be: appeng.parts.layers.LayerITileStorageMonitorable_TileCableBus
 //                    return (TileEntity) clazz.newInstance();
 //                }
 //                catch (Exception e) { e.printStackTrace(); }
-//            }
+            }
         }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())
         {
@@ -396,7 +392,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             return new TileEntityAluminumWire(2);
         }
 
-        return null;
+        return new TileEntityNull();
     }
 
     @Override
@@ -417,6 +413,20 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         return true;
     }
 
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        int metadata = stack.getItemDamage();
+        if (metadata >= EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta() && metadata <= EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta())
+        {
+            EnumEnclosedBlockType type = EnumEnclosedBlockType.byMetadata(metadata);
+            if (CompatibilityManager.isBCraftTransportLoaded() && type != null && type.getBCPipeType() != null)
+            {
+                BlockEnclosed.initialiseBCPipe(worldIn, pos, metadata);
+            }
+        }       
+    }
+
     public static void initialiseBCPipe(World world, BlockPos pos, int metadata)
     {
         try
@@ -432,20 +442,11 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             TileEntity tilePipe = world.getTileEntity(pos);
             Class<?> clazzTilePipe = tilePipe.getClass();
 
-            Method createPipe = null;
-            for (Method m : clazzBlockPipe.getDeclaredMethods())
+            if (CompatibilityManager.methodBCBlockPipe_createPipe != null)
             {
-                if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
-                {
-                    createPipe = m;
-                    break;
-                }
-            }
-            if (createPipe != null)
-            {
-                Object pipe = createPipe.invoke(null, pipeItem);
+                Object pipe = CompatibilityManager.methodBCBlockPipe_createPipe.invoke(null, pipeItem);
                 Method initializePipe = null;
-                for (Method m : clazzTilePipe.getDeclaredMethods())
+                for (Method m : clazzTilePipe.getMethods())
                 {
                     if (m.getName().equals("initialize") && m.getParameterTypes().length == 1)
                     {

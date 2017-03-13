@@ -78,6 +78,10 @@ public class ThreadFindSeal
             }
 
             this.looping.set(true);
+            for (TileEntityOxygenSealer eachSealer : sealers)
+            {
+                eachSealer.threadSeal = this;
+            }
 
 //            if (ConfigManagerCore.enableSealerMultithreading)
 //            {
@@ -317,6 +321,8 @@ public class ThreadFindSeal
         // enabling just that one and disabling all the others)
         TileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.clone().translate(0, -1, 0));
 
+        //TODO: if multi-threaded, this final code block giving access to the sealer tiles needs to be threadsafe
+        
         // If it is sealed, cooldown can be extended as frequent checks are not needed
         if (headSealer != null)
         {
@@ -337,18 +343,18 @@ public class ThreadFindSeal
             }
         }
 
+        this.sealedFinal.set(this.sealed);
         this.looping.set(false);
 
         if (ConfigManagerCore.enableDebug)
         {
             long time3 = System.nanoTime();
+            float total = (time3 - time1) / 1000000.0F;
+            float looping = (time2 - time1) / 1000000.0F;
+            float replacing = (time3 - time2) / 1000000.0F; 
             GCLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
-            GCLog.info("   Sealed: " + this.sealed);
-            GCLog.info("   Loop Time taken: " + (time2 - time1) / 1000000.0D + "ms");
-            GCLog.info("   Place Time taken: " + (time3 - time2) / 1000000.0D + "ms");
-            GCLog.info("   Total Time taken: " + (time3 - time1) / 1000000.0D + "ms");
-            GCLog.info("   Found: " + this.sealers.size() + " sealers");
-            GCLog.info("   Looped through: " + this.checked.size() + " blocks");
+            GCLog.info("   Sealed: " + this.sealed + "  ~  " + this.sealers.size() + " sealers  ~  " + (this.checked.size() - 1) + " blocks");
+            GCLog.info("   Total Time taken: " + String.format("%.2f", total) + "ms  ~  " + String.format("%.2f", looping) + " + " + String.format("%.2f", replacing) + "");
         }
 
         //Help the Garbage Collector
@@ -363,8 +369,6 @@ public class ThreadFindSeal
 //        if (this.breatheableToReplace != null) this.breatheableToReplace.clear();
 //        if (this.breatheableToReplaceBright != null) this.breatheableToReplaceBright.clear();
 //        if (this.otherSealers != null) this.otherSealers.clear();
-
-        this.sealedFinal.set(this.sealed);
     }
 
     private void makeSealGood(boolean ambientThermal)

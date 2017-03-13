@@ -166,7 +166,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
                 return worldIn.getBlockState(mainBlockPosition).getBlock().getBlockHardness(worldIn, pos);
             }
@@ -257,7 +257,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
                 Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
 
@@ -279,7 +279,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+	        if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
                 return world.getBlockState(mainBlockPosition).getBlock().getBedDirection(world, mainBlockPosition);
             }
@@ -296,7 +296,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
                 return world.getBlockState(mainBlockPosition).getBlock().isBed(world, mainBlockPosition, player);
             }
@@ -311,7 +311,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-        if (mainBlockPosition != null)
+        if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
         {
             world.getBlockState(mainBlockPosition).getBlock().setBedOccupied(world, mainBlockPosition, player, occupied);
         }
@@ -331,7 +331,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
 
-            if (mainBlockPosition != null)
+            if (mainBlockPosition != null && !mainBlockPosition.equals(target.getBlockPos()))
             {
                 effectRenderer.addBlockHitEffects(mainBlockPosition, target);
             }

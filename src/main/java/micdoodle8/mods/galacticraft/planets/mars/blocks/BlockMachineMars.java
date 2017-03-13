@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -43,7 +44,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-public class BlockMachineMars extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMachineMars extends BlockTileGC implements IShiftDescription, ISortableBlock, IPartialSealableBlock
 {
     public static final int TERRAFORMER_METADATA = 0;
     public static final int CRYOGENIC_CHAMBER_METADATA = 4;
@@ -387,5 +388,11 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+
+    public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
+    {
+	    int meta = getMetaFromState(world.getBlockState(pos)) & 12;
+		return meta != CRYOGENIC_CHAMBER_METADATA;
     }
 }

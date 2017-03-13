@@ -225,22 +225,17 @@ public class EventHandlerMars
         {
             IFuelDock dock = (IFuelDock) tile;
 
-            TileEntityLaunchController launchController = null;
-
             for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
             {
                 if (connectedTile instanceof TileEntityLaunchController)
                 {
-                    launchController = (TileEntityLaunchController) event.world.getTileEntity(((TileEntityLaunchController) connectedTile).getPos());
+                    final TileEntityLaunchController launchController = (TileEntityLaunchController) connectedTile;
+                    if (launchController.getEnergyStoredGC() > 0.0F && launchController.launchPadRemovalDisabled && !launchController.getDisabled(0))
+                    {
+                    	event.allow = false;
+                    	return;
+                    }
                     break;
-                }
-            }
-
-            if (launchController != null)
-            {
-                if (!launchController.getDisabled(0) && launchController.getEnergyStoredGC() > 0.0F)
-                {
-                    event.allow = !launchController.launchPadRemovalDisabled;
                 }
             }
         }

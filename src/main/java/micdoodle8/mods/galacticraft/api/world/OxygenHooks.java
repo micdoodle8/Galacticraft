@@ -149,7 +149,7 @@ public class OxygenHooks
                 {
                     oxygenUtilClass = Class.forName("micdoodle8.mods.galacticraft.core.util.OxygenUtil");
                 }
-                torchHasOxygenMethod = oxygenUtilClass.getDeclaredMethod("isAABBInBreathableAirBlock", World.class, Block.class, int.class, int.class, int.class);
+                torchHasOxygenMethod = oxygenUtilClass.getDeclaredMethod("checkTorchHasOxygen", World.class, Block.class, int.class, int.class, int.class);
             }
             return (Boolean)torchHasOxygenMethod.invoke(null, world, block, x, y, z);
         }

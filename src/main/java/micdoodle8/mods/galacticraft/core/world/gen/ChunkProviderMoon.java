@@ -336,8 +336,14 @@ public class ChunkProviderMoon extends ChunkProviderGenerate
     @Override
     public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
-        return biomegenbase.getSpawnableList(creatureType);
+        if (creatureType == EnumCreatureType.MONSTER)
+        {
+            return BiomeGenBaseMoon.moonFlat.getSpawnableList(creatureType);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     @Override
