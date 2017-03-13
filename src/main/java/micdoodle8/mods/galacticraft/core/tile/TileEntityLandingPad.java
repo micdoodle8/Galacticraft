@@ -205,11 +205,11 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     
     private void testConnectedTile(int x, int z, HashSet<ILandingPadAttachable> connectedTiles)
     {
-        BlockPos p = new BlockPos(x, this.getPos().getY(), z);
-        if (!this.worldObj.isBlockLoaded(pos, false))
+        BlockPos testPos = new BlockPos(x, this.getPos().getY(), z);
+        if (!this.worldObj.isBlockLoaded(testPos, false))
             return;
 
-        final TileEntity tile = this.worldObj.getTileEntity(pos);
+        final TileEntity tile = this.worldObj.getTileEntity(testPos);
 
         if (tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
         {

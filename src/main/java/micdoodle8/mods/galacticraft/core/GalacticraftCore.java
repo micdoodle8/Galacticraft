@@ -133,10 +133,6 @@ public class GalacticraftCore
         GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_blocks", null, 0, null);
         GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", null, 0, null);
 
-        //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker
-        BiomeGenBase biomeOrbitPreInit = BiomeGenBaseOrbit.space;
-        BiomeGenBase biomeMoonPreInit = BiomeGenBaseMoon.moonFlat;
-
         GCFluids.registerOilandFuel();
 
 //        if (Loader.isModLoaded("PlayerAPI"))
@@ -150,6 +146,10 @@ public class GalacticraftCore
         proxy.registerVariants();
 
         GCFluids.registerFluids();
+
+        //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
+        BiomeGenBase biomeOrbitPreInit = BiomeGenBaseOrbit.space;
+        BiomeGenBase biomeMoonPreInit = BiomeGenBaseMoon.moonFlat;
     }
 
     @EventHandler

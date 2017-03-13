@@ -494,9 +494,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             for (ILandingPadAttachable updatedTile : connectedTiles)
             {
-                if (controllerClass.isInstance(updatedTile))
+               if (controllerClass.isInstance(updatedTile))
                 {
-
                     Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
 
                     if (autoLaunchEnabled)
