@@ -15,11 +15,17 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
 {
@@ -33,6 +39,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
     private ItemStack[] containingItems = new ItemStack[3];
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
+    private static Random randnum = new Random();
 
     public TileEntityElectricIngotCompressor()
     {
@@ -384,7 +391,87 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
                 return stackInSlot != null && stackInSlot.isItemEqual(itemStack);
         	}
-        	return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
+        	return this.isItemCompressorInput(itemStack, slotID - 3);
+        }
+
+        return false;
+    }
+
+    public boolean isItemCompressorInput(ItemStack stack, int id)
+    {
+        for (IRecipe recipe : CompressorRecipes.getRecipeList())
+        {
+            if (recipe instanceof ShapedRecipes)
+            {
+                if (id >= ((ShapedRecipes) recipe).recipeItems.length) continue;
+            	ItemStack itemstack1 = ((ShapedRecipes) recipe).recipeItems[id];
+                if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+                {
+                	for (int i = 0; i < ((ShapedRecipes) recipe).recipeItems.length; i++)
+                	{
+                		if (i == id) continue;
+                        ItemStack itemstack2 = ((ShapedRecipes) recipe).recipeItems[i];
+                        if (stack.getItem() == itemstack2.getItem() && (itemstack2.getItemDamage() == 32767 || stack.getItemDamage() == itemstack2.getItemDamage()))
+                        {
+                        	ItemStack is3 = this.getStackInSlot(id + 3);
+                        	ItemStack is4 = this.getStackInSlot(i + 3);
+                        	return is3 == null || is4 != null && is3.stackSize < is4.stackSize;
+                        }
+                	}
+                	return true;
+                }
+            }
+            else if (recipe instanceof ShapelessOreRecipe)
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipe) recipe).getInput());
+                
+                Iterator<Object> req = required.iterator();
+
+                int match = 0;
+
+                while (req.hasNext())
+                {
+                    Object next = req.next();
+
+                    if (next instanceof ItemStack)
+                    {
+                        if ( OreDictionary.itemMatches((ItemStack)next, stack, false)) match++;
+                    }
+                    else if (next instanceof ArrayList)
+                    {
+                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>)next).iterator();
+                        while (itr.hasNext())
+                        {
+                            if (OreDictionary.itemMatches(itr.next(), stack, false))
+                            {
+                            	match++;
+                            	break;
+                            }
+                        }
+                    }
+                }
+                
+                if (match == 0) continue;
+                
+                if (match == 1) return true;
+                
+                //Shapeless recipe can go into (match) number of slots
+                int slotsFilled = 0;
+                for (int i = 3; i < 12; i++)
+                {
+                	ItemStack inMatrix = this.getStackInSlot(i); 
+                	if (inMatrix != null && inMatrix.isItemEqual(stack))
+                		slotsFilled++;
+                }
+                System.err.println("Comp " + slotsFilled + " " + match + " " + id);
+                if (slotsFilled < match)
+                {
+                	return this.getStackInSlot(id + 3) == null;
+                }
+                	
+                return randnum.nextInt(match) == 0;
+            }
         }
 
         return false;

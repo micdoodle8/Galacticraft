@@ -530,7 +530,11 @@ public class RecipeManagerGC
     	{
     		ItemStack silicon;
     		if (j == 0) silicon = new ItemStack(GCItems.basicItem, 1, 2);
-    		else silicon = silicons.get(j - 1); 
+    		else
+    		{
+    			silicon = silicons.get(j - 1);
+    			if (silicon.getItem() == GCItems.basicItem && silicon.getItemDamage() == 2) continue;
+    		}
     		CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.dye, 1, 4) });
     		CircuitFabricatorRecipes.addRecipe(basicWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Blocks.redstone_torch) });
     		CircuitFabricatorRecipes.addRecipe(advancedWafers, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(Items.repeater) });

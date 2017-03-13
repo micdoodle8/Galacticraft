@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -245,6 +246,7 @@ public class GCItems
 
         OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.meteoricIronIngot, 1, 0));
+        OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
     }
 
     public static void registerHarvestLevels()
