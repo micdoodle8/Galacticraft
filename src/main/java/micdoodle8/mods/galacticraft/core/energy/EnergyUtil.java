@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
 import buildcraft.api.mj.MjAPI;
+import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cofh.api.energy.IEnergyConnection;
@@ -11,7 +12,9 @@ import ic2.api.energy.tile.*;
 import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
@@ -23,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class EnergyUtil
 {
@@ -48,6 +52,16 @@ public class EnergyUtil
     private static Class<?> clazzPipeWood = null;  
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
     
+    
+    /**
+     * Tests whether an IConductor tile (a GC Aluminium Wire) can connect on each its 6 sides
+     * Returns a 6 member array, containing for each of the 6 standard directions:
+     * the connectable TileEntity if a connection was found, or else null.
+     * (This saves on the calling code having to use World.getTileEntity(x, y, z) a second time.)
+     * 
+     * @param tile
+     * @return
+     */
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
         final TileEntity[] adjacentConnections = new TileEntity[6];
@@ -57,6 +71,8 @@ public class EnergyUtil
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
+            
+            if (tileEntity == null) continue;
 
             if (tileEntity instanceof IConnector)
             {
@@ -91,17 +107,10 @@ public class EnergyUtil
             if (isBCReallyLoaded)
             {
                 //Do not connect GC wires directly to BC pipes of any type 
-                try
-                {
-                    if (clazzPipeTile.isInstance(tileEntity))
-                    {
-//                        Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
-//                        if (clazzPipeWood.isInstance(pipe))
-//                        {
-                          continue;
-//                        }
-                    }
-                } catch (Exception e) { }
+            	if (clazzPipeTile.isInstance(tileEntity))
+            	{
+            		continue;
+            	}
             }
             
             if (isIC2Loaded && tileEntity instanceof IEnergyTile)
@@ -172,6 +181,111 @@ public class EnergyUtil
         }
 
         return adjacentConnections;
+    }
+
+    /**
+     * Similar to getAdjacentPowerConnections but specific to energy receivers only
+     * Adds the adjacent power connections found to the passed acceptors, directions parameter Lists
+     * (Note: an acceptor can therefore sometimes be entered in the Lists more than once, with a different direction each time:
+     * this would represent GC wires connected to the acceptor on more than one side.)
+     * 
+     * @param conductor
+     * @param acceptors
+     * @param directions
+     * @throws Exception
+     */
+    public static void setAdjacentPowerConnections(TileEntity conductor, List <TileEntity> acceptors, List <ForgeDirection> directions) throws Exception
+    {
+        final BlockVec3 thisVec = new BlockVec3(conductor);
+        final World world = conductor.getWorldObj(); 
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        {
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
+            
+            if (tileEntity == null || tileEntity instanceof IConductor)  //world.getTileEntity will not have returned an invalid tile, invalid tiles are null
+            {
+            	continue;
+            }
+            
+            ForgeDirection sideFrom = direction.getOpposite();
+
+            if (tileEntity instanceof IElectrical)
+            {
+                if (((IElectrical) tileEntity).canConnect(sideFrom, NetworkType.POWER))
+                {
+                    acceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
+            }
+            
+            if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+            {
+                if (clazzMekCable != null && clazzMekCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+                if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(sideFrom))
+                {
+                    acceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
+            }
+            
+            if (isBCReallyLoaded && clazzPipeTile.isInstance(tileEntity))
+            {
+            	continue;
+            }
+
+            if (isIC2Loaded && tileEntity instanceof IEnergyAcceptor)
+            {
+                if (tileEntity instanceof IEnergyConductor)
+                {
+                    continue;
+                }
+                if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom((TileEntity) conductor, sideFrom))
+                {
+                    acceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
+            }
+            
+            if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
+            {
+            	if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+            	{
+            		continue;
+            	}
+            	if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
+            	{
+            		continue;
+            	}
+
+            	if (((IEnergyConnection) tileEntity).canConnectEnergy(sideFrom))
+            	{
+            		acceptors.add(tileEntity);
+            		directions.add(sideFrom);
+            	}
+            	continue;
+            }
+            
+            if (isBC6Loaded && MjAPI.getMjBattery(tileEntity, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
+            {
+            	acceptors.add(tileEntity);
+            	directions.add(sideFrom);
+            }
+            else if (isBCLoaded && tileEntity instanceof IPowerReceptor)
+            {
+            	if (((IPowerReceptor) tileEntity).getPowerReceiver(sideFrom) != null && (!(tileEntity instanceof IPowerEmitter) || !((IPowerEmitter)tileEntity).canEmitPowerFrom(sideFrom)))
+            	{
+            		acceptors.add(tileEntity);
+            		directions.add(sideFrom);
+            	}
+            }
+        }
+        return;
     }
     
     public static float otherModsEnergyTransfer(TileEntity tileAdj, ForgeDirection inputAdj, float toSend, boolean simulate)
@@ -472,6 +586,9 @@ public class EnergyUtil
                 e.printStackTrace();
             }
         }
+        if (clazzPipeTile == null)
+        	isBCReallyLoaded = false;
+        
         return true;
     }
 }

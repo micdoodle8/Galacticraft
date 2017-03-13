@@ -1,17 +1,13 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
 import buildcraft.api.mj.MjAPI;
-import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.FMLLog;
-import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
-import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
@@ -627,68 +623,12 @@ public class EnergyNetwork implements IElectricityNetwork
             //(Chunk loading can change the network if new conductors are found)
             for (IConductor conductor : conductorsCopy)
             {
-                final TileEntity[] adjacentConnections = EnergyUtil.getAdjacentPowerConnections((TileEntity) conductor);
-                for (int i = 0; i < 6; i++)
-                {
-                    TileEntity acceptor = adjacentConnections[i];
-
-                    if (!(acceptor instanceof IConductor) && acceptor != null && !acceptor.isInvalid())
-                    {
-                        // The direction 'sideFrom' is from the perspective of the acceptor, that's more useful than the conductor's perspective
-                        ForgeDirection sideFrom = ForgeDirection.getOrientation(i ^ 1);
-
-                        if (acceptor instanceof IElectrical)
-                        {
-                            if (((IElectrical) acceptor).canConnect(sideFrom, NetworkType.POWER))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                        else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-                        {
-                            if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                        else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor)
-                        {
-                            if (((IEnergyAcceptor) acceptor).acceptsEnergyFrom((TileEntity) conductor, sideFrom))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-						else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
-						{
-							if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
-							{
-								this.connectedAcceptors.add(acceptor);
-								this.connectedDirections.add(sideFrom);
-							}
-						}
-                        else if (isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6 && MjAPI.getMjBattery(acceptor, MjAPI.DEFAULT_POWER_FRAMEWORK, sideFrom) != null)
-                        {
-                            this.connectedAcceptors.add(acceptor);
-                            this.connectedDirections.add(sideFrom);
-                        }
-                        else if (isBCLoaded && acceptor instanceof IPowerReceptor)
-                        {
-                            if (((IPowerReceptor) acceptor).getPowerReceiver(sideFrom) != null && (!(acceptor instanceof IPowerEmitter) || !((IPowerEmitter)acceptor).canEmitPowerFrom(sideFrom)))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                    }
-                }
+                EnergyUtil.setAdjacentPowerConnections((TileEntity) conductor, this.connectedAcceptors, this.connectedDirections);
             }
         }
         catch (Exception e)
         {
-            FMLLog.severe("Energy Network: Error when trying to refresh list of power acceptors.");
+            FMLLog.severe("GC Aluminium Wire: Error when testing whether another mod's tileEntity can accept energy.");
             e.printStackTrace();
         }
     }
