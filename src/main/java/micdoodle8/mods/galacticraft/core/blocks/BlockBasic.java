@@ -183,7 +183,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tabs, List<ItemStack> list)
     {
-        for (int var4 = 3; var4 < 13; ++var4)
+        for (int var4 = 3; var4 < 12; ++var4)
         {
             list.add(new ItemStack(itemIn, 1, var4));
         }

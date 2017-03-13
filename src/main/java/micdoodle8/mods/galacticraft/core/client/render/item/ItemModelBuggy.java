@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
 public class ItemModelBuggy extends ModelTransformWrapper
@@ -23,7 +25,11 @@ public class ItemModelBuggy extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.175F);
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setScale(0.1085F);
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(new Vector3f(0.2F, -0.3F, 0.0F));
@@ -31,9 +37,6 @@ public class ItemModelBuggy extends ModelTransformWrapper
             mul.setIdentity();
             mul.rotY(-0.3F);
             ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotX((float) (Math.PI / 4.0F));
-//            ret.mul(mul);
             return ret;
         }
 

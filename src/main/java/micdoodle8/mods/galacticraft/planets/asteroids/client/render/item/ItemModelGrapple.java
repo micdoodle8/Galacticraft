@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
 public class ItemModelGrapple extends ModelTransformWrapper
@@ -23,7 +25,11 @@ public class ItemModelGrapple extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(1.0F);
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setScale(0.6F);
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(new Vector3f(-0.2F, -0.1F, 0.0F));

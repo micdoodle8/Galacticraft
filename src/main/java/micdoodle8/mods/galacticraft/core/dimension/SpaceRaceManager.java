@@ -149,7 +149,7 @@ public class SpaceRaceManager
             }
             else
             {
-                for (WorldServer server : toPlayer.worldObj.getMinecraftServer().worldServers)
+                for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
                 {
                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, server.provider.getDimension(), objList), server.provider.getDimension());
                 }

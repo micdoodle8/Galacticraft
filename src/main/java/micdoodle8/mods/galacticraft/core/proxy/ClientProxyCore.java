@@ -83,6 +83,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -157,6 +159,8 @@ public class ClientProxyCore extends CommonProxyCore
                 return BlockFallenMeteor.colorMultiplier(worldIn, pos);
             }
         }, new Block[] { GCBlocks.fallenMeteor });
+
+        GCSounds.registerSounds();
     }
 
     @Override
@@ -348,7 +352,8 @@ public class ClientProxyCore extends CommonProxyCore
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.6F, 0.04F, 0.0F), new javax.vecmath.Quat4f(), new javax.vecmath.Vector3f(0.42F, 0.42F, 0.42F), new javax.vecmath.Quat4f()));
+        Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()));
         replaceModelDefault(event, "rocket_t1", "rocketT1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)

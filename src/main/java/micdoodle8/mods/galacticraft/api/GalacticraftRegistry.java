@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -210,7 +209,7 @@ public class GalacticraftRegistry
     public static DimensionType registerDimension(String name, String suffix, int id, Class<? extends WorldProvider> provider, boolean keepLoaded) throws IllegalArgumentException
     {
         DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
-    	DimensionManager.registerDimension(id, type);
+//    	DimensionManager.registerDimension(id, type);
         GalacticraftRegistry.dimensionTypeIDs.add(id);
         return type;
     }

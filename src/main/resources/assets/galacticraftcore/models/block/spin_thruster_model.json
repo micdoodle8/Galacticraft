@@ -1,6 +1,14 @@
 {
+"parent": "block/block",
 "textures": {
     "texture": "galacticraftcore:blocks/thruster"
+},
+"display": {
+	"gui": {
+		"rotation": [ 30, 315, 0 ],
+		"translation": [ -2.0, -1.0, 0.0 ],
+		"scale": [ 0.7, 0.7, 0.7 ]
+	}
 },
 "elements": [ 
 {

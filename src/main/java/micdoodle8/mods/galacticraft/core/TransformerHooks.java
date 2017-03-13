@@ -165,8 +165,10 @@ public class TransformerHooks
         return world.prevRainingStrength + (world.rainingStrength - world.prevRainingStrength) * partialTicks;
     }
 
-    public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator)
     {
+        IChunkProvider chunkProvider = world.getChunkProvider();
+
         if (!(world.provider instanceof IGalacticraftWorldProvider))
         {
             return false;

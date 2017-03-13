@@ -1068,7 +1068,10 @@ public class WorldUtil
             {
                 for (Integer registeredID : WorldUtil.registeredPlanets)
                 {
-                    DimensionManager.unregisterDimension(registeredID);
+                    if (DimensionManager.isDimensionRegistered(registeredID))
+                    {
+                        DimensionManager.unregisterDimension(registeredID);
+                    }
                 }
             }
             WorldUtil.registeredPlanets = new ArrayList<Integer>();

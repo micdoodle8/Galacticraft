@@ -23,7 +23,10 @@ public class ItemModelBeamReflector extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.24F, -0.05F, 0.24F));
+            mul.setTranslation(new Vector3f(-0.42F, -0.05F, 0.24F));
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setScale(0.6F);
             ret.mul(mul);
             return ret;
         }

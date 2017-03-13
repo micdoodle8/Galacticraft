@@ -23,13 +23,16 @@ public class ItemModelTelepad extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(-0.14F, -0.36F, 0.24F));
+            mul.setTranslation(new Vector3f(0.12F, -0.25F, 0.24F));
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotX((float) Math.PI / 12.0F);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotY((float) Math.PI / 5.0F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setScale(1.3F);
+            mul.setScale(0.17F);
             ret.mul(mul);
             return ret;
         }

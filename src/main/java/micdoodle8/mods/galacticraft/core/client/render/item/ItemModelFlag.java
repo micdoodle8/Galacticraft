@@ -27,13 +27,16 @@ public class ItemModelFlag extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.4F);
+            mul.setScale(0.25F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.2F, -0.8F, 0.0F));
+            mul.setTranslation(new Vector3f(-0.22F, -1.5F, 0.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) (Math.PI / 2.0F));
+            mul.rotX(0.5F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotY((float) ((Math.PI / 4.0F) - (Math.PI / 2.0F)));
             ret.mul(mul);
             return ret;
         }
@@ -93,10 +96,10 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.setScale(0.5F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.15F, 0.45F, 0.15F));
+            mul.setTranslation(new Vector3f(0.55F, -0.4F, 0.55F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotX((float) -(Math.PI / 2.0F));
+//            mul.rotX((float) (Math.PI / 2.0F));
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(new Vector3f(0.0F, 0.5F, 0.0F));
