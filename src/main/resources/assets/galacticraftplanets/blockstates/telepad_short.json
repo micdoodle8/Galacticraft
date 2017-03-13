@@ -1,11 +1,10 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "galacticraftplanets:telepadShort.obj",
-    "custom": {
-      "flip-v": true
+  "variants": {
+     "normal": {
+         "model": "galacticraftplanets:telepadShort.obj",
+         "textures": { "particle": "galacticraftcore:blocks/buggy_pad_full" },
+         "custom": { "flip-v": true  }
+        }
     }
-  },
-  "variants": { 
-  }
 }

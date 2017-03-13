@@ -34,7 +34,7 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "reflector.obj"));
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "block/reflector.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
                 Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()

@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:blocks/receiver"
+        "layer0": "galacticraftplanets:blocks/beamReceiver"
     },
     "display": {
         "thirdperson": {

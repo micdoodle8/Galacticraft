@@ -56,7 +56,6 @@ import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.submergedT
  *
  * See https://github.com/micdoodle8/MicdoodleCore
  */
-@SuppressWarnings("unused")
 public class TransformerHooks
 {
     private static IWorldGenerator generatorGCGreg = null;

@@ -2,8 +2,12 @@
   "forge_marker": 1,
   "defaults": {
     "model": "galacticraftplanets:reflector.obj",
+    "textures": { "particle": "galacticraftcore:blocks/buggy_pad_full" },
     "custom": {
       "flip-v": true
     }
+  },
+  "variants": {
+     "normal" : [{}]
   }
 }

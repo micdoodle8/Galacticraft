@@ -64,10 +64,10 @@ If you spot an error or something missing in the translation of Galacticraft for
 
 1.  Find the .lang file on Github and take a look at what needs fixing.  The language files are here, you'll need to figure out whether it is a Galacticraft core, moon, mars or asteroids item
 
-    https://github.com/micdoodle8/Galacticraft/tree/master/src/main/resources/assets/galacticraftcore/lang
-    https://github.com/micdoodle8/Galacticraft/tree/master/src/main/resources/assets/galacticraftmoon/lang
-    https://github.com/micdoodle8/Galacticraft/tree/master/src/main/resources/assets/galacticraftmars/lang
-    https://github.com/micdoodle8/Galac...n/resources/assets/galacticraftasteroids/lang
+    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftcore/lang
+    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftmoon/lang
+    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftmars/lang
+    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftasteroids/lang
 
 2.  Click the Fork button (top right of this screen) and now in your new fork, navigate back to the language file: click __src/main__ then __resources__ then __assets__
 

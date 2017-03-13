@@ -475,6 +475,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "Galacticraft Coal Generator");
         GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "Galacticraft Electric Furnace");
         GameRegistry.registerTileEntity(TileEntityAluminumWire.class, "Galacticraft Aluminum Wire");
+        GameRegistry.registerTileEntity(TileEntityAluminumWireSwitch.class, "Galacticraft Switchable Aluminum Wire");
         GameRegistry.registerTileEntity(TileEntityFallenMeteor.class, "Fallen Meteor");
         GameRegistry.registerTileEntity(TileEntityIngotCompressor.class, "Ingot Compressor");
         GameRegistry.registerTileEntity(TileEntityElectricIngotCompressor.class, "Electric Ingot Compressor");
@@ -486,7 +487,9 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityArclamp.class, "Arc Lamp");
         GameRegistry.registerTileEntity(TileEntityScreen.class, "View Screen");
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "Telemetry Unit");
+        GameRegistry.registerTileEntity(TileEntityPainter.class, "Galacticraft Painter");
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "Galacticraft Fluid Tank");
+        GameRegistry.registerTileEntity(TileEntityNull.class, "Galacticraft Null Tile");
     }
 
     private void registerCreatures()

@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class TileBaseConductor extends TileEntity implements IConductor
 {
-    private IGridNetwork network;
+    protected IGridNetwork network;
 
     public TileEntity[] adjacentConnections = null;
 
@@ -86,15 +86,19 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
             BlockVec3 thisVec = new BlockVec3(this);
             for (EnumFacing side : EnumFacing.values())
             {
-                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            	TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
-                if (tileEntity != null)
-                {
-                    if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
-                    {
-                        ((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
-                    }
-                }
+            	if (tileEntity instanceof TileBaseConductor && ((TileBaseConductor)tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+            	{
+            		IGridNetwork otherNet = ((INetworkProvider) tileEntity).getNetwork();
+            		if (!this.getNetwork().equals(otherNet))
+            		{
+            			if (!otherNet.getTransmitters().isEmpty())
+            			{
+            				otherNet.merge(this.getNetwork());
+            			}
+            		}
+            	}
             }
         }
     }
@@ -117,10 +121,10 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
 
                 if (tileEntity instanceof IConnector)
                 {
-                    if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
-                    {
-                        this.adjacentConnections[i] = tileEntity;
-                    }
+                	if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+                	{
+                		this.adjacentConnections[i] = tileEntity;
+                	}
                 }
             }
         }

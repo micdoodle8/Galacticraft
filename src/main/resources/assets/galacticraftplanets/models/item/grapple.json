@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/grapple"
+        "layer0": "galacticraftplanets:blocks/grapple"
     },
     "display": {
         "thirdperson": {

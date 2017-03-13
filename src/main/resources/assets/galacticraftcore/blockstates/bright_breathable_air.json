@@ -1,0 +1,10 @@
+{
+    "forge_marker": 1,
+    "defaults": { "model": "galacticraftcore:breatheable_air" },
+    "variants": {
+        "normal": [{  }],
+        "inventory": [{  }],
+
+	"thermal": { "true": { }, "false": { } }
+    }
+}

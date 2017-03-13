@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"texture": "galacticraft:blocks/arc_lamp_on"
+		"texture": "galacticraftcore:blocks/arc_lamp_on"
 	},
     "display": {
         "gui": {

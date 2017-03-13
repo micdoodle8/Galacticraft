@@ -240,7 +240,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         for (int i = 0; i < 4; ++i)
         {
-            modelResourceLocation = new ModelResourceLocation("galacticraftcore:buggy_" + i, "inventory");
+            modelResourceLocation = new ModelResourceLocation("galacticraftcore:buggy" + (i > 0 ? "_" + i : ""), "inventory");
             ModelLoader.setCustomModelResourceLocation(GCItems.buggy, i, modelResourceLocation);
         }
 
@@ -373,21 +373,21 @@ public class ClientProxyCore extends CommonProxyCore
                 objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
                 break;
             }
-            replaceModelDefault(event, "buggy_" + i, "buggyInv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
+            replaceModelDefault(event, "buggy" + (i > 0 ? "_" + i : ""), "buggyInv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
         }
 
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
-
-        for (PartialCanister container : ClientProxyCore.canisters)
-        {
-            for (int i = 0; i < container.getTextureCount(); ++i)
-            {
-                ModelResourceLocation modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_" + i, "inventory");
-                IBakedModel object = event.getModelRegistry().getObject(modelResourceLocation);
-                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
-                event.getModelRegistry().putObject(modelResourceLocation, modelFinal);
-            }
-        }
+//
+//        for (PartialCanister container : ClientProxyCore.canisters)
+//        {
+//            for (int i = 0; i < container.getTextureCount(); ++i)
+//            {
+//                ModelResourceLocation modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_" + i, "inventory");
+//                IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+//                ItemLiquidCanisterModel modelFinal = new ItemLiquidCanisterModel(object);
+//                event.modelRegistry.putObject(modelResourceLocation, modelFinal);
+//            }
+//        }
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
@@ -449,11 +449,11 @@ public class ClientProxyCore extends CommonProxyCore
             ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, toReg);
         }
 
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.canister, 0, "canister_tin");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.canister, 0, "canister");  //This was canister_tin
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.canister, 1, "canister_copper");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.rocketEngine, 0, "tier1engine");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.rocketEngine, 0, "engine");  //This was tier1engine
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.rocketEngine, 1, "tier1booster");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 0, "parachute_plain");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 0, "parachute");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 1, "parachute_black");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 2, "parachute_blue");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 3, "parachute_lime");
@@ -469,13 +469,13 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 13, "parachute_red");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 14, "parachute_teal");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.parachute, 15, "parachute_yellow");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic_buggy");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.schematic, 0, "schematic");   //This was schematic_buggy
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.schematic, 1, "schematic_rocket_t2");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.key, 0, "key");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.partBuggy, 0, "wheel");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.partBuggy, 0, "buggymat");  //This was wheel
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.partBuggy, 1, "seat");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.partBuggy, 2, "storage");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 0, "solar_module_0");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 0, "basic_item");  //This was solar_module_0
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 1, "solar_module_1");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 2, "raw_silicon");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 3, "ingot_copper");
@@ -496,7 +496,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydrated_potato");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequency_module");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambient_thermal_controller");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 0, "meteoric_iron_ingot");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 0, "item_basic_moon");  //This was meteoric_iron_ingot
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 1, "compressed_meteoric_iron");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 2, "lunar_sapphire");
 
@@ -504,14 +504,15 @@ public class ClientProxyCore extends CommonProxyCore
         {
             for (int i = 0; i <= container.getItem().getMaxDamage(); ++i)
             {
-                int damage = (container.getTextureCount() - 1) * i / container.getItem().getMaxDamage();
-                ClientUtil.registerItemJson(container.getModID() + ":", container.getItem(), i, container.getBaseName() + "_" + (container.getTextureCount() - damage - 1));
+                final int levels = container.getTextureCount() - 1;
+                final int fillLevel = levels - levels * i / container.getItem().getMaxDamage();
+                ClientUtil.registerItemJson(container.getModID() + ":", container.getItem(), i, container.getBaseName() + (fillLevel > 0 ? "_" + fillLevel : ""));
             }
         }
 
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.meteorChunk, 0, "meteor_chunk");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.meteorChunk, 1, "meteor_chunk_hot");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.buggy, 0, "buggy_0");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.buggy, 0, "buggy");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.buggy, 1, "buggy_1");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.buggy, 2, "buggy_2");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.buggy, 3, "buggy_3");
@@ -557,6 +558,12 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 0, "air_lock_frame");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockFrame, 1, "air_lock_controller");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.airLockSeal, 0, "air_lock_seal");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassClear, 0, "space_glass_clear");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassVanilla, 0, "space_glass_vanilla");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassStrong, 0, "space_glass_strong");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassClear, 1, "space_glass_tin_clear");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassVanilla, 1, "space_glass_tin_vanilla");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassStrong, 1, "space_glass_tin_strong");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.refinery);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fuelLoader);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");
@@ -581,8 +588,11 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 4, "electric_furnace");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 8, "cluster_storage");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 12, "arc_furnace");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase3, 0, "painter");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 0, "aluminum_wire");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire_heavy");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 2, "aluminum_wire_switch");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 3, "aluminum_wire_switch_heavy");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");
@@ -619,6 +629,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     private static void addVariants()
     {
+        //BlockItem variants: 
         addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
         addCoreVariant("basic_block_core", "deco_block_0", "deco_block_1", "ore_copper_gc", "ore_tin_gc", "ore_aluminum_gc", "ore_silicon", "block_copper_gc", "block_tin_gc", "block_aluminum_gc", "block_meteoric_iron_gc");
         addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
@@ -629,28 +640,34 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("solar", "advanced_solar", "basic_solar");
         addCoreVariant("machine", "coal_generator", "ingot_compressor");
         addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor");
+        addCoreVariant("machine3", "painter");
         addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
         addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "moon_stone", "moon_turf", "ore_sapphire_moon", "moon_dungeon_brick");
-        addCoreVariant("canister", "canister_tin", "canister_copper");
-        addCoreVariant("engine", "tier1engine", "tier1booster");
-        addCoreVariant("parachute", "parachute_plain", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
-        addCoreVariant("schematic", "schematic_buggy", "schematic_rocket_t2");
-        addCoreVariant("key", "key");
-        addCoreVariant("buggymat", "wheel", "seat", "storage");
-        addCoreVariant("basic_item", "solar_module_0", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
-        addCoreVariant("item_basic_moon", "meteoric_iron_ingot", "compressed_meteoric_iron", "lunar_sapphire");
-        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy");
-        addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
-        addCoreVariant("buggy", "buggy_0", "buggy_1", "buggy_2", "buggy_3");
+        addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy", "aluminum_wire_switch", "aluminum_wire_switch_heavy");
         addCoreVariant("slab_gc_half", "slab_tin_1", "slab_tin_2", "slab_moon_stone", "slab_moon_dungeon_brick", "slab_mars_cobblestone", "slab_mars_dungeon_brick");
         addCoreVariant("wall_gc", "wall_tin_1", "wall_tin_2", "wall_moon_stone", "wall_moon_dungeon_brick", "wall_mars_cobblestone", "wall_mars_dungeon_brick");
+        addCoreVariant("space_glass_clear", "space_glass_clear", "space_glass_tin_clear");
+        addCoreVariant("space_glass_vanilla", "space_glass_vanilla", "space_glass_tin_vanilla");
+        addCoreVariant("space_glass_strong", "space_glass_strong", "space_glass_tin_strong");
+
+        //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
+        addCoreVariant("canister", "canister", "canister_copper");
+        addCoreVariant("engine", "engine", "tier1booster");
+        addCoreVariant("parachute", "parachute", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
+        addCoreVariant("schematic", "schematic", "schematic_rocket_t2");
+        addCoreVariant("key", "key");
+        addCoreVariant("buggymat", "buggymat", "seat", "storage");
+        addCoreVariant("basic_item", "basic_item", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
+        addCoreVariant("item_basic_moon", "item_basic_moon", "compressed_meteoric_iron", "lunar_sapphire");
+        addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
+        addCoreVariant("buggy", "buggy", "buggy_1", "buggy_2", "buggy_3");
 
         for (PartialCanister container : ClientProxyCore.canisters)
         {
             String[] variants = new String[container.getTextureCount()];
             for (int i = 0; i < container.getTextureCount(); ++i)
             {
-                variants[i] = container.getBaseName() + "_" + i;
+                variants[i] = container.getBaseName() + (i > 0 ? "_" + i : "");
             }
             ClientUtil.addVariant(container.getModID(), container.getBaseName(), variants);
         }

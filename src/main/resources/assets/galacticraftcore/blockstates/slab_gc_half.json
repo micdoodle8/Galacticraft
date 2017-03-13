@@ -1,5 +1,7 @@
 {
+    "forge_marker": 1,
     "variants": {
+        "inventory": [{ "model": "galacticraftcore:half_slab_tin_1" }],
         "half=bottom,variant=tin_slab_1":  { "model": "galacticraftcore:half_slab_tin_1" },
         "half=bottom,variant=tin_slab_2":  { "model": "galacticraftcore:half_slab_tin_2" },
         "half=bottom,variant=moon_stone_slab":  { "model": "galacticraftcore:half_slab_moon_stone" },

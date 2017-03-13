@@ -682,16 +682,7 @@ public class EnergyNetwork implements IElectricityNetwork
         this.availableAcceptors.clear();
         this.totalEnergy = 0F;
         this.totalRequested = 0F;
-        try
-        {
-            Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
-            clazz.getMethod("removeNetworkTick", this.getClass()).invoke(null, this);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        TickHandlerServer.removeNetworkTick(this);
     }
 
     @Override

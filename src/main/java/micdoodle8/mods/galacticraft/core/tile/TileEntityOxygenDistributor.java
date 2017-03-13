@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -11,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -50,7 +52,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public void validate()
     {
         super.validate();
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.worldObj.provider.getDimension()));
+        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this));
     }
 
     @Override
@@ -67,18 +69,24 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         {
             int bubbleR = MathHelper.ceiling_double_int(bubbleSize);
             int bubbleR2 = (int) (bubbleSize * bubbleSize);
-            for (int x = this.getPos().getX() - bubbleR; x < this.getPos().getX() + bubbleR; x++)
+            final int xMin = this.getPos().getX() - bubbleR;
+            final int xMax = this.getPos().getX() + bubbleR;
+            final int yMin = this.getPos().getY() - bubbleR;
+            final int yMax = this.getPos().getY() + bubbleR;
+            final int zMin = this.getPos().getZ() - bubbleR;
+            final int zMax = this.getPos().getZ() + bubbleR;
+            for (int x = xMin; x < xMax; x++)
             {
-                for (int y = this.getPos().getY() - bubbleR; y < this.getPos().getY() + bubbleR; y++)
+                for (int z = zMin; z < zMax; z++)
                 {
-                    for (int z = this.getPos().getZ() - bubbleR; z < this.getPos().getZ() + bubbleR; z++)
+                    //Doing y as the inner loop allows BlockVec3 to cache the chunks more efficiently
+                    for (int y = yMin; y < yMax; y++)
                     {
-                        BlockPos blockPos = new BlockPos(x, y, z);
-                        Block block = this.worldObj.getBlockState(blockPos).getBlock();
+                        IBlockState state = new BlockVec3(x, y, z).getBlockState(this.worldObj);
 
-                        if (block instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
+                        if (state.getBlock() instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
-                            this.worldObj.scheduleUpdate(blockPos, block, 0);
+                            this.worldObj.scheduleUpdate(new BlockPos(x, y, z), state.getBlock(), 0);
                         }
                     }
                 }

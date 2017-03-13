@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -127,6 +128,9 @@ public class StatsCapability implements IStatsCapability
     public int incrementalDamage = 0;
 
     public String startDimension = "";
+    public int glassColor1 = -1;
+    public int glassColor2 = -1;
+    public int glassColor3 = -1;
 
     public WeakReference<EntityPlayerMP> getPlayer()
     {
@@ -899,160 +903,181 @@ public class StatsCapability implements IStatsCapability
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         nbt.setInteger("AstroMinerCount", this.astroMinerCount);
+        nbt.setInteger("GlassColor1", this.glassColor1);
+        nbt.setInteger("GlassColor2", this.glassColor2);
+        nbt.setInteger("GlassColor3", this.glassColor3);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt)
     {
-        this.airRemaining = nbt.getInteger("playerAirRemaining");
-        this.damageCounter = nbt.getInteger("damageCounter");
-        this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
-        this.thermalLevel = nbt.getInteger("thermalLevel");
-
-        // Backwards compatibility
-        NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);
-        this.extendedInventory.readFromNBTOld(nbttaglist);
-
-        if (nbt.hasKey("ExtendedInventoryGC"))
+        try
         {
-            this.extendedInventory.readFromNBT(nbt.getTagList("ExtendedInventoryGC", 10));
-        }
+            this.airRemaining = nbt.getInteger("playerAirRemaining");
+            this.damageCounter = nbt.getInteger("damageCounter");
+            this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
+            this.thermalLevel = nbt.getInteger("thermalLevel");
 
-        // Added for GCInv command - if tried to load an offline player's
-        // inventory, load it now
-        // (if there was no offline load, then the dontload flag in doLoad()
-        // will make sure nothing happens)
-        EntityPlayerMP p = this.player.get();
-        if (p != null)
-        {
-            ItemStack[] saveinv = CommandGCInv.getSaveData(p.getGameProfile().getName().toLowerCase());
-            if (saveinv != null)
+            // Backwards compatibility
+            NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);
+            this.extendedInventory.readFromNBTOld(nbttaglist);
+
+            if (nbt.hasKey("ExtendedInventoryGC"))
             {
-                CommandGCInv.doLoad(p);
+                this.extendedInventory.readFromNBT(nbt.getTagList("ExtendedInventoryGC", 10));
             }
-        }
 
-        if (nbt.hasKey("SpaceshipTier"))
-        {
-            this.spaceshipTier = nbt.getInteger("SpaceshipTier");
-        }
-
-        //New keys in version 3.0.5.220
-        if (nbt.hasKey("FuelLevel"))
-        {
-            this.fuelLevel = nbt.getInteger("FuelLevel");
-        }
-        if (nbt.hasKey("ReturnRocket"))
-        {
-            ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
-            if (returnRocket != null)
+            // Added for GCInv command - if tried to load an offline player's
+            // inventory, load it now
+            // (if there was no offline load, then the dontload flag in doLoad()
+            // will make sure nothing happens)
+            EntityPlayerMP p = this.player.get();
+            if (p != null)
             {
-                this.rocketItem = returnRocket.getItem();
-                this.rocketType = returnRocket.getItemDamage();
-            }
-        }
-
-        this.usingParachute = nbt.getBoolean("usingParachute2");
-        this.usingPlanetSelectionGui = nbt.getBoolean("usingPlanetSelectionGui");
-        this.teleportCooldown = nbt.getInteger("teleportCooldown");
-        this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
-        this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
-        this.startDimension = nbt.hasKey("startDimension") ? nbt.getString("startDimension") : "";
-        if (nbt.hasKey("spaceStationDimensionID"))
-        {
-            // If loading from an old save file, the home space station is always the overworld, so use 0 as home planet
-            this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData("0$" + nbt.getInteger("spaceStationDimensionID"));
-        }
-        else
-        {
-            this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData(nbt.getString("spaceStationDimensionInfo"));
-        }
-
-        if (nbt.getBoolean("usingPlanetSelectionGui"))
-        {
-            this.openPlanetSelectionGuiCooldown = 20;
-        }
-
-        if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
-        {
-            final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
-            int length = nbt.getInteger("rocketStacksLength");
-
-            this.rocketStacks = new ItemStack[length];
-
-            for (int var3 = 0; var3 < var23.tagCount(); ++var3)
-            {
-                final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
-                final int var5 = var4.getByte("Slot") & 255;
-
-                if (var5 < this.rocketStacks.length)
+                ItemStack[] saveinv = CommandGCInv.getSaveData(p.getGameProfile().getName().toLowerCase());
+                if (saveinv != null)
                 {
-                    this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                    CommandGCInv.doLoad(p);
                 }
             }
-        }
 
-        this.unlockedSchematics = new ArrayList<ISchematicPage>();
-
-        if (p != null)
-        {
-            for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+            if (nbt.hasKey("SpaceshipTier"))
             {
-                final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+                this.spaceshipTier = nbt.getInteger("SpaceshipTier");
+            }
 
-                final int j = nbttagcompound.getInteger("UnlockedPage");
+            //New keys in version 3.0.5.220
+            if (nbt.hasKey("FuelLevel"))
+            {
+                this.fuelLevel = nbt.getInteger("FuelLevel");
+            }
+            if (nbt.hasKey("ReturnRocket"))
+            {
+                ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
+                if (returnRocket != null)
+                {
+                    this.rocketItem = returnRocket.getItem();
+                    this.rocketType = returnRocket.getItemDamage();
+                }
+            }
 
-                SchematicRegistry.addUnlockedPage(p, SchematicRegistry.getMatchingRecipeForID(j));
+            this.usingParachute = nbt.getBoolean("usingParachute2");
+            this.usingPlanetSelectionGui = nbt.getBoolean("usingPlanetSelectionGui");
+            this.teleportCooldown = nbt.getInteger("teleportCooldown");
+            this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
+            this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
+            this.startDimension = nbt.hasKey("startDimension") ? nbt.getString("startDimension") : "";
+            if (nbt.hasKey("spaceStationDimensionID"))
+            {
+                // If loading from an old save file, the home space station is always the overworld, so use 0 as home planet
+                this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData("0$" + nbt.getInteger("spaceStationDimensionID"));
+            }
+            else
+            {
+                this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData(nbt.getString("spaceStationDimensionInfo"));
+            }
+
+            if (nbt.getBoolean("usingPlanetSelectionGui"))
+            {
+                this.openPlanetSelectionGuiCooldown = 20;
+            }
+
+            if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
+            {
+                final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
+                int length = nbt.getInteger("rocketStacksLength");
+
+                this.rocketStacks = new ItemStack[length];
+
+                for (int var3 = 0; var3 < var23.tagCount(); ++var3)
+                {
+                    final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
+                    final int var5 = var4.getByte("Slot") & 255;
+
+                    if (var5 < this.rocketStacks.length)
+                    {
+                        this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                    }
+                }
+            }
+
+            this.unlockedSchematics = new ArrayList<ISchematicPage>();
+
+            if (p != null)
+            {
+                for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+                {
+                    final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+
+                    final int j = nbttagcompound.getInteger("UnlockedPage");
+
+                    SchematicRegistry.addUnlockedPage(p, SchematicRegistry.getMatchingRecipeForID(j));
+                }
+            }
+
+            Collections.sort(this.unlockedSchematics);
+
+            this.cryogenicChamberCooldown = nbt.getInteger("CryogenicChamberCooldown");
+
+            if (nbt.hasKey("ReceivedSoundWarning"))
+            {
+                this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");
+            }
+            if (nbt.hasKey("ReceivedBedWarning"))
+            {
+                this.receivedBedWarning = nbt.getBoolean("ReceivedBedWarning");
+            }
+
+            if (nbt.hasKey("LaunchpadStack"))
+            {
+                this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
+                if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
+                {
+                    this.launchpadStack = null;
+                }
+            }
+            else
+            {
+                // for backwards compatibility with saves which don't have this tag - players can't lose launchpads
+                this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9, 0);
+            }
+
+            if (nbt.hasKey("BuildFlags"))
+            {
+                this.buildFlags = nbt.getInteger("BuildFlags");
+            }
+
+            if (nbt.hasKey("ShownSpaceRace"))
+            {
+                this.openedSpaceRaceManager = nbt.getBoolean("ShownSpaceRace");
+            }
+
+            if (nbt.hasKey("AstroMinerCount"))
+            {
+                this.astroMinerCount = nbt.getInteger("AstroMinerCount");
+            }
+
+            this.sentFlags = false;
+            if (ConfigManagerCore.enableDebug)
+            {
+                GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+            }
+
+            this.sentFlags = false;
+            if (nbt.hasKey("GlassColor1"))
+            {
+                this.glassColor1 = nbt.getInteger("GlassColor1");
+                this.glassColor2 = nbt.getInteger("GlassColor2");
+                this.glassColor3 = nbt.getInteger("GlassColor3");
             }
         }
-
-        Collections.sort(this.unlockedSchematics);
-
-        this.cryogenicChamberCooldown = nbt.getInteger("CryogenicChamberCooldown");
-
-        if (nbt.hasKey("ReceivedSoundWarning"))
+        catch (Exception e)
         {
-            this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");
-        }
-        if (nbt.hasKey("ReceivedBedWarning"))
-        {
-            this.receivedBedWarning = nbt.getBoolean("ReceivedBedWarning");
+            GCLog.severe("Found error in saved Galacticraft player data for " + player.get().getGameProfile().getName() + " - this should fix itself next relog.");
+            e.printStackTrace();
         }
 
-        if (nbt.hasKey("LaunchpadStack"))
-        {
-            this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-            if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
-            {
-                this.launchpadStack = null;
-            }
-        }
-        else
-        {
-            // for backwards compatibility with saves which don't have this tag - players can't lose launchpads
-            this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9, 0);
-        }
-
-        if (nbt.hasKey("BuildFlags"))
-        {
-            this.buildFlags = nbt.getInteger("BuildFlags");
-        }
-
-        if (nbt.hasKey("ShownSpaceRace"))
-        {
-            this.openedSpaceRaceManager = nbt.getBoolean("ShownSpaceRace");
-        }
-
-        if (nbt.hasKey("AstroMinerCount"))
-        {
-            this.astroMinerCount = nbt.getInteger("AstroMinerCount");
-        }
-
-        this.sentFlags = false;
-        if (ConfigManagerCore.enableDebug)
-        {
-            GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
-        }
+        GCLog.debug("Finished loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
     public void copyFrom(IStatsCapability oldData, boolean keepInv)
@@ -1071,5 +1096,42 @@ public class StatsCapability implements IStatsCapability
         this.buildFlags = oldData.getBuildFlags();
         this.astroMinerCount = oldData.getAstroMinerCount();
         this.sentFlags = false;
+    }
+
+    public void setGlassColors(int color1, int color2, int color3)
+    {
+        boolean changes = false;
+        if (this.glassColor1 != color1)
+        {
+            changes = true;
+            this.glassColor1 = color1;
+        }
+        if (this.glassColor2 != color2)
+        {
+            changes = true;
+            this.glassColor2 = color2;
+        }
+        if (this.glassColor3 != color3)
+        {
+            changes = true;
+            this.glassColor3 = color3;
+        }
+        if (changes)
+            ColorUtil.sendUpdatedColorsToPlayer(this);
+    }
+
+    public int getGlassColor1()
+    {
+        return glassColor1;
+    }
+
+    public int getGlassColor2()
+    {
+        return glassColor2;
+    }
+
+    public int getGlassColor3()
+    {
+        return glassColor3;
     }
 }

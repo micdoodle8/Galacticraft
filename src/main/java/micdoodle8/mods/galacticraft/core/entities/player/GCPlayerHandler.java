@@ -163,6 +163,7 @@ public class GCPlayerHandler
             stats.setBuildFlags(stats.getBuildFlags() & 1536);
         }
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, player.worldObj.provider.getDimension(), new Object[] { stats.getBuildFlags() }), player);
+        ColorUtil.sendUpdatedColorsToPlayer(stats);
     }
 
 //    private void onPlayerLogout(EntityPlayerMP player)

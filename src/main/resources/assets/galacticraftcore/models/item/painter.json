@@ -1,0 +1,19 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftcore:blocks/machine",
+        "down": "galacticraftcore:blocks/machine",
+        "up": "galacticraftcore:blocks/machine",
+        "north": "galacticraftcore:blocks/machine_painter",
+        "east": "galacticraftcore:blocks/machine",
+        "south": "galacticraftcore:blocks/machine",
+        "west": "galacticraftcore:blocks/machine"
+    },
+    "display": {
+        "thirdperson": {
+            "rotation": [ 10, -45, 170 ],
+            "translation": [ 0, 1.5, -2.75 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }
+    }
+}

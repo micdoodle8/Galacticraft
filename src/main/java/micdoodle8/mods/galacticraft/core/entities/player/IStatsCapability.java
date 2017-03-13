@@ -137,7 +137,7 @@ public interface IStatsCapability
     void setLastThermalHelmetInSlot(ItemStack lastThermalHelmetInSlot);
 
     ItemStack getThermalChestplateInSlot();
-    
+
     void setThermalChestplateInSlot(ItemStack thermalChestplateInSlot);
 
     ItemStack getLastThermalChestplateInSlot();
@@ -299,4 +299,12 @@ public interface IStatsCapability
     String getStartDimension();
 
     void setStartDimension(String startDimension);
+
+    void setGlassColors(int color1, int color2, int color3);
+
+    int getGlassColor1();
+
+    int getGlassColor2();
+
+    int getGlassColor3();
 }

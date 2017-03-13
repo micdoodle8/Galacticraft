@@ -8,6 +8,7 @@ import ic2.api.energy.tile.*;
 import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
@@ -35,7 +36,8 @@ public class EnergyUtil
     public static Method injectEnergyIC2 = null;
     public static Method offeredEnergyIC2 = null;
     public static Method drawEnergyIC2 = null;
-    private static Class<?> clazzMekCable = null;
+    public static Class<?> clazzIC2Cable = null;
+    public static Class<?> clazzMekCable = null;
     public static Class<?> clazzEnderIOCable = null;
     public static Class<?> clazzMFRRednetEnergyCable = null;
     public static Class<?> clazzRailcraftEngine = null;
@@ -50,7 +52,12 @@ public class EnergyUtil
         BlockVec3 thisVec = new BlockVec3(tile);
         for (EnumFacing direction : EnumFacing.values())
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+        	if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
+            {
+                continue;
+            }
+        	
+        	TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity == null)
             {
@@ -407,7 +414,8 @@ public class EnergyUtil
 
             try
             {
-                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
+               clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+               Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
                 GCLog.debug("Found IC2 IEnergySink class OK");
 

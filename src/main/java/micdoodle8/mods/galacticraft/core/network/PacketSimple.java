@@ -140,7 +140,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         C_UPDATE_SPACESTATION_DATA(Side.CLIENT, Integer.class, NBTTagCompound.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, String.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
-        C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Boolean.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
+        C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
         C_UPDATE_STATS(Side.CLIENT, Integer.class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
@@ -169,7 +169,8 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         C_UPDATE_TELEMETRY(Side.CLIENT, BlockPos.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
-        C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class);
+        C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class),
+        C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class);  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -790,14 +791,14 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
 
                 try
                 {
-                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
                     if (folder.exists() || folder.mkdir())
                     {
                         MapUtil.getOverworldImageFromRaw(folder, cx, cz, bytes);
                     }
                     else
                     {
-                        System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
+                        System.err.println("Cannot create directory %minecraftDir%/assets/galacticraftMaps!");
                     }
                 }
                 catch (Exception e)
@@ -817,6 +818,9 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 pipe.getNetwork().split(pipe);
                 pipe.setNetwork(null);
             }
+            break;
+        case C_RECOLOR_ALL_GLASS:
+            ColorUtil.updateGlassColors((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
             break;
         default:
             break;
@@ -850,7 +854,6 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
 
                 if (!ship.landing)
                 {
-                    System.err.println(ConfigManagerCore.rocketFuelFactor);
                     if (ship.hasValidFuel())
                     {
                         ItemStack stack2 = stats.getExtendedInventory().getStackInSlot(4);

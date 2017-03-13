@@ -1,0 +1,20 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+    },
+    "variants": {
+        "facing":
+        {
+           "north": { },
+           "east":  { "y": 90 },
+           "west":  {  "y": 270 },
+           "south": {  "y": 180 }
+        },
+        
+        "type":
+        {
+           "painter": {        "model": "galacticraftcore:painter_model"
+           }
+        }
+    }
+}

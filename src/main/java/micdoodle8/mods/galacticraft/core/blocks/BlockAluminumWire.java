@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWireSwitch;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
@@ -31,7 +32,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     public enum EnumWireType implements IStringSerializable
     {
         ALUMINUM_WIRE(0, "alu_wire"),
-        ALUMINUM_WIRE_HEAVY(1, "alu_wire_heavy");
+        ALUMINUM_WIRE_HEAVY(1, "alu_wire_heavy"),
+        ALUMINUM_WIRE_SWITCHED(2, "alu_wire_switch"),
+        ALUMINUM_WIRE_SWITCHED_HEAVY(3, "alu_wire_switch_heavy");
 
         private final int meta;
         private final String name;
@@ -78,7 +81,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     public Vector3 getMinVector(IBlockState state)
     {
         EnumWireType type = (EnumWireType) state.getValue(WIRE_TYPE);
-        if (type == EnumWireType.ALUMINUM_WIRE)
+        if (type == EnumWireType.ALUMINUM_WIRE || type == EnumWireType.ALUMINUM_WIRE_SWITCHED)
         {
             return minVectorNormal;
         }
@@ -89,7 +92,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     public Vector3 getMaxVector(IBlockState state)
     {
         EnumWireType type = (EnumWireType) state.getValue(WIRE_TYPE);
-        if (type == EnumWireType.ALUMINUM_WIRE)
+        if (type == EnumWireType.ALUMINUM_WIRE || type == EnumWireType.ALUMINUM_WIRE_SWITCHED)
         {
             return maxVectorNormal;
         }
@@ -132,6 +135,12 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         case 1:
             tile = new TileEntityAluminumWire(2);
             break;
+        case 2:
+            tile = new TileEntityAluminumWireSwitch(1);
+            break;
+        case 3:
+            tile = new TileEntityAluminumWireSwitch(2);
+            break;
         default:
             return null;
         }
@@ -145,6 +154,8 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
+        par3List.add(new ItemStack(par1, 1, 2));
+        par3List.add(new ItemStack(par1, 1, 3));
     }
 
     @Override
@@ -162,6 +173,10 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
             return GCCoreUtil.translate("tile.aluminum_wire.alu_wire.description");
         case 1:
             return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_heavy.description");
+        case 2:
+            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_switch.description");
+        case 3:
+            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_switch_heavy.description");
         }
         return "";
     }

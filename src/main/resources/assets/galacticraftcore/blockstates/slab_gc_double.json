@@ -1,5 +1,7 @@
 {
+    "forge_marker": 1,
     "variants": {
+        "inventory": [{ "model": "galacticraftcore:deco_block_0_model" }],
         "variant=tin_slab_1":  { "model": "galacticraftcore:deco_block_0_model" },
         "variant=tin_slab_2":  { "model": "galacticraftcore:deco_block_1_model" },
         "variant=moon_stone_slab":  { "model": "galacticraftcore:moon_stone_model" },

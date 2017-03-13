@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -18,9 +20,12 @@ import java.util.Random;
 
 public class BlockBreathableAir extends BlockAir
 {
+    public static final PropertyBool THERMAL = PropertyBool.create("thermal");
+    
     public BlockBreathableAir(String assetName)
     {
         this.setResistance(1000.0F);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(THERMAL, false));
         this.setHardness(0.0F);
         this.setUnlocalizedName(assetName);
     }
@@ -73,5 +78,23 @@ public class BlockBreathableAir extends BlockAir
         {
             OxygenPressureProtocol.onEdgeBlockUpdated((World) worldIn, pos);
         }
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, THERMAL);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(THERMAL, meta % 2 == 1);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(THERMAL) ? 1 : 0);
     }
 }

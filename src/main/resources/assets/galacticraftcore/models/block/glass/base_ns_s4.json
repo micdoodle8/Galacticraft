@@ -1,0 +1,92 @@
+{
+    "elements": [
+        {
+            "name": "base",
+            "from": [ 4.0, 0.0, 0.0 ], 
+            "to": [ 12.0, 2.0, 16.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] },
+                "down": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "grout",
+            "from": [ 5.0, 2.0, 0.0 ], 
+            "to": [ 11.0, 3.0, 16.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 0.0, 14.0, 16.0 ], "rotation": 90 },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 0.0, 14.0, 16.0 ], "rotation": 90 },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 0.0, 11.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "base1",
+            "from": [ 4.0, 2.0, 0.0 ], 
+            "to": [ 12.0, 16.0, 2.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 14.0 ] },
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 14.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 14.0 ] },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 0.0, 2.0, 14.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] }
+            }
+        },
+        {
+            "name": "grout1",
+            "from": [ 5.0, 3.0, 2.0 ], 
+            "to": [ 11.0, 14.0, 3.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 2.0, 14.0, 13.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 2.0, 11.0, 13.0 ] },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 2.0, 3.0, 13.0 ] }
+            }
+        },
+        {
+            "name": "top",
+            "from": [ 4.0, 14.0, 2.0 ], 
+            "to": [ 12.0, 16.0, 16.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 0.0, 2.0, 14.0 ], "rotation": 90 },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 2.0, 2.0, 16.0 ], "rotation": 90 },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 2.0, 12.0, 16.0 ] },
+                "down": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 14.0 ] }
+            }
+        },
+        {
+            "name": "grout2",
+            "from": [ 5.0, 13.0, 3.0 ], 
+            "to": [ 11.0, 14.0, 14.0 ], 
+            "faces": {
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 13.0, 13.0, 14.0 ] },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 13.0, 13.0, 14.0 ] },
+                "down": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 2.0, 11.0, 11.0 ] }
+            }
+        },
+        {
+            "name": "grout3",
+            "from": [ 5.0, 3.0, 13.0 ], 
+            "to": [ 11.0, 13.0, 14.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 3.0, 11.0, 13.0 ] },
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 3.0, 14.0, 13.0 ] },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 3.0, 3.0, 13.0 ] }
+            }
+        },
+        {
+            "name": "side2",
+            "from": [ 4.0, 2.0, 14.0 ], 
+            "to": [ 12.0, 14.0, 16.0 ], 
+            "faces": {
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 2.0, 12.0, 14.0 ] },
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 2.0, 2.0, 14.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 2.0, 12.0, 14.0 ] },
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 2.0, 16.0, 14.0 ] }
+            }
+        }
+    ]
+}
