@@ -299,7 +299,7 @@ public class TileEntityTelemetry extends TileEntity
 	{
 		for (BlockVec3Dim telemeter : loadedList)
 		{
-			TileEntity te = telemeter.getTileEntity();
+			TileEntity te = telemeter.getTileEntityNoLoad();
 			if (te instanceof TileEntityTelemetry)
 			{
 				if (((TileEntityTelemetry)te).linkedEntity == playerOld)

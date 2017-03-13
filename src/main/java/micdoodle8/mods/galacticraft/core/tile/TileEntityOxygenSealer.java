@@ -162,6 +162,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
             this.active = this.storedOxygen >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
 
+            //TODO: if multithreaded, this codeblock should not run if the current threadSeal is flagged looping
             if (this.stopSealThreadCooldown > 0)
             {
                 this.stopSealThreadCooldown--;
@@ -170,14 +171,25 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             {
                 // This puts any Sealer which is updated to the back of the queue for updates
                 this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
-                TileEntityOxygenSealer.sealerCheckedThisTick = true;
-                OxygenPressureProtocol.updateSealerStatus(this);
+                if (this.active || this.sealed)
+                {
+	                TileEntityOxygenSealer.sealerCheckedThisTick = true;
+	                OxygenPressureProtocol.updateSealerStatus(this);
+                }
             }
 
+            //TODO: if multithreaded, this.threadSeal needs to be atomic
             if (this.threadSeal != null)
             {
-                this.sealed = this.active && this.threadSeal.sealedFinal.get();
-                this.calculatingSealed = this.active && this.threadSeal.looping.get();
+            	if (this.threadSeal.looping.get())
+            	{
+            		this.calculatingSealed = this.active;
+            	}
+            	else
+            	{
+            		this.calculatingSealed = false;
+            		this.sealed = this.active && this.threadSeal.sealedFinal.get();
+            	}
             }
 
             this.lastDisabled = this.disabled;

@@ -265,13 +265,22 @@ public class BlockVec3Dim implements Cloneable
     }
 
     /**
-     * This will load the chunk.
+     * This will load the chunk - use getTileEntityNoLoad() if just updating things if present.
      */
     public TileEntity getTileEntity()
     {
    		World world = getWorldForId(this.dim);
    		if (world == null) return null;
         return world.getTileEntity(this.x, this.y, this.z);
+    }
+
+    public TileEntity getTileEntityNoLoad()
+    {
+    	World world = getWorldForId(this.dim);
+    	if (world == null) return null;
+    	if (world.blockExists(this.x, this.y, this.z))
+    		return world.getTileEntity(this.x, this.y, this.z);
+    	return null;
     }
 
     public int getBlockMetadata()

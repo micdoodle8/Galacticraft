@@ -212,7 +212,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         	this.addToTelemetry = false;
 			for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
 			{
-				TileEntity t1 = vec.getTileEntity();
+				TileEntity t1 = vec.getTileEntityNoLoad();
 				if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
 				{
 					if (((TileEntityTelemetry)t1).linkedEntity == this)
