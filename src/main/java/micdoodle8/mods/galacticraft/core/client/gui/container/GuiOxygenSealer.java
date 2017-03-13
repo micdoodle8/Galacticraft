@@ -104,7 +104,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 50, 4210752);
         int adjustedOxygenPerTick =  (int) (this.sealer.oxygenPerTick * 20);
         if (this.sealer.disabled || this.sealer.getEnergyStoredGC() < this.sealer.storage.getMaxExtract()) adjustedOxygenPerTick = 0;
-        status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + this.sealer.oxygenPerTick * 20 + GCCoreUtil.translate("gui.per_second");
+        status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + adjustedOxygenPerTick + GCCoreUtil.translate("gui.per_second");
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 60, 4210752);
         status = GCCoreUtil.translate("gui.message.thermal_status.name") + ": " + this.getThermalStatus();
         this.fontRendererObj.drawString(status, this.xSize / 2 - this.fontRendererObj.getStringWidth(status) / 2, 70, 4210752);

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 
@@ -134,12 +135,10 @@ public class OxygenHooks
 	 * 
 	 * @param world
 	 * @param block		The block type of this torch being checked - currently unused
-	 * @param x			x coordinate of the torch
-	 * @param y			y coordinate of the torch
-	 * @param z			z coordinate of the torch
+	 * @param pos	    The x, y, z position of the torch
 	 * @return	True if there is a (sealed) oxygen block accessible, otherwise false.
 	 */
-    public static boolean checkTorchHasOxygen(World world, Block block, int x, int y, int z)
+    public static boolean checkTorchHasOxygen(World world, Block block, BlockPos pos)
     {
         try
         {
@@ -149,9 +148,9 @@ public class OxygenHooks
                 {
                     oxygenUtilClass = Class.forName("micdoodle8.mods.galacticraft.core.util.OxygenUtil");
                 }
-                torchHasOxygenMethod = oxygenUtilClass.getDeclaredMethod("checkTorchHasOxygen", World.class, Block.class, int.class, int.class, int.class);
+                torchHasOxygenMethod = oxygenUtilClass.getDeclaredMethod("checkTorchHasOxygen", World.class, BlockPos.class);
             }
-            return (Boolean)torchHasOxygenMethod.invoke(null, world, block, x, y, z);
+            return (Boolean)torchHasOxygenMethod.invoke(null, world, pos);
         }
         catch (Exception e)
         {

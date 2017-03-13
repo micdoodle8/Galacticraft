@@ -177,14 +177,13 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = getMetaFromState(worldIn.getBlockState(pos));
-
-        if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
-        else if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        else if (type == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             ((IMultiBlock) worldIn.getTileEntity(pos)).onActivated(playerIn);
             return true;
@@ -211,12 +210,12 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        int metadata = getMetaFromState(state);
-        if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             return new TileEntityLaunchController();
         }
-        if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        if (type == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             return new TileEntityCryogenicChamber();
         }
@@ -276,12 +275,12 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public int damageDropped(IBlockState state)
     {
-        int metadata = getMetaFromState(state);
-        if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             return BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
         }
-        else if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        else if (type == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             return BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
         }
@@ -294,7 +293,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public boolean isBed(IBlockAccess world, BlockPos pos, Entity player)
     {
-        return getMetaFromState(world.getBlockState(pos)) >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
+        return world.getBlockState(pos).getValue(TYPE) == EnumMachineType.CRYOGENIC_CHAMBER;
     }
 
     @Override
@@ -392,7 +391,6 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
     public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
     {
-	    int meta = getMetaFromState(world.getBlockState(pos)) & 12;
-		return meta != CRYOGENIC_CHAMBER_METADATA;
+	    return world.getBlockState(pos).getValue(TYPE) != EnumMachineType.CRYOGENIC_CHAMBER;
     }
 }

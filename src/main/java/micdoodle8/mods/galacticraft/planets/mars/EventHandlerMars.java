@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -42,6 +43,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerMars
@@ -86,9 +88,8 @@ public class EventHandlerMars
         BlockPos c = event.entityPlayer.playerLocation;
         IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
-        int metadata = blockID.getMetaFromState(state);
 
-        if (blockID == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             if (!event.flag1 && event.flag2 && event.flag3)
             {
