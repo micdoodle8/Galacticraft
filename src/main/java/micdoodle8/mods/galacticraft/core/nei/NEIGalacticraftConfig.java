@@ -44,11 +44,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         for (Block block : GCBlocks.hiddenBlocks)
         {
             API.hideItem(new ItemStack(block, 1, 0));
-//            if (block == GCBlocks.slabGCDouble) TODO
-//            {
-//            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
-//            		API.hideItem(new ItemStack(block, 1, j));
-//            }
+            if (block == GCBlocks.slabGCDouble)
+            {
+            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
+            		API.hideItem(new ItemStack(block, 1, j));
+            }
         }
 
         API.registerRecipeHandler(new RocketT1RecipeHandler());
