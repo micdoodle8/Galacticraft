@@ -8,9 +8,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The universal energy compatibility module allows Galacticraft to be
@@ -160,10 +158,6 @@ public class EnergyConfigHandler
         EnergyConfigHandler.disableMekanismInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of Mekanism energy", false).getBoolean(false);
         EnergyConfigHandler.disableMekanismOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of Mekanism energy", false).getBoolean(false);
 
-        if (!EnergyConfigHandler.isBuildcraftLoaded())
-        {
-            EnergyConfigHandler.displayEnergyUnitsBC = false;
-        }
         if (!EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
             EnergyConfigHandler.displayEnergyUnitsIC2 = false;
@@ -231,80 +225,6 @@ public class EnergyConfigHandler
         }
 
         return cachedIC2LoadedValue;
-    }
-
-    /**
-     * Checks using the FML loader to see if BC (or BC API) is loaded
-     */
-    public static boolean isBuildcraftLoaded()
-    {
-        if (!cachedBCLoaded)
-        {
-            cachedBCLoaded = true;
-            cachedBCLoadedValue = false;
-
-            if (disableMJinterface)
-            {
-                return false;
-            }
-            else
-            {
-                int count = 0;
-                try
-                {
-                    if (Class.forName("buildcraft.api.mj.MjAPI") != null)
-                    {
-                        count++;
-                    }
-                    if (Class.forName("buildcraft.api.power.IPowerReceptor") != null)
-                    {
-                        count++;
-                    }
-                    if (Class.forName("buildcraft.api.power.PowerHandler") != null)
-                    {
-                        count++;
-                    }
-                    if (Class.forName("buildcraft.api.power.IPowerEmitter") != null)
-                    {
-                        count++;
-                    }
-                    if (Class.forName("buildcraft.api.mj.IBatteryObject") != null)
-                    {
-                        count++;
-                    }
-                    if (Class.forName("buildcraft.api.mj.ISidedBatteryProvider") != null)
-                    {
-                        count++;
-                    }
-                }
-                catch (Exception e)
-                {
-                }
-
-                if (count < 6)
-                {
-                    return false;
-                }
-
-                try
-                {
-                    Class clazz = Class.forName("buildcraft.api.core.JavaTools");
-                    Method methodz = clazz.getMethod("getAllFields", Class.class);
-                    if (methodz != null && methodz.getReturnType() == List.class)
-                    {
-                        cachedBCLoadedValue = true;
-                        return true;
-                    }
-                }
-                catch (Exception e)
-                {
-                }
-
-                GCLog.severe("Other mods with two different versions of Buildcraft API detected.  Galacticraft cannot use MJ until this is fixed.  You may have more serious problems with other mods.  More info at: http://wiki.micdoodle8.com/wiki/Compatibility.");
-            }
-        }
-
-        return cachedBCLoadedValue;
     }
 
     public static boolean isBuildcraftReallyLoaded()

@@ -64,6 +64,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchSchedulingEnabled;
     @NetworkedField(targetSide = Side.CLIENT)
+    public boolean controlEnabled;
     public boolean hideTargetDestination = true;
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
@@ -106,6 +107,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 //	        	tickCounts.put(dim, tickCount);
 //	        	instanceCounts.put(dim, instanceCount);
 //            }
+        	
+      		this.controlEnabled = this.launchSchedulingEnabled && this.hasEnoughEnergyToRun && !this.getDisabled(0);
         	
         	if (this.frequencyCheckNeeded)
             {
