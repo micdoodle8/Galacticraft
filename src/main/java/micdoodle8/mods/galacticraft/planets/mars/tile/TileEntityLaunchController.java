@@ -12,9 +12,9 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+//import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
+//import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
@@ -34,9 +34,9 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 
 public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
@@ -61,6 +61,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchSchedulingEnabled;
     @NetworkedField(targetSide = Side.CLIENT)
+    public boolean controlEnabled;
     public boolean hideTargetDestination = true;
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
@@ -103,6 +104,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 //	        	tickCounts.put(dim, tickCount);
 //	        	instanceCounts.put(dim, instanceCount);
 //            }
+
+      		this.controlEnabled = this.launchSchedulingEnabled && this.hasEnoughEnergyToRun && !this.getDisabled(0);
         	
         	if (this.frequencyCheckNeeded)
             {

@@ -263,6 +263,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        	else
 	        		this.kill();
 	        }
+
+	        if (this.timeSinceLaunch > 50 && this.onGround)
+	        {
+	            this.failRocket();
+	        }
         }
         
         if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal())
@@ -321,11 +326,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
         this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
-
-        if (this.timeSinceLaunch > 50 && this.onGround)
-        {
-            this.failRocket();
-        }
 
         if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
         {

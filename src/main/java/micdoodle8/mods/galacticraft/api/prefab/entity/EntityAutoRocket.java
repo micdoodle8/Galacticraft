@@ -64,8 +64,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     private IFuelDock landingPad;
     public boolean landing;
     public EnumAutoLaunch autoLaunchSetting;
-
     public int autoLaunchCountdown;
+    private BlockVec3 activeLaunchController;
+    
     public String statusMessage;
     public String statusColour;
     public int statusMessageCooldown;
@@ -111,6 +112,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     public abstract int getFuelTankCapacity();
 
+    //Used for Cargo Rockets, client is asking the server what is the status
     public boolean checkLaunchValidity()
     {
         this.statusMessageCooldown = 40;
@@ -153,59 +155,33 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             return false;
         }
 
-        int yMin = MathHelper.floor_double(this.posY) - 3;
-        int yMax = MathHelper.floor_double(this.posY) + 1;
-        for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+        if (this.activeLaunchController != null)
         {
-        	for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+          	TileEntity launchController = this.activeLaunchController.getTileEntity(this.worldObj);
+        	if (controllerClass.isInstance(launchController))
         	{
-        		for (int y = yMin; y <= yMax; y++)
+        		try
         		{
-                    TileEntity tile = this.worldObj.getTileEntity(x, y, z);
+        			Boolean b = (Boolean) controllerClass.getMethod("validFrequency").invoke(launchController);
 
-                    if (tile instanceof IFuelDock)
-                    {
-                        IFuelDock dock = (IFuelDock) tile;
+        			if (b != null && b)
+        			{
+        				int controllerFrequency = controllerClass.getField("destFrequency").getInt(launchController);
+        				boolean foundPad = this.setTarget(false, controllerFrequency);
 
-                        try
-                        {
-                            TileEntity launchController = null;
-
-                            for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
-                            {
-                                if (!controllerClass.isInstance(connectedTile))
-                                	continue;
-
-                                launchController = (TileEntity) connectedTile;
-                                break;
-                            }
-
-                            if (launchController != null)
-                            {
-                            	//This includes a check whether the Launch Controller has energy
-                            	Boolean b = (Boolean) controllerClass.getMethod("validFrequency").invoke(launchController);
-
-                                if (b != null && b)
-                                {
-                                	int controllerFrequency = controllerClass.getField("destFrequency").getInt(launchController);
-                                    boolean foundPad = this.setTarget(false, controllerFrequency);
-
-                                    if (foundPad)
-                                    {
-                                        this.destinationFrequency = controllerFrequency;
-                                        GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+        				if (foundPad)
+        				{
+        					this.destinationFrequency = controllerFrequency;
+        					GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
+        					return true;
+        				}
+        			}
+        		}
+        		catch (Exception e)
+        		{
+        			e.printStackTrace();
+        		}
+        	}
         }
 
         this.destinationFrequency = -1;
@@ -323,9 +299,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
             if (this.autoLaunchCountdown > 0 && (!(this instanceof EntityTieredRocket) || this.riddenByEntity != null))
             {
-                this.autoLaunchCountdown--;
-
-                if (this.autoLaunchCountdown <= 0)
+                if (--this.autoLaunchCountdown <= 0)
                 {
                     this.autoLaunch();
                 }
@@ -346,34 +320,24 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
             if (this.autoLaunchSetting == EnumAutoLaunch.REDSTONE_SIGNAL)
             {
-                if (this.ticks % 25 == 0 && this.getLandingPad() != null)
+                if (this.ticks % 11 == 0 && this.activeLaunchController != null)
                 {
-                	HashSet<ILandingPadAttachable> connectedTiles = this.getLandingPad().getConnectedTiles(); 
-                    if (connectedTiles != null)
-                    {
-                        for (ILandingPadAttachable tile : connectedTiles)
-                        {
-                            if (!controllerClass.isInstance(tile))
-                            	continue;
-
-                            if (this.worldObj.isBlockIndirectlyGettingPowered(((TileEntity) tile).xCoord, ((TileEntity) tile).yCoord, ((TileEntity) tile).zCoord))
-                            {
-                            	this.autoLaunch();
-                            }
-                        }
-                    }
+                	if (this.worldObj.isBlockIndirectlyGettingPowered(this.activeLaunchController.x, this.activeLaunchController.y, this.activeLaunchController.z))
+                	{
+                		this.autoLaunch();
+                	}
                 }
             }
 
             if (this.landing && this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
             {
-                if (this.targetVec != null && this.worldObj.getTileEntity(this.targetVec.x, this.targetVec.y, this.targetVec.z) instanceof IFuelDock)
+                if (this.targetVec != null)
                 {
                 	this.motionY = Math.max(-2.0F, (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -70.0D);
                 	
-                	if (this.boundingBox.minY - this.targetVec.y < 0.2F)
+                	if (this.boundingBox.minY - this.getOnPadYOffset() - this.targetVec.y < 0.04F)
 	                {
-                		int yMin = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 1;
+                		int yMin = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 2;
                 		int yMax = MathHelper.floor_double(this.boundingBox.maxY) + 1;
                 		int zMin = MathHelper.floor_double(this.posZ) - 1;
                 		int zMax = MathHelper.floor_double(this.posZ) + 1;
@@ -433,10 +397,45 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         return false;
     }
 
+    //Server side only - this is a Launch Controlled ignition attempt
     private void autoLaunch()
     {
-        this.ignite();
-        this.autoLaunchSetting = null;
+    	if (this.autoLaunchSetting != null)
+    	{
+            if (this.activeLaunchController != null)
+            {
+              	TileEntity tile = this.activeLaunchController.getTileEntity(this.worldObj);
+            	
+            	if (controllerClass.isInstance(tile))
+            	{
+            		Boolean autoLaunchEnabled = null;
+            		try
+            		{
+            			autoLaunchEnabled = controllerClass.getField("controlEnabled").getBoolean(tile);
+            		} catch (Exception e) { }
+
+            		if (autoLaunchEnabled != null && autoLaunchEnabled)
+            		{
+            			if (this.fuelTank.getFluidAmount() > this.fuelTank.getCapacity() * 2 / 5)
+            				this.ignite();
+            			else
+            				this.failMessageInsufficientFuel();
+            		}
+            		else
+            		{
+            			this.failMessageLaunchController();
+            		}
+            	}            
+            }
+            this.autoLaunchSetting = null;
+            this.activeLaunchController = null;
+            
+            return;
+    	}
+    	else
+    	{
+    		this.ignite();
+    	}
     }
 
     public boolean igniteWithResult()
@@ -503,26 +502,23 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             {
                 if (controllerClass.isInstance(updatedTile))
                 {
-//                	TileEntity updatedTile = this.worldObj.getTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
-//
-//                	if (!controllerClass.isInstance(updatedTile))
-//                        continue;
-//
-//                  controllerClass.getField("attachedDock").set(updatedTile, dock);
-
-                    Boolean autoLaunchEnabled = controllerClass.getField("launchSchedulingEnabled").getBoolean(updatedTile);
+                	//This includes a check for whether it has enough energy to run (if it doesn't, then a launch would not go to the destination frequency and the rocket would be lost!)
+                    Boolean autoLaunchEnabled = controllerClass.getField("controlEnabled").getBoolean(updatedTile);
 
                     if (autoLaunchEnabled)
                     {
                         this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
 
+                        this.activeLaunchController = new BlockVec3((TileEntity) updatedTile);
+                        
                         switch (this.autoLaunchSetting)
                         {
                         case INSTANT:
                             //Small countdown to give player a moment to exit the Launch Controller GUI
                             if (this.autoLaunchCountdown <= 0 || this.autoLaunchCountdown > 12) this.autoLaunchCountdown = 12;
                             break;
-                            //The other settings set time to count down BEFORE engine ignition
+                            //The other settings set time to count down AFTER player mounts rocket but BEFORE engine ignition
+                            //TODO: if autoLaunchCountdown > 0 add some smoke (but not flame) particle effects or other pre-flight test feedback so the player knows something is happening
                         case TIME_10_SECONDS:
                             if (this.autoLaunchCountdown <= 0 || this.autoLaunchCountdown > 200)
                             	this.autoLaunchCountdown = 200;
@@ -539,10 +535,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                     }
                     else
                     {
+                        //This LaunchController is out of power, disabled, invalid target or set not to launch
+                        //No auto launch - but maybe another connectedTile will have some launch settings?
                         this.autoLaunchSetting = null;
+                        this.autoLaunchCountdown = 0;
+                        this.activeLaunchController = null;
                     }
-
-                    break;
                 }
             }
         }
@@ -761,6 +759,22 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
         }
     }
+
+    public void failMessageLaunchController()
+    {
+	    if (!this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayerMP)
+	    {
+	        ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.launchcontroller")));
+	    }
+    }
+    
+    public void failMessageInsufficientFuel()
+    {
+	    if (!this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayerMP)
+	    {
+	        ((EntityPlayerMP) this.riddenByEntity).addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.fuelinsufficient")));
+	    }
+    }
     
     @Override
     public void onLaunch()
@@ -884,6 +898,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
         nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
         nbt.setInteger("DestinationFrequency", this.destinationFrequency);
+        if (this.activeLaunchController != null) this.activeLaunchController.writeToNBT(nbt,"ALCat");
     }
 
     @Override
@@ -924,6 +939,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.autoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
         this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
         this.destinationFrequency = nbt.getInteger("DestinationFrequency");
+        this.activeLaunchController = BlockVec3.readFromNBT(nbt, "ALCat");
     }
 
     @Override
