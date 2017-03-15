@@ -158,7 +158,7 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayer>
                     {
                         this.greenOxygenTanks[1].render(scale);
                     }
-
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GlStateManager.popMatrix();
                 }
             }
