@@ -103,7 +103,7 @@ public class GCBlocks
         GCBlocks.brightAir = new BlockBrightAir("bright_air");
         GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("bright_breathable_air");
         GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
-        GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasure_chest");
+        GCBlocks.treasureChestTier1 = new BlockTier1TreasureChest("treasure_chest");
         GCBlocks.landingPad = new BlockLandingPad("landing_pad");
         GCBlocks.landingPadFull = new BlockLandingPadFull("landing_pad_full");
         GCBlocks.unlitTorch = new BlockUnlitTorch(false, "unlit_torch");
