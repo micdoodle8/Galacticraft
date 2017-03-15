@@ -10,9 +10,9 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+// import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
+// import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
@@ -37,9 +37,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+// import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+// import java.util.Map;
 
 public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
@@ -64,12 +64,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchSchedulingEnabled;
     @NetworkedField(targetSide = Side.CLIENT)
+    public boolean controlEnabled;
     public boolean hideTargetDestination = true;
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
     private boolean frequencyCheckNeeded = false;
-    private static Map<Integer, Long> tickCounts = new HashMap();
-    private static Map<Integer, Integer> instanceCounts = new HashMap();
+//    private static Map<Integer, Long> tickCounts = new HashMap();
+//    private static Map<Integer, Integer> instanceCounts = new HashMap();
 
     public TileEntityLaunchController()
     {
@@ -84,28 +85,30 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
         if (!this.worldObj.isRemote)
         {
-            if (ConfigManagerCore.enableDebug)
-            {
-            	int dim = this.worldObj.provider.getDimension();
-            	Long tickCount = tickCounts.get(dim);
-            	if (tickCount == null)
-            	{
-            		tickCount = 0L;
-            		tickCounts.put(dim, tickCount);
-            		instanceCounts.put(dim, 0);
-            	}
-            	int instanceCount = instanceCounts.get(dim);
-	        	if (this.worldObj.getTotalWorldTime() > tickCount)
-	            {
-	            	tickCount = this.worldObj.getTotalWorldTime();
-	            	if (tickCount % 20L == 0L) GCLog.debug("Dim " + dim + ": Number of Launch Controllers updating each tick: " + instanceCount);
-	            	instanceCount = 1;
-	            }
-	            else
-	            	instanceCount++;
-	        	tickCounts.put(dim, tickCount);
-	        	instanceCounts.put(dim, instanceCount);
-            }
+//            if (ConfigManagerCore.enableDebug)
+//            {
+//            	int dim = this.worldObj.provider.getDimensionId();
+//            	Long tickCount = tickCounts.get(dim);
+//            	if (tickCount == null)
+//            	{
+//            		tickCount = 0L;
+//            		tickCounts.put(dim, tickCount);
+//            		instanceCounts.put(dim, 0);
+//            	}
+//            	int instanceCount = instanceCounts.get(dim);
+//	        	if (this.worldObj.getTotalWorldTime() > tickCount)
+//	            {
+//	            	tickCount = this.worldObj.getTotalWorldTime();
+//	            	if (tickCount % 20L == 0L) GCLog.debug("Dim " + dim + ": Number of Launch Controllers updating each tick: " + instanceCount);
+//	            	instanceCount = 1;
+//	            }
+//	            else
+//	            	instanceCount++;
+//	        	tickCounts.put(dim, tickCount);
+//	        	instanceCounts.put(dim, instanceCount);
+//            }
+        	
+      		this.controlEnabled = this.launchSchedulingEnabled && this.hasEnoughEnergyToRun && !this.getDisabled(0);
         	
         	if (this.frequencyCheckNeeded)
             {

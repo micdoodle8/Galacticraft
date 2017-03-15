@@ -30,13 +30,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//import appeng.api.AEApi;
+//import appeng.api.util.AEColor;
+
 public class RecipeManagerGC
 {
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
 
     public static void loadRecipes()
     {
-        if (CompatibilityManager.isBCraftLoaded())
+        if (CompatibilityManager.isBCraftTransportLoaded())
         {
             RecipeManagerGC.addBuildCraftCraftingRecipes();
         }
@@ -44,6 +47,11 @@ public class RecipeManagerGC
         if (CompatibilityManager.isIc2Loaded())
         {
             RecipeManagerGC.addIndustrialCraft2Recipes();
+        }
+
+        if (CompatibilityManager.isAppEngLoaded())
+        {
+            RecipeManagerGC.addAppEngRecipes();
         }
 
         RecipeManagerGC.addUniversalRecipes();
@@ -541,6 +549,7 @@ public class RecipeManagerGC
             else
             {
                 silicon = silicons.get(j - 1);
+                if (silicon.getItem() == GCItems.basicItem && silicon.getItemDamage() == 2) continue;
             }
             CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Items.DYE, 1, 4) });
             CircuitFabricatorRecipes.addRecipe(basicWafers, new ItemStack[] { new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Blocks.REDSTONE_TORCH) });
@@ -640,6 +649,11 @@ public class RecipeManagerGC
         {
             e.printStackTrace();
         }
+    }
+
+    private static void addAppEngRecipes()
+    {
+//         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.Transparent, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
     }
 
     private static void addExNihiloRecipes()

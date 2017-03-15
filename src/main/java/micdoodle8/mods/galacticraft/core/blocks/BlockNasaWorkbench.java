@@ -104,60 +104,6 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     {
         final TileEntity tile = worldIn.getTileEntity(pos);
 
-        boolean validSpot = true;
-
-        for (int x = -1; x < 2; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                for (int z = -1; z < 2; z++)
-                {
-                    if (!(x == 0 && y == 0 && z == 0))
-                    {
-                        if (Math.abs(x) != 1 || Math.abs(z) != 1)
-                        {
-                            Block blockAt = worldIn.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock();
-
-                            if ((y == 0 || y == 3) && x == 0 && z == 0)
-                            {
-                                if (!blockAt.getMaterial(worldIn.getBlockState(pos)).isReplaceable())
-                                {
-                                    validSpot = false;
-                                }
-                            }
-                            else if (y != 0 && y != 3)
-                            {
-                                if (!blockAt.getMaterial(worldIn.getBlockState(pos)).isReplaceable())
-                                {
-                                    validSpot = false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!validSpot)
-        {
-            worldIn.setBlockToAir(pos);
-
-            if (!worldIn.isRemote && placer instanceof EntityPlayerMP)
-            {
-                EntityPlayerMP player = (EntityPlayerMP) placer;
-                player.addChatMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
-                if (!player.capabilities.isCreativeMode)
-                {
-                    final ItemStack nasaWorkbench = new ItemStack(this, 1, 0);
-                    final EntityItem entityitem = player.dropItem(nasaWorkbench, false);
-                    entityitem.setPickupDelay(0);
-                    entityitem.setOwner(player.getName());
-                }
-            }
-
-            return;
-        }
-
         if (tile instanceof IMultiBlock)
         {
             ((IMultiBlock) tile).onCreate(worldIn, pos);

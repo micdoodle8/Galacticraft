@@ -3,22 +3,30 @@ package micdoodle8.mods.galacticraft.core.util;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.lang.reflect.Method;
+
+//import cpw.mods.fml.common.Loader;
+//import cpw.mods.fml.common.registry.GameRegistry;
+
 
 public class CompatibilityManager
 {
     private static boolean modIc2Loaded;
-    private static boolean modBCraftLoaded;
+	private static boolean modBCraftEnergyLoaded;
+    private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
     private static boolean modTELoaded;
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
-    public static Class<?> classBCBlockGenericPipe = null;
+	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
+	public static Method methodBCBlockPipe_createPipe = null;
 
     public static void checkForCompatibleMods()
     {
@@ -63,13 +71,28 @@ public class CompatibilityManager
 
         }
 
-        if (Loader.isModLoaded("BuildCraft|Core"))
+        if (Loader.isModLoaded("BuildCraft|Energy"))
         {
-            CompatibilityManager.modBCraftLoaded = true;
+            CompatibilityManager.modBCraftEnergyLoaded = true;
+        }
+
+        if (Loader.isModLoaded("BuildCraft|Transport"))
+        {
+            CompatibilityManager.modBCraftTransportLoaded = true;
 
             try
             {
-                classBCBlockGenericPipe = Class.forName("buildcraft.transport.BlockGenericPipe");
+            	BlockEnclosed.blockPipeBC = (BlockContainer) GameRegistry.findBlock("BuildCraft|Transport", "pipeBlock");
+            	classBCBlockGenericPipe = BlockEnclosed.blockPipeBC.getClass(); 
+
+            	for (Method m : classBCBlockGenericPipe.getMethods())
+                {
+                	if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
+                    {
+                		methodBCBlockPipe_createPipe = m;
+                        break;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -78,9 +101,9 @@ public class CompatibilityManager
 
             BlockEnclosed.initialiseBC();
 
-            if (classBCBlockGenericPipe == null)
+            if (CompatibilityManager.methodBCBlockPipe_createPipe == null)
             {
-                CompatibilityManager.modBCraftLoaded = false;
+                CompatibilityManager.modBCraftTransportLoaded = false;
             }
         }
 
@@ -110,9 +133,14 @@ public class CompatibilityManager
         return CompatibilityManager.modIc2Loaded;
     }
 
-    public static boolean isBCraftLoaded()
+    public static boolean isBCraftTransportLoaded()
     {
-        return CompatibilityManager.modBCraftLoaded;
+        return CompatibilityManager.modBCraftTransportLoaded;
+    }
+
+    public static boolean isBCraftEnergyLoaded()
+    {
+        return CompatibilityManager.modBCraftEnergyLoaded;
     }
 
     public static boolean isTELoaded()

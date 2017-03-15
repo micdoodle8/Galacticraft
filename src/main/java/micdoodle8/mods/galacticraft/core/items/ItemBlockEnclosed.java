@@ -1,13 +1,20 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+//import java.lang.reflect.Method;
+//
+//import appeng.api.AEApi;
+//import appeng.api.util.AEColor;
+//import cpw.mods.fml.relauncher.Side;
+//import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlockType;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -50,94 +57,41 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int metadata = this.getMetadata(stack.getItemDamage());
-        BlockEnclosed.EnumEnclosedBlockType type = BlockEnclosed.EnumEnclosedBlockType.byMetadata(metadata);
-
-        if (type != null && type.getBCPipeType() != null)
+        if (metadata == EnumEnclosedBlockType.ME_CABLE.getMeta() && CompatibilityManager.isAppEngLoaded())
         {
-            IBlockState state = worldIn.getBlockState(pos);
-            Block block = state.getBlock();
+            IBlockState iblockstate = worldIn.getBlockState(pos);
+            Block block = iblockstate.getBlock();
 
-            if (block == Blocks.SNOW)
-            {
-                side = EnumFacing.UP;
-            }
-            else if (block != Blocks.VINE && block != Blocks.TALLGRASS && block != Blocks.DEADBUSH && !block.isReplaceable(worldIn, pos))
+            if (!block.isReplaceable(worldIn, pos))
             {
                 pos = pos.offset(side);
-//                if (side == EnumFacing.DOWN)
-//                {
-//                    j--;
-//                }
-//                if (side == EnumFacing.UP)
-//                {
-//                    j++;
-//                }
-//                if (side == EnumFacing.NORTH)
-//                {
-//                    k--;
-//                }
-//                if (side == EnumFacing.SOUTH)
-//                {
-//                    k++;
-//                }
-//                if (side == EnumFacing.WEST)
-//                {
-//                    i--;
-//                }
-//                if (side == EnumFacing.EAST)
-//                {
-//                    i++;
-//                }
             }
 
             if (stack.stackSize == 0)
             {
                 return EnumActionResult.FAIL;
             }
-
-            if (!playerIn.canPlayerEdit(pos, side, stack))
+            else if (!playerIn.canPlayerEdit(pos, side, stack))
             {
                 return EnumActionResult.FAIL;
             }
-            else if (pos.getY() == 255 && this.getBlock().getMaterial(state).isSolid())
+            else if (worldIn.canBlockBePlaced(this.block, pos, false, side, (Entity)null, stack))
             {
-                return EnumActionResult.FAIL;
-            }
-            else if (worldIn.canBlockBePlaced(block, pos, false, side, playerIn, stack))
-            {
-//                public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-                IBlockState j1 = this.getBlock().onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, metadata, playerIn);
-                block.onBlockPlacedBy(worldIn, pos, j1, playerIn, stack);
+                int i = this.getMetadata(stack.getMetadata());
+                IBlockState iblockstate1 = this.block.onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
 
-                if (placeBlockAt(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, j1))
+                if (placeBlockAt(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, iblockstate1))
                 {
-                    SoundType soundType = this.getBlock().getSoundType(state, worldIn, pos, playerIn);
+                    SoundType soundType = this.getBlock().getSoundType(iblockstate, worldIn, pos, playerIn);
                     worldIn.playSound(playerIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
                     --stack.stackSize;
 
-                    if (metadata >= BlockEnclosed.EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta() && metadata <= BlockEnclosed.EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta())
-                    {
-                        if (CompatibilityManager.isBCraftLoaded())
-                        {
-                            BlockEnclosed.initialiseBCPipe(worldIn, pos, metadata);
+//                  ItemStack itemME = AEApi.instance().definitions().parts().cableGlass().stack(AEColor.Transparent, 1);
+//                  itemME.stackSize = 2; //Fool AppEng into not destroying anything in the player inventory
+//                  return AEApi.instance().partHelper().placeBus( itemME, pos, side, entityplayer, world );
+//                  //Might be better to do appeng.parts.PartPlacement.place( is, pos, side, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
                         }
-                    }
-
-                    else if (metadata == BlockEnclosed.EnumEnclosedBlockType.ME_CABLE.getMeta())
-                    {
-//                    	ItemStack itemME = new ItemStack(Block.getBlockFromName("appliedenergistics2:tile.BlockCableBus"), 16);
-//                    	try
-//                    	{
-//                    		Class clazz = Class.forName("appeng.tile.networking.TileCableBus");
-//                    		Method m = clazz.getMethod("addPart", ItemStack.class, ForgeDirection.class, EntityPlayer.class);
-//                    		m.invoke(world.getTileEntity(i, j, k), itemME, ForgeDirection.UNKNOWN, entityplayer);
-//                    	}
-//                    	catch (Exception e) { e.printStackTrace(); }
-                    }
-                }
-
                 return EnumActionResult.SUCCESS;
-
             }
             else
             {

@@ -430,7 +430,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
-            if (d != 0 && this.ticks % MathHelper.floor_double(2 / d) == 0)
+            if (d != 0 && this.ticks % (MathHelper.floor_double(2 / d) + 1) == 0)
             {
                 this.removeFuel(1);
             }

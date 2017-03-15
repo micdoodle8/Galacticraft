@@ -40,20 +40,25 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     @Override
     public boolean placeBlockAt(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, IBlockState state)
     {
-        for (int y = 0; y < 3; y++)
-        {
-            IBlockState stateAt = world.getBlockState(pos.add(0, y, 0));
-            int metaAt = itemStack.getItemDamage();
+        int metaAt = itemStack.getItemDamage();
 
-            if (this.getBlock() == MarsBlocks.machine)
+        //If it is a Cryogenic Chamber, check the space
+        if (metaAt == BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        {
+            for (int y = 0; y < 3; y++)
             {
-                if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable() && metaAt >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && metaAt < BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
+                IBlockState stateAt = world.getBlockState(pos.add(0, y, 0));
+
+                if (this.getBlock() == MarsBlocks.machine)
                 {
-                    if (world.isRemote)
+                    if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable())
                     {
-                        FMLClientHandler.instance().getClient().ingameGUI.setRecordPlaying(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
+                        if (world.isRemote)
+                        {
+                            FMLClientHandler.instance().getClient().ingameGUI.setRecordPlaying(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
+                        }
+                        return false;
                     }
-                    return false;
                 }
             }
         }
@@ -113,7 +118,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     public boolean shouldHoldLeftHandUp(EntityPlayer player)
     {
         ItemStack currentStack = player.getHeldItemMainhand();
-        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
 
     }
 
@@ -121,8 +126,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     public boolean shouldHoldRightHandUp(EntityPlayer player)
     {
         ItemStack currentStack = player.getHeldItemMainhand();
-        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
-
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
     }
 
     @Override

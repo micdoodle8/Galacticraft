@@ -221,7 +221,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         	this.addToTelemetry = false;
 			for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
 			{
-				TileEntity t1 = vec.getTileEntity();
+				TileEntity t1 = vec.getTileEntityNoLoad();
 				if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
 				{
 					if (((TileEntityTelemetry)t1).linkedEntity == this)
@@ -275,6 +275,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                     {
                         this.kill();
                     }
+
+	        if (this.timeSinceLaunch > 50 && this.onGround)
+	        {
+	            this.failRocket();
+	        }
                 }
 	        }
         }
@@ -333,11 +338,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
         this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
-
-        if (this.timeSinceLaunch > 50 && this.onGround)
-        {
-            this.failRocket();
-        }
 
         if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
         {

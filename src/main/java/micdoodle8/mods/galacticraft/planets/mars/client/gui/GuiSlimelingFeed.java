@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import java.io.IOException;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -61,8 +63,12 @@ public class GuiSlimelingFeed extends GuiScreen
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID)
+    protected void keyTyped(char keyChar, int keyID) throws IOException
     {
+        if (!this.buttonGrowSlimeling.enabled && !this.buttonBreedSlimeling.enabled && !this.buttonStrengthenSlimeling.enabled && !this.buttonHealSlimeling.enabled)
+    {
+            super.keyTyped(keyChar, keyID);
+        }
         return;
     }
 

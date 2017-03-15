@@ -92,7 +92,7 @@ public class FluidUtil
             }
 
             //If the tank already contains something, fill it with more of the same
-            if (liquidInTank.amount + liquid.amount <= tank.getCapacity())
+			if (liquidInTank.amount < tank.getCapacity())
             {
                 return tank.fill(new FluidStack(liquidInTank, liquid.amount), doFill);
             }

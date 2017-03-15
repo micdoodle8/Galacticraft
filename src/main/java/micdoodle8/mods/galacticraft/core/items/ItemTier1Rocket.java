@@ -132,7 +132,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
 
                 if (spaceship.rocketType.getPreFueled())
                 {
-                    spaceship.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, 2000), true);
+                    spaceship.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, spaceship.getMaxFuel()), true);
                 }
             }
             else

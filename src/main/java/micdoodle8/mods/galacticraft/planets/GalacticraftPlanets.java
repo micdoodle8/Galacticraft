@@ -5,11 +5,15 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.MFRSpawnHandlerSlimeling;
+import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeMars;
 import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
@@ -71,6 +75,13 @@ public class GalacticraftPlanets
         GalacticraftPlanets.commonModules.add(new VenusModule());
         GalacticraftPlanets.proxy.preInit(event);
         GalacticraftPlanets.proxy.registerVariants();
+        
+        //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker
+        Biome biomeMarsPreInit = BiomeMars.marsFlat;
+        Biome biomeAsteroidsPreInit = BiomeAsteroids.asteroid;
+        Biome biomeVenusPreInit1 = BiomeVenus.venusFlat;
+        Biome biomeVenusPreInit2 = BiomeVenus.venusMountain;
+        Biome biomeVenusPreInit3 = BiomeVenus.venusValley;
     }
 
     @EventHandler

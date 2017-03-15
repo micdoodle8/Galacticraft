@@ -396,7 +396,7 @@ public class BlockVec3 implements Cloneable
             return null;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.isBlockLoaded(pos) ? world.getTileEntity(pos) : null;
+        return world.isBlockLoaded(pos, false) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -431,7 +431,7 @@ public class BlockVec3 implements Cloneable
             return null;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.isBlockLoaded(pos) ? world.getTileEntity(pos) : null;
+        return world.isBlockLoaded(pos, false) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -501,7 +501,7 @@ public class BlockVec3 implements Cloneable
             return null;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.isBlockLoaded(pos) ? world.getBlockState(pos).getBlock() : null;
+        return world.isBlockLoaded(pos, false) ? world.getBlockState(pos).getBlock() : null;
     }
 
     public int getBlockMetadata(IBlockAccess world)
@@ -550,6 +550,25 @@ public class BlockVec3 implements Cloneable
         this.z = par1NBTTagCompound.getInteger("z");
     }
 
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound, String prefix)
+    {
+        par1NBTTagCompound.setInteger(prefix + "_x", this.x);
+        par1NBTTagCompound.setInteger(prefix + "_y", this.y);
+        par1NBTTagCompound.setInteger(prefix + "_z", this.z);
+        return par1NBTTagCompound;
+    }
+
+    public static BlockVec3 readFromNBT(NBTTagCompound par1NBTTagCompound, String prefix)
+    {
+        Integer readX = par1NBTTagCompound.getInteger(prefix + "_x");
+        if (readX == null) return null;
+        Integer readY = par1NBTTagCompound.getInteger(prefix + "_y");
+        if (readY == null) return null;
+        Integer readZ = par1NBTTagCompound.getInteger(prefix + "_z");
+        if (readZ == null) return null;
+        return new BlockVec3(readX, readY, readZ);
+    }
+
     public double getMagnitude()
     {
         return Math.sqrt(this.getMagnitudeSquared());
@@ -567,7 +586,7 @@ public class BlockVec3 implements Cloneable
 
     public boolean blockExists(World world)
     {
-        return world.isBlockLoaded(new BlockPos(this.x, this.y, this.z));
+        return world.isBlockLoaded(new BlockPos(this.x, this.y, this.z), false);
     }
 
     public void setSideDone(int side)

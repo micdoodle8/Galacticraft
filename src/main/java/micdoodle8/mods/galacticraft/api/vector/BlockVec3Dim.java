@@ -274,13 +274,23 @@ public class BlockVec3Dim implements Cloneable
     }
 
     /**
-     * This will load the chunk.
+     * This will load the chunk - use getTileEntityNoLoad() if just updating things if present.
      */
     public TileEntity getTileEntity()
     {
    		World world = GalacticraftCore.proxy.getWorldForID(this.dim);
    		if (world == null) return null;
         return world.getTileEntity(new BlockPos(this.x, this.y, this.z));
+    }
+
+    public TileEntity getTileEntityNoLoad()
+    {
+        World world = getWorldForId(this.dim);
+        if (world == null) return null;
+        BlockPos pos = new BlockPos(this.x, this.y, this.z);
+        if (world.isBlockLoaded(pos, false))
+            return world.getTileEntity(pos);
+        return null;
     }
 
     public IBlockState getBlockMetadata()

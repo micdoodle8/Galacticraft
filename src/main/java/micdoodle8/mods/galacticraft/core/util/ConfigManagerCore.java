@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.input.Keyboard;
 
 import java.io.File;
@@ -736,6 +735,11 @@ public class ConfigManagerCore
     		challengeSpawnHandling = true;
     		challengeAsteroidPopulation = true;
     	}
+
+    	//This enables Endermen on Asteroids in Asteroids Challenge mode
+    	if (GalacticraftCore.isPlanetsLoaded)
+    		((BiomeAsteroids)BiomeAsteroids.asteroid).resetMonsterListByMode(challengeMobDropsAndSpawning);
+    	//TODO: could also increase mob spawn frequency in Hard Mode on various dimensions e.g. Moon and Mars?
     }
     
     /**

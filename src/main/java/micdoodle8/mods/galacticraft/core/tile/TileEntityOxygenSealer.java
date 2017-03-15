@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -50,12 +51,16 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     private static long ticksSave = 0L;
     private static boolean sealerCheckedThisTick = false;
     public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList();
+    private static final int UNSEALED_OXYGENPERTICK = 12;
 
 
     public TileEntityOxygenSealer()
     {
-        super(10000, 6);
+        super(10000, UNSEALED_OXYGENPERTICK);
         this.noRedstoneControl = true;
+        this.storage.setMaxExtract(5.0F);  //Half of a standard machine's power draw
+        this.storage.setMaxReceive(25.0F);
+        this.storage.setCapacity(EnergyStorageTile.STANDARD_CAPACITY * 2);  //Large capacity so it can keep working for a while even if chunk unloads affect its power supply
     }
 
     @Override
@@ -132,7 +137,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
             {
                 IItemOxygenSupply oxygenItem = (IItemOxygenSupply) oxygenItemStack.getItem();
-                int oxygenDraw = (int) Math.floor(Math.min(this.oxygenPerTick * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
+                int oxygenDraw = (int) Math.floor(Math.min(UNSEALED_OXYGENPERTICK * 2.5F, this.getMaxOxygenStored() - this.getOxygenStored()));
                 this.setOxygenStored(getOxygenStored() + oxygenItem.discharge(oxygenItemStack, oxygenDraw));
                 if (this.getOxygenStored() > this.getMaxOxygenStored())
                 {
@@ -147,12 +152,14 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                     this.storage.setMaxExtract(20.0F);
                 }
             }
-            else if (this.storage.getMaxExtract() != 10.0F)
+            else if (this.storage.getMaxExtract() != 5.0F)
             {
-                this.storage.setMaxExtract(10.0F);
+                this.storage.setMaxExtract(5.0F);
+                this.storage.setMaxReceive(25.0F);
             }
         }
 
+        this.oxygenPerTick = this.sealed ? 2 : UNSEALED_OXYGENPERTICK;
         super.update();
 
         if (!this.worldObj.isRemote)
@@ -173,6 +180,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
             this.active = this.getOxygenStored() >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
 
+            //TODO: if multithreaded, this codeblock should not run if the current threadSeal is flagged looping
             if (this.stopSealThreadCooldown > 0)
             {
                 this.stopSealThreadCooldown--;
@@ -181,14 +189,25 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             {
                 // This puts any Sealer which is updated to the back of the queue for updates
                 this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
+                if (this.active || this.sealed)
+                {
                 TileEntityOxygenSealer.sealerCheckedThisTick = true;
                 OxygenPressureProtocol.updateSealerStatus(this);
             }
+            }
 
+            //TODO: if multithreaded, this.threadSeal needs to be atomic
             if (this.threadSeal != null)
             {
+            	if (this.threadSeal.looping.get())
+            	{
+            		this.calculatingSealed = this.active;
+            	}
+            	else
+            	{
+            		this.calculatingSealed = false;
                 this.sealed = this.active && this.threadSeal.sealedFinal.get();
-                this.calculatingSealed = this.active && this.threadSeal.looping.get();
+            	}
             }
 
             this.lastDisabled = this.disabled;
@@ -432,7 +451,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean shouldUseOxygen()
     {
-        return this.hasEnoughEnergyToRun && this.active && this.sealed;
+        return this.hasEnoughEnergyToRun && this.active;
     }
 
     @Override
