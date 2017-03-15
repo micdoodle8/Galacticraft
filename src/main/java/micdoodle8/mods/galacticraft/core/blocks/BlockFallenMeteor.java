@@ -23,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -31,13 +32,20 @@ import java.util.Random;
 
 public class BlockFallenMeteor extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
+    private static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.15, 0.05, 0.15, 0.85, 0.75, 0.85);
+    
     public BlockFallenMeteor(String assetName)
     {
         super(Material.ROCK);
-//        this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
         this.setHardness(50.0F);
         this.setSoundType(SoundType.STONE);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return BOUNDS;
     }
 
     @Override

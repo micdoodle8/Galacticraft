@@ -458,6 +458,11 @@ public class OxygenUtil
     {
         TileEntity[] adjacentConnections = new TileEntity[EnumFacing.values().length];
 
+        if (tile == null)
+        {
+            return adjacentConnections;
+        }
+
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);

@@ -40,6 +40,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -55,7 +56,10 @@ import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -90,6 +94,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class EventHandlerGC
@@ -874,6 +879,9 @@ public class EventHandlerGC
 
     private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
 
+    private static Field volumeField;
+    private static Field pitchField;
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onSoundPlayed(PlaySoundEvent event)
@@ -886,7 +894,7 @@ public class EventHandlerGC
 
         EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
 
-        if (player != null && player.worldObj != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && event != null)
+        if (player != null && player.worldObj != null && player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             //Only modify standard game sounds, not music
             if (event.getResultSound().getAttenuationType() != ISound.AttenuationType.NONE)
@@ -906,7 +914,36 @@ public class EventHandlerGC
                     boolean soundInAtmosphere = OxygenUtil.isAABBInBreathableAirBlock(player.worldObj, bb);
                     if ((!playerInAtmosphere || !soundInAtmosphere))
                     {
-                        float volume = event.getResultSound().getVolume();
+                        float volume = 1.0F;
+                        float pitch = 1.0F;
+
+                        if (volumeField == null)
+                        {
+                            try
+                            {
+                                volumeField = PositionedSound.class.getDeclaredField("volume"); // TODO Obfuscated environment support
+                                volumeField.setAccessible(true);
+                                pitchField = PositionedSound.class.getDeclaredField("pitch"); // TODO Obfuscated environment support
+                                pitchField.setAccessible(true);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        if (volumeField != null && pitchField != null)
+                        {
+                            try
+                            {
+                                volume = event.getSound() instanceof PositionedSound ? (float) volumeField.get(event.getSound()) : 1.0F;
+                                pitch = event.getSound() instanceof PositionedSound ? (float) pitchField.get(event.getSound()) : 1.0F;
+                            }
+                            catch (IllegalAccessException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
 
                         //First check for duplicate firing of PlaySoundEvent17 on this handler's own playing of a reduced volume sound (see below)
                         for (int i = 0; i < this.soundPlayList.size(); i++)
@@ -925,7 +962,7 @@ public class EventHandlerGC
 
                         this.soundPlayList.add(new SoundPlayEntry(event.getName(), x, y, z, newVolume));
                         SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(event.getResultSound().getSoundLocation());
-                        ISound newSound = new PositionedSoundRecord(soundEvent, SoundCategory.NEUTRAL, newVolume, event.getResultSound().getPitch(), x, y, z);
+                        ISound newSound = new PositionedSoundRecord(soundEvent, SoundCategory.NEUTRAL, newVolume, pitch, x, y, z);
                         event.getManager().playSound(newSound);
                         event.setResultSound(null);
                     }

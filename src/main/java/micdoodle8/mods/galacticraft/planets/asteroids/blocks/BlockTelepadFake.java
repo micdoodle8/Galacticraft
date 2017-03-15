@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
@@ -31,6 +32,8 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 {
     public static final PropertyBool TOP = PropertyBool.create("top");
     public static final PropertyBool CONNECTABLE = PropertyBool.create("connectable");
+    protected static final AxisAlignedBB AABB_TOP = new AxisAlignedBB(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB AABB_BOTTOM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 
     public BlockTelepadFake(String assetName)
     {
@@ -46,6 +49,12 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return state.getValue(TOP) ? AABB_TOP : AABB_BOTTOM;
     }
 
 //    @Override

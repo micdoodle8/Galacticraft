@@ -22,6 +22,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
@@ -34,6 +35,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 {
     public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
     public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("rendertype", 0, 7);
+
+    protected static final AxisAlignedBB AABB_PAD = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+    protected static final AxisAlignedBB AABB_SOLAR = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final AxisAlignedBB AABB_SOLAR_TOP = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.6F, 0.7F);
 
     public enum EnumBlockMultiType implements IStringSerializable
     {
@@ -79,6 +84,22 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
         this.setResistance(1000000000000000.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch ((EnumBlockMultiType)state.getValue(MULTI_TYPE))
+        {
+        case SOLAR_PANEL_0:
+        case SOLAR_PANEL_1:
+            return source.getBlockState(pos.up()) == this ? AABB_SOLAR : AABB_SOLAR_TOP;
+        case ROCKET_PAD:
+        case BUGGY_FUEL_PAD:
+            return AABB_PAD;
+        default:
+            return FULL_BLOCK_AABB;
+        }
     }
 
     @Override

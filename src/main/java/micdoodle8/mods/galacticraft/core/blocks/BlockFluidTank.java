@@ -41,6 +41,12 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     }
 
     @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return BOUNDS;
+    }
+
+    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntity tile = worldIn.getTileEntity(pos);

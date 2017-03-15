@@ -99,7 +99,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     {
         if (world.isRemote)
         {
-            return EnumActionResult.FAIL;
+            return EnumActionResult.PASS;
         }
         IBlockState state = world.getBlockState(pos);
         Block blockID = state.getBlock();
@@ -108,13 +108,13 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         {
             int metadata = blockID.getMetaFromState(state);
 
-            world.setBlockState(pos, blockID.getStateFromMeta(EnumFacing.getHorizontal((metadata + 1) % 4).ordinal()), 3);
+            world.setBlockState(pos, blockID.getStateFromMeta(EnumFacing.getFront(metadata).rotateY().ordinal()), 3);
             this.wrenchUsed(player, pos);
 
-            return EnumActionResult.PASS;
+            return EnumActionResult.SUCCESS;
         }
 
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
     }
 
     @Override

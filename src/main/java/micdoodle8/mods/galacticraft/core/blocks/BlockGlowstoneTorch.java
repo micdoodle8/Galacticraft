@@ -27,6 +27,11 @@ import java.util.Random;
 public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);
+    protected static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D, 0.6000000238418579D, 0.6000000238418579D, 0.6000000238418579D);
+    protected static final AxisAlignedBB TORCH_NORTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.699999988079071D, 0.6499999761581421D, 0.800000011920929D, 1.0D);
+    protected static final AxisAlignedBB TORCH_SOUTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.0D, 0.6499999761581421D, 0.800000011920929D, 0.30000001192092896D);
+    protected static final AxisAlignedBB TORCH_WEST_AABB = new AxisAlignedBB(0.699999988079071D, 0.20000000298023224D, 0.3499999940395355D, 1.0D, 0.800000011920929D, 0.6499999761581421D);
+    protected static final AxisAlignedBB TORCH_EAST_AABB = new AxisAlignedBB(0.0D, 0.20000000298023224D, 0.3499999940395355D, 0.30000001192092896D, 0.800000011920929D, 0.6499999761581421D);
 
     public BlockGlowstoneTorch(String assetName)
     {
@@ -39,15 +44,33 @@ public class BlockGlowstoneTorch extends Block implements IShiftDescription, ISo
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return GalacticraftCore.galacticraftBlocksTab;
+        switch (state.getValue(FACING))
+        {
+        case EAST:
+            return TORCH_EAST_AABB;
+        case WEST:
+            return TORCH_WEST_AABB;
+        case SOUTH:
+            return TORCH_SOUTH_AABB;
+        case NORTH:
+            return TORCH_NORTH_AABB;
+        default:
+            return STANDING_AABB;
+        }
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        return null;
+        return NULL_AABB;
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override

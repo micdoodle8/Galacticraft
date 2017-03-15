@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
@@ -27,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,8 +38,10 @@ import java.util.List;
 public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
     public static final PropertyEnum WALKWAY_TYPE = PropertyEnum.create("type", EnumWalkwayType.class);
-    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
-    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
+//    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
+//    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
+    protected static final AxisAlignedBB AABB_UNCONNECTED = new AxisAlignedBB(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
+    protected static final AxisAlignedBB AABB_CONNECTED_DOWN = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 
     public enum EnumWalkwayType implements IStringSerializable
     {
@@ -84,15 +86,16 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public Vector3 getMinVector(IBlockState state)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return this.minVector;
-    }
+        state = this.getActualState(state, source, pos);
 
-    @Override
-    public Vector3 getMaxVector(IBlockState state)
-    {
-        return this.maxVector;
+        if (state.getValue(DOWN))
+        {
+            return AABB_CONNECTED_DOWN;
+        }
+
+        return AABB_UNCONNECTED;
     }
 
     @Override

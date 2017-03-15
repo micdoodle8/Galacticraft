@@ -24,8 +24,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +36,8 @@ import java.util.Random;
 
 public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
+    protected static final AxisAlignedBB AABB_TELEPAD = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
+
     protected BlockShortRangeTelepad(String assetName)
     {
         super(Material.IRON);
@@ -71,6 +75,12 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     public TileEntity createNewTileEntity(World world, int meta)
     {
         return new TileEntityShortRangeTelepad();
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB_TELEPAD;
     }
 
 //    @Override

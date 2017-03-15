@@ -33,6 +33,8 @@ import java.util.Random;
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
     public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webtype", EnumWebType.class);
+    protected static final AxisAlignedBB AABB_WEB = new AxisAlignedBB(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
+    protected static final AxisAlignedBB AABB_WEB_TORCH = new AxisAlignedBB(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
 
     public enum EnumWebType implements IStringSerializable
     {
@@ -79,7 +81,18 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         list.add(new ItemStack(itemIn, 1, 1));
     }
 
-//    @Override
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if (state.getValue(WEB_TYPE) == EnumWebType.WEB_1)
+        {
+            return AABB_WEB_TORCH;
+        }
+
+        return AABB_WEB;
+    }
+
+    //    @Override
 //    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
 //        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);

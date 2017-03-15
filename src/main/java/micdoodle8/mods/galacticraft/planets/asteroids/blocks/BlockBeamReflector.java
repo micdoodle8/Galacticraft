@@ -18,7 +18,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,11 +29,19 @@ import java.util.List;
 
 public class BlockBeamReflector extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
+    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.0, 0.25, 0.75, 0.8, 0.75);
+
     public BlockBeamReflector(String assetName)
     {
         super(Material.IRON);
         this.setUnlocalizedName(assetName);
         this.setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB;
     }
 
     @SideOnly(Side.CLIENT)

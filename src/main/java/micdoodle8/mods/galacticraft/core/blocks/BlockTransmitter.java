@@ -49,10 +49,6 @@ public abstract class BlockTransmitter extends BlockAdvanced
         }
     }
 
-    public abstract Vector3 getMinVector(IBlockState state);
-
-    public abstract Vector3 getMaxVector(IBlockState state);
-
 //    @Override
 //    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
 //    {

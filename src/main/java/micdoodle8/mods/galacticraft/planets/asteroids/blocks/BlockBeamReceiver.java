@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
@@ -38,12 +39,39 @@ import java.util.List;
 public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
 
     public BlockBeamReceiver(String assetName)
     {
         super(Material.IRON);
         this.setUnlocalizedName(assetName);
         this.setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+        case UP:
+            return UP_AABB;
+        case DOWN:
+            return DOWN_AABB;
+        case EAST:
+            return EAST_AABB;
+        case WEST:
+            return WEST_AABB;
+        case SOUTH:
+            return SOUTH_AABB;
+        default:
+        case NORTH:
+            return NORTH_AABB;
+        }
     }
 
     @SideOnly(Side.CLIENT)

@@ -96,7 +96,7 @@ public class PacketDynamic extends PacketBase
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         {
-            world = world.getMinecraftServer().worldServerForDimension(this.getDimensionID());
+            world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.getDimensionID());
         }
 
         if (world == null)

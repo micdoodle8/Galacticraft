@@ -29,28 +29,38 @@ public abstract class BlockAdvanced extends Block
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
+        if (hand != EnumHand.MAIN_HAND)
+        {
+            return false;
+        }
+
         /**
          * Check if the player is holding a wrench or an electric item. If so,
          * call the wrench event.
          */
-        if (this.isUsableWrench(playerIn, playerIn.inventory.getCurrentItem(), pos))
+        if (this.isUsableWrench(playerIn, heldItem, pos))
         {
-            this.damageWrench(playerIn, playerIn.inventory.getCurrentItem(), pos);
+            this.damageWrench(playerIn, heldItem, pos);
 
             if (playerIn.isSneaking())
             {
                 if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
                 {
                     playerIn.swingArm(hand);
-                    return true;
+                    return !worldIn.isRemote;
                 }
             }
 
             if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
             {
                 playerIn.swingArm(hand);
-                return true;
+                return !worldIn.isRemote;
             }
+        }
+
+        if (!worldIn.isRemote)
+        {
+            return false;
         }
 
         if (playerIn.isSneaking())

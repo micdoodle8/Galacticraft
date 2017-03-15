@@ -33,6 +33,11 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
+
     public BlockSpinThruster(String assetName)
     {
         super(Material.CIRCUITS);
@@ -42,16 +47,27 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+        case EAST:
+            return EAST_AABB;
+        case WEST:
+            return WEST_AABB;
+        case SOUTH:
+            return SOUTH_AABB;
+        default:
+        case NORTH:
+            return NORTH_AABB;
+        }
+    }
+
     private static boolean isBlockSolidOnSide(World world, BlockPos pos, EnumFacing direction)
     {
         IBlockState state = world.getBlockState(pos);
         return state.getBlock().isSideSolid(state, world, pos, direction);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
-    {
-        return null;
     }
 
     @Override

@@ -32,6 +32,11 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+
     //Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
 
     public BlockBrightLamp(String assetName)
@@ -42,6 +47,23 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         this.setSoundType(SoundType.WOOD);
         this.setUnlocalizedName(assetName);
         this.setLightLevel(1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+        case EAST:
+            return EAST_AABB;
+        case WEST:
+            return WEST_AABB;
+        case SOUTH:
+            return SOUTH_AABB;
+        default:
+        case NORTH:
+            return NORTH_AABB;
+        }
     }
 
     @Override
