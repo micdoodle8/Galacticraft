@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import api.player.client.ClientPlayerAPI;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,9 +19,13 @@ import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
-import micdoodle8.mods.galacticraft.core.client.render.item.*;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -128,6 +133,11 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.registerEntityRenderers();
 
         OBJLoader.instance.addDomain(Constants.ASSET_PREFIX);
+
+        if (Loader.isModLoaded("PlayerAPI"))
+        {
+            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
+        }
     }
 
     @Override
