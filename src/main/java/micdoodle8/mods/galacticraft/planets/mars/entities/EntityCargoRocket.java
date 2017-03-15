@@ -247,8 +247,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                     	GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
             			e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5F);
             			((EntityCargoRocket) e).landing = true;
-            			if (e != this)
-            				this.setDead();
+            			//No setDead() following successful transferEntityToDimension() - see javadoc on that
             		}
             		else
             		{
