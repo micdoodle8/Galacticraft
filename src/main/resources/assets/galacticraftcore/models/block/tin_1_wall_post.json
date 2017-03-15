@@ -1,8 +1,0 @@
-{
-    "parent": "galacticraftcore:block/gc_wall_post",
-    "textures": {
-        "wall": "galacticraftcore:blocks/deco_block_side",
-        "wall_bot": "galacticraftcore:blocks/deco_block_up",
-        "wall_top": "galacticraftcore:blocks/deco_block"
-    }
-}

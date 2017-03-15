@@ -170,7 +170,12 @@ public class BlockWallGC extends Block /* Do not extend BlockWall */ implements 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return state.withProperty(UP, Boolean.valueOf(this.canConnectTo(world, pos.up()))).withProperty(NORTH, Boolean.valueOf(this.canConnectTo(world, pos.north()))).withProperty(EAST, Boolean.valueOf(this.canConnectTo(world, pos.east()))).withProperty(SOUTH, Boolean.valueOf(this.canConnectTo(world, pos.south()))).withProperty(WEST, Boolean.valueOf(this.canConnectTo(world, pos.west())));
+        boolean flag = this.canConnectTo(world, pos.north());
+        boolean flag1 = this.canConnectTo(world, pos.east());
+        boolean flag2 = this.canConnectTo(world, pos.south());
+        boolean flag3 = this.canConnectTo(world, pos.west());
+        boolean flag4 = flag && !flag1 && flag2 && !flag3 || !flag && flag1 && !flag2 && flag3;
+        return state.withProperty(UP, Boolean.valueOf(!flag4 || !world.isAirBlock(pos.up()))).withProperty(NORTH, Boolean.valueOf(flag)).withProperty(EAST, Boolean.valueOf(flag1)).withProperty(SOUTH, Boolean.valueOf(flag2)).withProperty(WEST, Boolean.valueOf(flag3));
     }
 
     @Override
