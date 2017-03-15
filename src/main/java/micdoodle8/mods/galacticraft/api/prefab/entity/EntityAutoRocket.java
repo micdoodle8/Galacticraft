@@ -283,6 +283,37 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onUpdate()
     {
+        if (this.landing && this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
+        {
+            if (this.targetVec != null)
+            {
+                this.motionY = Math.max(-2.0F, (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -70.0D);
+                
+                if (this.boundingBox.minY - this.getOnPadYOffset() - this.targetVec.y < 0.04F)
+                {
+                    int yMin = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 2;
+                    int yMax = MathHelper.floor_double(this.boundingBox.maxY) + 1;
+                    int zMin = MathHelper.floor_double(this.posZ) - 1;
+                    int zMax = MathHelper.floor_double(this.posZ) + 1;
+                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                    {
+                        for (int z = zMin; z <= zMax; z++)
+                        {
+                            //Doing y as the inner loop may help with cacheing of chunks
+                            for (int y = yMin; y <= yMax; y++)
+                            {
+                                if (this.worldObj.getTileEntity(x, y, z) instanceof IFuelDock)
+                                {
+                                    //Land the rocket on the pad found
+                                    this.failRocket();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         super.onUpdate();
 
         if (!this.worldObj.isRemote)
@@ -326,37 +357,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 	{
                 		this.autoLaunch();
                 	}
-                }
-            }
-
-            if (this.landing && this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
-            {
-                if (this.targetVec != null)
-                {
-                	this.motionY = Math.max(-2.0F, (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -70.0D);
-                	
-                	if (this.boundingBox.minY - this.getOnPadYOffset() - this.targetVec.y < 0.04F)
-	                {
-                		int yMin = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 2;
-                		int yMax = MathHelper.floor_double(this.boundingBox.maxY) + 1;
-                		int zMin = MathHelper.floor_double(this.posZ) - 1;
-                		int zMax = MathHelper.floor_double(this.posZ) + 1;
-	                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
-	                    {
-	                    	for (int z = zMin; z <= zMax; z++)
-	                    	{
-	                    		//Doing y as the inner loop may help with cacheing of chunks
-	                    		for (int y = yMin; y <= yMax; y++)
-	                    		{
-	                                if (this.worldObj.getTileEntity(x, y, z) instanceof IFuelDock)
-	                                {
-	                                	//Land the rocket on the pad found
-	                                    this.failRocket();
-	                                }
-	                            }
-	                        }
-	                    }
-	                }
                 }
             }
 
@@ -428,7 +428,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             	}            
             }
             this.autoLaunchSetting = null;
-            this.activeLaunchController = null;
             
             return;
     	}
@@ -505,12 +504,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 	//This includes a check for whether it has enough energy to run (if it doesn't, then a launch would not go to the destination frequency and the rocket would be lost!)
                     Boolean autoLaunchEnabled = controllerClass.getField("controlEnabled").getBoolean(updatedTile);
 
+                    this.activeLaunchController = new BlockVec3((TileEntity) updatedTile);
+                    
                     if (autoLaunchEnabled)
                     {
                         this.autoLaunchSetting = EnumAutoLaunch.values()[controllerClass.getField("launchDropdownSelection").getInt(updatedTile)];
 
-                        this.activeLaunchController = new BlockVec3((TileEntity) updatedTile);
-                        
                         switch (this.autoLaunchSetting)
                         {
                         case INSTANT:
@@ -539,7 +538,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         //No auto launch - but maybe another connectedTile will have some launch settings?
                         this.autoLaunchSetting = null;
                         this.autoLaunchCountdown = 0;
-                        this.activeLaunchController = null;
                     }
                 }
             }

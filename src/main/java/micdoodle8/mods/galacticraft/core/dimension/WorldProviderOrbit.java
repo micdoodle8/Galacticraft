@@ -1098,7 +1098,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
      */
     public boolean checkSS(BlockVec3 baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) instanceof BlockAir)
+    	if (this.oneSSBlock == null || this.oneSSBlock.getBlockID(this.worldObj) instanceof BlockAir)
         {
             if (baseBlock != null)
             {

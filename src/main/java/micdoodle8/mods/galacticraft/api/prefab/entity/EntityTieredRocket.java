@@ -351,17 +351,18 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		if (this.riddenByEntity != null)
                     		{
                     			WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
-                                        //Now destroy the rocket entity, the rider is switching dimensions
-                                        this.setDead();
+                                //Important Note: do NOT use this.setDead() here, see javadoc on WorldUtil.transferEntityToDimension()
+                                this.stopRocketSound();
                     		}
                                 else {
                                     Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
+                                    //Important Note: do NOT use this.setDead() here, see javadoc on WorldUtil.transferEntityToDimension()
                                     if(e instanceof EntityAutoRocket) {
                                         e.setPosition(this.targetVec.x + 0.5F, this.targetVec.y + 800, this.targetVec.z + 0.5f);
                                         ((EntityAutoRocket)e).landing = true;
                                         ((EntityAutoRocket)e).setWaitForPlayer(false);
                                         if(e != this)
-                                            this.setDead();
+                                            this.stopRocketSound();
                                     }
                                     else {
                                         GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");

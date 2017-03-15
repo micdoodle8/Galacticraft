@@ -941,6 +941,14 @@ public class WorldUtil
         return WorldUtil.transferEntityToDimension(entity, dimensionID, world, true, null);
     }
 
+    /**
+     * IMPORTANT NOTE: do NOT use entity.setDead() following calling this method in an entity's update tick.
+     * Reason: this method may transfer the entity to another dimension
+     * If so. this method will already have removed the entity from this world's loadedEntityList.
+     * (Further explanation:  if the dead flag is set, World.updateEntities() would proceed to remove it AGAIN,
+     * with dire consequences - either removal of the wrong entity or if there are no more entities loaded
+     * in the world (e.g. on Space Stations) a server crash)  
+     */
     public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv, EntityAutoRocket ridingRocket)
     {
         if (!world.isRemote)
@@ -998,9 +1006,7 @@ public class WorldUtil
             ridingRocket.riddenByEntity = null;
             ridingRocket.writeToNBTOptional(nbt);
 
-            ((WorldServer) ridingRocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(ridingRocket);
-            ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
-            ridingRocket.worldObj.onEntityRemoved(ridingRocket);
+            removeEntityFromWorld(ridingRocket.worldObj, ridingRocket, true);
 
             ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(nbt, worldNew);
 
@@ -1036,7 +1042,6 @@ public class WorldUtil
                     } catch (Exception e) {  }
                 }
 
-                player.closeScreen();
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.usingPlanetSelectionGui = false;
 
@@ -1057,16 +1062,7 @@ public class WorldUtil
                     }
                 }
 
-                worldOld.playerEntities.remove(player);
-                worldOld.updateAllPlayersSleepingFlag();
-                if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
-                {
-                    Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
-                    chunkOld.removeEntity(player);
-                    chunkOld.isModified = true;
-                }
-                worldOld.loadedEntityList.remove(player);
-                worldOld.onEntityRemoved(player);
+                removeEntityFromWorld(worldOld, player, true);
 
                 if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
                 worldNew.spawnEntityInWorld(entity);
@@ -1114,7 +1110,6 @@ public class WorldUtil
                 NBTTagCompound nbt = new NBTTagCompound();
                 entity.isDead = false;
                 entity.writeToNBTOptional(nbt);
-                entity.isDead = true;
                 entity = EntityList.createEntityFromNBT(nbt, worldNew);
 
                 if (entity == null)
@@ -1270,23 +1265,24 @@ public class WorldUtil
             var2.closeScreen();
             var0.playerEntities.remove(var2);
             var0.updateAllPlayersSleepingFlag();
-            final int var3 = var1.chunkCoordX;
-            final int var4 = var1.chunkCoordZ;
+        }
+        final int var3 = var1.chunkCoordX;
+        final int var4 = var1.chunkCoordZ;
 
-            if (var1.addedToChunk && var0.getChunkProvider().chunkExists(var3, var4))
-            {
-                var0.getChunkFromChunkCoords(var3, var4).removeEntity(var1);
-                var0.getChunkFromChunkCoords(var3, var4).isModified = true;
-            }
-
-            if (directlyRemove)
-            {
-                var0.loadedEntityList.remove(var1);
-                var0.onEntityRemoved(var1);
-            }
+        if (var1.addedToChunk && var0.getChunkProvider().chunkExists(var3, var4))
+        {
+            Chunk chunk = var0.getChunkFromChunkCoords(var3, var4); 
+            chunk.removeEntity(var1);
+            chunk.isModified = true;
         }
 
-        var1.isDead = false;
+        if (directlyRemove)
+        {
+            var0.loadedEntityList.remove(var1);
+            var0.onEntityRemoved(var1);
+        }
+
+        var1.isDead = false;  //This is necessary to avoid World.updateEntities() from repeating the above and removing the wrong entity!
     }
 
     public static SpaceStationRecipe getSpaceStationRecipe(int planetID)
