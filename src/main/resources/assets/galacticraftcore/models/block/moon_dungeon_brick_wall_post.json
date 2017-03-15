@@ -1,6 +1,0 @@
-{
-    "parent": "block/wall_post",
-    "textures": {
-        "wall": "galacticraftcore:blocks/brick"
-    }
-}
