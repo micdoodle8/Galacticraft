@@ -55,6 +55,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         this.setDefaultState(this.blockState.getBaseState().withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
     }
 
+    @Override
     protected BlockState createBlockState()
     {
         return new BlockState(this, new IProperty[] {MODEL, ROTATION});
@@ -120,11 +121,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return true;
     }
 
+    @Override
     public boolean isOpaqueCube()
     {
         return false;
     }
 
+    @Override
     public boolean isFullCube()
     {
         return false;
@@ -136,6 +139,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return direction.ordinal() > 1;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
@@ -162,6 +166,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return this.color;
     }
 
+    @Override
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
         IBlockState above = worldIn.getBlockState(pos.up());
@@ -263,11 +268,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
     }
 
+    @Override
     public void setBlockBoundsForItemRender()
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState state = worldIn.getBlockState(pos);
@@ -423,6 +430,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return false;
     }
 
+    @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState above = worldIn.getBlockState(pos.up());

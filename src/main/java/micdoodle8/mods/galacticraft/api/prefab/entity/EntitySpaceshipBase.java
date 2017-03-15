@@ -598,6 +598,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		return returnList;
 	}
 	
+    @Override
     public void transmitData(int[] data)
     {
 		data[0] = this.timeUntilLaunch;
@@ -607,6 +608,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		data[4] = (int) this.rotationPitch;
     }
 	
+    @Override
     public void receiveData(int[] data, String[] str)
     {
 		//Spaceships:
@@ -623,6 +625,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		str[4] = GCCoreUtil.translate("gui.message.fuel.name") + ": " + data[3] + "%";
     }
 
+    @Override
     public void adjustDisplay(int[] data)
     {
 		GL11.glRotatef(data[4], -1, 0, 0);

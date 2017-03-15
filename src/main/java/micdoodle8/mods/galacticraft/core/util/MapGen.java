@@ -111,6 +111,7 @@ public class MapGen extends WorldChunkManager implements Runnable
         this.initialise(seed);
     }
   
+    @Override
     public void run()
     {
     	//Allow some time for the pause on any other map gen thread to become effective 
@@ -513,6 +514,7 @@ public class MapGen extends WorldChunkManager implements Runnable
      *      REPLICATES method in WorldChunkManager
      * Returns an array of biomes for the location input, used for generating the height map
      */
+    @Override
     public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int width, int height)
     {
         IntCache.resetIntCache();
