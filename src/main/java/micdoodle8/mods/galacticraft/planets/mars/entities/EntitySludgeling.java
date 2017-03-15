@@ -57,16 +57,19 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         return false;
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         return SoundEvents.ENTITY_SILVERFISH_AMBIENT;
     }
 
+    @Override
     protected SoundEvent getHurtSound()
     {
         return SoundEvents.ENTITY_SILVERFISH_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_SILVERFISH_DEATH;

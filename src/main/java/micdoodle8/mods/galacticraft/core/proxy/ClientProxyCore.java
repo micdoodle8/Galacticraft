@@ -154,6 +154,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
         {
+            @Override
             public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
             {
                 return BlockFallenMeteor.colorMultiplier(worldIn, pos);

@@ -393,6 +393,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         return EnumSortCategoryBlock.MACHINE;
     }
 
+    @Override
     public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
     {
 	    return world.getBlockState(pos).getValue(TYPE) != EnumMachineType.CRYOGENIC_CHAMBER;

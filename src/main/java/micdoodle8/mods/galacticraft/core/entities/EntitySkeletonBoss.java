@@ -337,6 +337,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         return true;
     }
 
+    @Override
     public ItemStack getGuaranteedLoot(Random rand)
     {
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(1);

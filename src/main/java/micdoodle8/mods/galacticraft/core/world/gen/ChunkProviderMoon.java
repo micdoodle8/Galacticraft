@@ -66,6 +66,7 @@ public class ChunkProviderMoon extends ChunkProviderOverworld
         this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25F);
     }
 
+    @Override
     public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.noiseGen1.setFrequency(0.0125F);

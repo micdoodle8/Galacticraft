@@ -90,21 +90,25 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         return SoundEvents.ENTITY_SPIDER_AMBIENT;
     }
 
+    @Override
     protected SoundEvent getHurtSound()
     {
         return SoundEvents.ENTITY_SPIDER_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_SPIDER_DEATH;
     }
 
+    @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
         this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);

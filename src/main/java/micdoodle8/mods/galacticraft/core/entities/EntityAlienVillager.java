@@ -263,16 +263,19 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.5F;
     }
 
+    @Override
     protected SoundEvent getAmbientSound()
     {
         return this.isTrading() ? SoundEvents.ENTITY_VILLAGER_TRADING : SoundEvents.ENTITY_VILLAGER_AMBIENT;
     }
 
+    @Override
     protected SoundEvent getHurtSound()
     {
         return SoundEvents.ENTITY_VILLAGER_HURT;
     }
 
+    @Override
     protected SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_VILLAGER_DEATH;

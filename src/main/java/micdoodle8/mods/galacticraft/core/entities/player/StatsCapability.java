@@ -132,701 +132,841 @@ public class StatsCapability implements IStatsCapability
     public int glassColor2 = -1;
     public int glassColor3 = -1;
 
+    @Override
     public WeakReference<EntityPlayerMP> getPlayer()
     {
         return player;
     }
 
+    @Override
     public void setPlayer(WeakReference<EntityPlayerMP> player)
     {
         this.player = player;
     }
 
+    @Override
     public InventoryExtended getExtendedInventory()
     {
         return extendedInventory;
     }
 
+    @Override
     public void setExtendedInventory(InventoryExtended extendedInventory)
     {
         this.extendedInventory = extendedInventory;
     }
 
+    @Override
     public int getAirRemaining()
     {
         return airRemaining;
     }
 
+    @Override
     public void setAirRemaining(int airRemaining)
     {
         this.airRemaining = airRemaining;
     }
 
+    @Override
     public int getAirRemaining2()
     {
         return airRemaining2;
     }
 
+    @Override
     public void setAirRemaining2(int airRemaining2)
     {
         this.airRemaining2 = airRemaining2;
     }
 
+    @Override
     public int getThermalLevel()
     {
         return thermalLevel;
     }
 
+    @Override
     public void setThermalLevel(int thermalLevel)
     {
         this.thermalLevel = thermalLevel;
     }
 
+    @Override
     public boolean isThermalLevelNormalising()
     {
         return thermalLevelNormalising;
     }
 
+    @Override
     public void setThermalLevelNormalising(boolean thermalLevelNormalising)
     {
         this.thermalLevelNormalising = thermalLevelNormalising;
     }
 
+    @Override
     public int getDamageCounter()
     {
         return damageCounter;
     }
 
+    @Override
     public void setDamageCounter(int damageCounter)
     {
         this.damageCounter = damageCounter;
     }
 
+    @Override
     public int getSpaceshipTier()
     {
         return spaceshipTier;
     }
 
+    @Override
     public void setSpaceshipTier(int spaceshipTier)
     {
         this.spaceshipTier = spaceshipTier;
     }
 
+    @Override
     public ItemStack[] getRocketStacks()
     {
         return rocketStacks;
     }
 
+    @Override
     public void setRocketStacks(ItemStack[] rocketStacks)
     {
         this.rocketStacks = rocketStacks;
     }
 
+    @Override
     public int getRocketType()
     {
         return rocketType;
     }
 
+    @Override
     public void setRocketType(int rocketType)
     {
         this.rocketType = rocketType;
     }
 
+    @Override
     public int getFuelLevel()
     {
         return fuelLevel;
     }
 
+    @Override
     public void setFuelLevel(int fuelLevel)
     {
         this.fuelLevel = fuelLevel;
     }
 
+    @Override
     public Item getRocketItem()
     {
         return rocketItem;
     }
 
+    @Override
     public void setRocketItem(Item rocketItem)
     {
         this.rocketItem = rocketItem;
     }
 
+    @Override
     public ItemStack getLaunchpadStack()
     {
         return launchpadStack;
     }
 
+    @Override
     public void setLaunchpadStack(ItemStack launchpadStack)
     {
         this.launchpadStack = launchpadStack;
     }
 
+    @Override
     public int getAstroMinerCount()
     {
         return astroMinerCount;
     }
 
+    @Override
     public void setAstroMinerCount(int astroMinerCount)
     {
         this.astroMinerCount = astroMinerCount;
     }
 
+    @Override
     public boolean isUsingParachute()
     {
         return usingParachute;
     }
 
+    @Override
     public void setUsingParachute(boolean usingParachute)
     {
         this.usingParachute = usingParachute;
     }
 
+    @Override
     public ItemStack getParachuteInSlot()
     {
         return parachuteInSlot;
     }
 
+    @Override
     public void setParachuteInSlot(ItemStack parachuteInSlot)
     {
         this.parachuteInSlot = parachuteInSlot;
     }
 
+    @Override
     public ItemStack getLastParachuteInSlot()
     {
         return lastParachuteInSlot;
     }
 
+    @Override
     public void setLastParachuteInSlot(ItemStack lastParachuteInSlot)
     {
         this.lastParachuteInSlot = lastParachuteInSlot;
     }
 
+    @Override
     public ItemStack getFrequencyModuleInSlot()
     {
         return frequencyModuleInSlot;
     }
 
+    @Override
     public void setFrequencyModuleInSlot(ItemStack frequencyModuleInSlot)
     {
         this.frequencyModuleInSlot = frequencyModuleInSlot;
     }
 
+    @Override
     public ItemStack getLastFrequencyModuleInSlot()
     {
         return lastFrequencyModuleInSlot;
     }
 
+    @Override
     public void setLastFrequencyModuleInSlot(ItemStack lastFrequencyModuleInSlot)
     {
         this.lastFrequencyModuleInSlot = lastFrequencyModuleInSlot;
     }
 
+    @Override
     public ItemStack getMaskInSlot()
     {
         return maskInSlot;
     }
 
+    @Override
     public void setMaskInSlot(ItemStack maskInSlot)
     {
         this.maskInSlot = maskInSlot;
     }
 
+    @Override
     public ItemStack getLastMaskInSlot()
     {
         return lastMaskInSlot;
     }
 
+    @Override
     public void setLastMaskInSlot(ItemStack lastMaskInSlot)
     {
         this.lastMaskInSlot = lastMaskInSlot;
     }
 
+    @Override
     public ItemStack getGearInSlot()
     {
         return gearInSlot;
     }
 
+    @Override
     public void setGearInSlot(ItemStack gearInSlot)
     {
         this.gearInSlot = gearInSlot;
     }
 
+    @Override
     public ItemStack getLastGearInSlot()
     {
         return lastGearInSlot;
     }
 
+    @Override
     public void setLastGearInSlot(ItemStack lastGearInSlot)
     {
         this.lastGearInSlot = lastGearInSlot;
     }
 
+    @Override
     public ItemStack getTankInSlot1()
     {
         return tankInSlot1;
     }
 
+    @Override
     public void setTankInSlot1(ItemStack tankInSlot1)
     {
         this.tankInSlot1 = tankInSlot1;
     }
 
+    @Override
     public ItemStack getLastTankInSlot1()
     {
         return lastTankInSlot1;
     }
 
+    @Override
     public void setLastTankInSlot1(ItemStack lastTankInSlot1)
     {
         this.lastTankInSlot1 = lastTankInSlot1;
     }
 
+    @Override
     public ItemStack getTankInSlot2()
     {
         return tankInSlot2;
     }
 
+    @Override
     public void setTankInSlot2(ItemStack tankInSlot2)
     {
         this.tankInSlot2 = tankInSlot2;
     }
 
+    @Override
     public ItemStack getLastTankInSlot2()
     {
         return lastTankInSlot2;
     }
 
+    @Override
     public void setLastTankInSlot2(ItemStack lastTankInSlot2)
     {
         this.lastTankInSlot2 = lastTankInSlot2;
     }
 
+    @Override
     public ItemStack getThermalHelmetInSlot()
     {
         return thermalHelmetInSlot;
     }
 
+    @Override
     public void setThermalHelmetInSlot(ItemStack thermalHelmetInSlot)
     {
         this.thermalHelmetInSlot = thermalHelmetInSlot;
     }
 
+    @Override
     public ItemStack getLastThermalHelmetInSlot()
     {
         return lastThermalHelmetInSlot;
     }
 
+    @Override
     public void setLastThermalHelmetInSlot(ItemStack lastThermalHelmetInSlot)
     {
         this.lastThermalHelmetInSlot = lastThermalHelmetInSlot;
     }
 
+    @Override
     public ItemStack getThermalChestplateInSlot()
     {
         return thermalChestplateInSlot;
     }
 
+    @Override
     public void setThermalChestplateInSlot(ItemStack thermalChestplateInSlot)
     {
         this.thermalChestplateInSlot = thermalChestplateInSlot;
     }
 
+    @Override
     public ItemStack getLastThermalChestplateInSlot()
     {
         return lastThermalChestplateInSlot;
     }
 
+    @Override
     public void setLastThermalChestplateInSlot(ItemStack lastThermalChestplateInSlot)
     {
         this.lastThermalChestplateInSlot = lastThermalChestplateInSlot;
     }
 
+    @Override
     public ItemStack getThermalLeggingsInSlot()
     {
         return thermalLeggingsInSlot;
     }
 
+    @Override
     public void setThermalLeggingsInSlot(ItemStack thermalLeggingsInSlot)
     {
         this.thermalLeggingsInSlot = thermalLeggingsInSlot;
     }
 
+    @Override
     public ItemStack getLastThermalLeggingsInSlot()
     {
         return lastThermalLeggingsInSlot;
     }
 
+    @Override
     public void setLastThermalLeggingsInSlot(ItemStack lastThermalLeggingsInSlot)
     {
         this.lastThermalLeggingsInSlot = lastThermalLeggingsInSlot;
     }
 
+    @Override
     public ItemStack getThermalBootsInSlot()
     {
         return thermalBootsInSlot;
     }
 
+    @Override
     public void setThermalBootsInSlot(ItemStack thermalBootsInSlot)
     {
         this.thermalBootsInSlot = thermalBootsInSlot;
     }
 
+    @Override
     public ItemStack getLastThermalBootsInSlot()
     {
         return lastThermalBootsInSlot;
     }
 
+    @Override
     public void setLastThermalBootsInSlot(ItemStack lastThermalBootsInSlot)
     {
         this.lastThermalBootsInSlot = lastThermalBootsInSlot;
     }
 
+    @Override
     public ItemStack getShieldControllerInSlot()
     {
         return shieldControllerInSlot;
     }
 
+    @Override
     public void setShieldControllerInSlot(ItemStack shieldControllerInSlot)
     {
         this.shieldControllerInSlot = shieldControllerInSlot;
     }
 
+    @Override
     public ItemStack getLastShieldControllerInSlot()
     {
         return lastShieldControllerInSlot;
     }
 
+    @Override
     public void setLastShieldControllerInSlot(ItemStack lastShieldControllerInSlot)
     {
         this.lastShieldControllerInSlot = lastShieldControllerInSlot;
     }
 
+    @Override
     public int getLaunchAttempts()
     {
         return launchAttempts;
     }
 
+    @Override
     public void setLaunchAttempts(int launchAttempts)
     {
         this.launchAttempts = launchAttempts;
     }
 
+    @Override
     public int getSpaceRaceInviteTeamID()
     {
         return spaceRaceInviteTeamID;
     }
 
+    @Override
     public void setSpaceRaceInviteTeamID(int spaceRaceInviteTeamID)
     {
         this.spaceRaceInviteTeamID = spaceRaceInviteTeamID;
     }
 
+    @Override
     public boolean isUsingPlanetSelectionGui()
     {
         return usingPlanetSelectionGui;
     }
 
+    @Override
     public void setUsingPlanetSelectionGui(boolean usingPlanetSelectionGui)
     {
         this.usingPlanetSelectionGui = usingPlanetSelectionGui;
     }
 
+    @Override
     public String getSavedPlanetList()
     {
         return savedPlanetList;
     }
 
+    @Override
     public void setSavedPlanetList(String savedPlanetList)
     {
         this.savedPlanetList = savedPlanetList;
     }
 
+    @Override
     public int getOpenPlanetSelectionGuiCooldown()
     {
         return openPlanetSelectionGuiCooldown;
     }
 
+    @Override
     public void setOpenPlanetSelectionGuiCooldown(int openPlanetSelectionGuiCooldown)
     {
         this.openPlanetSelectionGuiCooldown = openPlanetSelectionGuiCooldown;
     }
 
+    @Override
     public boolean hasOpenedPlanetSelectionGui()
     {
         return hasOpenedPlanetSelectionGui;
     }
 
+    @Override
     public void setHasOpenedPlanetSelectionGui(boolean hasOpenedPlanetSelectionGui)
     {
         this.hasOpenedPlanetSelectionGui = hasOpenedPlanetSelectionGui;
     }
 
+    @Override
     public int getChestSpawnCooldown()
     {
         return chestSpawnCooldown;
     }
 
+    @Override
     public void setChestSpawnCooldown(int chestSpawnCooldown)
     {
         this.chestSpawnCooldown = chestSpawnCooldown;
     }
 
+    @Override
     public Vector3 getChestSpawnVector()
     {
         return chestSpawnVector;
     }
 
+    @Override
     public void setChestSpawnVector(Vector3 chestSpawnVector)
     {
         this.chestSpawnVector = chestSpawnVector;
     }
 
+    @Override
     public int getTeleportCooldown()
     {
         return teleportCooldown;
     }
 
+    @Override
     public void setTeleportCooldown(int teleportCooldown)
     {
         this.teleportCooldown = teleportCooldown;
     }
 
+    @Override
     public int getChatCooldown()
     {
         return chatCooldown;
     }
 
+    @Override
     public void setChatCooldown(int chatCooldown)
     {
         this.chatCooldown = chatCooldown;
     }
 
+    @Override
     public double getDistanceSinceLastStep()
     {
         return distanceSinceLastStep;
     }
 
+    @Override
     public void setDistanceSinceLastStep(double distanceSinceLastStep)
     {
         this.distanceSinceLastStep = distanceSinceLastStep;
     }
 
+    @Override
     public int getLastStep()
     {
         return lastStep;
     }
 
+    @Override
     public void setLastStep(int lastStep)
     {
         this.lastStep = lastStep;
     }
 
+    @Override
     public double getCoordsTeleportedFromX()
     {
         return coordsTeleportedFromX;
     }
 
+    @Override
     public void setCoordsTeleportedFromX(double coordsTeleportedFromX)
     {
         this.coordsTeleportedFromX = coordsTeleportedFromX;
     }
 
+    @Override
     public double getCoordsTeleportedFromZ()
     {
         return coordsTeleportedFromZ;
     }
 
+    @Override
     public void setCoordsTeleportedFromZ(double coordsTeleportedFromZ)
     {
         this.coordsTeleportedFromZ = coordsTeleportedFromZ;
     }
 
+    @Override
     public HashMap<Integer, Integer> getSpaceStationDimensionData()
     {
         return spaceStationDimensionData;
     }
 
+    @Override
     public void setSpaceStationDimensionData(HashMap<Integer, Integer> spaceStationDimensionData)
     {
         this.spaceStationDimensionData = spaceStationDimensionData;
     }
 
+    @Override
     public boolean isOxygenSetupValid()
     {
         return oxygenSetupValid;
     }
 
+    @Override
     public void setOxygenSetupValid(boolean oxygenSetupValid)
     {
         this.oxygenSetupValid = oxygenSetupValid;
     }
 
+    @Override
     public boolean isLastOxygenSetupValid()
     {
         return lastOxygenSetupValid;
     }
 
+    @Override
     public void setLastOxygenSetupValid(boolean lastOxygenSetupValid)
     {
         this.lastOxygenSetupValid = lastOxygenSetupValid;
     }
 
+    @Override
     public boolean isTouchedGround()
     {
         return touchedGround;
     }
 
+    @Override
     public void setTouchedGround(boolean touchedGround)
     {
         this.touchedGround = touchedGround;
     }
 
+    @Override
     public boolean isLastOnGround()
     {
         return lastOnGround;
     }
 
+    @Override
     public void setLastOnGround(boolean lastOnGround)
     {
         this.lastOnGround = lastOnGround;
     }
 
+    @Override
     public boolean isInLander()
     {
         return inLander;
     }
 
+    @Override
     public void setInLander(boolean inLander)
     {
         this.inLander = inLander;
     }
 
+    @Override
     public boolean hasJustLanded()
     {
         return justLanded;
     }
 
+    @Override
     public void setJustLanded(boolean justLanded)
     {
         this.justLanded = justLanded;
     }
 
+    @Override
     public ArrayList<ISchematicPage> getUnlockedSchematics()
     {
         return unlockedSchematics;
     }
 
+    @Override
     public void setUnlockedSchematics(ArrayList<ISchematicPage> unlockedSchematics)
     {
         this.unlockedSchematics = unlockedSchematics;
     }
 
+    @Override
     public ArrayList<ISchematicPage> getLastUnlockedSchematics()
     {
         return lastUnlockedSchematics;
     }
 
+    @Override
     public void setLastUnlockedSchematics(ArrayList<ISchematicPage> lastUnlockedSchematics)
     {
         this.lastUnlockedSchematics = lastUnlockedSchematics;
     }
 
+    @Override
     public int getCryogenicChamberCooldown()
     {
         return cryogenicChamberCooldown;
     }
 
+    @Override
     public void setCryogenicChamberCooldown(int cryogenicChamberCooldown)
     {
         this.cryogenicChamberCooldown = cryogenicChamberCooldown;
     }
 
+    @Override
     public boolean hasReceivedSoundWarning()
     {
         return receivedSoundWarning;
     }
 
+    @Override
     public void setReceivedSoundWarning(boolean receivedSoundWarning)
     {
         this.receivedSoundWarning = receivedSoundWarning;
     }
 
+    @Override
     public boolean hasReceivedBedWarning()
     {
         return receivedBedWarning;
     }
 
+    @Override
     public void setReceivedBedWarning(boolean receivedBedWarning)
     {
         this.receivedBedWarning = receivedBedWarning;
     }
 
+    @Override
     public boolean hasOpenedSpaceRaceManager()
     {
         return openedSpaceRaceManager;
     }
 
+    @Override
     public void setOpenedSpaceRaceManager(boolean openedSpaceRaceManager)
     {
         this.openedSpaceRaceManager = openedSpaceRaceManager;
     }
 
+    @Override
     public boolean isSentFlags()
     {
         return sentFlags;
     }
 
+    @Override
     public void setSentFlags(boolean sentFlags)
     {
         this.sentFlags = sentFlags;
     }
 
+    @Override
     public boolean isNewInOrbit()
     {
         return newInOrbit;
     }
 
+    @Override
     public void setNewInOrbit(boolean newInOrbit)
     {
         this.newInOrbit = newInOrbit;
     }
 
+    @Override
     public boolean isNewAdventureSpawn()
     {
         return newAdventureSpawn;
     }
 
+    @Override
     public void setNewAdventureSpawn(boolean newAdventureSpawn)
     {
         this.newAdventureSpawn = newAdventureSpawn;
     }
 
+    @Override
     public int getBuildFlags()
     {
         return buildFlags;
     }
 
+    @Override
     public void setBuildFlags(int buildFlags)
     {
         this.buildFlags = buildFlags;
     }
 
+    @Override
     public int getIncrementalDamage()
     {
         return incrementalDamage;
     }
 
+    @Override
     public void setIncrementalDamage(int incrementalDamage)
     {
         this.incrementalDamage = incrementalDamage;
     }
 
+    @Override
     public String getStartDimension()
     {
         return startDimension;
     }
 
+    @Override
     public void setStartDimension(String startDimension)
     {
         this.startDimension = startDimension;
@@ -1080,6 +1220,7 @@ public class StatsCapability implements IStatsCapability
         GCLog.debug("Finished loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
+    @Override
     public void copyFrom(IStatsCapability oldData, boolean keepInv)
     {
         if (keepInv)
@@ -1098,6 +1239,7 @@ public class StatsCapability implements IStatsCapability
         this.sentFlags = false;
     }
 
+    @Override
     public void setGlassColors(int color1, int color2, int color3)
     {
         boolean changes = false;
@@ -1120,16 +1262,19 @@ public class StatsCapability implements IStatsCapability
             ColorUtil.sendUpdatedColorsToPlayer(this);
     }
 
+    @Override
     public int getGlassColor1()
     {
         return glassColor1;
     }
 
+    @Override
     public int getGlassColor2()
     {
         return glassColor2;
     }
 
+    @Override
     public int getGlassColor3()
     {
         return glassColor3;
