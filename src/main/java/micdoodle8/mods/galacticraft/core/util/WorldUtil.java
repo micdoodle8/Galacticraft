@@ -69,7 +69,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.DimensionManager;
@@ -942,12 +941,9 @@ public class WorldUtil
     }
 
     /**
-     * IMPORTANT NOTE: do NOT use entity.setDead() following calling this method in an entity's update tick.
-     * Reason: this method may transfer the entity to another dimension
-     * If so. this method will already have removed the entity from this world's loadedEntityList.
-     * (Further explanation:  if the dead flag is set, World.updateEntities() would proceed to remove it AGAIN,
-     * with dire consequences - either removal of the wrong entity or if there are no more entities loaded
-     * in the world (e.g. on Space Stations) a server crash)  
+     * It is not necessary to use entity.setDead() following calling this method.
+     * If the entity left the old world it was in, it will now automatically be removed from that old world before the next update tick.
+     * (See WorldUtil.removeEntityFromWorld())
      */
     public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv, EntityAutoRocket ridingRocket)
     {
@@ -1098,7 +1094,7 @@ public class WorldUtil
                 player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
             }
             else
-            //Non-player entity transfer i.e. it's an EntityCargoRocket
+            //Non-player entity transfer i.e. it's an EntityCargoRocket or an empty rocket
             {
                 ArrayList<TileEntityTelemetry> tList = null;
                 if (entity instanceof EntitySpaceshipBase)
@@ -1266,23 +1262,17 @@ public class WorldUtil
             var0.playerEntities.remove(var2);
             var0.updateAllPlayersSleepingFlag();
         }
-        final int var3 = var1.chunkCoordX;
-        final int var4 = var1.chunkCoordZ;
-
-        if (var1.addedToChunk && var0.getChunkProvider().chunkExists(var3, var4))
-        {
-            Chunk chunk = var0.getChunkFromChunkCoords(var3, var4); 
-            chunk.removeEntity(var1);
-            chunk.isModified = true;
-        }
 
         if (directlyRemove)
         {
-            var0.loadedEntityList.remove(var1);
-            var0.onEntityRemoved(var1);
+            List l = new ArrayList<Entity>();
+            l.add(var1);
+            var0.unloadEntities(l);
+            //This will automatically remove the entity from the world and the chunk prior to the world's next update entities tick
+            //It is important NOT to directly modify World.loadedEntityList here, as the World will be currently iterating through that list when updating each entity (see the line "this.loadedEntityList.remove(i--);" in World.updateEntities()
         }
 
-        var1.isDead = false;  //This is necessary to avoid World.updateEntities() from repeating the above and removing the wrong entity!
+        var1.isDead = false;
     }
 
     public static SpaceStationRecipe getSpaceStationRecipe(int planetID)

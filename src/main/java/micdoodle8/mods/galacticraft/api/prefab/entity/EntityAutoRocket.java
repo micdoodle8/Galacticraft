@@ -442,6 +442,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         if (this.setFrequency())
         {
             super.ignite();
+            this.activeLaunchController = null;
             return true;
         }
         else
@@ -449,9 +450,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             if (this.isPlayerRocket())
             {
                 super.ignite();
+                this.activeLaunchController = null;
                 return true;
             }
 
+            this.activeLaunchController = null;
             return false;
         }
     }
@@ -961,13 +964,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         if (pad != null)
         {
             pad.dockEntity(this);
-	    	this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+            //NOTE: setPad() is called also when a world or chunk is loaded - if the rocket is Ignited (from NBT save data) do not change those settings
+	    	if (!(this.launchPhase == EnumLaunchPhase.IGNITED.ordinal())) 
+	    	{ 
+	    	    this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
+	            this.targetVec = null;
+	            if (GalacticraftCore.isPlanetsLoaded)
+	            {
+	                this.updateControllerSettings(pad);
+	            }
+	    	}
 	        this.landing = false;
-	        this.targetVec = null;
-	        if (GalacticraftCore.isPlanetsLoaded)
-	        {
-	            this.updateControllerSettings(pad);
-	        }
         }
     }
 
