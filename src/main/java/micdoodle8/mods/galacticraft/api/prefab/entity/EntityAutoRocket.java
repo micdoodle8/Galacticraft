@@ -287,9 +287,21 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             if (this.targetVec != null)
             {
-                this.motionY = Math.max(-2.0F, (this.posY - this.getOnPadYOffset() - 0.4D - this.targetVec.y) / -70.0D);
-                
-                if (this.boundingBox.minY - this.getOnPadYOffset() - this.targetVec.y < 0.04F)
+                double yDiff = this.posY - this.getOnPadYOffset() - this.targetVec.y; 
+                this.motionY = Math.max(-2.0F, (yDiff - 0.05D) / -70.0D);
+
+                if (yDiff > 1F && yDiff < 4F)
+                {
+                    for (Object o : this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.copy().offset(0D, -3D, 0D), EntitySpaceshipBase.rocketSelector))
+                    {
+                        if (o instanceof EntitySpaceshipBase)
+                        {
+                            ((EntitySpaceshipBase)o).dropShipAsItem();
+                            ((EntitySpaceshipBase)o).setDead();
+                        }
+                    }
+                }
+                if (yDiff < 0.06F)
                 {
                     int yMin = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 2;
                     int yMax = MathHelper.floor_double(this.boundingBox.maxY) + 1;
@@ -480,7 +492,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 if (!this.worldObj.isRemote)
                 {
                     //Drop any existing rocket on the landing pad
-                	if (dock.getDockedEntity() instanceof EntitySpaceshipBase)
+                	if (dock.getDockedEntity() instanceof EntitySpaceshipBase && dock.getDockedEntity() != this)
                     {
                     	((EntitySpaceshipBase)dock.getDockedEntity()).dropShipAsItem();
                     	((EntitySpaceshipBase)dock.getDockedEntity()).setDead();
@@ -709,7 +721,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.shouldCancelExplosion())
         {
-        	//TODO: why looking around when already know the target?
+            //TODO: why looking around when already know the target?
         	//TODO: it would be good to land on an alternative neighbouring pad if there is already a rocket on the target pad
             for (int i = -3; i <= 3; i++)
             {

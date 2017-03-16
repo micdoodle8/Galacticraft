@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -42,7 +43,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o instanceof IDockable)
+                if (o instanceof IDockable && !((Entity)o).isDead) 
                 {
                     docked = true;
 

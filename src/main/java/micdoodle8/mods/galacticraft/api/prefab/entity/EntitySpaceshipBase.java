@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -631,4 +632,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		GL11.glTranslatef(0, this.height / 4, 0);
     }
 
+    public static IEntitySelector rocketSelector = new IEntitySelector()
+    {
+        public boolean isEntityApplicable(Entity e)
+        {
+            return e instanceof EntitySpaceshipBase;
+        }
+    };
 }
