@@ -67,6 +67,7 @@ public class ConfigManagerCore
     public static int[] staticLoadDimensions = { };
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
     public static boolean disableRocketLaunchAllNonGC;
+    public static int otherPlanetWorldBorders = 0;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -213,6 +214,12 @@ public class ConfigManagerCore
             prop.comment = "If true, rockets will be unable to reach the Overworld (only use this in special modpacks!)";
             prop.setLanguageKey("gc.configgui.rocketDisableOverworldReturn");
             disableRocketsToOverworld = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "World border for landing location on other planets (Moon, Mars, etc)", false);
+            prop.comment = "Set this to 0 for no borders (default).  If set to e.g. 2000, players will land on the Moon inside the x,z range -2000 to 2000.)";
+            prop.setLanguageKey("gc.configgui.planetWorldBorders");
+            otherPlanetWorldBorders = prop.getInt(0);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Force Overworld Spawn", false);

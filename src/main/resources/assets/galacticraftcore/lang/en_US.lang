@@ -667,6 +667,7 @@ gc.configgui.biomeIDBase=BiomeID Base for GC
 gc.configgui.staticLoadedDimensions=Static Loaded Dimensions
 gc.configgui.rocketDisableOverworldReturn=Disable Overworld Rocket Return
 gc.configgui.rocketDisabledDimensions=Rocket Disabled Dimensions
+gc.configgui.planetWorldBorders=Max x,z for Moon landing
 gc.configgui.forceOverworldRespawn=Force Overworld Respawn
 gc.configgui.idSchematicRocketT1=Schematic ID Tier 1 Rocket
 gc.configgui.idSchematicMoonBuggy=Schematic ID Moon Buggy

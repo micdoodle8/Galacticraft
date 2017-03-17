@@ -1060,11 +1060,11 @@ public class WorldUtil
 
                 removeEntityFromWorld(worldOld, player, true);
 
+                spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
                 if (worldNew.provider instanceof WorldProviderOrbit) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
 
-                spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
                 ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
                 if (ConfigManagerCore.enableDebug)
                 {

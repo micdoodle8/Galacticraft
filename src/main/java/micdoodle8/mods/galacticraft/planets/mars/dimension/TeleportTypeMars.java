@@ -26,7 +26,17 @@ public class TeleportTypeMars implements ITeleportType
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            return new Vector3(stats.coordsTeleportedFromX, ConfigManagerCore.disableLander ? 250.0 : 900.0, stats.coordsTeleportedFromZ);
+            double x = stats.coordsTeleportedFromX;
+            double z = stats.coordsTeleportedFromZ;
+            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            if (limit > 20)
+            {
+                if (x > limit) x = limit;
+                if (x < -limit) x = -limit;
+                if (z > limit) z = limit;
+                if (z < -limit) z = -limit;
+            }
+            return new Vector3(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
         }
 
         return null;
