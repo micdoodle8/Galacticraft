@@ -4,10 +4,8 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -15,8 +13,6 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -96,17 +92,8 @@ public class RenderPlayerGC extends RenderPlayer
 
                         int padding = gearData.getThermalPadding(i);
 
-                        if (GalacticraftCore.isPlanetsLoaded && par1EntityLivingBase instanceof EntityPlayerMP)
-                        {
-                            ItemStack thermalItem = GCPlayerStats.get((EntityPlayerMP)par1EntityLivingBase).extendedInventory.getStackInSlot(6 + i);
-                            if (thermalItem.getItem() != AsteroidsItems.thermalPadding || thermalItem.getItemDamage() != i)
-                            {
-                                //Skip render if the thermal item is not the Asteroids thermal armor - needed for submods
-                                padding = -1;
-                            }
-                        }
-                        
-                        if (padding >= 0 && !par1EntityLivingBase.isInvisible())
+                        //Padding sub-type 0 is standard Thermal Armor.  See PacketSimple handling of C_UPDATE_GEAR_SLOT for how the sub-type gets set
+                        if (padding == 0 && !par1EntityLivingBase.isInvisible())
                         {
                             GL11.glColor4f(1, 1, 1, 1);
                             Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.thermalPaddingTexture1);
