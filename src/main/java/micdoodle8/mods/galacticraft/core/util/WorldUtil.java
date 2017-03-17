@@ -977,6 +977,7 @@ public class WorldUtil
 
     private static Entity teleportEntity(World worldNew, Entity entity, int dimID, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
+        Entity otherRiddenEntity = null;
         if (entity.ridingEntity != null)
         {
         	if (entity.ridingEntity instanceof EntitySpaceshipBase)
@@ -985,6 +986,11 @@ public class WorldUtil
         	{
         		entity.ridingEntity.setDead();
         		entity.mountEntity(null);
+        	}
+        	else
+        	{
+                otherRiddenEntity = entity.ridingEntity;
+        	    entity.mountEntity(null);
         	}
         }
 
@@ -1215,6 +1221,28 @@ public class WorldUtil
 
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
             entity.mountEntity(ridingRocket);
+        }
+        else if (otherRiddenEntity != null)
+        {
+            if (dimChange)
+            {
+                World worldOld = otherRiddenEntity.worldObj;
+                NBTTagCompound nbt = new NBTTagCompound();
+                otherRiddenEntity.writeToNBTOptional(nbt);
+                removeEntityFromWorld(worldOld, otherRiddenEntity, true);
+                otherRiddenEntity = EntityList.createEntityFromNBT(nbt, worldNew);
+                worldNew.spawnEntityInWorld(otherRiddenEntity);
+                otherRiddenEntity.setWorld(worldNew);
+            }
+            if (spawnPos != null)
+            {
+                otherRiddenEntity.setPositionAndRotation(spawnPos.x, spawnPos.y - 10, spawnPos.z, otherRiddenEntity.rotationYaw, otherRiddenEntity.rotationPitch);
+            }
+            else
+            {
+                otherRiddenEntity.setPositionAndRotation(entity.posX, entity.posY - 10, entity.posZ, 0, 0);
+            }
+            worldNew.updateEntityWithOptionalForce(otherRiddenEntity, true);
         }
         else if (spawnPos != null)
         {
