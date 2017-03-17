@@ -255,8 +255,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (this.riddenByEntity != null)
         {
-            this.riddenByEntity.posX += this.rumble / (37F - 5F * this.getRocketTier());
-            this.riddenByEntity.posZ += this.rumble / (37F - 5F * this.getRocketTier());
+            final double rumbleAmount = this.rumble / (double) (37 - 5 * Math.max(this.getRocketTier(), 5));
+            this.riddenByEntity.posX += rumbleAmount;
+            this.riddenByEntity.posZ += rumbleAmount;
         }
 
         if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
