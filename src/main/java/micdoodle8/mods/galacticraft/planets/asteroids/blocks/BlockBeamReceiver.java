@@ -63,8 +63,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         {
             worldIn.destroyBlock(pos, true);
         }
-
-        if (meta != oldMeta)
+        else if (meta != oldMeta)
         {
             worldIn.setBlockState(pos, getStateFromMeta(meta), 3);
             TileEntity thisTile = worldIn.getTileEntity(pos);
