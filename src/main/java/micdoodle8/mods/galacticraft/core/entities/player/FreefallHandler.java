@@ -115,14 +115,14 @@ public class FreefallHandler {
         {
             if (!sneakLast)
             {
-            	posOffsetY += 0.0268;
+//            	posOffsetY += 0.0268;
             	sneakLast = true;
             }
             p.motionY -= ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
         } else if (sneakLast)
         {
         	sneakLast = false;
-        	posOffsetY -= 0.0268;
+//        	posOffsetY -= 0.0268;
         }
 
         if (!jetpackUsed && p.movementInput.jump)

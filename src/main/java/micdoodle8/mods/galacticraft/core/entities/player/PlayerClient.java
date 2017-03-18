@@ -125,25 +125,34 @@ public class PlayerClient implements IPlayerClient
 	            float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
 	            if (player.limbSwing < 0) player.limbSwing += adjust;
 	            else if (player.limbSwing > 0) player.limbSwing -= adjust;
-	            player.limbSwingAmount *= 0.9;
+	            player.limbSwingAmount *= 0.9F;
 	        } else
 	        {
-		    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
+		    	if (stats.inFreefallLast && this.downMot2 < -0.008D)
 		    	{
-		    		stats.landingTicks = 5 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
-		    		if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS) stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
-		    		
+		    		stats.landingTicks = 5 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 40);
+		    		if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS)
+		    		{
+		    		    ((WorldProviderOrbit)player.worldObj.provider).pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 1;
+		    		    stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
+		    		}
+		    		float dYmax = 0.3F * stats.landingTicks / GCPlayerStatsClient.MAX_LANDINGTICKS;
+		    		float factor = 1F;
 		    		for (int i = 0; i <= stats.landingTicks; i++)
 		    		{
-    	                if (i >= 4) stats.landingYOffset[i] = ((i >= 5) ? 0.15F : 0.3F) * 0.5F;
-    	                else
-    	                    stats.landingYOffset[i] = i * 0.075F * 0.5F;
+    	                stats.landingYOffset[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.landingTicks) * factor;
+    	                factor *= 0.97F;
 		    		}
 
 		    	}
 	        }
 
-	        if (stats.landingTicks > 0) stats.landingTicks--;
+	        if (stats.landingTicks > 0)
+	        {
+	            stats.landingTicks--;
+                player.limbSwing *= 0.8F;
+                player.limbSwingAmount = 0F;
+	        }
         }
         else
         	stats.inFreefall = false;

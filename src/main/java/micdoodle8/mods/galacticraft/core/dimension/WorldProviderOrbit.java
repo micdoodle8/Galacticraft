@@ -92,7 +92,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
     private double pPrevMotionX = 0D;
     public double pPrevMotionY = 0D;
     private double pPrevMotionZ = 0D;
-    private int pjumpticks = 0;
+    public int pjumpticks = 0;
     private boolean pWasOnGround = false;
 
     @Override
@@ -759,11 +759,11 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             {
                 if (p.onGround || this.pWasOnGround)
                 {
-                    this.pjumpticks = 20;
-                    p.motionY -= 0.015D;
-                    p.onGround = false;
-                    p.posY -= 0.1D;
-                    p.boundingBox.offset(0, -0.1D, 0);
+                    if (this.pjumpticks < 25) this.pjumpticks++;
+                    p.motionY -= dy;
+//                    p.onGround = false;
+//                    p.posY -= 0.1D;
+//                    p.boundingBox.offset(0, -0.1D, 0);
                 }
                 else
                 {
@@ -774,33 +774,18 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     }
                 }
             }
+            else if (this.pjumpticks > 0)
+            {
+                    p.motionY += 0.0145D * this.pjumpticks;
+                    this.pjumpticks = 0;
+            }
             else if (p.movementInput.sneak)
             {
                 if (!p.onGround)
                 {
                     p.motionY -= 0.015D;
-                    if (!FreefallHandler.sneakLast )
-                    {
-//                    	p.boundingBox.offset(0D, 0.0268D, 0D);
-                    	FreefallHandler.sneakLast = true;
-                    }
                 }
                 this.pjumpticks = 0;
-            }
-            else if (FreefallHandler.sneakLast)
-            {
-            	FreefallHandler.sneakLast = false;
-//            	p.boundingBox.offset(0D, -0.0268D, 0D);
-            }
-
-            if (this.pjumpticks > 0)
-            {
-                this.pjumpticks--;
-                p.motionY -= dy;
-                if (this.pjumpticks >= 17)
-                {
-                    p.motionY += 0.03D;
-                }
             }
         }
 

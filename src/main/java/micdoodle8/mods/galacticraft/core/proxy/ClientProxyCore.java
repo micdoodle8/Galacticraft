@@ -89,7 +89,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
@@ -688,7 +687,7 @@ public class ClientProxyCore extends CommonProxyCore
             GL11.glTranslatef(0, entity.getRotateOffset() + PLAYER_Y_OFFSET, 0);
         }
 
-        if (player instanceof GCEntityClientPlayerMP)
+        if (player instanceof EntityPlayerSP)
             sneakRenderOverride = true;
         //Gravity - freefall - jetpack changes in player model orientation can go here
     }
@@ -699,7 +698,7 @@ public class ClientProxyCore extends CommonProxyCore
         GL11.glPopMatrix();
 
         final EntityPlayer player = event.entityPlayer;
-        if (player instanceof GCEntityClientPlayerMP)
+        if (player instanceof EntityPlayerSP)
             sneakRenderOverride = false;
     }
 
@@ -1048,12 +1047,12 @@ public class ClientProxyCore extends CommonProxyCore
             GL11.glRotatef(yaw * stats.gdir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(yaw * stats.gdir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
 
-            if (stats.landingTicks > 0)
-            {
-            	float sneakY = stats.landingYOffset[stats.landingTicks];
-            	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
-            }
-
+//            if (player.isSneaking())
+//            {
+//            	float sneakY = -0.2F;
+//            	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
+//            }
+//
             GL11.glTranslatef(eyeHeightChange * stats.gdir.getEyeVecX(), eyeHeightChange * stats.gdir.getEyeVecY(), eyeHeightChange * stats.gdir.getEyeVecZ());
 
             if (stats.gravityTurnRate < 1.0F)
