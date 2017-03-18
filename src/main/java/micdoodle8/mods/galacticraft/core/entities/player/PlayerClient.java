@@ -130,8 +130,16 @@ public class PlayerClient implements IPlayerClient
 	        {
 		    	if (stats.inFreefallLast && this.downMot2 < -0.01D)
 		    	{
-		    		stats.landingTicks = 2 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
-		    		if (stats.landingTicks > 6) stats.landingTicks = 6;
+		    		stats.landingTicks = 5 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 75);
+		    		if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS) stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
+		    		
+		    		for (int i = 0; i <= stats.landingTicks; i++)
+		    		{
+    	                if (i >= 4) stats.landingYOffset[i] = ((i >= 5) ? 0.15F : 0.3F) * 0.5F;
+    	                else
+    	                    stats.landingYOffset[i] = i * 0.075F * 0.5F;
+		    		}
+
 		    	}
 	        }
 

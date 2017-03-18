@@ -89,6 +89,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
@@ -190,6 +191,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static float playerRotationPitch;
 
     public static boolean lastSpacebarDown;
+    public static boolean sneakRenderOverride;
 
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
 
@@ -686,6 +688,8 @@ public class ClientProxyCore extends CommonProxyCore
             GL11.glTranslatef(0, entity.getRotateOffset() + PLAYER_Y_OFFSET, 0);
         }
 
+        if (player instanceof GCEntityClientPlayerMP)
+            sneakRenderOverride = true;
         //Gravity - freefall - jetpack changes in player model orientation can go here
     }
 
@@ -693,6 +697,10 @@ public class ClientProxyCore extends CommonProxyCore
     public void onRenderPlayerPost(RenderPlayerEvent.Post event)
     {
         GL11.glPopMatrix();
+
+        final EntityPlayer player = event.entityPlayer;
+        if (player instanceof GCEntityClientPlayerMP)
+            sneakRenderOverride = false;
     }
 
     @SubscribeEvent
@@ -1042,10 +1050,7 @@ public class ClientProxyCore extends CommonProxyCore
 
             if (stats.landingTicks > 0)
             {
-            	float sneakY;
-            	if (stats.landingTicks >= 4) sneakY = (stats.landingTicks >= 5) ? 0.15F : 0.3F;
-            	else
-            		sneakY = stats.landingTicks * 0.075F;
+            	float sneakY = stats.landingYOffset[stats.landingTicks];
             	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
             }
 

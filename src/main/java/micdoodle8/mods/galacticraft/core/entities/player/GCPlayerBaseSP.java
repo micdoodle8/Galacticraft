@@ -73,10 +73,13 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         if (this.player.worldObj.provider instanceof WorldProviderOrbit)
     	{
-	        if (FreefallHandler.testFreefall(this.player)) return false;
-        	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
-	    	if (!this.player.onGround) return false;
-	    	if (stats.landingTicks > 0) return true;
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
+            if (stats.landingTicks > 0) return true;
+            if (ClientProxyCore.sneakRenderOverride)
+            {
+                if (FreefallHandler.testFreefall(this.player)) return false;
+                if (stats.inFreefall) return false;
+            }
     	}
         return super.isSneaking();
     }

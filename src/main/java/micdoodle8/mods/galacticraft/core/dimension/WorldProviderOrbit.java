@@ -781,7 +781,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
                     p.motionY -= 0.015D;
                     if (!FreefallHandler.sneakLast )
                     {
-                    	p.boundingBox.offset(0D, 0.0268D, 0D);
+//                    	p.boundingBox.offset(0D, 0.0268D, 0D);
                     	FreefallHandler.sneakLast = true;
                     }
                 }
@@ -790,7 +790,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             else if (FreefallHandler.sneakLast)
             {
             	FreefallHandler.sneakLast = false;
-            	p.boundingBox.offset(0D, -0.0268D, 0D);
+//            	p.boundingBox.offset(0D, -0.0268D, 0D);
             }
 
             if (this.pjumpticks > 0)

@@ -67,11 +67,14 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     public boolean isSneaking()
     {
         if (this.worldObj.provider instanceof WorldProviderOrbit)
-    	{
-	        if (FreefallHandler.testFreefall(this)) return false;
-        	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
-	    	if (stats.inFreefall) return false;
-	    	if (stats.landingTicks > 0) return true;
+        {
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
+            if (stats.landingTicks > 0) return true;
+            if (ClientProxyCore.sneakRenderOverride)
+            {
+                if (FreefallHandler.testFreefall(this)) return false;
+                if (stats.inFreefall) return false;
+            }
     	}
         return super.isSneaking();
     }
