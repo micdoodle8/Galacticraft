@@ -251,6 +251,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
                 this.moveStrafing *= 0.98F;
                 this.moveForward *= 0.98F;
                 this.randomYawVelocity *= 0.9F;
+                if ((this.boundingBox.minY % 1F) == 0.5F) this.boundingBox.minY += 0.00001F;
                 this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
 
                 // -from: EntityPlayer

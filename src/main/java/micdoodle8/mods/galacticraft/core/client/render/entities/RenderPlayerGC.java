@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
@@ -196,6 +197,11 @@ public class RenderPlayerGC extends RenderPlayer
                 }
         	}
           	super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+        }
+        
+        if (par1AbstractClientPlayer.isSneaking() && par1AbstractClientPlayer.worldObj.provider instanceof WorldProviderOrbit)
+        {
+            GL11.glTranslatef(0F, -0.1F, 0F);
         }
     }
 

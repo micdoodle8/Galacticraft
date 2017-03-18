@@ -133,7 +133,10 @@ public class PlayerClient implements IPlayerClient
 		    		stats.landingTicks = 5 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 40);
 		    		if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS)
 		    		{
-		    		    ((WorldProviderOrbit)player.worldObj.provider).pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 1;
+	                    if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS + 4)
+	                    {
+	                        ((WorldProviderOrbit)player.worldObj.provider).pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 5;
+	                    }
 		    		    stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
 		    		}
 		    		float dYmax = 0.3F * stats.landingTicks / GCPlayerStatsClient.MAX_LANDINGTICKS;

@@ -36,7 +36,7 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
 	public double downMotionLast;
     public boolean lastRidingCameraZoomEntity;
     public int landingTicks;
-    public static final int MAX_LANDINGTICKS = 14;
+    public static final int MAX_LANDINGTICKS = 15;
     public float[] landingYOffset = new float[MAX_LANDINGTICKS + 1];
 
     public EnumGravity gdir = EnumGravity.down;
