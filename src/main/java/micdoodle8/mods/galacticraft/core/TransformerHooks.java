@@ -658,14 +658,17 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static double getCameraZoom(double previous)
     {
+        if (ConfigManagerCore.disableVehicleCameraChanges)
+        {
+            return previous;
+        }
+
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player.getRidingEntity() != null && player.getRidingEntity() instanceof ICameraZoomEntity)
         {
-            if(!ConfigManagerCore.disableVehicleCameraChanges)
-            {
-                return ((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom();
-            }
+            return ((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom();
         }
+
         return previous;
     }
 }

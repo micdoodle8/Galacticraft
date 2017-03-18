@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
+import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeMars;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -45,6 +46,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
@@ -141,6 +143,8 @@ public class MarsModule implements IPlanetsModule
         CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : "ingotDesh");
 
         GalacticraftCore.proxy.registerFluidTexture(MarsModule.sludge, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underbecterial.png"));
+
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 1, GalacticraftPlanets.TEXTURE_PREFIX + BiomeMars.marsFlat.getBiomeName(), BiomeMars.marsFlat);
     }
 
     @Override
@@ -219,15 +223,16 @@ public class MarsModule implements IPlanetsModule
         MarsModule.registerGalacticraftNonMobEntity(EntityCargoRocket.class, "rocket_cargo", 150, 1, false);
     }
 
-    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
+    public void registerGalacticraftCreature(Class<? extends Entity> clazz, String name, int back, int fore)
     {
-        MarsModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
+        MarsModule.registerGalacticraftNonMobEntity(clazz, name, 80, 3, true);
         int nextEggID = GCCoreUtil.getNextValidID();
         if (nextEggID < 65536)
         {
-            EntityList.ID_TO_CLASS.put(nextEggID, var0);
-            EntityList.CLASS_TO_ID.put(var0, nextEggID);
-            EntityList.ENTITY_EGGS.put(var1, new EntityList.EntityEggInfo(var1, back, fore));
+            name = Constants.MOD_ID_PLANETS + "." + name;
+            EntityList.ID_TO_CLASS.put(nextEggID, clazz);
+            EntityList.CLASS_TO_ID.put(clazz, nextEggID);
+            EntityList.ENTITY_EGGS.put(name, new EntityList.EntityEggInfo(name, back, fore));
         }
     }
 

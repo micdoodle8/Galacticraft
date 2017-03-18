@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -70,14 +71,14 @@ public class RoomSpawner extends RoomEmpty
         switch (rand.nextInt(4))
         {
         case 0:
-            return "GalacticraftCore.evolved_spider";
+            return Constants.MOD_ID_CORE + ".evolved_spider";
         case 1:
-            return "GalacticraftCore.evolved_creeper";
+            return Constants.MOD_ID_CORE + ".evolved_creeper";
         case 2:
-            return "GalacticraftCore.evolved_skeleton";
+            return Constants.MOD_ID_CORE + ".evolved_skeleton";
         case 3:
         default:
-            return "GalacticraftCore.evolved_zombie";
+            return Constants.MOD_ID_CORE + ".evolved_zombie";
         }
     }
 

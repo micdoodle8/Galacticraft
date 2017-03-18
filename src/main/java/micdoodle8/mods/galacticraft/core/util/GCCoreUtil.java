@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
@@ -79,6 +80,7 @@ public class GCCoreUtil
         int nextEggID = getNextValidID();
         if (nextEggID < 65536)
         {
+            name = Constants.MOD_ID_CORE + "." + name;
             EntityList.ID_TO_CLASS.put(nextEggID, clazz);
             EntityList.CLASS_TO_ID.put(clazz, nextEggID);
             EntityList.ENTITY_EGGS.put(name, new EntityList.EntityEggInfo(name, back, fore));

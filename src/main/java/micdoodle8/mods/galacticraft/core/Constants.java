@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core;
 
 public class Constants
 {
-    public static final String MOD_ID_CORE = "GalacticraftCore";
-    public static final String MOD_ID_PLANETS = "GalacticraftPlanets";
+    public static final String MOD_ID_CORE = "galacticraftcore";
+    public static final String MOD_ID_PLANETS = "galacticraftplanets";
     public static final String MOD_NAME_SIMPLE = "Galacticraft";
 
     public static final int LOCALMAJVERSION = 4;

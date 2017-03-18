@@ -50,6 +50,13 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     }
 
     @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(IS_CHILD, false);
+    }
+
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();

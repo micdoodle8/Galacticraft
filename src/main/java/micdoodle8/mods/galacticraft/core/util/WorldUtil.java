@@ -694,8 +694,9 @@ public class WorldUtil
             }
             else if (entity.getRidingEntity() instanceof EntityCelestialFake)
             {
-                entity.getRidingEntity().removePassengers();
-                entity.getRidingEntity().setDead();
+                Entity e = entity.getRidingEntity();
+                e.removePassengers();
+                e.setDead();
             }
         }
 

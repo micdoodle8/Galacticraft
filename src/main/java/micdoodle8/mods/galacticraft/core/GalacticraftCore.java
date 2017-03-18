@@ -266,6 +266,9 @@ public class GalacticraftCore
         GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidOil, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png"));
 		GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidFuel, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underfuel.png"));
 
+		Biome.registerBiome(ConfigManagerCore.biomeIDbase, Constants.TEXTURE_PREFIX + BiomeMoon.moonFlat.getBiomeName(), BiomeMoon.moonFlat);
+		Biome.registerBiome(ConfigManagerCore.biomeIDbase + 3, Constants.TEXTURE_PREFIX + BiomeOrbit.space.getBiomeName(), BiomeOrbit.space);
+
 //        switch (this.getSlotIndex())
 //        {
 //        case 0:

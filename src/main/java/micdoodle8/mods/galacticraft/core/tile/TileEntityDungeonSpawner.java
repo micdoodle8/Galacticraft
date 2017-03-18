@@ -185,7 +185,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            // This exception will be thrown when read is called from TileEntity.handleUpdateTag
+            // but we only care if an exception is thrown on server side read
+            if (!this.worldObj.isRemote)
+            {
+                e.printStackTrace();
+            }
         }
 
         this.roomCoords = new Vector3();
