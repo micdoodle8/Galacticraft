@@ -504,19 +504,19 @@ public class TickHandlerClient
                 final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.getRidingEntity();
                 boolean hasChanged = false;
 
-                if (minecraft.gameSettings.keyBindLeft.isPressed())
+                if (minecraft.gameSettings.keyBindLeft.isKeyDown())
                 {
                     ship.turnYaw(-1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindRight.isPressed())
+                if (minecraft.gameSettings.keyBindRight.isKeyDown())
                 {
                     ship.turnYaw(1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindForward.isPressed())
+                if (minecraft.gameSettings.keyBindForward.isKeyDown())
                 {
                     if (ship.getLaunched())
                     {
@@ -525,7 +525,7 @@ public class TickHandlerClient
                     }
                 }
 
-                if (minecraft.gameSettings.keyBindBack.isPressed())
+                if (minecraft.gameSettings.keyBindBack.isKeyDown())
                 {
                     if (ship.getLaunched())
                     {
@@ -570,7 +570,7 @@ public class TickHandlerClient
                 world.setRainStrength(0.0F);
             }
 
-            boolean isPressed = KeyHandlerClient.spaceKey.isPressed();
+            boolean isPressed = KeyHandlerClient.spaceKey.isKeyDown();
 
             if (!isPressed)
             {
@@ -620,7 +620,7 @@ public class TickHandlerClient
     public static void zoom(float value)
     {
 //        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistance = value;
-        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistancePrev = value;
+//        FMLClientHandler.instance().getClient().entityRenderer.thirdPersonDistancePrev = value;
     }
 
     private void drawGradientRect(int par1, int par2, int par3, int par4, int par5, int par6)

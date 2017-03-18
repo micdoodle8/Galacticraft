@@ -47,6 +47,9 @@ public class ItemModelFlag extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
+            mul.rotY(1.5F);
+            ret.mul(mul);
+            mul.setIdentity();
             mul.rotY((float) -(Math.PI / 3.0F));
             ret.mul(mul);
             mul.setIdentity();

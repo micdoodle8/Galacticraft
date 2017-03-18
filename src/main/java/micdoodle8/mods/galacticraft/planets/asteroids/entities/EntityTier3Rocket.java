@@ -68,7 +68,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public float getRotateOffset()
     {
-        return 0.35F;
+        return 1.5F;
     }
 
     @Override
@@ -338,6 +338,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
     @Override
     public float getRenderOffsetY()
     {
-        return 1.1F;
+        return -1F;
     }
 }

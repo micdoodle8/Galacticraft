@@ -60,10 +60,14 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
         {
-            Vector3f trans = new Vector3f(0.5F, 0.5F, -1.5F);
+            Vector3f trans = new Vector3f(-2.5F, 1.8F, -3.0F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 45, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
             mul.setIdentity();
             mul.setScale(4.0F);
             ret.mul(mul);
@@ -71,7 +75,7 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
             mul.rotX((float) (Math.PI / 2.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotZ(-0.65F);
+            mul.rotZ((float) (-0.65F + Math.PI));
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(trans);
@@ -87,10 +91,14 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
         {
-            Vector3f trans = new Vector3f(0.3F, -0.5F, -0.8F);
+            Vector3f trans = new Vector3f(1.2F, -2.5F, 1.0F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(75, 15, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
             mul.setIdentity();
             mul.setScale(0.5F);
             ret.mul(mul);

@@ -686,12 +686,9 @@ public class GCPlayerHandler
                 {
                     for (ItemStack armor : playerMP.getArmorInventoryList())
                     {
-                        if (armor.getItem() instanceof ItemArmor)
+                        if (armor != null && armor.getItem() instanceof ItemArmor)
                         {
-                            if (armor != null)
-                            {
-                                armor.damageItem(1, playerMP);
-                            }
+                            armor.damageItem(1, playerMP);
                         }
                     }
                 }

@@ -412,6 +412,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand)
     {
+        if (hand != EnumHand.MAIN_HAND)
+        {
+            return false;
+        }
+
         if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
         {
             return false;

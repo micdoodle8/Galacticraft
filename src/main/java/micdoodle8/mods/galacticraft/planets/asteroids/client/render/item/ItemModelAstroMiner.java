@@ -54,10 +54,14 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
         {
-            Vector3f trans = new Vector3f(0.5F, -0.2F, -1.1F);
+            Vector3f trans = new Vector3f(0.5F, 0.0F, -1.7F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 45, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
             mul.setIdentity();
             mul.setScale(4.0F);
             ret.mul(mul);
@@ -78,15 +82,19 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
         {
-            Vector3f trans = new Vector3f(-0.2F, -0.0F, 0.7F);
+            Vector3f trans = new Vector3f(-0.2F, -0.0F, 1.2F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(75, 15, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
+            mul.setIdentity();
             mul.setScale(0.8F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotZ((float) (Math.PI / 2.0F));
+            mul.rotZ((float) -(Math.PI / 2.0F));
             ret.mul(mul);
             mul.setIdentity();
             mul.rotY((float) (Math.PI / 2.0F));

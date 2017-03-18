@@ -64,6 +64,10 @@ public class ItemModelGrapple extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 45, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
+            mul.setIdentity();
             mul.setScale(1.8F);
             ret.mul(mul);
             mul.setIdentity();

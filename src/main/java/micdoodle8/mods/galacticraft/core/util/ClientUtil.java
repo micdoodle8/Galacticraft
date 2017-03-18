@@ -158,7 +158,7 @@ public class ClientUtil
     {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer worldrenderer = tessellator.getBuffer();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
         for (BakedQuad bakedquad : model.getQuads(null, null, 0))
         {
@@ -172,7 +172,7 @@ public class ClientUtil
     {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer worldrenderer = tessellator.getBuffer();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
         for (BakedQuad bakedquad : model.getQuads(null, null, 0))
         {

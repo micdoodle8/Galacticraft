@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -71,9 +70,10 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9 + 180;
         final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9 + 45;
 
-        GL11.glTranslatef((float) par2, (float) par4 + entity.getRenderOffsetY(), (float) par6);
+        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
+        GL11.glTranslatef(0.0F, entity.getRenderOffsetY(), 0.0F);
         final float var28 = entity.rollAmplitude / 3 - par9;
 
         if (var28 > 0.0F)

@@ -863,10 +863,13 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                             ship.igniteCheckingCooldown();
                             stats.setLaunchAttempts(0);
                         }
-                        else if (stats.getChatCooldown() == 0 && stats.getLaunchAttempts() == 0)
+                        else if (stats.getLaunchAttempts() == 0)
                         {
-                            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
-                            stats.setChatCooldown(250);
+                            if (stats.getChatCooldown() == 0)
+                            {
+                                player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
+                                stats.setChatCooldown(100);
+                            }
                             stats.setLaunchAttempts(1);
                         }
                     }

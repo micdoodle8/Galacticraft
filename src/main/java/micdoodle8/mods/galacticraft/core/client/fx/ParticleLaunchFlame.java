@@ -25,17 +25,13 @@ public class ParticleLaunchFlame extends Particle
     public ParticleLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched, EntityLivingBase ridingEntity)
     {
         super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
-        this.motionX *= 0.10000000149011612D;
-        this.motionY *= 0.10000000149011612D;
-        this.motionZ *= 0.10000000149011612D;
-        this.motionX += motion.x;
-        this.motionY += motion.y;
-        this.motionZ += motion.z;
+        this.motionX = motion.x;
+        this.motionY = motion.y;
+        this.motionZ = motion.z;
         this.particleRed = 255F / 255F;
         this.particleGreen = 120F / 255F + this.rand.nextFloat() / 3;
         this.particleBlue = 55F / 255F;
-        this.particleScale *= 2F;
-        this.particleScale *= 1F * 2;
+        this.particleScale *= launched ? 4F : 0.1F;
         this.smokeParticleScale = this.particleScale;
         this.particleMaxAge = (int) (this.particleMaxAge * 1F);
         this.canCollide = true;

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHa
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
@@ -651,5 +653,19 @@ public class TransformerHooks
     {
         FootprintRenderer.renderFootprints(ClientProxyCore.mc.thePlayer, partialTicks);
         MinecraftForge.EVENT_BUS.post(new ClientProxyCore.EventSpecialRender(partialTicks));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static double getCameraZoom(double previous)
+    {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player.getRidingEntity() != null && player.getRidingEntity() instanceof ICameraZoomEntity)
+        {
+            if(!ConfigManagerCore.disableVehicleCameraChanges)
+            {
+                return ((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom();
+            }
+        }
+        return previous;
     }
 }

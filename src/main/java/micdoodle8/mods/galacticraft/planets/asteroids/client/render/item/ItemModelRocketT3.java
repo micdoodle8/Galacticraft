@@ -60,18 +60,22 @@ public class ItemModelRocketT3 extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
         {
-            Vector3f trans = new Vector3f(0.5F, 0.5F, -1.2F);
+            Vector3f trans = new Vector3f(0.5F, 3.2F, -3.6F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(4.0F);
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 45, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setScale(0.45F);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotX((float) (Math.PI / 2.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotZ(-0.65F);
+            mul.rotZ((float) (-0.65F + Math.PI));
             ret.mul(mul);
             mul.setIdentity();
             mul.setTranslation(trans);
@@ -82,12 +86,16 @@ public class ItemModelRocketT3 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
-            Vector3f trans = new Vector3f(0.0F, -0.4F, -0.3F);
+            Vector3f trans = new Vector3f(1.0F, -2.4F, 1.2F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(75, 15, 0));
+            mul.setRotation(rot);
+            ret.mul(mul);
             mul.setIdentity();
             mul.setScale(0.6F);
             ret.mul(mul);
