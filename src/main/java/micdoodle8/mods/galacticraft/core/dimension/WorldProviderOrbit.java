@@ -709,6 +709,7 @@ public class WorldProviderOrbit extends WorldProviderSpace implements IOrbitDime
             }
             else
             {
+                p.capabilities.isFlying = true;
                 //Half the normal acceleration in Creative mode
                 double dx = p.motionX - this.pPrevMotionX;
                 double dy = p.motionY - this.pPrevMotionY;
