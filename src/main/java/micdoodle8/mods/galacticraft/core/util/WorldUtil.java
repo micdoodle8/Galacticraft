@@ -837,7 +837,12 @@ public class WorldUtil
         {
         	GCLog.severe("Server dimension " + dimID + " has no match on client due to earlier registration problem.");
         }
+        else if (dimID == 0)
+        {
+            GCLog.severe("Client dimension " + providerID + " has no match on server - probably a server dimension ID conflict problem.");
+        }
         else
+
         {
             if (!WorldUtil.registeredPlanets.contains(dimID))
             {
@@ -1339,6 +1344,19 @@ public class WorldUtil
         return iArray;
     }
     
+    /**
+     * What's important here is that Galacticraft and the server both register
+     * the same reachable Galacticraft planets (and their provider types) in the same order.
+     * See WorldUtil.registerPlanet().
+     * 
+     * Even if there are dimension conflicts or other problems, the planets must be
+     * registered in the same order on both client and server.  This should happen
+     * automatically if Galacticraft versions match, and if planets modules
+     * match  (including Galacticraft-Planets and any other sub-mods).
+     * 
+     * It is NOT a good idea for sub-mods to make the registration order of planets variable
+     * or dependent on configs.
+     */
     public static void decodePlanetsListClient(List<Object> data)
     {
         try
@@ -1358,6 +1376,7 @@ public class WorldUtil
             if (data.size() > 0)
             {
             	//Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
+                //(this will be iterating through GalacticraftRegistry.worldProviderIDs)
             	int providerIndex = GalaxyRegistry.getRegisteredSatellites().size() * 2;
                 if (data.get(0) instanceof Integer)
                 {
