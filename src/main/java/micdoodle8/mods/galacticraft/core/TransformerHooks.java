@@ -574,14 +574,7 @@ public class TransformerHooks
             GL11.glRotatef(yaw * stats.gdir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(yaw * stats.gdir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
 
-            if (stats.landingTicks > 0)
-            {
-            	float sneakY;
-            	if (stats.landingTicks >= 4) sneakY = (stats.landingTicks >= 5) ? 0.15F : 0.3F;
-            	else
-            		sneakY = stats.landingTicks * 0.075F;
-            	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
-            }
+//        	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
 
             GL11.glTranslatef(eyeHeightChange * stats.gdir.getEyeVecX(), eyeHeightChange * stats.gdir.getEyeVecY(), eyeHeightChange * stats.gdir.getEyeVecZ());
 

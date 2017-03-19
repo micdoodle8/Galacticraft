@@ -644,6 +644,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             if (this.riddenByEntity != null)
             {
+                if (this.riddenByEntity == var1)
                 var1.mountEntity(null);
                 return true;
             }

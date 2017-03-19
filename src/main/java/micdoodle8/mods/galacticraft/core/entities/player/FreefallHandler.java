@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.dimension.SpinManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
@@ -33,7 +34,7 @@ public class FreefallHandler
     private double pPrevdY;
     public boolean sneakLast;
 
-    private int pjumpticks = 0;
+    public int pjumpticks = 0;
 
     public boolean testFreefall(EntityPlayer player)
     {
@@ -248,7 +249,8 @@ public class FreefallHandler
         double dZ = p.motionZ - pPrevMotionZ;
 
         double posOffsetX = -p.motionX;
-        double posOffsetY = -p.motionY;// + WorldUtil.getGravityForEntity(p);
+        double posOffsetY = - p.motionY;
+        if (posOffsetY == - TransformerHooks.getGravityForEntity(p)) posOffsetY = 0;
         double posOffsetZ = -p.motionZ;
         //if (p.capabilities.isFlying)
 
@@ -294,7 +296,7 @@ public class FreefallHandler
         {
             if (!sneakLast)
             {
-                posOffsetY += 0.0268;
+//            	posOffsetY += 0.0268;
                 sneakLast = true;
             }
             p.motionY -= ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
@@ -302,7 +304,7 @@ public class FreefallHandler
         else if (sneakLast)
         {
             sneakLast = false;
-            posOffsetY -= 0.0268;
+//        	posOffsetY -= 0.0268;
         }
 
         if (!jetpackUsed && p.movementInput.jump)
@@ -393,7 +395,6 @@ public class FreefallHandler
         SpinManager spinManager = worldProviderOrbit.getSpinManager();
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         boolean freefall = stats.inFreefall;
-//        if (freefall) p.ySize = 0F;  //Undo the sneak height adjust TODO Fix this for 1.8
         freefall = this.testFreefall(p, freefall);
         stats.inFreefall = freefall;
         stats.inFreefallFirstCheck = true;
@@ -508,6 +509,7 @@ public class FreefallHandler
             }
             else
             {
+                p.capabilities.isFlying = true;
                 //Half the normal acceleration in Creative mode
                 double dx = p.motionX - this.pPrevMotionX;
                 double dy = p.motionY - this.pPrevMotionY;
@@ -557,11 +559,8 @@ public class FreefallHandler
             {
                 if (p.onGround || stats.ssOnGroundLast)
                 {
-                    this.pjumpticks = 20;
-                    p.motionY -= 0.015D;
-                    p.onGround = false;
-                    p.posY -= 0.1D;
-                    p.getEntityBoundingBox().offset(0, -0.1D, 0);
+                    if (this.pjumpticks < 25) this.pjumpticks++;
+                    p.motionY -= dy;
                 }
                 else
                 {
@@ -572,33 +571,18 @@ public class FreefallHandler
                     }
                 }
             }
+            else if (this.pjumpticks > 0)
+            {
+                p.motionY += 0.0145D * this.pjumpticks;
+                this.pjumpticks = 0;
+            }
             else if (p.movementInput.sneak)
             {
                 if (!p.onGround)
                 {
                     p.motionY -= 0.015D;
-                    if (!this.sneakLast)
-                    {
-                        p.getEntityBoundingBox().offset(0D, 0.0268D, 0D);
-                        this.sneakLast = true;
-                    }
                 }
                 this.pjumpticks = 0;
-            }
-            else if (this.sneakLast)
-            {
-                this.sneakLast = false;
-                p.getEntityBoundingBox().offset(0D, -0.0268D, 0D);
-            }
-
-            if (this.pjumpticks > 0)
-            {
-                this.pjumpticks--;
-                p.motionY -= dy;
-                if (this.pjumpticks >= 17)
-                {
-                    p.motionY += 0.03D;
-                }
             }
         }
 

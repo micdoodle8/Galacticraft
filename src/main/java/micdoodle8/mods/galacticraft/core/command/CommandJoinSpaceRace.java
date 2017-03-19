@@ -28,6 +28,12 @@ public class CommandJoinSpaceRace extends CommandBase
     }
 
     @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender)
+    {
+        return true;
+    }
+
+    @Override
     public String getCommandName()
     {
         return "joinrace";

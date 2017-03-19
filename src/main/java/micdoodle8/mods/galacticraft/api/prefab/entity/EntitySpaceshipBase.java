@@ -32,7 +32,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
+
+import com.google.common.base.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -641,4 +644,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         return 1.34F;
     }
+
+    public static final Predicate<Entity> rocketSelector = new Predicate<Entity>()
+    {
+        public boolean apply(Entity e)
+        {
+            return e instanceof EntitySpaceshipBase && e.isEntityAlive();
+        }
+    };
 }

@@ -3,12 +3,18 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
+import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fml.common.Loader;
 
 public class GCPlayerBaseSP extends ClientPlayerBase
 {
+    boolean lastIsFlying;
+    int lastLandingTicks;
+
+    
     public GCPlayerBaseSP(ClientPlayerAPI playerAPI)
     {
         super(playerAPI);
@@ -43,6 +49,46 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     }
 
     @Override
+    public void beforeUpdateEntityActionState()
+    {
+        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        {
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
+            if (stats.landingTicks > 0)
+            {
+//                this.player.ySize = stats.landingYOffset[stats.landingTicks];
+                this.player.movementInput.moveStrafe *= 0.5F;
+                this.player.movementInput.moveForward *= 0.5F;
+//                if (this.player.movementInput.sneak && this.player.ySize < 0.2F)
+//                {
+//                    this.player.ySize = 0.2F;
+//                }
+            }
+//            else if (((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks > 0)
+//            {
+//                this.player.ySize = 0.01F * ((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks;
+//            }
+//            else if (!this.player.onGround || stats.inFreefall)
+//            {
+//                this.player.ySize = 0F;
+//            }
+            
+            //TODO: set this.player.flyToggleTimer = 0;
+        }        
+    }
+
+    @Override
+    public void afterUpdateEntityActionState()
+    {
+        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        {
+            this.player.setJumping(false);
+            AxisAlignedBB aABB = this.player.getEntityBoundingBox();
+            if ((aABB.minY % 1D) == 0.5D) this.player.setEntityBoundingBox(aABB.offset(0D, 0.00001D, 0D));
+        }
+    }
+    
+    @Override
     public void moveEntity(double par1, double par3, double par5)
     {
         super.moveEntity(par1, par3, par5);
@@ -74,9 +120,23 @@ public class GCPlayerBaseSP extends ClientPlayerBase
         if (this.player.worldObj.provider instanceof WorldProviderOrbit)
     	{
         	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
-            if (stats.freefallHandler.testFreefall(this.player)) return false;
-	    	if (!this.player.onGround) return false;
-	    	if (stats.landingTicks > 0) return true;
+        	if (stats.landingTicks > 0)
+        	{
+        	    if (this.lastLandingTicks == 0)
+        	        this.lastLandingTicks = stats.landingTicks;
+
+        	    return stats.landingTicks < this.lastLandingTicks;
+        	}
+        	else
+        	    this.lastLandingTicks = 0;
+
+        	if (stats.freefallHandler.pjumpticks > 0) return true;
+
+        	if (EventHandlerClient.sneakRenderOverride)
+        	{
+        	    if (stats.freefallHandler.testFreefall(this.player)) return false;
+        	    if (stats.inFreefall) return false;
+        	}
     	}
         return super.isSneaking();
     }

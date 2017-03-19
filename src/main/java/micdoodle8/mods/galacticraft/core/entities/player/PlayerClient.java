@@ -138,19 +138,33 @@ public class PlayerClient implements IPlayerClient
             }
             else
             {
-                if (stats.inFreefallLast && this.downMot2 < -0.01D)
+		    	if (stats.inFreefallLast && this.downMot2 < -0.008D)
                 {
-                    stats.landingTicks = 2 - (int) (Math.min(this.downMot2, stats.downMotionLast) * 75);
-                    if (stats.landingTicks > 6)
-                    {
-                        stats.landingTicks = 6;
-                    }
+		    		stats.landingTicks = 5 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 40);
+		    		if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS)
+		    		{
+	                    if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS + 4)
+	                    {
+	                        stats.freefallHandler.pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 5;
                 }
+		    		    stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
+		    		}
+		    		float dYmax = 0.3F * stats.landingTicks / GCPlayerStatsClient.MAX_LANDINGTICKS;
+		    		float factor = 1F;
+		    		for (int i = 0; i <= stats.landingTicks; i++)
+		    		{
+    	                stats.landingYOffset[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.landingTicks) * factor;
+    	                factor *= 0.97F;
             }
 
-            if (stats.landingTicks > 0)
-            {
-                stats.landingTicks--;
+		    	}
+	        }
+
+	        if (stats.landingTicks > 0)
+	        {
+	            stats.landingTicks--;
+                player.limbSwing *= 0.8F;
+                player.limbSwingAmount = 0F;
             }
         }
         else

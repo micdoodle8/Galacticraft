@@ -7,15 +7,18 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerClient
 {
     public static Minecraft mc = FMLClientHandler.instance().getClient();
+    public static boolean sneakRenderOverride;
 
     @SubscribeEvent
     public void onRenderPlayerPre(RenderPlayerEvent.Pre event)
@@ -36,6 +39,9 @@ public class EventHandlerClient
             GL11.glTranslatef(0, entity.getRotateOffset() + ClientProxyCore.PLAYER_Y_OFFSET, 0);
         }
 
+        if (player instanceof EntityPlayerSP)
+            sneakRenderOverride = true;
+
         //Gravity - freefall - jetpack changes in player model orientation can go here
     }
 
@@ -43,6 +49,10 @@ public class EventHandlerClient
     public void onRenderPlayerPost(RenderPlayerEvent.Post event)
     {
         GL11.glPopMatrix();
+
+        final EntityPlayer player = event.entityPlayer;
+        if (player instanceof EntityPlayerSP)
+            sneakRenderOverride = false;
     }
 
     @SubscribeEvent

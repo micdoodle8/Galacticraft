@@ -104,6 +104,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static float playerRotationYaw;
     public static float playerRotationPitch;
     public static boolean lastSpacebarDown;
+
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
     public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", EnumChatFormatting.BLUE, "Space");
