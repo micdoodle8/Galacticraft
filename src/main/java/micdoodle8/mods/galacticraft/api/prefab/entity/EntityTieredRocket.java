@@ -327,7 +327,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                     if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                     {
-                    	boolean dimensionAllowed = this.targetDimension == 0;
+                    	boolean dimensionAllowed = this.targetDimension == ConfigManagerCore.idDimensionOverworld;
 
                     	if (targetDim instanceof IGalacticraftWorldProvider)
                     	{
