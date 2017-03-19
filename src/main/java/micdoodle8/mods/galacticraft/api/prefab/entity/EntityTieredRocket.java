@@ -452,7 +452,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
         {
-            if (!this.worldObj.isRemote)
+            if (!this.worldObj.isRemote && this.riddenByEntity == par1EntityPlayer)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
                 GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par1EntityPlayer);
