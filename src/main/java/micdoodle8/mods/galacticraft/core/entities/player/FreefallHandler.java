@@ -1,6 +1,7 @@
  package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -69,10 +70,11 @@ public class FreefallHandler {
         double dZ = p.motionZ - pPrevMotionZ;
 
         double posOffsetX = - p.motionX;
-        double posOffsetY = - p.motionY;// + WorldUtil.getGravityForEntity(p);
+        double posOffsetY = - p.motionY;
+        if (posOffsetY == - WorldUtil.getGravityForEntity(p)) posOffsetY = 0;
         double posOffsetZ = - p.motionZ;
         //if (p.capabilities.isFlying)
-
+        
         ///Undo whatever vanilla tried to do to our y motion
         if (dY < 0D && p.motionY != 0.0D)
         {
