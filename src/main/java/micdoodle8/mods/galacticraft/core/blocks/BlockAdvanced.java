@@ -58,11 +58,6 @@ public abstract class BlockAdvanced extends Block
             }
         }
 
-        if (!worldIn.isRemote)
-        {
-            return false;
-        }
-
         if (playerIn.isSneaking())
         {
             if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))

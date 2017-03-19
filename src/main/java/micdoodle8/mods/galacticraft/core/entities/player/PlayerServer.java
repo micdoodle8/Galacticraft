@@ -22,7 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class PlayerServer implements IPlayerServer
 {
-    boolean updatingRidden = false;
+    private boolean updatingRidden = false;
 
     @Override
     public void clonePlayer(EntityPlayerMP player, EntityPlayer oldPlayer, boolean keepInv)
@@ -49,14 +49,10 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public boolean mountEntity(EntityPlayerMP player, Entity par1Entity)
+    public boolean dismountEntity(EntityPlayerMP player, Entity par1Entity)
     {
-        if (updatingRidden && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit())
-        {
-            return true;
-        }
+        return updatingRidden && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit();
 
-        return false;
     }
 
     @Override
@@ -70,9 +66,22 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3)
+    public boolean wakeUpPlayer(EntityPlayerMP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        return this.wakeUpPlayer(player, par1, par2, par3, false);
+        BlockPos c = player.bedLocation;
+
+        if (c != null)
+        {
+            EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, false);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            if (event.result == null || event.result == EntityPlayer.SleepResult.OK)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -160,23 +169,5 @@ public class PlayerServer implements IPlayerServer
                 player.motionY = 0.4D;
             }
         }
-    }
-
-    public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3, boolean bypass)
-    {
-        BlockPos c = player.bedLocation;
-
-        if (c != null)
-        {
-            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
-            MinecraftForge.EVENT_BUS.post(event);
-
-            if (bypass || event.result == null || event.result == EntityPlayer.SleepResult.OK)
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

@@ -18,9 +18,9 @@ import net.minecraft.world.WorldServer;
  */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
-    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager itemInWorldManager)
+    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager interactionManager)
     {
-        super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
+        super(server, WorldUtil.getStartWorld(world), profile, interactionManager);
         if (this.worldObj != world)
         {
             this.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
@@ -45,14 +45,12 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     }
 
     @Override
-    public boolean startRiding(Entity entityIn, boolean force)
+    public void dismountRidingEntity()
     {
-        if (!GalacticraftCore.proxy.player.mountEntity(this, entityIn))
+        if (!GalacticraftCore.proxy.player.dismountEntity(this, this.getRidingEntity()))
         {
-            return super.startRiding(entityIn, force);
+            super.dismountRidingEntity();
         }
-
-        return false;
     }
 
     @Override
@@ -63,11 +61,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     }
 
     @Override
-    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
+    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        if (!GalacticraftCore.proxy.player.wakeUpPlayer(this, par1, par2, par3))
+        if (!GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
         {
-            super.wakeUpPlayer(par1, par2, par3);
+            super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
         }
     }
 

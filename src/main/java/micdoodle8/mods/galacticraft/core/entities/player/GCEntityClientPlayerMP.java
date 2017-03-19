@@ -19,11 +19,11 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     }
 
     @Override
-    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
+    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        if (!ClientProxyCore.playerClientHandler.wakeUpPlayer(this, par1, par2, par3))
+        if (!ClientProxyCore.playerClientHandler.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
         {
-            super.wakeUpPlayer(par1, par2, par3);
+            super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
         }
     }
 

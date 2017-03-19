@@ -381,6 +381,11 @@ public class EventHandlerGC
     public void onBucketFill(FillBucketEvent event)
     {
         RayTraceResult pos = event.getTarget();
+        if (pos == null)
+        {
+            return;
+        }
+
         ItemStack ret = fillBucket(event.getWorld(), pos);
 
         if (ret == null)

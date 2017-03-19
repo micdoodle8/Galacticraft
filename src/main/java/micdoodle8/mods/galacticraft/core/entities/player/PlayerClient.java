@@ -50,9 +50,9 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3)
+    public boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        return this.wakeUpPlayer(player, par1, par2, par3, false);
+        return this.wakeUpPlayer(player, immediately, updateWorldFlag, setSpawn, false);
     }
 
     @Override
@@ -321,13 +321,13 @@ public class PlayerClient implements IPlayerClient
         }
     }
 
-    public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3, boolean bypass)
+    public boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn, boolean bypass)
     {
         BlockPos c = player.bedLocation;
 
         if (c != null)
         {
-            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
+            EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (bypass || event.result == null || event.result == EntityPlayer.SleepResult.OK)
