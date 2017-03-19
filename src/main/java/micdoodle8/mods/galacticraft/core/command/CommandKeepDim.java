@@ -20,7 +20,7 @@ public class CommandKeepDim extends CommandBase
     @Override
     public int getRequiredPermissionLevel()
     {
-        return 2;
+        return 4;
     }
 
     @Override

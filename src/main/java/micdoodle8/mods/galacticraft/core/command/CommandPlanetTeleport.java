@@ -23,6 +23,12 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
+    }
+
+    @Override
     public String getCommandName()
     {
         return "dimensiontp";

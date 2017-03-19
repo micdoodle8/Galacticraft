@@ -28,12 +28,6 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
-    {
-        return true;
-    }
-
-    @Override
     public String getCommandName()
     {
         return "gcastrominer";
