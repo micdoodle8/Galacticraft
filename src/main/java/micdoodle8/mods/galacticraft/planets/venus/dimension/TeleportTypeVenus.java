@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,7 +26,17 @@ public class TeleportTypeVenus implements ITeleportType
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            return new Vector3(stats.coordsTeleportedFromX, 900.0, stats.coordsTeleportedFromZ);
+            double x = stats.coordsTeleportedFromX;
+            double z = stats.coordsTeleportedFromZ;
+            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            if (limit > 20)
+            {
+                if (x > limit) x = limit;
+                if (x < -limit) x = -limit;
+                if (z > limit) z = limit;
+                if (z < -limit) z = -limit;
+            }
+            return new Vector3(x, 900.0, z);
         }
 
         return null;
