@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fml.common.Loader;
@@ -51,7 +51,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void beforeUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (this.player.worldObj.provider instanceof IZeroGDimension)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
             if (stats.landingTicks > 0)
@@ -69,7 +69,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void afterUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (this.player.worldObj.provider instanceof IZeroGDimension)
         {
             this.player.setJumping(false);
             AxisAlignedBB aABB = this.player.getEntityBoundingBox();
@@ -106,7 +106,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public boolean isSneaking()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (this.player.worldObj.provider instanceof IZeroGDimension)
     	{
         	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
         	if (stats.landingTicks > 0)

@@ -1,46 +1,17 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
-import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrbitDimension, ISolarLevel, IExitHeight
+public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation implements IOrbitDimension, IZeroGDimension, ISolarLevel, IExitHeight
 {
-    @Override
-    public void setDimension(int var1)
-    {
-        super.setDimension(var1);
-    }
-
-    /**
-     * Called only once from WorldProvider.registerWorld()
-     * so this provides a handy initialisation method
-     */
-    @Override
-    public void registerWorldChunkManager()
-    {
-        super.registerWorldChunkManager();
-        this.getSpinManager().registerServerSide();
-    }
-    
-    @Override
-    public CelestialBody getCelestialBody()
-    {
-        return GalacticraftCore.satelliteSpaceStation;
-    }
-
     @Override
     public Vector3 getFogColor()
     {
@@ -72,18 +43,6 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
-    {
-        return ChunkProviderOrbit.class;
-    }
-
-    @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
-    {
-        return WorldChunkManagerOrbit.class;
-    }
-
-    @Override
     public boolean isDaytime()
     {
         final float a = this.worldObj.getCelestialAngle(0F);
@@ -112,12 +71,6 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     }
 
     @Override
-    public void updateWeather()
-    {
-        super.updateWeather();
-    }
-
-    @Override
     public boolean isSkyColored()
     {
         return false;
@@ -139,30 +92,6 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
     public boolean canCoordinateBeSpawn(int var1, int var2)
     {
         return true;
-    }
-
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public boolean isSurfaceWorld()
-    {
-        return this.worldObj != null && this.worldObj.isRemote;
-    }
-
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public boolean canRespawnHere()
-    {
-        return false;
-    }
-
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public int getRespawnDimension(EntityPlayerMP player)
-    {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
     }
 
 //	@Override

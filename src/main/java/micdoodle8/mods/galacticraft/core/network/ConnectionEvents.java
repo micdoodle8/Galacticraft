@@ -2,11 +2,12 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
+
 import org.apache.logging.log4j.LogManager;
 
 public class ConnectionEvents
@@ -83,9 +85,9 @@ public class ConnectionEvents
             }
         }
 
-        if (event.player.worldObj.provider instanceof WorldProviderZeroGravity && event.player instanceof EntityPlayerMP)
+        if (event.player.worldObj.provider instanceof WorldProviderSpaceStation && event.player instanceof EntityPlayerMP)
         {
-            ((WorldProviderZeroGravity) event.player.worldObj.provider).getSpinManager().sendPackets((EntityPlayerMP) event.player);
+            ((WorldProviderSpaceStation) event.player.worldObj.provider).getSpinManager().sendPackets((EntityPlayerMP) event.player);
         }
     }
 

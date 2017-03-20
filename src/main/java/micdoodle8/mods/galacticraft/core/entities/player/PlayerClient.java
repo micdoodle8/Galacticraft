@@ -4,13 +4,13 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -87,7 +87,7 @@ public class PlayerClient implements IPlayerClient
                 stats.inFreefall = stats.freefallHandler.testFreefall(player);
                 startup = true;
             }
-            if (player.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (player.worldObj.provider instanceof IZeroGDimension)
             {
                 stats.inFreefallLast = stats.inFreefall;
                 stats.inFreefall = stats.freefallHandler.testFreefall(player);
@@ -116,7 +116,7 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        if (player.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (player.worldObj.provider instanceof IZeroGDimension)
         {
             stats.freefallHandler.postVanillaMotion(player);
 

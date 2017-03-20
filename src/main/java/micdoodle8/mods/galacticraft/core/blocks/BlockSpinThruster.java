@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -112,9 +112,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 
         if (!worldIn.isRemote)
         {
-            if (worldIn.provider instanceof WorldProviderZeroGravity)
+            if (worldIn.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderZeroGravity) worldIn.provider).getSpinManager().refresh(baseBlock, true);
+                ((WorldProviderSpaceStation) worldIn.provider).getSpinManager().refresh(baseBlock, true);
             }
         }
     }
@@ -156,9 +156,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 
         if (!worldIn.isRemote)
         {
-            if (worldIn.provider instanceof WorldProviderZeroGravity)
+            if (worldIn.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderZeroGravity) worldIn.provider).getSpinManager().refresh(pos, true);
+                ((WorldProviderSpaceStation) worldIn.provider).getSpinManager().refresh(pos, true);
             }
         }
     }
@@ -213,9 +213,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     {
         //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
         //Also make small thrust sounds
-        if (worldIn.provider instanceof WorldProviderZeroGravity)
+        if (worldIn.provider instanceof WorldProviderSpaceStation)
         {
-            if (((WorldProviderZeroGravity) worldIn.provider).getSpinManager().thrustersFiring || rand.nextInt(80) == 0)
+            if (((WorldProviderSpaceStation) worldIn.provider).getSpinManager().thrustersFiring || rand.nextInt(80) == 0)
             {
                 final int var6 = getMetaFromState(state) & 7;
                 final double var7 = pos.getX() + 0.5F;
@@ -262,9 +262,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
             }
         }
 
-        if (world.provider instanceof WorldProviderZeroGravity && !world.isRemote)
+        if (world.provider instanceof WorldProviderSpaceStation && !world.isRemote)
         {
-            WorldProviderZeroGravity worldOrbital = (WorldProviderZeroGravity) world.provider;
+            WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) world.provider;
             worldOrbital.getSpinManager().refresh(pos, true);
         }
         return true;
@@ -282,9 +282,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         if (!worldIn.isRemote)
         {
             final int facing = getMetaFromState(state) & 8;
-            if (worldIn.provider instanceof WorldProviderZeroGravity)
+            if (worldIn.provider instanceof WorldProviderSpaceStation)
             {
-                WorldProviderZeroGravity worldOrbital = (WorldProviderZeroGravity) worldIn.provider;
+                WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) worldIn.provider;
                 worldOrbital.getSpinManager().removeThruster(pos, facing == 0);
                 worldOrbital.getSpinManager().updateSpinSpeed();
             }

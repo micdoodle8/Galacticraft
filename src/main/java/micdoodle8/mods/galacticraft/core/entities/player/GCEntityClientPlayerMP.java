@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -61,7 +61,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         ClientProxyCore.playerClientHandler.onLivingUpdatePre(this);
         try {
-            if (this.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (this.worldObj.provider instanceof IZeroGDimension)
             {
                 //  from: EntityPlayerSP
                 if (this.sprintingTicksLeft > 0)
@@ -374,7 +374,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     @Override
     public boolean isSneaking()
     {
-        if (this.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (this.worldObj.provider instanceof IZeroGDimension)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.landingTicks > 0)
@@ -422,7 +422,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         }
 
         float ySize = 0.0F;
-        if (this.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (this.worldObj.provider instanceof IZeroGDimension)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.landingTicks > 0)

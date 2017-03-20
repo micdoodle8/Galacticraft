@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.dimension.SpinManager;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
@@ -77,12 +78,10 @@ public class FreefallHandler
     {
         World world = p.worldObj;
         WorldProvider worldProvider = world.provider;
-        if (!(worldProvider instanceof WorldProviderZeroGravity))
+        if (!(worldProvider instanceof IZeroGDimension))
         {
             return false;
         }
-        WorldProviderZeroGravity worldProviderOrbit = (WorldProviderZeroGravity) worldProvider;
-        SpinManager spinManager = worldProviderOrbit.getSpinManager();
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         if (this.pjumpticks > 0 || (stats.ssOnGroundLast && p.movementInput.jump))
         {
@@ -132,8 +131,19 @@ public class FreefallHandler
             }
             AxisAlignedBB playerReach = p.getEntityBoundingBox().addCoord(xreach, 0, zreach);
 
-            if (playerReach.maxX >= spinManager.ssBoundsMinX && playerReach.minX <= spinManager.ssBoundsMaxX && playerReach.maxY >= spinManager.ssBoundsMinY && playerReach.minY <= spinManager.ssBoundsMaxY && playerReach.maxZ >= spinManager.ssBoundsMinZ && playerReach.minZ <= spinManager.ssBoundsMaxZ)
-            //Player is somewhere within the space station boundaries
+            boolean checkBlockWithinReach;
+            if (worldProvider instanceof WorldProviderSpaceStation)
+            {
+                SpinManager spinManager = ((WorldProviderSpaceStation) worldProvider).getSpinManager();
+                checkBlockWithinReach = playerReach.maxX >= spinManager.ssBoundsMinX && playerReach.minX <= spinManager.ssBoundsMaxX && playerReach.maxY >= spinManager.ssBoundsMinY && playerReach.minY <= spinManager.ssBoundsMaxY && playerReach.maxZ >= spinManager.ssBoundsMinZ && playerReach.minZ <= spinManager.ssBoundsMaxZ;
+                //Player is somewhere within the space station boundaries
+            }
+            else
+            {
+                checkBlockWithinReach = true;
+            }
+            
+            if (checkBlockWithinReach)
             {
                 //Check if the player's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
                 //If so, it's assumed the player has something close enough to grab onto, so is not in freefall
@@ -390,26 +400,30 @@ public class FreefallHandler
     {
         World world = p.worldObj;
         WorldProvider worldProvider = world.provider;
-        if (!(worldProvider instanceof WorldProviderZeroGravity))
+        if (!(worldProvider instanceof IZeroGDimension))
         {
             return;
         }
-        WorldProviderZeroGravity worldProviderOrbit = (WorldProviderZeroGravity) worldProvider;
-        SpinManager spinManager = worldProviderOrbit.getSpinManager();
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         boolean freefall = stats.inFreefall;
         freefall = this.testFreefall(p, freefall);
         stats.inFreefall = freefall;
         stats.inFreefallFirstCheck = true;
 
-        boolean doGravity = true;
+        SpinManager spinManager = null;
+        if (worldProvider instanceof WorldProviderSpaceStation)
+        {
+            spinManager = ((WorldProviderSpaceStation) worldProvider).getSpinManager();
+        }
+        boolean doGravity = spinManager != null;
 
         if (freefall)
         {
             doGravity = false;
             this.pjumpticks = 0;
+            
             //Do spinning
-            if (spinManager.doSpinning && spinManager.angularVelocityRadians != 0F)
+            if (spinManager != null && spinManager.doSpinning && spinManager.angularVelocityRadians != 0F)
             {
                 //TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
                 //TODO think about server + network load (loading/unloading chunks) when movement is rapid
@@ -499,6 +513,7 @@ public class FreefallHandler
 									p.motionZ += offsetZ * 0.91F;
 								}*/
             }
+            //end of spinning section
 
             //Reverse effects of deceleration
             p.motionX /= 0.91F;

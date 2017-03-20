@@ -76,12 +76,12 @@ public class SpinManager
     private boolean dataNotLoaded = true;
     private List<Entity> loadedEntities = Lists.newLinkedList();
 
-    private WorldProviderZeroGravity worldProvider;
+    private WorldProviderSpaceStation worldProvider;
     private boolean clientSide = true;
 
-    public SpinManager(WorldProviderZeroGravity worldProvider)
+    public SpinManager(WorldProviderSpaceStation provider)
     {
-        this.worldProvider = worldProvider;
+        this.worldProvider = provider;
     }
 
     /**
