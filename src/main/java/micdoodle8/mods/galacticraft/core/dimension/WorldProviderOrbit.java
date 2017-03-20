@@ -24,6 +24,17 @@ public class WorldProviderOrbit extends WorldProviderZeroGravity implements IOrb
         super.setDimension(var1);
     }
 
+    /**
+     * Called only once from WorldProvider.registerWorld()
+     * so this provides a handy initialisation method
+     */
+    @Override
+    public void registerWorldChunkManager()
+    {
+        super.registerWorldChunkManager();
+        this.getSpinManager().registerServerSide();
+    }
+    
     @Override
     public CelestialBody getCelestialBody()
     {

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
@@ -76,19 +77,49 @@ public class SpinManager
     private List<Entity> loadedEntities = Lists.newLinkedList();
 
     private WorldProviderZeroGravity worldProvider;
+    private boolean clientSide = true;
 
     public SpinManager(WorldProviderZeroGravity worldProvider)
     {
         this.worldProvider = worldProvider;
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
+    /**
+     * Called from WorldProviderOrbit when registering the worldObj
+     */
+    public void registerServerSide()
+    {
+        if (!this.worldProvider.worldObj.isRemote)
+        {
+            MinecraftForge.EVENT_BUS.register(this);
+            this.clientSide = false;
+        }
+    }
+    
+    public void print()
+    {
+        if (this.worldProvider.worldObj != null)
+            System.err.println("Has worldobj  DIM " + this.worldProvider.getDimensionId() + " : " + this.worldProvider.getDimensionName());
+        else
+            System.err.println("No worldobj!  DIM " + this.worldProvider.getDimensionId() + " : " + this.worldProvider.getDimensionName());
+    }
+    
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
         {
-            this.spin();
+            try { 
+                if (this.worldProvider.worldObj == null)
+                {
+                    if (event.world == null)
+                        System.out.println("event null world?");
+                    else
+                        System.out.println("SpinManager failure ticking world " + event.world.provider.getDimensionName());
+                } else
+                    this.spin();
+            }
+            catch (Exception e) { print(); } //e.printStackTrace(); }
         }
     }
 
@@ -139,7 +170,7 @@ public class SpinManager
     {
         this.spinCentreX = x;
         this.spinCentreZ = z;
-        if (this.worldProvider.worldObj.isRemote)
+        if (this.clientSide)
         {
             if (ConfigManagerCore.enableDebug)
             {
@@ -483,7 +514,7 @@ public class SpinManager
             }
         }
 
-        if (!this.worldProvider.worldObj.isRemote)
+        if (!this.clientSide)
         {
             //Save the updated data for the world
             this.save();
@@ -492,7 +523,7 @@ public class SpinManager
 
     private void spin()
     {
-        if (!this.worldProvider.worldObj.isRemote)
+        if (!this.clientSide)
         {
             if (this.dataNotLoaded)
             {
