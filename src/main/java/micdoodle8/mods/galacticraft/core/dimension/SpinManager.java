@@ -27,10 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -91,38 +88,10 @@ public class SpinManager
     {
         if (!this.worldProvider.worldObj.isRemote)
         {
-            MinecraftForge.EVENT_BUS.register(this);
             this.clientSide = false;
         }
     }
     
-    public void print()
-    {
-        if (this.worldProvider.worldObj != null)
-            System.err.println("Has worldobj  DIM " + this.worldProvider.getDimensionId() + " : " + this.worldProvider.getDimensionName());
-        else
-            System.err.println("No worldobj!  DIM " + this.worldProvider.getDimensionId() + " : " + this.worldProvider.getDimensionName());
-    }
-    
-    @SubscribeEvent
-    public void onWorldTick(TickEvent.WorldTickEvent event)
-    {
-        if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
-        {
-            try { 
-                if (this.worldProvider.worldObj == null)
-                {
-                    if (event.world == null)
-                        System.out.println("event null world?");
-                    else
-                        System.out.println("SpinManager failure ticking world " + event.world.provider.getDimensionName());
-                } else
-                    this.spin();
-            }
-            catch (Exception e) { print(); } //e.printStackTrace(); }
-        }
-    }
-
     public float getSpinRate()
     {
         return this.skyAngularVelocity;
@@ -521,7 +490,7 @@ public class SpinManager
         }
     }
 
-    private void spin()
+    public void updateSpin()
     {
         if (!this.clientSide)
         {

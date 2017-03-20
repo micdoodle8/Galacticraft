@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -106,6 +108,12 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
 //		return "Leaving Earth Orbit";
 //	}
 
+    @Override
+    public CelestialBody getCelestialBody()
+    {
+        return GalacticraftCore.satelliteSpaceStation;
+    }
+    
     @Override
     public String getDimensionName()
     {
