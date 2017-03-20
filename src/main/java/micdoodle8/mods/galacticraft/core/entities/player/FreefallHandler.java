@@ -33,6 +33,7 @@ public class FreefallHandler
     private float jetpackBoost;
     private double pPrevdY;
     public boolean sneakLast;
+    public boolean onWall;
 
     public int pjumpticks = 0;
 
@@ -153,6 +154,7 @@ public class FreefallHandler
                             Block b = world.getBlockState(new BlockPos(x, y, z)).getBlock();
                             if (Blocks.air != b && GCBlocks.brightAir != b)
                             {
+                                this.onWall = true;
                                 return false;
                             }
                         }
@@ -228,6 +230,7 @@ public class FreefallHandler
 						}
 		}*/
 
+        this.onWall = false;
         return true;
     }
 

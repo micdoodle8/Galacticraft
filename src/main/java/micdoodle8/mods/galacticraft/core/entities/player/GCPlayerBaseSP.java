@@ -4,7 +4,7 @@ import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fml.common.Loader;
@@ -51,27 +51,16 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void beforeUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.player.worldObj.provider instanceof WorldProviderZeroGravity)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
             if (stats.landingTicks > 0)
             {
-//                this.player.ySize = stats.landingYOffset[stats.landingTicks];
                 this.player.movementInput.moveStrafe *= 0.5F;
                 this.player.movementInput.moveForward *= 0.5F;
-//                if (this.player.movementInput.sneak && this.player.ySize < 0.2F)
-//                {
-//                    this.player.ySize = 0.2F;
-//                }
             }
-//            else if (((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks > 0)
-//            {
-//                this.player.ySize = 0.01F * ((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks;
-//            }
-//            else if (!this.player.onGround || stats.inFreefall)
-//            {
-//                this.player.ySize = 0F;
-//            }
+            
+            //TODO: equivalent to getEyeHeight() in GCEntityClientPlayerMP
             
             //TODO: set this.player.flyToggleTimer = 0;
         }        
@@ -80,7 +69,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void afterUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.player.worldObj.provider instanceof WorldProviderZeroGravity)
         {
             this.player.setJumping(false);
             AxisAlignedBB aABB = this.player.getEntityBoundingBox();
@@ -117,7 +106,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public boolean isSneaking()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.player.worldObj.provider instanceof WorldProviderZeroGravity)
     	{
         	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
         	if (stats.landingTicks > 0)

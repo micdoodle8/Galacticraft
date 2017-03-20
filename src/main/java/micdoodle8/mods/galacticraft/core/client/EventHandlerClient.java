@@ -40,7 +40,9 @@ public class EventHandlerClient
         }
 
         if (player instanceof EntityPlayerSP)
+        {
             sneakRenderOverride = true;
+        }
 
         //Gravity - freefall - jetpack changes in player model orientation can go here
     }
