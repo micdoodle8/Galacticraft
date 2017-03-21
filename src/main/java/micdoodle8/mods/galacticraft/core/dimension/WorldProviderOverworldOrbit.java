@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
@@ -8,12 +11,15 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation implements IOrbitDimension, IZeroGDimension, ISolarLevel, IExitHeight
 {
+    Set<Entity> freefallingEntities = new HashSet<Entity>();
+    
     @Override
     public Vector3 getFogColor()
     {
@@ -220,5 +226,24 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     public boolean shouldCorrodeArmor()
     {
         return false;
+    }
+
+    @Override
+    public boolean inFreefall(Entity entity)
+    {
+        return freefallingEntities.contains(entity);
+    }
+
+    @Override
+    public void setInFreefall(Entity entity)
+    {
+        freefallingEntities.add(entity);
+    }
+    
+    @Override
+    public void updateWeather()
+    {
+        freefallingEntities.clear();
+        super.updateWeather();
     }
 }

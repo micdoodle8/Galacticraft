@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -64,6 +65,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -325,6 +327,19 @@ public class EventHandlerGC
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
                     }
                 }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
+    {
+        if (event.entity.worldObj.provider instanceof IZeroGDimension)
+        {
+            if (((IZeroGDimension)event.entity.worldObj.provider).inFreefall(event.entity))
+            {
+                event.canUpdate = true;
+//                event.entity.moveEntity(event.entity.motionX, event.entity.motionY, event.entity.motionZ);
             }
         }
     }

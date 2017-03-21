@@ -56,7 +56,7 @@ public class FreefallHandler
                 if (player.getEntityBoundingBox().minY - blockYmax > 0D)
                 {
                     player.posY -= player.getEntityBoundingBox().minY - blockYmax;
-                    player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0);
+                    player.setEntityBoundingBox(player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0));
                 }
                 else if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
                 {
@@ -64,7 +64,7 @@ public class FreefallHandler
                     if (collisionBox != null && collisionBox.intersectsWith(player.getEntityBoundingBox()))
                     {
                         player.posY -= player.getEntityBoundingBox().minY - blockYmax;
-                        player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0);
+                        player.setEntityBoundingBox(player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0));
                     }
                 }
                 return false;
@@ -484,7 +484,7 @@ public class FreefallHandler
 
                     p.posX += offsetX;
                     p.posZ += offsetZ;
-                    p.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ);
+                    p.setEntityBoundingBox(p.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ));
                 }
 
                 p.rotationYaw += spinManager.skyAngularVelocity;
