@@ -385,15 +385,15 @@ public class ThreadFindSeal
             for (BlockVec3 checkedVec : this.airToReplace)
             {
                 //No block update for performance reasons; deal with unlit torches separately
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, metadata, 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID, metadata, 0));
             }
             for (BlockVec3 checkedVec : this.airToReplaceBright)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir, metadata, 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir, metadata, 0));
             }
             for (BlockVec3 checkedVec : this.ambientThermalTracked)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlock(world), metadata, 3));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlock(world), metadata, 0));
             }
 
             TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
@@ -411,11 +411,11 @@ public class ThreadFindSeal
             List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
             for (BlockVec3 checkedVec : this.breatheableToReplace)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0, 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.air, 0, 0));
             }
             for (BlockVec3 checkedVec : this.breatheableToReplaceBright)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0, 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir, 0, 0));
             }
             TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimensionId(), changeList);
         }
