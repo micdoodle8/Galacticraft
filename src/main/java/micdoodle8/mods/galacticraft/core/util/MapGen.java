@@ -516,7 +516,7 @@ public class MapGen extends BiomeProvider implements Runnable
         int[] aint = this.genBiomes.getInts(x, z, width, height);
 
         int size = width * height;
-        if (biomes.length < size)
+        if (biomes == null || biomes.length < size)
         {
             biomes = new Biome[size];
         }
