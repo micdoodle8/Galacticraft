@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,8 +37,8 @@ public class TileEntityAirLockController extends TileEntityAirLock
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean active;
     public boolean lastActive;
-    public ArrayList<TileEntityAirLock> otherAirLocks;
-    public ArrayList<TileEntityAirLock> lastOtherAirLocks;
+    public ArrayList<BlockPos> otherAirLocks;
+    public ArrayList<BlockPos> lastOtherAirLocks;
     private AirLockProtocol protocol;
     private AirLockProtocol lastProtocol;
 
@@ -65,7 +64,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
             if ((this.active || !this.redstoneActivation) && this.playerDistanceActivation)
             {
-                double distance = 0.0F;
+                double distance = 0D;
 
                 switch (this.playerDistanceSelection)
                 {
@@ -83,40 +82,31 @@ public class TileEntityAirLockController extends TileEntityAirLock
                     break;
                 }
 
-                Vector3 thisPos = new Vector3(this).translate(0.5F);
-                Vector3 minPos = new Vector3(thisPos).translate(-distance);
-                Vector3 maxPos = new Vector3(thisPos).translate(distance);
+                Vector3 minPos = new Vector3(this).translate(0.5D - distance);
+                Vector3 maxPos = new Vector3(this).translate(0.5D + distance);
                 AxisAlignedBB matchingRegion = AxisAlignedBB.fromBounds(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
-                List playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, matchingRegion);
+                List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, matchingRegion);
 
-                boolean foundPlayer = false;
-
-                for (int i = 0; i < playersWithin.size(); i++)
+                if (this.playerNameMatches)
                 {
-                    Object o = playersWithin.get(i);
-
-                    if (o instanceof EntityPlayer)
+                    boolean foundPlayer = false;
+                    for (EntityPlayer p : playersWithin)
                     {
-                        if (this.playerNameMatches)
-                        {
-                            if (((EntityPlayer) o).getGameProfile().getName().equalsIgnoreCase(this.playerToOpenFor))
-                            {
-                                foundPlayer = true;
-                                break;
-                            }
-                        }
-                        else
+                        if (p.getGameProfile().getName().equalsIgnoreCase(this.playerToOpenFor))
                         {
                             foundPlayer = true;
                             break;
                         }
                     }
+                    this.active = foundPlayer;
                 }
-
-                this.active = !foundPlayer;
+                else
+                {
+                    this.active = !playersWithin.isEmpty();
+                }
             }
 
-            if (this.invertSelection)
+            if (!this.invertSelection)
             {
                 this.active = !this.active;
             }
@@ -126,19 +116,18 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 this.protocol = this.lastProtocol = new AirLockProtocol(this);
             }
 
-            if (this.ticks % 10 == 0)
+            if (this.ticks % 5 == 0)
             {
                 if (this.horizontalModeEnabled != this.lastHorizontalModeEnabled)
                 {
                     this.unsealAirLock();
                 }
-                else
+                else if (this.active || this.lastActive)
                 {
                     this.otherAirLocks = this.protocol.calculate(this.horizontalModeEnabled);
 
                     if (this.active && (this.otherAirLocks != null ||
-                            (this.lastOtherAirLocks != null && this.otherAirLocks != this.lastOtherAirLocks) ||
-                            (this.lastOtherAirLocks != null && this.otherAirLocks.size() != this.lastOtherAirLocks.size())))
+                            this.lastOtherAirLocks != null && (this.otherAirLocks != this.lastOtherAirLocks || this.otherAirLocks.size() != this.lastOtherAirLocks.size() )))
                     {
                         this.sealAirLock();
                     }
@@ -163,9 +152,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
     public void sealAirLock()
     {
-        int x = this.lastProtocol.minX + (this.lastProtocol.maxX - this.lastProtocol.minX) / 2;
-        int y = this.lastProtocol.minY + (this.lastProtocol.maxY - this.lastProtocol.minY) / 2;
-        int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
+        int x = (this.lastProtocol.maxX + this.lastProtocol.minX) / 2;
+        int y = (this.lastProtocol.maxY + this.lastProtocol.minY) / 2;
+        int z = (this.lastProtocol.maxZ + this.lastProtocol.minZ) / 2;
 
         if (this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() != GCBlocks.airLockSeal)
         {
@@ -180,11 +169,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
                     {
-                        Block blockAt = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-
-                        if (blockAt.isAir(this.worldObj, new BlockPos(x, y, z)))
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.worldObj.getBlockState(pos).getBlock().isAir(this.worldObj, pos))
                         {
-                            this.worldObj.setBlockState(new BlockPos(x, this.protocol.minY, z), GCBlocks.airLockSeal.getDefaultState(), 3);
+                            this.worldObj.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState(), 3);
                         }
                     }
                 }
@@ -198,11 +186,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     for (y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
                     {
-                        Block blockAt = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-
-                        if (blockAt.isAir(this.worldObj, new BlockPos(x, y, z)))
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.worldObj.getBlockState(pos).getBlock().isAir(this.worldObj, pos))
                         {
-                            this.worldObj.setBlockState(new BlockPos(x, y, this.protocol.minZ), GCBlocks.airLockSeal.getDefaultState(), 3);
+                            this.worldObj.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState(), 3);
                         }
                     }
                 }
@@ -213,11 +200,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     for (y = this.protocol.minY + 1; y <= this.protocol.maxY - 1; y++)
                     {
-                        Block blockAt = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-
-                        if (blockAt.isAir(this.worldObj, new BlockPos(x, y, z)))
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.worldObj.getBlockState(pos).getBlock().isAir(this.worldObj, pos))
                         {
-                            this.worldObj.setBlockState(new BlockPos(this.protocol.minX, y, z), GCBlocks.airLockSeal.getDefaultState(), 3);
+                            this.worldObj.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState(), 3);
                         }
                     }
                 }
@@ -249,11 +235,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
                     {
-                        Block blockAt = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-
-                        if (blockAt == GCBlocks.airLockSeal)
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.worldObj.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
-                            this.worldObj.setBlockToAir(new BlockPos(x, this.protocol.minY, z));
+                            this.worldObj.setBlockToAir(pos);
                         }
                     }
                 }
@@ -267,11 +252,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
                     {
-                        Block blockAt = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-
-                        if (blockAt == GCBlocks.airLockSeal)
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.worldObj.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
-                            this.worldObj.setBlockToAir(new BlockPos(x, y, this.lastProtocol.minZ));
+                            this.worldObj.setBlockToAir(pos);
                         }
                     }
                 }
@@ -282,11 +266,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 {
                     for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
                     {
-                        Block blockAt = this.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
-
-                        if (blockAt == GCBlocks.airLockSeal)
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.worldObj.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
-                            this.worldObj.setBlockToAir(new BlockPos(this.lastProtocol.minX, y, z));
+                            this.worldObj.setBlockToAir(pos);
                         }
                     }
                 }
