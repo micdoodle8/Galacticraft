@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicAstroMi
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -253,6 +254,7 @@ public class AsteroidsModule implements IPlanetsModule
     public void serverStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandGCAstroMiner());
+        ChunkProviderAsteroids.reset();
     }
 
     @Override
