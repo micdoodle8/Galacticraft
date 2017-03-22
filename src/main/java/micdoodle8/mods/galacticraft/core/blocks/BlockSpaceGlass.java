@@ -6,8 +6,10 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,6 +20,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -41,10 +44,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     private final GlassFrame frame; //frameValue corresponds to the damage of the placing item
     private int color = 0xFFFFFF;
     private final Block baseBlock;
+    private boolean isClient; 
+    private static Class clazz = Blocks.water.getClass().getSuperclass();
     
     public BlockSpaceGlass(String assetName, GlassType newType, GlassFrame newFrame, Block base)
     {
         super(Material.glass);
+        this.isClient = GalacticraftCore.proxy.getClass().getName().equals("micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore");
         this.type = newType;
         this.frame = newFrame;
         this.baseBlock = base == null ? this : base;
@@ -137,6 +143,15 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
     {
         return direction.ordinal() > 1;
+    }
+
+    public Material getMaterial()
+    {
+        if (this.isClient && JavaUtil.instance.isCalledBySpecific(clazz))
+        {
+            return Material.water;
+        }
+        return this.blockMaterial;
     }
 
     @Override
