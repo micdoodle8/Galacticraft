@@ -948,6 +948,11 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         return false;
     }
     
+    public static void reset()
+    {
+        chunksDone.clear();
+    }
+
     private class AsteroidData
     {
  		public boolean isHollow;
