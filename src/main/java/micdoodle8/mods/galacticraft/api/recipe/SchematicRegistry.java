@@ -76,7 +76,7 @@ public class SchematicRegistry
     {
         // Used internally to add page to player's list of unlocked schematics.
         // No need to subscribe to this event
-        MinecraftForge.EVENT_BUS.post(new Unlock(player, page));
+        if (page != null) MinecraftForge.EVENT_BUS.post(new Unlock(player, page));
     }
 
     /**
