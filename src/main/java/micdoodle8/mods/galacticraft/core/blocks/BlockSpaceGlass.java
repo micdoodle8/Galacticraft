@@ -145,6 +145,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return direction.ordinal() > 1;
     }
 
+    @Override
     public Material getMaterial()
     {
         if (this.isClient && JavaUtil.instance.isCalledBySpecific(clazz))
