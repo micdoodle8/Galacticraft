@@ -2,17 +2,18 @@ package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedContainer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicCargoRocket;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
-public class GuiSchematicCargoRocket extends GuiContainer implements ISchematicResultPage
+public class GuiSchematicCargoRocket extends GuiPositionedContainer implements ISchematicResultPage
 {
     private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
 
@@ -20,7 +21,7 @@ public class GuiSchematicCargoRocket extends GuiContainer implements ISchematicR
 
     public GuiSchematicCargoRocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematicCargoRocket(par1InventoryPlayer, pos));
+        super(new ContainerSchematicCargoRocket(par1InventoryPlayer, pos), pos);
         this.ySize = 220;
     }
 
@@ -42,10 +43,10 @@ public class GuiSchematicCargoRocket extends GuiContainer implements ISchematicR
             switch (par1GuiButton.id)
             {
             case 0:
-                SchematicRegistry.flipToLastPage(this.pageIndex);
+                SchematicRegistry.flipToLastPage(this, this.pageIndex);
                 break;
             case 1:
-                SchematicRegistry.flipToNextPage(this.pageIndex);
+                SchematicRegistry.flipToNextPage(this, this.pageIndex);
                 break;
             }
         }

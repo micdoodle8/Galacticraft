@@ -2,19 +2,20 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.gui;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedContainer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerSchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
-public class GuiSchematicTier3Rocket extends GuiContainer implements ISchematicResultPage
+public class GuiSchematicTier3Rocket extends GuiPositionedContainer implements ISchematicResultPage
 {
     private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_T3.png");
 
@@ -22,7 +23,7 @@ public class GuiSchematicTier3Rocket extends GuiContainer implements ISchematicR
 
     public GuiSchematicTier3Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematicTier3Rocket(par1InventoryPlayer, pos));
+        super(new ContainerSchematicTier3Rocket(par1InventoryPlayer, pos), pos);
         this.ySize = 238;
     }
 
@@ -44,10 +45,10 @@ public class GuiSchematicTier3Rocket extends GuiContainer implements ISchematicR
             switch (par1GuiButton.id)
             {
             case 0:
-                SchematicRegistry.flipToLastPage(this.pageIndex);
+                SchematicRegistry.flipToLastPage(this, this.pageIndex);
                 break;
             case 1:
-                SchematicRegistry.flipToNextPage(this.pageIndex);
+                SchematicRegistry.flipToNextPage(this, this.pageIndex);
                 break;
             }
         }

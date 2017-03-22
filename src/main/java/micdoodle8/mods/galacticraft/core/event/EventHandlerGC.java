@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedContainer;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
@@ -44,6 +45,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -639,8 +641,18 @@ public class EventHandlerGC
 
         if (page != null)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { page.getPageID() }));
-            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
+            GuiScreen cs = event.currentGui;
+            int benchX = (int) FMLClientHandler.instance().getClient().thePlayer.posX;
+            int benchY = (int) FMLClientHandler.instance().getClient().thePlayer.posY;
+            int benchZ = (int) FMLClientHandler.instance().getClient().thePlayer.posZ;
+            if (cs instanceof GuiPositionedContainer)
+            {
+                benchX = ((GuiPositionedContainer)cs).getX();
+                benchY = ((GuiPositionedContainer)cs).getY();
+                benchZ = ((GuiPositionedContainer)cs).getZ();
+            }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
+            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, benchX, benchY, benchZ);
         }
     }
 

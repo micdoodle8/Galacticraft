@@ -11,7 +11,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchematicResultPage
+public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements ISchematicResultPage
 {
     private static final ResourceLocation rocketBenchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocketbench.png");
 
@@ -19,7 +19,7 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchemati
 
     public GuiSchematicTier1Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematicTier1Rocket(par1InventoryPlayer, pos));
+        super(new ContainerSchematicTier1Rocket(par1InventoryPlayer, pos), pos);
         this.ySize = 221;
     }
 
@@ -42,10 +42,10 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC implements ISchemati
             switch (par1GuiButton.id)
             {
             case 0:
-                SchematicRegistry.flipToLastPage(this.pageIndex);
+                SchematicRegistry.flipToLastPage(this, this.pageIndex);
                 break;
             case 1:
-                SchematicRegistry.flipToNextPage(this.pageIndex);
+                SchematicRegistry.flipToNextPage(this, this.pageIndex);
                 break;
             }
         }

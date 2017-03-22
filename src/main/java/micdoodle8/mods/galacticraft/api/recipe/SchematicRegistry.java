@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -76,7 +77,7 @@ public class SchematicRegistry
     {
         // Used internally to add page to player's list of unlocked schematics.
         // No need to subscribe to this event
-        if (page != null) MinecraftForge.EVENT_BUS.post(new Unlock(player, page));
+        MinecraftForge.EVENT_BUS.post(new Unlock(player, page));
     }
 
     /**
@@ -110,13 +111,13 @@ public class SchematicRegistry
      * @return the schematic page that will be shown when the player clicks NEXT
      */
     @SideOnly(Side.CLIENT)
-    public static void flipToNextPage(int currentIndex)
+    public static void flipToNextPage(GuiScreen cs, int currentIndex)
     {
         FMLClientHandler.instance().getClient().currentScreen = null;
 
         // Used internally inside Galacticraft to flip to the next page. No need
         // to subscribe to this event.
-        MinecraftForge.EVENT_BUS.post(new FlipPage(null, currentIndex, 1));
+        MinecraftForge.EVENT_BUS.post(new FlipPage(cs, null, currentIndex, 1));
     }
 
     /**
@@ -126,12 +127,12 @@ public class SchematicRegistry
      * @return the schematic page that will be shown when the player clicks BACK
      */
     @SideOnly(Side.CLIENT)
-    public static void flipToLastPage(int currentIndex)
+    public static void flipToLastPage(GuiScreen cs, int currentIndex)
     {
         FMLClientHandler.instance().getClient().currentScreen = null;
 
         // Used internally inside Galacticraft to flip to the last page. No need
         // to subscribe to this event.
-        MinecraftForge.EVENT_BUS.post(new FlipPage(null, currentIndex, -1));
+        MinecraftForge.EVENT_BUS.post(new FlipPage(cs, null, currentIndex, -1));
     }
 }

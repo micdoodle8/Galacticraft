@@ -96,7 +96,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_RESPAWN_PLAYER(Side.SERVER, String.class),
         S_TELEPORT_ENTITY(Side.SERVER, String.class),
         S_IGNITE_ROCKET(Side.SERVER),
-        S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class),
+        S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_OPEN_FUEL_GUI(Side.SERVER, String.class),
         S_UPDATE_SHIP_YAW(Side.SERVER, Float.class),
         S_UPDATE_SHIP_PITCH(Side.SERVER, Float.class),
@@ -129,7 +129,7 @@ public class PacketSimple extends PacketBase implements Packet
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
-        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
+        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, BlockPos.class),
         C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class, Integer.class),
         C_CLOSE_GUI(Side.CLIENT),
         C_RESET_THIRD_PERSON(Side.CLIENT),
@@ -362,19 +362,14 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_SPAWN_SPARK_PARTICLES:
-            int x,
-                    y,
-                    z;
-            x = (Integer) this.data.get(0);
-            y = (Integer) this.data.get(1);
-            z = (Integer) this.data.get(2);
+            BlockPos pos = (BlockPos) this.data.get(0);
             Minecraft mc = Minecraft.getMinecraft();
 
             for (int i = 0; i < 4; i++)
             {
                 if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null && mc.theWorld != null)
                 {
-                    final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
+                    final EntityFX fx = new EntityFXSparks(mc.theWorld, pos.getX() - 0.15 + 0.5, pos.getY() + 1.2, pos.getZ() + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
 
                     if (fx != null)
                     {
@@ -883,7 +878,7 @@ public class PacketSimple extends PacketBase implements Packet
             {
                 final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
 
-                player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+                player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
             }
             break;
         case S_OPEN_FUEL_GUI:
