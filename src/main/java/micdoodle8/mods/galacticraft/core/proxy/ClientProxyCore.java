@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
+import api.player.client.ClientPlayerAPI;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -15,14 +18,19 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFallenMeteor;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
+import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
-import micdoodle8.mods.galacticraft.core.client.render.item.*;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -108,6 +116,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static float playerRotationYaw;
     public static float playerRotationPitch;
     public static boolean lastSpacebarDown;
+
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
     public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", TextFormatting.BLUE, "Space");
@@ -137,6 +146,11 @@ public class ClientProxyCore extends CommonProxyCore
         ClientProxyCore.registerEntityRenderers();
 
         OBJLoader.INSTANCE.addDomain(Constants.ASSET_PREFIX);
+
+        if (Loader.isModLoaded("PlayerAPI"))
+        {
+            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
+        }
     }
 
     @Override
@@ -424,6 +438,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
         MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
+        MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
     }
 
     private static void registerTileEntityRenderers()

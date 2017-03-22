@@ -5,10 +5,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 class AirLockProtocol
 {
-    private ArrayList<TileEntityAirLock> adjacentAirLocks;
+    private ArrayList<BlockPos> adjacentAirLocks;
+    private HashSet<BlockPos> checked;
     private final World worldObj;
     private final TileEntity head;
     private final int maxLoops;
@@ -28,31 +30,39 @@ class AirLockProtocol
 
     public AirLockProtocol(TileEntity head)
     {
-        this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
+        this.adjacentAirLocks = new ArrayList<BlockPos>();
+        this.checked = new HashSet<BlockPos>();
         this.worldObj = head.getWorld();
         this.head = head;
         this.maxLoops = 26;
     }
 
-    public void loopThrough(TileEntity tile2, int loops)
+    public void loopThrough(BlockPos pos, int loops)
     {
-        if (loops > 0)
+        int xAligned = this.head.getPos().getX();
+        int zAligned = this.head.getPos().getZ();
+        for (int x = -1; x <= 1; x++)
         {
-            for (int y = -1; y <= 1; y++)
+            int xTest = pos.getX() + x;
+            for (int z = -1; z <= 1; z++)
             {
-                for (int x = -1; x <= 1; x++)
+                int zTest = pos.getZ() + z;
+                
+                if ((xTest == xAligned || zTest == zAligned))
                 {
-                    for (int z = -1; z <= 1; z++)
+                    for (int y = -1; y <= 1; y++)
                     {
                         if (!(x == 0 && y == 0 && z == 0))
                         {
-                            if (tile2.getPos().getX() + x == this.head.getPos().getX() || tile2.getPos().getZ() + z == this.head.getPos().getZ())
+                            final BlockPos testPos = new BlockPos(xTest, pos.getY() + y, zTest);
+                            if (!this.checked.contains(testPos))
                             {
-                                final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(tile2.getPos().getX() + x, tile2.getPos().getY() + y, tile2.getPos().getZ() + z));
-                                if (tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
+                                this.checked.add(testPos);
+                                if (this.worldObj.getTileEntity(testPos) instanceof TileEntityAirLock)
                                 {
-                                    this.adjacentAirLocks.add((TileEntityAirLock) tile);
-                                    this.loopThrough(tile, loops - 1);
+                                    this.adjacentAirLocks.add(testPos);
+                                    if (loops > 1)
+                                        this.loopThrough(testPos, loops - 1);
                                 }
                             }
                         }
@@ -62,27 +72,25 @@ class AirLockProtocol
         }
     }
 
-    public void loopThroughHorizontal(TileEntity tile2, int loops)
+    public void loopThroughHorizontal(BlockPos pos, int loops)
     {
-        if (loops > 0)
+        int yTest = pos.getY();
+        for (int x = -1; x <= 1; x++)
         {
-            for (int y = -1; y <= 1; y++)
+            int xTest = pos.getX() + x;
+            for (int z = -1; z <= 1; z++)
             {
-                for (int x = -1; x <= 1; x++)
+                if (!(x == 0 && z == 0))
                 {
-                    for (int z = -1; z <= 1; z++)
+                    final BlockPos testPos = new BlockPos(xTest, yTest, pos.getZ() + z);
+                    if (!this.checked.contains(testPos))
                     {
-                        if (!(x == 0 && y == 0 && z == 0))
+                        this.checked.add(testPos);
+                        if (this.worldObj.getTileEntity(testPos) instanceof TileEntityAirLock)
                         {
-                            if (tile2.getPos().getY() + y == this.head.getPos().getY())
-                            {
-                                final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(tile2.getPos().getX() + x, tile2.getPos().getY() + y, tile2.getPos().getZ() + z));
-                                if (tile instanceof TileEntityAirLock && !this.adjacentAirLocks.contains(tile))
-                                {
-                                    this.adjacentAirLocks.add((TileEntityAirLock) tile);
-                                    this.loopThroughHorizontal(tile, loops - 1);
-                                }
-                            }
+                            this.adjacentAirLocks.add(testPos);
+                            if (loops > 1)
+                                this.loopThroughHorizontal(testPos, loops - 1);
                         }
                     }
                 }
@@ -90,62 +98,60 @@ class AirLockProtocol
         }
     }
 
-    @Deprecated
-    public ArrayList<TileEntityAirLock> calculate()
-    {
-        return this.calculate(false);
-    }
-
-    public ArrayList<TileEntityAirLock> calculate(boolean horizontal)
+    public ArrayList<BlockPos> calculate(boolean horizontal)
     {
         if (this.worldObj.isRemote)
         {
             return null;
         }
 
-        this.adjacentAirLocks = new ArrayList<TileEntityAirLock>();
+        this.adjacentAirLocks = new ArrayList<BlockPos>();
+        this.checked.clear();
+        final BlockPos headPos = this.head.getPos();
+        this.checked.add(headPos);
+        this.adjacentAirLocks.add(headPos);
 
         this.horizontal = horizontal;
 
         if (horizontal)
         {
-            this.loopThroughHorizontal(this.head, this.maxLoops);
+            this.loopThroughHorizontal(headPos, this.maxLoops);
         }
         else
         {
-            this.loopThrough(this.head, this.maxLoops);
+            this.loopThrough(headPos, this.maxLoops);
         }
 
-        for (final TileEntityAirLock airLock : this.adjacentAirLocks)
+        for (final BlockPos airLock : this.adjacentAirLocks)
         {
-            if (airLock.getPos().getX() < this.minX)
+            if (airLock.getX() < this.minX)
             {
-                this.minX = airLock.getPos().getX();
+                this.minX = airLock.getX();
             }
 
-            if (airLock.getPos().getX() > this.maxX)
+            if (airLock.getX() > this.maxX)
             {
-                this.maxX = airLock.getPos().getX();
+                this.maxX = airLock.getX();
             }
 
-            if (airLock.getPos().getY() < this.minY)
+            if (airLock.getY() < this.minY)
             {
-                this.minY = airLock.getPos().getY();
+                this.minY = airLock.getY();
             }
 
-            if (airLock.getPos().getY() > this.maxY)
+            if (airLock.getY() > this.maxY)
             {
-                this.maxY = airLock.getPos().getY();
+                this.maxY = airLock.getY();
             }
 
-            if (airLock.getPos().getZ() < this.minZ)
+            if (airLock.getZ() < this.minZ)
             {
-                this.minZ = airLock.getPos().getZ();
+                this.minZ = airLock.getZ();
             }
 
-            if (airLock.getPos().getZ() > this.maxZ)
+            if (airLock.getZ() > this.maxZ)
             {
-                this.maxZ = airLock.getPos().getZ();
+                this.maxZ = airLock.getZ();
             }
         }
 

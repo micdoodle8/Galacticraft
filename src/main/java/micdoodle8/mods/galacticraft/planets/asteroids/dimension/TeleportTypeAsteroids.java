@@ -47,6 +47,30 @@ public class TeleportTypeAsteroids implements ITeleportType
             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
             int x = MathHelper.floor_double(stats.getCoordsTeleportedFromX());
             int z = MathHelper.floor_double(stats.getCoordsTeleportedFromZ());
+            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            if (limit > 20)
+            {
+                if (x > limit)
+                {
+                    z *= limit / x;
+                    x = limit;
+                }
+                else if (x < -limit)
+                {   
+                    z *= -limit / x;
+                    x = -limit;
+                }
+                if (z > limit)
+                {
+                    x *= limit / z;
+                    z = limit;
+                }
+                else if (z < -limit)
+                {
+                    x *= - limit / z;
+                    z = -limit;
+                }
+            }
 
             int attemptCount = 0;
 

@@ -122,12 +122,14 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return true;
     }
 
-    public boolean isOpaqueCube()
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
-    public boolean isFullCube()
+    @Override
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -138,8 +140,8 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return direction.ordinal() > 1;
     }
 
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -151,19 +153,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
          return BlockRenderLayer.TRANSLUCENT;
     }
 
-    @Override
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
-    {
-        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
-    }
-
 //    @Override
-//    @SideOnly(Side.CLIENT)
-//    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPasss)
-//    {
-//        return this.color;
-//    }
-
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
 //        IBlockState above = worldIn.getBlockState(pos.up());
@@ -265,11 +255,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
 //    }
 //
+//    @Override
 //    public void setBlockBoundsForItemRender()
 //    {
 //        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 //    }
-
+//
+//    @Override
 //    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
 //    {
 //        IBlockState state = worldIn.getBlockState(pos);
@@ -292,7 +284,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //        boolean plateW = this.buildSolidSide(west, state);
 //        boolean plateE = this.buildSolidSide(east, state);
 //
-//        No plate on the sides which glass is facing
+//        //No plate on the sides which glass is facing
 //        if (connectedN || connectedS)
 //        {
 //            plateW = plateE = false;
@@ -302,7 +294,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //            plateN = plateS = false;
 //        }
 //
-//        Singleton
+//        //Singleton
 //        if (!connectedE && !connectedW && !connectedN && !connectedS)
 //        {
 //            boolean prefEW = false;
@@ -332,39 +324,19 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //        int solids = (plateD ? 1 : 0) + (plateU ? 1 : 0) + (plateN ? 1 : 0) + (plateS ? 1 : 0) + (plateW ? 1 : 0) + (plateE ? 1 : 0);
 //        if (solids > 2 || (plateU && plateD) || (plateW && plateE) || (plateN && plateS))
 //        {
-//            Widen to the frame width, if frames on opposite sides
+//            //Widen to the frame width, if frames on opposite sides
 //            f = 0.25F;
 //            f1 = 0.75F;
 //            f2 = 0.25F;
 //            f3 = 0.75F;
 //        }
 //        else {
-//            The glass width
+//            //The glass width
 //            f = 0.375F;
 //            f1 = 0.625F;
 //            f2 = 0.375F;
 //            f3 = 0.625F;
 //        }
-//
-//        if (connectedW || plateW)
-//        {
-//            f = 0.0F;
-//        }
-//        if (connectedE || plateE)
-//        {
-//            f1 = 1.0F;
-//        }
-//        if (connectedN || plateN)
-//        {
-//            f2 = 0.0F;
-//        }
-//        if (connectedS || plateS)
-//        {
-//            f3 = 1.0F;
-//        }
-//
-//        this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
-//    }
 
 
     @Override

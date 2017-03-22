@@ -38,12 +38,6 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
-    {
-        return true;
-    }
-
-    @Override
     public String getCommandName()
     {
         return "gcinv";

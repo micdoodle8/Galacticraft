@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -11,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -94,7 +94,7 @@ public class PlayerClient implements IPlayerClient
                 stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
                 startup = true;
             }
-            if (player.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (player.worldObj.provider instanceof IZeroGDimension)
             {
                 stats.setInFreefallLast(stats.isInFreefall());
                 stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
@@ -123,7 +123,7 @@ public class PlayerClient implements IPlayerClient
     {
         IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
-        if (player.worldObj.provider instanceof WorldProviderZeroGravity)
+        if (player.worldObj.provider instanceof IZeroGDimension)
         {
             stats.getFreefallHandler().postVanillaMotion(player);
 
@@ -145,19 +145,32 @@ public class PlayerClient implements IPlayerClient
             }
             else
             {
-                if (stats.isInFreefallLast() && this.downMot2 < -0.01D)
+		    	if (stats.isInFreefallLast() && this.downMot2 < -0.008D)
                 {
-                    stats.setLandingTicks(2 - (int) (Math.min(this.downMot2, stats.getDownMotionLast()) * 75));
-                    if (stats.getLandingTicks() > 6)
-                    {
-                        stats.setLandingTicks(6);
+		    		stats.setLandingTicks(5 - (int)(Math.min(this.downMot2, stats.getDownMotionLast()) * 40));
+		    		if (stats.getLandingTicks() > stats.getMaxLandingticks())
+		    		{
+	                    if (stats.getLandingTicks() > stats.getMaxLandingticks() + 4)
+	                    {
+	                        stats.getFreefallHandler().pjumpticks = stats.getLandingTicks() - stats.getMaxLandingticks() - 5;
+                        }
+		    		    stats.setLandingTicks(stats.getMaxLandingticks());
+		    		}
+		    		float dYmax = 0.3F * stats.getLandingTicks() / stats.getMaxLandingticks();
+		    		float factor = 1F;
+		    		for (int i = 0; i <= stats.getLandingTicks(); i++)
+		    		{
+    	                stats.getLandingYOffset()[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.getLandingTicks()) * factor;
+    	                factor *= 0.97F;
                     }
-                }
-            }
+		    	}
+	        }
 
-            if (stats.getLandingTicks() > 0)
-            {
-                stats.setLandingTicks(stats.getLandingTicks() - 1);
+	        if (stats.getLandingTicks() > 0)
+	        {
+	            stats.setLandingTicks(stats.getLandingTicks() - 1);
+                player.limbSwing *= 0.8F;
+                player.limbSwingAmount = 0F;
             }
         }
         else

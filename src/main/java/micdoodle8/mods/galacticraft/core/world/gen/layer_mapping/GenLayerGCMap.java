@@ -204,6 +204,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
                 crashreportcategory.addCrashSection("Biome B ID", Integer.valueOf(biomeIDB));
                 crashreportcategory.addCrashSection("Biome A", new Object()
                 {
+                    @Override
                     public String toString()
                     {
                         return String.valueOf((Object)biome);
@@ -211,6 +212,7 @@ public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLay
                 });
                 crashreportcategory.addCrashSection("Biome B", new Object()
                 {
+                    @Override
                     public String toString()
                     {
                         return String.valueOf((Object)biome1);

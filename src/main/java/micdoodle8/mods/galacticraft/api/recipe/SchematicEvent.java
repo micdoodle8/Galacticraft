@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -32,10 +33,12 @@ public abstract class SchematicEvent extends Event
     {
         public int index;
         public int direction;
+        public GuiScreen currentGui;
 
-        public FlipPage(ISchematicPage page, int index, int direction)
+        public FlipPage(GuiScreen cs, ISchematicPage page, int index, int direction)
         {
             super(page);
+            this.currentGui = cs;
             this.index = index;
             this.direction = direction;
         }

@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
@@ -89,7 +89,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 
             if (tile instanceof TileEntityMinerBase)
             {
-                if (worldIn.provider instanceof WorldProviderZeroGravity)
+                if (worldIn.provider instanceof WorldProviderSpaceStation)
                 {
                     playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
                     return EnumActionResult.FAIL;

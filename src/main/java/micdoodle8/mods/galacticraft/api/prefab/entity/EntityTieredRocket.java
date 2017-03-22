@@ -221,8 +221,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (!this.getPassengers().isEmpty())
         {
-            this.getPassengers().get(0).posX += this.rumble / (37F - 5F * this.getRocketTier());
-            this.getPassengers().get(0).posZ += this.rumble / (37F - 5F * this.getRocketTier());
+            final double rumbleAmount = this.rumble / (double) (37 - 5 * Math.max(this.getRocketTier(), 5));
+            this.getPassengers().get(0).posX += rumbleAmount;
+            this.getPassengers().get(0).posZ += rumbleAmount;
         }
 
         if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
@@ -292,7 +293,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                     if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                     {
-                    	boolean dimensionAllowed = this.targetDimension == 0;
+                    	boolean dimensionAllowed = this.targetDimension == ConfigManagerCore.idDimensionOverworld;
 
                     	if (targetDim instanceof IGalacticraftWorldProvider)
                     	{
@@ -317,24 +318,23 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		if (!this.getPassengers().isEmpty())
                     		{
                     			WorldUtil.transferEntityToDimension(this.getPassengers().get(0), this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
-                                        //Now destroy the rocket entity, the rider is switching dimensions
-                                        this.setDead();
                     		}
-                            else {
-                                Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
-                                if(e instanceof EntityAutoRocket) {
-                                    e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
-                                    ((EntityAutoRocket)e).landing = true;
-                                    ((EntityAutoRocket)e).setWaitForPlayer(false);
-                                    if(e != this)
-                                        this.setDead();
-                                }
-                                else {
-                                    GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
-                                    e.setDead();
-                                    this.setDead();
-                                }
-                            }
+                    		else
+                    		{
+                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
+                    		    if (e instanceof EntityAutoRocket)
+                    		    {
+                    		        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
+                    		        ((EntityAutoRocket)e).landing = true;
+                    		        ((EntityAutoRocket)e).setWaitForPlayer(false);
+                    		    }
+                    		    else
+                    		    {
+                    		        GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
+                    		        e.setDead();
+                    		        this.setDead();
+                    		    }
+                    		}
                     		return;
                     	}
                     }
@@ -424,7 +424,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
         {
-            if (!this.worldObj.isRemote)
+            if (!this.worldObj.isRemote && this.getPassengers().get(0) == player)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
                 IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);

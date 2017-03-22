@@ -165,12 +165,20 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_2, 5, .3));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 7, .3));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 11, .25));
+        
+        if (!ConfigManagerAsteroids.disableAluminumGen)
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, (byte) 3, 5, .2));
+        if (!ConfigManagerAsteroids.disableIlmeniteGen)
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, (byte) 4, 4, .15));
+        if (!ConfigManagerAsteroids.disableIronGen)
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, (byte) 5, 3, .2));
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.basicBlock, (byte) 8, 2, .15));
+        if (ConfigManagerCore.enableSiliconOreGen)
+            this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.basicBlock, (byte) 8, 2, .15)); //TODO: Asteroids version of silicon ore
+        //Solid Meteoric Iron - has no config to disable
         this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.basicBlock, (byte) 12, 2, .13));
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(Blocks.DIAMOND_ORE, (byte) 0, 1, .1));
+        //Diamond ore - has no config to disable
+        this.coreHandler.addBlock(new SpecialAsteroidBlock(Blocks.DIAMOND_ORE, (byte) 0, 1, .1));  //TODO: Asteroids version of diamond ore
+        
         this.shellHandler = new SpecialAsteroidBlockHandler();
         this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_0, 1, .15));
         this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE, this.ASTEROID_STONE_META_1, 3, .15));

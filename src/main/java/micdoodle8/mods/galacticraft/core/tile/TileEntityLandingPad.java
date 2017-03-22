@@ -48,7 +48,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o instanceof IDockable)
+                if (o instanceof IDockable && !((Entity)o).isDead) 
                 {
                     docked = true;
 

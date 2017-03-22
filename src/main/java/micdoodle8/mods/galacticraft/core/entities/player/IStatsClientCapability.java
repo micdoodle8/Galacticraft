@@ -132,4 +132,10 @@ public interface IStatsClientCapability
     ArrayList<ISchematicPage> getUnlockedSchematics();
 
     void setUnlockedSchematics(ArrayList<ISchematicPage> unlockedSchematics);
+
+    int getMaxLandingticks();
+
+    float[] getLandingYOffset();
+
+    void setLandingYOffset(float[] landingYOffset);
 }

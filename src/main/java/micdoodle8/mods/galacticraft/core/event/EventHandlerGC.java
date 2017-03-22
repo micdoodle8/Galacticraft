@@ -12,12 +12,14 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedContainer;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
@@ -43,6 +45,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -73,6 +76,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -252,7 +256,7 @@ public class EventHandlerGC
                 }
             }
 
-            if (worldObj.provider instanceof WorldProviderZeroGravity)
+            if (worldObj.provider instanceof WorldProviderSpaceStation)
             {
                 //On space stations simply block the bed activation => no explosion
                 event.setCanceled(true);
@@ -357,6 +361,19 @@ public class EventHandlerGC
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
                     }
                 }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
+    {
+        if (event.getEntity().worldObj.provider instanceof IZeroGDimension)
+        {
+            if (((IZeroGDimension)event.getEntity().worldObj.provider).inFreefall(event.getEntity()))
+            {
+                event.setCanUpdate(true);
+//                event.entity.moveEntity(event.entity.motionX, event.entity.motionY, event.entity.motionZ);
             }
         }
     }
@@ -662,8 +679,18 @@ public class EventHandlerGC
 
         if (page != null)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { page.getPageID() }));
-            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
+            GuiScreen cs = event.currentGui;
+            int benchX = (int) FMLClientHandler.instance().getClient().thePlayer.posX;
+            int benchY = (int) FMLClientHandler.instance().getClient().thePlayer.posY;
+            int benchZ = (int) FMLClientHandler.instance().getClient().thePlayer.posZ;
+            if (cs instanceof GuiPositionedContainer)
+            {
+                benchX = ((GuiPositionedContainer)cs).getX();
+                benchY = ((GuiPositionedContainer)cs).getY();
+                benchZ = ((GuiPositionedContainer)cs).getZ();
+            }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
+            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, benchX, benchY, benchZ);
         }
     }
 

@@ -10,13 +10,20 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable
+public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable, ITumblable
 {
+    private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntityEvolvedSkeleton.class, DataSerializers.FLOAT);
     private int conversionTime = 0;
+    private float tumbling = 0F;
+    private float tumbleAngle = 0F;
 
     public EntityEvolvedZombie(World par1World)
     {
@@ -132,5 +139,107 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         {
             this.addRandomDrop();
         }
+    }
+
+    @Override
+    public void setTumbling(float value)
+    {
+        this.tumbling = value / 2F;
+    }
+    
+    @Override
+    public void onEntityUpdate()
+    {
+        super.onEntityUpdate();
+        if (!this.isDead)
+        {
+            if (this.tumbling != 0F)
+            {
+                if (this.onGround)
+                {
+                    this.tumbling = 0F;
+                }
+            }
+
+            if (!this.worldObj.isRemote)
+            {
+                this.setSpinPitch(this.tumbling);
+            }
+            else
+            {
+                this.tumbling = this.getSpinPitch();
+                this.tumbleAngle -= this.tumbling;
+                if (this.tumbling == 0F && this.tumbleAngle != 0F)
+                {
+                    this.tumbleAngle *= 0.8F;
+                    if (Math.abs(this.tumbleAngle) < 1F)
+                        this.tumbleAngle = 0F;
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.getDataManager().register(SPIN_PITCH, 0.0F);
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.tumbling = nbt.getFloat("tumbling");
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setFloat("tumbling", this.tumbling);
+    }
+
+    public float getSpinPitch()
+    {
+        return this.getDataManager().get(SPIN_PITCH);
+    }
+
+    public void setSpinPitch(float pitch)
+    {
+        this.getDataManager().set(SPIN_PITCH, pitch);
+    }
+
+    @Override
+    public float getTumbleAngle(float partial)
+    {
+        float angle = this.tumbleAngle - partial * this.tumbling;
+        if (angle > 360F)
+        {   
+            this.tumbleAngle -= 360F;
+            angle -= 360F;
+        }
+        if (angle < 0F)
+        {
+            this.tumbleAngle += 360F;
+            angle += 360F;
+        }
+        return angle;
+    }
+
+    @Override
+    public float getTumbleAxisX()
+    {
+        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        if (velocity2 == 0D) return 1F;
+        return (float) (this.motionZ / MathHelper.sqrt_double(velocity2));
+    }
+
+    @Override
+    public float getTumbleAxisZ()
+    {
+        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        if (velocity2 == 0D) return 0F;
+        return (float) (this.motionX / MathHelper.sqrt_double(velocity2));
     }
 }

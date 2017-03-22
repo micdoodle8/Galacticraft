@@ -27,7 +27,33 @@ public class TeleportTypeMoon implements ITeleportType
         if (player != null)
         {
             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-            return new Vector3(stats.getCoordsTeleportedFromX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, stats.getCoordsTeleportedFromZ());
+            double x = stats.getCoordsTeleportedFromX();
+            double z = stats.getCoordsTeleportedFromZ();
+            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            if (limit > 20)
+            {
+                if (x > limit)
+                {
+                    z *= limit / x;
+                    x = limit;
+                }
+                else if (x < -limit)
+                {
+                    z *= -limit / x;
+                    x = -limit;
+                }
+                if (z > limit)
+                {
+                    x *= limit / z;
+                    z = limit;
+                }
+                else if (z < -limit)
+                {
+                    x *= - limit / z;
+                    z = -limit;
+                }
+            }
+            return new Vector3(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
         }
 
         return null;
@@ -44,9 +70,9 @@ public class TeleportTypeMoon implements ITeleportType
     {
         if (ConfigManagerCore.disableLander)
         {
-            final double x = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
-            final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
-            return new Vector3(x, 220.0D, z);
+            final double x = (rand.nextDouble() * 2 - 1.0D) * 4.0D;
+            final double z = (rand.nextDouble() * 2 - 1.0D) * 4.0D;
+            return new Vector3(player.posX + x, 220.0D, player.posZ + z);
         }
 
         return null;

@@ -387,15 +387,15 @@ public class ThreadFindSeal
             for (BlockVec3 checkedVec : this.airToReplace)
             {
                 //No block update for performance reasons; deal with unlit torches separately
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID.getDefaultState(), 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), breatheableAirID.getStateFromMeta(ambientThermal ? 1 : 0), 0));
             }
             for (BlockVec3 checkedVec : this.airToReplaceBright)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir.getDefaultState(), 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightBreatheableAir.getStateFromMeta(ambientThermal ? 1 : 0), 0));
             }
             for (BlockVec3 checkedVec : this.ambientThermalTracked)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlockState(world), 3));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlockState(world).getBlock().getStateFromMeta(ambientThermal ? 1 : 0), 0));
             }
 
             TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
@@ -413,11 +413,11 @@ public class ThreadFindSeal
             List<ScheduledBlockChange> changeList = new LinkedList<ScheduledBlockChange>();
             for (BlockVec3 checkedVec : this.breatheableToReplace)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.AIR.getDefaultState(), 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), Blocks.AIR.getDefaultState(), 0));
             }
             for (BlockVec3 checkedVec : this.breatheableToReplaceBright)
             {
-                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir.getDefaultState(), 2));
+                changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir.getDefaultState(), 0));
             }
             TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
         }

@@ -17,7 +17,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
@@ -1170,7 +1170,7 @@ public class GCPlayerHandler
                 GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
                 player.connection.sendPacket(new SPacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
 
-                if (worldNew.provider instanceof WorldProviderZeroGravity)
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimension(), new Object[] {}), player);
                 }
@@ -1315,12 +1315,12 @@ public class GCPlayerHandler
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimension(), new Object[] {}), player);
             }
 
-            if (player.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (player.worldObj.provider instanceof WorldProviderSpaceStation)
             {
             	this.preventFlyingKicks(player);
                 if (stats.isNewInOrbit())
                 {
-                    ((WorldProviderZeroGravity) player.worldObj.provider).getSpinManager().sendPackets(player);
+                    ((WorldProviderSpaceStation) player.worldObj.provider).getSpinManager().sendPackets(player);
                     stats.setNewInOrbit(false);
                 }
             }

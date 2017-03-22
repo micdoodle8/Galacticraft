@@ -41,6 +41,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public EnumDyeColor color = EnumDyeColor.RED;
 
+    public TileEntityParaChest()
+    {
+        this.color = EnumDyeColor.RED;
+    }
+
     @Override
     public void validate()
     {

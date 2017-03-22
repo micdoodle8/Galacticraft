@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -18,7 +19,7 @@ import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
@@ -47,12 +48,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.*;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -581,7 +582,12 @@ public class WorldUtil
         {
             GCLog.severe("Server dimension " + dimID + " has no match on client due to earlier registration problem.");
         }
+        else if (dimID == 0)
+        {
+            GCLog.severe("Client dimension " + providerIndex + " has no match on server - probably a server dimension ID conflict problem.");
+        }
         else
+
         {
             if (!WorldUtil.registeredPlanets.contains(dimID))
             {
@@ -654,6 +660,11 @@ public class WorldUtil
         return WorldUtil.transferEntityToDimension(entity, dimensionID, world, true, null);
     }
 
+    /**
+     * It is not necessary to use entity.setDead() following calling this method.
+     * If the entity left the old world it was in, it will now automatically be removed from that old world before the next update tick.
+     * (See WorldUtil.removeEntityFromWorld())
+     */
     public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, boolean transferInv, EntityAutoRocket ridingRocket)
     {
         if (!world.isRemote)
@@ -686,6 +697,7 @@ public class WorldUtil
 
     private static Entity teleportEntity(World worldNew, Entity entity, int dimID, ITeleportType type, boolean transferInv, EntityAutoRocket ridingRocket)
     {
+        Entity otherRiddenEntity = null;
         if (entity.getRidingEntity() != null)
         {
             if (entity.getRidingEntity() instanceof EntitySpaceshipBase)
@@ -698,6 +710,11 @@ public class WorldUtil
                 e.removePassengers();
                 e.setDead();
             }
+        	else
+        	{
+                otherRiddenEntity = entity.getRidingEntity();
+        	    entity.dismountRidingEntity();
+        	}
         }
 
         boolean dimChange = entity.worldObj != worldNew;
@@ -715,8 +732,7 @@ public class WorldUtil
             ridingRocket.writeToNBTOptional(nbt);
 
             ((WorldServer) ridingRocket.worldObj).getEntityTracker().untrackEntity(ridingRocket);
-            ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
-            ridingRocket.worldObj.onEntityRemoved(ridingRocket);
+            removeEntityFromWorld(ridingRocket.worldObj, ridingRocket, true);
 
             ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(nbt, worldNew);
 
@@ -761,7 +777,6 @@ public class WorldUtil
                     }
                 }
 
-                player.closeScreen();
                 IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                 stats.setUsingPlanetSelectionGui(false);
 
@@ -772,7 +787,7 @@ public class WorldUtil
                 }
                 player.connection.sendPacket(new SPacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
 
-                if (worldNew.provider instanceof WorldProviderZeroGravity)
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     if (WorldUtil.registeredSpaceStations.containsKey(dimID))
                     //TODO This has never been effective before due to the earlier bug - what does it actually do?
@@ -783,25 +798,15 @@ public class WorldUtil
                     }
                 }
 
-                worldOld.playerEntities.remove(player);
-                worldOld.updateAllPlayersSleepingFlag();
-                if (player.addedToChunk && worldOld.getChunkProvider().getLoadedChunk(player.chunkCoordX, player.chunkCoordZ) != null)
-                {
-                    Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
-                    chunkOld.removeEntity(player);
-                    chunkOld.setChunkModified();
-                }
-                worldOld.loadedEntityList.remove(player);
-                worldOld.onEntityRemoved(player);
-
-                if (worldNew.provider instanceof WorldProviderZeroGravity)
+                removeEntityFromWorld(worldOld, player, true);
+                spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimension(), new Object[] {}), player);
                 }
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
 
-                spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, player);
                 ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
                 if (ConfigManagerCore.enableDebug)
                 {
@@ -831,7 +836,7 @@ public class WorldUtil
                 player.connection.sendPacket(new SPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
             }
             else
-            //Non-player entity transfer i.e. it's an EntityCargoRocket
+            //Non-player entity transfer i.e. it's an EntityCargoRocket or an empty rocket
             {
                 ArrayList<TileEntityTelemetry> tList = null;
                 if (entity instanceof EntitySpaceshipBase)
@@ -843,7 +848,6 @@ public class WorldUtil
                 NBTTagCompound nbt = new NBTTagCompound();
                 entity.isDead = false;
                 entity.writeToNBTOptional(nbt);
-                entity.isDead = true;
                 entity = EntityList.createEntityFromNBT(nbt, worldNew);
 
                 if (entity == null)
@@ -879,7 +883,7 @@ public class WorldUtil
                 IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                 stats.setUsingPlanetSelectionGui(false);
 
-                if (worldNew.provider instanceof WorldProviderZeroGravity)
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimension(), new Object[] {}), player);
                 }
@@ -957,6 +961,28 @@ public class WorldUtil
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
             entity.startRiding(ridingRocket);
         }
+        else if (otherRiddenEntity != null)
+        {
+            if (dimChange)
+            {
+                World worldOld = otherRiddenEntity.worldObj;
+                NBTTagCompound nbt = new NBTTagCompound();
+                otherRiddenEntity.writeToNBTOptional(nbt);
+                removeEntityFromWorld(worldOld, otherRiddenEntity, true);
+                otherRiddenEntity = EntityList.createEntityFromNBT(nbt, worldNew);
+                worldNew.spawnEntityInWorld(otherRiddenEntity);
+                otherRiddenEntity.setWorld(worldNew);
+            }
+            if (spawnPos != null)
+            {
+                otherRiddenEntity.setPositionAndRotation(spawnPos.x, spawnPos.y - 10, spawnPos.z, otherRiddenEntity.rotationYaw, otherRiddenEntity.rotationPitch);
+            }
+            else
+            {
+                otherRiddenEntity.setPositionAndRotation(entity.posX, entity.posY - 10, entity.posZ, 0, 0);
+            }
+            worldNew.updateEntityWithOptionalForce(otherRiddenEntity, true);
+        }
         else if (spawnPos != null)
         {
             entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
@@ -1002,20 +1028,15 @@ public class WorldUtil
             var2.closeScreen();
             var0.playerEntities.remove(var2);
             var0.updateAllPlayersSleepingFlag();
-            final int var3 = var1.chunkCoordX;
-            final int var4 = var1.chunkCoordZ;
+        }
 
-            if (var1.addedToChunk && var0.getChunkProvider().getLoadedChunk(var3, var4) != null)
-            {
-                var0.getChunkFromChunkCoords(var3, var4).removeEntity(var1);
-                var0.getChunkFromChunkCoords(var3, var4).setChunkModified();
-            }
-
-            if (directlyRemove)
-            {
-                var0.loadedEntityList.remove(var1);
-                var0.onEntityRemoved(var1);
-            }
+        if (directlyRemove)
+        {
+            List l = new ArrayList<Entity>();
+            l.add(var1);
+            var0.unloadEntities(l);
+            //This will automatically remove the entity from the world and the chunk prior to the world's next update entities tick
+            //It is important NOT to directly modify World.loadedEntityList here, as the World will be currently iterating through that list when updating each entity (see the line "this.loadedEntityList.remove(i--);" in World.updateEntities()
         }
 
         var1.isDead = false;
@@ -1057,6 +1078,19 @@ public class WorldUtil
         return iArray;
     }
 
+    /**
+     * What's important here is that Galacticraft and the server both register
+     * the same reachable Galacticraft planets (and their provider types) in the same order.
+     * See WorldUtil.registerPlanet().
+     * 
+     * Even if there are dimension conflicts or other problems, the planets must be
+     * registered in the same order on both client and server.  This should happen
+     * automatically if Galacticraft versions match, and if planets modules
+     * match  (including Galacticraft-Planets and any other sub-mods).
+     * 
+     * It is NOT a good idea for sub-mods to make the registration order of planets variable
+     * or dependent on configs.
+     */
     public static void decodePlanetsListClient(List<Object> data)
     {
         try
@@ -1081,6 +1115,7 @@ public class WorldUtil
             if (data.size() > 0)
             {
                 //Start the provider index at offset 2 to skip the two Overworld Orbit dimensions
+                //(this will be iterating through GalacticraftRegistry.worldProviderIDs)
                 int providerIndex = GalaxyRegistry.getRegisteredSatellites().size() * 2;
                 if (data.get(0) instanceof Integer)
                 {

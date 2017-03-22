@@ -252,7 +252,7 @@ public class RecipeManagerGC
         inputMap.put(aluminumIngots, 16);
         inputMap.put("waferAdvanced", 1);
         inputMap.put(Items.IRON_INGOT, 24);
-        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworld, new SpaceStationRecipe(inputMap)));
+        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.aluminumWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Blocks.WOOL, 'C', "ingotAluminum" });
 

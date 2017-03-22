@@ -26,6 +26,8 @@ public class StatsClientCapability implements IStatsClientCapability
     public double downMotionLast;
     public boolean lastRidingCameraZoomEntity;
     public int landingTicks;
+    public static final int MAX_LANDINGTICKS = 15;
+    public float[] landingYOffset = new float[MAX_LANDINGTICKS + 1];
 
     public EnumGravity gdir = EnumGravity.down;
     public float gravityTurnRate;
@@ -578,5 +580,23 @@ public class StatsClientCapability implements IStatsClientCapability
     public void setUnlockedSchematics(ArrayList<ISchematicPage> unlockedSchematics)
     {
         this.unlockedSchematics = unlockedSchematics;
+    }
+
+    @Override
+    public int getMaxLandingticks()
+    {
+        return MAX_LANDINGTICKS;
+    }
+
+    @Override
+    public float[] getLandingYOffset()
+    {
+        return landingYOffset;
+    }
+
+    @Override
+    public void setLandingYOffset(float[] landingYOffset)
+    {
+        this.landingYOffset = landingYOffset;
     }
 }

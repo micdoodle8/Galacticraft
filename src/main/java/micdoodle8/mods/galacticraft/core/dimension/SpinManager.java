@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
+import micdoodle8.mods.galacticraft.core.entities.ITumblable;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -23,13 +25,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -75,23 +75,25 @@ public class SpinManager
     private boolean dataNotLoaded = true;
     private List<Entity> loadedEntities = Lists.newLinkedList();
 
-    private WorldProviderZeroGravity worldProvider;
+    private WorldProviderSpaceStation worldProvider;
+    private boolean clientSide = true;
 
-    public SpinManager(WorldProviderZeroGravity worldProvider)
+    public SpinManager(WorldProviderSpaceStation provider)
     {
-        this.worldProvider = worldProvider;
-        MinecraftForge.EVENT_BUS.register(this);
+        this.worldProvider = provider;
     }
 
-    @SubscribeEvent
-    public void onWorldTick(TickEvent.WorldTickEvent event)
+    /**
+     * Called from WorldProviderOrbit when registering the worldObj
+     */
+    public void registerServerSide()
     {
-        if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
+        if (!this.worldProvider.worldObj.isRemote)
         {
-            this.spin();
+            this.clientSide = false;
         }
     }
-
+    
     public float getSpinRate()
     {
         return this.skyAngularVelocity;
@@ -139,7 +141,7 @@ public class SpinManager
     {
         this.spinCentreX = x;
         this.spinCentreZ = z;
-        if (this.worldProvider.worldObj.isRemote)
+        if (this.clientSide)
         {
             if (ConfigManagerCore.enableDebug)
             {
@@ -485,16 +487,16 @@ public class SpinManager
             }
         }
 
-        if (!this.worldProvider.worldObj.isRemote)
+        if (!this.clientSide)
         {
             //Save the updated data for the world
             this.save();
         }
     }
 
-    private void spin()
+    public void updateSpin()
     {
-        if (!this.worldProvider.worldObj.isRemote)
+        if (!this.clientSide)
         {
             if (this.dataNotLoaded)
             {
@@ -554,118 +556,233 @@ public class SpinManager
                 this.loadedEntities.addAll(this.worldProvider.worldObj.loadedEntityList);
                 for (Entity e : this.loadedEntities)
                 {
+                    //TODO: What about vehicles from GC (buggies) and other mods?
                     if ((e instanceof EntityItem || e instanceof EntityLivingBase && !(e instanceof EntityPlayer) || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
                     {
-                        boolean freefall = true;
-                        if (e.getEntityBoundingBox().maxX >= this.ssBoundsMinX && e.getEntityBoundingBox().minX <= this.ssBoundsMaxX && e.getEntityBoundingBox().maxY >= this.ssBoundsMinY &&
-                                e.getEntityBoundingBox().minY <= this.ssBoundsMaxY && e.getEntityBoundingBox().maxZ >= this.ssBoundsMinZ && e.getEntityBoundingBox().minZ <= this.ssBoundsMaxZ)
+                        if (this.testEntityFreefall(e.getEntityBoundingBox()))
                         {
-                            //Entity is somewhere within the space station boundaries
-
-                            //Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
-                            //If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
-                            //Note: breatheable air here means the entity is definitely not in freefall
-                            int xmx = MathHelper.floor_double(e.getEntityBoundingBox().maxX + 0.2D);
-                            int ym = MathHelper.floor_double(e.getEntityBoundingBox().minY - 0.1D);
-                            int yy = MathHelper.floor_double(e.getEntityBoundingBox().maxY + 0.1D);
-                            int zm = MathHelper.floor_double(e.getEntityBoundingBox().minZ - 0.2D);
-                            int zz = MathHelper.floor_double(e.getEntityBoundingBox().maxZ + 0.2D);
-                            BLOCKCHECK:
-                            for (int x = MathHelper.floor_double(e.getEntityBoundingBox().minX - 0.2D); x <= xmx; x++)
+                            this.moveRotatedEntity(e, this.spinCentreX, this.spinCentreZ, this.angularVelocityRadians);
+                            
+                            if (e instanceof ITumblable)
                             {
-                                for (int y = ym; y <= yy; y++)
-                                {
-                                    for (int z = zm; z <= zz; z++)
-                                    {
-                                        BlockPos pos = new BlockPos(x, y, z);
-                                        if (this.worldProvider.worldObj.isBlockLoaded(pos) && Blocks.AIR != this.worldProvider.worldObj.getBlockState(pos).getBlock())
-                                        {
-                                            freefall = false;
-                                            break BLOCKCHECK;
-                                        }
-                                    }
-                                }
+                                ((ITumblable) e).setTumbling(e.worldObj.rand.nextFloat() * 6F + 3F);
                             }
                         }
-
-                        if (freefall)
+                        else
                         {
-                            //Do the rotation
-                            if (this.angularVelocityRadians != 0F)
+                            if (e instanceof ITumblable)
                             {
-                                float angle;
-                                final double xx = e.posX - this.spinCentreX;
-                                final double zz = e.posZ - this.spinCentreZ;
-                                double arc = Math.sqrt(xx * xx + zz * zz);
-                                if (xx == 0D)
-                                {
-                                    angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
-                                }
-                                else
-                                {
-                                    angle = (float) Math.atan(zz / xx);
-                                }
-                                if (xx < 0D)
-                                {
-                                    angle += 3.1415926535F;
-                                }
-                                angle += this.angularVelocityRadians / 3F;
-                                arc = arc * this.angularVelocityRadians;
-                                final double offsetX = -arc * MathHelper.sin(angle);
-                                final double offsetZ = arc * MathHelper.cos(angle);
-                                e.posX += offsetX;
-                                e.posZ += offsetZ;
-                                e.lastTickPosX += offsetX;
-                                e.lastTickPosZ += offsetZ;
-
-                                //Rotated into an unloaded chunk (probably also drifted out to there): byebye
-                                if (!this.worldProvider.worldObj.isBlockLoaded(new BlockPos(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
-                                {
-                                    e.setDead();
-                                }
-
-                                e.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ);
-                                //TODO check for block collisions here - if so move the entity appropriately and apply fall damage
-                                //Moving the entity = slide along / down
-                                e.rotationYaw += this.skyAngularVelocity;
-                                while (e.rotationYaw > 360F)
-                                {
-                                    e.rotationYaw -= 360F;
-                                }
-                            }
-
-                            //Undo deceleration
-                            if (e instanceof EntityLivingBase)
-                            {
-                                e.motionX /= 0.91F;
-                                e.motionZ /= 0.91F;
-                                if (e instanceof EntityFlying)
-                                {
-                                    e.motionY /= 0.91F;
-                                }
-                                else
-                                {
-                                    e.motionY /= 0.9800000190734863D;
-                                }
-                            }
-                            else if (e instanceof EntityFallingBlock)
-                            {
-                                e.motionY /= 0.9800000190734863D;
-                                //e.motionY += 0.03999999910593033D;
-                                //e.posY += 0.03999999910593033D;
-                                //e.lastTickPosY += 0.03999999910593033D;
-                            }
-                            else
-                            {
-                                e.motionX /= 0.9800000190734863D;
-                                e.motionY /= 0.9800000190734863D;
-                                e.motionZ /= 0.9800000190734863D;
+                                ((ITumblable) e).setTumbling(0F);
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private void moveRotatedEntity(Entity e, double rotationCentreX, double rotationCentreZ, float deltaTheta)
+    {
+        //Do the rotation
+        if (deltaTheta != 0F)
+        {
+            float angle;
+            final double xx = e.posX - rotationCentreX;
+            final double zz = e.posZ - rotationCentreZ;
+            double arc = Math.sqrt(xx * xx + zz * zz);
+            if (xx == 0D)
+            {
+                angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
+            }
+            else
+            {
+                angle = (float) Math.atan(zz / xx);
+            }
+            if (xx < 0D)
+            {
+                angle += 3.1415926535F;
+            }
+            angle += deltaTheta / 3F;
+            arc = arc * deltaTheta;
+            final double offsetX = -arc * MathHelper.sin(angle);
+            final double offsetZ = arc * MathHelper.cos(angle);
+            e.posX += offsetX;
+            e.posZ += offsetZ;
+            e.lastTickPosX += offsetX;
+            e.lastTickPosZ += offsetZ;
+
+            //Rotated into an unloaded chunk (probably also drifted out to there): byebye
+            if (!e.worldObj.isBlockLoaded(new BlockPos(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
+            {
+                e.setDead();
+                return;
+            }
+
+            e.setEntityBoundingBox(e.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ));
+            //TODO check for block collisions here - if so move the entity appropriately and apply fall damage
+            //Moving the entity = slide along / down
+            e.rotationYaw += this.skyAngularVelocity;
+            while (e.rotationYaw > 360F)
+            {
+                e.rotationYaw -= 360F;
+            }
+
+            //Rotate the motion vector (motionX, motionZ) by the angular rotation
+            double velocity = Math.sqrt(e.motionX * e.motionX + e.motionZ * e.motionZ);
+            if (e.motionX == 0D)
+            {
+                angle = e.motionZ > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
+            }
+            else
+            {
+                angle = (float) Math.atan(e.motionZ / e.motionX);
+            }
+            if (e.motionX < 0D)
+            {
+                angle += 3.1415926535F;
+            }
+            angle += deltaTheta;
+            e.motionX = velocity * MathHelper.cos(angle);
+            e.motionZ = velocity * MathHelper.sin(angle);
+        }
+
+        if (e.worldObj.provider instanceof IZeroGDimension) ((IZeroGDimension)e.worldObj.provider).setInFreefall(e);
+        //Undo deceleration
+
+        boolean warnLog = false;
+        if (e instanceof EntityLivingBase)
+        {
+            e.motionX /= (double)0.91F; //0.91F;
+            e.motionZ /= (double)0.91F; //0.91F;
+            e.motionY /= (e instanceof EntityFlying) ?  0.91F : 0.9800000190734863D;
+
+            if (e.motionX > 10D)
+            {
+                warnLog = true;
+                e.motionX = 10D;
+            }
+            else if (e.motionX < -10D)
+            {
+                warnLog = true;
+                e.motionX = -10D;
+            }
+            if (e.motionY > 10D)
+            {
+                warnLog = true;
+                e.motionY = 10D;
+            }
+            else if (e.motionY < -10D)
+            {
+                warnLog = true;
+                e.motionY = -10D;
+            }
+            if (e.motionZ > 10D)
+            {
+                warnLog = true;
+                e.motionZ = 10D;
+            }
+            else if (e.motionZ < -10D)
+            {
+                warnLog = true;
+                e.motionZ = -10D;
+            }
+        }
+        else if (e instanceof EntityFallingBlock)
+        {
+            e.motionY /= 0.9800000190734863D;
+            //e.motionY += 0.03999999910593033D;
+            //e.posY += 0.03999999910593033D;
+            //e.lastTickPosY += 0.03999999910593033D;
+            if (e.motionY > 10D)
+            {
+                warnLog = true;
+                e.motionY = 10D;
+            }
+            else if (e.motionY < -10D)
+            {
+                warnLog = true;
+                e.motionY = -10D;
+            }
+        }
+        else
+        {
+            e.motionX /= 0.9800000190734863D;
+            e.motionY /= 0.9800000190734863D;
+            e.motionZ /= 0.9800000190734863D;
+            
+            if (e.motionX > 10D)
+            {
+                warnLog = true;
+                e.motionX = 10D;
+            }
+            else if (e.motionX < -10D)
+            {
+                warnLog = true;
+                e.motionX = -10D;
+            }
+            if (e.motionY > 10D)
+            {
+                warnLog = true;
+                e.motionY = 10D;
+            }
+            else if (e.motionY < -10D)
+            {
+                warnLog = true;
+                e.motionY = -10D;
+            }
+            if (e.motionZ > 10D)
+            {
+                warnLog = true;
+                e.motionZ = 10D;
+            }
+            else if (e.motionZ < -10D)
+            {
+                warnLog = true;
+                e.motionZ = -10D;
+            }
+        }
+        
+        if (warnLog)
+            GCLog.debug(e.getName() + " moving too fast");
+    }
+
+    public boolean testEntityFreefall(AxisAlignedBB entityBoundingBox)
+    {
+        if (entityBoundingBox.maxX >= this.ssBoundsMinX && entityBoundingBox.minX <= this.ssBoundsMaxX && entityBoundingBox.maxY >= this.ssBoundsMinY &&
+                entityBoundingBox.minY <= this.ssBoundsMaxY && entityBoundingBox.maxZ >= this.ssBoundsMinZ && entityBoundingBox.minZ <= this.ssBoundsMaxZ)
+        {
+            //Entity is somewhere within the space station boundaries
+
+            //Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+            //If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
+            //Note: breatheable air here means the entity is definitely not in freefall
+            int xmx = MathHelper.floor_double(entityBoundingBox.maxX + 0.2D);
+            int ym = MathHelper.floor_double(entityBoundingBox.minY - 0.1D);
+            int yy = MathHelper.floor_double(entityBoundingBox.maxY + 0.1D);
+            int zm = MathHelper.floor_double(entityBoundingBox.minZ - 0.2D);
+            int zz = MathHelper.floor_double(entityBoundingBox.maxZ + 0.2D);
+            if (ym < 0) ym = 0;
+            if (yy > 255) yy = 255; 
+
+            for (int x = MathHelper.floor_double(entityBoundingBox.minX - 0.2D); x <= xmx; x++)
+            {
+                for (int z = zm; z <= zz; z++)
+                {
+                    if (!this.worldProvider.worldObj.isBlockLoaded(new BlockPos(x, 0, z), false))
+                        continue;
+
+                    for (int y = ym; y <= yy; y++)
+                    {
+                        if (Blocks.AIR != this.worldProvider.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock())
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

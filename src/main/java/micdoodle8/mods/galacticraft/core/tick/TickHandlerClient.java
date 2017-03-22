@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -19,7 +20,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
@@ -470,12 +471,12 @@ public class TickHandlerClient
                         world.provider.setSkyRenderer(null);
                     }
                 }
-                else if (world.provider instanceof WorldProviderZeroGravity)
+                else if (world.provider instanceof WorldProviderSpaceStation)
                 {
                     if (world.provider.getSkyRenderer() == null)
                     {
                         world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
-                        ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderZeroGravity) world.provider).getSpinManager().getSpinRate();
+                        ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderSpaceStation) world.provider).getSpinManager().getSpinRate();
                         IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
                         stats.setInFreefallFirstCheck(false);
                     }

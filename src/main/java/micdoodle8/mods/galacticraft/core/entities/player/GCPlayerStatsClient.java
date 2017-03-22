@@ -1,23 +1,61 @@
 //package micdoodle8.mods.galacticraft.core.entities.player;
 //
 //import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-//import micdoodle8.mods.galacticraft.core.Constants;
 //import net.minecraft.client.entity.EntityPlayerSP;
 //import net.minecraft.entity.Entity;
 //import net.minecraft.nbt.NBTTagCompound;
-//import net.minecraft.util.ResourceLocation;
-//import net.minecraft.util.math.AxisAlignedBB;
+//import net.minecraft.util.AxisAlignedBB;
 //import net.minecraft.world.World;
+//import net.minecraftforge.common.IExtendedEntityProperties;
 //
 //import java.lang.ref.WeakReference;
 //import java.util.ArrayList;
 //
-//public class GCPlayerStatsClient
+//public class GCPlayerStatsClient implements IExtendedEntityProperties
 //{
-//    public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.ASSET_PREFIX, "player_stats_client");
+//    public static final String GC_PLAYER_PROP = "GCPlayerStatsClient";
 //
 //    public WeakReference<EntityPlayerSP> player;
 //
+//    public boolean usingParachute;
+//    public boolean lastUsingParachute;
+//    public boolean usingAdvancedGoggles;
+//    public int thermalLevel;
+//    public boolean thermalLevelNormalising;
+//    public int thirdPersonView = 0;
+//    public long tick;
+//    public boolean oxygenSetupValid = true;
+//    AxisAlignedBB boundingBoxBefore;
+//    public boolean lastOnGround;
+//
+//    public double distanceSinceLastStep;
+//    public int lastStep;
+//    public boolean inFreefall;
+//    public boolean inFreefallLast;
+//    public boolean inFreefallFirstCheck;
+//    public double downMotionLast;
+//    public boolean lastRidingCameraZoomEntity;
+//    public int landingTicks;
+//    public static final int MAX_LANDINGTICKS = 15;
+//    public float[] landingYOffset = new float[MAX_LANDINGTICKS + 1];
+//
+//    public EnumGravity gdir = EnumGravity.down;
+//    public float gravityTurnRate;
+//    public float gravityTurnRatePrev;
+//    public float gravityTurnVecX;
+//    public float gravityTurnVecY;
+//    public float gravityTurnVecZ;
+//    public float gravityTurnYaw;
+//
+//    public int spaceRaceInviteTeamID;
+//    public boolean lastZoomed;
+//    public int buildFlags = -1;
+//
+//    public boolean ssOnGroundLast;
+//
+//    public FreefallHandler freefallHandler = new FreefallHandler();
+//
+//    public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 //
 //    public GCPlayerStatsClient(EntityPlayerSP player)
 //    {
@@ -186,15 +224,15 @@
 //        this.gdir = newGravity;
 //    }
 //
-////    public void setParachute(boolean tf)
-////    {
-////        this.usingParachute = tf;
-////
-////        if (!tf)
-////        {
-////            this.lastUsingParachute = false;
-////        }
-////    }
+//    public void setParachute(boolean tf)
+//    {
+//        this.usingParachute = tf;
+//
+//        if (!tf)
+//        {
+//            this.lastUsingParachute = false;
+//        }
+//    }
 //
 //    @Override
 //    public void saveNBTData(NBTTagCompound nbt)

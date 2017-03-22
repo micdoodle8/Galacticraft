@@ -7,12 +7,13 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -174,7 +176,7 @@ public class TransformerHooks
         {
             return false;
         }
-        if (world.provider instanceof WorldProviderZeroGravity)
+        if (world.provider instanceof WorldProviderSpaceStation)
         {
             return true;
         }
@@ -560,7 +562,7 @@ public class TransformerHooks
             GL11.glTranslatef(0, offset, 0);
         }
 
-        if (viewEntity instanceof EntityLivingBase && viewEntity.worldObj.provider instanceof WorldProviderZeroGravity && !((EntityLivingBase)viewEntity).isPlayerSleeping())
+        if (viewEntity instanceof EntityLivingBase && viewEntity.worldObj.provider instanceof IZeroGDimension && !((EntityLivingBase)viewEntity).isPlayerSleeping())
         {
             float pitch = viewEntity.prevRotationPitch + (viewEntity.rotationPitch - viewEntity.prevRotationPitch) * partialTicks;
             float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
@@ -579,14 +581,7 @@ public class TransformerHooks
             GL11.glRotatef(yaw * stats.getGdir().getYawGravityY(), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(yaw * stats.getGdir().getYawGravityZ(), 0.0F, 0.0F, 1.0F);
 
-            if (stats.getLandingTicks() > 0)
-            {
-            	float sneakY;
-            	if (stats.getLandingTicks() >= 4) sneakY = (stats.getLandingTicks() >= 5) ? 0.15F : 0.3F;
-            	else
-            		sneakY = stats.getLandingTicks() * 0.075F;
-            	GL11.glTranslatef(sneakY * stats.getGdir().getSneakVecX(), sneakY * stats.getGdir().getSneakVecY(), sneakY * stats.getGdir().getSneakVecZ());
-            }
+//        	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
 
             GL11.glTranslatef(eyeHeightChange * stats.getGdir().getEyeVecX(), eyeHeightChange * stats.getGdir().getEyeVecY(), eyeHeightChange * stats.getGdir().getEyeVecZ());
 
