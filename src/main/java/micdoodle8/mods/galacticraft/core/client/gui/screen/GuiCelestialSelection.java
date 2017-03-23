@@ -592,7 +592,7 @@ public class GuiCelestialSelection extends GuiScreen
                         WorldProvider spacestation = WorldUtil.getProviderForDimensionClient(spacestationID);
                         if (spacestation != null)
                         {
-                            dimension = WorldUtil.getDimensionName(spacestation);
+                            dimension = "Space Station " + mapping;
                         }
                         else
                         {
