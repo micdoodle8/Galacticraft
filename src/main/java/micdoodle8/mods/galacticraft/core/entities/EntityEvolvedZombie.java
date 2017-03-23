@@ -20,7 +20,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable, ITumblable
 {
-    private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntityEvolvedSkeleton.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntityEvolvedZombie.class, DataSerializers.FLOAT);
     private int conversionTime = 0;
     private float tumbling = 0F;
     private float tumbleAngle = 0F;
