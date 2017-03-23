@@ -56,7 +56,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         {
         case OK:
             ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, entityPlayer.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.worldObj), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
             IStatsCapability stats = entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);

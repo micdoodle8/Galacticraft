@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -35,7 +36,7 @@ public class PacketEntityUpdate extends PacketBase
 
     public PacketEntityUpdate(Entity entity)
     {
-        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround, entity.worldObj.provider.getDimensionId());
+        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround, GCCoreUtil.getDimensionID(entity.worldObj));
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -53,7 +54,7 @@ public class ChunkPowerHandler
                 e.printStackTrace();
             }
 
-            if (ConfigManagerCore.retrogenOil && event.world.provider.getDimensionId() == 0)
+            if (ConfigManagerCore.retrogenOil && GCCoreUtil.getDimensionID(event.world) == 0)
             {
                 EventHandlerGC.retrogenOil(event.world, event.getChunk());
             }

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
@@ -199,7 +200,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
         }
     }
 
@@ -271,7 +272,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 
         int distSq = 1025;
         BlockVec3Dim nearest = null;
-        int dim = te.getWorld().provider.getDimensionId();
+        int dim = GCCoreUtil.getDimensionID(te.getWorld());
         for (BlockVec3Dim telemeter : loadedList)
         {
             if (telemeter.dim != dim)

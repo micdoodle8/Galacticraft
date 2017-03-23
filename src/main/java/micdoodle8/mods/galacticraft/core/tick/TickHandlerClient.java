@@ -584,7 +584,7 @@ public class TickHandlerClient
 
             if (player != null && player.ridingEntity != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, player.worldObj.provider.getDimensionId(), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}));
                 ClientProxyCore.lastSpacebarDown = true;
             }
 

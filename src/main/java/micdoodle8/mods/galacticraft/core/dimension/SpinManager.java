@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.entities.ITumblable;
 import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
@@ -399,7 +400,7 @@ public class SpinManager
         List<Object> objList = new ArrayList<Object>();
         objList.add(Double.valueOf(this.spinCentreX));
         objList.add(Double.valueOf(this.spinCentreZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, GCCoreUtil.getDimensionID(this.worldProvider), objList), GCCoreUtil.getDimensionID(this.worldProvider));
 
         objList = new ArrayList<Object>();
         objList.add(Integer.valueOf(this.ssBoundsMinX));
@@ -408,7 +409,7 @@ public class SpinManager
         objList.add(Integer.valueOf(this.ssBoundsMaxY));
         objList.add(Integer.valueOf(this.ssBoundsMinZ));
         objList.add(Integer.valueOf(this.ssBoundsMaxZ));
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, GCCoreUtil.getDimensionID(this.worldProvider), objList), GCCoreUtil.getDimensionID(this.worldProvider));
 
         this.updateSpinSpeed();
 
@@ -545,7 +546,7 @@ public class SpinManager
                     List<Object> objList = new ArrayList<Object>();
                     objList.add(Float.valueOf(this.angularVelocityRadians));
                     objList.add(Boolean.valueOf(this.thrustersFiring));
-                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, GCCoreUtil.getDimensionID(this.worldProvider), objList), GCCoreUtil.getDimensionID(this.worldProvider));
                 }
             }
 
@@ -666,11 +667,11 @@ public class SpinManager
         objList.add(this.thrustersFiring);
         if (player == null)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, GCCoreUtil.getDimensionID(this.worldProvider), objList), GCCoreUtil.getDimensionID(this.worldProvider));
         }
         else
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, player.worldObj.provider.getDimensionId(), objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_SPIN, GCCoreUtil.getDimensionID(player.worldObj), objList), player);
         }
 
         objList = new ArrayList<>();
@@ -678,11 +679,11 @@ public class SpinManager
         objList.add(this.spinCentreZ);
         if (player == null)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, GCCoreUtil.getDimensionID(this.worldProvider), objList), GCCoreUtil.getDimensionID(this.worldProvider));
         }
         else
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, player.worldObj.provider.getDimensionId(), objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_DATA, GCCoreUtil.getDimensionID(player.worldObj), objList), player);
         }
 
         objList = new ArrayList<>();
@@ -694,11 +695,11 @@ public class SpinManager
         objList.add(this.ssBoundsMaxZ);
         if (player == null)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, this.worldProvider.getDimensionId(), objList), this.worldProvider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, GCCoreUtil.getDimensionID(this.worldProvider), objList), GCCoreUtil.getDimensionID(this.worldProvider));
         }
         else
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, player.worldObj.provider.getDimensionId(), objList), player);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(PacketSimple.EnumSimplePacket.C_UPDATE_STATION_BOX, GCCoreUtil.getDimensionID(player.worldObj), objList), player);
         }
     }
 

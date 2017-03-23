@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -30,7 +31,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(Entity entity)
     {
-        super(entity.worldObj.provider.getDimensionId());
+        super(GCCoreUtil.getDimensionID(entity.worldObj));
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
         this.data = new Object[] { entity.getEntityId() };
@@ -40,7 +41,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(TileEntity tile)
     {
-        super(tile.getWorld().provider.getDimensionId());
+        super(GCCoreUtil.getDimensionID(tile.getWorld()));
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
         this.data = new Object[] { tile.getPos() };

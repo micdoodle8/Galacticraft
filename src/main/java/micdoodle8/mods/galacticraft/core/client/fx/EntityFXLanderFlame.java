@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
@@ -104,7 +105,7 @@ public class EntityFXLanderFlame extends EntityFX
                     if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, var5.worldObj.provider.getDimensionId(), new Object[] { var5.getEntityId() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.worldObj), new Object[] { var5.getEntityId() }));
                     }
                 }
             }

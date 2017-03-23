@@ -323,7 +323,7 @@ public class WorldUtil
     public static WorldProvider getProviderForDimensionClient(int id)
     {
         World ws = ClientProxyCore.mc.theWorld;
-        if (ws != null && ws.provider.getDimensionId() == id)
+        if (ws != null && GCCoreUtil.getDimensionID(ws) == id)
         {
             return ws.provider;
         }
@@ -371,9 +371,9 @@ public class WorldUtil
                     WorldProvider provider = WorldUtil.getProviderForDimensionServer(id);
                     if (celestialBody != null && provider != null)
                     {
-                        if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || provider.getDimensionId() == 0)
+                        if (provider instanceof IGalacticraftWorldProvider && !(provider instanceof IOrbitDimension) || GCCoreUtil.getDimensionID(provider) == 0)
                         {
-                            map.put(celestialBody.getName(), provider.getDimensionId());
+                            map.put(celestialBody.getName(), GCCoreUtil.getDimensionID(provider));
                         }
                     }
                 }
@@ -634,7 +634,7 @@ public class WorldUtil
         dimNames.put(newID, "Space Station " + newID);
         IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
         stats.getSpaceStationDimensionData().put(homePlanetID, newID);
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, player.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), player);
         return data;
     }
 
@@ -662,7 +662,7 @@ public class WorldUtil
 
         for (WorldServer server : MinecraftServer.getServer().worldServers)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, server.provider.getDimensionId(), WorldUtil.getSpaceStationList()), server.provider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, GCCoreUtil.getDimensionID(server), WorldUtil.getSpaceStationList()), GCCoreUtil.getDimensionID(server));
         }
         return SpaceStationWorldData.getStationData(world, dimID, homePlanetID, dynamicProviderID, staticProviderID, player);
     }
@@ -732,7 +732,7 @@ public class WorldUtil
         entity.worldObj.updateEntityWithOptionalForce(entity, false);
         EntityPlayerMP player = null;
         Vector3 spawnPos = null;
-        int oldDimID = entity.worldObj.provider.getDimensionId();
+        int oldDimID = GCCoreUtil.getDimensionID(entity.worldObj);
 
         if (ridingRocket != null)
         {
@@ -805,7 +805,7 @@ public class WorldUtil
                     {
                         NBTTagCompound var2 = new NBTTagCompound();
                         SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, player.worldObj.provider.getDimensionId(), new Object[] { dimID, var2 }), player);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { dimID, var2 }), player);
                     }
                 }
 
@@ -813,7 +813,7 @@ public class WorldUtil
                 spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] {}), player);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
                 }
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
@@ -832,7 +832,7 @@ public class WorldUtil
                 player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 //worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.getDimensionId());
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
 
                 player.theItemInWorldManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
@@ -896,7 +896,7 @@ public class WorldUtil
 
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, player.worldObj.provider.getDimensionId(), new Object[] {}), player);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
                 }
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
@@ -905,7 +905,7 @@ public class WorldUtil
                 entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.getDimensionId());
+                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + GCCoreUtil.getDimensionID(worldNew));
             }
 
             //Cargo rocket does not needs its location setting here, it will do that itself
@@ -1150,17 +1150,17 @@ public class WorldUtil
                 WorldProvider dimMoon = WorldUtil.getProviderForNameClient("moon.moon");
                 if (dimMoon != null)
                 {
-                    GCLog.debug("Crosscheck: Moon is " + dimMoon.getDimensionId());
+                    GCLog.debug("Crosscheck: Moon is " + GCCoreUtil.getDimensionID(dimMoon));
                 }
                 WorldProvider dimMars = WorldUtil.getProviderForNameClient("planet.mars");
                 if (dimMars != null)
                 {
-                    GCLog.debug("Crosscheck: Mars is " + dimMars.getDimensionId());
+                    GCLog.debug("Crosscheck: Mars is " + GCCoreUtil.getDimensionID(dimMars));
                 }
                 WorldProvider dimAst = WorldUtil.getProviderForNameClient("planet.asteroids");
                 if (dimAst != null)
                 {
-                    GCLog.debug("Crosscheck: Asteroids is " + dimAst.getDimensionId());
+                    GCLog.debug("Crosscheck: Asteroids is " + GCCoreUtil.getDimensionID(dimAst));
                 }
             }
         }
@@ -1273,7 +1273,7 @@ public class WorldUtil
             count++;
         }
 
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), dimensionList }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { player.getGameProfile().getName(), dimensionList }), player);
         stats.setUsingPlanetSelectionGui(true);
         stats.setSavedPlanetList(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);
@@ -1402,7 +1402,7 @@ public class WorldUtil
             }
         }
 
-        if (wp.getDimensionId() == ConfigManagerCore.idDimensionOverworld)
+        if (GCCoreUtil.getDimensionID(wp) == ConfigManagerCore.idDimensionOverworld)
         {
             return "Overworld";
         }

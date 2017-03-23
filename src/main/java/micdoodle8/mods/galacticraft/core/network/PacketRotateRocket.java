@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -17,7 +18,7 @@ public class PacketRotateRocket extends PacketBase
 
     public PacketRotateRocket(Entity rotateableEntity)
     {
-        super(rotateableEntity.worldObj.provider.getDimensionId());
+        super(GCCoreUtil.getDimensionID(rotateableEntity.worldObj));
         this.entityID = rotateableEntity.getEntityId();
         this.entityPitch = rotateableEntity.rotationPitch;
         this.entityYaw = rotateableEntity.rotationYaw;

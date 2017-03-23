@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.DelayTimer;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -46,7 +47,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         if (!this.worldObj.isRemote && updateClient && delayTimer.markTimeIfDelay(this.worldObj))
         {
             PacketDynamic packet = new PacketDynamic(this);
-            GalacticraftCore.packetPipeline.sendToAllAround(packet, new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+            GalacticraftCore.packetPipeline.sendToAllAround(packet, new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
             this.updateClient = false;
         }
     }

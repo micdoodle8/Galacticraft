@@ -59,7 +59,7 @@ public class SpaceRaceManager
 
                     if (race.getPlayerNames().contains(player.getGameProfile().getName()))
                     {
-                        CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.getDimensionId());
+                        CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(GCCoreUtil.getDimensionID(player.worldObj));
 
                         if (body != null)
                         {
@@ -147,13 +147,13 @@ public class SpaceRaceManager
 
             if (toPlayer != null)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, toPlayer.worldObj.provider.getDimensionId(), objList), toPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.worldObj), objList), toPlayer);
             }
             else
             {
                 for (WorldServer server : MinecraftServer.getServer().worldServers)
                 {
-                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, server.provider.getDimensionId(), objList), server.provider.getDimensionId());
+                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(server), objList), GCCoreUtil.getDimensionID(server));
                 }
             }
         }

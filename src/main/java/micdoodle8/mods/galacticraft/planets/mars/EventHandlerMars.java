@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -95,7 +96,7 @@ public class EventHandlerMars
 
                 if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, event.entityPlayer.worldObj.provider.getDimensionId(), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(event.entityPlayer.worldObj), new Object[] {}));
                 }
             }
             else if (!event.flag1 && !event.flag2 && event.flag3)

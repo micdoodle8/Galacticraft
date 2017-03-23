@@ -318,7 +318,7 @@ public class PlayerClient implements IPlayerClient
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimensionId(), pos, player.rotationYaw, player.getName());
+                        FootprintRenderer.addFootprint(chunkKey, GCCoreUtil.getDimensionID(player.worldObj), pos, player.rotationYaw, player.getName());
 
                         // Increment and cap step counter at 1
                         stats.setLastStep((stats.getLastStep() + 1) % 2);
@@ -376,7 +376,7 @@ public class PlayerClient implements IPlayerClient
         }
         flag |= 1 << i;
         stats.setBuildFlags((flag & 511) + (repeatCount << 9));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, player.worldObj.provider.getDimensionId(), new Object[] { stats.getBuildFlags() }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { stats.getBuildFlags() }));
         switch (i)
         {
         case 0:

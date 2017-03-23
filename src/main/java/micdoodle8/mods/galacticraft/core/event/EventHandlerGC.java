@@ -98,7 +98,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void playerJoinWorld(EntityJoinWorldEvent event)
     {
-        TickHandlerServer.markWorldNeedsUpdate(event.world.provider.getDimensionId());
+        TickHandlerServer.markWorldNeedsUpdate(GCCoreUtil.getDimensionID(event.world));
     }
 
     @SubscribeEvent
@@ -229,7 +229,7 @@ public class EventHandlerGC
                 EventHandlerGC.bedActivated = true;
 
                 //On planets allow the bed to be used to designate a player spawn point
-                event.entityPlayer.setSpawnChunk(event.pos, false, event.world.provider.getDimensionId());
+                event.entityPlayer.setSpawnChunk(event.pos, false, GCCoreUtil.getDimensionID(event.world));
             }
             else
             {
@@ -403,7 +403,7 @@ public class EventHandlerGC
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == world.provider.getDimensionId())
+            if (dim == GCCoreUtil.getDimensionID(world))
             {
                 doGen2 = true;
                 break;
@@ -622,7 +622,7 @@ public class EventHandlerGC
                 List<Object> objList = new ArrayList<Object>();
                 objList.add(iArray);
 
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, event.player.worldObj.provider.getDimensionId(), objList), event.player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, GCCoreUtil.getDimensionID(event.player.worldObj), objList), event.player);
             }
         }
     }
@@ -655,7 +655,7 @@ public class EventHandlerGC
                 benchY = ((GuiPositionedContainer)cs).getY();
                 benchZ = ((GuiPositionedContainer)cs).getZ();
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
             FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, benchX, benchY, benchZ);
         }
     }

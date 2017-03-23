@@ -5,11 +5,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.GenLayerGCMap;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
@@ -18,7 +15,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
-
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -80,7 +76,7 @@ public class MapGen extends WorldChunkManager implements Runnable
     {
         this.biomeMapCx = cx >> 4;
         this.biomeMapCz = cz >> 4;
-        this.dimID = world.provider.getDimensionId();
+        this.dimID = GCCoreUtil.getDimensionID(world);
         if (file.exists())
         {
             return;
@@ -166,7 +162,7 @@ public class MapGen extends WorldChunkManager implements Runnable
         {
             for (WorldServer server : MinecraftServer.getServer().worldServers)
             {
-                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimensionId(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimensionId());
+                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(server), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), GCCoreUtil.getDimensionID(server));
             }
         }
         catch (Exception ex)

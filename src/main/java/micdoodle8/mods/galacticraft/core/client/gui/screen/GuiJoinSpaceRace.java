@@ -99,7 +99,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
             this.thePlayer.closeScreen();
             break;
         case 1:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, mc.theWorld.provider.getDimensionId(), new Object[] { this.thePlayer.getGameProfile().getName(), this.spaceRaceData.getSpaceRaceID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.thePlayer.getGameProfile().getName(), this.spaceRaceData.getSpaceRaceID() }));
             this.thePlayer.closeScreen();
             break;
         default:

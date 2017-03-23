@@ -117,7 +117,7 @@ public class MapUtil
                 }
             }
         }
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] {}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] {}));
 		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
 		MapUtil.biomeColours.clear();
 		setupColours();
@@ -255,7 +255,7 @@ public class MapUtil
     {
     	if (largeMap.length < 1000000)
     	{
-    		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimensionId(), new Object[] { cx, cz, largeMap }), client);
+    		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMap }), client);
     	}
     	else if (largeMap.length < 2000000)
 		{
@@ -263,8 +263,8 @@ public class MapUtil
 			//These two arrays are deliberately different sizes to signal to client (receiving them) which is which
 			byte[] largeMapPartA = Arrays.copyOf(largeMap, halfSize);
 			byte[] largeMapPartB = Arrays.copyOfRange(largeMap, halfSize, halfSize + halfSize + 2);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimensionId(), new Object[] { cx, cz, largeMapPartA }), client);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimensionId(), new Object[] { cx, cz, largeMapPartB }), client);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMapPartA }), client);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMapPartB }), client);
 		}
     }
 
@@ -780,7 +780,7 @@ public class MapUtil
             return false;
         }
 
-        int dim = world.provider.getDimensionId();
+        int dim = GCCoreUtil.getDimensionID(world);
         boolean result = true;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, result))
         {
@@ -834,7 +834,7 @@ public class MapUtil
             {
                 clientRequests.add(filename.getName());
                 //GCLog.debug("Info: Client requested map file" + filename.getName());
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { dim, cx, cz }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { dim, cx, cz }));
             }
             return true;
         }

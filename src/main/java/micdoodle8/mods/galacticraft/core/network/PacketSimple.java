@@ -689,7 +689,7 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case C_RESPAWN_PLAYER:
             final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
-            final int dimID = provider.getDimensionId();
+            final int dimID = GCCoreUtil.getDimensionID(provider);
             if (ConfigManagerCore.enableDebug)
             {
                 GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);

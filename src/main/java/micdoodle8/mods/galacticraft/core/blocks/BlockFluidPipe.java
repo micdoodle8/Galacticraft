@@ -139,7 +139,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
                     worldIn.setBlockState(pos, state.withProperty(COLOR, EnumDyeColor.byDyeDamage(dyeColor)));
 
-                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, worldIn.provider.getDimensionId(), new Object[] { pos }), new NetworkRegistry.TargetPoint(worldIn.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 40.0));
+                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionID(worldIn), new Object[] { pos }), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(worldIn), pos.getX(), pos.getY(), pos.getZ(), 40.0));
 
                     if (colorBefore != (byte) dyeColor && !playerIn.capabilities.isCreativeMode && --playerIn.inventory.getCurrentItem().stackSize == 0)
                     {

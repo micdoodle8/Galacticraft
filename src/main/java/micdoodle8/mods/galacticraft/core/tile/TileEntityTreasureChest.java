@@ -477,7 +477,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         {
             if (player.worldObj.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, this.worldObj.provider.getDimensionId(), new Object[] { this.getTierOfKeyRequired() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getTierOfKeyRequired() }));
             }
             return true;
         }

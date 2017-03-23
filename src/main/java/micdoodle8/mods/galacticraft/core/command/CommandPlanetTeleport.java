@@ -59,7 +59,7 @@ public class CommandPlanetTeleport extends CommandBase
                 if (playerBase != null)
                 {
                     MinecraftServer server = MinecraftServer.getServer();
-                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimensionId());
+                    WorldServer worldserver = server.worldServerForDimension(GCCoreUtil.getDimensionID(server.worldServers[0]));
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                     stats.setRocketStacks(new ItemStack[2]);

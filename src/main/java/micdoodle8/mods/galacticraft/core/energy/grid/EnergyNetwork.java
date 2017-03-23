@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -440,7 +441,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 GCLog.severe("DEBUG Energy network loop issue, please report this");
                 if (debugTE != null)
                 {
-                    GCLog.severe("Problem was likely caused by tile in dim " + debugTE.getWorld().provider.getDimensionId() + " at " + debugTE.getPos() + " Type:" + debugTE.getClass().getSimpleName());
+                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(debugTE.getWorld()) + " at " + debugTE.getPos() + " Type:" + debugTE.getClass().getSimpleName());
                 }
             }
         }
