@@ -8,12 +8,16 @@ import micdoodle8.mods.galacticraft.core.dimension.SpinManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
@@ -651,5 +655,152 @@ public class FreefallHandler
         this.pPrevMotionX = p.motionX;
         this.pPrevMotionY = p.motionY;
         this.pPrevMotionZ = p.motionZ;
+    }
+    
+    /**
+     * Used for non-player entities in ZeroGDimensions
+     */
+    public static boolean testEntityFreefall(World worldObj, AxisAlignedBB entityBoundingBox)
+    {
+        //Check if the entity's bounding box is in the same block coordinates as any non-vacuum block (including torches etc)
+        //If so, it's assumed the entity has something close enough to catch onto, so is not in freefall
+        //Note: breatheable air here means the entity is definitely not in freefall
+        int xmx = MathHelper.floor_double(entityBoundingBox.maxX + 0.2D);
+        int ym = MathHelper.floor_double(entityBoundingBox.minY - 0.1D);
+        int yy = MathHelper.floor_double(entityBoundingBox.maxY + 0.1D);
+        int zm = MathHelper.floor_double(entityBoundingBox.minZ - 0.2D);
+        int zz = MathHelper.floor_double(entityBoundingBox.maxZ + 0.2D);
+        if (ym < 0) ym = 0;
+        if (yy > 255) yy = 255; 
+
+        for (int x = MathHelper.floor_double(entityBoundingBox.minX - 0.2D); x <= xmx; x++)
+        {
+            for (int z = zm; z <= zz; z++)
+            {
+                if (!worldObj.isBlockLoaded(new BlockPos(x, 0, z), false))
+                    continue;
+
+                for (int y = ym; y <= yy; y++)
+                {
+                    if (Blocks.air != worldObj.getBlockState(new BlockPos(x, y, z)).getBlock())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    /**
+     * Call this on every freefalling non-player entity in a dimension
+     * either at the end of the world tick (ideal) or else during the
+     * start of the next world tick (e.g. during updateWeather())
+     * 
+     * May require iteration through the world's loadedEntityList
+     * See SpinManager.updateSpin() for an example
+     * @param e
+     */
+    public static void tickFreefallEntity(Entity e)
+    {
+        if (e.worldObj.provider instanceof IZeroGDimension) ((IZeroGDimension)e.worldObj.provider).setInFreefall(e);
+        
+        //Undo deceleration applied at the end of the previous tick
+        boolean warnLog = false;
+        if (e instanceof EntityLivingBase)
+        {
+            e.motionX /= (double)0.91F; //0.91F;
+            e.motionZ /= (double)0.91F; //0.91F;
+            e.motionY /= (e instanceof EntityFlying) ?  0.91F : 0.9800000190734863D;
+
+            if (e.motionX > 10D)
+            {
+                warnLog = true;
+                e.motionX = 10D;
+            }
+            else if (e.motionX < -10D)
+            {
+                warnLog = true;
+                e.motionX = -10D;
+            }
+            if (e.motionY > 10D)
+            {
+                warnLog = true;
+                e.motionY = 10D;
+            }
+            else if (e.motionY < -10D)
+            {
+                warnLog = true;
+                e.motionY = -10D;
+            }
+            if (e.motionZ > 10D)
+            {
+                warnLog = true;
+                e.motionZ = 10D;
+            }
+            else if (e.motionZ < -10D)
+            {
+                warnLog = true;
+                e.motionZ = -10D;
+            }
+        }
+        else if (e instanceof EntityFallingBlock)
+        {
+            e.motionY /= 0.9800000190734863D;
+            //e.motionY += 0.03999999910593033D;
+            //e.posY += 0.03999999910593033D;
+            //e.lastTickPosY += 0.03999999910593033D;
+            if (e.motionY > 10D)
+            {
+                warnLog = true;
+                e.motionY = 10D;
+            }
+            else if (e.motionY < -10D)
+            {
+                warnLog = true;
+                e.motionY = -10D;
+            }
+        }
+        else
+        {
+            e.motionX /= 0.9800000190734863D;
+            e.motionY /= 0.9800000190734863D;
+            e.motionZ /= 0.9800000190734863D;
+            
+            if (e.motionX > 10D)
+            {
+                warnLog = true;
+                e.motionX = 10D;
+            }
+            else if (e.motionX < -10D)
+            {
+                warnLog = true;
+                e.motionX = -10D;
+            }
+            if (e.motionY > 10D)
+            {
+                warnLog = true;
+                e.motionY = 10D;
+            }
+            else if (e.motionY < -10D)
+            {
+                warnLog = true;
+                e.motionY = -10D;
+            }
+            if (e.motionZ > 10D)
+            {
+                warnLog = true;
+                e.motionZ = 10D;
+            }
+            else if (e.motionZ < -10D)
+            {
+                warnLog = true;
+                e.motionZ = -10D;
+            }
+        }
+        
+        if (warnLog)
+            GCLog.debug(e.getName() + " moving too fast");
     }
 }

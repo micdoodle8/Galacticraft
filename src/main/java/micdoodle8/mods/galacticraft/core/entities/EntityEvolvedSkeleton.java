@@ -177,7 +177,13 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     @Override
     public void setTumbling(float value)
     {
-        this.tumbling = value / 2F;
+        if (value !=0F)
+        {
+            if (this.tumbling == 0F)
+                this.tumbling = (this.worldObj.rand.nextFloat() + 0.5F) * value;
+        }
+        else
+            this.tumbling = 0F;
     }
     
     @Override
