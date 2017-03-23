@@ -120,6 +120,17 @@ public class ItemModelCargoRocket extends ModelTransformWrapper
             return ret;
         }
 
+        if (cameraTransformType == TransformType.GROUND)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(0.1F);
+            ret.mul(mul);
+            return ret;
+        }
+
         return null;
     }
 }

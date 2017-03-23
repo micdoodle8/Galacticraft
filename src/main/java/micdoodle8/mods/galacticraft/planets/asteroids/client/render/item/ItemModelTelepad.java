@@ -37,6 +37,28 @@ public class ItemModelTelepad extends ModelTransformWrapper
             return ret;
         }
 
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(0.17F);
+            ret.mul(mul);
+            return ret;
+        }
+
+        if (cameraTransformType == TransformType.GROUND)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(0.1F);
+            ret.mul(mul);
+            return ret;
+        }
+
         return null;
     }
 }
