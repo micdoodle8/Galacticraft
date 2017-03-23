@@ -63,6 +63,11 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public void onUpdate()
     {
+        if (this.getPassengers().isEmpty())
+        {
+            this.setDead();
+            return;
+        }
         super.onUpdate();
 
         if (this.ticks < 40 && this.posY > 150)

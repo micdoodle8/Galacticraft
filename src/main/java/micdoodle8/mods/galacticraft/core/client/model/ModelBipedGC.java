@@ -109,7 +109,7 @@ public class ModelBipedGC extends ModelBiped
 
             if (player.onGround && holdableItem.shouldCrouch(player))
             {
-                GlStateManager.translate(0.0F, player.isSneaking() ? 0.0F : 0.1F, 0.0F);
+                GlStateManager.translate(0.0F, player.isSneaking() ? 0.0F : 0.125F, 0.0F);
                 biped.bipedBody.rotateAngleX = 0.5F;
                 biped.bipedRightLeg.rotationPointZ = 4.0F;
                 biped.bipedLeftLeg.rotationPointZ = 4.0F;

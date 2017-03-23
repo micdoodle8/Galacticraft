@@ -32,10 +32,26 @@ public class TeleportTypeVenus implements ITeleportType
             int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
             if (limit > 20)
             {
-                if (x > limit) x = limit;
-                if (x < -limit) x = -limit;
-                if (z > limit) z = limit;
-                if (z < -limit) z = -limit;
+                if (x > limit)
+                {
+                    z *= limit / x;
+                    x = limit;
+                }
+                else if (x < -limit)
+                {   
+                    z *= -limit / x;
+                    x = -limit;
+                }
+                if (z > limit)
+                {
+                    x *= limit / z;
+                    z = limit;
+                }
+                else if (z < -limit)
+                {
+                    x *= - limit / z;
+                    z = -limit;
+                }
             }
             return new Vector3(x, 900.0, z);
         }

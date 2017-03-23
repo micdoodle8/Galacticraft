@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -42,10 +44,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     private final GlassFrame frame; //frameValue corresponds to the damage of the placing item
     private int color = 0xFFFFFF;
     private final Block baseBlock;
+    private boolean isClient; 
+    private static Class clazz = Blocks.WATER.getClass().getSuperclass();
     
     public BlockSpaceGlass(String assetName, GlassType newType, GlassFrame newFrame, Block base)
     {
         super(Material.GLASS);
+        this.isClient = GalacticraftCore.proxy.getClass().getName().equals("micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore");
         this.type = newType;
         this.frame = newFrame;
         this.baseBlock = base == null ? this : base;
@@ -141,6 +146,17 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
+    public Material getMaterial(IBlockState state)
+    {
+        if (this.isClient && JavaUtil.instance.isCalledBySpecific(clazz))
+        {
+            return Material.WATER;
+        }
+        return this.blockMaterial;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;

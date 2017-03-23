@@ -675,19 +675,19 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
 
                     worldObj.setBlockState(new BlockPos(px, y, pz), block.getStateFromMeta(meta), 2);
                     int count = 7;
-                    if (!(worldObj.getBlockState(new BlockPos(px - 1, y, pz)) instanceof BlockAir))
+                    if (!(worldObj.getBlockState(new BlockPos(px - 1, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 1;
                     }
-                    else if (!(worldObj.getBlockState(new BlockPos(px - 2, y, pz)) instanceof BlockAir))
+                    else if (!(worldObj.getBlockState(new BlockPos(px - 2, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 3;
                     }
-                    else if (!(worldObj.getBlockState(new BlockPos(px - 3, y, pz)) instanceof BlockAir))
+                    else if (!(worldObj.getBlockState(new BlockPos(px - 3, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 5;
                     }
-                    else if (!(worldObj.getBlockState(new BlockPos(px - 4, y, pz)) instanceof BlockAir))
+                    else if (!(worldObj.getBlockState(new BlockPos(px - 4, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 6;
                     }
@@ -1014,6 +1014,11 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         }
 
         return false;
+    }
+    
+    public static void reset()
+    {
+        chunksDone.clear();
     }
 
     private class AsteroidData

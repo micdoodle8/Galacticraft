@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -17,19 +18,15 @@ public class EventHandlerVenus
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (event.side == Side.SERVER)
+        if (event.side == Side.SERVER && event.phase == Phase.START)
         {
             for (Entity e : new ArrayList<>(event.world.loadedEntityList))
             {
-                if (e instanceof EntityLivingBase)
+                if (e.ticksExisted % 20 == 0 && e instanceof EntityLivingBase)
                 {
-                    EntityLivingBase entityLivingBase = (EntityLivingBase) e;
-                    if (event.world.isMaterialInBB(entityLivingBase.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), VenusModule.acidMaterial))
+                    if (event.world.isMaterialInBB(e.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), VenusModule.acidMaterial))
                     {
-                        if (entityLivingBase.ticksExisted % 20 == 0)
-                        {
-                            entityLivingBase.attackEntityFrom(DamageSourceGC.acid, 3.0F);
-                        }
+                        e.attackEntityFrom(DamageSourceGC.acid, 3.0F);
                     }
                 }
             }
