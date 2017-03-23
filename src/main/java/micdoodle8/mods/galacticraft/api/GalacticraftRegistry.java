@@ -208,8 +208,15 @@ public class GalacticraftRegistry
      */
     public static DimensionType registerDimension(String name, String suffix, int id, Class<? extends WorldProvider> provider, boolean keepLoaded) throws IllegalArgumentException
     {
+        for (DimensionType other : DimensionType.values())
+        {
+            if (other.getId() == id)
+            {
+                return null;
+            }
+        }
+
         DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
-//    	DimensionManager.registerDimension(id, type);
         GalacticraftRegistry.dimensionTypeIDs.add(id);
         return type;
     }
