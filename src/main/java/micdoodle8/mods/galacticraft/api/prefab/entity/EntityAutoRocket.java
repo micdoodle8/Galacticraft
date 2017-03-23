@@ -13,7 +13,8 @@ import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -807,16 +808,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
         if (!this.worldObj.isRemote)
         {
-            GCPlayerStats stats = null;
+            IStatsCapability stats = null;
 
             if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
             {
-                stats = GCPlayerStats.get((EntityPlayerMP) this.riddenByEntity);
+                stats = this.riddenByEntity.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
                 if (!(this.worldObj.provider instanceof IOrbitDimension))
                 {
-                    stats.coordsTeleportedFromX = this.riddenByEntity.posX;
-                    stats.coordsTeleportedFromZ = this.riddenByEntity.posZ;
+                    stats.setCoordsTeleportedFromX(this.riddenByEntity.posX);
+                    stats.setCoordsTeleportedFromZ(this.riddenByEntity.posZ);
                 }
             }
 
@@ -854,7 +855,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             //Set the player's launchpad item for return on landing - or null if launchpads not removed
             if (stats != null)
             {
-                stats.launchpadStack = amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null;
+                stats.setLaunchpadStack(amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null);
             }
 
             this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);

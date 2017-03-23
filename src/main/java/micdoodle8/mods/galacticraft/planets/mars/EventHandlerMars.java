@@ -7,14 +7,14 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -29,7 +29,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +42,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerMars
@@ -105,7 +103,7 @@ public class EventHandlerMars
                 if (!event.entityPlayer.worldObj.isRemote)
                 {
                     event.entityPlayer.heal(5.0F);
-                    GCPlayerStats.get((EntityPlayerMP) event.entityPlayer).cryogenicChamberCooldown = 6000;
+                    event.entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setCryogenicChamberCooldown(6000);
 
                     for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
                     {

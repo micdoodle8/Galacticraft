@@ -2,13 +2,13 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
-
 import org.apache.logging.log4j.LogManager;
 
 public class ConnectionEvents
@@ -75,9 +74,9 @@ public class ConnectionEvents
         if (event.player instanceof EntityPlayerMP)
         {
             EntityPlayerMP thePlayer = (EntityPlayerMP) event.player;
-            GCPlayerStats stats = GCPlayerStats.get(thePlayer);
+            IStatsCapability stats = thePlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
             SpaceStationWorldData.checkAllStations(thePlayer, stats);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, thePlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), thePlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, thePlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), thePlayer);
             SpaceRace raceForPlayer = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
             if (raceForPlayer != null)
             {

@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
@@ -58,15 +59,15 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
                 if (playerBase != null)
                 {
-                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
+                    IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-                    if (stats.spaceStationDimensionData.isEmpty())
+                    if (stats.getSpaceStationDimensionData().isEmpty())
                     {
                         throw new WrongUsageException(GCCoreUtil.translate("commands.ssinvite.not_found"), new Object[0]);
                     }
                     else
                     {
-                        for (Map.Entry<Integer, Integer> e : stats.spaceStationDimensionData.entrySet())
+                        for (Map.Entry<Integer, Integer> e : stats.getSpaceStationDimensionData().entrySet())
                         {
                             final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
 
@@ -123,15 +124,15 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get(playerBase);
-            if (!stats.spaceStationDimensionData.isEmpty())
+            IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            if (!stats.getSpaceStationDimensionData().isEmpty())
             {
                 String[] allNames = MinecraftServer.getServer().getAllUsernames();
                 //data.getAllowedPlayers may include some in lowercase
                 //Convert to correct case at least for those players who are online
                 HashSet<String> allowedNames = Sets.newHashSet();
 
-                for (Map.Entry<Integer, Integer> e : stats.spaceStationDimensionData.entrySet())
+                for (Map.Entry<Integer, Integer> e : stats.getSpaceStationDimensionData().entrySet())
                 {
                     final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
                     allowedNames.addAll(data.getAllowedPlayers());

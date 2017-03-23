@@ -8,8 +8,10 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiPreLaunchChecklist;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.inventory.*;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.*;
@@ -42,7 +44,7 @@ public class GuiHandler implements IGuiHandler
             return null;
         }
 
-        GCPlayerStats stats = GCPlayerStats.get(playerBase);
+        IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
         if (ID == GuiIdsCore.ROCKET_INVENTORY && player.ridingEntity instanceof EntityTieredRocket)
         {
@@ -50,7 +52,7 @@ public class GuiHandler implements IGuiHandler
         }
         else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
         {
-            return new ContainerExtendedInventory(player, stats.extendedInventory);
+            return new ContainerExtendedInventory(player, stats.getExtendedInventory());
         }
 
         BlockPos pos = new BlockPos(x, y, z);
@@ -132,7 +134,7 @@ public class GuiHandler implements IGuiHandler
             }
         }
 
-        for (ISchematicPage page : stats.unlockedSchematics)
+        for (ISchematicPage page : stats.getUnlockedSchematics())
         {
             if (ID == page.getGuiID())
             {
@@ -268,8 +270,9 @@ public class GuiHandler implements IGuiHandler
 
         if (playerClient != null)
         {
-            GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerClient);
-            for (ISchematicPage page : stats.unlockedSchematics)
+            IStatsClientCapability stats = playerClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+
+            for (ISchematicPage page : stats.getUnlockedSchematics())
             {
                 if (ID == page.getGuiID())
                 {

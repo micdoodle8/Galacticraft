@@ -11,7 +11,9 @@ import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.EnumGravity;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -39,7 +41,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -540,7 +541,7 @@ public class TransformerHooks
     public static void orientCamera(float partialTicks)
     {
         EntityPlayerSP player = ClientProxyCore.mc.thePlayer;
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
         Entity viewEntity = ClientProxyCore.mc.getRenderViewEntity();
 
@@ -568,21 +569,22 @@ public class TransformerHooks
             GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
             GL11.glTranslatef(0.0F, 0.0F, 0.1F);
 
-            GL11.glRotatef(180.0F * stats.gdir.getThetaX(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(180.0F * stats.gdir.getThetaZ(), 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(pitch * stats.gdir.getPitchGravityX(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(pitch * stats.gdir.getPitchGravityY(), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(yaw * stats.gdir.getYawGravityX(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(yaw * stats.gdir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(yaw * stats.gdir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
+            EnumGravity gDir = stats.getGdir();
+            GL11.glRotatef(180.0F * gDir.getThetaX(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(180.0F * gDir.getThetaZ(), 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(pitch * gDir.getPitchGravityX(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(pitch * gDir.getPitchGravityY(), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * gDir.getYawGravityX(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(yaw * gDir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(yaw * gDir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
 
-//        	GL11.glTranslatef(sneakY * stats.gdir.getSneakVecX(), sneakY * stats.gdir.getSneakVecY(), sneakY * stats.gdir.getSneakVecZ());
+//        	GL11.glTranslatef(sneakY * gDir.getSneakVecX(), sneakY * gDir.getSneakVecY(), sneakY * gDir.getSneakVecZ());
 
-            GL11.glTranslatef(eyeHeightChange * stats.gdir.getEyeVecX(), eyeHeightChange * stats.gdir.getEyeVecY(), eyeHeightChange * stats.gdir.getEyeVecZ());
+            GL11.glTranslatef(eyeHeightChange * gDir.getEyeVecX(), eyeHeightChange * gDir.getEyeVecY(), eyeHeightChange * gDir.getEyeVecZ());
 
-            if (stats.gravityTurnRate < 1.0F)
+            if (stats.getGravityTurnRate() < 1.0F)
             {
-                GL11.glRotatef(90.0F * (stats.gravityTurnRatePrev + (stats.gravityTurnRate - stats.gravityTurnRatePrev) * partialTicks), stats.gravityTurnVecX, stats.gravityTurnVecY, stats.gravityTurnVecZ);
+                GL11.glRotatef(90.0F * (stats.getGravityTurnRatePrev() + (stats.getGravityTurnRate() - stats.getGravityTurnRatePrev()) * partialTicks), stats.getGravityTurnVecX(), stats.getGravityTurnVecY(), stats.getGravityTurnVecZ());
             }
         }
 

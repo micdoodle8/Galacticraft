@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -338,7 +338,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return "spacestation_" + dimID;
     }
 
-    public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
+    public static void updateSSOwnership(EntityPlayerMP player, String playerName, IStatsCapability stats, int stationID, SpaceStationWorldData stationData)
     {
         if (stationData == null)
         {
@@ -348,25 +348,25 @@ public class SpaceStationWorldData extends WorldSavedData
         if (stationData.owner.equals(playerName))
         {
             //This player is the owner of the station - ensure stats data matches
-            if (!(stats.spaceStationDimensionData.values().contains(stationID)))
+            if (!(stats.getSpaceStationDimensionData().values().contains(stationID)))
             {
                 GCLog.debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
-                stats.spaceStationDimensionData.put(stationData.getHomePlanet(), stationID);
+                stats.getSpaceStationDimensionData().put(stationData.getHomePlanet(), stationID);
             }
         }
         else
         {
             //This player is the owner of the station - remove from stats data
-            Integer savedOwned = stats.spaceStationDimensionData.get(stationData.getHomePlanet());
+            Integer savedOwned = stats.getSpaceStationDimensionData().get(stationData.getHomePlanet());
             if (savedOwned != null && savedOwned == stationID)
             {
                 GCLog.debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
-                stats.spaceStationDimensionData.remove(savedOwned);
+                stats.getSpaceStationDimensionData().remove(savedOwned);
             }
         }
     }
 
-    public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
+    public static void checkAllStations(EntityPlayerMP thePlayer, IStatsCapability stats)
     {
         String name = thePlayer.getGameProfile().getName().replace(".", "");
         for (int id : WorldUtil.registeredSpaceStations.keySet())

@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.planets.venus.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
@@ -25,9 +26,9 @@ public class TeleportTypeVenus implements ITeleportType
     {
         if (player != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
-            double x = stats.coordsTeleportedFromX;
-            double z = stats.coordsTeleportedFromZ;
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            double x = stats.getCoordsTeleportedFromX();
+            double z = stats.getCoordsTeleportedFromZ();
             int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
             if (limit > 20)
             {
@@ -75,9 +76,9 @@ public class TeleportTypeVenus implements ITeleportType
     {
         if (!ridingAutoRocket && player != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-            if (stats.teleportCooldown <= 0)
+            if (stats.getTeleportCooldown() <= 0)
             {
                 if (player.capabilities.isFlying)
                 {
@@ -91,7 +92,7 @@ public class TeleportTypeVenus implements ITeleportType
                     newWorld.spawnEntityInWorld(entryPod);
                 }
 
-                stats.teleportCooldown = 10;
+                stats.setTeleportCooldown(10);
             }
         }
     }

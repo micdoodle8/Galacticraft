@@ -1,7 +1,8 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,12 +47,12 @@ public class ItemOxygenGear extends Item implements ISortableItem
     {
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-            ItemStack gear = stats.extendedInventory.getStackInSlot(1);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            ItemStack gear = stats.getExtendedInventory().getStackInSlot(1);
 
             if (gear == null)
             {
-                stats.extendedInventory.setInventorySlotContents(1, itemStack.copy());
+                stats.getExtendedInventory().setInventorySlotContents(1, itemStack.copy());
                 itemStack.stackSize = 0;
             }
         }

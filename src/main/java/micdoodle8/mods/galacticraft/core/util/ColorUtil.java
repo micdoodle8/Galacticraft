@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 
 public class ColorUtil
 {
@@ -206,10 +206,10 @@ public class ColorUtil
         return grey << 16 | grey << 8 | (grey & 255);
     }
 
-    public static void sendUpdatedColorsToPlayer(GCPlayerStats stats)
+    public static void sendUpdatedColorsToPlayer(IStatsCapability stats)
     {
-        int dimID = stats.player.get().dimension;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[] { Integer.valueOf(stats.glassColor1), Integer.valueOf(stats.glassColor2), Integer.valueOf(stats.glassColor3) }), stats.player.get());
+        int dimID = stats.getPlayer().get().dimension;
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[] { Integer.valueOf(stats.getGlassColor1()), Integer.valueOf(stats.getGlassColor2()), Integer.valueOf(stats.getGlassColor3()) }), stats.getPlayer().get());
     }
     
     public static void updateColorsForArea(int dimID, BlockPos pos, int range, int color1, int color2, int color3)

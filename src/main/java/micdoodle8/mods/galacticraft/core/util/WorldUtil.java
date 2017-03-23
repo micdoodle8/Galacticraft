@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -21,8 +20,9 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -52,7 +52,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -633,9 +632,9 @@ public class WorldUtil
         int newID = DimensionManager.getNextFreeDimId();
         SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, homePlanetID, dynamicProviderID, staticProviderID, player);
         dimNames.put(newID, "Space Station " + newID);
-        GCPlayerStats stats = GCPlayerStats.get(player);
-        stats.spaceStationDimensionData.put(homePlanetID, newID);
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, player.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), player);
+        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        stats.getSpaceStationDimensionData().put(homePlanetID, newID);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, player.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), player);
         return data;
     }
 
@@ -789,8 +788,8 @@ public class WorldUtil
                     }
                 }
 
-                GCPlayerStats stats = GCPlayerStats.get(player);
-                stats.usingPlanetSelectionGui = false;
+                IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                stats.setUsingPlanetSelectionGui(false);
 
                 player.dimension = dimID;
                 if (ConfigManagerCore.enableDebug)
@@ -892,8 +891,8 @@ public class WorldUtil
             {
                 player = (EntityPlayerMP) entity;
                 player.closeScreen();
-                GCPlayerStats stats = GCPlayerStats.get(player);
-                stats.usingPlanetSelectionGui = false;
+                IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                stats.setUsingPlanetSelectionGui(false);
 
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
@@ -915,49 +914,49 @@ public class WorldUtil
         //Update PlayerStatsGC
         if (player != null)
         {
-            GCPlayerStats playerStats = GCPlayerStats.get(player);
-            if (ridingRocket == null && type.useParachute() && playerStats.extendedInventory.getStackInSlot(4) != null && playerStats.extendedInventory.getStackInSlot(4).getItem() instanceof ItemParaChute)
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            if (ridingRocket == null && type.useParachute() && stats.getExtendedInventory().getStackInSlot(4) != null && stats.getExtendedInventory().getStackInSlot(4).getItem() instanceof ItemParaChute)
             {
-                GCPlayerHandler.setUsingParachute(player, playerStats, true);
+                GCPlayerHandler.setUsingParachute(player, stats, true);
             }
             else
             {
-                GCPlayerHandler.setUsingParachute(player, playerStats, false);
+                GCPlayerHandler.setUsingParachute(player, stats, false);
             }
 
-            if (playerStats.rocketStacks != null && playerStats.rocketStacks.length > 0)
+            if (stats.getRocketStacks() != null && stats.getRocketStacks().length > 0)
             {
-                for (int stack = 0; stack < playerStats.rocketStacks.length; stack++)
+                for (int stack = 0; stack < stats.getRocketStacks().length; stack++)
                 {
                     if (transferInv)
                     {
-                        if (playerStats.rocketStacks[stack] == null)
+                        if (stats.getRocketStacks()[stack] == null)
                         {
-                            if (stack == playerStats.rocketStacks.length - 1)
+                            if (stack == stats.getRocketStacks().length - 1)
                             {
-                                if (playerStats.rocketItem != null)
+                                if (stats.getRocketItem() != null)
                                 {
-                                    playerStats.rocketStacks[stack] = new ItemStack(playerStats.rocketItem, 1, playerStats.rocketType);
+                                    stats.getRocketStacks()[stack] = new ItemStack(stats.getRocketItem(), 1, stats.getRocketType());
                                 }
                             }
-                            else if (stack == playerStats.rocketStacks.length - 2)
+                            else if (stack == stats.getRocketStacks().length - 2)
                             {
-                                playerStats.rocketStacks[stack] = playerStats.launchpadStack;
-                                playerStats.launchpadStack = null;
+                                stats.getRocketStacks()[stack] = stats.getLaunchpadStack();
+                                stats.setLaunchpadStack(null);
                             }
                         }
                     }
                     else
                     {
-                        playerStats.rocketStacks[stack] = null;
+                        stats.getRocketStacks()[stack] = null;
                     }
                 }
             }
 
-            if (transferInv && playerStats.chestSpawnCooldown == 0)
+            if (transferInv && stats.getChestSpawnCooldown() == 0)
             {
-                playerStats.chestSpawnVector = type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random());
-                playerStats.chestSpawnCooldown = 200;
+                stats.setChestSpawnVector(type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random()));
+                stats.setChestSpawnCooldown(200);
             }
         }
 
@@ -1260,10 +1259,10 @@ public class WorldUtil
         }
     }
 
-    public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)
+    public static void toCelestialSelection(EntityPlayerMP player, IStatsCapability stats, int tier)
     {
         player.mountEntity(null);
-        stats.spaceshipTier = tier;
+        stats.setSpaceshipTier(tier);
 
         HashMap<String, Integer> map = WorldUtil.getArrayOfPossibleDimensions(tier, player);
         String dimensionList = "";
@@ -1275,8 +1274,8 @@ public class WorldUtil
         }
 
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, player.worldObj.provider.getDimensionId(), new Object[] { player.getGameProfile().getName(), dimensionList }), player);
-        stats.usingPlanetSelectionGui = true;
-        stats.savedPlanetList = dimensionList;
+        stats.setUsingPlanetSelectionGui(true);
+        stats.setSavedPlanetList(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);
         player.worldObj.spawnEntityInWorld(fakeEntity);
         player.mountEntity(fakeEntity);

@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -23,8 +24,8 @@ public class TeleportTypeOverworld implements ITeleportType
     {
         if (player != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
-            return new Vector3(stats.coordsTeleportedFromX, 250.0, stats.coordsTeleportedFromZ);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            return new Vector3(stats.getCoordsTeleportedFromX(), 250.0, stats.getCoordsTeleportedFromZ());
         }
 
         return null;

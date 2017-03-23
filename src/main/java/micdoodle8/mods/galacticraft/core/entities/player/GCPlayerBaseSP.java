@@ -53,8 +53,8 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         if (this.player.worldObj.provider instanceof IZeroGDimension)
         {
-            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
-            if (stats.landingTicks > 0)
+            IStatsClientCapability stats = this.player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            if (stats.getLandingTicks() > 0)
             {
                 this.player.movementInput.moveStrafe *= 0.5F;
                 this.player.movementInput.moveForward *= 0.5F;
@@ -108,23 +108,23 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         if (this.player.worldObj.provider instanceof IZeroGDimension)
     	{
-        	GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
-        	if (stats.landingTicks > 0)
+            IStatsClientCapability stats = this.player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        	if (stats.getLandingTicks() > 0)
         	{
         	    if (this.lastLandingTicks == 0)
-        	        this.lastLandingTicks = stats.landingTicks;
+        	        this.lastLandingTicks = stats.getLandingTicks();
 
-        	    return stats.landingTicks < this.lastLandingTicks;
+        	    return stats.getLandingTicks() < this.lastLandingTicks;
         	}
         	else
         	    this.lastLandingTicks = 0;
 
-        	if (stats.freefallHandler.pjumpticks > 0) return true;
+        	if (stats.getFreefallHandler().pjumpticks > 0) return true;
 
         	if (EventHandlerClient.sneakRenderOverride)
         	{
-        	    if (stats.freefallHandler.testFreefall(this.player)) return false;
-        	    if (stats.inFreefall) return false;
+        	    if (stats.getFreefallHandler().testFreefall(this.player)) return false;
+        	    if (stats.isInFreefall()) return false;
         	}
     	}
         return super.isSneaking();

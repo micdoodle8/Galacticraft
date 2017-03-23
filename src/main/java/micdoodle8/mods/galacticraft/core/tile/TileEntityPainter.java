@@ -1,20 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
-//import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
@@ -23,6 +16,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+
+import java.util.*;
+
+//import net.minecraft.item.EnumDyeColor;
 
 public class TileEntityPainter extends TileEntity
 {
@@ -57,7 +54,8 @@ public class TileEntityPainter extends TileEntity
             color = ColorUtil.lighten(color, 0.03F);
             this.setGlassColors(color, color, color);
 
-            //GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+            //IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            //stats.setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
         }
     }
     
@@ -185,7 +183,7 @@ public class TileEntityPainter extends TileEntity
 
     private void dominantToPlayer(EntityPlayerMP player)
     {
-        GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+        player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
     }
 
     //TODO: create a GUI and inventory, place specific colourable items (glass, flags etc) in this

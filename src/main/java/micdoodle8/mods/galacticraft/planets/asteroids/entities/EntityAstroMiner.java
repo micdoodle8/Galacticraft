@@ -9,7 +9,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -2187,10 +2188,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         if (!this.worldObj.isRemote && this.playerMP != null && !this.spawnedInCreative)
         {
-            int astroCount = GCPlayerStats.get(this.playerMP).astroMinerCount;
+            IStatsCapability stats = this.playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            int astroCount = stats.getAstroMinerCount();
             if (astroCount > 0)
             {
-                GCPlayerStats.get(this.playerMP).astroMinerCount--;
+                stats.setAstroMinerCount(stats.getAstroMinerCount() - 1);
             }
         }
 

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
@@ -115,18 +116,18 @@ public class CommandGCAstroMiner extends CommandBase
 
                 if (playerBase != null)
                 {
-                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
+                    IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                     switch (type)
                     {
                     case 1:
-                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.astroMinerCount)));
+                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.getAstroMinerCount())));
                         break;
                     case 2:
-                        stats.astroMinerCount = 0;
+                        stats.setAstroMinerCount(0);
                         sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
                         break;
                     case 3:
-                        stats.astroMinerCount = newvalue;
+                        stats.setAstroMinerCount(newvalue);
                         sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
                         break;
                     }

@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -100,8 +101,8 @@ public class OverlaySensorGlasses extends Overlay
 
             if (client != null)
             {
-                GCPlayerStatsClient stats = GCPlayerStatsClient.get(client);
-                var2 = stats.usingAdvancedGoggles;
+                IStatsClientCapability stats = client.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+                var2 = stats.isUsingAdvancedGoggles();
             }
 
             OverlaySensorGlasses.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);

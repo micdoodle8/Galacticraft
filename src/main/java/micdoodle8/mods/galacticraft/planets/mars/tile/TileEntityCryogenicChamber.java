@@ -4,7 +4,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -58,7 +59,8 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, entityPlayer.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
+            IStatsCapability stats = entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", stats.getCryogenicChamberCooldown() / 20)));
             return false;
         default:
             return false;
@@ -79,9 +81,10 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
 
-            if (GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown > 0)
+            IStatsCapability stats = entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            if (stats.getCryogenicChamberCooldown() > 0)
             {
-//                return EnumStatus.NOT_POSSIBLE_NOW;
+                return EnumStatus.NOT_POSSIBLE_NOW;
             }
         }
 

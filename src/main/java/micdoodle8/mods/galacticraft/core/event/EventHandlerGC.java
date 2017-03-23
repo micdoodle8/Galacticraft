@@ -22,16 +22,15 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedConta
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
-import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -207,7 +206,12 @@ public class EventHandlerGC
         {
             if (GalacticraftCore.isPlanetsLoaded)
             {
-                GCPlayerStats.tryBedWarning((EntityPlayerMP) event.entityPlayer);
+                IStatsCapability stats = event.entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                if (!stats.hasReceivedBedWarning())
+                {
+                    event.entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
+                    stats.setReceivedBedWarning(true);
+                }
             }
 
             if (worldObj.provider instanceof WorldProviderSpaceStation)
@@ -598,20 +602,20 @@ public class EventHandlerGC
     @SubscribeEvent
     public void schematicUnlocked(Unlock event)
     {
-        GCPlayerStats stats = GCPlayerStats.get(event.player);
+        IStatsCapability stats = event.player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-        if (!stats.unlockedSchematics.contains(event.page))
+        if (!stats.getUnlockedSchematics().contains(event.page))
         {
-            stats.unlockedSchematics.add(event.page);
-            Collections.sort(stats.unlockedSchematics);
+            stats.getUnlockedSchematics().add(event.page);
+            Collections.sort(stats.getUnlockedSchematics());
 
             if (event.player != null && event.player.playerNetServerHandler != null)
             {
-                Integer[] iArray = new Integer[stats.unlockedSchematics.size()];
+                Integer[] iArray = new Integer[stats.getUnlockedSchematics().size()];
 
                 for (int i = 0; i < iArray.length; i++)
                 {
-                    ISchematicPage page = stats.unlockedSchematics.get(i);
+                    ISchematicPage page = stats.getUnlockedSchematics().get(i);
                     iArray[i] = page == null ? -2 : page.getPageID();
                 }
 
@@ -662,11 +666,11 @@ public class EventHandlerGC
         final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
 
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
-        for (int i = 0; i < stats.unlockedSchematics.size(); i++)
+        for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
         {
-            idList.put(i, stats.unlockedSchematics.get(i).getPageID());
+            idList.put(i, stats.getUnlockedSchematics().get(i).getPageID());
         }
 
         final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
@@ -679,9 +683,9 @@ public class EventHandlerGC
 
             if (page.getPageID() == currentIndex)
             {
-                if (count + 1 < stats.unlockedSchematics.size())
+                if (count + 1 < stats.getUnlockedSchematics().size())
                 {
-                    return stats.unlockedSchematics.get(count + 1);
+                    return stats.getUnlockedSchematics().get(count + 1);
                 }
                 else
                 {
@@ -699,11 +703,11 @@ public class EventHandlerGC
         final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
 
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
-        for (int i = 0; i < stats.unlockedSchematics.size(); i++)
+        for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
         {
-            idList.put(i, stats.unlockedSchematics.get(i).getPageID());
+            idList.put(i, stats.getUnlockedSchematics().get(i).getPageID());
         }
 
         final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
@@ -718,7 +722,7 @@ public class EventHandlerGC
             {
                 if (count - 1 >= 0)
                 {
-                    return stats.unlockedSchematics.get(count - 1);
+                    return stats.getUnlockedSchematics().get(count - 1);
                 }
                 else
                 {
@@ -735,18 +739,18 @@ public class EventHandlerGC
     {
         if (event.entityLiving instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) event.entityLiving);
+            IStatsCapability stats = event.entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
             if (!event.entityLiving.worldObj.getGameRules().getBoolean("keepInventory"))
             {
                 event.entityLiving.captureDrops = true;
-                for (int i = stats.extendedInventory.getSizeInventory() - 1; i >= 0; i--)
+                for (int i = stats.getExtendedInventory().getSizeInventory() - 1; i >= 0; i--)
                 {
-                    ItemStack stack = stats.extendedInventory.getStackInSlot(i);
+                    ItemStack stack = stats.getExtendedInventory().getStackInSlot(i);
 
                     if (stack != null)
                     {
                         ((EntityPlayerMP) event.entityLiving).dropItem(stack, true, false);
-                        stats.extendedInventory.setInventorySlotContents(i, null);
+                        stats.getExtendedInventory().setInventorySlotContents(i, null);
                     }
                 }
                 event.entityLiving.captureDrops = false;

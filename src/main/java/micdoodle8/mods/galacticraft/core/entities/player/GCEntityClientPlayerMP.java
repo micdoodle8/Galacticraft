@@ -4,11 +4,8 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-
-import java.util.List;
-
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
@@ -22,6 +19,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class GCEntityClientPlayerMP extends EntityPlayerSP
 {
@@ -142,8 +141,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 }
 
                 //CUSTOM-------------------
-                GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
-                if (stats.landingTicks > 0)
+                IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+                if (stats.getLandingTicks() > 0)
                 {
                     this.movementInput.moveStrafe *= 0.5F;
                     this.movementInput.moveForward *= 0.5F;
@@ -376,18 +375,18 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         if (this.worldObj.provider instanceof IZeroGDimension)
         {
-            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
-            if (stats.landingTicks > 0)
+            IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            if (stats.getLandingTicks() > 0)
             {
                 if (this.lastLandingTicks == 0)
-                    this.lastLandingTicks = stats.landingTicks;
+                    this.lastLandingTicks = stats.getLandingTicks();
 
-                this.sneakLast = stats.landingTicks < this.lastLandingTicks; 
+                this.sneakLast = stats.getLandingTicks() < this.lastLandingTicks;
                 return sneakLast;
             }
             else
                 this.lastLandingTicks = 0;
-            if (stats.freefallHandler.pjumpticks > 0)
+            if (stats.getFreefallHandler().pjumpticks > 0)
             {
                 this.sneakLast = true;
                 return true;
@@ -400,7 +399,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     return false;
                 }
                 //                if (stats.freefallHandler.testFreefall(this)) return false;
-                if (stats.inFreefall || stats.freefallHandler.onWall)
+                if (stats.isInFreefall() || stats.getFreefallHandler().onWall)
                 {
                     this.sneakLast = false;
                     return false;
@@ -424,20 +423,20 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         float ySize = 0.0F;
         if (this.worldObj.provider instanceof IZeroGDimension)
         {
-            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
-            if (stats.landingTicks > 0)
+            IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            if (stats.getLandingTicks() > 0)
             {
-                ySize = stats.landingYOffset[stats.landingTicks];
+                ySize = stats.getLandingYOffset()[stats.getLandingTicks()];
                 if (this.movementInput.sneak && ySize < 0.08F)
                 {
                     ySize = 0.08F;
                 }
             }
-            else if (stats.freefallHandler.pjumpticks > 0)
+            else if (stats.getFreefallHandler().pjumpticks > 0)
             {
-                ySize = 0.01F * stats.freefallHandler.pjumpticks;
+                ySize = 0.01F * stats.getFreefallHandler().pjumpticks;
             }
-            else if (this.isSneaking() && !stats.inFreefall && !stats.freefallHandler.onWall)
+            else if (this.isSneaking() && !stats.isInFreefall() && !stats.getFreefallHandler().onWall)
             {
                 ySize = 0.08F;
             }

@@ -6,7 +6,8 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -139,20 +140,20 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
         if (playerBase != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
             if (this.cargoItems == null || this.cargoItems.length == 0)
             {
-                stats.rocketStacks = new ItemStack[2];
+                stats.setRocketStacks(new ItemStack[2]);
             }
             else
             {
-                stats.rocketStacks = this.cargoItems;
+                stats.setRocketStacks(this.cargoItems);
             }
 
-            stats.rocketType = this.rocketType.getIndex();
-            stats.rocketItem = GCItems.rocketTier1;
-            stats.fuelLevel = this.fuelTank.getFluidAmount();
+            stats.setRocketType(this.rocketType.getIndex());
+            stats.setRocketItem(GCItems.rocketTier1);
+            stats.setFuelLevel(this.fuelTank.getFluidAmount());
         }
     }
 

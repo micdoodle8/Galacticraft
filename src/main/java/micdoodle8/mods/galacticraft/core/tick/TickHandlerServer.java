@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -13,7 +12,8 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
@@ -255,7 +255,7 @@ public class TickHandlerServer
             {
                 try
                 {
-                    final GCPlayerStats stats = GCPlayerStats.get(change.getPlayer());
+                    IStatsCapability stats = change.getPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                     final WorldProvider provider = WorldUtil.getProviderForNameServer(change.getDimensionName());
                     final Integer dim = provider.getDimensionId();
                     GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
@@ -267,7 +267,7 @@ public class TickHandlerServer
                         WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
                     }
 
-                    stats.teleportCooldown = 10;
+                    stats.setTeleportCooldown(10);
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, change.getPlayer().worldObj.provider.getDimensionId(), new Object[] {}), change.getPlayer());
                 }
                 catch (Exception e)
@@ -420,8 +420,8 @@ public class TickHandlerServer
                         BufferedImage reusable = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
                         for (EntityPlayerMP playerMP : copy)
                         {
-                            GCPlayerStats stats = GCPlayerStats.get(playerMP);
-                            MapUtil.makeVanillaMap(playerMP.dimension, (int) Math.floor(stats.coordsTeleportedFromX) >> 4, (int) Math.floor(stats.coordsTeleportedFromZ) >> 4, baseFolder, reusable);
+                            IStatsCapability stats = playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                            MapUtil.makeVanillaMap(playerMP.dimension, (int) Math.floor(stats.getCoordsTeleportedFromZ()) >> 4, (int) Math.floor(stats.getCoordsTeleportedFromZ()) >> 4, baseFolder, reusable);
                         }
                         playersRequestingMapData.removeAll(copy);
                     }

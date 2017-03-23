@@ -52,10 +52,10 @@ public class PlayerClient implements IPlayerClient
     @Override
     public void onUpdate(EntityPlayerSP player)
     {
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
-        stats.tick++;
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        stats.setTick(stats.getTick() + 1);
 
-        if (stats.usingParachute && !player.capabilities.isFlying && !player.handleWaterMovement())
+        if (stats.isUsingParachute() && !player.capabilities.isFlying && !player.handleWaterMovement())
         {
             player.motionY = -0.5D;
             player.motionX *= 0.5F;
@@ -66,9 +66,10 @@ public class PlayerClient implements IPlayerClient
     @Override
     public boolean isEntityInsideOpaqueBlock(EntityPlayerSP player, boolean vanillaInside)
     {
-        if (vanillaInside && GCPlayerStatsClient.get(player).inFreefall)
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        if (vanillaInside && stats.isInFreefall())
         {
-            GCPlayerStatsClient.get(player).inFreefall = false;
+            stats.setInFreefall(false);
             return false;
         }
         return !(player.ridingEntity instanceof EntityLanderBase) && vanillaInside;
@@ -77,23 +78,23 @@ public class PlayerClient implements IPlayerClient
     @Override
     public void onLivingUpdatePre(EntityPlayerSP player)
     {
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
         if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             if (!startup)
             {
-                stats.inFreefallLast = stats.inFreefall;
-                stats.inFreefall = stats.freefallHandler.testFreefall(player);
+                stats.setInFreefallLast(stats.isInFreefall());
+                stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
                 startup = true;
             }
             if (player.worldObj.provider instanceof IZeroGDimension)
             {
-                stats.inFreefallLast = stats.inFreefall;
-                stats.inFreefall = stats.freefallHandler.testFreefall(player);
-                this.downMot2 = stats.downMotionLast;
-                stats.downMotionLast = player.motionY;
-                stats.freefallHandler.preVanillaMotion(player);
+                stats.setInFreefallLast(stats.isInFreefall());
+                stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
+                this.downMot2 = stats.getDownMotionLast();
+                stats.setDownMotionLast(player.motionY);
+                stats.getFreefallHandler().preVanillaMotion(player);
             }
         }
 
@@ -114,13 +115,13 @@ public class PlayerClient implements IPlayerClient
     @Override
     public void onLivingUpdatePost(EntityPlayerSP player)
     {
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
         if (player.worldObj.provider instanceof IZeroGDimension)
         {
-            stats.freefallHandler.postVanillaMotion(player);
+            stats.getFreefallHandler().postVanillaMotion(player);
 
-            if (stats.inFreefall)
+            if (stats.isInFreefall())
             {
                 //No limb swing
                 player.limbSwing -= player.limbSwingAmount;
@@ -138,43 +139,42 @@ public class PlayerClient implements IPlayerClient
             }
             else
             {
-		    	if (stats.inFreefallLast && this.downMot2 < -0.008D)
+		    	if (stats.isInFreefall() && this.downMot2 < -0.008D)
                 {
-		    		stats.landingTicks = 5 - (int)(Math.min(this.downMot2, stats.downMotionLast) * 40);
-		    		if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS)
+		    		stats.setLandingTicks(5 - (int)(Math.min(this.downMot2, stats.getDownMotionLast()) * 40));
+		    		if (stats.getLandingTicks() > stats.getMaxLandingticks())
 		    		{
-	                    if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS + 4)
+	                    if (stats.getLandingTicks() > stats.getMaxLandingticks() + 4)
 	                    {
-	                        stats.freefallHandler.pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 5;
-                }
-		    		    stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
+	                        stats.getFreefallHandler().pjumpticks = stats.getLandingTicks() - stats.getMaxLandingticks() - 5;
+                        }
+		    		    stats.setLandingTicks(stats.getMaxLandingticks());
 		    		}
-		    		float dYmax = 0.3F * stats.landingTicks / GCPlayerStatsClient.MAX_LANDINGTICKS;
+		    		float dYmax = 0.3F * stats.getLandingTicks() / stats.getMaxLandingticks();
 		    		float factor = 1F;
-		    		for (int i = 0; i <= stats.landingTicks; i++)
+		    		for (int i = 0; i <= stats.getLandingTicks(); i++)
 		    		{
-    	                stats.landingYOffset[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.landingTicks) * factor;
+    	                stats.getLandingYOffset()[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.getLandingTicks()) * factor;
     	                factor *= 0.97F;
-            }
-
+                    }
 		    	}
 	        }
 
-	        if (stats.landingTicks > 0)
+	        if (stats.getLandingTicks() > 0)
 	        {
-	            stats.landingTicks--;
+	            stats.setLandingTicks(stats.getLandingTicks() - 1);
                 player.limbSwing *= 0.8F;
                 player.limbSwingAmount = 0F;
             }
         }
         else
         {
-            stats.inFreefall = false;
+            stats.setInFreefall(false);
         }
 
         boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
 
-        if (ridingThirdPersonEntity && !stats.lastRidingCameraZoomEntity)
+        if (ridingThirdPersonEntity && !stats.isLastRidingCameraZoomEntity())
         {
             if(!ConfigManagerCore.disableVehicleCameraChanges)
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
@@ -184,33 +184,33 @@ public class PlayerClient implements IPlayerClient
         {
             if(!ConfigManagerCore.disableVehicleCameraChanges)
             {
-                stats.lastZoomed = true;
+                stats.setLastZoomed(true);
                 TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
             }
         }
-        else if (stats.lastZoomed)
+        else if (stats.isLastZoomed())
         {
         	if(!ConfigManagerCore.disableVehicleCameraChanges)
             {
-	            stats.lastZoomed = false;
+	            stats.setLastZoomed(false);
 	            TickHandlerClient.zoom(4.0F);
             }
         }
 
-        stats.lastRidingCameraZoomEntity = ridingThirdPersonEntity;
+        stats.setLastRidingCameraZoomEntity(ridingThirdPersonEntity);
 
-        if (stats.usingParachute)
+        if (stats.isUsingParachute())
         {
             player.fallDistance = 0.0F;
         }
 
         PlayerGearData gearData = ModelPlayerGC.getGearData(player);
 
-        stats.usingParachute = false;
+        stats.setUsingParachute(false);
 
         if (gearData != null)
         {
-            stats.usingParachute = gearData.getParachute() != null;
+            stats.setUsingParachute(gearData.getParachute() != null);
             if(!GalacticraftCore.isHeightConflictingModInstalled)
             {
                 if (gearData.getMask() >= 0)
@@ -226,19 +226,20 @@ public class PlayerClient implements IPlayerClient
             }
         }
 
-        if (stats.usingParachute && player.onGround)
+        if (stats.isUsingParachute() && player.onGround)
         {
-            stats.setParachute(false);
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
+            stats.setUsingParachute(false);
+            stats.setLastUsingParachute(false);
+            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.getThirdPersonView();
         }
 
-        if (!stats.lastUsingParachute && stats.usingParachute)
+        if (!stats.isLastUsingParachute() && stats.isUsingParachute())
         {
             FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(Constants.TEXTURE_PREFIX + "player.parachute"), 0.95F + player.getRNG().nextFloat() * 0.1F, 1.0F, (float) player.posX, (float) player.posY, (float) player.posZ));
         }
 
-        stats.lastUsingParachute = stats.usingParachute;
-        stats.lastOnGround = player.onGround;
+        stats.setLastUsingParachute(stats.isUsingParachute());
+        stats.setLastOnGround(player.onGround);
     }
 
     @Override
@@ -278,7 +279,7 @@ public class PlayerClient implements IPlayerClient
 
     private void updateFeet(EntityPlayerSP player, double motionX, double motionZ)
     {
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
         double motionSqrd = motionX * motionX + motionZ * motionZ;
 
         // If the player is on the moon, not airbourne and not riding anything
@@ -297,14 +298,14 @@ public class PlayerClient implements IPlayerClient
                 if (state.getBlock().getMetaFromState(state) == 5)
                 {
                     // If it has been long enough since the last step
-                    if (stats.distanceSinceLastStep > 0.35)
+                    if (stats.getDistanceSinceLastStep() > 0.35)
                     {
                         Vector3 pos = new Vector3(player);
                         // Set the footprint position to the block below and add random number to stop z-fighting
                         pos.y = MathHelper.floor_double(player.posY) + player.getRNG().nextFloat() / 100.0F;
 
                         // Adjust footprint to left or right depending on step count
-                        switch (stats.lastStep)
+                        switch (stats.getLastStep())
                         {
                         case 0:
                             pos.translate(new Vector3(Math.sin(Math.toRadians(-player.rotationYaw + 90)) * 0.25, 0, Math.cos(Math.toRadians(-player.rotationYaw + 90)) * 0.25));
@@ -320,13 +321,12 @@ public class PlayerClient implements IPlayerClient
                         FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimensionId(), pos, player.rotationYaw, player.getName());
 
                         // Increment and cap step counter at 1
-                        stats.lastStep++;
-                        stats.lastStep %= 2;
-                        stats.distanceSinceLastStep = 0;
+                        stats.setLastStep((stats.getLastStep() + 1) % 2);
+                        stats.setDistanceSinceLastStep(0);
                     }
                     else
                     {
-                        stats.distanceSinceLastStep += motionSqrd;
+                        stats.setDistanceSinceLastStep(stats.getDistanceSinceLastStep() + motionSqrd);
                     }
                 }
             }
@@ -359,8 +359,8 @@ public class PlayerClient implements IPlayerClient
         // 4,5,6 : Fuel loader, Launchpad, NASA Workbench
         // 7: oil found 8: placed rocket
 
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
-        int flag = stats.buildFlags;
+        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        int flag = stats.getBuildFlags();
         if (flag == -1)
         {
             flag = 0;
@@ -375,8 +375,8 @@ public class PlayerClient implements IPlayerClient
             return;
         }
         flag |= 1 << i;
-        stats.buildFlags = (flag & 511) + (repeatCount << 9);
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, player.worldObj.provider.getDimensionId(), new Object[] { stats.buildFlags }));
+        stats.setBuildFlags((flag & 511) + (repeatCount << 9));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, player.worldObj.provider.getDimensionId(), new Object[] { stats.getBuildFlags() }));
         switch (i)
         {
         case 0:

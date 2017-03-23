@@ -39,10 +39,8 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacketType;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
@@ -261,12 +259,12 @@ public class PacketSimple extends PacketBase implements Packet
     public void handleClientSide(EntityPlayer player)
     {
         EntityPlayerSP playerBaseClient = null;
-        GCPlayerStatsClient stats = null;
+        IStatsClientCapability stats = null;
 
         if (player instanceof EntityPlayerSP)
         {
             playerBaseClient = (EntityPlayerSP) player;
-            stats = GCPlayerStatsClient.get(playerBaseClient);
+            stats = playerBaseClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
         }
         else
         {
@@ -474,7 +472,7 @@ public class PacketSimple extends PacketBase implements Packet
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
             break;
         case C_RESET_THIRD_PERSON:
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
+            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.getThirdPersonView();
             break;
         case C_UPDATE_SPACESTATION_LIST:
             WorldUtil.decodeSpaceStationListClient(data);
@@ -495,9 +493,9 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case C_ADD_NEW_SCHEMATIC:
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
-            if (!stats.unlockedSchematics.contains(page))
+            if (!stats.getUnlockedSchematics().contains(page))
             {
-                stats.unlockedSchematics.add(page);
+                stats.getUnlockedSchematics().add(page);
             }
             break;
         case C_UPDATE_SCHEMATIC_LIST:
@@ -507,11 +505,11 @@ public class PacketSimple extends PacketBase implements Packet
 
                 if (schematicID != -2)
                 {
-                    Collections.sort(stats.unlockedSchematics);
+                    Collections.sort(stats.getUnlockedSchematics());
 
-                    if (!stats.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
+                    if (!stats.getUnlockedSchematics().contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
                     {
-                        stats.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(schematicID));
+                        stats.getUnlockedSchematics().add(SchematicRegistry.getMatchingRecipeForID(schematicID));
                     }
                 }
             }
@@ -529,7 +527,7 @@ public class PacketSimple extends PacketBase implements Packet
             player.playSound("random.bow", 10.0F, 0.2F);
             break;
         case C_UPDATE_OXYGEN_VALIDITY:
-            stats.oxygenSetupValid = (Boolean) this.data.get(0);
+            stats.setOxygenSetupValid((Boolean) this.data.get(0));
             break;
         case C_OPEN_PARACHEST_GUI:
             switch ((Integer) this.data.get(1))
@@ -593,7 +591,7 @@ public class PacketSimple extends PacketBase implements Packet
             SpaceRaceManager.addSpaceRace(race);
             break;
         case C_OPEN_JOIN_RACE_GUI:
-            stats.spaceRaceInviteTeamID = (Integer) this.data.get(0);
+            stats.setSpaceRaceInviteTeamID((Integer) this.data.get(0));
             player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
             break;
         case C_UPDATE_FOOTPRINT_LIST:
@@ -652,8 +650,8 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_UPDATE_THERMAL_LEVEL:
-            stats.thermalLevel = (Integer) this.data.get(0);
-            stats.thermalLevelNormalising = (Boolean) this.data.get(1);
+            stats.setThermalLevel((Integer) this.data.get(0));
+            stats.setThermalLevelNormalising((Boolean) this.data.get(1));
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
             player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
@@ -710,7 +708,7 @@ public class PacketSimple extends PacketBase implements Packet
 //            }
 //            break;
         case C_UPDATE_STATS:
-            stats.buildFlags = (Integer) this.data.get(0);
+            stats.setBuildFlags((Integer) this.data.get(0));
             break;
         case C_UPDATE_VIEWSCREEN:
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
@@ -832,7 +830,7 @@ public class PacketSimple extends PacketBase implements Packet
             return;
         }
 
-        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
+        final IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
         switch (this.type)
         {
@@ -851,24 +849,24 @@ public class PacketSimple extends PacketBase implements Packet
                 {
                     if (ship.hasValidFuel())
                     {
-                        ItemStack stack2 = stats.extendedInventory.getStackInSlot(4);
+                        ItemStack stack2 = stats.getExtendedInventory().getStackInSlot(4);
 
-                        if (stack2 != null && stack2.getItem() instanceof ItemParaChute || stats.launchAttempts > 0)
+                        if (stack2 != null && stack2.getItem() instanceof ItemParaChute || stats.getLaunchAttempts() > 0)
                         {
                             ship.igniteCheckingCooldown();
-                            stats.launchAttempts = 0;
+                            stats.setLaunchAttempts(0);
                         }
-                        else if (stats.chatCooldown == 0 && stats.launchAttempts == 0)
+                        else if (stats.getChatCooldown() == 0 && stats.getLaunchAttempts() == 0)
                         {
                             player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
-                            stats.chatCooldown = 250;
-                            stats.launchAttempts = 1;
+                            stats.setChatCooldown(250);
+                            stats.setLaunchAttempts(1);
                         }
                     }
-                    else if (stats.chatCooldown == 0)
+                    else if (stats.getChatCooldown() == 0)
                     {
                         player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nofuel")));
-                        stats.chatCooldown = 250;
+                        stats.setChatCooldown(250);
                     }
                 }
             }
@@ -923,7 +921,7 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case S_BIND_SPACE_STATION_ID:
             int homeID = (Integer) this.data.get(0);
-            if ((!stats.spaceStationDimensionData.containsKey(homeID) || stats.spaceStationDimensionData.get(homeID) == -1 || stats.spaceStationDimensionData.get(homeID) == 0)
+            if ((!stats.getSpaceStationDimensionData().containsKey(homeID) || stats.getSpaceStationDimensionData().get(homeID) == -1 || stats.getSpaceStationDimensionData().get(homeID) == 0)
                     && !ConfigManagerCore.disableSpaceStationCreation)
             {
                 if (playerBase.capabilities.isCreativeMode || WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
@@ -973,10 +971,10 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_ON_FAILED_CHEST_UNLOCK:
-            if (stats.chatCooldown == 0)
+            if (stats.getChatCooldown() == 0)
             {
                 player.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.chest.warning.wrongkey", this.data.get(0))));
-                stats.chatCooldown = 100;
+                stats.setChatCooldown(100);
             }
             break;
         case S_RENAME_SPACE_STATION:
@@ -1119,7 +1117,7 @@ public class PacketSimple extends PacketBase implements Packet
 
                 if (race != null)
                 {
-                    GCPlayerStats.get(playerInvited).spaceRaceInviteTeamID = teamInvitedTo;
+                    playerInvited.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setSpaceRaceInviteTeamID(teamInvitedTo);
                     String dA = EnumColor.DARK_AQUA.getCode();
                     String bG = EnumColor.BRIGHT_GREEN.getCode();
                     String dB = EnumColor.PURPLE.getCode();
@@ -1231,7 +1229,7 @@ public class PacketSimple extends PacketBase implements Packet
             EntityPlayerMP e = PlayerUtil.getPlayerBaseServerFromPlayerUsername(name, true);
             if (e != null)
             {
-                GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
+                GCPlayerHandler.checkGear(e, e.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null), true);
             }
             break;
         case S_REQUEST_ARCLAMP_FACING:
@@ -1242,7 +1240,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_BUILDFLAGS_UPDATE:
-            stats.buildFlags = (Integer) this.data.get(0);
+            stats.setBuildFlags((Integer) this.data.get(0));
             break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
             TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));

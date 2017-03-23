@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -101,17 +102,17 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     {
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-            ItemStack gear = stats.extendedInventory.getStackInSlot(6);
-            ItemStack gear1 = stats.extendedInventory.getStackInSlot(7);
-            ItemStack gear2 = stats.extendedInventory.getStackInSlot(8);
-            ItemStack gear3 = stats.extendedInventory.getStackInSlot(9);
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            ItemStack gear = stats.getExtendedInventory().getStackInSlot(6);
+            ItemStack gear1 = stats.getExtendedInventory().getStackInSlot(7);
+            ItemStack gear2 = stats.getExtendedInventory().getStackInSlot(8);
+            ItemStack gear3 = stats.getExtendedInventory().getStackInSlot(9);
 
             if (itemStack.getItemDamage() == 0)
             {
                 if (gear == null)
                 {
-                    stats.extendedInventory.setInventorySlotContents(6, itemStack.copy());
+                    stats.getExtendedInventory().setInventorySlotContents(6, itemStack.copy());
                     itemStack.stackSize = 0;
                 }
             }
@@ -119,7 +120,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
             {
                 if (gear1 == null)
                 {
-                    stats.extendedInventory.setInventorySlotContents(7, itemStack.copy());
+                    stats.getExtendedInventory().setInventorySlotContents(7, itemStack.copy());
                     itemStack.stackSize = 0;
                 }
             }
@@ -127,7 +128,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
             {
                 if (gear2 == null)
                 {
-                    stats.extendedInventory.setInventorySlotContents(8, itemStack.copy());
+                    stats.getExtendedInventory().setInventorySlotContents(8, itemStack.copy());
                     itemStack.stackSize = 0;
                 }
             }
@@ -135,7 +136,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
             {
                 if (gear3 == null)
                 {
-                    stats.extendedInventory.setInventorySlotContents(9, itemStack.copy());
+                    stats.getExtendedInventory().setInventorySlotContents(9, itemStack.copy());
                     itemStack.stackSize = 0;
                 }
             }

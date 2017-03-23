@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -13,7 +13,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -142,7 +141,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
                     return true;
                 }
 
-                ItemStack wearing = GCPlayerStats.get((EntityPlayerMP) entityPlayer).frequencyModuleInSlot;
+                ItemStack wearing = entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).getFrequencyModuleInSlot();
                 if (wearing != null)
                 {
                     if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim"))
