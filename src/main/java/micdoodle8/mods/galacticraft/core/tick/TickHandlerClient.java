@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
@@ -49,10 +50,13 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -300,25 +304,25 @@ public class TickHandlerClient
         }
     }
 
-//    @SubscribeEvent
-//    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
-//    {
-//        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-//        final EntityPlayerSP player = minecraft.thePlayer;
-//
-//        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
-//        {
-//            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
-//            {
-//                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
-//                String str = I18n.format("mount.onboard", new Object[] { GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode()) });
-//                if (minecraft.ingameGUI.recordPlaying.equals(str))
-//                {
-//                    minecraft.ingameGUI.recordPlaying = "";
-//                }
-//            }
-//        }
-//    } TODO
+    @SubscribeEvent
+    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
+    {
+        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final EntityPlayerSP player = minecraft.thePlayer;
+
+        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
+        {
+            if (player != null && player.ridingEntity != null && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
+            {
+                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
+                String str = I18n.format("mount.onboard", new Object[] { GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode()) });
+                if (minecraft.ingameGUI.recordPlaying.equals(str))
+                {
+                    minecraft.ingameGUI.recordPlaying = "";
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event)
