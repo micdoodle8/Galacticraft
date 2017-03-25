@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -120,7 +121,11 @@ public class TickHandlerServer
         TickHandlerServer.spaceRaceData = null;
         TickHandlerServer.tickCount = 0L;
         TickHandlerServer.fluidNetworks.clear();
-        MapUtil.reset();
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            MapUtil.reset();
+        }
     }
 
     public static void addFootprint(long chunkKey, Footprint print, int dimID)
@@ -279,13 +284,16 @@ public class TickHandlerServer
 
             TickHandlerServer.scheduledDimensionChanges.clear();
 
-            if (MapUtil.calculatingMap.get())
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
             {
-                MapUtil.BiomeMapNextTick_MultiThreaded();
-            }
-            else if (!MapUtil.doneOverworldTexture)
-            {
-                MapUtil.makeOverworldTexture();
+                if (MapUtil.calculatingMap.get())
+                {
+                    MapUtil.BiomeMapNextTick_MultiThreaded();
+                }
+                else if (!MapUtil.doneOverworldTexture)
+                {
+                    MapUtil.makeOverworldTexture();
+                }
             }
 
             if (TickHandlerServer.spaceRaceData == null)
