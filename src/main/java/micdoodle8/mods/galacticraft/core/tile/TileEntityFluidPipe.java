@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
@@ -81,7 +82,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         {
             if (!this.dataRequest)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, this.worldObj.provider.getDimension(), new Object[] { this.worldObj.provider.getDimension(), this.getPos() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { GCCoreUtil.getDimensionID(this.worldObj), this.getPos() }));
                 this.dataRequest = true;
             }
         }

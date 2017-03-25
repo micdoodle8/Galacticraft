@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -51,7 +52,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         boolean initialLight = false;
         if (this.updateClientFlag)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimension());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.worldObj));
             this.updateClientFlag = false;
         }
 
@@ -189,7 +190,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         this.thisAABB = null;
         if (this.worldObj.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos() }));
         }
         else
         {
@@ -372,7 +373,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.facing }), this.worldObj.provider.getDimension());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.worldObj));
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();

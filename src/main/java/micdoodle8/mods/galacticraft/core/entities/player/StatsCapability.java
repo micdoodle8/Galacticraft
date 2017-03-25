@@ -901,7 +901,7 @@ public class StatsCapability implements IStatsCapability
     }
 
     @Override
-    public boolean isSentFlags()
+    public boolean hasSentFlags()
     {
         return sentFlags;
     }

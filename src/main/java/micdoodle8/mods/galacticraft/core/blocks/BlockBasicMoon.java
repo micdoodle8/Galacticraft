@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
@@ -302,7 +303,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
         if (!worldIn.isRemote && type == EnumBlockBasicMoon.MOON_TURF)
         {
-            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(worldIn.provider.getDimension());
+            Map<Long, List<Footprint>> footprintChunkMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionID(worldIn));
 
             if (footprintChunkMap != null)
             {
@@ -330,7 +331,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
                 }
             }
 
-            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, worldIn.provider.getDimension()));
+            TickHandlerServer.footprintBlockChanges.add(new BlockVec3Dim(pos, GCCoreUtil.getDimensionID(worldIn)));
         }
     }
 

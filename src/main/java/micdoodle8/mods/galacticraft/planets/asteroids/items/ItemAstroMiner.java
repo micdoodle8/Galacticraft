@@ -6,6 +6,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
@@ -108,8 +110,8 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 }
 
                 EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
+                IStatsCapability stats = playerIn.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-                IStatsCapability stats = playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                 int astroCount = stats.getAstroMinerCount();
                 if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
                 {

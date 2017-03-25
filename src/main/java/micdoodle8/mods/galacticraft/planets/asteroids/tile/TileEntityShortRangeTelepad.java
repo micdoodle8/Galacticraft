@@ -159,7 +159,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         ((EntityPlayerMP) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, this.worldObj.provider.getDimension(), new Object[] { finalPos, e.getEntityId() }), this.worldObj.provider.getDimension());
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { finalPos, e.getEntityId() }), GCCoreUtil.getDimensionID(this.worldObj));
                                 }
 
                                 if (containedEntities.size() > 0)
@@ -496,7 +496,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         if (this.address >= 0)
         {
             ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.address);
-            this.addressValid = entry == null || (this.worldObj != null && (entry.dimensionID == this.worldObj.provider.getDimension() && entry.position.x == this.getPos().getX() && entry.position.y == this.getPos().getY() && entry.position.z == this.getPos().getZ()));
+            this.addressValid = entry == null || (this.worldObj != null && (entry.dimensionID == GCCoreUtil.getDimensionID(this.worldObj) && entry.position.x == this.getPos().getX() && entry.position.y == this.getPos().getY() && entry.position.z == this.getPos().getZ()));
         }
         else
         {
@@ -519,7 +519,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
             if (addressResult != null)
             {
-                if (this.worldObj.provider.getDimension() == addressResult.dimensionID)
+                if (GCCoreUtil.getDimensionID(this.worldObj) == addressResult.dimensionID)
                 {
                     double distance = this.getDistanceSq(addressResult.position.x + 0.5F, addressResult.position.y + 0.5F, addressResult.position.z + 0.5F);
 

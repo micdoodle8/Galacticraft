@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.*;
@@ -398,11 +399,11 @@ public class ThreadFindSeal
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), checkedVec.getBlockState(world).getBlock().getStateFromMeta(ambientThermal ? 1 : 0), 0));
             }
 
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
+            TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionID(this.world), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimension(), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(GCCoreUtil.getDimensionID(this.world), this.torchesToUpdate);
         }
     }
 
@@ -419,11 +420,11 @@ public class ThreadFindSeal
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.clone(), GCBlocks.brightAir.getDefaultState(), 0));
             }
-            TickHandlerServer.scheduleNewBlockChange(this.world.provider.getDimension(), changeList);
+            TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionID(this.world), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(this.world.provider.getDimension(), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(GCCoreUtil.getDimensionID(this.world), this.torchesToUpdate);
         }
     }
 

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -53,10 +54,11 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         {
         case OK:
             ((EntityPlayerMP) entityPlayer).connection.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, entityPlayer.worldObj.provider.getDimension(), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.worldObj), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).getCryogenicChamberCooldown() / 20)));
+            IStatsCapability stats = entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            entityPlayer.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", stats.getCryogenicChamberCooldown() / 20)));
             return false;
         default:
             return false;
@@ -77,7 +79,8 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
             }
 
-            if (entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).getCryogenicChamberCooldown() > 0)
+            IStatsCapability stats = entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            if (stats.getCryogenicChamberCooldown() > 0)
             {
                 return EntityPlayer.SleepResult.NOT_POSSIBLE_NOW;
             }

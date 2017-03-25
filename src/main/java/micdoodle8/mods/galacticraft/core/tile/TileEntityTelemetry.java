@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
@@ -274,7 +275,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 
         int distSq = 1025;
         BlockVec3Dim nearest = null;
-        int dim = te.getWorld().provider.getDimension();
+        int dim = GCCoreUtil.getDimensionID(te.getWorld());
         for (BlockVec3Dim telemeter : loadedList)
         {
             if (telemeter.dim != dim)

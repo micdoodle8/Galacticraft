@@ -109,7 +109,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void playerJoinWorld(EntityJoinWorldEvent event)
     {
-        TickHandlerServer.markWorldNeedsUpdate(event.getWorld().provider.getDimension());
+        TickHandlerServer.markWorldNeedsUpdate(GCCoreUtil.getDimensionID(event.getWorld()));
     }
 
     @SubscribeEvent
@@ -271,7 +271,7 @@ public class EventHandlerGC
                 EventHandlerGC.bedActivated = true;
 
                 //On planets allow the bed to be used to designate a player spawn point
-                event.getEntityPlayer().setSpawnChunk(event.getPos(), false, event.getWorld().provider.getDimension());
+                event.getEntityPlayer().setSpawnChunk(event.getPos(), false, GCCoreUtil.getDimensionID(event.getWorld()));
             }
             else
             {
@@ -436,7 +436,7 @@ public class EventHandlerGC
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == world.provider.getDimension())
+            if (dim == GCCoreUtil.getDimensionID(world))
             {
                 doGen2 = true;
                 break;
@@ -656,7 +656,7 @@ public class EventHandlerGC
                 List<Object> objList = new ArrayList<Object>();
                 objList.add(iArray);
 
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, event.player.worldObj.provider.getDimension(), objList), event.player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, GCCoreUtil.getDimensionID(event.player.worldObj), objList), event.player);
             }
         }
     }
@@ -689,7 +689,7 @@ public class EventHandlerGC
                 benchY = ((GuiPositionedContainer)cs).getY();
                 benchZ = ((GuiPositionedContainer)cs).getZ();
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
             FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, benchX, benchY, benchZ);
         }
     }
@@ -773,17 +773,17 @@ public class EventHandlerGC
     {
         if (event.getEntityLiving() instanceof EntityPlayerMP)
         {
-            IStatsCapability stats = event.getEntityLiving().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-            if (!event.getEntityLiving().worldObj.getGameRules().getBoolean("keepInventory"))
+            IStatsCapability stats = event.getEntityPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            if (!event.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory"))
             {
-                event.getEntityLiving().captureDrops = true;
+                event.getEntityPlayer().captureDrops = true;
                 for (int i = stats.getExtendedInventory().getSizeInventory() - 1; i >= 0; i--)
                 {
                     ItemStack stack = stats.getExtendedInventory().getStackInSlot(i);
 
                     if (stack != null)
                     {
-                        ((EntityPlayerMP) event.getEntityLiving()).dropItem(stack, true, false);
+                        event.getEntityPlayer().dropItem(stack, true, false);
                         stats.getExtendedInventory().setInventorySlotContents(i, null);
                     }
                 }

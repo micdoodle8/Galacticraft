@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
@@ -477,8 +476,7 @@ public class TickHandlerClient
                     {
                         world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
                         ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderSpaceStation) world.provider).getSpinManager().getSpinRate();
-                        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
-                        stats.setInFreefallFirstCheck(false);
+                        player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null).setInFreefallFirstCheck(false);
                     }
 
                     if (world.provider.getCloudRenderer() == null)
@@ -580,7 +578,7 @@ public class TickHandlerClient
 
             if (player != null && player.getRidingEntity() != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, player.worldObj.provider.getDimension(), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}));
                 ClientProxyCore.lastSpacebarDown = true;
             }
 

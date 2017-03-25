@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -64,7 +65,7 @@ public class DrawGameScreen extends IScreenManager
 
     private void makeMap()
     {
-        if (this.mapDone || reusableMap == null || this.driver.getWorld().provider.getDimension() != 0)
+        if (this.mapDone || reusableMap == null || GCCoreUtil.getDimensionID(this.driver.getWorld()) != 0)
         {
             return;
         }

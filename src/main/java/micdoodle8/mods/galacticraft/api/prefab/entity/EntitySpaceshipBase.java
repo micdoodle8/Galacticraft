@@ -261,8 +261,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        {
 	            this.kill();
 	        }
-	        else
-	        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
+	        else if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
 	        {
                 for (Entity e : this.getPassengers())
                 {
@@ -279,10 +278,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                         this.kill();
                     }
 
-	        if (this.timeSinceLaunch > 50 && this.onGround)
-	        {
-	            this.failRocket();
-	        }
+                    if (this.timeSinceLaunch > 50 && this.onGround)
+                    {
+                        this.failRocket();
+                    }
                 }
 	        }
         }

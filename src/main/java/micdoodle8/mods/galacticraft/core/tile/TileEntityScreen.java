@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -68,7 +69,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         if (FMLCommonHandler.instance().getEffectiveSide().isClient())
         {
             this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, this.worldObj.provider.getDimension(), new Object[] { this.getPos() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos() }));
         }
     }
 
@@ -91,7 +92,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         {
             connectedFlags += 1;
         }
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.imageType, connectedFlags }), this.worldObj.provider.getDimension());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.imageType, connectedFlags }), GCCoreUtil.getDimensionID(this.worldObj));
     }
 
     public EnumFacing getFront()

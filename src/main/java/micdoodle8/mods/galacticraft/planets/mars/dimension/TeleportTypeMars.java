@@ -74,22 +74,26 @@ public class TeleportTypeMars implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
     {
-        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-        if (!ridingAutoRocket && player != null && stats.getTeleportCooldown() <= 0)
+        if (!ridingAutoRocket && player != null)
         {
-            if (player.capabilities.isFlying)
+            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+
+            if (stats.getTeleportCooldown() <= 0)
             {
-                player.capabilities.isFlying = false;
+                if (player.capabilities.isFlying)
+                {
+                    player.capabilities.isFlying = false;
+                }
+
+                EntityLandingBalloons lander = new EntityLandingBalloons(player);
+
+                if (!newWorld.isRemote)
+                {
+                    newWorld.spawnEntityInWorld(lander);
+                }
+
+                stats.setTeleportCooldown(10);
             }
-
-            EntityLandingBalloons lander = new EntityLandingBalloons(player);
-
-            if (!newWorld.isRemote)
-            {
-                newWorld.spawnEntityInWorld(lander);
-            }
-
-            stats.setTeleportCooldown(10);
         }
     }
 

@@ -177,7 +177,6 @@ public class PacketSimpleMars extends PacketBase
     public void handleServerSide(EntityPlayer player)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
-        IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
         switch (this.type)
         {

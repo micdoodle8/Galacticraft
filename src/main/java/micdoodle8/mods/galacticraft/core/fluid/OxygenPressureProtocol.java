@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -77,7 +78,7 @@ public class OxygenPressureProtocol
     {
         if (ConfigManagerCore.enableSealerEdgeChecks)
         {
-            TickHandlerServer.scheduleNewEdgeCheck(world.provider.getDimension(), vec);
+            TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionID(world), vec);
         }
     }
 

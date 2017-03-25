@@ -135,7 +135,7 @@ public class GuiSlimeling extends GuiScreen
             }
         }
 
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimension(), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
 
         super.keyTyped(keyChar, keyID);
     }
@@ -153,7 +153,7 @@ public class GuiSlimeling extends GuiScreen
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimension(), new Object[] { this.slimeling.getEntityId(), 0, "" }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 0, "" }));
                 break;
             }
         }
@@ -182,7 +182,7 @@ public class GuiSlimeling extends GuiScreen
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
             this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimension(), new Object[] { this.slimeling.getEntityId(), 6, "" }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 6, "" }));
         }
 
         super.mouseClicked(px, py, par3);
@@ -232,7 +232,7 @@ public class GuiSlimeling extends GuiScreen
                 if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.slimeling.isOwner(this.mc.thePlayer))
                 {
                     this.slimeling.setName(this.slimeling.getName().substring(0, this.slimeling.getName().length() - 1));
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimension(), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
                     this.timeBackspacePressed = System.currentTimeMillis();
                     this.backspacePressed++;
                 }

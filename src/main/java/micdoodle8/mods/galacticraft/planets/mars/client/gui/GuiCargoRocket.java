@@ -62,7 +62,7 @@ public class GuiCargoRocket extends GuiContainerGC
         switch (button.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, mc.theWorld.provider.getDimension(), new Object[] { this.rocket.getEntityId(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.rocket.getEntityId(), 0 }));
             break;
         default:
             break;

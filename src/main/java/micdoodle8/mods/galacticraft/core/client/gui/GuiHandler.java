@@ -271,6 +271,7 @@ public class GuiHandler implements IGuiHandler
         if (playerClient != null)
         {
             IStatsClientCapability stats = playerClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+
             for (ISchematicPage page : stats.getUnlockedSchematics())
             {
                 if (ID == page.getGuiID())

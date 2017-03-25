@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -237,7 +238,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-            if (this.targetDimension != this.worldObj.provider.getDimension())
+            if (this.targetDimension != GCCoreUtil.getDimensionID(this.worldObj))
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
                 WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);

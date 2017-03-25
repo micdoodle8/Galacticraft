@@ -517,7 +517,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.motionX = 0;
             this.motionY = 0;
             this.motionZ = 0;
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.worldObj));
             return;
         }
 
@@ -617,7 +617,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             break;
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.worldObj));
 
         this.posX += this.motionX;
         this.posY += this.motionY;
@@ -2216,7 +2216,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             int astroCount = stats.getAstroMinerCount();
             if (astroCount > 0)
             {
-                stats.setAstroMinerCount(astroCount - 1);
+                stats.setAstroMinerCount(stats.getAstroMinerCount() - 1);
             }
         }
 

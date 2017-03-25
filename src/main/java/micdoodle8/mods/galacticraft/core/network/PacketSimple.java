@@ -692,7 +692,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             break;
         case C_RESPAWN_PLAYER:
             final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
-            final int dimID = provider.getDimension();
+            final int dimID = GCCoreUtil.getDimensionID(provider);
             if (ConfigManagerCore.enableDebug)
             {
                 GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
@@ -833,7 +833,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             return;
         }
 
-        IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        final IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
         switch (this.type)
         {
@@ -859,13 +859,10 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                             ship.igniteCheckingCooldown();
                             stats.setLaunchAttempts(0);
                         }
-                        else if (stats.getLaunchAttempts() == 0)
+                        else if (stats.getChatCooldown() == 0 && stats.getLaunchAttempts() == 0)
                         {
-                            if (stats.getChatCooldown() == 0)
-                            {
-                                player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
-                                stats.setChatCooldown(100);
-                            }
+                            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
+                            stats.setChatCooldown(250);
                             stats.setLaunchAttempts(1);
                         }
                     }
@@ -1123,8 +1120,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
 
                 if (race != null)
                 {
-                    IStatsCapability invitedPlayerStats = playerInvited.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-                    invitedPlayerStats.setSpaceRaceInviteTeamID(teamInvitedTo);
+                    playerInvited.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setSpaceRaceInviteTeamID(teamInvitedTo);
                     String dA = EnumColor.DARK_AQUA.getCode();
                     String bG = EnumColor.BRIGHT_GREEN.getCode();
                     String dB = EnumColor.PURPLE.getCode();
@@ -1236,8 +1232,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             EntityPlayerMP e = PlayerUtil.getPlayerBaseServerFromPlayerUsername(name, true);
             if (e != null)
             {
-                IStatsCapability statsRequested = e.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-                GCPlayerHandler.checkGear(e, statsRequested, true);
+                GCPlayerHandler.checkGear(e, e.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null), true);
             }
             break;
         case S_REQUEST_ARCLAMP_FACING:

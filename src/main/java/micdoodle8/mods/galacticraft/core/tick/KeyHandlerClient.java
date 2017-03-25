@@ -152,13 +152,13 @@ public class KeyHandlerClient extends KeyHandler
                     if (kb == KeyHandlerClient.leftShiftKey)
                     {
                         autoRocket.motionY -= 0.02D;
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, mc.theWorld.provider.getDimension(), new Object[] { autoRocket.getEntityId(), false }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { autoRocket.getEntityId(), false }));
                     }
 
                     if (kb == KeyHandlerClient.spaceKey)
                     {
                         autoRocket.motionY += 0.02D;
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, mc.theWorld.provider.getDimension(), new Object[] { autoRocket.getEntityId(), true }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { autoRocket.getEntityId(), true }));
                     }
                 }
             }

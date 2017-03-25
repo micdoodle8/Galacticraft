@@ -94,7 +94,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -111,7 +111,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 

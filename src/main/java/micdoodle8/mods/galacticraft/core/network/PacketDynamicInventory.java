@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +27,7 @@ public class PacketDynamicInventory extends PacketBase
 
     public PacketDynamicInventory(Entity entity)
     {
-        super(entity.worldObj.provider.getDimension());
+        super(GCCoreUtil.getDimensionID(entity.worldObj));
         assert entity instanceof IInventory : "Entity does not implement " + IInventory.class.getSimpleName();
         this.type = 0;
         this.data = new Object[] { entity.getEntityId() };
@@ -40,7 +41,7 @@ public class PacketDynamicInventory extends PacketBase
 
     public PacketDynamicInventory(TileEntity chest)
     {
-        super(chest.getWorld().provider.getDimension());
+        super(GCCoreUtil.getDimensionID(chest.getWorld()));
         assert chest instanceof IInventory : "Tile does not implement " + IInventory.class.getSimpleName();
         this.type = 1;
         this.data = new Object[] { chest.getPos() };

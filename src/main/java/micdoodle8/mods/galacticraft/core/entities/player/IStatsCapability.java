@@ -276,7 +276,7 @@ public interface IStatsCapability
 
     void setOpenedSpaceRaceManager(boolean openedSpaceRaceManager);
 
-    boolean isSentFlags();
+    boolean hasSentFlags();
 
     void setSentFlags(boolean sentFlags);
 

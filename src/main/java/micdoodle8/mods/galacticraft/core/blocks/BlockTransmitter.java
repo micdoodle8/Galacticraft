@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -40,8 +41,8 @@ public abstract class BlockTransmitter extends BlockAdvanced
 
         TileEntity tile = worldIn.getTileEntity(pos);
 
-//        this.setBlockBoundsBasedOnState(worldIn, pos); TODO
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, ((World) worldIn).provider.getDimension(), new Object[] { pos }), new NetworkRegistry.TargetPoint(((World) worldIn).provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_WIRE_BOUNDS, GCCoreUtil.getDimensionID((World) worldIn), new Object[] { pos }), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID((World) worldIn), pos.getX(), pos.getY(), pos.getZ(), 10.0D));
 
         if (tile instanceof INetworkConnection)
         {

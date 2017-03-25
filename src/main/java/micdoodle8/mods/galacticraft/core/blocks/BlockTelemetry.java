@@ -138,7 +138,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
                     fmData.setInteger("teCoordX", pos.getX());
                     fmData.setInteger("teCoordY", pos.getY());
                     fmData.setInteger("teCoordZ", pos.getZ());
-                    fmData.setInteger("teDim", world.provider.getDimension());
+                    fmData.setInteger("teDim", GCCoreUtil.getDimensionID(world));
                     return true;
                 }
 

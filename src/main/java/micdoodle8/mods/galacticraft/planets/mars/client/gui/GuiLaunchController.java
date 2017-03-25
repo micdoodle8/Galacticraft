@@ -352,7 +352,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         if (dropdown.equals(this.dropdownTest))
         {
             this.launchController.launchDropdownSelection = selection;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimension(), new Object[] { 1, this.launchController.getPos(), this.launchController.launchDropdownSelection }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 1, this.launchController.getPos(), this.launchController.launchDropdownSelection }));
         }
     }
 
@@ -381,12 +381,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
             if (textBox.equals(this.frequency))
             {
                 this.launchController.frequency = textBox.getIntegerValue();
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimension(), new Object[] { 0, this.launchController.getPos(), this.launchController.frequency }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 0, this.launchController.getPos(), this.launchController.frequency }));
             }
             else if (textBox.equals(this.destinationFrequency))
             {
                 this.launchController.destFrequency = textBox.getIntegerValue();
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimension(), new Object[] { 2, this.launchController.getPos(), this.launchController.destFrequency }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 2, this.launchController.getPos(), this.launchController.destFrequency }));
             }
         }
     }
@@ -443,12 +443,12 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         if (checkbox.equals(this.enablePadRemovalButton))
         {
             this.launchController.launchPadRemovalDisabled = !newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimension(), new Object[] { 3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
         }
         else if (checkbox.equals(this.launchWhenCheckbox))
         {
             this.launchController.launchSchedulingEnabled = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, mc.theWorld.provider.getDimension(), new Object[] { 4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0 }));
         }
     }
 

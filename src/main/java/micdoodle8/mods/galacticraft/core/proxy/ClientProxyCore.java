@@ -289,7 +289,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         World world = ClientProxyCore.mc.theWorld;
 
-        if (world != null && world.provider.getDimension() == dimensionID)
+        if (world != null && GCCoreUtil.getDimensionID(world) == dimensionID)
         {
             return world;
         }

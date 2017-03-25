@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
@@ -54,7 +55,8 @@ public class TileEntityPainter extends TileEntity
             color = ColorUtil.lighten(color, 0.03F);
             this.setGlassColors(color, color, color);
 
-            //GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+            //IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            //stats.setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
         }
     }
     
@@ -78,7 +80,7 @@ public class TileEntityPainter extends TileEntity
         }
 
 //        if (changes)
-//            ColorUtil.updateColorsForArea(this.worldObj.provider.getDimensionId(), this.pos, this.range, this.glassColor1, this.glassColor2, this.glassColor3);;
+//            ColorUtil.updateColorsForArea(this.worldObj), this.pos, this.range, this.glassColor1, this.glassColor2, this.glassColor3);;
     }
     
     @Override
@@ -107,7 +109,7 @@ public class TileEntityPainter extends TileEntity
 
     private static Set<BlockVec3> getLoadedTiles(World world)
     {
-        int dimID = world.provider.getDimension();
+        int dimID = GCCoreUtil.getDimensionID(world);
         Set<BlockVec3> loaded = loadedTilesForDim.get(dimID);
         
         if (loaded == null)
@@ -147,8 +149,8 @@ public class TileEntityPainter extends TileEntity
     public static void onServerTick(World world)
     {
         Set<BlockVec3> loaded = getLoadedTiles(world);
-        int dimID = world.provider.getDimension();
-        List<EntityPlayerMP> allPlayers = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+        int dimID = GCCoreUtil.getDimensionID(world);
+        List<EntityPlayerMP> allPlayers = (List<EntityPlayerMP>)FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
         for (final EntityPlayerMP player : allPlayers)
         {
             if (player.dimension != dimID) continue;

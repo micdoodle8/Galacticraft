@@ -87,7 +87,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
 //            if (ConfigManagerCore.enableDebug)
 //            {
-//            	int dim = this.worldObj.provider.getDimensionId();
+//            	int dim = this.worldObj);
 //            	Long tickCount = tickCounts.get(dim);
 //            	if (tickCount == null)
 //            	{
@@ -151,7 +151,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, this.worldObj.provider.getDimension(), new Object[] { 5, this.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { 5, this.getPos(), 0 }));
             }
         }
     }

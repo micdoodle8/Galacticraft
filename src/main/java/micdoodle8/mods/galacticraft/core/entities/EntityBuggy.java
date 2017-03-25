@@ -446,8 +446,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else if (this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 50.0D));
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.getDimension(), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 50.0D));
         }
     }
 
@@ -659,7 +659,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         if (this.worldObj.isRemote && (key == 6 || key == 8 || key == 9))
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, this.worldObj.provider.getDimension(), new Object[] { key }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { key }));
             return true;
         }
 

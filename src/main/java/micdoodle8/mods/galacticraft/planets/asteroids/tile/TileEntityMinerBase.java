@@ -381,7 +381,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         super.validate();
         if (this.worldObj.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
         }
     }
 
@@ -608,7 +608,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             z = this.mainBlockPosition.getZ();
         }
         int link = (this.linkedMinerID != null) ? 1 : 0;
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), this.facing, x, y, z, link }), this.worldObj.provider.getDimension());
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing, x, y, z, link }), GCCoreUtil.getDimensionID(this.worldObj));
     }
 
     @Override

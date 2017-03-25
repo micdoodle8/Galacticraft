@@ -341,31 +341,32 @@ public class TeleportTypeAsteroids implements ITeleportType
         SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 2)); //Knows how to build Astro Miner
-        stats.setRocketStacks(new ItemStack[20]);
+        ItemStack[] rocketStacks = new ItemStack[20];
         stats.setFuelLevel(1000);
         int i = 0;
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.oxMask);
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.oxygenGear);
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.oxTankMedium);
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.oxTankHeavy);
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.oxTankHeavy);
-        stats.getRocketStacks()[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.getRocketStacks()[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.getRocketStacks()[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.getRocketStacks()[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
-        stats.getRocketStacks()[i++] = new ItemStack(Blocks.GLASS_PANE, 16);
-        stats.getRocketStacks()[i++] = new ItemStack(Blocks.PLANKS, 32, 2);
-        stats.getRocketStacks()[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
-        stats.getRocketStacks()[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
-        stats.getRocketStacks()[i++] = new ItemStack(Items.EGG, 12);
+        rocketStacks[i++] = new ItemStack(GCItems.oxMask);
+        rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
+        rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
+        rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
+        rocketStacks[i++] = new ItemStack(Blocks.GLASS_PANE, 16);
+        rocketStacks[i++] = new ItemStack(Blocks.PLANKS, 32, 2);
+        rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
+        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
+        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
+        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
+        rocketStacks[i++] = new ItemStack(Items.EGG, 12);
 
-        stats.getRocketStacks()[i++] = new ItemStack(Items.SPAWN_EGG, 2, EntityList.CLASS_TO_ID.get(EntityCow.class));
-        stats.getRocketStacks()[i++] = new ItemStack(Items.POTIONITEM, 4, 8262); //Night Vision Potion
-        stats.getRocketStacks()[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
-        stats.getRocketStacks()[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
-        //stats.getRocketStacks()[15] = new ItemStack(GCBlocks.brightLamp, 4);
-        //stats.getRocketStacks()[16] = new ItemStack(GCBlocks.aluminumWire, 32);
+        rocketStacks[i++] = new ItemStack(Items.SPAWN_EGG, 2, EntityList.CLASS_TO_ID.get(EntityCow.class));
+        rocketStacks[i++] = new ItemStack(Items.POTIONITEM, 4, 8262); //Night Vision Potion
+        rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
+        rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
+        //rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
+        //rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
+        stats.setRocketStacks(rocketStacks);
     }
 }

@@ -76,7 +76,7 @@ public class MapGen extends BiomeProvider implements Runnable
     {
         this.biomeMapCx = cx >> 4;
         this.biomeMapCz = cz >> 4;
-        this.dimID = world.provider.getDimension();
+        this.dimID = GCCoreUtil.getDimensionID(world);
         if (file.exists())
         {
             return;

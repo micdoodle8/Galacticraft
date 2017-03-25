@@ -84,7 +84,7 @@ public class CommandGCEnergyUnits extends CommandBase
 
                 if (paramvalue > 0)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_ENERGYUNITS, playerBase.worldObj.provider.getDimension(), new Object[] { paramvalue }), playerBase);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_ENERGYUNITS, GCCoreUtil.getDimensionID(playerBase.worldObj), new Object[] { paramvalue }), playerBase);
                     return;
                 }
 
