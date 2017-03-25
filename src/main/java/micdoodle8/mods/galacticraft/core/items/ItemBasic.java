@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -205,7 +204,7 @@ public class ItemBasic extends Item implements ISortableItem
         {
             if (par3EntityPlayer instanceof EntityPlayerMP)
             {
-                IStatsCapability stats = par3EntityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(par3EntityPlayer);
                 ItemStack gear = stats.getExtendedInventory().getStackInSlot(5);
 
                 if (gear == null)

@@ -53,7 +53,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         if (this.player.worldObj.provider instanceof IZeroGDimension)
         {
-            IStatsClientCapability stats = this.player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
             if (stats.getLandingTicks() > 0)
             {
                 this.player.movementInput.moveStrafe *= 0.5F;
@@ -108,7 +108,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         if (this.player.worldObj.provider instanceof IZeroGDimension)
     	{
-            IStatsClientCapability stats = this.player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
         	if (stats.getLandingTicks() > 0)
         	{
         	    if (this.lastLandingTicks == 0)

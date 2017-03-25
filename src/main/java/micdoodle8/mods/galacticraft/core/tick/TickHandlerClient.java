@@ -21,8 +21,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
@@ -162,11 +161,11 @@ public class TickHandlerClient
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayerSP player = minecraft.thePlayer;
         final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
-        IStatsClientCapability stats = null;
+        GCPlayerStatsClient stats = null;
 
         if (player != null)
         {
-            stats = playerBaseClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            stats = GCPlayerStatsClient.get(playerBaseClient);
         }
 
         if (event.phase == Phase.END)
@@ -482,7 +481,7 @@ public class TickHandlerClient
                     {
                         world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
                         ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderSpaceStation) world.provider).getSpinManager().getSpinRate();
-                        player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null).setInFreefallFirstCheck(false);
+                        GCPlayerStatsClient.get(player).setInFreefallFirstCheck(false);
                     }
 
                     if (world.provider.getCloudRenderer() == null)

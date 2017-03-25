@@ -10,8 +10,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -368,7 +367,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
 
                 this.onTeleport(player);
-                IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
             }
         }
@@ -419,7 +418,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             if (!this.worldObj.isRemote && this.riddenByEntity == par1EntityPlayer)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
-                IStatsCapability stats = par1EntityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(par1EntityPlayer);
                 stats.setChatCooldown(0);
                 // Prevent player being dropped from the top of the rocket...
                 float heightBefore = this.height;
@@ -435,7 +434,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             if (!this.worldObj.isRemote)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.worldObj.provider.getDimensionId(), new Object[] { }), (EntityPlayerMP) par1EntityPlayer);
-                IStatsCapability stats = par1EntityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(par1EntityPlayer);
                 stats.setChatCooldown(0);
                 par1EntityPlayer.mountEntity(this);
             }

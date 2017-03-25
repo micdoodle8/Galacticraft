@@ -86,7 +86,7 @@ public class FreefallHandler
         {
             return false;
         }
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         if (this.pjumpticks > 0 || (stats.isSsOnGroundLast() && p.movementInput.jump))
         {
             return false;
@@ -276,7 +276,7 @@ public class FreefallHandler
         {
             p.motionY = pPrevMotionY;
         }
-        else if (dY > 0.01D && p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null).isInFreefallLast())
+        else if (dY > 0.01D && GCPlayerStatsClient.get(p).isInFreefallLast())
         {
             //Impulse upwards - it's probably a jetpack from another mod
             if (dX < 0.01D && dZ < 0.01D)
@@ -395,7 +395,7 @@ public class FreefallHandler
     public void preVanillaMotion(EntityPlayerSP p)
     {
         this.setupFreefallPre(p);
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         stats.setSsOnGroundLast(p.onGround);
     }
 
@@ -408,7 +408,7 @@ public class FreefallHandler
         {
             return;
         }
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         boolean freefall = stats.isInFreefall();
         freefall = this.testFreefall(p, freefall);
         stats.setInFreefall(freefall);

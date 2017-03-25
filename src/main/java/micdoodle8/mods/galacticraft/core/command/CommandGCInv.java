@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
@@ -84,7 +83,7 @@ public class CommandGCInv extends CommandBase
                 EntityPlayerMP thePlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[1], true);
                 if (thePlayer != null && !thePlayer.isDead && thePlayer.worldObj != null)
                 {
-                    IStatsCapability stats = thePlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                    GCPlayerStats stats = GCPlayerStats.get(thePlayer);
 
                     if (args[0].equalsIgnoreCase("drop"))
                     {
@@ -181,7 +180,7 @@ public class CommandGCInv extends CommandBase
         // auto-restore on a server restart.
         {
             ItemStack[] saveinv = CommandGCInv.savedata.get(theName);
-            InventoryExtended gcInventory = thePlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).getExtendedInventory();
+            InventoryExtended gcInventory = GCPlayerStats.get(thePlayer).getExtendedInventory();
             for (int i = 0; i < gcInventory.getSizeInventory(); i++)
             {
                 gcInventory.setInventorySlotContents(i, saveinv[i]);

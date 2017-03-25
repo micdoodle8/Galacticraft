@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -338,7 +338,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return "spacestation_" + dimID;
     }
 
-    public static void updateSSOwnership(EntityPlayerMP player, String playerName, IStatsCapability stats, int stationID, SpaceStationWorldData stationData)
+    public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
     {
         if (stationData == null)
         {
@@ -366,7 +366,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
     }
 
-    public static void checkAllStations(EntityPlayerMP thePlayer, IStatsCapability stats)
+    public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
     {
         String name = thePlayer.getGameProfile().getName().replace(".", "");
         for (int id : WorldUtil.registeredSpaceStations.keySet())

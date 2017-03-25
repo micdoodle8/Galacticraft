@@ -141,7 +141,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 }
 
                 //CUSTOM-------------------
-                IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+                GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
                 if (stats.getLandingTicks() > 0)
                 {
                     this.movementInput.moveStrafe *= 0.5F;
@@ -375,7 +375,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         if (this.worldObj.provider instanceof IZeroGDimension)
         {
-            IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.getLandingTicks() > 0)
             {
                 if (this.lastLandingTicks == 0)
@@ -423,7 +423,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         float ySize = 0.0F;
         if (this.worldObj.provider instanceof IZeroGDimension)
         {
-            IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.getLandingTicks() > 0)
             {
                 ySize = stats.getLandingYOffset()[stats.getLandingTicks()];

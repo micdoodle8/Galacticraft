@@ -20,9 +20,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -632,7 +631,7 @@ public class WorldUtil
         int newID = DimensionManager.getNextFreeDimId();
         SpaceStationWorldData data = WorldUtil.createSpaceStation(world, newID, homePlanetID, dynamicProviderID, staticProviderID, player);
         dimNames.put(newID, "Space Station " + newID);
-        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        GCPlayerStats stats = GCPlayerStats.get(player);
         stats.getSpaceStationDimensionData().put(homePlanetID, newID);
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), player);
         return data;
@@ -788,7 +787,7 @@ public class WorldUtil
                     }
                 }
 
-                IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setUsingPlanetSelectionGui(false);
 
                 player.dimension = dimID;
@@ -891,7 +890,7 @@ public class WorldUtil
             {
                 player = (EntityPlayerMP) entity;
                 player.closeScreen();
-                IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setUsingPlanetSelectionGui(false);
 
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
@@ -914,7 +913,7 @@ public class WorldUtil
         //Update PlayerStatsGC
         if (player != null)
         {
-            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(player);
             if (ridingRocket == null && type.useParachute() && stats.getExtendedInventory().getStackInSlot(4) != null && stats.getExtendedInventory().getStackInSlot(4).getItem() instanceof ItemParaChute)
             {
                 GCPlayerHandler.setUsingParachute(player, stats, true);
@@ -1259,7 +1258,7 @@ public class WorldUtil
         }
     }
 
-    public static void toCelestialSelection(EntityPlayerMP player, IStatsCapability stats, int tier)
+    public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier)
     {
         player.mountEntity(null);
         stats.setSpaceshipTier(tier);

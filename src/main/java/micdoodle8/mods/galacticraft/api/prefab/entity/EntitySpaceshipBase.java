@@ -8,8 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GameScreenText;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
@@ -256,7 +255,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        {
 	        	if (this.riddenByEntity instanceof EntityPlayerMP)
 	        	{
-                    IStatsCapability stats = this.riddenByEntity.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                    GCPlayerStats stats = GCPlayerStats.get(this.riddenByEntity);
 	        		if (stats.isUsingPlanetSelectionGui())
 	        		{
 	        			this.kill();

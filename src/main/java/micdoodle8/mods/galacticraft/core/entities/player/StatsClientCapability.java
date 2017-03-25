@@ -5,7 +5,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 import java.util.ArrayList;
 
-public class StatsClientCapability implements IStatsClientCapability
+public class StatsClientCapability extends GCPlayerStatsClient
 {
     public boolean usingParachute;
     public boolean lastUsingParachute;

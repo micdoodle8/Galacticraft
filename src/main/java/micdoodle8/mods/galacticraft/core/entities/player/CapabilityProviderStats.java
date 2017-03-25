@@ -11,25 +11,25 @@ import java.lang.ref.WeakReference;
 public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCompound>
 {
     private EntityPlayerMP owner;
-    private IStatsCapability statsCapability;
+    private GCPlayerStats statsCapability;
 
     public CapabilityProviderStats(EntityPlayerMP owner)
     {
         this.owner = owner;
-        this.statsCapability = CapabilityStatsHandler.GC_STATS_CAPABILITY.getDefaultInstance();
+        this.statsCapability = GCCapabilities.GC_STATS_CAPABILITY.getDefaultInstance();
         this.statsCapability.setPlayer(new WeakReference<>(this.owner));
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityStatsHandler.GC_STATS_CAPABILITY;
+        return capability == GCCapabilities.GC_STATS_CAPABILITY;
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        if (CapabilityStatsHandler.GC_STATS_CAPABILITY != null && capability == CapabilityStatsHandler.GC_STATS_CAPABILITY)
+        if (GCCapabilities.GC_STATS_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CAPABILITY)
         {
             return (T)(statsCapability);
         }

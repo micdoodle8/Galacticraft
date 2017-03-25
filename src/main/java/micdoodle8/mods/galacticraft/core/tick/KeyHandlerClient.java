@@ -8,8 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.KeyHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -77,7 +76,7 @@ public class KeyHandlerClient extends KeyHandler
                 return;
             }
 
-            IStatsClientCapability stats = playerBase.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerBase);
 
             if (kb.getKeyCode() == KeyHandlerClient.galaxyMap.getKeyCode())
             {

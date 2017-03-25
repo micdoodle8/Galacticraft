@@ -22,10 +22,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedConta
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -206,7 +204,7 @@ public class EventHandlerGC
         {
             if (GalacticraftCore.isPlanetsLoaded)
             {
-                IStatsCapability stats = event.entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                GCPlayerStats stats = GCPlayerStats.get(event.entityPlayer);
                 if (!stats.hasReceivedBedWarning())
                 {
                     event.entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
@@ -602,7 +600,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void schematicUnlocked(Unlock event)
     {
-        IStatsCapability stats = event.player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        GCPlayerStats stats = GCPlayerStats.get(event.player);
 
         if (!stats.getUnlockedSchematics().contains(event.page))
         {
@@ -666,7 +664,7 @@ public class EventHandlerGC
         final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
 
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
         {
@@ -703,7 +701,7 @@ public class EventHandlerGC
         final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
 
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
         {
@@ -739,7 +737,7 @@ public class EventHandlerGC
     {
         if (event.entityLiving instanceof EntityPlayerMP)
         {
-            IStatsCapability stats = event.entityPlayer.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(event.entityPlayer);
             if (!event.entityLiving.worldObj.getGameRules().getBoolean("keepInventory"))
             {
                 event.entityLiving.captureDrops = true;

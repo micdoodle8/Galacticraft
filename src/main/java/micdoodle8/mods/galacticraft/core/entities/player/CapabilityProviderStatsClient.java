@@ -8,24 +8,24 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class CapabilityProviderStatsClient implements ICapabilityProvider
 {
     private EntityPlayerSP owner;
-    private IStatsClientCapability statsCapability;
+    private GCPlayerStatsClient statsCapability;
 
     public CapabilityProviderStatsClient(EntityPlayerSP owner)
     {
         this.owner = owner;
-        this.statsCapability = CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY.getDefaultInstance();
+        this.statsCapability = GCCapabilities.GC_STATS_CLIENT_CAPABILITY.getDefaultInstance();
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY;
+        return capability == GCCapabilities.GC_STATS_CLIENT_CAPABILITY;
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        if (CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY != null && capability == CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY)
+        if (GCCapabilities.GC_STATS_CLIENT_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CLIENT_CAPABILITY)
         {
             return (T)(statsCapability);
         }
