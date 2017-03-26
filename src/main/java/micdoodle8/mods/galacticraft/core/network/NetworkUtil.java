@@ -479,7 +479,7 @@ public class NetworkUtil
         else
         {
             buffer.writeShort(Item.getIdFromItem(itemStack.getItem()));
-            buffer.writeByte(itemStack.stackSize);
+            buffer.writeByte(itemStack.getCount());
             buffer.writeShort(itemStack.getItemDamage());
             NBTTagCompound nbttagcompound = null;
 

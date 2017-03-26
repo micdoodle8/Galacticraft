@@ -114,12 +114,12 @@ public class MapGenCavernMars extends MapGenBaseMeta
 
                 if (xPos >= var19 - 16.0D - caveWidth * 2.0D && zPos >= var21 - 16.0D - caveWidth * 2.0D && xPos <= var19 + 16.0D + caveWidth * 2.0D && zPos <= var21 + 16.0D + caveWidth * 2.0D) // CHECKED
                 {
-                    int caveMinX = MathHelper.floor_double(xPos - caveWidth) - origXChunkCoord * 16 - 1;
-                    int caveMaxX = MathHelper.floor_double(xPos + caveWidth) - origXChunkCoord * 16 + 1;
-                    int caveMinY = MathHelper.floor_double(yPos - caveHeight) - 1;
-                    int caveMaxY = MathHelper.floor_double(yPos + caveHeight) + 1;
-                    int caveMinZ = MathHelper.floor_double(zPos - caveWidth) - origZChunkCoord * 16 - 1;
-                    int caveMaxZ = MathHelper.floor_double(zPos + caveWidth) - origZChunkCoord * 16 + 1;
+                    int caveMinX = MathHelper.floor(xPos - caveWidth) - origXChunkCoord * 16 - 1;
+                    int caveMaxX = MathHelper.floor(xPos + caveWidth) - origXChunkCoord * 16 + 1;
+                    int caveMinY = MathHelper.floor(yPos - caveHeight) - 1;
+                    int caveMaxY = MathHelper.floor(yPos + caveHeight) + 1;
+                    int caveMinZ = MathHelper.floor(zPos - caveWidth) - origZChunkCoord * 16 - 1;
+                    int caveMaxZ = MathHelper.floor(zPos + caveWidth) - origZChunkCoord * 16 + 1;
 
                     if (caveMinX < 0)
                     {

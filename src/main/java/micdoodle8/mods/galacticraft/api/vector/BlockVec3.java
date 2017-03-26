@@ -524,7 +524,7 @@ public class BlockVec3 implements Cloneable
         int var2 = vector.x - this.x;
         int var4 = vector.y - this.y;
         int var6 = vector.z - this.z;
-        return MathHelper.floor_double(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
+        return MathHelper.floor(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
     }
 
     public int distanceSquared(BlockVec3 vector)

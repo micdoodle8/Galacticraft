@@ -89,7 +89,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
                 {
                     j = EntityXPOrb.getXPSplit(i);
                     i -= j;
-                    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+                    this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
                 }
             }
         }
@@ -102,7 +102,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
             {
                 j = EntityXPOrb.getXPSplit(i);
                 i -= j;
-                this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+                this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
             }
 
             TileEntityTreasureChest chest = null;
@@ -192,7 +192,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.skeleton_boss.message")));
+                    p.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
                 this.setDead();

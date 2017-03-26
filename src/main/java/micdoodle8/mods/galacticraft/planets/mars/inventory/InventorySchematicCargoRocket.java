@@ -121,7 +121,7 @@ public class InventorySchematicCargoRocket implements IInventory
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }

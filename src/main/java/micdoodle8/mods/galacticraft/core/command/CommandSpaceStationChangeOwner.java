@@ -107,7 +107,7 @@ public class CommandSpaceStationChangeOwner extends CommandBase
 
         if (playerAdmin != null)
         {
-            playerAdmin.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
+            playerAdmin.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
         }
         else
         //Console

@@ -212,14 +212,14 @@ public class VenusModuleClient implements IPlanetsModuleClient
 
             if (particleID.equals("acidVapor"))
             {
-                particle = new ParticleAcidVapor(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
+                particle = new ParticleAcidVapor(mc.world, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
             }
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
                 if (particleID.equals("acidExhaust"))
                 {
-                    particle = new ParticleAcidExhaust(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
+                    particle = new ParticleAcidExhaust(mc.world, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
                 }
             }
 

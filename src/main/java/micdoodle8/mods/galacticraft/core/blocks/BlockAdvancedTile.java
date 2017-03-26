@@ -61,16 +61,16 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
                         float var9 = random.nextFloat() * 0.8F + 0.1F;
                         float var10 = random.nextFloat() * 0.8F + 0.1F;
 
-                        while (var7.stackSize > 0)
+                        while (var7.getCount() > 0)
                         {
                             int var11 = random.nextInt(21) + 10;
 
-                            if (var11 > var7.stackSize)
+                            if (var11 > var7.getCount())
                             {
-                                var11 = var7.stackSize;
+                                var11 = var7.getCount();
                             }
 
-                            var7.stackSize -= var11;
+                            var7.shrink(var11);
                             EntityItem var12 = new EntityItem(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, new ItemStack(var7.getItem(), var11, var7.getItemDamage()));
 
                             if (var7.hasTagCompound())
@@ -82,7 +82,7 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
                             var12.motionX = (float) random.nextGaussian() * var13;
                             var12.motionY = (float) random.nextGaussian() * var13 + 0.2F;
                             var12.motionZ = (float) random.nextGaussian() * var13;
-                            worldIn.spawnEntityInWorld(var12);
+                            worldIn.spawnEntity(var12);
                         }
                     }
                 }

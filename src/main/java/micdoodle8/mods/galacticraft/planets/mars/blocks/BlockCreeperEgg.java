@@ -59,7 +59,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -85,7 +85,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
             EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(world);
             creeper.setPosition(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
             creeper.setChild(true);
-            world.spawnEntityInWorld(creeper);
+            world.spawnEntity(creeper);
         }
 
         world.setBlockToAir(pos);

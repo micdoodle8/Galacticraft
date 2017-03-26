@@ -441,7 +441,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                             if (stats.getChatCooldown() == 0)
                             {
-                                player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.slimeling.chat.wrong_player")));
+                                player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.slimeling.chat.wrong_player")));
                                 stats.setChatCooldown(100);
                             }
                         }

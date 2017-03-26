@@ -67,7 +67,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     {
         int metadata = state.getBlock().getMetaFromState(state);
 
-        int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = 0;
 
         switch (angle)

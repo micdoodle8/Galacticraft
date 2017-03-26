@@ -179,7 +179,7 @@ public class CompressorRecipes
             }
         }
 
-        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.getCount() == 1 && itemstack1.getCount() == 1 && itemstack.getItem().isRepairable())
         {
             int k = itemstack.getItem().getMaxDamage() - itemstack.getItemDamage();
             int l = itemstack.getItem().getMaxDamage() - itemstack1.getItemDamage();

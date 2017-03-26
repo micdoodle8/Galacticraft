@@ -51,7 +51,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
     }
 
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
 //    {
 //        this.setBlockBoundsBasedOnState(worldIn, pos);
 //        return super.getCollisionBoundingBox(blockState, worldIn, pos);

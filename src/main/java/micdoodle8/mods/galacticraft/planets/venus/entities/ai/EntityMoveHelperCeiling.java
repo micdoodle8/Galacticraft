@@ -20,7 +20,7 @@ public class EntityMoveHelperCeiling extends EntityMoveHelper
         if (this.isUpdating())
         {
             this.action = EntityMoveHelper.Action.WAIT;
-            int i = MathHelper.floor_double(this.entity.getEntityBoundingBox().minY + 0.5D);
+            int i = MathHelper.floor(this.entity.getEntityBoundingBox().minY + 0.5D);
             double d0 = this.posX - this.entity.posX;
             double d1 = this.posZ - this.entity.posZ;
             double d2 = this.posY - (double)i;

@@ -25,42 +25,42 @@ public class EffectHandler
 
             if (particleID.equals("whiteSmokeIdle"))
             {
-                particle = new ParticleLaunchSmoke(mc.theWorld, position, motion, 1.0F, false);
+                particle = new ParticleLaunchSmoke(mc.world, position, motion, 1.0F, false);
             }
             else if (particleID.equals("whiteSmokeLaunched"))
             {
-                particle = new ParticleLaunchSmoke(mc.theWorld, position, motion, 1.0F, true);
+                particle = new ParticleLaunchSmoke(mc.world, position, motion, 1.0F, true);
             }
             else if (particleID.equals("whiteSmokeLargeIdle"))
             {
-                particle = new ParticleLaunchSmoke(mc.theWorld, position, motion, 2.5F, false);
+                particle = new ParticleLaunchSmoke(mc.world, position, motion, 2.5F, false);
             }
             else if (particleID.equals("whiteSmokeLargeLaunched"))
             {
-                particle = new ParticleLaunchSmoke(mc.theWorld, position, motion, 2.5F, true);
+                particle = new ParticleLaunchSmoke(mc.world, position, motion, 2.5F, true);
             }
             else if (particleID.equals("launchFlameIdle"))
             {
-                particle = new ParticleLaunchFlame(mc.theWorld, position, motion, false, (EntityLivingBase) otherInfo[0]);
+                particle = new ParticleLaunchFlame(mc.world, position, motion, false, (EntityLivingBase) otherInfo[0]);
             }
             else if (particleID.equals("launchFlameLaunched"))
             {
-                particle = new ParticleLaunchFlame(mc.theWorld, position, motion, true, (EntityLivingBase) otherInfo[0]);
+                particle = new ParticleLaunchFlame(mc.world, position, motion, true, (EntityLivingBase) otherInfo[0]);
             }
             else if (particleID.equals("whiteSmokeTiny"))
             {
-                particle = new ParticleSmokeSmall(mc.theWorld, position, motion);
+                particle = new ParticleSmokeSmall(mc.world, position, motion);
             }
             else if (particleID.equals("oilDrip"))
             {
-                particle = new ParticleOilDrip(mc.theWorld, position.x, position.y, position.z);
+                particle = new ParticleOilDrip(mc.world, position.x, position.y, position.z);
             }
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
                 if (particleID.equals("oxygen"))
                 {
-                    particle = new ParticleOxygen(mc.theWorld, position, motion, (Vector3) otherInfo[0]);
+                    particle = new ParticleOxygen(mc.world, position, motion, (Vector3) otherInfo[0]);
                 }
             }
 

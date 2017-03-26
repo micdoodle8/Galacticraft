@@ -618,7 +618,7 @@ public class SpinManager
             e.lastTickPosZ += offsetZ;
 
             //Rotated into an unloaded chunk (probably also drifted out to there): byebye
-            if (!e.worldObj.isBlockLoaded(new BlockPos(MathHelper.floor_double(e.posX), 64, MathHelper.floor_double(e.posZ))))
+            if (!e.worldObj.isBlockLoaded(new BlockPos(MathHelper.floor(e.posX), 64, MathHelper.floor(e.posZ))))
             {
                 e.setDead();
                 return;

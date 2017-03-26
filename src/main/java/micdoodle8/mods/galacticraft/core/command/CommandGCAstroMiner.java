@@ -115,15 +115,15 @@ public class CommandGCAstroMiner extends CommandBase
                     switch (type)
                     {
                     case 1:
-                        sender.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.getAstroMinerCount())));
+                        sender.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.getAstroMinerCount())));
                         break;
                     case 2:
                         stats.setAstroMinerCount(0);
-                        sender.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
+                        sender.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
                         break;
                     case 3:
                         stats.setAstroMinerCount(newvalue);
-                        sender.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
+                        sender.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
                         break;
                     }
                 }

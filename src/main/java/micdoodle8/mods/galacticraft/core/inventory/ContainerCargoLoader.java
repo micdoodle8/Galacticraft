@@ -91,7 +91,7 @@ public class ContainerCargoLoader extends Container
                 }
             }
 
-            if (var5.stackSize == 0)
+            if (var5.getCount() == 0)
             {
                 slot.putStack((ItemStack) null);
             }
@@ -100,7 +100,7 @@ public class ContainerCargoLoader extends Container
                 slot.onSlotChanged();
             }
 
-            if (var5.stackSize == var3.stackSize)
+            if (var5.getCount() == var3.getCount())
             {
                 return null;
             }

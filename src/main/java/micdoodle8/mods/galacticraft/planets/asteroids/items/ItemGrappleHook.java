@@ -82,7 +82,7 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
 
             if (!worldIn.isRemote)
             {
-                worldIn.spawnEntityInWorld(grapple);
+                worldIn.spawnEntity(grapple);
             }
 
             stack.damageItem(1, player);
@@ -100,7 +100,7 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
         }
         else if (worldIn.isRemote)
         {
-            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.grapple.fail")));
+            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.grapple.fail")));
         }
     }
 

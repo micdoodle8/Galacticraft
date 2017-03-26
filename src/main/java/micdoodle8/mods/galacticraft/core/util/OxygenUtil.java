@@ -117,12 +117,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX);
-        int j = MathHelper.floor_double(bb.maxX);
-        int k = MathHelper.floor_double(bb.minY);
-        int l = MathHelper.floor_double(bb.maxY);
-        int i1 = MathHelper.floor_double(bb.minZ);
-        int j1 = MathHelper.floor_double(bb.maxZ);
+        int i = MathHelper.floor(bb.minX);
+        int j = MathHelper.floor(bb.maxX);
+        int k = MathHelper.floor(bb.minY);
+        int l = MathHelper.floor(bb.maxY);
+        int i1 = MathHelper.floor(bb.minZ);
+        int j1 = MathHelper.floor(bb.maxZ);
 
         OxygenUtil.checked = new HashSet();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
@@ -149,12 +149,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenAndThermalBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX);
-        int j = MathHelper.floor_double(bb.maxX);
-        int k = MathHelper.floor_double(bb.minY);
-        int l = MathHelper.floor_double(bb.maxY);
-        int i1 = MathHelper.floor_double(bb.minZ);
-        int j1 = MathHelper.floor_double(bb.maxZ);
+        int i = MathHelper.floor(bb.minX);
+        int j = MathHelper.floor(bb.maxX);
+        int k = MathHelper.floor(bb.minY);
+        int l = MathHelper.floor(bb.maxY);
+        int i1 = MathHelper.floor(bb.minZ);
+        int j1 = MathHelper.floor(bb.maxZ);
 
         OxygenUtil.checked = new HashSet();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))

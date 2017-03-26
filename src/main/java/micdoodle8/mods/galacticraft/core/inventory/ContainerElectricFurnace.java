@@ -114,7 +114,7 @@ public class ContainerElectricFurnace extends Container
                 return null;
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
                 var3.putStack((ItemStack) null);
             }
@@ -123,7 +123,7 @@ public class ContainerElectricFurnace extends Container
                 var3.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
                 return null;
             }

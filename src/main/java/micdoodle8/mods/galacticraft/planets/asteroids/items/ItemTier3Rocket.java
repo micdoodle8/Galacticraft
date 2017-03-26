@@ -121,7 +121,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
 
                 rocket.rotationYaw += 45;
                 rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-                worldIn.spawnEntityInWorld(rocket);
+                worldIn.spawnEntity(rocket);
 
                 if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
                 {

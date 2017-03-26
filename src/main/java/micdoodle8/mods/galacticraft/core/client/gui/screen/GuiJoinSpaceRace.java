@@ -99,7 +99,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
             this.thePlayer.closeScreen();
             break;
         case 1:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.thePlayer.getGameProfile().getName(), this.spaceRaceData.getSpaceRaceID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.thePlayer.getGameProfile().getName(), this.spaceRaceData.getSpaceRaceID() }));
             this.thePlayer.closeScreen();
             break;
         default:
@@ -164,7 +164,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     @Override
     public void drawWorldBackground(int i)
     {
-        if (this.mc.theWorld != null)
+        if (this.mc.world != null)
         {
             int scaleX = Math.min(this.ticksPassed * 14, this.width / 3);
             int scaleY = Math.min(this.ticksPassed * 14, this.height / 3);

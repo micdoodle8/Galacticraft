@@ -115,7 +115,7 @@ public class ContainerRocketInventory extends Container
                 return null;
             }
 
-            if (var5.stackSize == 0)
+            if (var5.getCount() == 0)
             {
                 var4.putStack((ItemStack) null);
             }

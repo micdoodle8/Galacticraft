@@ -126,7 +126,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                     {
                         EntityLiving bossLiving = (EntityLiving) this.boss;
                         bossLiving.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(bossLiving)), null);
-                        this.worldObj.spawnEntityInWorld(bossLiving);
+                        this.worldObj.spawnEntity(bossLiving);
                         this.playSpawnSound(bossLiving);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);

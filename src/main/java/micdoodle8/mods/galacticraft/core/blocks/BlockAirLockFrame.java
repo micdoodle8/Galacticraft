@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -72,12 +73,11 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
         this.setUnlocalizedName(assetName);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(par1, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
-        par3List.add(new ItemStack(par1, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));
+        list.add(new ItemStack(itemIn, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
+        list.add(new ItemStack(itemIn, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));
     }
 
     @Override

@@ -251,7 +251,7 @@ public class EventHandlerGC
                 IStatsCapability stats = event.getEntityPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                 if (!stats.hasReceivedBedWarning())
                 {
-                    event.getEntityPlayer().addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.bed_fail.message")));
+                    event.getEntityPlayer().sendMessage(new TextComponentString(GCCoreUtil.translate("gui.bed_fail.message")));
                     stats.setReceivedBedWarning(true);
                 }
             }

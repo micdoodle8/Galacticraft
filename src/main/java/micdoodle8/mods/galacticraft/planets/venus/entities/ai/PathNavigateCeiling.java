@@ -49,8 +49,8 @@ public class PathNavigateCeiling extends PathNavigate
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d current, Vec3d target, int sizeX, int sizeY, int sizeZ)
     {
-        int i = MathHelper.floor_double(current.xCoord);
-        int j = MathHelper.floor_double(current.zCoord);
+        int i = MathHelper.floor(current.xCoord);
+        int j = MathHelper.floor(current.zCoord);
         double d0 = target.xCoord - current.xCoord;
         double d1 = target.zCoord - current.zCoord;
         double d2 = d0 * d0 + d1 * d1;
@@ -94,8 +94,8 @@ public class PathNavigateCeiling extends PathNavigate
                 d7 = d7 / d1;
                 int k = d0 < 0.0D ? -1 : 1;
                 int l = d1 < 0.0D ? -1 : 1;
-                int i1 = MathHelper.floor_double(target.xCoord);
-                int j1 = MathHelper.floor_double(target.zCoord);
+                int i1 = MathHelper.floor(target.xCoord);
+                int j1 = MathHelper.floor(target.zCoord);
                 int k1 = i1 - i;
                 int l1 = j1 - j;
 

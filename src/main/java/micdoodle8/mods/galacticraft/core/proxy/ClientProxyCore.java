@@ -275,7 +275,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getClientWorld()
     {
-        return ClientProxyCore.mc.theWorld;
+        return ClientProxyCore.mc.world;
     }
 
     @Override
@@ -287,7 +287,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getWorldForID(int dimensionID)
     {
-        World world = ClientProxyCore.mc.theWorld;
+        World world = ClientProxyCore.mc.world;
 
         if (world != null && GCCoreUtil.getDimensionID(world) == dimensionID)
         {

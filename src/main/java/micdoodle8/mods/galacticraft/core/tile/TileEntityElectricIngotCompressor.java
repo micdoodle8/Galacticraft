@@ -183,7 +183,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
                         entityitem.setPickupDelay(10);
 
-                        this.worldObj.spawnEntityInWorld(entityitem);
+                        this.worldObj.spawnEntity(entityitem);
                     }
                     this.containingItems[slot].stackSize = 64;
                 }
@@ -379,7 +379,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
         return this.worldObj.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }

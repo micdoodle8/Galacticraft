@@ -371,13 +371,13 @@ public class TickHandlerClient
 
                     for (int i = -4; i < 5; i++)
                     {
-                        int x = MathHelper.floor_double(player.posX + i);
+                        int x = MathHelper.floor(player.posX + i);
                         for (int j = -4; j < 5; j++)
                         {
-                            int y = MathHelper.floor_double(player.posY + j);
+                            int y = MathHelper.floor(player.posY + j);
                             for (int k = -4; k < 5; k++)
                             {
-                                int z = MathHelper.floor_double(player.posZ + k);
+                                int z = MathHelper.floor(player.posZ + k);
                                 BlockPos pos = new BlockPos(x, y, z);
 
                                 IBlockState state = player.worldObj.getBlockState(pos);
@@ -405,7 +405,7 @@ public class TickHandlerClient
                             }
                         }
                     }
-                    TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
+                    TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor(player.posX), MathHelper.floor(player.posY), MathHelper.floor(player.posZ));
                     //TODO: revert. Correct code is temporarily commented out for testing render
                     if (nearestSealer != null)// && nearestSealer.threadSeal != null)
                     {

@@ -66,7 +66,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
         {
             ItemStack var3;
 
-            if (this.containedItems[slotIndex].stackSize <= amount)
+            if (this.containedItems[slotIndex].getCount() <= amount)
             {
                 var3 = this.containedItems[slotIndex];
                 this.containedItems[slotIndex] = null;
@@ -76,7 +76,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
             {
                 var3 = this.containedItems[slotIndex].splitStack(amount);
 
-                if (this.containedItems[slotIndex].stackSize == 0)
+                if (this.containedItems[slotIndex].getCount() == 0)
                 {
                     this.containedItems[slotIndex] = null;
                 }
@@ -110,7 +110,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     {
         this.containedItems[slotIndex] = stack;
 
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
+        if (stack != null && stack.getCount() > this.getInventoryStackLimit())
         {
             stack.stackSize = this.getInventoryStackLimit();
         }
@@ -129,7 +129,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
         return true;
     }

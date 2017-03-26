@@ -114,9 +114,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    final int x = MathHelper.floor_double(this.posX);
-                    final int y = MathHelper.floor_double(this.posY);
-                    final int z = MathHelper.floor_double(this.posZ);
+                    final int x = MathHelper.floor(this.posX);
+                    final int y = MathHelper.floor(this.posY);
+                    final int z = MathHelper.floor(this.posZ);
 
                     BlockPos pos = new BlockPos(x, y + i, z);
                     IBlockState state = this.worldObj.getBlockState(pos);
@@ -134,7 +134,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
                             for (final ItemStack stack : this.cargo)
                             {
                                 final EntityItem e = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
-                                this.worldObj.spawnEntityInWorld(e);
+                                this.worldObj.spawnEntity(e);
                             }
 
                             return;
@@ -147,7 +147,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
                     for (final ItemStack stack : this.cargo)
                     {
                         final EntityItem e = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
-                        this.worldObj.spawnEntityInWorld(e);
+                        this.worldObj.spawnEntity(e);
                     }
                 }
             }

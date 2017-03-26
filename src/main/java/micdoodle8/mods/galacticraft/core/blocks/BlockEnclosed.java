@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -147,11 +148,11 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta()));
-        par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta()));
-        par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.OXYGEN_PIPE.getMeta()));
+        list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta()));
+        list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta()));
+        list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.OXYGEN_PIPE.getMeta()));
 
         if (CompatibilityManager.isTELoaded() || GCBlocks.registeringSorted)
         {
@@ -160,26 +161,26 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
         if (CompatibilityManager.isIc2Loaded() || GCBlocks.registeringSorted)
         {
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()));
         }
 
         if (CompatibilityManager.isBCraftTransportLoaded() || GCBlocks.registeringSorted)
         {
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_ITEM_COBBLESTONEPIPE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_FLUIDS_COBBLESTONEPIPE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_FLUIDS_STONEPIPE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_POWER_STONEPIPE.getMeta()));
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_ITEM_COBBLESTONEPIPE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_FLUIDS_COBBLESTONEPIPE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_FLUIDS_STONEPIPE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_POWER_STONEPIPE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta()));
         }
 
         if (CompatibilityManager.isAppEngLoaded() || GCBlocks.registeringSorted)
         {
-            par3List.add(new ItemStack(par1, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()));
+            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()));
         }
     }
 

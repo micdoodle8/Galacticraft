@@ -131,7 +131,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 }
 
                 rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-                world.spawnEntityInWorld(rocket);
+                world.spawnEntity(rocket);
 
                 if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
                 {

@@ -324,7 +324,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1)
+    public boolean isUsableByPlayer(EntityPlayer var1)
     {
         return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
     }
@@ -499,7 +499,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
                 {
-                    this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
+                    this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
                     this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
                     //Continue mining even though base was destroyed - maybe it will be replaced
                 }
@@ -661,7 +661,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.motionZ = 0;
         if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
         {
-            this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + i + ".fail")));
+            this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + i + ".fail")));
             this.givenFailMessage += (1 << i);
         }
     }
@@ -782,7 +782,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
                 {
-                    this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
+                    this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
                     this.givenFailMessage += 64;
                 }
             }
@@ -890,7 +890,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return;
         }
 
-        BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
         int otherEnd = (this.worldObj.provider instanceof WorldProviderAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
         if (this.baseFacing == EnumFacing.NORTH || this.baseFacing == EnumFacing.WEST)
         {
@@ -1003,7 +1003,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.mineCountDown--;
             return false;
         }
-        BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
         if (dist == 2)
         {
             inFront.translate(headings2[this.facingAI.getIndex()]);
@@ -1204,7 +1204,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             if (this.playerMP != null)
             {
-                this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
             }
             this.motionX = 0;
             this.motionY = 0;
@@ -1241,7 +1241,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private boolean prepareMoveClient(int limit, int dist)
     {
-        BlockVec3 inFront = new BlockVec3(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 1.5D), MathHelper.floor_double(this.posZ + 0.5D));
+        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
         if (dist == 2)
         {
             inFront.translate(headings2[this.facing.getIndex()]);
@@ -1529,7 +1529,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         EntityItem entityitem = new EntityItem(this.worldObj, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, drops);
         entityitem.setDefaultPickupDelay();
-        this.worldObj.spawnEntityInWorld(entityitem);
+        this.worldObj.spawnEntity(entityitem);
         this.inventoryDrops++;
     }
 
@@ -2027,7 +2027,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return false;
         }
 
-        world.spawnEntityInWorld(miner);
+        world.spawnEntity(miner);
         miner.flagLink = true;
         return true;
     }
@@ -2083,7 +2083,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP == null && !this.spawnedInCreative)
                 {
-                    ((EntityPlayer) e).addChatMessage(new TextComponentString("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
+                    ((EntityPlayer) e).sendMessage(new TextComponentString("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
                 }
                 this.kill();
                 return true;

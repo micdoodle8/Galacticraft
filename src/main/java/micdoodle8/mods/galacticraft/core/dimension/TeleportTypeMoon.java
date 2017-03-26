@@ -94,7 +94,7 @@ public class TeleportTypeMoon implements ITeleportType
 
             if (!newWorld.isRemote)
             {
-                newWorld.spawnEntityInWorld(lander);
+                newWorld.spawnEntity(lander);
             }
 
             stats.setTeleportCooldown(10);

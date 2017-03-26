@@ -268,11 +268,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             {
                 if (particleID.equals("portalBlue"))
                 {
-                    particle = new EntityFXTeleport(mc.theWorld, position, motion, (TileEntityShortRangeTelepad) extraData[0], (Boolean) extraData[1]);
+                    particle = new EntityFXTeleport(mc.world, position, motion, (TileEntityShortRangeTelepad) extraData[0], (Boolean) extraData[1]);
                 }
                 else if (particleID.equals("cryoFreeze"))
                 {
-                    particle = new EntityCryoFX(mc.theWorld, position, motion);
+                    particle = new EntityCryoFX(mc.world, position, motion);
                 }
             }
 

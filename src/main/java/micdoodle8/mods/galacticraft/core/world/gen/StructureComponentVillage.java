@@ -142,7 +142,7 @@ public abstract class StructureComponentVillage extends StructureComponent
                 ++this.villagersSpawned;
                 final EntityAlienVillager var11 = new EntityAlienVillager(par1World);
                 var11.setLocationAndAngles(var8 + 0.5D, var9, var10 + 0.5D, 0.0F, 0.0F);
-                par1World.spawnEntityInWorld(var11);
+                par1World.spawnEntity(var11);
             }
         }
     }

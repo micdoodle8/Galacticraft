@@ -171,7 +171,7 @@ public class InventoryUtils {
         item.motionX = world.rand.nextGaussian() * 0.05;
         item.motionY = world.rand.nextGaussian() * 0.05 + 0.2F;
         item.motionZ = world.rand.nextGaussian() * 0.05;
-        world.spawnEntityInWorld(item);
+        world.spawnEntity(item);
     }
 
     /**

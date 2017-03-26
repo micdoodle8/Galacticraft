@@ -1171,7 +1171,7 @@ public class StatsCapability implements IStatsCapability
             if (nbt.hasKey("LaunchpadStack"))
             {
                 this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-                if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
+                if (this.launchpadStack != null && this.launchpadStack.getCount() == 0)
                 {
                     this.launchpadStack = null;
                 }

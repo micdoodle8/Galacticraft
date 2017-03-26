@@ -67,7 +67,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                 pos = pos.offset(side);
             }
 
-            if (stack.stackSize == 0)
+            if (stack.getCount() == 0)
             {
                 return EnumActionResult.FAIL;
             }

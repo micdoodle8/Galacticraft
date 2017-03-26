@@ -302,11 +302,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 }
                 if (yDiff < 0.06F)
                 {
-                    int yMin = MathHelper.floor_double(this.getEntityBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
-                    int yMax = MathHelper.floor_double(this.getEntityBoundingBox().maxY) + 1;
-                    int zMin = MathHelper.floor_double(this.posZ) - 1;
-                    int zMax = MathHelper.floor_double(this.posZ) + 1;
-                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                    int yMin = MathHelper.floor(this.getEntityBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
+                    int yMax = MathHelper.floor(this.getEntityBoundingBox().maxY) + 1;
+                    int zMin = MathHelper.floor(this.posZ) - 1;
+                    int zMax = MathHelper.floor(this.posZ) + 1;
+                    for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
                     {
                         for (int z = zMin; z <= zMax; z++)
                         {
@@ -723,11 +723,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 BlockPos pos = new BlockPos((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ));
                 if (this.landing && this.targetVec != null && this.worldObj.getTileEntity(pos) instanceof IFuelDock && this.posY - this.targetVec.getY() < 5)
                 {
-                    for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+                    for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
                     {
-                        for (int y = MathHelper.floor_double(this.posY - 3.0D); y <= MathHelper.floor_double(this.posY) + 1; y++)
+                        for (int y = MathHelper.floor(this.posY - 3.0D); y <= MathHelper.floor(this.posY) + 1; y++)
                         {
-                            for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                            for (int z = MathHelper.floor(this.posZ) - 1; z <= MathHelper.floor(this.posZ) + 1; z++)
                             {
                                 BlockPos pos1 = new BlockPos(x, y, z);
                                 TileEntity tile = this.worldObj.getTileEntity(pos1);
@@ -766,7 +766,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.timeUntilLaunch = 0;
         if (!this.worldObj.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
         {
-            this.getPassengers().get(0).addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+            this.getPassengers().get(0).sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
         }
     }
     
@@ -774,7 +774,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (!this.worldObj.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
         {
-            ((EntityPlayerMP) this.getPassengers().get(0)).addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.launchcontroller")));
+            ((EntityPlayerMP) this.getPassengers().get(0)).sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.launchcontroller")));
         }
     }
 
@@ -782,7 +782,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (!this.worldObj.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
         {
-            ((EntityPlayerMP) this.getPassengers().get(0)).addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.fuelinsufficient")));
+            ((EntityPlayerMP) this.getPassengers().get(0)).sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.fuelinsufficient")));
         }
     }
 
@@ -830,11 +830,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             int amountRemoved = 0;
 
             PADSEARCH:
-            for (int x = MathHelper.floor_double(this.posX) - 1; x <= MathHelper.floor_double(this.posX) + 1; x++)
+            for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
             {
-                for (int y = MathHelper.floor_double(this.posY) - 3; y <= MathHelper.floor_double(this.posY) + 1; y++)
+                for (int y = MathHelper.floor(this.posY) - 3; y <= MathHelper.floor(this.posY) + 1; y++)
                 {
-                    for (int z = MathHelper.floor_double(this.posZ) - 1; z <= MathHelper.floor_double(this.posZ) + 1; z++)
+                    for (int z = MathHelper.floor(this.posZ) - 1; z <= MathHelper.floor(this.posZ) + 1; z++)
                     {
                         BlockPos pos = new BlockPos(x, y, z);
                         final Block block = this.worldObj.getBlockState(pos).getBlock();
@@ -942,7 +942,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
         if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
         {
-            this.targetVec = new BlockPos(MathHelper.floor_double(nbt.getDouble("targetTileX")), MathHelper.floor_double(nbt.getDouble("targetTileY")), MathHelper.floor_double(nbt.getDouble("targetTileZ")));
+            this.targetVec = new BlockPos(MathHelper.floor(nbt.getDouble("targetTileX")), MathHelper.floor(nbt.getDouble("targetTileY")), MathHelper.floor(nbt.getDouble("targetTileZ")));
         }
 
         this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
@@ -1026,13 +1026,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             ItemStack stackAt = this.cargoItems[count];
 
-            if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+            if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
-                if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
+                if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
                 {
                     if (doAdd)
                     {
-                        this.cargoItems[count].stackSize += stack.stackSize;
+                        this.cargoItems[count].stackSize += stack.getCount();
                         this.markDirty();
                     }
 
@@ -1041,8 +1041,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 else
                 {
                     //Part of the stack can fill this slot but there will be some left over
-                    int origSize = stackAt.stackSize;
-                    int surplus = origSize + stack.stackSize - stackAt.getMaxStackSize();
+                    int origSize = stackAt.getCount();
+                    int surplus = origSize + stack.getCount() - stackAt.getMaxStackSize();
 
                     if (doAdd)
                     {
@@ -1102,7 +1102,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 ItemStack resultStack = stackAt.copy();
                 resultStack.stackSize = 1;
 
-            	if (doRemove && --stackAt.stackSize <= 0)
+            	if (doRemove && --stackAt.getCount() <= 0)
                 {
                     this.cargoItems[i] = null;
                 }
@@ -1138,7 +1138,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             ItemStack var3;
 
-            if (this.cargoItems[par1].stackSize <= par2)
+            if (this.cargoItems[par1].getCount() <= par2)
             {
                 var3 = this.cargoItems[par1];
                 this.cargoItems[par1] = null;
@@ -1148,7 +1148,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             {
                 var3 = this.cargoItems[par1].splitStack(par2);
 
-                if (this.cargoItems[par1].stackSize == 0)
+                if (this.cargoItems[par1].getCount() == 0)
                 {
                     this.cargoItems[par1] = null;
                 }
@@ -1182,7 +1182,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         this.cargoItems[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        if (par2ItemStack != null && par2ItemStack.getCount() > this.getInventoryStackLimit())
         {
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
@@ -1217,7 +1217,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
         return !this.isDead && entityplayer.getDistanceSqToEntity(this) <= 64.0D;
     }

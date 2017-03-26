@@ -248,7 +248,7 @@ public class ItemBasic extends Item implements ISortableItem
             itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
             itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
 
-            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.tracking.message")));
+            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.tracking.message")));
             return true;
         }
         return false;

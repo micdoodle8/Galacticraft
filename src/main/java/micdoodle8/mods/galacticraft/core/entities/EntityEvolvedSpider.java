@@ -58,7 +58,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
-            this.worldObj.spawnEntityInWorld(entityskeleton);
+            this.worldObj.spawnEntity(entityskeleton);
             entityskeleton.startRiding(this);
         }
 

@@ -342,7 +342,7 @@
 //        if (nbt.hasKey("LaunchpadStack"))
 //        {
 //            this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-//            if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
+//            if (this.launchpadStack != null && this.launchpadStack.getCount() == 0)
 //            {
 //                this.launchpadStack = null;
 //            }
@@ -405,7 +405,7 @@
 //        final GCPlayerStats GCPlayer = GCPlayerStats.get(player);
 //        if (!GCPlayer.receivedBedWarning)
 //        {
-//            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
+//            player.sendMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
 //            GCPlayer.receivedBedWarning = true;
 //        }
 //    }

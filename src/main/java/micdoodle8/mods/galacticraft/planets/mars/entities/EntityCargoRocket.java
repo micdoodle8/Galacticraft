@@ -108,7 +108,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                 }
             }
 
-            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
+            if (this.timeSinceLaunch % MathHelper.floor(3 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
                 if (!this.hasValidFuel())

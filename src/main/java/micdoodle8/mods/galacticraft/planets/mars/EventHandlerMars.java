@@ -166,9 +166,9 @@ public class EventHandlerMars
 
         if (entity != null)
         {
-            int x = MathHelper.floor_double(entity.posX);
-            int y = MathHelper.floor_double(entity.posY);
-            int z = MathHelper.floor_double(entity.posZ);
+            int x = MathHelper.floor(entity.posX);
+            int y = MathHelper.floor(entity.posY);
+            int z = MathHelper.floor(entity.posZ);
             TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y - 1, z));
 
             if (tile instanceof TileEntityMulti)

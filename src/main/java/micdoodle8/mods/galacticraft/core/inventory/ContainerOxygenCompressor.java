@@ -104,7 +104,7 @@ public class ContainerOxygenCompressor extends Container
                 }
             }
 
-            if (stack.stackSize == 0)
+            if (stack.getCount() == 0)
             {
                 slot.putStack((ItemStack) null);
             }
@@ -113,7 +113,7 @@ public class ContainerOxygenCompressor extends Container
                 slot.onSlotChanged();
             }
 
-            if (stack.stackSize == var2.stackSize)
+            if (stack.getCount() == var2.getCount())
             {
                 return null;
             }

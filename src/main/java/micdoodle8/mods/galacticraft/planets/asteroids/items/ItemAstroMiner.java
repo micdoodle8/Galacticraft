@@ -93,13 +93,13 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
             {
                 if (worldIn.provider instanceof WorldProviderSpaceStation)
                 {
-                    playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
+                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
                     return EnumActionResult.FAIL;
                 }
 
                 if (((TileEntityMinerBase) tile).getLinkedMiner() != null)
                 {
-                    playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner.fail")));
+                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner.fail")));
                     return EnumActionResult.FAIL;
                 }
 
@@ -115,13 +115,13 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 int astroCount = stats.getAstroMinerCount();
                 if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
                 {
-                    playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
+                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
                     return EnumActionResult.FAIL;
                 }
 
                 if (!((TileEntityMinerBase) tile).spawnMiner(playerMP))
                 {
-                    playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
                     return EnumActionResult.FAIL;
                 }
 

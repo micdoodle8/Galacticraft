@@ -159,12 +159,12 @@ public class ContainerBuggyBench extends Container
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
                 slot.putStack((ItemStack) null);
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
                 return null;
             }
@@ -180,7 +180,7 @@ public class ContainerBuggyBench extends Container
     protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (par1ItemStack.getCount() > 0)
         {
             Slot slot;
             ItemStack slotStack;

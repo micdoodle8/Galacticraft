@@ -182,7 +182,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                         IStatsCapability stats = playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                         if (stats.getChatCooldown() == 0)
                         {
-                            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));
+                            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));
                             stats.setChatCooldown(20);
                         }
                     }
@@ -405,12 +405,12 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
         if (recipe.getItemToBuy().getItem() == Items.EMERALD)
         {
-            this.wealth += recipe.getItemToBuy().stackSize;
+            this.wealth += recipe.getItemToBuy().getCount();
         }
 
         if (recipe.getRewardsExp())
         {
-            this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY + 0.5D, this.posZ, i));
+            this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY + 0.5D, this.posZ, i));
         }
     }
 
@@ -546,7 +546,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                 entitywitch.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
             }
 
-            this.worldObj.spawnEntityInWorld(entitywitch);
+            this.worldObj.spawnEntity(entitywitch);
             this.setDead();
         }
     }
@@ -572,7 +572,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             }
             else
             {
-                itemstack.stackSize = itemstack1.stackSize;
+                itemstack.stackSize = itemstack1.getCount();
             }
         }
     }
@@ -605,12 +605,12 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
             if (itemstack != null)
             {
-                if (itemstack.getItem() == Items.BREAD && itemstack.stackSize >= 3 * multiplier || itemstack.getItem() == Items.POTATO && itemstack.stackSize >= 12 * multiplier || itemstack.getItem() == Items.CARROT && itemstack.stackSize >= 12 * multiplier)
+                if (itemstack.getItem() == Items.BREAD && itemstack.getCount() >= 3 * multiplier || itemstack.getItem() == Items.POTATO && itemstack.getCount() >= 12 * multiplier || itemstack.getItem() == Items.CARROT && itemstack.getCount() >= 12 * multiplier)
                 {
                     return true;
                 }
 
-                if (itemstack.getItem() == Items.WHEAT && itemstack.stackSize >= 9 * multiplier)
+                if (itemstack.getItem() == Items.WHEAT && itemstack.getCount() >= 9 * multiplier)
                 {
                     return true;
                 }

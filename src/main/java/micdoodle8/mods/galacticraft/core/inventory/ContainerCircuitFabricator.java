@@ -156,7 +156,7 @@ public class ContainerCircuitFabricator extends Container
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
                 slot.putStack((ItemStack) null);
             }
@@ -165,7 +165,7 @@ public class ContainerCircuitFabricator extends Container
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
                 return null;
             }

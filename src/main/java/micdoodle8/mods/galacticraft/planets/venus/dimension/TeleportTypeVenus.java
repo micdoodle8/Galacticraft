@@ -89,7 +89,7 @@ public class TeleportTypeVenus implements ITeleportType
                 {
                     EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
 
-                    newWorld.spawnEntityInWorld(entryPod);
+                    newWorld.spawnEntity(entryPod);
                 }
 
                 stats.setTeleportCooldown(10);

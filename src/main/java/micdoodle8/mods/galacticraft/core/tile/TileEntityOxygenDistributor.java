@@ -231,7 +231,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //            {
 //                this.oxygenBubble = new EntityBubble(this.worldObj, new Vector3(this), this);
 //                this.hasValidBubble = true;
-//                this.worldObj.spawnEntityInWorld(this.oxygenBubble);
+//                this.worldObj.spawnEntity(this.oxygenBubble);
 //            }
 //        }
 
@@ -242,7 +242,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             if (this.ticks % (this.active ? 20 : 4) == 0)
             {
                 double size = bubbleSize;
-                int bubbleR = MathHelper.floor_double(size) + 4;
+                int bubbleR = MathHelper.floor(size) + 4;
                 int bubbleR2 = (int) (size * size);
                 for (int x = this.getPos().getX() - bubbleR; x <= this.getPos().getX() + bubbleR; x++)
                 {
@@ -413,7 +413,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }

@@ -73,7 +73,7 @@ public class InventoryBuggyBench implements IInventory
         {
             ItemStack var3;
 
-            if (this.stackList[par1].stackSize <= par2)
+            if (this.stackList[par1].getCount() <= par2)
             {
                 var3 = this.stackList[par1];
                 this.stackList[par1] = null;
@@ -84,7 +84,7 @@ public class InventoryBuggyBench implements IInventory
             {
                 var3 = this.stackList[par1].splitStack(par2);
 
-                if (this.stackList[par1].stackSize == 0)
+                if (this.stackList[par1].getCount() == 0)
                 {
                     this.stackList[par1] = null;
                 }
@@ -118,7 +118,7 @@ public class InventoryBuggyBench implements IInventory
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }

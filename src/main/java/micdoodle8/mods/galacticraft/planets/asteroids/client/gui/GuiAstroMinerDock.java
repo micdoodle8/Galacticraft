@@ -104,7 +104,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimension(), new Object[] { this.tile.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.world.provider.getDimension(), new Object[] { this.tile.getPos(), 0 }));
                 break;
             default:
                 break;
@@ -124,15 +124,15 @@ public class GuiAstroMinerDock extends GuiContainerGC
         this.fontRendererObj.drawString(this.getStatus(), 177, 141, 4210752);
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posX) - this.tile.getPos().getX() - 1)), 186, 152, 2536735);
+            this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor(this.tile.linkedMiner.posX) - this.tile.getPos().getX() - 1)), 186, 152, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posY) - this.tile.getPos().getY())), 186, 162, 2536735);
+            this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor(this.tile.linkedMiner.posY) - this.tile.getPos().getY())), 186, 162, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394z: " + getDeltaString((MathHelper.floor_double(this.tile.linkedMiner.posZ) - this.tile.getPos().getZ() - 1)), 186, 172, 2536735);
+            this.fontRendererObj.drawString("\u0394z: " + getDeltaString((MathHelper.floor(this.tile.linkedMiner.posZ) - this.tile.getPos().getZ() - 1)), 186, 172, 2536735);
         }
         if (this.extraLines)
         {

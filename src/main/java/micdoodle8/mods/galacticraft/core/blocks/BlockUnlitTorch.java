@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -73,7 +74,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return null;
     }
@@ -139,9 +140,9 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
-        if (this.canPlaceAt(worldIn, pos, facing))
+        if (this.canPlaceAt(world, pos, facing))
         {
             return this.getDefaultState().withProperty(FACING, facing);
         }
@@ -149,7 +150,7 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
         {
             for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
             {
-                if (worldIn.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
+                if (world.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
                 {
                     return this.getDefaultState().withProperty(FACING, enumfacing);
                 }

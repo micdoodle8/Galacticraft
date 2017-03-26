@@ -137,12 +137,12 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
                     if (!worldIn.isRemote)
                     {
-                        worldIn.spawnEntityInWorld(var35);
+                        worldIn.spawnEntity(var35);
                     }
 
                     if (!playerIn.capabilities.isCreativeMode)
                     {
-                        --itemStackIn.stackSize;
+                        --itemStackIn.getCount();
                     }
                 }
 

@@ -67,17 +67,17 @@ public class CommandKeepDim extends CommandBase
 
                     if (ConfigManagerCore.setLoaded(dimID))
                     {
-                        playerBase.addChatMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
+                        playerBase.sendMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
                     }
                     else
                     {
                         if (ConfigManagerCore.setUnloaded(dimID))
                         {
-                            playerBase.addChatMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
+                            playerBase.sendMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
                         }
                         else
                         {
-                            playerBase.addChatMessage(new TextComponentString("[GCKeepLoaded] Failed to set dimension as not static"));
+                            playerBase.sendMessage(new TextComponentString("[GCKeepLoaded] Failed to set dimension as not static"));
                         }
                     }
                 }

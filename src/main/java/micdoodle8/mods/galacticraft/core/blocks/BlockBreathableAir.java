@@ -31,12 +31,6 @@ public class BlockBreathableAir extends BlockAir
     }
 
     @Override
-    public boolean canReplace(World world, BlockPos pos, EnumFacing side, ItemStack stack)
-    {
-        return true;
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return true;

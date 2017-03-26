@@ -322,7 +322,7 @@ public class WorldUtil
     @SideOnly(Side.CLIENT)
     public static WorldProvider getProviderForDimensionClient(int id)
     {
-        World ws = ClientProxyCore.mc.theWorld;
+        World ws = ClientProxyCore.mc.world;
         if (ws != null && GCCoreUtil.getDimensionID(ws) == id)
         {
             return ws.provider;
@@ -802,7 +802,7 @@ public class WorldUtil
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
                 }
-                worldNew.spawnEntityInWorld(entity);
+                worldNew.spawnEntity(entity);
                 entity.setWorld(worldNew);
 
                 ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
@@ -858,7 +858,7 @@ public class WorldUtil
                     ((IWorldTransferCallback) entity).onWorldTransferred(worldNew);
                 }
 
-                worldNew.spawnEntityInWorld(entity);
+                worldNew.spawnEntity(entity);
                 entity.setWorld(worldNew);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
@@ -953,7 +953,7 @@ public class WorldUtil
             entity.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY, ridingRocket.posZ, 0, 0);
             worldNew.updateEntityWithOptionalForce(entity, true);
 
-            worldNew.spawnEntityInWorld(ridingRocket);
+            worldNew.spawnEntity(ridingRocket);
             ridingRocket.setWorld(worldNew);
 
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
@@ -968,7 +968,7 @@ public class WorldUtil
                 otherRiddenEntity.writeToNBTOptional(nbt);
                 removeEntityFromWorld(worldOld, otherRiddenEntity, true);
                 otherRiddenEntity = EntityList.createEntityFromNBT(nbt, worldNew);
-                worldNew.spawnEntityInWorld(otherRiddenEntity);
+                worldNew.spawnEntity(otherRiddenEntity);
                 otherRiddenEntity.setWorld(worldNew);
             }
             if (spawnPos != null)
@@ -1267,7 +1267,7 @@ public class WorldUtil
         stats.setUsingPlanetSelectionGui(true);
         stats.setSavedPlanetList(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.worldObj, player.posX, player.posY, player.posZ);
-        player.worldObj.spawnEntityInWorld(fakeEntity);
+        player.worldObj.spawnEntity(fakeEntity);
         player.startRiding(fakeEntity);
     }
 

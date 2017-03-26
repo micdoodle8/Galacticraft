@@ -51,7 +51,7 @@ public class ParticleOilDrip extends Particle
             this.setParticleTextureIndex(112);
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9800000190734863D;
         this.motionY *= 0.9800000190734863D;
         this.motionZ *= 0.9800000190734863D;
@@ -61,14 +61,14 @@ public class ParticleOilDrip extends Particle
             this.setExpired();
         }
 
-        if (this.isCollided)
+        if (this.onGround)
         {
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }
 
         BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-        IBlockState state = this.worldObj.getBlockState(pos);
+        IBlockState state = this.world.getBlockState(pos);
         Material material = state.getBlock().getMaterial(state);
 
         if (material.isLiquid() || material.isSolid())
@@ -80,7 +80,7 @@ public class ParticleOilDrip extends Particle
                 d0 = BlockLiquid.getLiquidHeightPercent(((Integer) state.getValue(BlockLiquid.LEVEL)).intValue());
             }
 
-            double d1 = MathHelper.floor_double(this.posY) + 1 - d0;
+            double d1 = MathHelper.floor(this.posY) + 1 - d0;
 
             if (this.posY < d1)
             {

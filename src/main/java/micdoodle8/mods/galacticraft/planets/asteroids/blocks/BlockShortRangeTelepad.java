@@ -133,7 +133,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
             {
                 if (!worldIn.isRemote)
                 {
-                    ((EntityPlayer) placer).addChatMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                    ((EntityPlayer) placer).sendMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                 }
                 ((EntityPlayer) placer).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(this), 1, 0));
             }

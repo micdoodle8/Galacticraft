@@ -91,12 +91,12 @@ public class MapGenCaveMars extends MapGenBaseMeta
 
                 if (par6 >= d4 - 16.0D - d6 * 2.0D && par10 >= d5 - 16.0D - d6 * 2.0D && par6 <= d4 + 16.0D + d6 * 2.0D && par10 <= d5 + 16.0D + d6 * 2.0D)
                 {
-                    int l1 = MathHelper.floor_double(par6 - d6) - par3 * 16 - 1;
-                    int i2 = MathHelper.floor_double(par6 + d6) - par3 * 16 + 1;
-                    int j2 = MathHelper.floor_double(par8 - d7) - 1;
-                    int k2 = MathHelper.floor_double(par8 + d7) + 1;
-                    int l2 = MathHelper.floor_double(par10 - d6) - par4 * 16 - 1;
-                    int i3 = MathHelper.floor_double(par10 + d6) - par4 * 16 + 1;
+                    int l1 = MathHelper.floor(par6 - d6) - par3 * 16 - 1;
+                    int i2 = MathHelper.floor(par6 + d6) - par3 * 16 + 1;
+                    int j2 = MathHelper.floor(par8 - d7) - 1;
+                    int k2 = MathHelper.floor(par8 + d7) + 1;
+                    int l2 = MathHelper.floor(par10 - d6) - par4 * 16 - 1;
+                    int i3 = MathHelper.floor(par10 + d6) - par4 * 16 + 1;
 
                     if (l1 < 0)
                     {

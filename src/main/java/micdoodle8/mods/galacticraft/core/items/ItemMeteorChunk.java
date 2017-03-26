@@ -155,7 +155,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
                 meteor.isHot = true;
             }
             meteor.canBePickedUp = player.capabilities.isCreativeMode ? 2 : 1;
-            world.spawnEntityInWorld(meteor);
+            world.spawnEntity(meteor);
         }
 
         player.swingArm(hand);

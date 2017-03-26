@@ -27,12 +27,14 @@ public abstract class BlockAdvanced extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (hand != EnumHand.MAIN_HAND)
         {
             return false;
         }
+
+        ItemStack heldItem = playerIn.getHeldItem(hand);
 
         /**
          * Check if the player is holding a wrench or an electric item. If so,

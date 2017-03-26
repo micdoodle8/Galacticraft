@@ -45,7 +45,7 @@ public class BlockSludge extends BlockFluidClassic
             {
                 EntitySludgeling sludgeling = new EntitySludgeling(worldIn);
                 sludgeling.setPosition(pos.getX() + worldIn.rand.nextInt(5) - 2, pos.getY(), pos.getZ() + worldIn.rand.nextInt(5) - 2);
-                worldIn.spawnEntityInWorld(sludgeling);
+                worldIn.spawnEntity(sludgeling);
             }
         }
 

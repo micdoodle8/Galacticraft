@@ -24,12 +24,6 @@ public class BlockBrightAir extends BlockAir
     }
 
     @Override
-    public boolean canReplace(World worldIn, BlockPos pos, EnumFacing side, ItemStack stack)
-    {
-        return true;
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return true;

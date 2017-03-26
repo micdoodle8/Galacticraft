@@ -194,7 +194,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                                     double dist = 3.0F;
                                     juicer.setPosition(this.posX + dist * Math.sin(angle), this.posY + 0.2F, this.posZ + dist * Math.cos(angle));
                                     juicer.setHanging(true);
-                                    this.worldObj.spawnEntityInWorld(juicer);
+                                    this.worldObj.spawnEntity(juicer);
                                     this.juicersSpawned.add(juicer);
                                 }
                             }
@@ -369,7 +369,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         EntityWebShot entityarrow = new EntityWebShot(this.worldObj, this, target, 0.8F, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
+        this.worldObj.spawnEntity(entityarrow);
     }
 
     @Override

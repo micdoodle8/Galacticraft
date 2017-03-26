@@ -333,7 +333,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(this.thePlayer.getGameProfile().getName());
                     if (race != null)
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { playerToInvite.value, race.getSpaceRaceID() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.world), new Object[] { playerToInvite.value, race.getSpaceRaceID() }));
                         this.recentlyInvited.put(playerToInvite.value, 20 * 60);
                     }
                 }
@@ -346,7 +346,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                     SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(this.thePlayer.getGameProfile().getName());
                     if (race != null)
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.world), new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
                     }
                 }
             }
@@ -631,7 +631,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             objList.add(this.spaceRaceData.getFlagData());
             objList.add(this.spaceRaceData.getTeamColor());
             objList.add(this.spaceRaceData.getPlayerNames().toArray(new String[this.spaceRaceData.getPlayerNames().size()]));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, GCCoreUtil.getDimensionID(mc.theWorld), objList));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, GCCoreUtil.getDimensionID(mc.world), objList));
         }
     }
 
@@ -887,7 +887,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     @Override
     public void drawWorldBackground(int i)
     {
-        if (this.mc.theWorld != null)
+        if (this.mc.world != null)
         {
             int scaleX = Math.min(this.ticksPassed * 14, this.width / 3);
             int scaleY = Math.min(this.ticksPassed * 14, this.height / 3);

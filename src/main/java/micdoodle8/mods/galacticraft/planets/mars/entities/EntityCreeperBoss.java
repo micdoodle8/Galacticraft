@@ -220,7 +220,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         }
         else
         {
-            this.worldObj.spawnEntityInWorld(entityitem);
+            this.worldObj.spawnEntity(entityitem);
         }
         return entityitem;
     }
@@ -303,7 +303,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         projectileTNT.posY = d4;
         projectileTNT.posX = d3;
         projectileTNT.posZ = d5;
-        this.worldObj.spawnEntityInWorld(projectileTNT);
+        this.worldObj.spawnEntity(projectileTNT);
     }
 
     @Override

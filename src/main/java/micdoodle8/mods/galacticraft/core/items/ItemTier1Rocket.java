@@ -113,7 +113,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
                 final EntityTier1Rocket spaceship = new EntityTier1Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
 
                 spaceship.setPosition(spaceship.posX, spaceship.posY + spaceship.getOnPadYOffset(), spaceship.posZ);
-                worldIn.spawnEntityInWorld(spaceship);
+                worldIn.spawnEntity(spaceship);
 
                 if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
                 {
@@ -124,7 +124,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
                 {
                     stack.stackSize--;
 
-                    if (stack.stackSize <= 0)
+                    if (stack.getCount() <= 0)
                     {
                         stack = null;
                     }

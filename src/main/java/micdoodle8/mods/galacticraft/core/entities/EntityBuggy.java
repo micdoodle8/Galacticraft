@@ -430,7 +430,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             double d = this.motionX * this.motionX + this.motionZ * this.motionZ;
 
-            if (d != 0 && this.ticks % (MathHelper.floor_double(2 / d) + 1) == 0)
+            if (d != 0 && this.ticks % (MathHelper.floor(2 / d) + 1) == 0)
             {
                 this.removeFuel(1);
             }
@@ -541,7 +541,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             ItemStack var3;
 
-            if (this.cargoItems[var1].stackSize <= var2)
+            if (this.cargoItems[var1].getCount() <= var2)
             {
                 var3 = this.cargoItems[var1];
                 this.cargoItems[var1] = null;
@@ -551,7 +551,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             {
                 var3 = this.cargoItems[var1].splitStack(var2);
 
-                if (this.cargoItems[var1].stackSize == 0)
+                if (this.cargoItems[var1].getCount() == 0)
                 {
                     this.cargoItems[var1] = null;
                 }
@@ -585,7 +585,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         this.cargoItems[var1] = var2;
 
-        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
+        if (var2 != null && var2.getCount() > this.getInventoryStackLimit())
         {
             var2.stackSize = this.getInventoryStackLimit();
         }
@@ -604,7 +604,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1)
+    public boolean isUsableByPlayer(EntityPlayer var1)
     {
         return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
     }
@@ -631,10 +631,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             if (this.getPassengers().isEmpty())
             {
-                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
-                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
-                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
-                player.addChatMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
+                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
+                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
+                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
+                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
             }
 
             return true;
@@ -723,13 +723,13 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             ItemStack stackAt = this.cargoItems[count];
 
-            if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+            if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
-                if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
+                if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
                 {
                     if (doAdd)
                     {
-                        this.cargoItems[count].stackSize += stack.stackSize;
+                        this.cargoItems[count].stackSize += stack.getCount();
                         this.markDirty();
                     }
 
@@ -738,12 +738,12 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 else
                 {
                     //Part of the stack can fill this slot but there will be some left over
-                    int origSize = stackAt.stackSize;
-                    int surplus = origSize + stack.stackSize - stackAt.getMaxStackSize();
+                    int origSize = stackAt.getCount();
+                    int surplus = origSize + stack.getCount() - stackAt.getMaxStackSize();
 
                     if (doAdd)
                     {
-                        this.cargoItems[count].stackSize = stackAt.getMaxStackSize();
+                        this.cargoItems[count].getCount() = stackAt.getMaxStackSize();
                         this.markDirty();
                     }
 
@@ -790,7 +790,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 ItemStack resultStack = stackAt.copy();
                 resultStack.stackSize = 1;
 
-                if (doRemove && --stackAt.stackSize <= 0)
+                if (doRemove && --stackAt.getCount() <= 0)
                 {
                     this.cargoItems[i] = null;
                 }

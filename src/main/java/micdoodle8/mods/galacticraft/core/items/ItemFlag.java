@@ -83,7 +83,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
                 if (worldIn.getEntitiesWithinAABB(EntityFlag.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 3, pos.getZ() + 1)).isEmpty())
                 {
-                    worldIn.spawnEntityInWorld(flag);
+                    worldIn.spawnEntity(flag);
                     flag.setType(stack.getItemDamage());
                     flag.setOwner(player.getGameProfile().getName());
                     worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 2.0F);
@@ -91,7 +91,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
                 }
                 else
                 {
-                    entity.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.flag.already_placed")));
+                    entity.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.flag.already_placed")));
                 }
             }
 
@@ -101,7 +101,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
                 if (var2 >= 0 && !player.capabilities.isCreativeMode)
                 {
-                    if (--player.inventory.mainInventory[var2].stackSize <= 0)
+                    if (--player.inventory.mainInventory[var2].getCount() <= 0)
                     {
                         player.inventory.mainInventory[var2] = null;
                     }

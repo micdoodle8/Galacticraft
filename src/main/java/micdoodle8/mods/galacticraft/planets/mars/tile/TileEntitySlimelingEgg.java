@@ -56,7 +56,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 
                 if (!this.worldObj.isRemote)
                 {
-                    this.worldObj.spawnEntityInWorld(slimeling);
+                    this.worldObj.spawnEntity(slimeling);
                 }
 
                 slimeling.setTamed(true);

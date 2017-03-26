@@ -21,10 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -145,7 +142,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     {
         int metadata = getMetaFromState(state);
 
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
@@ -230,11 +227,11 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(this.getElectricCompressor());
-        par3List.add(this.getCircuitFabricator());
-        par3List.add(this.getOxygenStorageModule());
+        list.add(this.getElectricCompressor());
+        list.add(this.getCircuitFabricator());
+        list.add(this.getOxygenStorageModule());
     }
 
     @Override

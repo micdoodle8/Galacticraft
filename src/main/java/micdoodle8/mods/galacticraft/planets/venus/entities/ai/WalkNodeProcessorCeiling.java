@@ -45,17 +45,17 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
         if (this.getCanSwim() && this.entity.isInWater())
         {
             i = (int)this.entity.getEntityBoundingBox().minY;
-            BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(MathHelper.floor_double(this.entity.posX), i, MathHelper.floor_double(this.entity.posZ));
+            BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(MathHelper.floor(this.entity.posX), i, MathHelper.floor(this.entity.posZ));
 
             for (Block block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock(); block == Blocks.FLOWING_WATER || block == Blocks.WATER; block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock())
             {
                 ++i;
-                blockpos$mutableblockpos.setPos(MathHelper.floor_double(this.entity.posX), i, MathHelper.floor_double(this.entity.posZ));
+                blockpos$mutableblockpos.setPos(MathHelper.floor(this.entity.posX), i, MathHelper.floor(this.entity.posZ));
             }
         }
         else if (this.entity.onGround)
         {
-            i = MathHelper.floor_double(this.entity.getEntityBoundingBox().minY + 0.5D);
+            i = MathHelper.floor(this.entity.getEntityBoundingBox().minY + 0.5D);
         }
         else
         {
@@ -97,7 +97,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
     @Override
     public PathPoint getPathPointToCoords(double x, double y, double z)
     {
-        return this.openPoint(MathHelper.floor_double(x - (double)(this.entity.width / 2.0F)), MathHelper.floor_double(y), MathHelper.floor_double(z - (double)(this.entity.width / 2.0F)));
+        return this.openPoint(MathHelper.floor(x - (double)(this.entity.width / 2.0F)), MathHelper.floor(y), MathHelper.floor(z - (double)(this.entity.width / 2.0F)));
     }
 
     @Override

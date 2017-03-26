@@ -46,7 +46,7 @@ public class ItemUtils {
         double zVelocity = world.rand.nextFloat() * velocity + (1.0D - velocity) * 0.5D;
         EntityItem entityItem = new EntityItem(world, pos.getX() + xVelocity, pos.getY() + yVelocity, pos.getZ() + zVelocity, stack);
         entityItem.setPickupDelay(10);
-        world.spawnEntityInWorld(entityItem);
+        world.spawnEntity(entityItem);
     }
 
     /**
@@ -125,7 +125,7 @@ public class ItemUtils {
         }
 
         entity.setPickupDelay(10);
-        world.spawnEntityInWorld(entity);
+        world.spawnEntity(entity);
     }
 
     /**

@@ -30,7 +30,7 @@ public class InventoryExtended implements IInventoryGC
         {
             ItemStack var3;
 
-            if (this.inventoryStacks[i].stackSize <= j)
+            if (this.inventoryStacks[i].getCount() <= j)
             {
                 var3 = this.inventoryStacks[i];
                 this.inventoryStacks[i] = null;
@@ -40,7 +40,7 @@ public class InventoryExtended implements IInventoryGC
             {
                 var3 = this.inventoryStacks[i].splitStack(j);
 
-                if (this.inventoryStacks[i].stackSize == 0)
+                if (this.inventoryStacks[i].getCount() == 0)
                 {
                     this.inventoryStacks[i] = null;
                 }
@@ -65,7 +65,7 @@ public class InventoryExtended implements IInventoryGC
     {
         this.inventoryStacks[i] = itemstack;
 
-        if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit())
+        if (itemstack != null && itemstack.getCount() > this.getInventoryStackLimit())
         {
             itemstack.stackSize = this.getInventoryStackLimit();
         }
@@ -96,7 +96,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
         return true;
     }

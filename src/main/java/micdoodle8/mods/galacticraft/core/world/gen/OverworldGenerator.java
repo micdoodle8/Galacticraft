@@ -66,12 +66,12 @@ public class OverworldGenerator implements IWorldGenerator
             double var26 = par2Random.nextDouble() * this.amountPerVein / 16.0D;
             double var28 = (MathHelper.sin(var19 * (float) Math.PI / this.amountPerVein) + 1.0F) * var26 + 1.0D;
             double var30 = (MathHelper.sin(var19 * (float) Math.PI / this.amountPerVein) + 1.0F) * var26 + 1.0D;
-            int var32 = MathHelper.floor_double(var20 - var28 / 2.0D);
-            int var33 = MathHelper.floor_double(var22 - var30 / 2.0D);
-            int var34 = MathHelper.floor_double(var24 - var28 / 2.0D);
-            int var35 = MathHelper.floor_double(var20 + var28 / 2.0D);
-            int var36 = MathHelper.floor_double(var22 + var30 / 2.0D);
-            int var37 = MathHelper.floor_double(var24 + var28 / 2.0D);
+            int var32 = MathHelper.floor(var20 - var28 / 2.0D);
+            int var33 = MathHelper.floor(var22 - var30 / 2.0D);
+            int var34 = MathHelper.floor(var24 - var28 / 2.0D);
+            int var35 = MathHelper.floor(var20 + var28 / 2.0D);
+            int var36 = MathHelper.floor(var22 + var30 / 2.0D);
+            int var37 = MathHelper.floor(var24 + var28 / 2.0D);
 
             for (int var38 = var32; var38 <= var35; ++var38)
             {

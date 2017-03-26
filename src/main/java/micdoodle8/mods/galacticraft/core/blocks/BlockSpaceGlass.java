@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -68,18 +69,18 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
     
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < GlassFrame.values().length; i++)
             list.add(new ItemStack(itemIn, 1, i));
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int damage, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         //This allows the different item damage values to place different instances of the block - the instances of the block are constructed in GCBlocks
-        if (damage >= GlassFrame.values().length) damage = 0;
-        switch (GlassFrame.values()[damage])
+        if (meta >= GlassFrame.values().length) meta = 0;
+        switch (GlassFrame.values()[meta])
         {
         case TIN_DECO:
         {

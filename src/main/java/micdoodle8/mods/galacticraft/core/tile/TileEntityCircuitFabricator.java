@@ -149,7 +149,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
 
                         entityitem.setPickupDelay(10);
 
-                        this.worldObj.spawnEntityInWorld(entityitem);
+                        this.worldObj.spawnEntity(entityitem);
                     }
                     this.containingItems[6].stackSize = 64;
                 }

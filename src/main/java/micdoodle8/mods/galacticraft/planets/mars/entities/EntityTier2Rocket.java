@@ -135,7 +135,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
                 }
             }
 
-            if (this.timeSinceLaunch % MathHelper.floor_double(2 * (1 / multiplier)) == 0)
+            if (this.timeSinceLaunch % MathHelper.floor(2 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
                 if (!this.hasValidFuel())
@@ -236,7 +236,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
     }

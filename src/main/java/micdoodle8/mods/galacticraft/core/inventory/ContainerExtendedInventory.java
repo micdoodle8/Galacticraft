@@ -136,7 +136,7 @@ public class ContainerExtendedInventory extends Container
                 }
             }
 
-            if (stack.stackSize == 0)
+            if (stack.getCount() == 0)
             {
                 slot.putStack((ItemStack) null);
             }
@@ -145,7 +145,7 @@ public class ContainerExtendedInventory extends Container
                 slot.onSlotChanged();
             }
 
-            if (stack.stackSize == var2.stackSize)
+            if (stack.getCount() == var2.getCount())
             {
                 return null;
             }
@@ -159,7 +159,7 @@ public class ContainerExtendedInventory extends Container
     protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (par1ItemStack.getCount() > 0)
         {
             Slot slot;
             ItemStack slotStack;

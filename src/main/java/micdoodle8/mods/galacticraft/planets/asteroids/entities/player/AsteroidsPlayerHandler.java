@@ -91,7 +91,7 @@ public class AsteroidsPlayerHandler
                     smallAsteroid.spinYaw = player.worldObj.rand.nextFloat() * 4;
                     smallAsteroid.spinPitch = player.worldObj.rand.nextFloat() * 2;
 
-                    player.worldObj.spawnEntityInWorld(smallAsteroid);
+                    player.worldObj.spawnEntity(smallAsteroid);
                 }
             }
         }

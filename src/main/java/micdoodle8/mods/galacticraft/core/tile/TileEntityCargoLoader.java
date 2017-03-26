@@ -10,11 +10,13 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -24,7 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
 {
-    private ItemStack[] containingItems = new ItemStack[15];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(15, ItemStack.EMPTY);
     public boolean outOfItems;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean targetFull;
@@ -45,7 +47,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.getWorld().isRemote)
         {
             if (this.ticks % 100 == 0)
             {
@@ -90,7 +92,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
         for (final EnumFacing dir : EnumFacing.VALUES)
         {
-            final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
+            final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.getWorld(), dir);
 
             if (pad != null && pad instanceof TileEntityMulti)
             {
@@ -121,21 +123,21 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, stacks);
         return nbt;
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -213,17 +215,17 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         int count = 1;
 
-        for (count = 1; count < this.containingItems.length; count++)
+        for (count = 1; count < this.stacks.size(); count++)
         {
-            ItemStack stackAt = this.containingItems[count];
+            ItemStack stackAt = this.stacks.get(count);
 
-            if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.stackSize < stackAt.getMaxStackSize())
+            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
-                if (stackAt.stackSize + stack.stackSize <= stackAt.getMaxStackSize())
+                if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
                 {
                     if (doAdd)
                     {
-                        this.containingItems[count].stackSize += stack.stackSize;
+                        stackAt.grow(stack.getCount());
                         this.markDirty();
                     }
 
@@ -232,36 +234,36 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
                 else
                 {
                     //Part of the stack can fill this slot but there will be some left over
-                    int origSize = stackAt.stackSize;
-                    int surplus = origSize + stack.stackSize - stackAt.getMaxStackSize();
+                    int origSize = stackAt.getCount();
+                    int surplus = origSize + stack.getCount() - stackAt.getMaxStackSize();
 
                     if (doAdd)
                     {
-                        this.containingItems[count].stackSize = stackAt.getMaxStackSize();
+                        stackAt.setCount(stackAt.getMaxStackSize());
                         this.markDirty();
                     }
 
-                    stack.stackSize = surplus;
+                    stack.setCount(surplus);
                     if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
                     {
                         return EnumCargoLoadingState.SUCCESS;
                     }
 
-                    this.containingItems[count].stackSize = origSize;
+                    stackAt.setCount(origSize);
                     return EnumCargoLoadingState.FULL;
                 }
             }
         }
 
-        for (count = 1; count < this.containingItems.length; count++)
+        for (count = 1; count < this.stacks.size(); count++)
         {
-            ItemStack stackAt = this.containingItems[count];
+            ItemStack stackAt = this.stacks.get(count);
 
             if (stackAt == null)
             {
                 if (doAdd)
                 {
-                    this.containingItems[count] = stack;
+                    this.stacks.set(count, stack);
                     this.markDirty();
                 }
 
@@ -274,18 +276,22 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
     public RemovalResult removeCargo(boolean doRemove)
     {
-        for (int i = 1; i < this.containingItems.length; i++)
+        for (int i = 1; i < this.stacks.size(); i++)
         {
-            ItemStack stackAt = this.containingItems[i];
+            ItemStack stackAt = this.stacks.get(i);
 
             if (stackAt != null)
             {
                 ItemStack resultStack = stackAt.copy();
-                resultStack.stackSize = 1;
+                resultStack.setCount(1);
 
-                if (doRemove && --stackAt.stackSize <= 0)
+                if (doRemove)
                 {
-                    this.containingItems[i] = null;
+                    stackAt.shrink(1);
+                    if (stackAt.isEmpty())
+                    {
+                        this.stacks.set(i, null);
+                    }
                 }
 
                 if (doRemove)
@@ -309,7 +315,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockCargoLoader.FACING);
+        return this.getWorld().getBlockState(getPos()).getValue(BlockCargoLoader.FACING);
     }
 
     @Override

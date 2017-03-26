@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -194,7 +195,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     private void replaceEmptyCanisterItem(ItemStack container, Item newItem)
     {
         //This is a neat trick to change the item ID in an ItemStack
-        final int stackSize = container.stackSize;
+        final int getCount() = container.getCount();
         NBTTagCompound tag = new NBTTagCompound();
         tag.setShort("id", (short) Item.getIdFromItem(newItem));
         tag.setByte("Count", (byte) stackSize);

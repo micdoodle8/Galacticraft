@@ -468,9 +468,9 @@ public class TransformerHooks
                 f2 = 1.0F;
             }
 
-            int i = MathHelper.floor_double(player.posX);
-            int j = MathHelper.floor_double(player.posY);
-            int k = MathHelper.floor_double(player.posZ);
+            int i = MathHelper.floor(player.posX);
+            int j = MathHelper.floor(player.posY);
+            int k = MathHelper.floor(player.posZ);
             BlockPos pos = new BlockPos(i, j, k);
             int l = ForgeHooksClient.getSkyBlendColour(world, pos);
             float f4 = (float) (l >> 16 & 255) / 255.0F;

@@ -548,8 +548,8 @@ public class GCPlayerHandler
 
             if (absThermalLevelMod > 0D)
             {
-                int thermalLevelCooldownBase = Math.abs(MathHelper.floor_double(200 / thermalLevelMod));
-                int normaliseCooldown = Math.abs(MathHelper.floor_double(150 / lowestThermalStrength));
+                int thermalLevelCooldownBase = Math.abs(MathHelper.floor(200 / thermalLevelMod));
+                int normaliseCooldown = Math.abs(MathHelper.floor(150 / lowestThermalStrength));
                 int thermalLevelTickCooldown = thermalLevelCooldownBase;
                 if (thermalLevelTickCooldown < 1)
                 {
@@ -560,7 +560,7 @@ public class GCPlayerHandler
                 {
                     thermalLevelMod /= Math.max(1.0F, lowestThermalStrength / 2.0F);
                     absThermalLevelMod = Math.abs(thermalLevelMod);
-                    normaliseCooldown = MathHelper.floor_double(normaliseCooldown / absThermalLevelMod);
+                    normaliseCooldown = MathHelper.floor(normaliseCooldown / absThermalLevelMod);
                     if (normaliseCooldown < 1)
                     {
                         normaliseCooldown = 1;   //Prevent divide by zero errors
@@ -600,7 +600,7 @@ public class GCPlayerHandler
 
                 // Instead of increasing/decreasing the thermal level by a large amount every ~200 ticks, increase/decrease
                 //      by a small amount each time (still the same average increase/decrease)
-                int thermalLevelTickCooldownSingle = MathHelper.floor_double(thermalLevelTickCooldown / absThermalLevelMod);
+                int thermalLevelTickCooldownSingle = MathHelper.floor(thermalLevelTickCooldown / absThermalLevelMod);
                 if (thermalLevelTickCooldownSingle < 1)
                 {
                     thermalLevelTickCooldownSingle = 1;   //Prevent divide by zero errors
@@ -873,7 +873,7 @@ public class GCPlayerHandler
 
                         if (!world.isRemote)
                         {
-                            world.spawnEntityInWorld(meteor);
+                            world.spawnEntity(meteor);
                         }
                     }
                 }
@@ -896,7 +896,7 @@ public class GCPlayerHandler
 
                         if (!world.isRemote)
                         {
-                            world.spawnEntityInWorld(meteor);
+                            world.spawnEntity(meteor);
                         }
                     }
                 }
@@ -926,7 +926,7 @@ public class GCPlayerHandler
                     }
                     if (torchItem != null)
                     {
-                        player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.stackSize, 0);
+                        player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.getCount(), 0);
                     }
                 }
             }
@@ -939,7 +939,7 @@ public class GCPlayerHandler
                     Item torchItem = torchItems.get(theCurrentItem.getItem());
                     if (torchItem != null)
                     {
-                        player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.stackSize, 0);
+                        player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.getCount(), 0);
                     }
                 }
             }
@@ -980,9 +980,9 @@ public class GCPlayerHandler
         double motionSqrd = motionX * motionX + motionZ * motionZ;
         if (motionSqrd > 0.001D && !player.capabilities.isFlying)
         {
-            int iPosX = MathHelper.floor_double(player.posX);
-            int iPosY = MathHelper.floor_double(player.posY) - 1;
-            int iPosZ = MathHelper.floor_double(player.posZ);
+            int iPosX = MathHelper.floor(player.posX);
+            int iPosY = MathHelper.floor(player.posY) - 1;
+            int iPosZ = MathHelper.floor(player.posZ);
 
             // If the block below is the moon block
             IBlockState state = player.worldObj.getBlockState(new BlockPos(iPosX, iPosY, iPosZ));
@@ -997,7 +997,7 @@ public class GCPlayerHandler
                     {
                         Vector3 pos = new Vector3(player);
                         // Set the footprint position to the block below and add random number to stop z-fighting
-                        pos.y = MathHelper.floor_double(player.posY - 1D) + player.worldObj.rand.nextFloat() / 100.0F;
+                        pos.y = MathHelper.floor(player.posY - 1D) + player.worldObj.rand.nextFloat() / 100.0F;
 
                         // Adjust footprint to left or right depending on step count
                         switch (stats.getLastStep())
@@ -1189,7 +1189,7 @@ public class GCPlayerHandler
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
                 }
-                worldNew.spawnEntityInWorld(player);
+                worldNew.spawnEntity(player);
                 player.setWorld(worldNew);
             }
 
@@ -1319,9 +1319,9 @@ public class GCPlayerHandler
                 if (player.getBedLocation(GCCoreUtil.getDimensionID(player.worldObj)) == null || stats.isNewAdventureSpawn())
                 {
                     int i = 30000000;
-                    int j = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posX + 0.5D)));
-                    int k = Math.min(256, Math.max(0, MathHelper.floor_double(player.posY + 1.5D)));
-                    int l = Math.min(i, Math.max(-i, MathHelper.floor_double(player.posZ + 0.5D)));
+                    int j = Math.min(i, Math.max(-i, MathHelper.floor(player.posX + 0.5D)));
+                    int k = Math.min(256, Math.max(0, MathHelper.floor(player.posY + 1.5D)));
+                    int l = Math.min(i, Math.max(-i, MathHelper.floor(player.posZ + 0.5D)));
                     BlockPos coords = new BlockPos(j, k, l);
                     player.setSpawnChunk(coords, true, GCCoreUtil.getDimensionID(player.worldObj));
                     stats.setNewAdventureSpawn(false);
@@ -1371,7 +1371,7 @@ public class GCPlayerHandler
 
                     if (!player.worldObj.isRemote)
                     {
-                        player.worldObj.spawnEntityInWorld(chest);
+                        player.worldObj.spawnEntity(chest);
                     }
                 }
             }
@@ -1405,7 +1405,7 @@ public class GCPlayerHandler
             {
                 sb.append(" ").append(EnumColor.YELLOW).append(aString2);
             }
-            player.addChatMessage(new TextComponentString(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + sb.toString()));
+            player.sendMessage(new TextComponentString(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + sb.toString()));
             stats.setReceivedSoundWarning(true);
         }
 
