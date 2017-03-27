@@ -47,7 +47,7 @@ public class GuiElementTextBox extends GuiButton
             {
                 if (this.text.length() > 0)
                 {
-                    if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
+                    if (this.parentGui.canPlayerEdit(this, this.mc.player))
                     {
                         String toBeParsed = this.text.substring(0, this.text.length() - 1);
 
@@ -79,7 +79,7 @@ public class GuiElementTextBox extends GuiButton
 
                 if (this.isValid(this.text + pastestring))
                 {
-                    if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
+                    if (this.parentGui.canPlayerEdit(this, this.mc.player))
                     {
                         this.text = this.text + pastestring;
                         this.text = this.text.substring(0, Math.min(String.valueOf(this.text).length(), this.maxLength));
@@ -93,7 +93,7 @@ public class GuiElementTextBox extends GuiButton
             }
             else if (this.isValid(this.text + keyChar))
             {
-                if (this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
+                if (this.parentGui.canPlayerEdit(this, this.mc.player))
                 {
                     this.text = this.text + keyChar;
                     this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
@@ -132,7 +132,7 @@ public class GuiElementTextBox extends GuiButton
             {
                 if (Keyboard.isKeyDown(Keyboard.KEY_BACK) && this.text.length() > 0)
                 {
-                    if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
+                    if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.parentGui.canPlayerEdit(this, this.mc.player))
                     {
                         String toBeParsed = this.text.substring(0, this.text.length() - 1);
 
@@ -149,7 +149,7 @@ public class GuiElementTextBox extends GuiButton
                         this.timeBackspacePressed = System.currentTimeMillis();
                         this.backspacePressed++;
                     }
-                    else if (!this.parentGui.canPlayerEdit(this, this.mc.thePlayer))
+                    else if (!this.parentGui.canPlayerEdit(this, this.mc.player))
                     {
                         this.incorrectUseTimer = 10;
                         this.parentGui.onIntruderInteraction(this);

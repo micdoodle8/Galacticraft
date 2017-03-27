@@ -49,7 +49,7 @@ public class ContainerLaunchController extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ContainerLaunchController extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, stack);
+            slot.onTake(par1EntityPlayer, stack);
         }
 
         return var2;

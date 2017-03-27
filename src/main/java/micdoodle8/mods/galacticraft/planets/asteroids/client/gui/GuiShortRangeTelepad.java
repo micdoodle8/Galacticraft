@@ -43,7 +43,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
 
     public GuiShortRangeTelepad(InventoryPlayer playerInventory, TileEntityShortRangeTelepad telepad)
     {
-        super(new ContainerShortRangeTelepad(playerInventory, telepad, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerShortRangeTelepad(playerInventory, telepad, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
         this.telepad = telepad;
     }

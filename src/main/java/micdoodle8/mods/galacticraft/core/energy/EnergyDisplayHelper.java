@@ -99,11 +99,11 @@ public class EnergyDisplayHelper
 
     public static int getEnergyDisplayI(float energyVal)
     {
-        return MathHelper.floor_float(energyVal);
+        return MathHelper.floor(energyVal);
     }
 
     public static String getEnergyDisplay1DP(float energyVal)
     {
-        return "" + MathHelper.floor_float(energyVal) + "." + (MathHelper.floor_float(energyVal * 10) % 10) + (MathHelper.floor_float(energyVal * 100) % 10);
+        return "" + MathHelper.floor(energyVal) + "." + (MathHelper.floor(energyVal * 10) % 10) + (MathHelper.floor(energyVal * 100) % 10);
     }
 }

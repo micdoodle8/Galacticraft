@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,13 +34,12 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
         return GalacticraftCore.galacticraftItemsTab;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < 2; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(itemIn, 1, i));
         }
     }
 
@@ -61,7 +61,7 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
-        if (par2EntityPlayer.worldObj.isRemote)
+        if (par2EntityPlayer.world.isRemote)
         {
             switch (par1ItemStack.getItemDamage())
             {

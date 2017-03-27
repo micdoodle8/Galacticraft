@@ -73,7 +73,7 @@ public class GCFluids
             GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil);
             GCItems.bucketOil.setUnlocalizedName("bucket_oil");
             GCItems.registerItem(GCItems.bucketOil);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.BUCKET));
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, Fluid.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.BUCKET));
         }
 
         EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
@@ -108,7 +108,7 @@ public class GCFluids
             GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel);
             GCItems.bucketFuel.setUnlocalizedName("bucket_fuel");
             GCItems.registerItem(GCItems.bucketFuel);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.BUCKET));
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, Fluid.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.BUCKET));
         }
 
         EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);

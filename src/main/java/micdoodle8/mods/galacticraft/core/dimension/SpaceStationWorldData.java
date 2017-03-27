@@ -244,12 +244,12 @@ public class SpaceStationWorldData extends WorldSavedData
         else
         {
             final String stationIdentifier = SpaceStationWorldData.getSpaceStationID(stationID);
-            SpaceStationWorldData stationData = (SpaceStationWorldData) world.loadItemData(SpaceStationWorldData.class, stationIdentifier);
+            SpaceStationWorldData stationData = (SpaceStationWorldData) world.loadData(SpaceStationWorldData.class, stationIdentifier);
 
             if (stationData == null)
             {
                 stationData = new SpaceStationWorldData(stationIdentifier);
-                world.setItemData(stationIdentifier, stationData);
+                world.setData(stationIdentifier, stationData);
                 stationData.dataCompound = new NBTTagCompound();
 
                 if (owner != null)
@@ -301,14 +301,14 @@ public class SpaceStationWorldData extends WorldSavedData
         final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
         if (var0 == null)
         {
-            var0 = DimensionManager.getProvider(0).worldObj;
+            var0 = DimensionManager.getProvider(0).world;
         }
-        SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
+        SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadData(SpaceStationWorldData.class, var2);
 
         if (var3 == null)
         {
             var3 = new SpaceStationWorldData(var2);
-            var0.setItemData(var2, var3);
+            var0.setData(var2, var3);
             var3.dataCompound = new NBTTagCompound();
 
             if (player != null)

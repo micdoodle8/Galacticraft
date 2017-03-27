@@ -68,17 +68,17 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
             final float x = (this.rand.nextFloat() - 0.5F) * this.width;
             final float y = (this.rand.nextFloat() - 0.5F) * (this.height / 2.0F);
             final float z = (this.rand.nextFloat() - 0.5F) * this.width;
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D);
+            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D);
         }
 
         int i;
         int j;
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.worldObj), new Object[] {}), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -89,12 +89,12 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
                 {
                     j = EntityXPOrb.getXPSplit(i);
                     i -= j;
-                    this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
                 }
             }
         }
 
-        if (this.deathTicks == 200 && !this.worldObj.isRemote)
+        if (this.deathTicks == 200 && !this.world.isRemote)
         {
             i = 20;
 
@@ -102,14 +102,14 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
             {
                 j = EntityXPOrb.getXPSplit(i);
                 i -= j;
-                this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+                this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
             }
 
             TileEntityTreasureChest chest = null;
 
             if (this.spawner != null && this.spawner.getChestPos() != null)
             {
-                TileEntity chestTest = this.worldObj.getTileEntity(this.spawner.getChestPos());
+                TileEntity chestTest = this.world.getTileEntity(this.spawner.getChestPos());
 
                 if (chestTest != null && chestTest instanceof TileEntityTreasureChest)
                 {
@@ -162,7 +162,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
                 this.spawner.boss = null;
                 this.spawner.spawned = false;
 
-                if (!this.worldObj.isRemote)
+                if (!this.world.isRemote)
                 {
                     this.spawner.lastKillTime = MinecraftServer.getCurrentTimeMillis();
                 }
@@ -175,7 +175,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
     {
         if (this.roomCoords != null && this.roomSize != null)
         {
-            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class,
                     new AxisAlignedBB(
                             this.roomCoords.intX(),
                             this.roomCoords.intY(),
@@ -188,7 +188,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
-                List<EntityPlayer> entitiesWithin2 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
+                List<EntityPlayer> entitiesWithin2 = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
 
                 for (EntityPlayer p : entitiesWithin2)
                 {

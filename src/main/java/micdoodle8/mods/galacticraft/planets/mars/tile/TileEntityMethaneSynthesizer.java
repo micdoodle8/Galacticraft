@@ -68,7 +68,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             this.hasCO2 = this.getAirProducts();
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             //If somehow it has CO2 in a CO2-free dimension, flush it out
             if (this.hasCO2 == 0 && this.gasTank2.getFluidAmount() > 0)
@@ -89,11 +89,11 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     //CO2 -> CO2 tank
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
                     {
-                        IBlockState stateAbove = this.worldObj.getBlockState(this.getPos().up());
+                        IBlockState stateAbove = this.world.getBlockState(this.getPos().up());
                         Block blockAbove = stateAbove.getBlock();
                         if (blockAbove != null && blockAbove.getMaterial(stateAbove) == Material.AIR && blockAbove != GCBlocks.breatheableAir && blockAbove != GCBlocks.brightBreatheableAir)
                         {
-                            if (!OxygenUtil.inOxygenBubble(this.worldObj, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
+                            if (!OxygenUtil.inOxygenBubble(this.world, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
                                 FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
                                 this.gasTank2.fill(gcAtmosphere, true);
@@ -193,7 +193,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public int getAirProducts()
     {
-        WorldProvider WP = this.worldObj.provider;
+        WorldProvider WP = this.world.provider;
         if (WP instanceof WorldProviderSpace)
         {
             ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere;
@@ -502,7 +502,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public int getBlockMetadata()
     {
-        return this.getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
+        return this.getBlockType().getMetaFromState(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -610,7 +610,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }
 
     public EnumFacing getHydrogenInputDirection()

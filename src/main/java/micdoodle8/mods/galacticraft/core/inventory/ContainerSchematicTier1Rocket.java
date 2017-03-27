@@ -18,12 +18,12 @@ public class ContainerSchematicTier1Rocket extends Container
 {
     public InventoryRocketBench craftMatrix = new InventoryRocketBench(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerSchematicTier1Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
         final int change = 27;
-        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 69 + change));
         int var6;
         int var7;
@@ -83,7 +83,7 @@ public class ContainerSchematicTier1Rocket extends Container
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (int var2 = 1; var2 < 18; ++var2)
             {
@@ -190,7 +190,7 @@ public class ContainerSchematicTier1Rocket extends Container
             {
                 if (par1 == 0)
                 {
-                    var3.onPickupFromSlot(par1EntityPlayer, var4);
+                    var3.onTake(par1EntityPlayer, var4);
                 }
                 var3.putStack((ItemStack) null);
                 return var2;
@@ -201,7 +201,7 @@ public class ContainerSchematicTier1Rocket extends Container
                 return null;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            var3.onTake(par1EntityPlayer, var4);
             if (par1 == 0)
             {
                 var3.onSlotChanged();
@@ -227,8 +227,8 @@ public class ContainerSchematicTier1Rocket extends Container
                 if (slotStack == null)
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

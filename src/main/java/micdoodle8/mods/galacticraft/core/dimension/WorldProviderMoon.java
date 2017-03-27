@@ -138,7 +138,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
-        final float var2 = this.worldObj.getCelestialAngle(par1);
+        final float var2 = this.world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
@@ -157,18 +157,18 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
 //	@Override
 //	public IChunkProvider createChunkGenerator()
 //	{
-//		return new ChunkProviderMoon(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+//		return new ChunkProviderMoon(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
 //	}
 
 //	@Override
 //	public void updateWeather()
 //	{
-//		this.worldObj.getWorldInfo().setRainTime(0);
-//		this.worldObj.getWorldInfo().setRaining(false);
-//		this.worldObj.getWorldInfo().setThunderTime(0);
-//		this.worldObj.getWorldInfo().setThundering(false);
-//		this.worldObj.rainingStrength = 0.0F;
-//		this.worldObj.thunderingStrength = 0.0F;
+//		this.world.getWorldInfo().setRainTime(0);
+//		this.world.getWorldInfo().setRaining(false);
+//		this.world.getWorldInfo().setThunderTime(0);
+//		this.world.getWorldInfo().setThundering(false);
+//		this.world.rainingStrength = 0.0F;
+//		this.world.thunderingStrength = 0.0F;
 //	}
 
     @Override
@@ -200,7 +200,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     @Override
     public boolean isSurfaceWorld()
     {
-        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+        return (this.world == null) ? false : this.world.isRemote;
     }
 
     //Overriding  so that beds do not explode on Moon

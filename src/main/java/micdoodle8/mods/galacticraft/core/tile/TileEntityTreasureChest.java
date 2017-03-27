@@ -189,7 +189,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
             if (j >= 0 && j < this.chestContents.length)
             {
-                this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.chestContents[j] = new ItemStack(nbttagcompound1);
             }
         }
 
@@ -238,7 +238,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public boolean isUsableByPlayer(EntityPlayer player)
     {
-        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -265,11 +265,11 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             this.numPlayersUsing = 0;
         }
 
-        if (!this.worldObj.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0)
+        if (!this.world.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0)
         {
             this.numPlayersUsing = 0;
             f = 5.0F;
-            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double) ((float) i - f), (double) ((float) j - f), (double) ((float) k - f), (double) ((float) (i + 1) + f), (double) ((float) (j + 1) + f), (double) ((float) (k + 1) + f)));
+            List list = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double) ((float) i - f), (double) ((float) j - f), (double) ((float) k - f), (double) ((float) (i + 1) + f), (double) ((float) (j + 1) + f), (double) ((float) (k + 1) + f)));
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
@@ -297,7 +297,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             double d1 = (double) i + 0.5D;
             d2 = (double) k + 0.5D;
 
-            this.worldObj.playSound(null, d1, (double)j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.world.playSound(null, d1, (double)j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (((this.numPlayersUsing == 0 || this.locked) && this.lidAngle > 0.0F) || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
@@ -325,7 +325,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                 d2 = (double) i + 0.5D;
                 double d0 = (double) k + 0.5D;
 
-                this.worldObj.playSound(null, d2, (double)j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.world.playSound(null, d2, (double)j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -362,9 +362,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             }
 
             ++this.numPlayersUsing;
-            this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-            this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
-            this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
+            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
+            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
+            this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
         }
     }
 
@@ -374,9 +374,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         if (!player.isSpectator())
         {
 //            --this.numPlayersUsing;
-//            this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-//            this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
-//            this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
+//            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
+//            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
+//            this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
         }
     }
 
@@ -472,7 +472,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         {
             this.locked = false;
 
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 // player.playSound("galacticraft.player.unlockchest", 1.0F,
                 // 1.0F);
@@ -496,9 +496,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
         if (this.locked)
         {
-            if (player.worldObj.isRemote)
+            if (player.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getTierOfKeyRequired() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getTierOfKeyRequired() }));
             }
             return true;
         }
@@ -516,7 +516,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
         double distance = Double.MAX_VALUE;
         TileEntityTreasureChest chest = null;
-        for (final TileEntity tile : entity.worldObj.loadedTileEntityList)
+        for (final TileEntity tile : entity.world.loadedTileEntityList)
         {
             if (tile instanceof TileEntityTreasureChest && ((TileEntityTreasureChest) tile).getTierOfKeyRequired() == tier)
             {
@@ -578,7 +578,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
         if (this.lootTable != null)
         {
-            LootTable loottable = this.worldObj.getLootTableManager().getLootTableFromLocation(this.lootTable);
+            LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(this.lootTable);
             this.lootTable = null;
             Random random;
 
@@ -591,7 +591,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                 random = new Random(this.lootTableSeed);
             }
 
-            LootContext.Builder builder = new LootContext.Builder((WorldServer)this.worldObj);
+            LootContext.Builder builder = new LootContext.Builder((WorldServer)this.world);
 
             if (player != null)
             {

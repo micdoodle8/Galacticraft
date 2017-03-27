@@ -50,7 +50,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             return;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.lastKillTime > 0 && MinecraftServer.getCurrentTimeMillis() - lastKillTime > 900000) // 15 minutes
             {
@@ -59,7 +59,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             }
 
             final Vector3 thisVec = new Vector3(this);
-            final List<E> l = this.worldObj.getEntitiesWithinAABB(bossClass, new AxisAlignedBB(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
+            final List<E> l = this.world.getEntitiesWithinAABB(bossClass, new AxisAlignedBB(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15));
 
             for (final Entity e : l)
             {
@@ -72,7 +72,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityMob> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(this.roomCoords.intX() - 3, this.roomCoords.intY() - 3, this.roomCoords.intZ() - 3, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
+            List<EntityMob> entitiesWithin = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(this.roomCoords.intX() - 3, this.roomCoords.intY() - 3, this.roomCoords.intZ() - 3, this.roomCoords.intX() + this.roomSize.intX() + 3, this.roomCoords.intY() + this.roomSize.intY() + 3, this.roomCoords.intZ() + this.roomSize.intZ() + 3));
 
             for (Entity mob : entitiesWithin)
             {
@@ -82,14 +82,14 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
+            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ()));
 
             if (this.boss == null && !this.isBossDefeated && !playersWithin.isEmpty())
             {
                 try
                 {
                     Constructor<?> c = this.bossClass.getConstructor(new Class[] { World.class });
-                    this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
+                    this.boss = (IBoss) c.newInstance(new Object[] { this.world });
                     ((Entity) this.boss).setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                     this.boss.setRoom(this.roomCoords, this.roomSize);
                 }
@@ -125,8 +125,8 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                     if (this.boss instanceof EntityLiving)
                     {
                         EntityLiving bossLiving = (EntityLiving) this.boss;
-                        bossLiving.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(bossLiving)), null);
-                        this.worldObj.spawnEntity(bossLiving);
+                        bossLiving.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(bossLiving)), null);
+                        this.world.spawnEntity(bossLiving);
                         this.playSpawnSound(bossLiving);
                         this.spawned = true;
                         this.boss.onBossSpawned(this);
@@ -187,7 +187,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         {
             // This exception will be thrown when read is called from TileEntity.handleUpdateTag
             // but we only care if an exception is thrown on server side read
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 e.printStackTrace();
             }

@@ -98,9 +98,9 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
             double multiplier = 1.0D;
 
-            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (this.world.provider instanceof IGalacticraftWorldProvider)
             {
-                multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
+                multiplier = ((IGalacticraftWorldProvider) this.world.provider).getFuelUsageMultiplier();
 
                 if (multiplier <= 0)
                 {
@@ -157,7 +157,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 this.spawnParticles(this.getLaunched());
             }
@@ -225,7 +225,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public void onReachAtmosphere()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             //stop the sounds on the client - but do not reset, the rocket may start again
             this.stopRocketSound();
@@ -238,15 +238,15 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-            if (this.targetDimension != GCCoreUtil.getDimensionID(this.worldObj))
+            if (this.targetDimension != GCCoreUtil.getDimensionID(this.world))
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
                 WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
-                if (targetDim != null && targetDim.worldObj instanceof WorldServer)
+                if (targetDim != null && targetDim.world instanceof WorldServer)
                 {
                     GCLog.debug("Loaded destination dimension " + this.targetDimension);
                     this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.worldObj, false, null);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.world, false, null);
 
                     if (e instanceof EntityCargoRocket)
                     {
@@ -285,7 +285,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
-        if (!this.worldObj.isRemote && player instanceof EntityPlayerMP)
+        if (!this.world.isRemote && player instanceof EntityPlayerMP)
         {
             MarsUtil.openCargoRocketInventory((EntityPlayerMP) player, this);
         }

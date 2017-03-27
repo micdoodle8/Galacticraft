@@ -96,14 +96,14 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.shouldPullEnergy() && this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC(null) && this.getBatteryInSlot() != null && this.getElectricInputDirection() != null)
             {
                 this.discharge(this.getBatteryInSlot());
             }
 
-            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos())))
+            if (this.getEnergyStoredGC(null) > this.storage.getMaxExtract() && (this.noRedstoneControl || !RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos())))
             {
                 this.hasEnoughEnergyToRun = true;
                 if (this.shouldUseEnergy())
@@ -124,7 +124,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.disableCooldown > 0)
             {
@@ -195,7 +195,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();
-        drops.add(this.getBlockType().getPickBlock(this.worldObj.getBlockState(this.getPos()), null, this.worldObj, this.getPos(), player));
+        drops.add(this.getBlockType().getPickBlock(this.world.getBlockState(this.getPos()), null, this.world, this.getPos(), player));
         return drops;
     }
 
@@ -228,7 +228,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public String getGUIstatus()
     {
-        if (!this.noRedstoneControl && RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
+        if (!this.noRedstoneControl && RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos()))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
         }

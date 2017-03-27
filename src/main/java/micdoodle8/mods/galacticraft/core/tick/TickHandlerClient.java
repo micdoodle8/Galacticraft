@@ -159,7 +159,7 @@ public class TickHandlerClient
     public void onRenderTick(RenderTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.player;
         final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
         IStatsClientCapability stats = null;
 
@@ -253,12 +253,12 @@ public class TickHandlerClient
                 OverlayDockingRocket.renderDockingOverlay();
             }
 
-            if (minecraft.currentScreen == null && player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.getRidingEntity()).launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
+            if (minecraft.currentScreen == null && player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.player.getRidingEntity()).launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
             {
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
 
-            if (player != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && !playerBaseClient.isSpectator())
+            if (player != null && player.world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.provider) && !playerBaseClient.isSpectator())
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 
@@ -278,7 +278,7 @@ public class TickHandlerClient
                 OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
             }
 
-            if (playerBaseClient != null && player.worldObj.provider instanceof IGalacticraftWorldProvider && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.worldObj.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode && !playerBaseClient.isSpectator())
+            if (playerBaseClient != null && player.world.provider instanceof IGalacticraftWorldProvider && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.provider) && minecraft.currentScreen == null && !playerBaseClient.capabilities.isCreativeMode && !playerBaseClient.isSpectator())
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay();
             }
@@ -298,7 +298,7 @@ public class TickHandlerClient
 //    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
 //    {
 //        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-//        final EntityPlayerSP player = minecraft.thePlayer;
+//        final EntityPlayerSP player = minecraft.player;
 //
 //        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
 //        {
@@ -318,8 +318,8 @@ public class TickHandlerClient
     public void onClientTick(ClientTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final WorldClient world = minecraft.theWorld;
-        final EntityPlayerSP player = minecraft.thePlayer;
+        final WorldClient world = minecraft.world;
+        final EntityPlayerSP player = minecraft.player;
 
         if (event.phase == Phase.START)
         {
@@ -380,7 +380,7 @@ public class TickHandlerClient
                                 int z = MathHelper.floor(player.posZ + k);
                                 BlockPos pos = new BlockPos(x, y, z);
 
-                                IBlockState state = player.worldObj.getBlockState(pos);
+                                IBlockState state = player.world.getBlockState(pos);
                                 final Block block = state.getBlock();
 
                                 if (block.getMaterial(state) != Material.AIR)
@@ -440,7 +440,7 @@ public class TickHandlerClient
 
             if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
             {
-                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
                 TickHandlerClient.spaceRaceGuiScheduled = false;
             }
 
@@ -549,7 +549,7 @@ public class TickHandlerClient
                         IEntityNoisy vehicle = (IEntityNoisy) e;
                         if (vehicle.getSoundUpdater() == null)
                         {
-                            ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().thePlayer);
+                            ISound noise = vehicle.setSoundUpdater(FMLClientHandler.instance().getClient().player);
                             if (noise != null)
                             {
                                 FMLClientHandler.instance().getClient().getSoundHandler().playSound(noise);
@@ -578,7 +578,7 @@ public class TickHandlerClient
 
             if (player != null && player.getRidingEntity() != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.world), new Object[] {}));
                 ClientProxyCore.lastSpacebarDown = true;
             }
 

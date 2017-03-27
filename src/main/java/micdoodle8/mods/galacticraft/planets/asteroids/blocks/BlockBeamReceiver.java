@@ -237,7 +237,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     @SideOnly(Side.CLIENT)
     private void sendIncorrectSideMessage()
     {
-        FMLClientHandler.instance().getClient().thePlayer.sendMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
+        FMLClientHandler.instance().getClient().player.sendMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
     @Override

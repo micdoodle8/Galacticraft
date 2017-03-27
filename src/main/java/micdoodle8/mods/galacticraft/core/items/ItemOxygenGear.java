@@ -46,8 +46,10 @@ public class ItemOxygenGear extends Item implements ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
@@ -56,7 +58,7 @@ public class ItemOxygenGear extends Item implements ISortableItem
             if (gear == null)
             {
                 stats.getExtendedInventory().setInventorySlotContents(1, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ItemStack.EMPTY;
                 return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
             }
         }

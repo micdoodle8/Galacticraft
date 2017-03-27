@@ -127,7 +127,7 @@ public class PacketSimpleAsteroids extends PacketBase
         switch (this.type)
         {
         case C_TELEPAD_SEND:
-            Entity entity = playerBaseClient.worldObj.getEntityByID((Integer) this.data.get(1));
+            Entity entity = playerBaseClient.world.getEntityByID((Integer) this.data.get(1));
 
             if (entity != null && entity instanceof EntityLivingBase)
             {
@@ -136,7 +136,7 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case C_UPDATE_GRAPPLE_POS:
-            entity = playerBaseClient.worldObj.getEntityByID((Integer) this.data.get(0));
+            entity = playerBaseClient.world.getEntityByID((Integer) this.data.get(0));
             if (entity != null && entity instanceof EntityGrapple)
             {
                 Vector3 vec = (Vector3) this.data.get(1);
@@ -144,7 +144,7 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case C_UPDATE_MINERBASE_FACING:
-            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            tile = player.world.getTileEntity((BlockPos) this.data.get(0));
             int facingNew = (Integer) this.data.get(1);
             if (tile instanceof TileEntityMinerBase)
             {
@@ -174,7 +174,7 @@ public class PacketSimpleAsteroids extends PacketBase
         switch (this.type)
         {
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
+            TileEntity tile = player.world.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -197,7 +197,7 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case S_REQUEST_MINERBASE_FACING:
-//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.worldObj), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.world), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
             break;
         default:
             break;

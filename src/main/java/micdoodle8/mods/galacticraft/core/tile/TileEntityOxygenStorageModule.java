@@ -43,7 +43,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             ItemStack oxygenItemStack = this.getStackInSlot(0);
             if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
@@ -64,14 +64,14 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
         if (this.scaledOxygenLevel != this.lastScaledOxygenLevel)
         {
-            this.worldObj.notifyLightSet(this.getPos());
+            this.world.notifyLightSet(this.getPos());
         }
 
         this.lastScaledOxygenLevel = this.scaledOxygenLevel;
 
         this.produceOxygen(EnumFacing.getFront((this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2) ^ 1));
 
-        // if (!this.worldObj.isRemote)
+        // if (!this.world.isRemote)
         // {
         // int gasToSend = Math.min(this.storedOxygen,
         // GCCoreTileEntityOxygenStorageModule.OUTPUT_PER_TICK);
@@ -82,7 +82,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         //
         // Vector3 thisVec = new Vector3(this);
         // TileEntity tileEntity =
-        // thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
+        // thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.world);
         //
         // if (tileEntity instanceof IGasAcceptor)
         // {
@@ -127,7 +127,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
             if (var5 < this.containingItems.length)
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = new ItemStack(var4);
             }
         }
     }
@@ -205,12 +205,12 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public EnumFacing getFront()
     {
-        IBlockState state = this.worldObj.getBlockState(this.getPos());
+        IBlockState state = this.world.getBlockState(this.getPos());
         if (state.getBlock() != GCBlocks.machineBase2)
         {
             return EnumFacing.NORTH;
         }
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachine2.FACING);
     }
 
     @Override
@@ -309,7 +309,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override

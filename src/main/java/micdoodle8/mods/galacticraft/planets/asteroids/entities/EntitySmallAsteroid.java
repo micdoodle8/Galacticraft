@@ -44,7 +44,7 @@ public class EntitySmallAsteroid extends Entity
 
         super.onEntityUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.setSpinPitch(this.spinPitch);
             this.setSpinYaw(this.spinYaw);

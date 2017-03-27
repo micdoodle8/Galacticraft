@@ -238,7 +238,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!this.isAddedToEnergyNet)
             {
@@ -322,9 +322,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 
     private void unloadTileIC2()
     {
-        if (this.isAddedToEnergyNet && this.worldObj != null)
+        if (this.isAddedToEnergyNet && this.world != null)
         {
-            if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+            if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.world.isRemote)
             {
                 try
                 {
@@ -431,7 +431,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             return 0;
         }
 
-        return MathHelper.floor_float(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
@@ -449,13 +449,13 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int getEnergyStored(EnumFacing from)
     {
-        return MathHelper.floor_float(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
     public int getMaxEnergyStored(EnumFacing from)
     {
-        return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -539,7 +539,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
      */
     public void updateFacing()
     {
-        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.world.isRemote)
         {
             //This seems the only method to tell IC2 the connection sides have changed
             //(Maybe there is an internal refresh() method but it's not in the API)

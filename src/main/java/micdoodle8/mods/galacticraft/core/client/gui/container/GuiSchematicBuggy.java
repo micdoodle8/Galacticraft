@@ -20,7 +20,7 @@ public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchema
 
     public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().thePlayer), pos);
+        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().player), pos);
         this.ySize = 221;
     }
 

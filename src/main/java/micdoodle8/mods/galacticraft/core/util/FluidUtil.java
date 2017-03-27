@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.*;
@@ -170,7 +171,7 @@ public class FluidUtil
     {
         ItemStack slotItem = inventory[slot];
         boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
-        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
+        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : Fluid.BUCKET_VOLUME);
 
         if (amountToFill <= 0 || (isCanister && slotItem.getItem() != canisterType && slotItem.getItemDamage() != ItemCanisterGeneric.EMPTY))
         {
@@ -182,7 +183,7 @@ public class FluidUtil
             inventory[slot] = new ItemStack(canisterType, 1, slotItem.getItemDamage() - amountToFill);
             tank.drain(amountToFill, true);
         }
-        else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
+        else if (amountToFill == Fluid.BUCKET_VOLUME)
         {
             inventory[slot] = FluidContainerRegistry.fillFluidContainer(liquid, inventory[slot]);
 
@@ -203,7 +204,7 @@ public class FluidUtil
      * @param inventory
      * @param slot
      */
-    public static void tryFillContainerFuel(FluidTank tank, ItemStack[] inventory, int slot)
+    public static void tryFillContainerFuel(FluidTank tank, NonNullList<ItemStack> inventory, int slot)
     {
         if (FluidUtil.isValidContainer(inventory[slot]))
         {
@@ -414,14 +415,14 @@ public class FluidUtil
     {
         double d0 = entity.posY + entity.getEyeHeight();
         int i = MathHelper.floor(entity.posX);
-        int j = MathHelper.floor_float(MathHelper.floor(d0));
+        int j = MathHelper.floor(MathHelper.floor(d0));
         int k = MathHelper.floor(entity.posZ);
         BlockPos pos = new BlockPos(i, j, k);
-        Block block = entity.worldObj.getBlockState(pos).getBlock();
+        Block block = entity.world.getBlockState(pos).getBlock();
 
         if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid() != null && ((IFluidBlock) block).getFluid().getName().equals(fluid.getName()))
         {
-            double filled = ((IFluidBlock) block).getFilledPercentage(entity.worldObj, pos);
+            double filled = ((IFluidBlock) block).getFilledPercentage(entity.world, pos);
             if (filled < 0)
             {
                 filled *= -1;

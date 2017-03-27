@@ -140,6 +140,6 @@ public class PlayerUtil
 
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
-        return player.worldObj.getMinecraftServer().getPlayerList().getPlayerList().contains(player);
+        return player.world.getMinecraftServer().getPlayerList().getPlayerList().contains(player);
     }
 }

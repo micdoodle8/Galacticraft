@@ -71,7 +71,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     {
         for (int y = 0; y < 3; y++)
         {
-            this.worldObj.destroyBlock(this.getPos().add(0, y, 0), false);
+            this.world.destroyBlock(this.getPos().add(0, y, 0), false);
         }
     }
 }

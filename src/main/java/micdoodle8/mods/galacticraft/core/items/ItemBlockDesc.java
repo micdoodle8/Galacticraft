@@ -77,7 +77,7 @@ public class ItemBlockDesc extends ItemBlockGC
                 }
                 else if (this.getBlock() instanceof BlockAdvancedTile)
                 {
-                    TileEntity te = ((BlockAdvancedTile) this.getBlock()).createTileEntity(player.worldObj, getBlock().getStateFromMeta(stack.getItemDamage() & 12));
+                    TileEntity te = ((BlockAdvancedTile) this.getBlock()).createTileEntity(player.world, getBlock().getStateFromMeta(stack.getItemDamage() & 12));
                     if (te instanceof TileBaseElectricBlock)
                     {
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();

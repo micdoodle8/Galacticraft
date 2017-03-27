@@ -213,7 +213,7 @@ public class OreGenOtherMods
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
-        this.worldObj = event.worldObj;
+        this.world = event.world;
         this.randomGenerator = event.rand;
         this.pos = event.pos;
 
@@ -261,7 +261,7 @@ public class OreGenOtherMods
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
             BlockPos blockpos = this.pos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
-            worldGenerator.generate(this.worldObj, this.randomGenerator, blockpos);
+            worldGenerator.generate(this.world, this.randomGenerator, blockpos);
         }
     }
 

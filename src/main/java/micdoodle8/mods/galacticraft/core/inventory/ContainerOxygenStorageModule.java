@@ -110,7 +110,7 @@ public class ContainerOxygenStorageModule extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, stack);
+            slot.onTake(par1EntityPlayer, stack);
         }
 
         return var2;

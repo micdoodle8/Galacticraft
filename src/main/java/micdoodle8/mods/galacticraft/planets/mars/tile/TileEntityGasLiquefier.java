@@ -101,7 +101,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             this.airProducts = this.getAirProducts();
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             FluidStack currentgas = this.gasTank.getFluid();
             if (currentgas == null || currentgas.amount <= 0)
@@ -148,7 +148,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                     //Air -> Air tank
                     if (this.gasTankType == -1 || (this.gasTankType == TankGases.AIR.index && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
                     {
-                        IBlockState stateAbove = this.worldObj.getBlockState(getPos().up());
+                        IBlockState stateAbove = this.world.getBlockState(getPos().up());
                         if (stateAbove.getBlock().getMaterial(stateAbove) == Material.AIR && stateAbove.getBlock() != GCBlocks.breatheableAir && stateAbove.getBlock() != GCBlocks.brightBreatheableAir)
                         {
                             FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
@@ -393,7 +393,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     public int getAirProducts()
     {
-        WorldProvider WP = this.worldObj.provider;
+        WorldProvider WP = this.world.provider;
         if (WP instanceof WorldProviderSpace)
         {
             int result = 0;
@@ -772,7 +772,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public int getBlockMetadata()
     {
-        return getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos())) & 3;
+        return getBlockType().getMetaFromState(this.world.getBlockState(getPos())) & 3;
     }
 
     @Override
@@ -843,7 +843,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }
 
     public EnumFacing getGasInputDirection()

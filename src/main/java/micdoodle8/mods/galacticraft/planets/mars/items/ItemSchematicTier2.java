@@ -31,7 +31,7 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < 3; i++)
         {
@@ -44,7 +44,7 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
-        if (par2EntityPlayer.worldObj.isRemote)
+        if (par2EntityPlayer.world.isRemote)
         {
             switch (par1ItemStack.getItemDamage())
             {

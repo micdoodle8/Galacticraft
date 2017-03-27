@@ -175,7 +175,7 @@ public class SkyProviderMoon extends IRenderHandler
 
         // HOME:
         var12 = 10.0F;
-        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.thePlayer.posZ) * 0.01F;
+        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.player.posZ) * 0.01F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
@@ -204,7 +204,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
-        final double var25 = mc.thePlayer.getPosition().getY() - world.getHorizon();
+        final double var25 = mc.player.getPosition().getY() - world.getHorizon();
 
         if (var25 < 0.0D)
         {
@@ -313,7 +313,7 @@ public class SkyProviderMoon extends IRenderHandler
 
     public float getSkyBrightness(float par1)
     {
-        final float var2 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(par1);
+        final float var2 = FMLClientHandler.instance().getClient().world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.sin(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)

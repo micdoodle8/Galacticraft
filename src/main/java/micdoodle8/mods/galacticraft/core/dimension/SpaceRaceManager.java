@@ -51,13 +51,13 @@ public class SpaceRaceManager
             boolean playerOnline = false;
 
             PlayerList playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
-            for (int j = 0; j < playerList.getPlayerList().size(); j++)
+            for (int j = 0; j < playerList.getPlayers().size(); j++)
             {
-                EntityPlayer player = playerList.getPlayerList().get(j);
+                EntityPlayer player = playerList.getPlayers().get(j);
 
                 if (race.getPlayerNames().contains(player.getGameProfile().getName()))
                 {
-                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.worldObj.provider.getDimension());
+                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.world.provider.getDimension());
 
                     if (body != null)
                     {
@@ -145,11 +145,11 @@ public class SpaceRaceManager
 
             if (toPlayer != null)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.worldObj), objList), toPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.world), objList), toPlayer);
             }
             else
             {
-                for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
+                for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
                 {
                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(server), objList), GCCoreUtil.getDimensionID(server));
                 }

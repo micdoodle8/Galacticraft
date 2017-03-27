@@ -17,12 +17,12 @@ public class ContainerBuggyBench extends Container
 {
     public InventoryBuggyBench craftMatrix = new InventoryBuggyBench(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerBuggyBench(InventoryPlayer par1InventoryPlayer, BlockPos pos, EntityPlayer player)
     {
         final int change = 27;
-        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79 + change));
         int var6;
         int var7;
@@ -73,7 +73,7 @@ public class ContainerBuggyBench extends Container
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
@@ -170,7 +170,7 @@ public class ContainerBuggyBench extends Container
             }
 
             slot.onSlotChanged();
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;
@@ -193,8 +193,8 @@ public class ContainerBuggyBench extends Container
                 if (slotStack == null)
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

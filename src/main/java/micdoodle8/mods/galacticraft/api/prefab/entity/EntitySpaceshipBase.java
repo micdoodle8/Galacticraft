@@ -124,7 +124,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        if (!this.worldObj.isRemote && !this.isDead)
+        if (!this.world.isRemote && !this.isDead)
         {
 			boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
         	Entity e = par1DamageSource.getEntity(); 
@@ -143,7 +143,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                     this.shipDamage = 100;
                 }
 
-                if (flag || this.shipDamage > 90 && !this.worldObj.isRemote)
+                if (flag || this.shipDamage > 90 && !this.world.isRemote)
                 {
                     this.removePassengers();
 
@@ -170,7 +170,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public void dropShipAsItem()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             return;
         }
@@ -238,11 +238,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             e.fallDistance = 0.0F;
         }
 
-        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
+        if (this.posY > (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200))
         {
             this.onReachAtmosphere();
-            if (this.worldObj.isRemote)
-            	this.posY = 1 + (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200);
+            if (this.world.isRemote)
+            	this.posY = 1 + (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200);
         }
 
         if (this.rollAmplitude > 0)
@@ -255,13 +255,13 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.shipDamage--;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
 	        if (this.posY < 0.0D)
 	        {
 	            this.kill();
 	        }
-	        else if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
+	        else if (this.posY > (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200) + 100)
 	        {
                 for (Entity e : this.getPassengers())
                 {
@@ -307,7 +307,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
 
-        final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+        final List<?> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 
         if (var15 != null && !var15.isEmpty())
         {
@@ -346,7 +346,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.motionX = this.motionY = this.motionZ = 0.0F;
         }
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.setPosition(this.posX, this.posY, this.posZ);
 
@@ -362,7 +362,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         this.setRotation(this.rotationYaw, this.rotationPitch);
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.setPosition(this.posX, this.posY, this.posZ);
         }
@@ -371,12 +371,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 
-        if (!this.worldObj.isRemote && this.ticks % 3 == 0)
+        if (!this.world.isRemote && this.ticks % 3 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.world.provider.getDimension());
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
-            // this.worldObj.provider.getDimension());
+            // this.world.provider.getDimension());
         }
     }
 
@@ -396,7 +396,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             new Exception().printStackTrace();
         }
@@ -424,7 +424,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!ConfigManagerCore.disableSpaceshipGrief)
         {
-            this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, 5, true);
         }
 
         this.setDead();
@@ -569,7 +569,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public ResourceLocation getSpaceshipGui()
     {
-        return GalacticraftRegistry.getResouceLocationForDimension(this.worldObj.provider.getClass());
+        return GalacticraftRegistry.getResouceLocationForDimension(this.world.provider.getClass());
     }
 
     public void setLaunchPhase(EnumLaunchPhase phase)

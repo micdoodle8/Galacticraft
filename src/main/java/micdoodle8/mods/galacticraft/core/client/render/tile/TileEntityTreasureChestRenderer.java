@@ -27,7 +27,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
     {
         int var9;
 
-        if (!chest.hasWorldObj())
+        if (!chest.hasWorld())
         {
             var9 = 0;
         }

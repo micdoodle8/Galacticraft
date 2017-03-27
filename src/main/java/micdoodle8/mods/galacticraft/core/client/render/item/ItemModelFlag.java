@@ -53,10 +53,10 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.rotY((float) -(Math.PI / 3.0F));
             ret.mul(mul);
             mul.setIdentity();
-            EntityLivingBase player = Minecraft.getMinecraft().thePlayer;
+            EntityLivingBase player = Minecraft.getMinecraft().player;
             if (player.isHandActive() && player.getActiveItemStack() != null)
             {
-                final int useTime = Minecraft.getMinecraft().thePlayer.getItemInUseMaxCount();
+                final int useTime = Minecraft.getMinecraft().player.getItemInUseMaxCount();
                 float interpolate0 = useTime / 20.0F;
                 interpolate0 = (interpolate0 * interpolate0 + interpolate0 * 2.0F) / 3.0F;
 
@@ -64,7 +64,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                 {
                     interpolate0 = 1.0F;
                 }
-                final int useTimeFuture = Minecraft.getMinecraft().thePlayer.getItemInUseMaxCount() + 1;
+                final int useTimeFuture = Minecraft.getMinecraft().player.getItemInUseMaxCount() + 1;
                 float interpolate1 = useTimeFuture / 20.0F;
                 interpolate1 = (interpolate1 * interpolate1 + interpolate1 * 2.0F) / 3.0F;
 

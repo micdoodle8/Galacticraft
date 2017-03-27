@@ -83,9 +83,9 @@ public class GuiSlimelingFeed extends GuiScreen
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.slimeling.getEntityId(), 2, "" }));
                 break;
             case 1:
-                if (!this.slimeling.isInLove() && this.slimeling.isOwner(this.mc.thePlayer) && this.slimeling.worldObj.isRemote)
+                if (!this.slimeling.isInLove() && this.slimeling.isOwner(this.mc.player) && this.slimeling.world.isRemote)
                 {
-                    this.slimeling.setInLove(this.mc.thePlayer);
+                    this.slimeling.setInLove(this.mc.player);
                 }
 
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.slimeling.getEntityId(), 3, "" }));

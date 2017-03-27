@@ -29,7 +29,6 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
@@ -47,7 +46,8 @@ public class ClientUtil
 
     public static void addVariant(String modID, String name, String... variants)
     {
-        Item itemBlockVariants = GameRegistry.findItem(modID, name);
+//        Item itemBlockVariants = GameRegistry.findItem(modID, name);
+        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(modID, name));
         ResourceLocation[] variants0 = new ResourceLocation[variants.length];
         for (int i = 0; i < variants.length; ++i)
         {
@@ -94,7 +94,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -111,7 +111,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 

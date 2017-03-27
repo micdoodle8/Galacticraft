@@ -61,7 +61,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
     public void igniteCheckingCooldown()
     {
-        if (!this.worldObj.isRemote && this.launchCooldown <= 0)
+        if (!this.world.isRemote && this.launchCooldown <= 0)
         {
             this.initiatePlanetsPreGen(this.chunkCoordX, this.chunkCoordZ);
 
@@ -143,7 +143,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 Entity passenger = this.getPassengers().get(0);
                 if (this.ticks >= 40)
                 {
-                    if (!this.worldObj.isRemote)
+                    if (!this.world.isRemote)
                     {
                         this.removePassengers();
                         passenger.startRiding(this, true);
@@ -172,7 +172,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             this.rotationPitch = this.rotationYaw = 0;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.launchCooldown > 0)
             {
@@ -233,7 +233,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             this.rumble = (float) this.rand.nextInt(3) - 3;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.lastLastMotionY = this.lastMotionY;
             this.lastMotionY = this.motionY;
@@ -277,7 +277,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         //Launch controlled
         if (this.destinationFrequency != -1)
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
             	//stop the sounds on the client - but do not reset, the rocket may start again
             	this.stopRocketSound();
@@ -288,10 +288,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             if (this.targetVec != null)
             {
-                if (this.targetDimension != this.worldObj.provider.getDimension())
+                if (this.targetDimension != this.world.provider.getDimension())
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
-                    if (targetDim != null && targetDim.worldObj instanceof WorldServer)
+                    if (targetDim != null && targetDim.world instanceof WorldServer)
                     {
                     	boolean dimensionAllowed = this.targetDimension == ConfigManagerCore.idDimensionOverworld;
 
@@ -317,11 +317,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     	{
                     		if (!this.getPassengers().isEmpty())
                     		{
-                    			WorldUtil.transferEntityToDimension(this.getPassengers().get(0), this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
+                    			WorldUtil.transferEntityToDimension(this.getPassengers().get(0), this.targetDimension, (WorldServer) targetDim.world, false, this);
                     		}
                     		else
                     		{
-                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.worldObj, false, null);
+                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.world, false, null);
                     		    if (e instanceof EntityAutoRocket)
                     		    {
                     		        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
@@ -364,7 +364,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
 
         //Not launch controlled
-        if (!this.getPassengers().isEmpty() && !this.worldObj.isRemote)
+        if (!this.getPassengers().isEmpty() && !this.world.isRemote)
         {
             if (this.getPassengers().get(0) instanceof EntityPlayerMP)
             {
@@ -410,7 +410,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
         if (hand != EnumHand.MAIN_HAND)
         {
@@ -424,9 +424,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
         {
-            if (!this.worldObj.isRemote && this.getPassengers().get(0) == player)
+            if (!this.world.isRemote && this.getPassengers().get(0) == player)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
                 IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                 stats.setChatCooldown(0);
                 // Prevent player being dropped from the top of the rocket...
@@ -440,9 +440,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
         else if (player instanceof EntityPlayerMP)
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.worldObj.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
                 IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
                 stats.setChatCooldown(0);
                 player.startRiding(this);

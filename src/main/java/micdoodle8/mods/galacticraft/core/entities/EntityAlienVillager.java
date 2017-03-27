@@ -39,7 +39,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityAlienVillager extends EntityAgeable implements IMerchant, INpc, IEntityBreathable
@@ -103,9 +102,9 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         if (--this.randomTickDivider <= 0)
         {
             BlockPos blockpos = new BlockPos(this);
-            this.worldObj.getVillageCollection().addToVillagerPositionList(blockpos);
+            this.world.getVillageCollection().addToVillagerPositionList(blockpos);
             this.randomTickDivider = 70 + this.rand.nextInt(50);
-            this.villageObj = this.worldObj.getVillageCollection().getNearestVillage(blockpos, 32);
+            this.villageObj = this.world.getVillageCollection().getNearestVillage(blockpos, 32);
 
             if (this.villageObj == null)
             {
@@ -145,7 +144,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
                     if (this.villageObj != null && this.lastBuyingPlayer != null)
                     {
-                        this.worldObj.setEntityState(this, (byte) 14);
+                        this.world.setEntityState(this, (byte) 14);
                         this.villageObj.modifyPlayerReputation(this.lastBuyingPlayer, 1);
                     }
                 }
@@ -158,7 +157,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.inventory.getCurrentItem();
         boolean flag = itemstack != null && itemstack.getItem() == Items.SPAWN_EGG;
@@ -167,7 +166,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
 
-            if (!this.worldObj.isRemote && (this.buyingList == null || this.buyingList.size() > 0))
+            if (!this.world.isRemote && (this.buyingList == null || this.buyingList.size() > 0))
             {
                 if (gearData != null && gearData.getFrequencyModule() != -1)
                 {
@@ -194,7 +193,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
         else
         {
-            return super.processInteract(player, hand, stack);
+            return super.processInteract(player, hand);
         }
     }
 
@@ -240,7 +239,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(i));
+            ItemStack itemstack = new ItemStack(nbttaglist.getCompoundTagAt(i));
 
             if (itemstack != null)
             {
@@ -323,7 +322,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
                 if (this.isEntityAlive())
                 {
-                    this.worldObj.setEntityState(this, (byte) 13);
+                    this.world.setEntityState(this, (byte) 13);
                 }
             }
         }
@@ -349,7 +348,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             }
             else
             {
-                EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
+                EntityPlayer entityplayer = this.world.getClosestPlayerToEntity(this, 16.0D);
 
                 if (entityplayer != null)
                 {
@@ -410,14 +409,14 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
         if (recipe.getRewardsExp())
         {
-            this.worldObj.spawnEntity(new EntityXPOrb(this.worldObj, this.posX, this.posY + 0.5D, this.posZ, i));
+            this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
         }
     }
 
     @Override
     public void verifySellingItem(ItemStack stack)
     {
-        if (!this.worldObj.isRemote && this.livingSoundTime > -this.getTalkInterval() + 20)
+        if (!this.world.isRemote && this.livingSoundTime > -this.getTalkInterval() + 20)
         {
             this.livingSoundTime = -this.getTalkInterval();
 
@@ -505,7 +504,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            this.worldObj.spawnParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
+            this.world.spawnParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
         }
     }
 
@@ -519,9 +518,21 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     @Override
     public EntityAlienVillager createChild(EntityAgeable ageable)
     {
-        EntityAlienVillager entityvillager = new EntityAlienVillager(this.worldObj);
-        entityvillager.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData) null);
+        EntityAlienVillager entityvillager = new EntityAlienVillager(this.world);
+        entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData) null);
         return entityvillager;
+    }
+
+    @Override
+    public World getWorld()
+    {
+        return this.world;
+    }
+
+    @Override
+    public BlockPos getPos()
+    {
+        return new BlockPos(this);
     }
 
     @Override
@@ -533,11 +544,11 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     @Override
     public void onStruckByLightning(EntityLightningBolt lightningBolt)
     {
-        if (!this.worldObj.isRemote && !this.isDead)
+        if (!this.world.isRemote && !this.isDead)
         {
-            EntityWitch entitywitch = new EntityWitch(this.worldObj);
+            EntityWitch entitywitch = new EntityWitch(this.world);
             entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            entitywitch.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(entitywitch)), (IEntityLivingData) null);
+            entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), (IEntityLivingData) null);
             entitywitch.setNoAI(this.isAIDisabled());
 
             if (this.hasCustomName())
@@ -546,7 +557,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                 entitywitch.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
             }
 
-            this.worldObj.spawnEntity(entitywitch);
+            this.world.spawnEntity(entitywitch);
             this.setDead();
         }
     }
@@ -572,7 +583,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             }
             else
             {
-                itemstack.stackSize = itemstack1.getCount();
+                itemstack.setCount(itemstack1.getCount());
             }
         }
     }

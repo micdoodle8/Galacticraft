@@ -45,7 +45,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.containingItems[1] != null)
             {
@@ -77,7 +77,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
                                     final int amount = this.containingItems[1].stackSize;
                                     if (amount > 1)
                                     {
-                                        this.oilTank.fill(new FluidStack(GCFluids.fluidOil, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                                        this.oilTank.fill(new FluidStack(GCFluids.fluidOil, (amount - 1) * Fluid.BUCKET_VOLUME), true);
                                     }
                                     this.containingItems[1] = new ItemStack(Items.BUCKET, amount);
                                 }
@@ -308,7 +308,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public EnumFacing getFront()
     {
-        return (this.worldObj.getBlockState(getPos()).getValue(BlockRefinery.FACING));
+        return (this.world.getBlockState(getPos()).getValue(BlockRefinery.FACING));
     }
 
     @Override

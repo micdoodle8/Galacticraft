@@ -55,7 +55,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (TileEntityOxygen.timeSinceOxygenRequest > 0)
             {
@@ -219,7 +219,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
     public void produceOxygen()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (EnumFacing direction : this.getOxygenOutputDirections())
             {
@@ -237,7 +237,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
         if (provide > 0)
         {
-            TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, outputDirection);
+            TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.world, outputDirection);
             FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)

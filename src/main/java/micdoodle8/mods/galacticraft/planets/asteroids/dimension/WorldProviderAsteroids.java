@@ -37,7 +37,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     //	@Override
 //	public void registerWorldChunkManager()
 //	{
-//		this.worldChunkMgr = new WorldChunkManagerAsteroids(this.worldObj, 0F);
+//		this.worldChunkMgr = new WorldChunkManagerAsteroids(this.world, 0F);
 //	}
 
     @Override
@@ -110,7 +110,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 //	@Override
 //	public IChunkProvider createChunkGenerator()
 //	{
-//		return new ChunkProviderAsteroids(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+//		return new ChunkProviderAsteroids(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
 //	}
 
     @Override
@@ -136,7 +136,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     @Override
     public boolean isSurfaceWorld()
     {
-        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+        return (this.world == null) ? false : this.world.isRemote;
     }
 
     //Overriding so that beds do not explode on Asteroids
@@ -241,12 +241,12 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
     private void loadAsteroidSavedData()
     {
-        this.datafile = (AsteroidSaveData) this.worldObj.loadItemData(AsteroidSaveData.class, AsteroidSaveData.saveDataID);
+        this.datafile = (AsteroidSaveData) this.world.loadData(AsteroidSaveData.class, AsteroidSaveData.saveDataID);
 
         if (this.datafile == null)
         {
             this.datafile = new AsteroidSaveData("");
-            this.worldObj.setItemData(AsteroidSaveData.saveDataID, this.datafile);
+            this.world.setData(AsteroidSaveData.saveDataID, this.datafile);
             this.writeToNBT(this.datafile.datacompound);
         }
         else

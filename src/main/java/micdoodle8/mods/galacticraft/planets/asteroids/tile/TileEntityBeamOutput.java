@@ -34,7 +34,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         if (this.preLoadTarget != null)
         {
-            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.preLoadTarget);
+            TileEntity tileAtTarget = this.world.getTileEntity(this.preLoadTarget);
 
             if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
             {
@@ -52,7 +52,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         this.lastTargetVec = this.targetVec;
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.updateOrientation();
         }
@@ -105,9 +105,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         {
             for (int cZ = chunkZMin; cZ <= chunkZMax; cZ++)
             {
-                if (this.worldObj.getChunkProvider().getLoadedChunk(cX, cZ) != null)
+                if (this.world.getChunkProvider().getLoadedChunk(cX, cZ) != null)
                 {
-                    Chunk chunk = this.worldObj.getChunkFromChunkCoords(cX, cZ);
+                    Chunk chunk = this.world.getChunkFromChunkCoords(cX, cZ);
 
                     for (Object obj : chunk.getTileEntityMap().values())
                     {
@@ -304,7 +304,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         if (this.targetVec.getX() != -1 || this.targetVec.getY() != -1 || this.targetVec.getZ() != -1)
         {
-            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.targetVec);
+            TileEntity tileAtTarget = this.world.getTileEntity(this.targetVec);
 
             if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
             {

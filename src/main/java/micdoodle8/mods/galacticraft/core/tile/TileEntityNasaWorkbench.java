@@ -24,7 +24,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         return true;
     }
 
@@ -64,7 +64,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
             return;
         }
         final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + 3, placedPosition.getZ());
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.worldObj, vecToAdd, placedPosition, 3);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(this.world, vecToAdd, placedPosition, 3);
     }
 
     @Override
@@ -84,21 +84,21 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 
                         if ((y == 0 || y == 3) && x == 0 && z == 0)
                         {
-                            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
+                            if (this.world.isRemote && this.world.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                             }
 
-                            this.worldObj.setBlockToAir(pos);
+                            this.world.setBlockToAir(pos);
                         }
                         else if (y != 0 && y != 3)
                         {
-                            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
+                            if (this.world.isRemote && this.world.rand.nextDouble() < 0.05D)
                             {
-                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
+                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                             }
 
-                            this.worldObj.setBlockToAir(pos);
+                            this.world.setBlockToAir(pos);
                         }
                     }
                 }

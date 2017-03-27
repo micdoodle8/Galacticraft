@@ -136,7 +136,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     {
         this.dataManager.set(IS_CHILD, isChild);
 
-        if (this.worldObj != null && !this.worldObj.isRemote)
+        if (this.world != null && !this.world.isRemote)
         {
             IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
             iattributeinstance.removeModifier(babySpeedBoostModifier);

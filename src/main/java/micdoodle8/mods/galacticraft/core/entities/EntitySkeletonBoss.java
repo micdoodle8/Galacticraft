@@ -70,11 +70,11 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         super.onDeathUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.deathTicks == 100)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { 1.5F }), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.world), new Object[] { 1.5F }), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
             }
         }
     }
@@ -114,9 +114,9 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         if (this.getPassengers().isEmpty() && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity) && this.deathTicks == 0)
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_LAUGH, GCCoreUtil.getDimensionID(this.worldObj), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_LAUGH, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
                 par1EntityPlayer.startRiding(this);
             }
 
@@ -168,12 +168,12 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
         this.ticks++;
 
-        if (!this.worldObj.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod / 2)
+        if (!this.world.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod / 2)
         {
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
         }
 
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
+        final EntityPlayer player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
@@ -204,7 +204,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
             this.thrownEntity = this.getPassengers().get(0);
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 this.removePassengers();
             }
@@ -221,14 +221,14 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             }
 
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionID(this.worldObj), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
             }
             ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
 
             this.thrownEntity.isAirBorne = true;
-            final float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+            final float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
             final float f1 = 2.4F;
             this.thrownEntity.motionX /= 2.0D;
             this.thrownEntity.motionY /= 2.0D;
@@ -273,7 +273,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     @Override
     public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
         entityitem.setDefaultPickupDelay();
         if (this.captureDrops)
@@ -282,7 +282,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         }
         else
         {
-            this.worldObj.spawnEntity(entityitem);
+            this.world.spawnEntity(entityitem);
         }
         return entityitem;
     }
@@ -321,15 +321,15 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             return;
         }
 
-        EntityTippedArrow arrow = new EntityTippedArrow(this.worldObj, this);
+        EntityTippedArrow arrow = new EntityTippedArrow(this.world, this);
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - arrow.posY;
         double d2 = target.posZ - this.posZ;
-        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        arrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
+        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+        arrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
 
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntity(arrow);
+        this.world.spawnEntity(arrow);
     }
 
     @Override

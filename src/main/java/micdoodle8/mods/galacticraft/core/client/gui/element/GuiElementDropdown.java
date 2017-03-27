@@ -98,7 +98,7 @@ public class GuiElementDropdown extends GuiButton
         {
             if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
             {
-                if (this.parentClass.canBeClickedBy(this, par1Minecraft.thePlayer))
+                if (this.parentClass.canBeClickedBy(this, par1Minecraft.player))
                 {
                     this.dropdownClicked = true;
                     return true;
@@ -113,7 +113,7 @@ public class GuiElementDropdown extends GuiButton
         {
             if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
             {
-                if (this.parentClass.canBeClickedBy(this, par1Minecraft.thePlayer))
+                if (this.parentClass.canBeClickedBy(this, par1Minecraft.player))
                 {
                     int optionClicked = (par3 - this.yPosition) / this.height;
                     this.selectedOption = optionClicked % this.optionStrings.length;

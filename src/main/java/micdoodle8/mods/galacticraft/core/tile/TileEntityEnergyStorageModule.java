@@ -72,10 +72,10 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             int metadata = this.getBlockMetadata();
 
             //for version update compatibility
-            Block b = this.worldObj.getBlockState(this.getPos()).getBlock();
+            Block b = this.world.getBlockState(this.getPos()).getBlock();
             if (b == GCBlocks.machineBase)
             {
-                this.worldObj.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState(), 2);
+                this.world.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState(), 2);
             }
             else if (metadata >= 8)
             {
@@ -85,7 +85,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
 
         float energy = this.storage.getEnergyStoredGC();
-        if (this.getTierGC() == 1 && !this.worldObj.isRemote)
+        if (this.getTierGC() == 1 && !this.world.isRemote)
         {
             if (this.lastEnergy - energy > this.storage.getMaxExtract() - 1)
             {
@@ -101,16 +101,16 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
         if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
         {
-            this.worldObj.notifyLightSet(this.getPos());
+            this.world.notifyLightSet(this.getPos());
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.recharge(this.containingItems[0]);
             this.discharge(this.containingItems[1]);
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.produce();
         }
@@ -152,7 +152,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
             if (var5 < this.containingItems.length)
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = new ItemStack(var4);
             }
         }
     }
@@ -267,7 +267,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
 //    @Override
@@ -371,11 +371,11 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     {
         if (getBlockType() instanceof BlockMachine)
         {
-            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
+            return (this.world.getBlockState(getPos()).getValue(BlockMachine.FACING));
         }
         else if (getBlockType() instanceof BlockMachineTiered)
         {
-            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
+            return (this.world.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
         }
         return EnumFacing.NORTH;
     }

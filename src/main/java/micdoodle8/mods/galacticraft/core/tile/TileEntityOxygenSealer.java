@@ -67,7 +67,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public void validate()
     {
         super.validate();
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!TileEntityOxygenSealer.loadedTiles.contains(this))
             {
@@ -79,7 +79,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             TileEntityOxygenSealer.loadedTiles.remove(this);
         }
@@ -89,7 +89,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void onChunkUnload()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             TileEntityOxygenSealer.loadedTiles.remove(this);
         }
@@ -112,8 +112,8 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             return 0;
         }
         BlockPos posAbove = new BlockPos(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
-        IBlockState stateAbove = this.worldObj.getBlockState(posAbove);
-        if (!(stateAbove.getBlock().isAir(stateAbove, this.worldObj, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.worldObj, stateAbove.getBlock(), this.getPos().up(), EnumFacing.UP))
+        IBlockState stateAbove = this.world.getBlockState(posAbove);
+        if (!(stateAbove.getBlock().isAir(stateAbove, this.world, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.world, stateAbove.getBlock(), this.getPos().up(), EnumFacing.UP))
         {
             // The vent is blocked
             return 0;
@@ -131,7 +131,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             ItemStack oxygenItemStack = this.getStackInSlot(1);
             if (oxygenItemStack != null && oxygenItemStack.getItem() instanceof IItemOxygenSupply)
@@ -162,7 +162,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         this.oxygenPerTick = this.sealed ? 2 : UNSEALED_OXYGENPERTICK;
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             // Some code to count the number of Oxygen Sealers being updated,
             // tick by tick - needed for queueing
@@ -230,7 +230,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
             if (var5 < this.containingItems.length)
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = new ItemStack(var4);
             }
         }
     }
@@ -341,7 +341,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -433,7 +433,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockOxygenSealer.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockOxygenSealer.FACING);
     }
 
     @Override

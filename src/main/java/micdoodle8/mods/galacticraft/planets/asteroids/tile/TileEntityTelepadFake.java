@@ -27,10 +27,10 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     {
         this.setMainBlockInternal(mainBlock);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            IBlockState state = this.worldObj.getBlockState(this.getPos());
-            this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
+            IBlockState state = this.world.getBlockState(this.getPos());
+            this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
         }
     }
 
@@ -81,7 +81,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (mainTelepad == null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
+            TileEntity tileEntity = this.world.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity != null)
             {
@@ -94,7 +94,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
 
         if (mainTelepad == null)
         {
-            this.worldObj.setBlockToAir(this.mainBlockPosition);
+            this.world.setBlockToAir(this.mainBlockPosition);
         }
         else
         {
@@ -106,7 +106,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
             }
             else
             {
-                this.worldObj.removeTileEntity(this.getPos());
+                this.world.removeTileEntity(this.getPos());
             }
         }
 
@@ -173,7 +173,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
                 for (int z = -1; z <= 1; z++)
                 {
                     final BlockPos vecToCheck = this.getPos().add(x, y, z);
-                    if (this.worldObj.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
+                    if (this.world.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
                     {
                         this.setMainBlock(vecToCheck);
                         return;

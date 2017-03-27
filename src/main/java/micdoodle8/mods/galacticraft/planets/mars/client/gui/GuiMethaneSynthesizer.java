@@ -43,7 +43,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
     public GuiMethaneSynthesizer(InventoryPlayer par1InventoryPlayer, TileEntityMethaneSynthesizer tileEntity)
     {
-        super(new ContainerMethaneSynthesizer(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerMethaneSynthesizer(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }

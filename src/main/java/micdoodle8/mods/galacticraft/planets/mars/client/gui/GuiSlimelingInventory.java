@@ -35,7 +35,7 @@ public class GuiSlimelingInventory extends GuiContainer
 
     public GuiSlimelingInventory(EntityPlayer player, EntitySlimeling slimeling)
     {
-        super(new ContainerSlimeling(player.inventory, slimeling, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerSlimeling(player.inventory, slimeling, FMLClientHandler.instance().getClient().player));
         this.slimeling = slimeling;
         this.xSize = 176;
         this.ySize = 210;

@@ -115,28 +115,28 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         GlStateManager.translate(x, y, 50.0F);
         GlStateManager.scale(-scale, scale, scale);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-        float f2 = mc.thePlayer.renderYawOffset;
-        float f3 = mc.thePlayer.rotationYaw;
-        float f4 = mc.thePlayer.rotationPitch;
-        float f5 = mc.thePlayer.rotationYawHead;
+        float f2 = mc.player.renderYawOffset;
+        float f3 = mc.player.rotationYaw;
+        float f4 = mc.player.rotationPitch;
+        float f5 = mc.player.rotationYawHead;
         mouseX -= 19;
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-        mc.thePlayer.renderYawOffset = GuiExtendedInventory.rotation;
-        mc.thePlayer.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
-        mc.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
-        mc.thePlayer.rotationYawHead = mc.thePlayer.rotationYaw;
-        mc.thePlayer.rotationPitch = (float) Math.sin(mc.getSystemTime() / 500.0F) * 3.0F;
-        GlStateManager.translate(0.0F, (float) mc.thePlayer.getYOffset(), 0.0F);
+        mc.player.renderYawOffset = GuiExtendedInventory.rotation;
+        mc.player.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
+        mc.player.rotationYaw = GuiExtendedInventory.rotation;
+        mc.player.rotationYawHead = mc.player.rotationYaw;
+        mc.player.rotationPitch = (float) Math.sin(mc.getSystemTime() / 500.0F) * 3.0F;
+        GlStateManager.translate(0.0F, (float) mc.player.getYOffset(), 0.0F);
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
-        rendermanager.doRenderEntity(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        rendermanager.doRenderEntity(mc.player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         rendermanager.setRenderShadow(true);
-        mc.thePlayer.renderYawOffset = f2;
-        mc.thePlayer.rotationYaw = f3;
-        mc.thePlayer.rotationPitch = f4;
-        mc.thePlayer.rotationYawHead = f5;
+        mc.player.renderYawOffset = f2;
+        mc.player.rotationYaw = f3;
+        mc.player.rotationPitch = f4;
+        mc.player.rotationYawHead = f5;
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
@@ -148,7 +148,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     public int getPotionOffset()
     {
         // If at least one potion is active...
-        if (!Minecraft.getMinecraft().thePlayer.getActivePotionEffects().isEmpty())
+        if (!Minecraft.getMinecraft().player.getActivePotionEffects().isEmpty())
         {
             this.initWithPotion = true;
             return 60 + getPotionOffsetNEI();

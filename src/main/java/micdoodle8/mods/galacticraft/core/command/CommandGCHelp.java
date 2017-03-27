@@ -14,9 +14,9 @@ import net.minecraft.util.text.ITextComponent;
 public class CommandGCHelp extends CommandBase
 {
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName();
+        return "/" + this.getName();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommandGCHelp extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "gchelp";
     }

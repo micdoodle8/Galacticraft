@@ -73,7 +73,7 @@ public class MapGenDungeonVenus extends MapGenStructure
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        Random random = this.worldObj.setRandomSeed(k, l, 10387312);
+        Random random = this.world.setRandomSeed(k, l, 10387312);
         k = k * numChunks;
         l = l * numChunks;
         k = k + random.nextInt(numChunks);
@@ -85,7 +85,7 @@ public class MapGenDungeonVenus extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        return new MapGenDungeonVenus.Start(this.worldObj, this.rand, chunkX, chunkZ, this.configuration);
+        return new MapGenDungeonVenus.Start(this.world, this.rand, chunkX, chunkZ, this.configuration);
     }
 
     public static class Start extends StructureStart

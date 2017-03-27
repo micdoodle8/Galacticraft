@@ -56,7 +56,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
     public ChunkProviderSpace(World par1World, long seed, boolean mapFeaturesEnabled)
     {
         super(par1World, seed, mapFeaturesEnabled, "");
-        this.worldObj = par1World;
+        this.world = par1World;
         this.rand = new Random(seed);
 
         this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25F);
@@ -238,7 +238,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
 //        final byte[] meta = new byte[32768 * 2];
         this.generateTerrain(x, z, primer);
         this.createCraters(x, z, primer);
-        this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16, 16);
+        this.biomesForGeneration = this.world.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16, 16);
         this.replaceBiomeBlocks(x, z, primer, this.biomesForGeneration);
 
         if (this.worldGenerators == null)
@@ -248,12 +248,12 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
 
         for (MapGenBaseMeta generator : this.worldGenerators)
         {
-            generator.generate(this.worldObj, x, z, primer);
+            generator.generate(this.world, x, z, primer);
         }
 
         this.onChunkProvide(x, z, primer);
 
-        final Chunk var4 = new Chunk(this.worldObj, primer, x, z);
+        final Chunk var4 = new Chunk(this.world, primer, x, z);
         final byte[] var5 = var4.getBiomeArray();
 
         for (int var6 = 0; var6 < var5.length; ++var6)
@@ -349,12 +349,12 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
         BlockFalling.fallInstantly = true;
         int var4 = x * 16;
         int var5 = z * 16;
-        this.worldObj.getBiome(new BlockPos(var4 + 16, 0, var5 + 16));
-        this.rand.setSeed(this.worldObj.getSeed());
+        this.world.getBiome(new BlockPos(var4 + 16, 0, var5 + 16));
+        this.rand.setSeed(this.world.getSeed());
         final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
         final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(x * var7 + z * var9 ^ this.worldObj.getSeed());
-        this.decoratePlanet(this.worldObj, this.rand, var4, var5);
+        this.rand.setSeed(x * var7 + z * var9 ^ this.world.getSeed());
+        this.decoratePlanet(this.world, this.rand, var4, var5);
         this.onPopulate(x, z);
 
         BlockFalling.fallInstantly = false;
@@ -363,7 +363,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        Biome biomegenbase = this.worldObj.getBiome(pos);
+        Biome biomegenbase = this.world.getBiome(pos);
         return biomegenbase.getSpawnableList(creatureType);
     }
 

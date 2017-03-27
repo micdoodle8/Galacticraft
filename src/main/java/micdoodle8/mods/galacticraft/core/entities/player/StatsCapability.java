@@ -12,10 +12,12 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class StatsCapability implements IStatsCapability
 
     // temporary data while player is in planet selection GUI
     public int spaceshipTier = 1;
-    public ItemStack[] rocketStacks = new ItemStack[2];
+    public NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public int rocketType;
     public int fuelLevel;
     public Item rocketItem;
@@ -229,15 +231,15 @@ public class StatsCapability implements IStatsCapability
     }
 
     @Override
-    public ItemStack[] getRocketStacks()
+    public NonNullList<ItemStack> getRocketStacks()
     {
-        return rocketStacks;
+        return stacks;
     }
 
     @Override
-    public void setRocketStacks(ItemStack[] rocketStacks)
+    public void setRocketStacks(NonNullList<ItemStack> rocketStacks)
     {
-        this.rocketStacks = rocketStacks;
+        this.stacks = rocketStacks;
     }
 
     @Override
@@ -1004,7 +1006,7 @@ public class StatsCapability implements IStatsCapability
 
         nbt.setTag("Schematics", tagList);
 
-        nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
+        nbt.setInteger("rocketStacksLength", this.stacks.size());
         nbt.setInteger("SpaceshipTier", this.spaceshipTier);
         nbt.setInteger("FuelLevel", this.fuelLevel);
         if (this.rocketItem != null)
@@ -1013,20 +1015,26 @@ public class StatsCapability implements IStatsCapability
             nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new NBTTagCompound()));
         }
 
-        final NBTTagList var2 = new NBTTagList();
+        NBTTagList nbttaglist = new NBTTagList();
 
-        for (int var3 = 0; var3 < this.rocketStacks.length; ++var3)
+        for (int i = 0; i < this.stacks.size(); ++i)
         {
-            if (this.rocketStacks[var3] != null)
+            ItemStack itemstack = (ItemStack)this.stacks.get(i);
+
+            if (!itemstack.isEmpty())
             {
-                final NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) var3);
-                this.rocketStacks[var3].writeToNBT(var4);
-                var2.appendTag(var4);
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte)i);
+                itemstack.writeToNBT(nbttagcompound);
+                nbttaglist.appendTag(nbttagcompound);
             }
         }
 
-        nbt.setTag("RocketItems", var2);
+        if (!nbttaglist.hasNoTags())
+        {
+            nbt.setTag("RocketItems", nbttaglist);
+        }
+
         final NBTTagCompound var4 = new NBTTagCompound();
         if (this.launchpadStack != null)
         {
@@ -1093,12 +1101,9 @@ public class StatsCapability implements IStatsCapability
             }
             if (nbt.hasKey("ReturnRocket"))
             {
-                ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
-                if (returnRocket != null)
-                {
-                    this.rocketItem = returnRocket.getItem();
-                    this.rocketType = returnRocket.getItemDamage();
-                }
+                ItemStack returnRocket = new ItemStack(nbt.getCompoundTag("ReturnRocket"));
+                this.rocketItem = returnRocket.getItem();
+                this.rocketType = returnRocket.getItemDamage();
             }
 
             this.usingParachute = nbt.getBoolean("usingParachute2");
@@ -1124,19 +1129,20 @@ public class StatsCapability implements IStatsCapability
 
             if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
             {
-                final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
                 int length = nbt.getInteger("rocketStacksLength");
 
-                this.rocketStacks = new ItemStack[length];
+                this.stacks = NonNullList.withSize(length, ItemStack.EMPTY);
 
-                for (int var3 = 0; var3 < var23.tagCount(); ++var3)
+                NBTTagList nbttaglist1 = nbt.getTagList("RocketItems", 10);
+
+                for (int i = 0; i < nbttaglist1.tagCount(); ++i)
                 {
-                    final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
-                    final int var5 = var4.getByte("Slot") & 255;
+                    NBTTagCompound nbttagcompound = nbttaglist1.getCompoundTagAt(i);
+                    int j = nbttagcompound.getByte("Slot") & 255;
 
-                    if (var5 < this.rocketStacks.length)
+                    if (j >= 0 && j < this.stacks.size())
                     {
-                        this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                        this.stacks.set(j, new ItemStack(nbttagcompound));
                     }
                 }
             }
@@ -1170,8 +1176,8 @@ public class StatsCapability implements IStatsCapability
 
             if (nbt.hasKey("LaunchpadStack"))
             {
-                this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-                if (this.launchpadStack != null && this.launchpadStack.getCount() == 0)
+                this.launchpadStack = new ItemStack(nbt.getCompoundTag("LaunchpadStack"));
+                if (this.launchpadStack.getCount() == 0)
                 {
                     this.launchpadStack = null;
                 }

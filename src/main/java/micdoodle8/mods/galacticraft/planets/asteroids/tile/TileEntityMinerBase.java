@@ -97,7 +97,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                     {
                         final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
 
-                        TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+                        TileEntity tile = this.world.getTileEntity(vecToAdd);
                         if (tile instanceof TileEntityMinerBase)
                         {
                             BlockPos pos = ((TileEntityMinerBase) tile).mainBlockPosition;
@@ -112,7 +112,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
 
 //        if (this.updateClientFlag)
-        if (!this.worldObj.isRemote && this.ticks % 40 == 5)
+        if (!this.world.isRemote && this.ticks % 40 == 5)
         {
             this.updateClient();
 //        	this.updateClientFlag = false;
@@ -172,7 +172,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             if (this.linkedMinerID == null)
             {
                 System.err.println("" + this.facing);
-                if (EntityAstroMiner.spawnMinerAtBase(this.worldObj, this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1, this.facing, new BlockVec3(this), player))
+                if (EntityAstroMiner.spawnMinerAtBase(this.world, this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1, this.facing, new BlockVec3(this), player))
                 {
                     this.findTargetPoints();
                     return true;
@@ -197,7 +197,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (masterTile == null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
+            TileEntity tileEntity = this.world.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity != null)
             {
@@ -210,7 +210,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (masterTile == null)
         {
-            this.worldObj.setBlockToAir(this.mainBlockPosition);
+            this.world.setBlockToAir(this.mainBlockPosition);
         }
         else
         {
@@ -222,7 +222,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             }
             else
             {
-                this.worldObj.removeTileEntity(this.getPos());
+                this.world.removeTileEntity(this.getPos());
             }
         }
 
@@ -304,7 +304,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -379,9 +379,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void validate()
     {
         super.validate();
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
         }
     }
 
@@ -469,7 +469,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (master != null && !master.isInvalid())
         {
-            this.worldObj.destroyBlock(master.getPos(), false);
+            this.world.destroyBlock(master.getPos(), false);
         }
     }
 
@@ -484,7 +484,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                 return false;
             }
 
-            entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+            entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
             return true;
         }
         else
@@ -526,7 +526,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
                 for (int z = 0; z < 2; z++)
                 {
-                    this.worldObj.destroyBlock(this.getPos().add(x, y, z), false);
+                    this.world.destroyBlock(this.getPos().add(x, y, z), false);
                 }
             }
         }
@@ -576,7 +576,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             }
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.updateClient();
         }
@@ -584,10 +584,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         for (EnumFacing facing : EnumFacing.values())
         {
             BlockPos offset = this.getPos().offset(facing);
-            TileEntity tileOffset = this.worldObj.getTileEntity(offset);
+            TileEntity tileOffset = this.world.getTileEntity(offset);
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {
-                IBlockState state = this.worldObj.getBlockState(offset);
+                IBlockState state = this.world.getBlockState(offset);
                 state.getBlock().onNeighborChange(worldObj, this.getPos(), offset);
                 worldObj.markBlockRangeForRenderUpdate(offset, offset);
             }
@@ -608,7 +608,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             z = this.mainBlockPosition.getZ();
         }
         int link = (this.linkedMinerID != null) ? 1 : 0;
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing, x, y, z, link }), GCCoreUtil.getDimensionID(this.worldObj));
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos(), this.facing, x, y, z, link }), GCCoreUtil.getDimensionID(this.world));
     }
 
     @Override
@@ -826,9 +826,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         int baseFacing = (this.facing.getHorizontalIndex() + 2) ^ 1;
         BlockVec3 posnTarget = new BlockVec3(this);
 
-        if (this.worldObj.provider instanceof WorldProviderAsteroids)
+        if (this.world.provider instanceof WorldProviderAsteroids)
         {
-            ArrayList<BlockVec3> roids = ((WorldProviderAsteroids) this.worldObj.provider).getClosestAsteroidsXZ(posnTarget.x, posnTarget.y, posnTarget.z, baseFacing, 100);
+            ArrayList<BlockVec3> roids = ((WorldProviderAsteroids) this.world.provider).getClosestAsteroidsXZ(posnTarget.x, posnTarget.y, posnTarget.z, baseFacing, 100);
             if (roids != null && roids.size() > 0)
             {
                 this.targetPoints.addAll(roids);
@@ -836,13 +836,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             }
         }
 
-        posnTarget.modifyPositionFromSide(EnumFacing.getFront(baseFacing), this.worldObj.rand.nextInt(16) + 32);
+        posnTarget.modifyPositionFromSide(EnumFacing.getFront(baseFacing), this.world.rand.nextInt(16) + 32);
         int miny = Math.min(this.getPos().getY() * 2 - 90, this.getPos().getY() - 22);
         if (miny < 5)
         {
             miny = 5;
         }
-        posnTarget.y = miny + 5 + this.worldObj.rand.nextInt(4);
+        posnTarget.y = miny + 5 + this.world.rand.nextInt(4);
 
         this.targetPoints.add(posnTarget);
 

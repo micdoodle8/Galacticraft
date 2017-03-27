@@ -97,7 +97,7 @@ public class InventoryTreasureChest implements IInventory
     @Override
     public boolean isUsableByPlayer(EntityPlayer p_70300_1_)
     {
-        return this.upperChest.isUseableByPlayer(p_70300_1_) && this.lowerChest.isUseableByPlayer(p_70300_1_);
+        return this.upperChest.isUsableByPlayer(p_70300_1_) && this.lowerChest.isUsableByPlayer(p_70300_1_);
     }
 
     @Override
@@ -125,6 +125,12 @@ public class InventoryTreasureChest implements IInventory
     {
         this.upperChest.clear();
         this.lowerChest.clear();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        return this.upperChest.isEmpty() && this.lowerChest.isEmpty();
     }
 
     @Override

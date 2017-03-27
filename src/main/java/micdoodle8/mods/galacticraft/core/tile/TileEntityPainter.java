@@ -80,7 +80,7 @@ public class TileEntityPainter extends TileEntity
         }
 
 //        if (changes)
-//            ColorUtil.updateColorsForArea(this.worldObj), this.pos, this.range, this.glassColor1, this.glassColor2, this.glassColor3);;
+//            ColorUtil.updateColorsForArea(this.world), this.pos, this.range, this.glassColor1, this.glassColor2, this.glassColor3);;
     }
     
     @Override
@@ -125,24 +125,24 @@ public class TileEntityPainter extends TileEntity
     public void validate()
     {
         super.validate();
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.getLoadedTiles(this.worldObj).add(new BlockVec3(this.pos));
+            this.getLoadedTiles(this.world).add(new BlockVec3(this.pos));
         }
     }
 
     @Override
     public void onChunkUnload()
     {
-        this.getLoadedTiles(this.worldObj).remove(new BlockVec3(this.pos));
+        this.getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
         super.onChunkUnload();
     }
 
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote)
-            this.getLoadedTiles(this.worldObj).remove(new BlockVec3(this.pos));
+        if (!this.world.isRemote)
+            this.getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
         super.invalidate();
     }
 

@@ -49,7 +49,7 @@ public class ContainerParaChest extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.parachestInventory.isUseableByPlayer(par1EntityPlayer);
+        return this.parachestInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override

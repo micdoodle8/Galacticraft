@@ -164,12 +164,12 @@ public class SkyProviderOverworld extends IRenderHandler
             }
         }
 
-        float theta = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
+        float theta = MathHelper.sqrt(((float) (mc.player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        final Vec3d var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
+        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float i = (float) var2.xCoord * var21;
         float x = (float) var2.yCoord * var21;
         float var5 = (float) var2.zCoord * var21;
@@ -191,7 +191,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(i, x, var5);
-        if (mc.thePlayer.posY < 214)
+        if (mc.player.posY < 214)
         {
             GL11.glCallList(this.glSkyList);
         }
@@ -200,7 +200,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float[] costh = this.minecraft.theWorld.provider.calcSunriseSunsetColors(this.minecraft.theWorld.getCelestialAngle(partialTicks), partialTicks);
+        final float[] costh = this.minecraft.world.provider.calcSunriseSunsetColors(this.minecraft.world.getCelestialAngle(partialTicks), partialTicks);
         float var9;
         float size;
         float rand1;
@@ -214,7 +214,7 @@ public class SkyProviderOverworld extends IRenderHandler
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(MathHelper.sin(this.minecraft.world.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
             z = costh[0] * sunsetModInv;
             var9 = costh[1] * sunsetModInv;
@@ -253,7 +253,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
         GL11.glPushMatrix();
-        z = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
+        z = 1.0F - this.minecraft.world.getRainStrength(partialTicks);
         var9 = 0.0F;
         size = 0.0F;
         rand1 = 0.0F;
@@ -261,17 +261,17 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glTranslatef(var9, size, rand1);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 
-        GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        double playerHeight = this.minecraft.thePlayer.posY;
+        GL11.glRotatef(this.minecraft.world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        double playerHeight = this.minecraft.player.posY;
 
         //Draw stars
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         float threshold;
-        Vec3d vec = TransformerHooks.getFogColorHook(this.minecraft.theWorld);
+        Vec3d vec = TransformerHooks.getFogColorHook(this.minecraft.world);
         threshold = Math.max(0.1F, (float) vec.lengthVector() - 0.1F);
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
-        var20 = MathHelper.sqrt_float(var20);
+        var20 = MathHelper.sqrt(var20);
         float bright1 = Math.min(0.9F, var20 * 3);
 //        float bright2 = Math.min(0.85F, var20 * 2.5F);
 //        float bright3 = Math.min(0.8F, var20 * 2);
@@ -319,7 +319,7 @@ public class SkyProviderOverworld extends IRenderHandler
         //Draw moon
         r = 40.0F;
         this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.moonTexture);
-        float sinphi = this.minecraft.theWorld.getMoonPhase();
+        float sinphi = this.minecraft.world.getMoonPhase();
         final int cosphi = (int) (sinphi % 4);
         final int var29 = (int) (sinphi / 4 % 2);
         final float yy = (cosphi) / 4.0F;
@@ -357,7 +357,7 @@ public class SkyProviderOverworld extends IRenderHandler
             float scale = 850 * (0.25F - theta / 10000.0F);
             scale = Math.max(scale, 0.2F);
             GL11.glScalef(scale, 1.0F, scale);
-            GL11.glTranslatef(0.0F, -(float) mc.thePlayer.posY, 0.0F);
+            GL11.glTranslatef(0.0F, -(float) mc.player.posY, 0.0F);
 //	        if (ClientProxyCore.overworldTextureLocal != null)
 //	        {
 //	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());

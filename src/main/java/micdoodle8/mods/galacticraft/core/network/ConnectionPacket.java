@@ -129,7 +129,7 @@ public class ConnectionPacket
     {
         FMLProxyPacket pkt = event.getPacket();
 
-        onFMLProxyPacketData(event.getManager(), pkt, Minecraft.getMinecraft().thePlayer);
+        onFMLProxyPacketData(event.getManager(), pkt, Minecraft.getMinecraft().player);
     }
 
     @SubscribeEvent

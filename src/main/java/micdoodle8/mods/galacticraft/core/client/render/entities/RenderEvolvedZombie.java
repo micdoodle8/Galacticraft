@@ -55,13 +55,13 @@ public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
     }
     
     @Override
-    protected void rotateCorpse(EntityEvolvedZombie zombie, float pitch, float yaw, float partialTicks)
+    protected void applyRotations(EntityEvolvedZombie zombie, float pitch, float yaw, float partialTicks)
     {
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         GL11.glTranslatef(0F, -zombie.height * 0.55F, 0F);
         GL11.glRotatef(zombie.getTumbleAngle(partialTicks), zombie.getTumbleAxisX(), 0F, zombie.getTumbleAxisZ());
         GL11.glTranslatef(0F, zombie.height * 0.55F, 0F);
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        super.rotateCorpse(zombie, pitch, yaw, partialTicks);
+        super.applyRotations(zombie, pitch, yaw, partialTicks);
     }
 }

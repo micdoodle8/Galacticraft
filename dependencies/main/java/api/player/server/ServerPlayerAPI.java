@@ -661,7 +661,7 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, afterMountEntityHookTypes, "afterMountEntity", net.minecraft.entity.Entity.class, boolean.class);
 
 		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", double.class, double.class, double.class);
-		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", double.class, double.class, double.class);
+		addMethod(id, baseClass, overrideMoveEntityHookTypes, "move", double.class, double.class, double.class);
 		addMethod(id, baseClass, afterMoveEntityHookTypes, "afterMoveEntity", double.class, double.class, double.class);
 
 		addMethod(id, baseClass, beforeMoveEntityWithHeadingHookTypes, "beforeMoveEntityWithHeading", float.class, float.class);

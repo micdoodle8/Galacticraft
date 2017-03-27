@@ -99,8 +99,9 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
         if (player instanceof EntityPlayerMP)
         {
             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
@@ -110,14 +111,14 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
             if (gear == null)
             {
                 stats.getExtendedInventory().setInventorySlotContents(2, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ItemStack.EMPTY;
             }
             else if (gear1 == null)
             {
                 stats.getExtendedInventory().setInventorySlotContents(3, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ItemStack.EMPTY;
             }
         }
-        return new ActionResult(EnumActionResult.SUCCESS, itemStack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
     }
 }

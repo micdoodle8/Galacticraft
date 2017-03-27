@@ -9,6 +9,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.stats.StatisticsManager;
@@ -60,7 +61,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         ClientProxyCore.playerClientHandler.onLivingUpdatePre(this);
         try {
-            if (this.worldObj.provider instanceof IZeroGDimension)
+            if (this.world.provider instanceof IZeroGDimension)
             {
                 //  from: EntityPlayerSP
                 if (this.sprintingTicksLeft > 0)
@@ -198,7 +199,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 
                 //Omit fly toggle timer
                 
-                if (this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL && this.worldObj.getGameRules().getBoolean("naturalRegeneration"))
+                if (this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.world.getGameRules().getBoolean("naturalRegeneration"))
                 {
                     if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0)
                     {
@@ -249,7 +250,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     this.motionZ = 0.0D;
                 }
 
-                this.worldObj.theProfiler.startSection("ai");
+                this.world.theProfiler.startSection("ai");
 
                 if (this.isMovementBlocked())
                 {
@@ -261,8 +262,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 else
                     this.updateEntityActionState();
                 
-                this.worldObj.theProfiler.endSection();
-                this.worldObj.theProfiler.startSection("travel");
+                this.world.theProfiler.endSection();
+                this.world.theProfiler.startSection("travel");
                 this.moveStrafing *= 0.98F;
                 this.moveForward *= 0.98F;
                 this.randomYawVelocity *= 0.9F;
@@ -273,15 +274,15 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 //-----------END CUSTOM
                 
                 this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
-                this.worldObj.theProfiler.endSection();
-                this.worldObj.theProfiler.startSection("push");
+                this.world.theProfiler.endSection();
+                this.world.theProfiler.startSection("push");
 
-                if (!this.worldObj.isRemote)
+                if (!this.world.isRemote)
                 {
                     this.collideWithNearbyEntities();
                 }
 
-                this.worldObj.theProfiler.endSection();
+                this.world.theProfiler.endSection();
 
                 // -from: EntityPlayer
                 
@@ -290,7 +291,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 //Omit        this.jumpMovementFactor = this.speedInAir;
                 //(no bounding in space)
                 
-                float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
                 float f1 = (float)(Math.atan(-this.motionY * 0.20000000298023224D) * 15.0D);
 
                 if (f > 0.1F)
@@ -324,7 +325,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                         axisalignedbb = this.getEntityBoundingBox().expand(1.0D, 0.5D, 1.0D);
                     }
 
-                    List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
+                    List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
 
                     for (int i = 0; i < list.size(); ++i)
                     {
@@ -357,10 +358,10 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     }
 
     @Override
-    public void moveEntity(double par1, double par3, double par5)
+    public void move(MoverType type, double x, double y, double z)
     {
-        super.moveEntity(par1, par3, par5);
-        ClientProxyCore.playerClientHandler.moveEntity(this, par1, par3, par5);
+        super.move(type, x, y, z);
+        ClientProxyCore.playerClientHandler.move(this, type, x, y, z);
     }
 
     @Override
@@ -373,7 +374,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     @Override
     public boolean isSneaking()
     {
-        if (this.worldObj.provider instanceof IZeroGDimension)
+        if (this.world.provider instanceof IZeroGDimension)
         {
             IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
             if (stats.getLandingTicks() > 0)
@@ -421,7 +422,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         }
 
         float ySize = 0.0F;
-        if (this.worldObj.provider instanceof IZeroGDimension)
+        if (this.world.provider instanceof IZeroGDimension)
         {
             IStatsClientCapability stats = this.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
             if (stats.getLandingTicks() > 0)
@@ -460,9 +461,9 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 //    @SideOnly(Side.CLIENT)
 //    public void setVelocity(double xx, double yy, double zz)
 //    {
-//    	if (this.worldObj.provider instanceof WorldProviderOrbit)
+//    	if (this.world.provider instanceof WorldProviderOrbit)
 //    	{
-//    		((WorldProviderOrbit)this.worldObj.provider).setVelocityClient(this, xx, yy, zz);	
+//    		((WorldProviderOrbit)this.world.provider).setVelocityClient(this, xx, yy, zz);
 //    	}
 //    	super.setVelocity(xx, yy, zz);
 //    }
@@ -471,7 +472,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     /*@Override
     public void setInPortal()
     {
-    	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
+    	if (!(this.world.provider instanceof IGalacticraftWorldProvider))
     	{
     		super.setInPortal();
     	}

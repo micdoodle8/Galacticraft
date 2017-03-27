@@ -80,9 +80,9 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         double var9 = -1.0D;
         EntityPlayer var11 = null;
 
-        for (int var12 = 0; var12 < this.worldObj.loadedEntityList.size(); ++var12)
+        for (int var12 = 0; var12 < this.world.loadedEntityList.size(); ++var12)
         {
-            EntityPlayer var13 = (EntityPlayer) this.worldObj.loadedEntityList.get(var12);
+            EntityPlayer var13 = (EntityPlayer) this.world.loadedEntityList.get(var12);
             double var14 = var13.getDistanceSq(par1, par3, par5);
 
             if ((par7 < 0.0D || var14 < par7 * par7) && (var9 == -1.0D || var14 < var9))
@@ -125,7 +125,7 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
+            EntityPlayer var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else

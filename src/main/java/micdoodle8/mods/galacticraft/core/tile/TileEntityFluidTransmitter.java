@@ -90,13 +90,13 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     @Override
     public void onNetworkChanged()
     {
-        this.worldObj.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
+        this.world.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
     }
 
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!this.validated)
             {
@@ -146,7 +146,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
             return;
         }
 
-        if (this.worldObj.isRemote && this.network != null)
+        if (this.world.isRemote && this.network != null)
         {
             FluidNetwork fluidNetwork = (FluidNetwork) this.network;
             fluidNetwork.removeTransmitter(this);
@@ -159,7 +159,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
 
         this.network = network;
 
-        if (this.worldObj.isRemote && this.network != null)
+        if (this.world.isRemote && this.network != null)
         {
             ((FluidNetwork) this.network).pipes.add(this);
         }
@@ -168,13 +168,13 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     @Override
     public void refresh()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.adjacentConnections = null;
 
             for (EnumFacing side : EnumFacing.values())
             {
-                TileEntity tileEntity = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
+                TileEntity tileEntity = new BlockVec3(this).getTileEntityOnSide(this.world, side);
 
                 if (tileEntity != null)
                 {
@@ -209,7 +209,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
          */
         if (this.adjacentConnections == null)
         {
-            this.adjacentConnections = OxygenUtil.getAdjacentFluidConnections(this, this.worldObj.isRemote);
+            this.adjacentConnections = OxygenUtil.getAdjacentFluidConnections(this, this.world.isRemote);
         }
 
         return this.adjacentConnections;

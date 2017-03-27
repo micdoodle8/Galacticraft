@@ -99,7 +99,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 
         if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 this.spawnParticles(this.getLaunched());
             }
@@ -125,9 +125,9 @@ public class EntityTier2Rocket extends EntityTieredRocket
 
             double multiplier = 1.0D;
 
-            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (this.world.provider instanceof IGalacticraftWorldProvider)
             {
-                multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
+                multiplier = ((IGalacticraftWorldProvider) this.world.provider).getFuelUsageMultiplier();
 
                 if (multiplier <= 0)
                 {
@@ -144,7 +144,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
                 }
             }
         }
-        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+        else if (!this.hasValidFuel() && this.getLaunched() && !this.world.isRemote)
         {
             if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
             {

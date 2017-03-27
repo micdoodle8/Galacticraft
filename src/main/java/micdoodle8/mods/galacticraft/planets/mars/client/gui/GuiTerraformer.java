@@ -36,7 +36,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
     public GuiTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer terraformer)
     {
-        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, FMLClientHandler.instance().getClient().player));
         this.ySize = 237;
         this.terraformer = terraformer;
     }

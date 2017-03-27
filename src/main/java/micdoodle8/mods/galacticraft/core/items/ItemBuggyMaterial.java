@@ -7,10 +7,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemBuggyMaterial extends Item implements ISortableItem
 {
@@ -72,13 +71,12 @@ public class ItemBuggyMaterial extends Item implements ISortableItem
         return super.getIconFromDamage(damage);
     }*/
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < ItemBuggyMaterial.names.length; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(itemIn, 1, i));
         }
     }
 

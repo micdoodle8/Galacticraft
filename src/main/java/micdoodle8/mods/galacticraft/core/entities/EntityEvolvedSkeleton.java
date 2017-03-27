@@ -5,27 +5,17 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.SkeletonType;
-import net.minecraft.entity.projectile.EntityTippedArrow;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -52,53 +42,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     public boolean canBreath()
     {
         return true;
-    }
-
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
-    {
-        EntityTippedArrow entitytippedarrow = new EntityTippedArrow(this.worldObj, this);
-        double d0 = target.posX - this.posX;
-        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entitytippedarrow.posY;
-        double d2 = target.posZ - this.posZ;
-        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        entitytippedarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
-        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.POWER, this);
-        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.PUNCH, this);
-        DifficultyInstance difficultyinstance = this.worldObj.getDifficultyForLocation(new BlockPos(this));
-        entitytippedarrow.setDamage((double)(distanceFactor * 2.0F) + this.rand.nextGaussian() * 0.25D + (double)((float)this.worldObj.getDifficulty().getDifficultyId() * 0.11F));
-
-        if (i > 0)
-        {
-            entitytippedarrow.setDamage(entitytippedarrow.getDamage() + (double)i * 0.5D + 0.5D);
-        }
-
-        if (j > 0)
-        {
-            entitytippedarrow.setKnockbackStrength(j);
-        }
-
-        boolean flag = this.isBurning() && difficultyinstance.isHard() && this.rand.nextBoolean() || this.getSkeletonType() == SkeletonType.WITHER;
-        flag = flag || EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FLAME, this) > 0;
-
-        if (flag)
-        {
-            entitytippedarrow.setFire(100);
-        }
-
-        ItemStack itemstack = this.getHeldItem(EnumHand.OFF_HAND);
-
-        if (itemstack != null && itemstack.getItem() == Items.TIPPED_ARROW)
-        {
-            entitytippedarrow.setPotionEffect(itemstack);
-        }
-        else if (this.getSkeletonType() == SkeletonType.STRAY)
-        {
-            entitytippedarrow.addEffect(new PotionEffect(MobEffects.SLOWNESS, 600));
-        }
-
-        this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntity(entitytippedarrow);
     }
 
     @Override
@@ -193,7 +136,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         if (value !=0F)
         {
             if (this.tumbling == 0F)
-                this.tumbling = (this.worldObj.rand.nextFloat() + 0.5F) * value;
+                this.tumbling = (this.world.rand.nextFloat() + 0.5F) * value;
         }
         else
             this.tumbling = 0F;
@@ -213,7 +156,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 }
             }
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 this.setSpinPitch(this.tumbling);
             }
@@ -284,7 +227,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     {
         double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
         if (velocity2 == 0D) return 1F;
-        return (float) (this.motionZ / MathHelper.sqrt_double(velocity2));
+        return (float) (this.motionZ / MathHelper.sqrt(velocity2));
     }
 
     @Override
@@ -292,6 +235,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     {
         double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
         if (velocity2 == 0D) return 0F;
-        return (float) (this.motionX / MathHelper.sqrt_double(velocity2));
+        return (float) (this.motionX / MathHelper.sqrt(velocity2));
     }
 }

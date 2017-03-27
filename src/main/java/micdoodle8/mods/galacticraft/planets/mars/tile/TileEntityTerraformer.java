@@ -91,14 +91,14 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
 //        if (this.terraformBubble == null)
 //        {
-//            if (!this.worldObj.isRemote)
+//            if (!this.world.isRemote)
 //            {
-//                this.terraformBubble = new EntityTerraformBubble(this.worldObj, new Vector3(this), this);
-//                this.worldObj.spawnEntity(this.terraformBubble);
+//                this.terraformBubble = new EntityTerraformBubble(this.world, new Vector3(this), this);
+//                this.world.spawnEntity(this.terraformBubble);
 //            }
 //        }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.containingItems[0] != null)
             {
@@ -118,7 +118,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
         }
 
-        if (!this.worldObj.isRemote && (this.active != this.lastActive || this.ticks % 60 == 0))
+        if (!this.world.isRemote && (this.active != this.lastActive || this.ticks % 60 == 0))
         {
             this.terraformableBlocksList.clear();
             this.grassBlockList.clear();
@@ -137,22 +137,22 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                         for (int z = this.getPos().getZ() - bubbleSize; z < this.getPos().getZ() + bubbleSize; z++)
                         {
                             BlockPos pos = new BlockPos(x, y, z);
-                            Block blockID = this.worldObj.getBlockState(pos).getBlock();
+                            Block blockID = this.world.getBlockState(pos).getBlock();
                             if (blockID == null)
                             {
                                 continue;
                             }
 
-                            if (!(blockID.isAir(this.worldObj.getBlockState(pos), this.worldObj, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
+                            if (!(blockID.isAir(this.world.getBlockState(pos), this.world, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
-                                if (doGrass && blockID instanceof ITerraformableBlock && ((ITerraformableBlock) blockID).isTerraformable(this.worldObj, pos))
+                                if (doGrass && blockID instanceof ITerraformableBlock && ((ITerraformableBlock) blockID).isTerraformable(this.world, pos))
                                 {
                                     this.terraformableBlocksList.add(new BlockPos(x, y, z));
                                 }
                                 else if (doTrees)
                                 {
-                                    Block blockIDAbove = this.worldObj.getBlockState(pos.up()).getBlock();
-                                    if (blockID == Blocks.GRASS && blockIDAbove.isAir(this.worldObj.getBlockState(pos.up()), this.worldObj, pos.up()))
+                                    Block blockIDAbove = this.world.getBlockState(pos.up()).getBlock();
+                                    if (blockID == Blocks.GRASS && blockIDAbove.isAir(this.world.getBlockState(pos.up()), this.world, pos.up()))
                                     {
                                         this.grassBlockList.add(new BlockPos(x, y, z));
                                     }
@@ -164,21 +164,21 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             }
         }
 
-        if (!this.worldObj.isRemote && this.terraformableBlocksList.size() > 0 && this.ticks % 15 == 0)
+        if (!this.world.isRemote && this.terraformableBlocksList.size() > 0 && this.ticks % 15 == 0)
         {
             ArrayList<BlockPos> terraformableBlocks2 = new ArrayList<BlockPos>(this.terraformableBlocksList);
 
-            int randomIndex = this.worldObj.rand.nextInt(this.terraformableBlocksList.size());
+            int randomIndex = this.world.rand.nextInt(this.terraformableBlocksList.size());
             BlockPos vec = terraformableBlocks2.get(randomIndex);
 
-            if (this.worldObj.getBlockState(vec).getBlock() instanceof ITerraformableBlock)
+            if (this.world.getBlockState(vec).getBlock() instanceof ITerraformableBlock)
             {
                 Block id;
 
-                switch (this.worldObj.rand.nextInt(40))
+                switch (this.world.rand.nextInt(40))
                 {
                 case 0:
-                    if (this.worldObj.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.worldObj.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
+                    if (this.world.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.world.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.world.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.world.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
                     {
                         id = Blocks.FLOWING_WATER;
                     }
@@ -192,7 +192,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                     break;
                 }
 
-                this.worldObj.setBlockState(vec, id.getDefaultState());
+                this.world.setBlockState(vec, id.getDefaultState());
 
                 if (id == Blocks.GRASS)
                 {
@@ -209,12 +209,12 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             this.terraformableBlocksList.remove(randomIndex);
         }
 
-        if (!this.worldObj.isRemote && !this.treesDisabled && this.grassBlockList.size() > 0 && this.ticks % 50 == 0)
+        if (!this.world.isRemote && !this.treesDisabled && this.grassBlockList.size() > 0 && this.ticks % 50 == 0)
         {
-            int randomIndex = this.worldObj.rand.nextInt(this.grassBlockList.size());
+            int randomIndex = this.world.rand.nextInt(this.grassBlockList.size());
             BlockPos vecGrass = grassBlockList.get(randomIndex);
 
-            if (this.worldObj.getBlockState(vecGrass).getBlock() == Blocks.GRASS)
+            if (this.world.getBlockState(vecGrass).getBlock() == Blocks.GRASS)
             {
                 BlockPos vecSapling = vecGrass.add(0, 1, 0);
                 ItemStack sapling = this.getFirstSaplingStack();
@@ -233,25 +233,25 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 if (!flag && sapling != null)
                 {
                     Block b = Block.getBlockFromItem(sapling.getItem());
-                    this.worldObj.setBlockState(vecSapling, b.getStateFromMeta(sapling.getItemDamage()), 3);
+                    this.world.setBlockState(vecSapling, b.getStateFromMeta(sapling.getItemDamage()), 3);
                     if (b instanceof BlockSapling)
                     {
-                        if (this.worldObj.getLightFromNeighbors(vecSapling) >= 9)
+                        if (this.world.getLightFromNeighbors(vecSapling) >= 9)
                         {
-                            ((BlockSapling) b).grow(this.worldObj, vecSapling, this.worldObj.getBlockState(vecSapling), this.worldObj.rand);
+                            ((BlockSapling) b).grow(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
                             this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
                         }
                     }
                     else if (b instanceof BlockBush)
                     {
-                        if (this.worldObj.getLightFromNeighbors(vecSapling) >= 5)
+                        if (this.world.getLightFromNeighbors(vecSapling) >= 5)
                         //Hammer the update tick a few times to try to get it to grow - it won't always
                         {
                             for (int j = 0; j < 12; j++)
                             {
-                                if (this.worldObj.getBlockState(vecSapling).getBlock() == b)
+                                if (this.world.getBlockState(vecSapling).getBlock() == b)
                                 {
-                                    ((BlockBush) b).updateTick(this.worldObj, vecSapling, this.worldObj.getBlockState(vecSapling), this.worldObj.rand);
+                                    ((BlockBush) b).updateTick(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
                                 }
                                 else
                                 {
@@ -271,7 +271,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             this.grassBlockList.remove(randomIndex);
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.terraformableBlocksListSize = this.terraformableBlocksList.size();
             this.grassBlocksListSize = this.grassBlockList.size();
@@ -292,7 +292,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             networkedList.add(this.bubbleSize);
         }
@@ -301,7 +301,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.bubbleSize = dataStream.readFloat();
         }
@@ -394,7 +394,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             return -1;
         }
 
-        int random = this.worldObj.rand.nextInt(stackcount);
+        int random = this.world.rand.nextInt(stackcount);
         for (int i = start; i < end; i++)
         {
             if (this.containingItems[i] != null)
@@ -699,7 +699,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
     }
 
     @Override

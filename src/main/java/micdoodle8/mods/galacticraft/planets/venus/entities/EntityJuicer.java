@@ -142,22 +142,22 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
 
         super.onLivingUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.jumpTarget == null && this.moveForward < 0.005F)
             {
                 if (this.timeSinceLastJump <= 0)
                 {
-                    IBlockState blockAbove = this.worldObj.getBlockState(new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ));
+                    IBlockState blockAbove = this.world.getBlockState(new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ));
 
                     if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                             blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                     {
-                        RayTraceResult hit = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
+                        RayTraceResult hit = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
 
                         if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK)
                         {
-                            IBlockState blockBelow = this.worldObj.getBlockState(hit.getBlockPos());
+                            IBlockState blockBelow = this.world.getBlockState(hit.getBlockPos());
                             if (blockBelow.getBlock() == VenusBlocks.venusBlock && (blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                                     blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                             {
@@ -203,12 +203,12 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     {
         super.onUpdate();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.prevLimbSwingAmount = this.limbSwingAmount;
             double d1 = this.posX - this.prevPosX;
             double d0 = this.posZ - this.prevPosZ;
-            float f2 = MathHelper.sqrt_double(d1 * d1 + d0 * d0) * 4.0F;
+            float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
 
             if (f2 > 1.0F)
             {
@@ -259,7 +259,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
+            EntityPlayer var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else

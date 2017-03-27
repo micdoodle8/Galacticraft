@@ -76,12 +76,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     {
         if (this.shouldDisablePrecipitation())
         {
-            this.worldObj.getWorldInfo().setRainTime(0);
-            this.worldObj.getWorldInfo().setRaining(false);
-            this.worldObj.getWorldInfo().setThunderTime(0);
-            this.worldObj.getWorldInfo().setThundering(false);
-            this.worldObj.rainingStrength = 0.0F;
-            this.worldObj.thunderingStrength = 0.0F;
+            this.world.getWorldInfo().setRainTime(0);
+            this.world.getWorldInfo().setRaining(false);
+            this.world.getWorldInfo().setThunderTime(0);
+            this.world.getWorldInfo().setThundering(false);
+            this.world.rainingStrength = 0.0F;
+            this.world.thunderingStrength = 0.0F;
         }
         else
         {
@@ -182,7 +182,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public boolean isSurfaceWorld()
     {
-        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+        return (this.world == null) ? false : this.world.isRemote;
     }
 
     /**
@@ -256,7 +256,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 Constructor<?> constr = constructors[i];
                 if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
                 {
-                    return (IChunkGenerator) constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+                    return (IChunkGenerator) constr.newInstance(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
                 }
                 else if (constr.getParameterTypes().length == 0)
                 {
@@ -290,7 +290,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 {
                     if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class }))
                     {
-                        this.biomeProvider = (BiomeProvider) constr.newInstance(this.worldObj);
+                        this.biomeProvider = (BiomeProvider) constr.newInstance(this.world);
                     }
                     else if (constr.getParameterTypes().length == 0)
                     {

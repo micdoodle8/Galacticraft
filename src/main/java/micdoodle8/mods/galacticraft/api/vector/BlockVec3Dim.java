@@ -387,7 +387,7 @@ public class BlockVec3Dim implements Cloneable
     @SideOnly(Side.CLIENT)
     private World getWorldForIdClient(int dimensionID)
     {
-        World world = FMLClientHandler.instance().getClient().theWorld;
+        World world = FMLClientHandler.instance().getClient().world;
 
         if (world != null && world.provider.getDimension() == dimensionID)
         {

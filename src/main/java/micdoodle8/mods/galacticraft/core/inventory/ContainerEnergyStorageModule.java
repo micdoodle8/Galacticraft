@@ -47,7 +47,7 @@ public class ContainerEnergyStorageModule extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -122,7 +122,7 @@ public class ContainerEnergyStorageModule extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, itemStack);
+            slot.onTake(par1EntityPlayer, itemStack);
         }
 
         return returnStack;

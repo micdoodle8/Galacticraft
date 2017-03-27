@@ -13,11 +13,12 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,7 +26,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,21 +82,21 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     public EntityLanderBase(EntityPlayerMP player, float yOffset)
     {
-        this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
+        this(player.world, player.posX, player.posY, player.posZ, yOffset);
 
         IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-        this.containedItems = new ItemStack[stats.getRocketStacks().length + 1];
+        this.stacks = NonNullList.withSize(stats.getRocketStacks().size() + 1, ItemStack.EMPTY);
         this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.getFuelLevel()));
 
-        for (int i = 0; i < stats.getRocketStacks().length; i++)
+        for (int i = 0; i < stats.getRocketStacks().size(); i++)
         {
-            if (stats.getRocketStacks()[i] != null)
+            if (!stats.getRocketStacks().get(i).isEmpty())
             {
-                this.containedItems[i] = stats.getRocketStacks()[i].copy();
+                this.stacks.set(i, stats.getRocketStacks().get(i).copy());
             }
             else
             {
-                this.containedItems[i] = null;
+                this.stacks.get(i).setCount(0);
             }
         }
 
@@ -114,7 +114,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             if (this.getPassengers().isEmpty())
             {
-                final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
+                final EntityPlayer player = this.world.getClosestPlayerToEntity(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
@@ -123,14 +123,14 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             }
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.checkFluidTankTransfer(this.containedItems.length - 1, this.fuelTank);
+            this.checkFluidTankTransfer(this.stacks.size() - 1, this.fuelTank);
         }
 
         AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
 
-        final List<Entity> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+        final List<Entity> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 
         if (var15 != null && !var15.isEmpty())
         {
@@ -147,7 +147,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        FluidUtil.tryFillContainerFuel(tank, this.containedItems, slot);
+        FluidUtil.tryFillContainerFuel(tank, this.stacks, slot);
     }
 
     private void pushEntityAway(Entity entityToPush)
@@ -156,11 +156,11 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             double d0 = this.posX - entityToPush.posX;
             double d1 = this.posZ - entityToPush.posZ;
-            double d2 = MathHelper.abs_max(d0, d1);
+            double d2 = MathHelper.absMax(d0, d1);
 
             if (d2 >= 0.009999999776482582D)
             {
-                d2 = MathHelper.sqrt_double(d2);
+                d2 = MathHelper.sqrt(d2);
                 d0 /= d2;
                 d1 /= d2;
                 double d3 = 1.0D / d2;
@@ -184,25 +184,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        final NBTTagList var2 = nbt.getTagList("Items", 10);
-
         int invSize = nbt.getInteger("rocketStacksLength");
         if (invSize < 3)
         {
             invSize = 3;
         }
-        this.containedItems = new ItemStack[invSize];
-
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-        {
-            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            final int var5 = var4.getByte("Slot") & 255;
-
-            if (var5 < this.containedItems.length)
-            {
-                this.containedItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-            }
-        }
+        this.stacks = NonNullList.withSize(invSize, ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
 
         if (nbt.hasKey("fuelTank"))
         {
@@ -218,22 +206,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
-        final NBTTagList nbttaglist = new NBTTagList();
+        nbt.setInteger("rocketStacksLength", this.stacks.size());
 
-        nbt.setInteger("rocketStacksLength", this.containedItems.length);
-
-        for (int i = 0; i < this.containedItems.length; ++i)
-        {
-            if (this.containedItems[i] != null)
-            {
-                final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.containedItems[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-
-        nbt.setTag("Items", nbttaglist);
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         if (this.fuelTank.getFluid() != null)
         {
@@ -270,7 +245,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public void tickInAir()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.shouldMove())
             {
@@ -291,14 +266,14 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         final ArrayList<Object> objList = new ArrayList<Object>();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            Integer cargoLength = this.containedItems != null ? this.containedItems.length : 0;
+            Integer cargoLength = this.stacks != null ? this.stacks.size() : 0;
             objList.add(cargoLength);
             objList.add(this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount);
         }
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.shouldMoveClient = this.shouldMove();
             objList.add(this.shouldMoveClient);
@@ -337,13 +312,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         try
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 this.hasReceivedPacket = true;
                 int cargoLength = buffer.readInt();
-                if (this.containedItems == null || this.containedItems.length == 0)
+                if (this.stacks == null || this.stacks.isEmpty())
                 {
-                    this.containedItems = new ItemStack[cargoLength];
+                    this.stacks = NonNullList.withSize(cargoLength, ItemStack.EMPTY);
                     GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
                 }
 
@@ -364,7 +339,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                             {
                                 if (e instanceof EntityPlayer)
                                 {
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
                                     e.startRiding(this);
                                 }
                             }
@@ -390,7 +365,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                             {
                                 if (e instanceof EntityPlayer)
                                 {
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
                                     e.startRiding(this, true);
                                 }
                             }
@@ -422,19 +397,19 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public List<ItemStack> getItemsDropped()
     {
-        return new ArrayList<ItemStack>(Arrays.asList(this.containedItems));
+        return this.stacks;
     }
 
     @Override
     public int getSizeInventory()
     {
-        return this.containedItems.length;
+        return this.stacks.size();
     }
 
     @Override
     public void setSizeInventory(int size)
     {
-        this.containedItems = new ItemStack[size];
+        this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
     }
 
     @Override

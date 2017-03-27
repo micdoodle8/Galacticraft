@@ -45,13 +45,13 @@ public abstract class GuiContainerGC extends GuiContainer
         {
             Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i1);
 
-            if (slot.canBeHovered() && this.isPointInRegion(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, par1, par2))
+            if (slot.canBeHovered() && this.isPointInRegion(slot.xPos, slot.yPos, 16, 16, par1, par2))
             {
                 ItemStack itemStack = slot.getStack();
 
                 if (itemStack != null)
                 {
-                    List list = itemStack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+                    List list = itemStack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips);
                     int size = list.size();
 
                     if (Loader.isModLoaded("Waila"))

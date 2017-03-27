@@ -43,7 +43,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
     public GuiWaterElectrolyzer(InventoryPlayer par1InventoryPlayer, TileEntityElectrolyzer tileEntity)
     {
-        super(new ContainerElectrolyzer(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerElectrolyzer(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }

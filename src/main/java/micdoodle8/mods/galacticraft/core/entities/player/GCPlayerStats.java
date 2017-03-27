@@ -264,7 +264,7 @@
 //        }
 //        if (nbt.hasKey("ReturnRocket"))
 //        {
-//            ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
+//            ItemStack returnRocket = new ItemStack(nbt.getCompoundTag("ReturnRocket"));
 //            if (returnRocket != null)
 //            {
 //                this.rocketItem = returnRocket.getItem();
@@ -307,7 +307,7 @@
 //
 //                if (var5 < this.rocketStacks.length)
 //                {
-//                    this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+//                    this.rocketStacks[var5] = new ItemStack(var4);
 //                }
 //            }
 //        }
@@ -341,7 +341,7 @@
 //
 //        if (nbt.hasKey("LaunchpadStack"))
 //        {
-//            this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
+//            this.launchpadStack = new ItemStack(nbt.getCompoundTag("LaunchpadStack"));
 //            if (this.launchpadStack != null && this.launchpadStack.getCount() == 0)
 //            {
 //                this.launchpadStack = null;

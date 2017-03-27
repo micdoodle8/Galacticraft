@@ -261,15 +261,15 @@ public class TickHandlerServer
                     final Integer dim = GCCoreUtil.getDimensionID(provider);
                     GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
 
-                    if (change.getPlayer().worldObj instanceof WorldServer)
+                    if (change.getPlayer().world instanceof WorldServer)
                     {
-                        final WorldServer world = (WorldServer) change.getPlayer().worldObj;
+                        final WorldServer world = (WorldServer) change.getPlayer().world;
 
                         WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
                     }
 
                     stats.setTeleportCooldown(10);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().worldObj), new Object[] {}), change.getPlayer());
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().world), new Object[] {}), change.getPlayer());
                 }
                 catch (Exception e)
                 {
@@ -305,7 +305,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.tickCount % 33 == 0)
             {
-                WorldServer[] worlds = server.worldServers;
+                WorldServer[] worlds = server.worlds;
 
                 for (int i = worlds.length - 1; i >= 0; i--)
                 {
@@ -315,7 +315,7 @@ public class TickHandlerServer
             }
             if (TickHandlerServer.tickCount % 100 == 0)
             {
-                WorldServer[] worlds = server.worldServers;
+                WorldServer[] worlds = server.worlds;
 
                 for (int i = 0; i < worlds.length; i++)
                 {
@@ -378,7 +378,7 @@ public class TickHandlerServer
             {
                 for (BlockVec3Dim targetPoint : footprintBlockChanges)
                 {
-                    WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+                    WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
 
                     for (int i = 0; i < worlds.length; i++)
                     {
@@ -596,9 +596,9 @@ public class TickHandlerServer
                     {
                         final Entity e = (Entity) o;
 
-                        if (e.worldObj.provider instanceof IOrbitDimension)
+                        if (e.world.provider instanceof IOrbitDimension)
                         {
-                            final IOrbitDimension dimension = (IOrbitDimension) e.worldObj.provider;
+                            final IOrbitDimension dimension = (IOrbitDimension) e.world.provider;
 
                             if (e.posY <= dimension.getYCoordToTeleportToPlanet())
                             {

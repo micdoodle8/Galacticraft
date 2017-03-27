@@ -327,7 +327,7 @@ public class ChunkLoadingCallback implements LoadingCallback
 
                     if (ChunkLoadingCallback.loadOnLogin)
                     {
-                        player.worldObj.getMinecraftServer().worldServerForDimension(dimID);
+                        player.world.getMinecraftServer().worldServerForDimension(dimID);
                     }
                 }
             }

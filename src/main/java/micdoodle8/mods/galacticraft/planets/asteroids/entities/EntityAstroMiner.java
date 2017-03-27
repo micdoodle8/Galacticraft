@@ -409,7 +409,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.facing = this.getFacingFromRotation();
         this.setBoundingBoxForFacing();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             //CLIENT CODE
             if (this.turnProgress == 0)
@@ -473,7 +473,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             this.flagLink = false;
             this.checkPlayer();
-            TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
+            TileEntity tileEntity = posBase.getTileEntity(this.world);
             if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase) tileEntity).isMaster && !tileEntity.isInvalid())
             {
                 //Create link with base on loading the EntityAstroMiner
@@ -517,7 +517,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.motionX = 0;
             this.motionY = 0;
             this.motionZ = 0;
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.worldObj));
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.world));
             return;
         }
 
@@ -544,7 +544,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 this.freeze(FAIL_OUTOFENERGY);
             }
-            else if (!(this.worldObj.provider instanceof WorldProviderAsteroids) && this.ticksExisted % 2 == 0)
+            else if (!(this.world.provider instanceof WorldProviderAsteroids) && this.ticksExisted % 2 == 0)
             {
                 this.energyLevel--;
             }
@@ -617,7 +617,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             break;
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.worldObj));
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.world));
 
         this.posX += this.motionX;
         this.posY += this.motionY;
@@ -679,9 +679,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         int y = buffer.readInt();
         int z = buffer.readInt();
         BlockPos pos = new BlockPos(x, y, z);
-        if (this.worldObj.isBlockLoaded(pos))
+        if (this.world.isBlockLoaded(pos))
         {
-            TileEntity tile = this.worldObj.getTileEntity(pos);
+            TileEntity tile = this.world.getTileEntity(pos);
             if (tile instanceof TileEntityMinerBase)
             {
                 ((TileEntityMinerBase) tile).linkedMiner = this;
@@ -741,7 +741,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private void atBase()
     {
-        TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
+        TileEntity tileEntity = posBase.getTileEntity(this.world);
 
         if (!(tileEntity instanceof TileEntityMinerBase) || tileEntity.isInvalid() || !((TileEntityMinerBase) tileEntity).isMaster)
         {
@@ -891,7 +891,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
 
         BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
-        int otherEnd = (this.worldObj.provider instanceof WorldProviderAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
+        int otherEnd = (this.world.provider instanceof WorldProviderAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
         if (this.baseFacing == EnumFacing.NORTH || this.baseFacing == EnumFacing.WEST)
         {
             otherEnd = -otherEnd;
@@ -1446,7 +1446,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         //Check things to avoid in front of it (see static list for list) including base type things
         //Can move through liquids including flowing lava
-        IBlockState state = this.worldObj.getBlockState(pos);
+        IBlockState state = this.world.getBlockState(pos);
         Block b = state.getBlock();
         if (b.getMaterial(state) == Material.AIR)
         {
@@ -1477,7 +1477,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                 return true;
             }
             int meta = b.getMetaFromState(state);
-            if (b.getBlockHardness(state, this.worldObj, pos) < 0)
+            if (b.getBlockHardness(state, this.world, pos) < 0)
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = meta;
@@ -1502,7 +1502,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             return false;
         }
-        int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.interactionManager.getGameType(), this.playerMP, pos);
+        int result = ForgeHooks.onBlockBreakEvent(this.world, this.playerMP.interactionManager.getGameType(), this.playerMP, pos);
         if (result < 0)
         {
             return true;
@@ -1510,26 +1510,26 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         this.tryBlockLimit--;
 
-        ItemStack drops = gtFlag ? getGTDrops(this.worldObj, pos, b) : getPickBlock(this.worldObj, pos, b);
+        ItemStack drops = gtFlag ? getGTDrops(this.world, pos, b) : getPickBlock(this.world, pos, b);
         if (drops != null && !this.addToInventory(drops))
         {
             //drop itemstack if AstroMiner can't hold it
             dropStack(pos, drops);
         }
 
-        this.worldObj.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+        this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         return false;
     }
 
     private void dropStack(BlockPos pos, ItemStack drops)
     {
         float f = 0.7F;
-        double d0 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(this.worldObj, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, drops);
+        double d0 = this.world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d1 = this.world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d2 = this.world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        EntityItem entityitem = new EntityItem(this.world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, drops);
         entityitem.setDefaultPickupDelay();
-        this.worldObj.spawnEntity(entityitem);
+        this.world.spawnEntity(entityitem);
         this.inventoryDrops++;
     }
 
@@ -1558,7 +1558,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
 
         //Add minable blocks to the laser fx list
-        IBlockState state = this.worldObj.getBlockState(pos);
+        IBlockState state = this.world.getBlockState(pos);
         Block b = state.getBlock();
         if (b.getMaterial(state) == Material.AIR)
         {
@@ -1580,7 +1580,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             return true;
         }
-        if (b.hasTileEntity(state) || b.getBlockHardness(state, this.worldObj, pos) < 0)
+        if (b.hasTileEntity(state) || b.getBlockHardness(state, this.world, pos) < 0)
         {
             return true;
         }
@@ -2074,7 +2074,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return true;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             Entity e = par1DamageSource.getEntity();
 
@@ -2210,7 +2210,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void setDead()
     {
-        if (!this.worldObj.isRemote && this.playerMP != null && !this.spawnedInCreative)
+        if (!this.world.isRemote && this.playerMP != null && !this.spawnedInCreative)
         {
             IStatsCapability stats = this.playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
             int astroCount = stats.getAstroMinerCount();
@@ -2223,7 +2223,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         super.setDead();
         if (posBase != null)
         {
-            TileEntity tileEntity = posBase.getTileEntity(this.worldObj);
+            TileEntity tileEntity = posBase.getTileEntity(this.world);
             if (tileEntity instanceof TileEntityMinerBase)
             {
                 ((TileEntityMinerBase) tileEntity).unlinkMiner();
@@ -2259,7 +2259,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     public void dropShipAsItem()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             return;
         }
@@ -2365,7 +2365,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
                 if (var5 < this.cargoItems.length)
                 {
-                    this.cargoItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                    this.cargoItems[var5] = new ItemStack(var4);
                 }
             }
         }

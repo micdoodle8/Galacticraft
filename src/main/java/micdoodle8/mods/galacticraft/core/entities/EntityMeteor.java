@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -58,16 +59,16 @@ public class EntityMeteor extends Entity
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.motionY -= 0.03999999910593033D;
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.spawnParticles();
         }
 
         Vec3d var15 = new Vec3d(this.posX, this.posY, this.posZ);
         Vec3d var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        RayTraceResult var3 = this.worldObj.rayTraceBlocks(var15, var2, true, true, false);
+        RayTraceResult var3 = this.world.rayTraceBlocks(var15, var2, true, true, false);
         var15 = new Vec3d(this.posX, this.posY, this.posZ);
         var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -77,7 +78,7 @@ public class EntityMeteor extends Entity
         }
 
         Entity var4 = null;
-        final List<?> var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
+        final List<?> var5 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(2.0D, 2.0D, 2.0D));
         double var6 = 0.0D;
         final Iterator<?> var8 = var5.iterator();
 
@@ -131,14 +132,14 @@ public class EntityMeteor extends Entity
 
     protected void onImpact(RayTraceResult movingObjPos)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (movingObjPos != null)
             {
                 BlockPos above = movingObjPos.getBlockPos().up();
-                if (this.worldObj.getBlockState(movingObjPos.getBlockPos().up()).getBlock().isAir(worldObj.getBlockState(above), worldObj, above))
+                if (this.world.getBlockState(movingObjPos.getBlockPos().up()).getBlock().isAir(world.getBlockState(above), world, above))
                 {
-                    this.worldObj.setBlockState(movingObjPos.getBlockPos().up(), GCBlocks.fallenMeteor.getDefaultState(), 3);
+                    this.world.setBlockState(movingObjPos.getBlockPos().up(), GCBlocks.fallenMeteor.getDefaultState(), 3);
                 }
 
                 if (movingObjPos.entityHit != null)
@@ -147,7 +148,7 @@ public class EntityMeteor extends Entity
                 }
             }
 
-            this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
+            this.world.newExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
         }
 
         this.setDead();

@@ -38,9 +38,9 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 1.5D, this.getPos().getY() - 2.0, this.getPos().getZ() - 1.5D,
+            final List<?> list = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 1.5D, this.getPos().getY() - 2.0, this.getPos().getZ() - 1.5D,
                     this.getPos().getX() + 1.5D, this.getPos().getY() + 4.0, this.getPos().getZ() + 1.5D), new Predicate()
             {
                 @Override
@@ -54,7 +54,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
             for (final Object o : list)
             {
-                if (o != null && o instanceof IDockable && !this.worldObj.isRemote)
+                if (o != null && o instanceof IDockable && !this.world.isRemote)
                 {
                     final IDockable fuelable = (IDockable) o;
 
@@ -90,7 +90,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
                 {
                     final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
 
-                    TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+                    TileEntity tile = this.world.getTileEntity(vecToAdd);
                     if (tile instanceof TileEntityMulti)
                     {
                         BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
@@ -135,7 +135,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     {
         final BlockVec3 thisBlock = new BlockVec3(this);
 
-        this.worldObj.destroyBlock(new BlockPos(thisBlock.x, thisBlock.y, thisBlock.z), true);
+        this.world.destroyBlock(new BlockPos(thisBlock.x, thisBlock.y, thisBlock.z), true);
 
         for (int x = -1; x < 2; x++)
         {
@@ -143,12 +143,12 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
             {
                 BlockPos pos = new BlockPos(thisBlock.x + x, thisBlock.y, thisBlock.z + z);
 
-                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                 }
 
-                this.worldObj.destroyBlock(pos, false);
+                this.world.destroyBlock(pos, false);
             }
         }
 
@@ -216,9 +216,9 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
                 {
                     if (Math.abs(x) != Math.abs(z))
                     {
-                        final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
+                        final TileEntity tile = this.world.getTileEntity(new BlockPos(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
 
-                        if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
+                        if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.world, this.getPos()))
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);
                         }

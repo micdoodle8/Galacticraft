@@ -140,10 +140,10 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
         }
 
         // Send changed tag compound to server
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(mc.thePlayer.worldObj), new Object[] { this.tagCompound }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(mc.player.world), new Object[] { this.tagCompound }));
 
         // Update client item
-        ItemStack stack = mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND /* TODO Support off-hand use */);
+        ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND /* TODO Support off-hand use */);
         NBTTagCompound tagCompound = stack.getTagCompound();
         if (tagCompound == null)
         {

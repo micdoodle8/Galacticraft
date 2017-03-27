@@ -26,7 +26,7 @@ public class AsteroidsEventHandlerClient
     public void onClientTick(ClientTickEvent event)
     {
         Minecraft minecraft = Minecraft.getMinecraft();
-        WorldClient world = minecraft.theWorld;
+        WorldClient world = minecraft.world;
 
         if (world != null)
         {
@@ -140,6 +140,6 @@ public class AsteroidsEventHandlerClient
     @SubscribeEvent
     public void onSpecialRender(EventSpecialRender event)
     {
-        NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
+        NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().world, event.partialTicks);
     }
 }

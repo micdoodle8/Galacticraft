@@ -84,7 +84,7 @@ public class ContainerSlimeling extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.slimelingInventory.isUseableByPlayer(par1EntityPlayer);
+        return this.slimelingInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -183,7 +183,7 @@ public class ContainerSlimeling extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

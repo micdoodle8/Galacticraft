@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -76,13 +77,12 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
-        par3List.add(new ItemStack(par1, 1, 1));
+        list.add(new ItemStack(itemIn, 1, this.getMaxDamage()));
+        list.add(new ItemStack(itemIn, 1, 1));
     }
 
     @Override

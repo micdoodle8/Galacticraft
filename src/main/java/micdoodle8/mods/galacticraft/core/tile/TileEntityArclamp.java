@@ -44,7 +44,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             return;
         }
@@ -52,11 +52,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         boolean initialLight = false;
         if (this.updateClientFlag)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.worldObj));
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.world));
             this.updateClientFlag = false;
         }
 
-        if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
+        if (RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos()))
         {
             if (this.isActive)
             {
@@ -132,9 +132,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                 this.lightArea();
             }
 
-            if (this.worldObj.rand.nextInt(20) == 0)
+            if (this.world.rand.nextInt(20) == 0)
             {
-                List<Entity> moblist = this.worldObj.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.MOB_SELECTOR);
+                List<Entity> moblist = this.world.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.MOB_SELECTOR);
 
                 if (!moblist.isEmpty())
                 {
@@ -146,7 +146,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                         }
                         EntityCreature e = (EntityCreature) entry;
                         //Check whether the mob can actually *see* the arclamp tile
-                        //if (this.worldObj.func_147447_a(thisPos, Vec3d.createVectorHelper(e.posX, e.posY, e.posZ), true, true, false) != null) continue;
+                        //if (this.world.func_147447_a(thisPos, Vec3d.createVectorHelper(e.posX, e.posY, e.posZ), true, true, false) != null) continue;
 
                         Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(e, 16, 7, this.thisPos);
                         if (vecNewTarget == null)
@@ -188,9 +188,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         this.thisPos = new Vec3d(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos() }));
         }
         else
         {
@@ -201,7 +201,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.revertAir();
         }
@@ -220,7 +220,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         LinkedList<BlockVec3> nextLayer = new LinkedList();
         BlockVec3 thisvec = new BlockVec3(this);
         currentLayer.add(thisvec);
-        World world = this.worldObj;
+        World world = this.world;
         int sideskip1 = this.sideRear;
         int sideskip2 = this.facingSide ^ 1;
         for (int i = 0; i < 6; i++)
@@ -373,7 +373,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.worldObj));
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.world));
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();
@@ -385,14 +385,14 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
         for (BlockVec3 vec : this.airToRestore)
         {
-            IBlockState b = vec.getBlockState(this.worldObj);
+            IBlockState b = vec.getBlockState(this.world);
             if (b.getBlock() == brightAir)
             {
-                this.worldObj.setBlockState(vec.toBlockPos(), Blocks.AIR.getDefaultState(), 2);
+                this.world.setBlockState(vec.toBlockPos(), Blocks.AIR.getDefaultState(), 2);
             }
             else if (b.getBlock() == brightBreatheableAir)
             {
-                this.worldObj.setBlockState(vec.toBlockPos(), GCBlocks.breatheableAir.getDefaultState(), 2);
+                this.world.setBlockState(vec.toBlockPos(), GCBlocks.breatheableAir.getDefaultState(), 2);
                 //No block update - not necessary for changing air to air, also must not trigger a sealer edge check
             }
         }
@@ -401,6 +401,6 @@ public class TileEntityArclamp extends TileEntity implements ITickable
 
     public boolean getEnabled()
     {
-        return !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos());
+        return !RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos());
     }
 }

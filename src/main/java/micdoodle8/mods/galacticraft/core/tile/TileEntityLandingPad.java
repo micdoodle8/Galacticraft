@@ -40,9 +40,9 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 1.0D, this.getPos().getZ() + 0.5D));
+            final List<Entity> list = this.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 1.0D, this.getPos().getZ() + 0.5D));
 
             boolean docked = false;
 
@@ -86,7 +86,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                 {
                     final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
 
-                    TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+                    TileEntity tile = this.world.getTileEntity(vecToAdd);
                     if (tile instanceof TileEntityMulti)
                     {
                         BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
@@ -137,19 +137,19 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     {
         final BlockPos thisBlock = getPos();
 
-        this.worldObj.destroyBlock(thisBlock, true);
+        this.world.destroyBlock(thisBlock, true);
 
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)
             {
                 BlockPos pos = new BlockPos(thisBlock.getX() + x, thisBlock.getY(), thisBlock.getZ() + z);
-                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                 {
                     FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.landingPad.getDefaultState());
                 }
 
-                this.worldObj.destroyBlock(pos, false);
+                this.world.destroyBlock(pos, false);
             }
         }
 
@@ -206,12 +206,12 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     private void testConnectedTile(int x, int z, HashSet<ILandingPadAttachable> connectedTiles)
                     {
         BlockPos testPos = new BlockPos(x, this.getPos().getY(), z);
-        if (!this.worldObj.isBlockLoaded(testPos, false))
+        if (!this.world.isBlockLoaded(testPos, false))
             return;
 
-        final TileEntity tile = this.worldObj.getTileEntity(testPos);
+        final TileEntity tile = this.world.getTileEntity(testPos);
 
-        if (tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
+        if (tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.world, this.getPos()))
                         {
                             connectedTiles.add((ILandingPadAttachable) tile);
                             if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)

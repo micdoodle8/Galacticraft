@@ -21,6 +21,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,7 +42,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     private ItemStack producingStack = null;
     private long ticks;
 
-    private ItemStack[] containingItems = new ItemStack[3];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     private static Random randnum = new Random();
 
@@ -56,7 +57,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             boolean updateInv = false;
 
@@ -70,7 +71,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
                     if (this.processTicks >= this.processTimeRequired)
                     {
-                        this.worldObj.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                        this.world.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.world.rand.nextFloat() * 0.1F + 0.9F);
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -117,28 +118,28 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             return false;
         }
-        if (this.containingItems[1] == null && this.containingItems[2] == null)
+        if (this.stacks.get(1).isEmpty() && this.stacks.get(2).isEmpty())
         {
             return true;
         }
-        if (this.containingItems[1] != null && !this.containingItems[1].isItemEqual(itemstack) || this.containingItems[2] != null && !this.containingItems[2].isItemEqual(itemstack))
+        if (!this.stacks.get(1).isEmpty() && !this.stacks.get(1).isItemEqual(itemstack) || !this.stacks.get(2).isEmpty() && !this.stacks.get(2).isItemEqual(itemstack))
         {
             return false;
         }
-        int result = this.containingItems[1] == null ? 0 : this.containingItems[1].stackSize + itemstack.stackSize;
-        int result2 = this.containingItems[2] == null ? 0 : this.containingItems[2].stackSize + itemstack.stackSize;
+        int result = this.stacks.get(1).isEmpty() ? 0 : this.stacks.get(1).getCount() + itemstack.getCount();
+        int result2 = this.stacks.get(2).isEmpty() ? 0 : this.stacks.get(2).getCount() + itemstack.getCount();
         return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize() && result2 <= this.getInventoryStackLimit() && result2 <= itemstack.getMaxStackSize();
     }
 
     public void updateInput()
     {
-        this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.worldObj);
+        this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.world);
     }
 
     public void compressItems()
     {
-        int stackSize1 = this.containingItems[1] == null ? 0 : this.containingItems[1].stackSize;
-        int stackSize2 = this.containingItems[2] == null ? 0 : this.containingItems[2].stackSize;
+        int stackSize1 = this.stacks.get(1).isEmpty() ? 0 : this.stacks.get(1).getCount();
+        int stackSize2 = this.stacks.get(2).isEmpty() ? 0 : this.stacks.get(2).getCount();
 
         if (stackSize1 <= stackSize2)
         {
@@ -161,35 +162,35 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
                 {
-                    resultItemStack.stackSize *= 2;
+                    resultItemStack.grow(resultItemStack.getCount());
                 }
             }
 
-            if (this.containingItems[slot] == null)
+            if (this.stacks.get(slot).isEmpty())
             {
-                this.containingItems[slot] = resultItemStack;
+                this.stacks.set(slot, resultItemStack);
             }
-            else if (this.containingItems[slot].isItemEqual(resultItemStack))
+            else if (this.stacks.get(slot).isItemEqual(resultItemStack))
             {
-                if (this.containingItems[slot].stackSize + resultItemStack.stackSize > 64)
+                if (this.stacks.get(slot).getCount() + resultItemStack.getCount() > 64)
                 {
-                    for (int i = 0; i < this.containingItems[slot].stackSize + resultItemStack.stackSize - 64; i++)
+                    for (int i = 0; i < this.stacks.get(slot).getCount() + resultItemStack.getCount() - 64; i++)
                     {
                         float var = 0.7F;
-                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+                        double dx = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dy = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dz = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        EntityItem entityitem = new EntityItem(this.world, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
                         entityitem.setPickupDelay(10);
 
-                        this.worldObj.spawnEntity(entityitem);
+                        this.world.spawnEntity(entityitem);
                     }
-                    this.containingItems[slot].stackSize = 64;
+                    this.stacks.get(slot).setCount(64);
                 }
                 else
                 {
-                    this.containingItems[slot].stackSize += resultItemStack.stackSize;
+                    this.stacks.get(slot).grow(resultItemStack.getCount());
                 }
             }
 
@@ -214,21 +215,22 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.containingItems = new ItemStack[this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory()];
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        this.stacks = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
+            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+            int j = nbttagcompound.getByte("Slot") & 255;
 
-            if (var5 < this.containingItems.length)
+            if (j >= 0 && j < this.stacks.size())
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.stacks.set(j, new ItemStack(nbttagcompound));
             }
-            else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
+            else if (j < this.stacks.size() + this.compressingCraftMatrix.getSizeInventory())
             {
-                this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
+                this.compressingCraftMatrix.setInventorySlotContents(j - this.stacks.size(), new ItemStack(nbttagcompound));
             }
         }
 
@@ -243,13 +245,13 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         NBTTagList var2 = new NBTTagList();
         int var3;
 
-        for (var3 = 0; var3 < this.containingItems.length; ++var3)
+        for (var3 = 0; var3 < this.stacks.size(); ++var3)
         {
-            if (this.containingItems[var3] != null)
+            if (!this.stacks.get(var3).isEmpty())
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte) var3);
-                this.containingItems[var3].writeToNBT(var4);
+                this.stacks.get(var3).writeToNBT(var4);
                 var2.appendTag(var4);
             }
         }
@@ -259,7 +261,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             if (this.compressingCraftMatrix.getStackInSlot(var3) != null)
             {
                 NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) (var3 + this.containingItems.length));
+                var4.setByte("Slot", (byte) (var3 + this.stacks.size()));
                 this.compressingCraftMatrix.getStackInSlot(var3).writeToNBT(var4);
                 var2.appendTag(var4);
             }
@@ -272,26 +274,26 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public int getSizeInventory()
     {
-        return this.containingItems.length + this.compressingCraftMatrix.getSizeInventory();
+        return this.stacks.size() + this.compressingCraftMatrix.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        if (par1 >= this.containingItems.length)
+        if (par1 >= this.stacks.size())
         {
-            return this.compressingCraftMatrix.getStackInSlot(par1 - this.containingItems.length);
+            return this.compressingCraftMatrix.getStackInSlot(par1 - this.stacks.size());
         }
 
-        return this.containingItems[par1];
+        return this.stacks.get(par1);
     }
 
     @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (par1 >= this.containingItems.length)
+        if (par1 >= this.stacks.size())
         {
-            ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.containingItems.length, par2);
+            ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.stacks.size(), par2);
             if (result != null)
             {
                 this.updateInput();
@@ -299,23 +301,23 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             return result;
         }
 
-        if (this.containingItems[par1] != null)
+        if (!this.stacks.get(par1).isEmpty())
         {
             ItemStack var3;
 
-            if (this.containingItems[par1].stackSize <= par2)
+            if (this.stacks.get(par1).getCount() <= par2)
             {
-                var3 = this.containingItems[par1];
-                this.containingItems[par1] = null;
+                var3 = this.stacks.get(par1);
+                this.stacks.set(par1, ItemStack.EMPTY);
                 return var3;
             }
             else
             {
-                var3 = this.containingItems[par1].splitStack(par2);
+                var3 = this.stacks.get(par1).splitStack(par2);
 
-                if (this.containingItems[par1].stackSize == 0)
+                if (this.stacks.get(par1).isEmpty())
                 {
-                    this.containingItems[par1] = null;
+                    this.stacks.set(par1, ItemStack.EMPTY);
                 }
 
                 return var3;
@@ -330,15 +332,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public ItemStack removeStackFromSlot(int par1)
     {
-        if (par1 >= this.containingItems.length)
+        if (par1 >= this.stacks.size())
         {
-            return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.containingItems.length);
+            return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.stacks.size());
         }
 
-        if (this.containingItems[par1] != null)
+        if (!this.stacks.get(par1).isEmpty())
         {
-            ItemStack var2 = this.containingItems[par1];
-            this.containingItems[par1] = null;
+            ItemStack var2 = this.stacks.get(par1);
+            this.stacks.set(par1, ItemStack.EMPTY);
             return var2;
         }
         else
@@ -350,18 +352,18 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        if (par1 >= this.containingItems.length)
+        if (par1 >= this.stacks.size())
         {
-            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.containingItems.length, par2ItemStack);
+            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.stacks.size(), par2ItemStack);
             this.updateInput();
         }
         else
         {
-            this.containingItems[par1] = par2ItemStack;
+            this.stacks.set(par1, par2ItemStack);
 
-            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+            if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit())
             {
-                par2ItemStack.stackSize = this.getInventoryStackLimit();
+                par2ItemStack.setCount(this.getInventoryStackLimit());
             }
         }
     }
@@ -381,7 +383,21 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 //    @Override
@@ -428,7 +444,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                         {
                         	ItemStack is3 = this.getStackInSlot(id + 3);
                         	ItemStack is4 = this.getStackInSlot(i + 3);
-                        	return is3 == null || is4 != null && is3.stackSize < is4.stackSize;
+                        	return is3 == null || is4 != null && is3.getCount() < is4.getCount();
                         }
                 	}
                 	return true;
@@ -507,7 +523,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 continue;
             }
             ItemStack stack1 = this.getStackInSlot(i);
-            if (stack1 == null || stack1.stackSize <= 0)
+            if (stack1 == null || stack1.getCount() <= 0)
             {
                 continue;
             }
@@ -526,7 +542,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
                 if (stack1.isItemEqual(stack2))
                 {
-                    if (stack2.stackSize >= stack1.stackSize)
+                    if (stack2.getCount() >= stack1.getCount())
                     {
                         removeSlots.add(j);
                     }
@@ -616,7 +632,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachine2.FACING);
     }
 
     @Override

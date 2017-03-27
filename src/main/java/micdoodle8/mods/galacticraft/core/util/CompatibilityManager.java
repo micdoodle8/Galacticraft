@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.lang.reflect.Method;
 
@@ -82,7 +82,7 @@ public class CompatibilityManager
 
             try
             {
-            	BlockEnclosed.blockPipeBC = (BlockContainer) GameRegistry.findBlock("BuildCraft|Transport", "pipeBlock");
+            	BlockEnclosed.blockPipeBC = (BlockContainer) Block.REGISTRY.getObject(new ResourceLocation("BuildCraft|Transport", "pipeBlock"));
             	classBCBlockGenericPipe = BlockEnclosed.blockPipeBC.getClass(); 
 
             	for (Method m : classBCBlockGenericPipe.getMethods())

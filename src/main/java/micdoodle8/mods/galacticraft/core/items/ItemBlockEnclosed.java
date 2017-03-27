@@ -13,15 +13,14 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,9 +53,10 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = this.getMetadata(stack.getItemDamage());
+        ItemStack itemstack = playerIn.getHeldItem(hand);
+        int metadata = this.getMetadata(itemstack.getItemDamage());
         if (metadata == EnumEnclosedBlockType.ME_CABLE.getMeta() && CompatibilityManager.isAppEngLoaded())
         {
             IBlockState iblockstate = worldIn.getBlockState(pos);
@@ -67,24 +67,24 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                 pos = pos.offset(side);
             }
 
-            if (stack.getCount() == 0)
+            if (itemstack.getCount() == 0)
             {
                 return EnumActionResult.FAIL;
             }
-            else if (!playerIn.canPlayerEdit(pos, side, stack))
+            else if (!playerIn.canPlayerEdit(pos, side, itemstack))
             {
                 return EnumActionResult.FAIL;
             }
-            else if (worldIn.canBlockBePlaced(this.block, pos, false, side, (Entity)null, stack))
+            else if (worldIn.mayPlace(this.block, pos, false, side, null))
             {
-                int i = this.getMetadata(stack.getMetadata());
-                IBlockState iblockstate1 = this.block.onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
+                int i = this.getMetadata(itemstack.getMetadata());
+                IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
 
-                if (placeBlockAt(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, iblockstate1))
+                if (placeBlockAt(itemstack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, iblockstate1))
                 {
                     SoundType soundType = this.getBlock().getSoundType(iblockstate, worldIn, pos, playerIn);
                     worldIn.playSound(playerIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
-                    --stack.stackSize;
+                    itemstack.shrink(1);
 
 //                  ItemStack itemME = AEApi.instance().definitions().parts().cableGlass().stack(AEColor.Transparent, 1);
 //                  itemME.stackSize = 2; //Fool AppEng into not destroying anything in the player inventory
@@ -100,7 +100,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
         }
         else
         {
-            return super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+            return super.onItemUse(playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
         }
     }
 

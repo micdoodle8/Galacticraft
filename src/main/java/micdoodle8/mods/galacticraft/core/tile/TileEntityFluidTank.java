@@ -44,10 +44,10 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
             moveFluidDown();
         }
 
-        if (!this.worldObj.isRemote && updateClient && delayTimer.markTimeIfDelay(this.worldObj))
+        if (!this.world.isRemote && updateClient && delayTimer.markTimeIfDelay(this.world))
         {
             PacketDynamic packet = new PacketDynamic(this);
-            GalacticraftCore.packetPipeline.sendToAllAround(packet, new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+            GalacticraftCore.packetPipeline.sendToAllAround(packet, new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
             this.updateClient = false;
         }
     }
@@ -214,7 +214,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
 
     public TileEntityFluidTank getPreviousTank(BlockPos current)
     {
-        TileEntity below = this.worldObj.getTileEntity(current.down());
+        TileEntity below = this.world.getTileEntity(current.down());
         if (below instanceof TileEntityFluidTank)
         {
             return (TileEntityFluidTank) below;
@@ -294,7 +294,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     @Override
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (fluidTank == null)
             {
@@ -314,7 +314,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     @Override
     public void readExtraNetworkedData(ByteBuf buffer)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             int capacity = buffer.readInt();
             String fluidName = ByteBufUtils.readUTF8String(buffer);

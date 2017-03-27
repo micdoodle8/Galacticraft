@@ -102,7 +102,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!this.shouldEvade && this.deathTicks <= 0)
             {
@@ -123,15 +123,15 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                     {
                         if (dX * dX + dY * dY + dZ * dZ > distance * distance)
                         {
-                            float f = MathHelper.sqrt_double(d0) / distance;
+                            float f = MathHelper.sqrt(d0) / distance;
                             this.attackEntityWithRangedAttack(attackTarget, 0.0F);
-                            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.minRangedAttackTime) + (float) this.minRangedAttackTime);
+                            this.rangedAttackTime = MathHelper.floor(f * (float) (this.maxRangedAttackTime - this.minRangedAttackTime) + (float) this.minRangedAttackTime);
                         }
                     }
                     else if (this.rangedAttackTime < 0)
                     {
-                        float f2 = MathHelper.sqrt_double(d0) / distance;
-                        this.rangedAttackTime = MathHelper.floor_float(f2 * (float)(this.maxRangedAttackTime - this.minRangedAttackTime) + (float)this.minRangedAttackTime);
+                        float f2 = MathHelper.sqrt(d0) / distance;
+                        this.rangedAttackTime = MathHelper.floor(f2 * (float)(this.maxRangedAttackTime - this.minRangedAttackTime) + (float)this.minRangedAttackTime);
                     }
                 }
             }
@@ -142,7 +142,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
             for (UUID id : this.spawnedPreload)
             {
                 Entity entity = null;
-                for (Entity e : this.worldObj.getLoadedEntityList())
+                for (Entity e : this.world.getLoadedEntityList())
                 {
                     if (e.getUniqueID().equals(id))
                     {
@@ -162,7 +162,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
             }
         }
 
-        if (!this.worldObj.isRemote && this.shouldEvade)
+        if (!this.world.isRemote && this.shouldEvade)
         {
             if (this.roomCoords != null && this.roomSize != null)
             {
@@ -189,12 +189,12 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                             {
                                 if (this.juicersSpawned.size() < 6)
                                 {
-                                    EntityJuicer juicer = new EntityJuicer(this.worldObj);
+                                    EntityJuicer juicer = new EntityJuicer(this.world);
                                     double angle = Math.random() * 2 * Math.PI;
                                     double dist = 3.0F;
                                     juicer.setPosition(this.posX + dist * Math.sin(angle), this.posY + 0.2F, this.posZ + dist * Math.cos(angle));
                                     juicer.setHanging(true);
-                                    this.worldObj.spawnEntity(juicer);
+                                    this.world.spawnEntity(juicer);
                                     this.juicersSpawned.add(juicer);
                                 }
                             }
@@ -367,9 +367,9 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float damage)
     {
-        EntityWebShot entityarrow = new EntityWebShot(this.worldObj, this, target, 0.8F, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
+        EntityWebShot entityarrow = new EntityWebShot(this.world, this, target, 0.8F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntity(entityarrow);
+        this.world.spawnEntity(entityarrow);
     }
 
     @Override

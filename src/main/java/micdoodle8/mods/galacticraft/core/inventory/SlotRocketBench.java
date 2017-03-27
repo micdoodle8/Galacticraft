@@ -32,11 +32,11 @@ public class SlotRocketBench extends Slot
     {
         if (this.player instanceof EntityPlayerMP)
         {
-            for (int var12 = 0; var12 < this.player.worldObj.playerEntities.size(); ++var12)
+            for (int var12 = 0; var12 < this.player.world.playerEntities.size(); ++var12)
             {
-                final EntityPlayerMP var13 = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
+                final EntityPlayerMP var13 = (EntityPlayerMP) this.player.world.playerEntities.get(var12);
 
-                if (var13.dimension == GCCoreUtil.getDimensionID(this.player.worldObj))
+                if (var13.dimension == GCCoreUtil.getDimensionID(this.player.world))
                 {
                     final double var14 = this.pos.getX() - var13.posX;
                     final double var16 = this.pos.getY() - var13.posY;
@@ -44,7 +44,7 @@ public class SlotRocketBench extends Slot
 
                     if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { this.pos }), var13);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { this.pos }), var13);
                     }
                 }
             }

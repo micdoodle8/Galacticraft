@@ -30,9 +30,9 @@ public class OverlayDockingRocket extends Overlay
         final int height = scaledresolution.getScaledHeight();
         OverlayDockingRocket.minecraft.entityRenderer.setupOverlayRendering();
 
-        if (OverlayDockingRocket.minecraft.thePlayer.getRidingEntity() instanceof EntityAutoRocket)
+        if (OverlayDockingRocket.minecraft.player.getRidingEntity() instanceof EntityAutoRocket)
         {
-            EntityAutoRocket rocket = (EntityAutoRocket) OverlayDockingRocket.minecraft.thePlayer.getRidingEntity();
+            EntityAutoRocket rocket = (EntityAutoRocket) OverlayDockingRocket.minecraft.player.getRidingEntity();
 
             if (rocket.landing && rocket.targetVec != null)
             {

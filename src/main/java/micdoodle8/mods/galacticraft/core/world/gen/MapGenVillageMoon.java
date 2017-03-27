@@ -71,7 +71,7 @@ public class MapGenVillageMoon extends MapGenStructure
 
         int randX = i / numChunks;
         int randZ = j / numChunks;
-        final Random var7 = this.worldObj.setRandomSeed(i, j, 10387312);
+        final Random var7 = this.world.setRandomSeed(i, j, 10387312);
         randX *= numChunks;
         randZ *= numChunks;
         randX += var7.nextInt(numChunks - offsetChunks);
@@ -85,7 +85,7 @@ public class MapGenVillageMoon extends MapGenStructure
     protected StructureStart getStructureStart(int par1, int par2)
     {
         FMLLog.info("Generating Moon Village at x" + par1 * 16 + " z" + par2 * 16);
-        return new StructureVillageStartMoon(this.worldObj, this.rand, par1, par2, this.terrainType);
+        return new StructureVillageStartMoon(this.world, this.rand, par1, par2, this.terrainType);
     }
 
     @Override

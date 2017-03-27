@@ -36,7 +36,7 @@ public class GuiRefinery extends GuiContainerGC
 
     public GuiRefinery(InventoryPlayer par1InventoryPlayer, TileEntityRefinery tileEntity)
     {
-        super(new ContainerRefinery(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerRefinery(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }

@@ -68,7 +68,7 @@ public class EntityCryoFX extends Particle
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
-        EntityPlayer entityplayer = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 2.0D, false);
+        EntityPlayer entityplayer = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 2.0D, false);
 
         if (entityplayer != null && this.posY > entityplayer.getEntityBoundingBox().minY)
         {

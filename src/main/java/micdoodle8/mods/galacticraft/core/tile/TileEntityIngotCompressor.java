@@ -49,7 +49,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             boolean updateInv = false;
             boolean flag = this.furnaceBurnTime > 0;
@@ -68,7 +68,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                 {
                     updateInv = true;
 
-                    if (fuel != null)
+                    if (!fuel.isEmpty())
                     {
                         --fuel.stackSize;
 
@@ -86,7 +86,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
                 if (this.processTicks % 40 == 0 && this.processTicks > TileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
                 {
-                    this.worldObj.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                    this.world.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.world.rand.nextFloat() * 0.1F + 0.9F);
                 }
 
                 if (this.processTicks == TileEntityIngotCompressor.PROCESS_TIME_REQUIRED)
@@ -132,7 +132,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
     public void updateInput()
     {
-        this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.worldObj);
+        this.producingStack = CompressorRecipes.findMatchingRecipe(this.compressingCraftMatrix, this.world);
     }
 
     private boolean canSmelt()
@@ -242,14 +242,14 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     for (int i = 0; i < this.containingItems[1].stackSize + resultItemStack.stackSize - 64; i++)
                     {
                         float var = 0.7F;
-                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
+                        double dx = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dy = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        double dz = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+                        EntityItem entityitem = new EntityItem(this.world, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
 
                         entityitem.setPickupDelay(10);
 
-                        this.worldObj.spawnEntity(entityitem);
+                        this.world.spawnEntity(entityitem);
                     }
                     this.containingItems[1].stackSize = 64;
                 }
@@ -289,11 +289,11 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             if (var5 < this.containingItems.length)
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = new ItemStack(var4);
             }
             else if (var5 < this.containingItems.length + this.compressingCraftMatrix.getSizeInventory())
             {
-                this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
+                this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, new ItemStack(var4));
             }
         }
 
@@ -446,7 +446,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
 //    @Override

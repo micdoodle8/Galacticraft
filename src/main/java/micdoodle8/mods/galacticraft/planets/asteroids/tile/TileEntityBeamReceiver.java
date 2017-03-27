@@ -40,7 +40,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             this.preLoadFacing = -1;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.getTarget() != null && this.modeReceive == ReceiverMode.EXTRACT.ordinal() && this.facing != null)
             {
@@ -163,7 +163,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             return null;
         }
 
-        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.facing);
+        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, this.facing);
 
         if (tile == null || tile.isInvalid())
         {
@@ -286,7 +286,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             }
             else
             {
-                TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, newDirection);
+                TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, newDirection);
 
                 if (tile == null)
                 {

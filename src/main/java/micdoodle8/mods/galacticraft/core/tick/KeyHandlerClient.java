@@ -68,9 +68,9 @@ public class KeyHandlerClient extends KeyHandler
     @Override
     public void keyDown(Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
     {
-        if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
+        if (KeyHandlerClient.mc.player != null && tickEnd)
         {
-            EntityPlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+            EntityPlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.player, false);
 
             if (playerBase == null)
             {
@@ -83,7 +83,7 @@ public class KeyHandlerClient extends KeyHandler
             {
                 if (KeyHandlerClient.mc.currentScreen == null)
                 {
-                    KeyHandlerClient.mc.thePlayer.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.world, (int) KeyHandlerClient.mc.thePlayer.posX, (int) KeyHandlerClient.mc.thePlayer.posY, (int) KeyHandlerClient.mc.thePlayer.posZ);
+                    KeyHandlerClient.mc.player.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.world, (int) KeyHandlerClient.mc.player.posX, (int) KeyHandlerClient.mc.player.posY, (int) KeyHandlerClient.mc.player.posZ);
                 }
             }
             else if (kb.getKeyCode() == KeyHandlerClient.openFuelGui.getKeyCode())
@@ -102,7 +102,7 @@ public class KeyHandlerClient extends KeyHandler
             }
         }
 
-        if (KeyHandlerClient.mc.thePlayer != null && KeyHandlerClient.mc.currentScreen == null)
+        if (KeyHandlerClient.mc.player != null && KeyHandlerClient.mc.currentScreen == null)
         {
             int keyNum = -1;
 
@@ -131,7 +131,7 @@ public class KeyHandlerClient extends KeyHandler
                 keyNum = 5;
             }
 
-            Entity entityTest = KeyHandlerClient.mc.thePlayer.getRidingEntity();
+            Entity entityTest = KeyHandlerClient.mc.player.getRidingEntity();
             if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
             {
                 IControllableEntity entity = (IControllableEntity) entityTest;

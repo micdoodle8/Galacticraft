@@ -53,8 +53,8 @@ public class TabRegistry
 
 	public static void openInventoryGui()
 	{
-		TabRegistry.mc.thePlayer.connection.sendPacket(new CPacketCloseWindow(mc.thePlayer.openContainer.windowId));
-		GuiInventory inventory = new GuiInventory(TabRegistry.mc.thePlayer);
+		TabRegistry.mc.player.connection.sendPacket(new CPacketCloseWindow(mc.player.openContainer.windowId));
+		GuiInventory inventory = new GuiInventory(TabRegistry.mc.player);
 		TabRegistry.mc.displayGuiScreen(inventory);
 	}
 
@@ -91,7 +91,7 @@ public class TabRegistry
 	public static int getPotionOffset()
 	{
 		// If at least one potion is active...
-		if (!mc.thePlayer.getActivePotionEffects().isEmpty())
+		if (!mc.player.getActivePotionEffects().isEmpty())
 		{
 			initWithPotion = true;
 			return 60 + getPotionOffsetNEI();

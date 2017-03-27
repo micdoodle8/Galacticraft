@@ -57,13 +57,13 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     {
         ItemStack stack = entityPlayer.inventory.getCurrentItem();
 
-        if (stack != null)
+        if (!stack.isEmpty())
         {
             stack.damageItem(1, entityPlayer);
 
             if (stack.getItemDamage() >= stack.getMaxDamage())
             {
-                stack.stackSize--;
+                stack.shrink(1);
             }
 
             if (stack.getCount() <= 0)
@@ -74,7 +74,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         return EnumActionResult.PASS;
     }
@@ -95,7 +95,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         if (world.isRemote)
         {

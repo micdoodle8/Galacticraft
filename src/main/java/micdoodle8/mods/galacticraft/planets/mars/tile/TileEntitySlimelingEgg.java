@@ -19,7 +19,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.timeToHatch > 0)
             {
@@ -27,7 +27,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
             }
             else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
             {
-                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                IBlockState state = this.world.getBlockState(this.getPos());
                 int metadata = state.getBlock().getMetaFromState(state) % 3;
 
                 float colorRed = 0.0F;
@@ -48,15 +48,15 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
                     break;
                 }
 
-                EntitySlimeling slimeling = new EntitySlimeling(this.worldObj, colorRed, colorGreen, colorBlue);
+                EntitySlimeling slimeling = new EntitySlimeling(this.world, colorRed, colorGreen, colorBlue);
 
                 slimeling.setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                 slimeling.setOwnerId(UUID.fromString(this.lastTouchedPlayerUUID));
                 slimeling.setOwnerUsername(this.lastTouchedPlayerName);
 
-                if (!this.worldObj.isRemote)
+                if (!this.world.isRemote)
                 {
-                    this.worldObj.spawnEntity(slimeling);
+                    this.world.spawnEntity(slimeling);
                 }
 
                 slimeling.setTamed(true);
@@ -64,7 +64,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
                 slimeling.setAttackTarget((EntityLivingBase) null);
                 slimeling.setHealth(20.0F);
 
-                this.worldObj.setBlockToAir(this.getPos());
+                this.world.setBlockToAir(this.getPos());
             }
         }
     }
@@ -82,7 +82,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
         }
         else
         {
-            uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.worldObj.getMinecraftServer(), nbt.getString("Owner"));
+            uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.world.getMinecraftServer(), nbt.getString("Owner"));
         }
 
         if (uuid.length() > 0)

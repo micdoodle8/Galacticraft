@@ -51,7 +51,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.loadedFuelLastTick = false;
 
@@ -92,7 +92,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                                     final int amount = this.containingItems[1].stackSize;
                                     if (amount > 1)
                                     {
-                                        this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                                        this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * Fluid.BUCKET_VOLUME), true);
                                     }
                                     this.containingItems[1] = new ItemStack(Items.BUCKET, amount);
                                 }
@@ -117,7 +117,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
                 for (final EnumFacing dir : EnumFacing.values())
                 {
-                    final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
+                    final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.world, dir);
 
                     if (pad instanceof TileEntityMulti)
                     {
@@ -273,7 +273,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         int used = 0;
 
 //        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2).getOpposite()))
-        if (from.equals(this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING)))
+        if (from.equals(this.world.getBlockState(getPos()).getValue(BlockFuelLoader.FACING)))
         {
             if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {
@@ -305,7 +305,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockFuelLoader.FACING);
     }
 
     @Override

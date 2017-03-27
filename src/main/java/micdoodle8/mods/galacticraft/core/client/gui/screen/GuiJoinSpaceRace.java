@@ -43,7 +43,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     private int buttonFlag_xPosition;
     private int buttonFlag_yPosition;
 
-    private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
+    private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().world);
     private ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;

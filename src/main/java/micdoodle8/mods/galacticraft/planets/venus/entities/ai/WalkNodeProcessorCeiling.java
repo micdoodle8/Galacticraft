@@ -109,7 +109,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
 
         if (this.entity.getPathPriority(pathnodetype) >= 0.0F)
         {
-            j = MathHelper.floor_float(Math.max(1.0F, this.entity.stepHeight));
+            j = MathHelper.floor(Math.max(1.0F, this.entity.stepHeight));
         }
 
         BlockPos blockpos = (new BlockPos(currentPoint.xCoord, currentPoint.yCoord, currentPoint.zCoord)).down();
@@ -230,7 +230,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                         AxisAlignedBB axisalignedbb1 = this.blockaccess.getBlockState(blockpos).getBoundingBox(this.blockaccess, blockpos);
                         AxisAlignedBB axisalignedbb2 = axisalignedbb.addCoord(0.0D, axisalignedbb1.maxY - 0.002D, 0.0D);
 
-                        if (this.entity.worldObj.collidesWithAnyBlock(axisalignedbb2))
+                        if (this.entity.world.collidesWithAnyBlock(axisalignedbb2))
                         {
                             pathpoint = null;
                         }
@@ -241,7 +241,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                 {
                     AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double)x - d1 + 0.5D, (double)y + 0.001D, (double)z - d1 + 0.5D, (double)x + d1 + 0.5D, (double)((float)y + this.entity.height), (double)z + d1 + 0.5D);
 
-                    if (this.entity.worldObj.collidesWithAnyBlock(axisalignedbb3))
+                    if (this.entity.world.collidesWithAnyBlock(axisalignedbb3))
                     {
                         return null;
                     }

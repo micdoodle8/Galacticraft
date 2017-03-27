@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -52,9 +53,9 @@ public interface IStatsCapability
 
     void setSpaceshipTier(int spaceshipTier);
 
-    ItemStack[] getRocketStacks();
+    NonNullList<ItemStack> getRocketStacks();
 
-    void setRocketStacks(ItemStack[] rocketStacks);
+    void setRocketStacks(NonNullList<ItemStack> rocketStacks);
 
     int getRocketType();
 

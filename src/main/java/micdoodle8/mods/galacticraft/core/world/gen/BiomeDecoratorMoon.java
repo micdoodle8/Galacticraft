@@ -37,17 +37,17 @@ public class BiomeDecoratorMoon extends BiomeDecorator
     @Override
     public void decorate(World worldIn, Random random, Biome p_180292_3_, BlockPos pos)
     {
-        if (this.worldObj != null)
+        if (this.world != null)
         {
             throw new RuntimeException("Already decorating!!");
         }
         else
         {
-            this.worldObj = worldIn;
+            this.world = worldIn;
             this.randomGenerator = random;
             this.chunkPos = pos;
             this.generateMoon();
-            this.worldObj = null;
+            this.world = null;
             this.randomGenerator = null;
         }
     }
@@ -57,13 +57,13 @@ public class BiomeDecoratorMoon extends BiomeDecorator
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
             BlockPos blockpos = this.chunkPos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
-            worldGenerator.generate(this.worldObj, this.randomGenerator, blockpos);
+            worldGenerator.generate(this.world, this.randomGenerator, blockpos);
         }
     }
 
     private void generateMoon()
     {
-        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, this.randomGenerator, chunkPos));
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.world, this.randomGenerator, chunkPos));
         this.genStandardOre(20, this.dirtGen, 0, 200);
         if (!ConfigManagerCore.disableCopperMoon)
         {
@@ -92,6 +92,6 @@ public class BiomeDecoratorMoon extends BiomeDecorator
                 }
             }
         }
-        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, this.randomGenerator, chunkPos));
+        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.world, this.randomGenerator, chunkPos));
     }
 }

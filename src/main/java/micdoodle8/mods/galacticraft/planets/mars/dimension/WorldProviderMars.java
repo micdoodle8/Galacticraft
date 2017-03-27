@@ -115,7 +115,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
-        float f1 = this.worldObj.getCelestialAngle(par1);
+        float f1 = this.world.getCelestialAngle(par1);
         float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
 
         if (f2 < 0.0F)
@@ -150,7 +150,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
 //	@Override
 //	public IChunkProvider createChunkGenerator()
 //	{
-//		return new ChunkProviderMars(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+//		return new ChunkProviderMars(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
 //	}
 //
 //	@Override
@@ -182,7 +182,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public boolean isSurfaceWorld()
     {
-        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+        return (this.world == null) ? false : this.world.isRemote;
     }
 
     //Overriding so that beds do not explode on Mars

@@ -53,7 +53,7 @@ public class FootprintRenderer
         {
             for (Footprint footprint : footprintList)
             {
-                if (footprint.dimension == GCCoreUtil.getDimensionID(player.worldObj))
+                if (footprint.dimension == GCCoreUtil.getDimensionID(player.world))
                 {
                     GL11.glPushMatrix();
                     float ageScale = footprint.age / (float) Footprint.MAX_AGE;
@@ -117,7 +117,7 @@ public class FootprintRenderer
         while (i.hasNext())
         {
             Footprint print = i.next();
-            if (!print.owner.equals(FMLClientHandler.instance().getClient().thePlayer.getName()))
+            if (!print.owner.equals(FMLClientHandler.instance().getClient().player.getName()))
             {
                 i.remove();
             }

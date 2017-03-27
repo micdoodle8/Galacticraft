@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -129,7 +128,7 @@ public class GameScreenText implements IGameScreen
                 //Setup special visual types from data sent by Telemetry
                 if (entity instanceof EntityHorse)
                 {
-                    ((EntityHorse) entity).setType(HorseType.values()[telemeter.clientData[3]]);
+//                    ((EntityHorse) entity).setType(HorseType.values()[telemeter.clientData[3]]);
                     ((EntityHorse) entity).setHorseVariant(telemeter.clientData[4]);
                 }
                 if (entity instanceof EntityVillager)
@@ -153,7 +152,7 @@ public class GameScreenText implements IGameScreen
                 }
                 else if (entity instanceof EntitySkeleton)
                 {
-                    ((EntitySkeleton) entity).setSkeletonType(SkeletonType.values()[telemeter.clientData[3]]);
+//                    ((EntitySkeleton) entity).setSkeletonType(SkeletonType.values()[telemeter.clientData[3]]);
                 }
                 else if (entity instanceof EntityZombie)
                 {

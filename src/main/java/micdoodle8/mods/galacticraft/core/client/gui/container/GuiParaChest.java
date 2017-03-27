@@ -31,7 +31,7 @@ public class GuiParaChest extends GuiContainerGC
 
     public GuiParaChest(IInventory par1IInventory, IInventory par2IInventory)
     {
-        super(new ContainerParaChest(par1IInventory, par2IInventory, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerParaChest(par1IInventory, par2IInventory, FMLClientHandler.instance().getClient().player));
         this.upperChestInventory = par1IInventory;
         this.lowerChestInventory = par2IInventory;
         this.allowUserInput = false;

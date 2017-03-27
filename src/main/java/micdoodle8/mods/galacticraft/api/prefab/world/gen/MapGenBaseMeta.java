@@ -30,7 +30,7 @@ public abstract class MapGenBaseMeta
 
     public void generate(World world, int chunkX, int chunkZ, ChunkPrimer primer)
     {
-        this.worldObj = world;
+        this.world = world;
         this.rand.setSeed(world.getSeed());
         final long r0 = this.rand.nextLong();
         final long r1 = this.rand.nextLong();

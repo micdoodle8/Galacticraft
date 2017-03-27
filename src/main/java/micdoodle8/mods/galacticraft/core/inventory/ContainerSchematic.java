@@ -15,11 +15,11 @@ public class ContainerSchematic extends Container
 {
     public InventorySchematic craftMatrix = new InventorySchematic(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerSchematic(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
         int var6;
         int var7;
@@ -47,7 +47,7 @@ public class ContainerSchematic extends Container
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (int var2 = 0; var2 < 1; ++var2)
             {

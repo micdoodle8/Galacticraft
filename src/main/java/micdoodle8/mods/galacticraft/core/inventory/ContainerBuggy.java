@@ -48,7 +48,7 @@ public class ContainerBuggy extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.spaceshipInv.isUseableByPlayer(par1EntityPlayer);
+        return this.spaceshipInv.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

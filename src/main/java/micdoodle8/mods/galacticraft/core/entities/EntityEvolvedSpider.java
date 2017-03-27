@@ -53,12 +53,12 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
 
-        if (this.worldObj.rand.nextInt(100) == 0)
+        if (this.world.rand.nextInt(100) == 0)
         {
-            EntitySkeleton entityskeleton = new EntitySkeleton(this.worldObj);
+            EntitySkeleton entityskeleton = new EntitySkeleton(this.world);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
-            this.worldObj.spawnEntity(entityskeleton);
+            this.world.spawnEntity(entityskeleton);
             entityskeleton.startRiding(this);
         }
 
@@ -66,9 +66,9 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         {
             livingdata = new EntitySpider.GroupData();
 
-            if (this.worldObj.getDifficulty() == EnumDifficulty.HARD && this.worldObj.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
+            if (this.world.getDifficulty() == EnumDifficulty.HARD && this.world.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
             {
-                ((EntitySpider.GroupData)livingdata).setRandomEffect(this.worldObj.rand);
+                ((EntitySpider.GroupData)livingdata).setRandomEffect(this.world.rand);
             }
         }
 

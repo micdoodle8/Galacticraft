@@ -17,6 +17,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -49,11 +50,11 @@ public class FreefallHandler
         int xx = MathHelper.floor(player.posX);
         int zz = MathHelper.floor(player.posZ);
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
-        IBlockState state = player.worldObj.getBlockState(pos);
+        IBlockState state = player.world.getBlockState(pos);
         Block b = state.getBlock();
         if (b.getMaterial(state) != Material.AIR && !(b instanceof BlockLiquid))
         {
-            double blockYmax = playerFeetOnY + b.getBoundingBox(state, player.worldObj, pos).maxY;
+            double blockYmax = playerFeetOnY + b.getBoundingBox(state, player.world, pos).maxY;
             if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
@@ -62,10 +63,10 @@ public class FreefallHandler
                     player.posY -= player.getEntityBoundingBox().minY - blockYmax;
                     player.setEntityBoundingBox(player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0));
                 }
-                else if (b.canCollideCheck(player.worldObj.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
+                else if (b.canCollideCheck(player.world.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
                 {
                     BlockPos offsetPos = new BlockPos(xx, playerFeetOnY, zz);
-                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.worldObj.getBlockState(offsetPos), player.worldObj, offsetPos);
+                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.world.getBlockState(offsetPos), player.world, offsetPos);
                     if (collisionBox != null && collisionBox.intersectsWith(player.getEntityBoundingBox()))
                     {
                         player.posY -= player.getEntityBoundingBox().minY - blockYmax;
@@ -81,7 +82,7 @@ public class FreefallHandler
     @SideOnly(Side.CLIENT)
     private boolean testFreefall(EntityPlayerSP p, boolean flag)
     {
-        World world = p.worldObj;
+        World world = p.world;
         WorldProvider worldProvider = world.provider;
         if (!(worldProvider instanceof IZeroGDimension))
         {
@@ -238,7 +239,7 @@ public class FreefallHandler
 			for(int x = xmin; x <= xmax; x++)
 				for (int z = zmin; z <= zmax; z++)
 					for (int y = ymin; y <= ymax; y++)
-						if (Blocks.AIR != this.worldProvider.worldObj.getBlock(x, y, z))
+						if (Blocks.AIR != this.worldProvider.world.getBlock(x, y, z))
 						{
 							freefall = false;
 							break BLOCKCHECK0;
@@ -360,7 +361,7 @@ public class FreefallHandler
         pPrevMotionX = p.motionX;
         pPrevMotionY = p.motionY;
         pPrevMotionZ = p.motionZ;
-        p.moveEntity(p.motionX + posOffsetX, p.motionY + posOffsetY, p.motionZ + posOffsetZ);
+        p.move(MoverType.SELF, p.motionX + posOffsetX, p.motionY + posOffsetY, p.motionZ + posOffsetZ);
     }
 
 	/*				double dyaw = p.rotationYaw - p.prevRotationYaw;
@@ -404,7 +405,7 @@ public class FreefallHandler
     @SideOnly(Side.CLIENT)
     public void postVanillaMotion(EntityPlayerSP p)
     {
-        World world = p.worldObj;
+        World world = p.world;
         WorldProvider worldProvider = world.provider;
         if (!(worldProvider instanceof IZeroGDimension))
         {
@@ -706,7 +707,7 @@ public class FreefallHandler
      */
     public static void tickFreefallEntity(Entity e)
     {
-        if (e.worldObj.provider instanceof IZeroGDimension) ((IZeroGDimension)e.worldObj.provider).setInFreefall(e);
+        if (e.world.provider instanceof IZeroGDimension) ((IZeroGDimension)e.world.provider).setInFreefall(e);
         
         //Undo deceleration applied at the end of the previous tick
         boolean warnLog = false;

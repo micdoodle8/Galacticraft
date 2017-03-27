@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -102,7 +103,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     @Override
     public void setPositionRotationAndMotion(double x, double y, double z, float yaw, float pitch, double motX, double motY, double motZ, boolean onGround)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.advancedPositionX = x;
             this.advancedPositionY = y;
@@ -144,7 +145,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     @Override
     public boolean attackEntityFrom(DamageSource var1, float var2)
     {
-        if (this.isDead || var1.equals(DamageSource.cactus) || !this.allowDamageSource(var1))
+        if (this.isDead || var1.equals(DamageSource.CACTUS) || !this.allowDamageSource(var1))
         {
             return true;
         }
@@ -176,7 +177,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
                         return false;
                     }
 
-                    if (!this.worldObj.isRemote)
+                    if (!this.world.isRemote)
                     {
                         this.dropItems();
 
@@ -239,7 +240,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
         for (final ItemStack item : this.getItemsDropped())
         {
-            if (item != null)
+            if (item != null && !item.isEmpty())
             {
                 this.entityDropItem(item, 0);
             }
@@ -251,7 +252,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     {
         if (!this.getPassengers().isEmpty())
         {
-            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().thePlayer))
+            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().player))
             {
             }
             else
@@ -267,11 +268,11 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     }
 
     @Override
-    public void moveEntity(double par1, double par3, double par5)
+    public void move(MoverType type, double x, double y, double z)
     {
         if (this.shouldMove())
         {
-            super.moveEntity(par1, par3, par5);
+            super.move(type, x, y, z);
         }
     }
 
@@ -291,7 +292,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
         super.onUpdate();
 
-        if (this.canSetPositionClient() && this.worldObj.isRemote && (this.getPassengers().isEmpty() || !this.getPassengers().contains(FMLClientHandler.instance().getClient().thePlayer)))
+        if (this.canSetPositionClient() && this.world.isRemote && (this.getPassengers().isEmpty() || !this.getPassengers().contains(FMLClientHandler.instance().getClient().player)))
         {
             double x;
             double y;
@@ -328,7 +329,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
             this.currentDamage--;
         }
 
-        if (this.shouldSpawnParticles() && this.worldObj.isRemote)
+        if (this.shouldSpawnParticles() && this.world.isRemote)
         {
             this.spawnParticles(this.getParticleMap());
         }
@@ -342,13 +343,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
             this.tickInAir();
         }
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             Vector3 mot = this.getMotionVec();
             this.motionX = mot.x;
             this.motionY = mot.y;
             this.motionZ = mot.z;
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         }
 
         if (this.onGround && !this.lastOnGround)
@@ -358,23 +359,23 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
 
         if (shouldSendAdvancedMotionPacket())
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 GalacticraftCore.packetPipeline.sendToServer(new PacketEntityUpdate(this));
             }
 
-            if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+            if (!this.world.isRemote && this.ticks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 50.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 50.0D));
             }
         }
 
-        if (!this.worldObj.isRemote && this.ticks % 5 == 0)
+        if (!this.world.isRemote && this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 50.0D));
         }
 
-        if (this.worldObj.isRemote && this.ticks % 5 == 0)
+        if (this.world.isRemote && this.ticks % 5 == 0)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }

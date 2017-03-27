@@ -25,7 +25,7 @@ import java.util.Iterator;
  * The thermal armor render is done after the corresponding body part of the player is drawn.
  * This ALSO patches RenderPlayer so that it uses ModelPlayerGC in place of ModelPlayer to draw the player.
  * <p>
- * Finally, this also adds a hook into rotateCorpse so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
+ * Finally, this also adds a hook into applyRotations so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
  *
  * @author User
  */
@@ -94,7 +94,7 @@ public class RenderPlayerGC extends RenderPlayer
     }
 
     @Override
-    protected void rotateCorpse(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4)
+    protected void applyRotations(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4)
     {
         if (par1AbstractClientPlayer.isEntityAlive() && par1AbstractClientPlayer.isPlayerSleeping())
         {
@@ -103,7 +103,7 @@ public class RenderPlayerGC extends RenderPlayer
 
             if (!event.vanillaOverride)
             {
-                super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+                super.applyRotations(par1AbstractClientPlayer, par2, par3, par4);
             }
             else if (event.shouldRotate == null || event.shouldRotate)
             {
@@ -127,7 +127,7 @@ public class RenderPlayerGC extends RenderPlayer
                     GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
                 }
             }
-            super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+            super.applyRotations(par1AbstractClientPlayer, par2, par3, par4);
         }
     }
 

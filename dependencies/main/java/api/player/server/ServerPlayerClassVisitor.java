@@ -317,7 +317,7 @@ public final class ServerPlayerClassVisitor extends ClassVisitor
 			return super.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localMountEntity", desc, signature, exceptions);
 		}
 
-		if(name.equals(isObfuscated ? "d" : "moveEntity") && desc.equals("(DDD)V"))
+		if(name.equals(isObfuscated ? "d" : "move") && desc.equals("(DDD)V"))
 		{
 			hadLocalMoveEntity = true;
 			return super.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localMoveEntity", desc, signature, exceptions);
@@ -1595,12 +1595,12 @@ public final class ServerPlayerClassVisitor extends ClassVisitor
 			mv.visitEnd();
 		}
 
-		mv = cv.visitMethod(Opcodes.ACC_PUBLIC, isObfuscated ? "d" : "moveEntity", "(DDD)V", null, null);
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC, isObfuscated ? "d" : "move", "(DDD)V", null, null);
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitVarInsn(Opcodes.DLOAD, 1);
 		mv.visitVarInsn(Opcodes.DLOAD, 3);
 		mv.visitVarInsn(Opcodes.DLOAD, 5);
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "moveEntity", "(Lapi/player/server/IServerPlayerAPI;DDD)V", false);
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "move", "(Lapi/player/server/IServerPlayerAPI;DDD)V", false);
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(0, 0);
 		mv.visitEnd();
@@ -1610,7 +1610,7 @@ public final class ServerPlayerClassVisitor extends ClassVisitor
 		mv.visitVarInsn(Opcodes.DLOAD, 1);
 		mv.visitVarInsn(Opcodes.DLOAD, 3);
 		mv.visitVarInsn(Opcodes.DLOAD, 5);
-		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, isObfuscated ? "lu" : "net/minecraft/entity/player/EntityPlayerMP", isObfuscated ? "d" : "moveEntity", "(DDD)V", false);
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, isObfuscated ? "lu" : "net/minecraft/entity/player/EntityPlayerMP", isObfuscated ? "d" : "move", "(DDD)V", false);
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(0, 0);
 		mv.visitEnd();
@@ -1620,7 +1620,7 @@ public final class ServerPlayerClassVisitor extends ClassVisitor
 		mv.visitVarInsn(Opcodes.DLOAD, 1);
 		mv.visitVarInsn(Opcodes.DLOAD, 3);
 		mv.visitVarInsn(Opcodes.DLOAD, 5);
-		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "zs" : "net/minecraft/entity/player/EntityPlayer", isObfuscated ? "d" : "moveEntity", "(DDD)V", false);
+		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "zs" : "net/minecraft/entity/player/EntityPlayer", isObfuscated ? "d" : "move", "(DDD)V", false);
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(0, 0);
 		mv.visitEnd();
@@ -1632,7 +1632,7 @@ public final class ServerPlayerClassVisitor extends ClassVisitor
 			mv.visitVarInsn(Opcodes.DLOAD, 1);
 			mv.visitVarInsn(Opcodes.DLOAD, 3);
 			mv.visitVarInsn(Opcodes.DLOAD, 5);
-			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "zs" : "net/minecraft/entity/player/EntityPlayer", isObfuscated ? "d" : "moveEntity", "(DDD)V", false);
+			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "zs" : "net/minecraft/entity/player/EntityPlayer", isObfuscated ? "d" : "move", "(DDD)V", false);
 			mv.visitInsn(Opcodes.RETURN);
 			mv.visitMaxs(0, 0);
 			mv.visitEnd();

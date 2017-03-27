@@ -97,7 +97,7 @@ public class OverlaySensorGlasses extends Overlay
 
             boolean var2 = false;
 
-            final EntityPlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer, false);
+            final EntityPlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.player, false);
 
             if (client != null)
             {

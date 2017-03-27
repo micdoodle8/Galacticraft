@@ -52,7 +52,7 @@ public class EventHandlerMars
         {
             EntityDamageSource source = (EntityDamageSource) event.getSource();
 
-            if (source.getEntity() instanceof EntitySlimeling && !source.getEntity().worldObj.isRemote)
+            if (source.getEntity() instanceof EntitySlimeling && !source.getEntity().world.isRemote)
             {
                 ((EntitySlimeling) source.getEntity()).kills++;
             }
@@ -62,7 +62,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().worldObj.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(MobEffects.FIRE_RESISTANCE)))
+        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(MobEffects.FIRE_RESISTANCE)))
         {
             Entity entity = event.getSource().getEntity();
 
@@ -92,19 +92,19 @@ public class EventHandlerMars
             {
                 event.result = EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
 
-                if (event.getEntityPlayer().worldObj.isRemote && event.bypassed && event.getEntityPlayer() instanceof EntityPlayerSP)
+                if (event.getEntityPlayer().world.isRemote && event.bypassed && event.getEntityPlayer() instanceof EntityPlayerSP)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(event.getEntityPlayer().worldObj), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(event.getEntityPlayer().world), new Object[] {}));
                 }
             }
             else if (!event.flag1 && !event.flag2 && event.flag3)
             {
-                if (!event.getEntityPlayer().worldObj.isRemote)
+                if (!event.getEntityPlayer().world.isRemote)
                 {
                     event.getEntityPlayer().heal(5.0F);
                     event.getEntityPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setCryogenicChamberCooldown(6000);
 
-                    for (WorldServer worldServer : event.getEntity().getServer().worldServers)
+                    for (WorldServer worldServer : event.getEntity().getServer().worlds)
                     {
                         worldServer.setWorldTime(0);
                     }
@@ -118,13 +118,13 @@ public class EventHandlerMars
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
         BlockPos blockPos = event.getEntityPlayer().bedLocation;
-        IBlockState state = event.getEntityPlayer().worldObj.getBlockState(blockPos);
+        IBlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
         if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
         {
-            TileEntity tile = event.getEntityPlayer().worldObj.getTileEntity(blockPos);
+            TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
             if (tile instanceof TileEntityMulti)
             {
-                state = event.getEntityPlayer().worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                state = event.getEntityPlayer().world.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
             }
         }
 
@@ -145,7 +145,7 @@ public class EventHandlerMars
             this.eggGenerator = new WorldGenEggs(MarsBlocks.rock);
         }
 
-        if (event.worldObj.provider instanceof WorldProviderMars)
+        if (event.world.provider instanceof WorldProviderMars)
         {
             int eggsPerChunk = 2;
             BlockPos blockpos;
@@ -153,7 +153,7 @@ public class EventHandlerMars
             for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
             {
                 blockpos = event.pos.add(event.rand.nextInt(16), event.rand.nextInt(128), event.rand.nextInt(16));
-                this.eggGenerator.generate(event.worldObj, event.rand, blockpos);
+                this.eggGenerator.generate(event.world, event.rand, blockpos);
             }
         }
     }
@@ -162,7 +162,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void orientCamera(OrientCameraEvent event)
     {
-        EntityPlayer entity = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer entity = Minecraft.getMinecraft().player;
 
         if (entity != null)
         {

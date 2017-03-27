@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,8 +26,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 
 public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 {
@@ -101,10 +98,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
                 if (var2 >= 0 && !player.capabilities.isCreativeMode)
                 {
-                    if (--player.inventory.mainInventory[var2].getCount() <= 0)
-                    {
-                        player.inventory.mainInventory[var2] = null;
-                    }
+                    player.inventory.mainInventory.get(var2).shrink(1);
                 }
             }
         }
@@ -112,9 +106,9 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
     private int getInventorySlotContainItem(EntityPlayer player, ItemStack stack)
     {
-        for (int var2 = 0; var2 < player.inventory.mainInventory.length; ++var2)
+        for (int var2 = 0; var2 < player.inventory.mainInventory.size(); ++var2)
         {
-            if (player.inventory.mainInventory[var2] != null && player.inventory.mainInventory[var2].isItemEqual(stack))
+            if (!player.inventory.mainInventory.get(var2).isEmpty() && player.inventory.mainInventory.get(var2).isItemEqual(stack))
             {
                 return var2;
             }
@@ -136,10 +130,10 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         playerIn.setActiveHand(hand);
-        return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
     }
 
     @Override

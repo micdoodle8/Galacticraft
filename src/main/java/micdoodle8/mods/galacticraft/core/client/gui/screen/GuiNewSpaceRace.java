@@ -91,7 +91,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     private int selectionMinY;
     private int selectionMaxY;
 
-    private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
+    private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().world);
     private ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;
@@ -124,7 +124,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
     private boolean canPlayerEdit()
     {
-        return mc.thePlayer.getGameProfile().getName().equals(this.spaceRaceData.getPlayerNames().get(0));
+        return mc.player.getGameProfile().getName().equals(this.spaceRaceData.getPlayerNames().get(0));
     }
 
     @SuppressWarnings("unchecked")
@@ -405,9 +405,9 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER && this.gradientListAddPlayers != null && this.ticksPassed % 20 == 0)
         {
             List<ListElement> playerNames = new ArrayList<ListElement>();
-            for (int i = 0; i < this.thePlayer.worldObj.playerEntities.size(); i++)
+            for (int i = 0; i < this.thePlayer.world.playerEntities.size(); i++)
             {
-                EntityPlayer player = (EntityPlayer) this.thePlayer.worldObj.playerEntities.get(i);
+                EntityPlayer player = (EntityPlayer) this.thePlayer.world.playerEntities.get(i);
 
                 if (player.getDistanceSqToEntity(this.thePlayer) <= 25 * 25)
                 {
@@ -606,7 +606,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
     public void updateSpaceRaceData()
     {
-        String playerName = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName();
+        String playerName = FMLClientHandler.instance().getClient().player.getGameProfile().getName();
         SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
 
         if (race != null && !this.isDirty)

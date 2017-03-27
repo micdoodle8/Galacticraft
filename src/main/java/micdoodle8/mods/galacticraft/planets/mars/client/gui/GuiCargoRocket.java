@@ -48,7 +48,7 @@ public class GuiCargoRocket extends GuiContainerGC
 
     public GuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket, EnumRocketType rocketType)
     {
-        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType, FMLClientHandler.instance().getClient().player));
         this.upperChestInventory = par1IInventory;
         this.rocket = rocket;
         this.allowUserInput = false;

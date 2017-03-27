@@ -138,7 +138,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
     public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
     {
         super(par1World, par2, par4, "");
-        this.worldObj = par1World;
+        this.world = par1World;
         this.rand = new Random(par2);
 
         this.asteroidDensity = new Billowed(this.rand.nextLong(), 2, .25F);
@@ -247,7 +247,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         }
 
         //Add to the list of asteroids for external use
-        ((WorldProviderAsteroids) this.worldObj.provider).addAsteroid(asteroidX, asteroidY, asteroidZ, size, isHollow ? -1 : core.index);
+        ((WorldProviderAsteroids) this.world.provider).addAsteroid(asteroidX, asteroidY, asteroidZ, size, isHollow ? -1 : core.index);
 
         final int xMin = this.clamp(Math.max(chunkX, asteroidX - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkX, 0, 16);
         final int zMin = this.clamp(Math.max(chunkZ, asteroidZ - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkZ, 0, 16);
@@ -542,10 +542,10 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
 //        final Block[] ids = new Block[65536];
 //        final byte[] meta = new byte[65536];
         this.generateTerrain(par1, par2, primer, false);
-        //this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
+        //this.biomesForGeneration = this.world.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 
 //        long time2 = System.nanoTime();
-        final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
+        final Chunk var4 = new Chunk(this.world, primer, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
 
         for (int var6 = 0; var6 < var5.length; ++var6)
@@ -614,13 +614,13 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         }
 
 //        BlockFalling.fallInstantly = true;
-//        this.worldObj.getBiome(new BlockPos(x + 16, 0, z + 16));
+//        this.world.getBiome(new BlockPos(x + 16, 0, z + 16));
 //        BlockFalling.fallInstantly = false;
 
-        this.rand.setSeed(this.worldObj.getSeed());
+        this.rand.setSeed(this.world.getSeed());
         long var7 = this.rand.nextLong() / 2L * 2L + 1L;
         long var9 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.worldObj.getSeed());
+        this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.world.getSeed());
 
         //50:50 chance to include small blocks each chunk
         if (this.rand.nextBoolean())
@@ -701,7 +701,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
             this.generateTerrain(chunkX, chunkZ, null, true);
         }
 
-        this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.worldObj.getSeed());
+        this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.world.getSeed());
 
         //Look for hollow asteroids to populate
         if (!this.largeAsteroids.isEmpty())
@@ -944,7 +944,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        Biome biome = this.worldObj.getBiome(pos);
+        Biome biome = this.world.getBiome(pos);
         return biome.getSpawnableList(creatureType);
     }
 

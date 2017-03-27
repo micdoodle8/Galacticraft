@@ -54,7 +54,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                 }
             }
 
-            if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
+            if (this.world.isRemote && this.fieldCacheServer.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
 //                if (networkDataChanged)
@@ -62,12 +62,12 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                     GalacticraftCore.packetPipeline.sendToServer(packet);
                 }
             }
-            else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
+            else if (!this.world.isRemote && this.fieldCacheClient.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
 //                if (networkDataChanged)
                 {
-                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
                 }
             }
         }
@@ -132,7 +132,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             }
         }
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             fieldList = this.fieldCacheServer;
         }
@@ -191,7 +191,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
-        if (this.worldObj == null)
+        if (this.world == null)
         {
             GCLog.severe("World is NULL! Connot decode packet data!");
             return;
@@ -209,18 +209,18 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             }
         }
 
-//        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
+//        if (this.world.isRemote && this.fieldCacheClient.size() == 0)
 //        {
 //            return;
 //        }
-//        else if (!this.worldObj.isRemote && this.fieldCacheServer.size() == 0)
+//        else if (!this.world.isRemote && this.fieldCacheServer.size() == 0)
 //        {
 //            return;
 //        }
 
         Set<Field> fieldSet = null;
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             fieldSet = this.fieldCacheClient;
         }
@@ -233,7 +233,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
         {
             try
             {
-                Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.worldObj);
+                Object obj = NetworkUtil.getFieldValueFromStream(field, buffer, this.world);
                 field.set(this, obj);
             }
             catch (Exception e)

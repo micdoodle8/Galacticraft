@@ -62,7 +62,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     {
         float amountProduced = 0;
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             EnumSet<EnumFacing> outputDirections = this.getElectricalOutputDirections();
 //            outputDirections.remove(EnumFacing.UNKNOWN);
@@ -70,7 +70,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             BlockVec3 thisVec = new BlockVec3(this);
             for (EnumFacing direction : outputDirections)
             {
-                TileEntity tileAdj = thisVec.getTileEntityOnSide(this.worldObj, direction);
+                TileEntity tileAdj = thisVec.getTileEntityOnSide(this.world, direction);
 
                 if (tileAdj != null)
                 {
@@ -212,7 +212,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     {
         if (direction == null && EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
-            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getElectricalOutputDirectionMain());
+            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, this.getElectricalOutputDirectionMain());
             if (tile instanceof IConductor)
             {
                 //No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
@@ -247,6 +247,6 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
             return 0;
         }
 
-        return MathHelper.floor_float(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+        return MathHelper.floor(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
 }

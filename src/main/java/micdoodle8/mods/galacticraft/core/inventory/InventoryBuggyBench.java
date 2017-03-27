@@ -4,18 +4,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
 public class InventoryBuggyBench implements IInventory
 {
-    private final ItemStack[] stackList;
+    private final NonNullList<ItemStack> stackList;
     private final int inventoryWidth;
     private final Container eventHandler;
 
     public InventoryBuggyBench(Container par1Container)
     {
-        final int var4 = 32;
-        this.stackList = new ItemStack[var4];
+        final int size = 32;
+        this.stackList = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
         this.eventHandler = par1Container;
         this.inventoryWidth = 5;
     }
@@ -23,13 +24,13 @@ public class InventoryBuggyBench implements IInventory
     @Override
     public int getSizeInventory()
     {
-        return this.stackList.length;
+        return this.stackList.size();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stackList[par1];
+        return par1 >= this.getSizeInventory() ? null : this.stackList.get(par1);
     }
 
     public ItemStack getStackInRowAndColumn(int par1, int par2)
@@ -52,13 +53,14 @@ public class InventoryBuggyBench implements IInventory
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int par1)
+    public ItemStack removeStackFromSlot(int index)
     {
-        if (this.stackList[par1] != null)
+        ItemStack stack = this.stackList.get(index);
+        if (!stack.isEmpty())
         {
-            final ItemStack var2 = this.stackList[par1];
-            this.stackList[par1] = null;
-            return var2;
+            stack.setCount(0);
+            this.stackList.set(index, stack);
+            return stack;
         }
         else
         {
@@ -67,26 +69,28 @@ public class InventoryBuggyBench implements IInventory
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.stackList[par1] != null)
+        ItemStack stack = this.stackList.get(index);
+        if (!stack.isEmpty())
         {
             ItemStack var3;
 
-            if (this.stackList[par1].getCount() <= par2)
+            if (stack.getCount() <= count)
             {
-                var3 = this.stackList[par1];
-                this.stackList[par1] = null;
+                var3 = stack.copy();
+                stack.setCount(0);
+                this.stackList.set(index, stack);
                 this.eventHandler.onCraftMatrixChanged(this);
                 return var3;
             }
             else
             {
-                var3 = this.stackList[par1].splitStack(par2);
+                var3 = stack.splitStack(count);
 
-                if (this.stackList[par1].getCount() == 0)
+                if (stack.getCount() == 0)
                 {
-                    this.stackList[par1] = null;
+                    this.stackList.set(index, stack);
                 }
 
                 this.eventHandler.onCraftMatrixChanged(this);
@@ -100,9 +104,9 @@ public class InventoryBuggyBench implements IInventory
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int index, ItemStack item)
     {
-        this.stackList[par1] = par2ItemStack;
+        this.stackList.set(index, item);
         this.eventHandler.onCraftMatrixChanged(this);
     }
 
@@ -173,5 +177,19 @@ public class InventoryBuggyBench implements IInventory
     public ITextComponent getDisplayName()
     {
         return null;
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stackList)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

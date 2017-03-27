@@ -117,7 +117,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             String ownerName = getOwnerUsername();
             if (ownerName != null)
             {
-                return this.worldObj.getPlayerEntityByName(ownerName);
+                return this.world.getPlayerEntityByName(ownerName);
             }
         }
         return owner;
@@ -298,7 +298,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     {
         super.onLivingUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.ticksAlive <= 0)
             {
@@ -330,7 +330,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 //            this.setCargoSlot(this.slimelingInventory.getStackInSlot(1));
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getMaxHealthSlimeling());
 
@@ -424,7 +424,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                             player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
                         }
 
-                        if (this.worldObj.isRemote)
+                        if (this.world.isRemote)
                         {
                             MarsModuleClient.openSlimelingGui(this, 1);
                         }
@@ -449,7 +449,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 }
                 else
                 {
-                    if (this.worldObj.isRemote)
+                    if (this.world.isRemote)
                     {
                         MarsModuleClient.openSlimelingGui(this, 0);
                     }
@@ -457,7 +457,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             }
             else
             {
-                if (this.worldObj.isRemote)
+                if (this.world.isRemote)
                 {
                     MarsModuleClient.openSlimelingGui(this, 0);
                 }
@@ -477,7 +477,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
             }
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 if (this.rand.nextInt(3) == 0)
                 {
@@ -489,12 +489,12 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                     this.setOwnerId(player.getUniqueID());
                     this.setOwnerUsername(player.getName());
                     this.playTameEffect(true);
-                    this.worldObj.setEntityState(this, (byte) 7);
+                    this.world.setEntityState(this, (byte) 7);
                 }
                 else
                 {
                     this.playTameEffect(false);
-                    this.worldObj.setEntityState(this, (byte) 6);
+                    this.world.setEntityState(this, (byte) 6);
                 }
             }
 
@@ -538,7 +538,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             newColor.x = Math.max(Math.min(newColor.x, 1.0F), 0);
             newColor.y = Math.max(Math.min(newColor.y, 1.0F), 0);
             newColor.z = Math.max(Math.min(newColor.z, 1.0F), 0);
-            EntitySlimeling newSlimeling = new EntitySlimeling(this.worldObj, (float) newColor.x, (float) newColor.y, (float) newColor.z);
+            EntitySlimeling newSlimeling = new EntitySlimeling(this.world, (float) newColor.x, (float) newColor.y, (float) newColor.z);
 
             UUID s = this.getOwnerId();
 
@@ -708,7 +708,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     {
         super.onDeath(p_70645_1_);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             ItemStack bag = this.slimelingInventory.getStackInSlot(1);
             if (bag != null && bag.getItem() == MarsItems.marsItemBasic && bag.getItemDamage() == 4)

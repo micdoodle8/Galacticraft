@@ -47,13 +47,13 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
-        TileEntity adjacentTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, direction);
+        TileEntity adjacentTile = new BlockVec3(this).getTileEntityOnSide(this.world, direction);
 
         if (type == NetworkType.FLUID)
         {
             if (adjacentTile instanceof IColorable)
             {
-                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                IBlockState state = this.world.getBlockState(this.getPos());
                 IBlockState adjacentTileState = adjacentTile.getWorld().getBlockState(adjacentTile.getPos());
                 byte thisCol = this.getColor(state);
                 byte otherCol = ((IColorable) adjacentTile).getColor(adjacentTileState);
@@ -69,7 +69,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 //    @Override
 //    public boolean canUpdate()
 //    {
-//        return this.worldObj == null || !this.worldObj.isRemote;
+//        return this.world == null || !this.world.isRemote;
 //
 //    }
 
@@ -78,11 +78,11 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     {
         super.update();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.dataRequest)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { GCCoreUtil.getDimensionID(this.worldObj), this.getPos() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[] { GCCoreUtil.getDimensionID(this.world), this.getPos() }));
                 this.dataRequest = true;
             }
         }
@@ -111,9 +111,9 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     {
         super.validate();
 
-        if (this.worldObj != null && this.worldObj.isRemote)
+        if (this.world != null && this.world.isRemote)
         {
-            this.worldObj.notifyLightSet(getPos());
+            this.world.notifyLightSet(getPos());
         }
     }
 
@@ -121,11 +121,11 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public void onColorUpdate()
     {
-        if (this.worldObj != null)
+        if (this.world != null)
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
-                this.worldObj.notifyLightSet(getPos());
+                this.world.notifyLightSet(getPos());
             }
             else
             {
@@ -148,10 +148,10 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public void onAdjacentColorChanged(EnumFacing direction)
     {
-        IBlockState state = this.worldObj.getBlockState(this.getPos());
-        this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
+        IBlockState state = this.world.getBlockState(this.getPos());
+        this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.refresh();
         }
@@ -165,7 +165,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         if (par1NBTTagCompound.hasKey("pipeColor"))
         {
             // Backwards compatibility
-            this.worldObj.setBlockState(getPos(), this.worldObj.getBlockState(getPos()).withProperty(BlockFluidPipe.COLOR, EnumDyeColor.byDyeDamage(par1NBTTagCompound.getByte("pipeColor"))));
+            this.world.setBlockState(getPos(), this.world.getBlockState(getPos()).withProperty(BlockFluidPipe.COLOR, EnumDyeColor.byDyeDamage(par1NBTTagCompound.getByte("pipeColor"))));
         }
     }
 
@@ -252,7 +252,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         }
 
         BlockFluidPipe.ignoreDrop = true;
-        this.worldObj.setBlockState(pos, block.getStateFromMeta(currentType.getMetaFromState(this.worldObj.getBlockState(pos))));
+        this.world.setBlockState(pos, block.getStateFromMeta(currentType.getMetaFromState(this.world.getBlockState(pos))));
         BlockFluidPipe.ignoreDrop = false;
         if (this.hasNetwork())
         {

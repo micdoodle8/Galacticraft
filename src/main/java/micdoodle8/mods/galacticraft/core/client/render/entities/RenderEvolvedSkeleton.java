@@ -62,15 +62,17 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
     }
-    
+
+
+
     @Override
-    protected void rotateCorpse(EntityEvolvedSkeleton skellie, float pitch, float yaw, float partialTicks)
+    protected void applyRotations(EntityEvolvedSkeleton skellie, float pitch, float yaw, float partialTicks)
     {
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         GL11.glTranslatef(0F, -skellie.height * 0.55F, 0F);
         GL11.glRotatef(skellie.getTumbleAngle(partialTicks), skellie.getTumbleAxisX(), 0F, skellie.getTumbleAxisZ());
         GL11.glTranslatef(0F, skellie.height * 0.55F, 0F);
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        super.rotateCorpse(skellie, pitch, yaw, partialTicks);
+        super.applyRotations(skellie, pitch, yaw, partialTicks);
     }
 }

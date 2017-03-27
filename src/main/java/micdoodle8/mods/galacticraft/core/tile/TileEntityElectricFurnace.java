@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -39,7 +40,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
 
-    private ItemStack[] containingItems = new ItemStack[3];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
     private boolean initialised = false;
@@ -79,10 +80,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             int metadata = this.getBlockMetadata();
             //for version update compatibility
-            Block b = this.worldObj.getBlockState(this.getPos()).getBlock();
+            Block b = this.world.getBlockState(this.getPos()).getBlock();
             if (b == GCBlocks.machineBase)
             {
-                this.worldObj.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState()/*,s 4*/, 2);
+                this.world.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState()/*,s 4*/, 2);
             }
             else if (metadata >= 8)
             {
@@ -93,7 +94,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.canProcess())
             {
@@ -121,7 +122,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 else if (this.processTicks > 0 && this.processTicks < this.processTimeRequired)
                 {
                     //Apply a "cooling down" process if the electric furnace runs out of energy while smelting
-                    if (this.worldObj.rand.nextInt(4) == 0)
+                    if (this.world.rand.nextInt(4) == 0)
                     {
                         this.processTicks++;
                     }
@@ -139,19 +140,19 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.containingItems[1] == null || FurnaceRecipes.instance().getSmeltingResult(this.containingItems[1]) == null)
+        if (this.stacks.get(1) == null || FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1)) == null)
         {
             return false;
         }
 
-        if (this.containingItems[2] != null)
+        if (this.stacks.get(2) != null)
         {
-            if (!this.containingItems[2].isItemEqual(FurnaceRecipes.instance().getSmeltingResult(this.containingItems[1])))
+            if (!this.stacks.get(2).isItemEqual(FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1))))
             {
                 return false;
             }
 
-            if (this.containingItems[2].stackSize + 1 > 64)
+            if (this.stacks.get(2).getCount() + 1 > 64)
             {
                 return false;
             }
@@ -168,39 +169,34 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         if (this.canProcess())
         {
-            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.containingItems[1]);
+            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1));
 
-            if (this.containingItems[2] == null)
+            if (this.stacks.get(2).isEmpty())
             {
-                this.containingItems[2] = resultItemStack.copy();
+                this.stacks.set(2, resultItemStack.copy());
                 if (this.tierGC > 1)
                 {
-                    String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
+                    String nameSmelted = this.stacks.get(1).getUnlocalizedName().toLowerCase();
                     if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
                     {
-                        this.containingItems[2].stackSize += resultItemStack.stackSize;
+                        this.stacks.get(2).grow(resultItemStack.getCount());
                     }
                 }
             }
-            else if (this.containingItems[2].isItemEqual(resultItemStack))
+            else if (this.stacks.get(2).isItemEqual(resultItemStack))
             {
-                this.containingItems[2].stackSize += resultItemStack.stackSize;
+                this.stacks.get(2).grow(resultItemStack.getCount());
                 if (this.tierGC > 1)
                 {
-                    String nameSmelted = this.containingItems[1].getUnlocalizedName().toLowerCase();
+                    String nameSmelted = this.stacks.get(1).getUnlocalizedName().toLowerCase();
                     if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
                     {
-                        this.containingItems[2].stackSize += resultItemStack.stackSize;
+                        this.stacks.get(2).grow(resultItemStack.getCount());
                     }
                 }
             }
 
-            this.containingItems[1].stackSize--;
-
-            if (this.containingItems[1].stackSize <= 0)
-            {
-                this.containingItems[1] = null;
-            }
+            this.stacks.get(1).shrink(1);
         }
     }
 
@@ -218,7 +214,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             this.initialised = false;
         }
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
     }
 
     @Override
@@ -230,14 +226,14 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         }
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
         return nbt;
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -305,7 +301,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachineTiered.FACING);
     }
 
     @Override

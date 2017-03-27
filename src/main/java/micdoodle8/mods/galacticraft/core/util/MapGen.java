@@ -66,7 +66,7 @@ public class MapGen extends BiomeProvider implements Runnable
         {
             for (int k = -2; k <= 2; ++k)
             {
-                float f = 10.0F / MathHelper.sqrt_float((float) (j * j + k * k) + 0.2F);
+                float f = 10.0F / MathHelper.sqrt((float) (j * j + k * k) + 0.2F);
                 parabolicField[j + 2 + (k + 2) * 5] = f;
             }
         }
@@ -159,7 +159,7 @@ public class MapGen extends BiomeProvider implements Runnable
     {
         try
         {
-            for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
+            for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
             {
                 GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimension(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimension());
             }

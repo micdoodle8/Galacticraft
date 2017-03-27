@@ -111,7 +111,7 @@ public class RenderEvolvedCreeper extends RenderCreeper
 //        EntityEvolvedCreeper creeper = (EntityEvolvedCreeper) par1EntityLiving;
 //        final Minecraft minecraft = FMLClientHandler.instance().getClient();
 //
-//        final EntityPlayerSP player = minecraft.thePlayer;
+//        final EntityPlayerSP player = minecraft.player;
 //
 //        ItemStack helmetSlot = null;
 //

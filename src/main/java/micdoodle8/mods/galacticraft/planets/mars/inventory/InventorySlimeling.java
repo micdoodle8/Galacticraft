@@ -64,7 +64,7 @@ public class InventorySlimeling implements IInventory
         {
             if (this.stackList[i] != null)
             {
-                if (!this.slimeling.worldObj.isRemote)
+                if (!this.slimeling.world.isRemote)
                 {
                     this.slimeling.entityDropItem(this.stackList[i], 0.5F);
                 }
@@ -141,7 +141,7 @@ public class InventorySlimeling implements IInventory
         {
             final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
+            final ItemStack itemstack = new ItemStack(nbttagcompound);
 
             if (itemstack != null)
             {

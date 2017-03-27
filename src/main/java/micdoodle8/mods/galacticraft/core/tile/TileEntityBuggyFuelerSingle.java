@@ -14,7 +14,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<TileEntity>();
 
@@ -22,7 +22,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
             {
                 for (int z = this.getPos().getZ() - 1; z < this.getPos().getZ() + 2; z++)
                 {
-                    final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
+                    final TileEntity tile = this.world.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 
                     if (tile instanceof TileEntityBuggyFuelerSingle)
                     {
@@ -39,12 +39,12 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
                     tile.getWorld().setBlockState(tile.getPos(), Blocks.AIR.getDefaultState(), 3);
                 }
 
-                this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 3);
-                final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.getPos());
+                this.world.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 3);
+                final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.world.getTileEntity(this.getPos());
 
                 if (tile != null)
                 {
-                    tile.onCreate(worldObj, this.getPos());
+                    tile.onCreate(world, this.getPos());
                 }
             }
         }

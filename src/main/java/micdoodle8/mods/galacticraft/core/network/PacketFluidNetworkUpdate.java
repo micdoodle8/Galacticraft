@@ -141,7 +141,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        TileEntity tile = player.worldObj.getTileEntity(this.pos);
+        TileEntity tile = player.world.getTileEntity(this.pos);
 
         if (tile instanceof IBufferTransmitter)
         {
@@ -157,7 +157,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
 
                 for (BlockPos pos : this.transmittersCoords)
                 {
-                    TileEntity transmitterTile = player.worldObj.getTileEntity(pos);
+                    TileEntity transmitterTile = player.world.getTileEntity(pos);
 
                     if (transmitterTile instanceof IBufferTransmitter)
                     {

@@ -41,14 +41,14 @@ public class EntityProjectileTNT extends EntityFireball
     @Override
     protected void onImpact(RayTraceResult movingObjectPosition)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (movingObjectPosition.entityHit != null && !(movingObjectPosition.entityHit instanceof EntityCreeper))
             {
                 movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12.0F : 6.0F);
             }
 
-            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getBoolean("mobGriefing"));
+            this.world.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean("mobGriefing"));
             this.setDead();
         }
     }

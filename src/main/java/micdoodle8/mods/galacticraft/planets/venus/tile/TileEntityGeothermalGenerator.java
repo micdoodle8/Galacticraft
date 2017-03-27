@@ -60,7 +60,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         if (this.ticks % 20 == 0)
         {
             BlockPos below = this.getPos().down();
-            IBlockState stateBelow = this.worldObj.getBlockState(below);
+            IBlockState stateBelow = this.world.getBlockState(below);
 
             boolean lastValidSpout = this.validSpout;
             this.validSpout = false;
@@ -69,13 +69,13 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 BlockPos pos1 = below.down();
                 for (; this.getPos().getY() - pos1.getY() < 20; pos1 = pos1.down())
                 {
-                    IBlockState state = this.worldObj.getBlockState(pos1);
+                    IBlockState state = this.world.getBlockState(pos1);
                     if (state.getBlock() == VenusModule.sulphuricAcid.getBlock())
                     {
                         this.validSpout = true;
                         break;
                     }
-                    else if (!state.getBlock().isAir(this.worldObj.getBlockState(pos1), this.worldObj, pos1))
+                    else if (!state.getBlock().isAir(this.world.getBlockState(pos1), this.world, pos1))
                     {
                         // Not valid
                         break;
@@ -83,15 +83,15 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 }
             }
 
-            if (this.worldObj.isRemote && this.validSpout != lastValidSpout)
+            if (this.world.isRemote && this.validSpout != lastValidSpout)
             {
                 // Update active texture
-                IBlockState state = this.worldObj.getBlockState(this.getPos());
-                this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
+                IBlockState state = this.world.getBlockState(this.getPos());
+                this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.recharge(this.containingItems[0]);
 
@@ -155,7 +155,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
             if (slot < this.containingItems.length)
             {
-                this.containingItems[slot] = ItemStack.loadItemStackFromNBT(tagAt);
+                this.containingItems[slot] = new ItemStack(tagAt);
             }
         }
     }
@@ -201,7 +201,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockGeothermalGenerator.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockGeothermalGenerator.FACING);
     }
 
     @Override
@@ -233,11 +233,11 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     {
         if (this.disableCooldown == 0)
         {
-            if (this.disabled != disabled && this.worldObj.isRemote)
+            if (this.disabled != disabled && this.world.isRemote)
             {
                 // Update active texture
-                IBlockState state = this.worldObj.getBlockState(this.getPos());
-                this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
+                IBlockState state = this.world.getBlockState(this.getPos());
+                this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
 
             this.disabled = disabled;
@@ -334,7 +334,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     @Override
     public boolean isUsableByPlayer(EntityPlayer player)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override

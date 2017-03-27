@@ -32,7 +32,7 @@ public class TickHandlerClientVenus
     public void onRenderTick(RenderTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.player;
         final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
         if (event.phase == Phase.END)
@@ -44,7 +44,7 @@ public class TickHandlerClientVenus
     public void renderLightning(ClientProxyCore.EventSpecialRender event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.player;
         if (player != null && !ConfigManagerVenus.disableAmbientLightning)
         {
             Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
@@ -63,7 +63,7 @@ public class TickHandlerClientVenus
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-        final WorldClient world = minecraft.theWorld;
+        final WorldClient world = minecraft.world;
 
         if (world != null)
         {
@@ -87,7 +87,7 @@ public class TickHandlerClientVenus
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.thePlayer;
+        final EntityPlayerSP player = minecraft.player;
 
         if (player == event.player)
         {
@@ -108,7 +108,7 @@ public class TickHandlerClientVenus
                     }
                 }
 
-                if (player.getRNG().nextInt(500) == 0 && minecraft.theWorld.provider instanceof WorldProviderVenus)
+                if (player.getRNG().nextInt(500) == 0 && minecraft.world.provider instanceof WorldProviderVenus)
                 {
                     double freq = player.getRNG().nextDouble() * Math.PI * 2.0F;
                     double dist = 180.0F;
@@ -117,7 +117,7 @@ public class TickHandlerClientVenus
                     double posX = player.posX + dX;
                     double posY = 70;
                     double posZ = player.posZ + dZ;
-                    minecraft.theWorld.playSound(null, posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.WEATHER, 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F);
+                    minecraft.world.playSound(null, posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.WEATHER, 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F);
                     lightning.put(new BlockPos(posX, posY, posZ), 20);
                 }
             }

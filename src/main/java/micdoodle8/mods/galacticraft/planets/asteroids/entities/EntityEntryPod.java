@@ -73,7 +73,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     {
         super.tickInAir();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
@@ -167,7 +167,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     @Override
     public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {

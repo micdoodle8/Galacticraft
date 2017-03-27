@@ -41,7 +41,7 @@ public class ItemBlockNasaWorkbench extends ItemBlockDesc
                                 {
                                     if (world.isRemote)
                                     {
-                                        FMLClientHandler.instance().getClient().ingameGUI.setRecordPlaying(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
+                                        FMLClientHandler.instance().getClient().ingameGUI.setOverlayMessage(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
                                     }
                                     return false;
                                 }
@@ -52,7 +52,7 @@ public class ItemBlockNasaWorkbench extends ItemBlockDesc
                                 {
                                     if (world.isRemote)
                                     {
-                                        FMLClientHandler.instance().getClient().ingameGUI.setRecordPlaying(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
+                                        FMLClientHandler.instance().getClient().ingameGUI.setOverlayMessage(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
                                     }
                                     return false;
                                 }

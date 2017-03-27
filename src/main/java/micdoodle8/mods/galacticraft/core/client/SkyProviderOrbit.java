@@ -92,16 +92,16 @@ public class SkyProviderOrbit extends IRenderHandler
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
-        final float var20 = 400.0F + (float) this.minecraft.thePlayer.posY / 2F;
+        final float var20 = 400.0F + (float) this.minecraft.player.posY / 2F;
 
-        // if (this.minecraft.thePlayer.getRidingEntity() != null)
+        // if (this.minecraft.player.getRidingEntity() != null)
         {
-            // var20 = (float) (this.minecraft.thePlayer.posY - 200.0F);
+            // var20 = (float) (this.minecraft.player.posY - 200.0F);
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        final Vec3d var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
+        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float var3 = (float) var2.xCoord;
         float var4 = (float) var2.yCoord;
         float var5 = (float) var2.zCoord;
@@ -128,7 +128,7 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float[] var24 = this.minecraft.theWorld.provider.calcSunriseSunsetColors(this.minecraft.theWorld.getCelestialAngle(partialTicks), partialTicks);
+        final float[] var24 = this.minecraft.world.provider.calcSunriseSunsetColors(this.minecraft.world.getCelestialAngle(partialTicks), partialTicks);
         float var9;
         float var10;
         float var11;
@@ -140,7 +140,7 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(MathHelper.sin(this.minecraft.world.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
             var8 = var24[0];
             var9 = var24[1];
@@ -177,7 +177,7 @@ public class SkyProviderOrbit extends IRenderHandler
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
-        var8 = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
+        var8 = 1.0F - this.minecraft.world.getRainStrength(partialTicks);
         var9 = 0.0F;
         var10 = 0.0F;
         var11 = 0.0F;
@@ -189,7 +189,7 @@ public class SkyProviderOrbit extends IRenderHandler
         float deltaTick = partialTicks - this.prevPartialTicks;
         //while (deltaTick < 0F) deltaTick += 1.0F;
         this.prevPartialTicks = partialTicks;
-        long curTick = this.minecraft.theWorld.getTotalWorldTime();
+        long curTick = this.minecraft.world.getTotalWorldTime();
         int tickDiff = (int) (curTick - this.prevTick);
         this.prevTick = curTick;
         if (tickDiff > 0 && tickDiff < 20)
@@ -211,7 +211,7 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glPushMatrix();
-        float celestialAngle = this.minecraft.theWorld.getCelestialAngle(partialTicks);
+        float celestialAngle = this.minecraft.world.getCelestialAngle(partialTicks);
         GL11.glRotatef(celestialAngle * 360.0F, 1.0F, 0.0F, 0.0F);
         if (this.renderSun)
         {
@@ -257,7 +257,7 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             var12 = 40.0F;
             this.minecraft.renderEngine.bindTexture(SkyProviderOrbit.moonTexture);
-            float var28 = this.minecraft.theWorld.getMoonPhase();
+            float var28 = this.minecraft.world.getMoonPhase();
             final int var30 = (int) (var28 % 4);
             final int var29 = (int) (var28 / 4 % 2);
             final float var16 = (var30 + 0) / 4.0F;
@@ -310,9 +310,9 @@ public class SkyProviderOrbit extends IRenderHandler
 		/* This all does nothing!
         double var25 = 0.0D;
 
-		// if (this.minecraft.thePlayer.getRidingEntity() != null)
+		// if (this.minecraft.player.getRidingEntity() != null)
 		{
-			var25 = this.minecraft.thePlayer.posY - 64;
+			var25 = this.minecraft.player.posY - 64;
 
 			if (var25 < 0.0D)
 			{
@@ -349,7 +349,7 @@ public class SkyProviderOrbit extends IRenderHandler
 			}
 		}
 
-		if (this.minecraft.theWorld.provider.isSkyColored())
+		if (this.minecraft.world.provider.isSkyColored())
 		{
 			GL11.glColor3f(0.0f, 0.0f, 0.0f);
 		}

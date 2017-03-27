@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -48,19 +49,19 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < 4; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(itemIn, 1, i));
         }
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+        ItemStack itemstack = playerIn.getHeldItem(hand);
         final float var4 = 1.0F;
         final float var5 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * var4;
         final float var6 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * var4;
@@ -80,7 +81,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
         if (var24 == null)
         {
-            return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.PASS, itemstack);
         }
         else
         {
@@ -108,7 +109,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
             if (var26)
             {
-                return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
+                return new ActionResult<>(EnumActionResult.PASS, itemstack);
             }
             else
             {
@@ -123,16 +124,16 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
                         --var33;
                     }
 
-                    final EntityBuggy var35 = new EntityBuggy(worldIn, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, itemStackIn.getItemDamage());
+                    final EntityBuggy var35 = new EntityBuggy(worldIn, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, itemstack.getItemDamage());
 
                     if (!worldIn.getCollisionBoxes(var35, var35.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
                     {
-                        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
+                        return new ActionResult<>(EnumActionResult.PASS, itemstack);
                     }
 
-                    if (itemStackIn.hasTagCompound() && itemStackIn.getTagCompound().hasKey("BuggyFuel"))
+                    if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("BuggyFuel"))
                     {
-                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, itemStackIn.getTagCompound().getInteger("BuggyFuel")));
+                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, itemstack.getTagCompound().getInteger("BuggyFuel")));
                     }
 
                     if (!worldIn.isRemote)
@@ -142,11 +143,11 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
                     if (!playerIn.capabilities.isCreativeMode)
                     {
-                        --itemStackIn.getCount();
+                        itemstack.shrink(1);
                     }
                 }
 
-                return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+                return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
             }
         }
     }

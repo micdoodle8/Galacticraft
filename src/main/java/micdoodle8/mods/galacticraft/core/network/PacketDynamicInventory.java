@@ -27,7 +27,7 @@ public class PacketDynamicInventory extends PacketBase
 
     public PacketDynamicInventory(Entity entity)
     {
-        super(GCCoreUtil.getDimensionID(entity.worldObj));
+        super(GCCoreUtil.getDimensionID(entity.world));
         assert entity instanceof IInventory : "Entity does not implement " + IInventory.class.getSimpleName();
         this.type = 0;
         this.data = new Object[] { entity.getEntityId() };
@@ -122,7 +122,7 @@ public class PacketDynamicInventory extends PacketBase
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        if (player.worldObj == null)
+        if (player.world == null)
         {
             return;
         }
@@ -130,7 +130,7 @@ public class PacketDynamicInventory extends PacketBase
         switch (this.type)
         {
         case 0:
-            Entity entity = player.worldObj.getEntityByID((Integer) this.data[0]);
+            Entity entity = player.world.getEntityByID((Integer) this.data[0]);
 
             if (entity instanceof IInventorySettable)
             {
@@ -139,7 +139,7 @@ public class PacketDynamicInventory extends PacketBase
 
             break;
         case 1:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
+            TileEntity tile = player.world.getTileEntity((BlockPos) this.data[0]);
 
             if (tile instanceof IInventorySettable)
             {
@@ -156,7 +156,7 @@ public class PacketDynamicInventory extends PacketBase
         switch (this.type)
         {
         case 0:
-            Entity entity = player.worldObj.getEntityByID((Integer) this.data[0]);
+            Entity entity = player.world.getEntityByID((Integer) this.data[0]);
 
             if (entity instanceof IInventorySettable)
             {
@@ -165,7 +165,7 @@ public class PacketDynamicInventory extends PacketBase
 
             break;
         case 1:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
+            TileEntity tile = player.world.getTileEntity((BlockPos) this.data[0]);
 
             if (tile instanceof IInventorySettable)
             {

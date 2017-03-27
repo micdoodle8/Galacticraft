@@ -12,7 +12,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             final ArrayList<TileEntity> attachedBaseBlocks = new ArrayList<TileEntity>();
 
@@ -23,7 +23,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                 {
                     for (int z = this.getPos().getZ(); z < this.getPos().getZ() + 2; z++)
                     {
-                        final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, y, z));
+                        final TileEntity tile = this.world.getTileEntity(new BlockPos(x, y, z));
 
                         if (tile instanceof TileEntityMinerBaseSingle)
                         {
@@ -52,7 +52,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                     {
                         for (int z = this.getPos().getZ(); z < this.getPos().getZ() + 2; z++)
                         {
-                            final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, y, z));
+                            final TileEntity tile = this.world.getTileEntity(new BlockPos(x, y, z));
 
                             if (tile instanceof TileEntityMinerBase)
                             {

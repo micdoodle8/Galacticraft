@@ -83,7 +83,7 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
     {
         if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
         {
-            if (this.parentGui.canPlayerEdit(this, par1Minecraft.thePlayer))
+            if (this.parentGui.canPlayerEdit(this, par1Minecraft.player))
             {
                 this.isSelected = !this.isSelected;
                 this.parentGui.onSelectionChanged(this, this.isSelected);

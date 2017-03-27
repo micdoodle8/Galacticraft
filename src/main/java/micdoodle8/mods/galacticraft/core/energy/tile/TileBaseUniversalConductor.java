@@ -38,7 +38,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     {
         if (!this.isAddedToEnergyNet)
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
             	this.initIC();
             }
@@ -64,7 +64,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
     protected void initIC()
     {
-        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.world.isRemote)
         {
             try
             {
@@ -85,9 +85,9 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
     private void unloadTileIC2()
     {
-        if (this.isAddedToEnergyNet && this.worldObj != null)
+        if (this.isAddedToEnergyNet && this.world != null)
         {
-            if (!this.worldObj.isRemote && EnergyConfigHandler.isIndustrialCraft2Loaded())
+            if (!this.world.isRemote && EnergyConfigHandler.isIndustrialCraft2Loaded())
             {
                 try
                 {
@@ -135,7 +135,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergy(EnumFacing directionFrom, double amount, double voltage)
     {
-        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, directionFrom);
+        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, directionFrom);
         int tier = ((int) voltage > 120) ? 2 : 1;
         if (tile instanceof IEnergySource && ((IEnergySource) tile).getOfferedEnergy() >= 128)
         {
@@ -221,7 +221,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         }
         float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
-        return MathHelper.floor_float(sentGC / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
@@ -234,7 +234,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     public boolean canConnectEnergy(EnumFacing from)
     {
         //Do not form wire-to-wire connections with EnderIO conduits
-        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, from);
+        TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, from);
         try
         {
             if (EnergyUtil.clazzEnderIOCable != null && EnergyUtil.clazzEnderIOCable.isInstance(tile))
@@ -266,7 +266,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             return 0;
         }
 
-        return MathHelper.floor_float(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -288,7 +288,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             return false;
         }
 
-        TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
+        TileEntity te = new BlockVec3(this).getTileEntityOnSide(this.world, side);
         try
         {
             if (EnergyUtil.clazzMekCable != null && EnergyUtil.clazzMekCable.isInstance(te))

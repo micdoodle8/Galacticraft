@@ -43,7 +43,7 @@ public class GCInvSaveData extends WorldSavedData
                                 System.out.println("GCInv error retrieving savefile: slot was outside range 0-5");
                                 return;
                             }
-                            saveinv[i] = ItemStack.loadItemStackFromNBT(obj1);
+                            saveinv[i] = new ItemStack(obj1);
                         }
                     }
                 }

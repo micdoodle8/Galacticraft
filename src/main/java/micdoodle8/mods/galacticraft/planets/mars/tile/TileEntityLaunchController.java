@@ -83,11 +83,11 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
 //            if (ConfigManagerCore.enableDebug)
 //            {
-//            	int dim = this.worldObj);
+//            	int dim = this.world);
 //            	Long tickCount = tickCounts.get(dim);
 //            	if (tickCount == null)
 //            	{
@@ -96,9 +96,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 //            		instanceCounts.put(dim, 0);
 //            	}
 //            	int instanceCount = instanceCounts.get(dim);
-//	        	if (this.worldObj.getTotalWorldTime() > tickCount)
+//	        	if (this.world.getTotalWorldTime() > tickCount)
 //	            {
-//	            	tickCount = this.worldObj.getTotalWorldTime();
+//	            	tickCount = this.world.getTotalWorldTime();
 //	            	if (tickCount % 20L == 0L) GCLog.debug("Dim " + dim + ": Number of Launch Controllers updating each tick: " + instanceCount);
 //	            	instanceCount = 1;
 //	            }
@@ -136,7 +136,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     for (int i = 0; i < this.connectedPads.size(); i++)
                     {
                         BlockPos coords = this.connectedPads.get(i);
-                        Block block = this.worldObj.getBlockState(coords).getBlock();
+                        Block block = this.world.getBlockState(coords).getBlock();
 
                         if (block != GCBlocks.landingPadFull)
                         {
@@ -151,7 +151,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { 5, this.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.world), new Object[] { 5, this.getPos(), 0 }));
             }
         }
     }
@@ -182,7 +182,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public void onTicketLoaded(Ticket ticket, boolean placed)
     {
-        if (!this.worldObj.isRemote && ConfigManagerMars.launchControllerChunkLoad)
+        if (!this.world.isRemote && ConfigManagerMars.launchControllerChunkLoad)
         {
             if (ticket == null)
             {
@@ -203,7 +203,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             {
                 for (int z = -2; z <= 2; z++)
                 {
-                    Block blockID = this.worldObj.getBlockState(this.getPos().add(x, 0, z)).getBlock();
+                    Block blockID = this.world.getBlockState(this.getPos().add(x, 0, z)).getBlock();
 
                     if (blockID instanceof BlockLandingPadFull)
                     {
@@ -213,18 +213,18 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
                             if (placed)
                             {
-                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z, this.getOwnerName());
+                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.world, this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z, this.getOwnerName());
                             }
                             else
                             {
-                                ChunkLoadingCallback.addToList(this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
+                                ChunkLoadingCallback.addToList(this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
                             }
                         }
                     }
                 }
             }
 
-            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
+            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
         }
     }
 
@@ -373,7 +373,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         if (this.frequency >= 0 && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.frequencyValid = true;
-            WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+            WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
 
             worldLoop:
             for (int i = 0; i < servers.length; i++)
@@ -422,12 +422,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void checkDestFrequencyValid()
     {
-        if (!this.worldObj.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+        if (!this.world.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)
             {
-                WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+                WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
                 for (int i = 0; i < servers.length; i++)
                 {
                     WorldServer world = servers[i];
@@ -512,7 +512,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
     }
 
     @Override

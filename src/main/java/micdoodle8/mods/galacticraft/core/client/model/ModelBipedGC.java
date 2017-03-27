@@ -34,7 +34,7 @@ public class ModelBipedGC extends ModelBiped
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
 
-        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.getRidingEntity() == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+        if (!par7Entity.onGround && par7Entity.world.provider instanceof IGalacticraftWorldProvider && par7Entity.getRidingEntity() == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
             float speedModifier = 0.1162F * 2;
 
@@ -121,7 +121,7 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+        final List<?> l = player.world.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
         for (int i = 0; i < l.size(); i++)
         {
@@ -167,7 +167,7 @@ public class ModelBipedGC extends ModelBiped
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { id }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
                 ClientProxyCore.gearDataRequests.add(id);
             }
         }

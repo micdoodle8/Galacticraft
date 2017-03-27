@@ -40,7 +40,7 @@ public class ContainerOxygenCollector extends Container
     @Override
     public boolean canInteractWith(EntityPlayer var1)
     {
-        return this.tileEntity.isUseableByPlayer(var1);
+        return this.tileEntity.isUsableByPlayer(var1);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ContainerOxygenCollector extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, stack);
+            slot.onTake(par1EntityPlayer, stack);
         }
 
         return var2;

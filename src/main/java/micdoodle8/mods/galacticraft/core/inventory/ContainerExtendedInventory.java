@@ -150,7 +150,7 @@ public class ContainerExtendedInventory extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, stack);
+            slot.onTake(par1EntityPlayer, stack);
         }
 
         return var2;
@@ -172,8 +172,8 @@ public class ContainerExtendedInventory extends Container
                 if (slotStack == null)
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

@@ -32,7 +32,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.usingEnergy = false;
             ItemStack tank1 = this.containingItems[0];
@@ -66,7 +66,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 
             if (var5 < this.containingItems.length)
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = new ItemStack(var4);
             }
         }
     }
@@ -177,7 +177,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -263,7 +263,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockOxygenCompressor.FACING);
     }
 
     @Override

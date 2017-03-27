@@ -20,7 +20,7 @@ public class GCCoreEventPopulate extends Event
 
     public GCCoreEventPopulate(World worldObj, Random rand, BlockPos pos)
     {
-        this.worldObj = worldObj;
+        this.world = worldObj;
         this.rand = rand;
         this.pos = pos;
     }

@@ -54,7 +54,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             producedLastTick = this.getOxygenStored() < this.getMaxOxygenStored();
 
@@ -71,7 +71,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
             //
             // Vector3 thisVec = new Vector3(this);
             // TileEntity tileEntity =
-            // thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.worldObj);
+            // thisVec.modifyPositionFromSide(this.getOxygenOutputDirection()).getTileEntity(this.world);
             //
             // if (tileEntity instanceof IGasAcceptor)
             // {
@@ -99,7 +99,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
             // }
 
             //Approximately once every 40 ticks, search out oxygen producing blocks
-            if (this.worldObj.rand.nextInt(10) == 0)
+            if (this.world.rand.nextInt(10) == 0)
             {
                 if (this.hasEnoughEnergyToRun)
                 {
@@ -109,7 +109,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
                     if (!this.isInitialised)
                     {
-                        this.noAtmosphericOxygen = (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN));
+                        this.noAtmosphericOxygen = (this.world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.world.provider).isGasPresent(IAtmosphericGas.OXYGEN));
                         this.isInitialised = true;
                     }
 
@@ -128,9 +128,9 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                             {
                                 miny = 0;
                             }
-                            if (maxy >= this.worldObj.getHeight())
+                            if (maxy >= this.world.getHeight())
                             {
-                                maxy = this.worldObj.getHeight() - 1;
+                                maxy = this.world.getHeight() - 1;
                             }
 
                             // Loop the x and the z first, so the y loop will be at
@@ -143,7 +143,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                 // Preload the first chunk for the z loop - there
                                 // can be a maximum of 2 chunks in the z loop
                                 int chunkz = this.getPos().getZ() - 5 >> 4;
-                                Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
+                                Chunk chunk = this.world.getChunkFromChunkCoords(chunkx, chunkz);
                                 for (int z = this.getPos().getZ() - 5; z <= this.getPos().getZ() + 5; z++)
                                 {
                                     if (z >> 4 != chunkz)
@@ -151,7 +151,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                         // moved across z chunk boundary into a new
                                         // chunk, so load the new chunk
                                         chunkz = z >> 4;
-                                        chunk = this.worldObj.getChunkFromChunkCoords(chunkx, chunkz);
+                                        chunk = this.world.getChunkFromChunkCoords(chunkx, chunkz);
                                     }
                                     for (int y = miny; y <= maxy; y++)
                                     {
@@ -165,7 +165,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                         if (!(state.getBlock() instanceof BlockAir))
                                         {
                                             BlockPos pos = new BlockPos(x, y, z);
-                                            if (state.getBlock().isLeaves(state, this.worldObj, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.worldObj, pos) == EnumPlantType.Crop)
+                                            if (state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.world, pos) == EnumPlantType.Crop)
                                             {
                                                 nearbyLeaves += 0.075F * 10F;
                                             }
@@ -209,7 +209,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
             if (var5 < this.containingItems.length)
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.containingItems[var5] = new ItemStack(var4);
             }
         }
     }
@@ -320,7 +320,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -406,7 +406,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public EnumFacing getFront()
     {
-        return (this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
+        return (this.world.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
     }
 
     @Override

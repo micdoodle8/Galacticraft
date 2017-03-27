@@ -147,7 +147,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         if (value !=0F)
         {
             if (this.tumbling == 0F)
-                this.tumbling = (this.worldObj.rand.nextFloat() + 0.5F) * value;
+                this.tumbling = (this.world.rand.nextFloat() + 0.5F) * value;
         }
         else
             this.tumbling = 0F;
@@ -167,7 +167,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
                 }
             }
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 this.setSpinPitch(this.tumbling);
             }
@@ -238,7 +238,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     {
         double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
         if (velocity2 == 0D) return 1F;
-        return (float) (this.motionZ / MathHelper.sqrt_double(velocity2));
+        return (float) (this.motionZ / MathHelper.sqrt(velocity2));
     }
 
     @Override
@@ -246,6 +246,6 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     {
         double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
         if (velocity2 == 0D) return 0F;
-        return (float) (this.motionX / MathHelper.sqrt_double(velocity2));
+        return (float) (this.motionX / MathHelper.sqrt(velocity2));
     }
 }

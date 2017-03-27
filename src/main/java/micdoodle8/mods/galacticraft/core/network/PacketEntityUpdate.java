@@ -36,7 +36,7 @@ public class PacketEntityUpdate extends PacketBase
 
     public PacketEntityUpdate(Entity entity)
     {
-        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround, GCCoreUtil.getDimensionID(entity.worldObj));
+        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround, GCCoreUtil.getDimensionID(entity.world));
     }
 
     @Override
@@ -81,11 +81,11 @@ public class PacketEntityUpdate extends PacketBase
 
     private void setEntityData(EntityPlayer player)
     {
-        Entity entity = player.worldObj.getEntityByID(this.entityID);
+        Entity entity = player.world.getEntityByID(this.entityID);
 
         if (entity instanceof IEntityFullSync)
         {
-            if (player.worldObj.isRemote || player.getUniqueID().equals(((IEntityFullSync) entity).getOwnerUUID()) || ((IEntityFullSync) entity).getOwnerUUID() == null)
+            if (player.world.isRemote || player.getUniqueID().equals(((IEntityFullSync) entity).getOwnerUUID()) || ((IEntityFullSync) entity).getOwnerUUID() == null)
             {
                 IEntityFullSync controllable = (IEntityFullSync) entity;
                 controllable.setPositionRotationAndMotion(this.position.x, this.position.y, this.position.z, this.rotationYaw, this.rotationPitch, this.motion.x, this.motion.y, this.motion.z, this.onGround);

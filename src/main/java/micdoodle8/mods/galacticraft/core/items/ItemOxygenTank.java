@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,13 +34,12 @@ public class ItemOxygenTank extends Item implements ISortableItem
         this.setNoRepair();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
+        list.add(new ItemStack(itemIn, 1, 0));
+        list.add(new ItemStack(itemIn, 1, this.getMaxDamage()));
     }
 
     @Override
@@ -69,8 +69,10 @@ public class ItemOxygenTank extends Item implements ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
@@ -80,12 +82,12 @@ public class ItemOxygenTank extends Item implements ISortableItem
             if (gear == null)
             {
                 stats.getExtendedInventory().setInventorySlotContents(2, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ItemStack.EMPTY;
             }
             else if (gear1 == null)
             {
                 stats.getExtendedInventory().setInventorySlotContents(3, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ItemStack.EMPTY;
             }
         }
         return new ActionResult<>(EnumActionResult.PASS, itemStack);

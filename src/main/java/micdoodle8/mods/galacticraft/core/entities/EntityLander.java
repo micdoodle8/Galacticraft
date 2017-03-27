@@ -78,9 +78,9 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
@@ -180,7 +180,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
         EntityLivingBase passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityLivingBase) ? null : (EntityLivingBase) this.getPassengers().get(0);
-        return new ParticleLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, passenger);
+        return new ParticleLanderFlame(this.world, x, y, z, motX, motY, motZ, passenger);
     }
 
     @Override
@@ -188,7 +188,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     {
         super.tickInAir();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
@@ -212,12 +212,12 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public void onGroundHit()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (Math.abs(this.lastMotionY) > 2.0D)
             {
                 this.removePassengers();
-                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+                this.world.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
 
                 this.setDead();
             }

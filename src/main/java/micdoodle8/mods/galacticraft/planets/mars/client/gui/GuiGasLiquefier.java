@@ -42,7 +42,7 @@ public class GuiGasLiquefier extends GuiContainerGC
 
     public GuiGasLiquefier(InventoryPlayer par1InventoryPlayer, TileEntityGasLiquefier tileEntity)
     {
-        super(new ContainerGasLiquefier(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerGasLiquefier(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }

@@ -59,7 +59,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
     public GuiLaunchController(InventoryPlayer playerInventory, TileEntityLaunchController launchController)
     {
-        super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
         this.launchController = launchController;
     }
@@ -75,7 +75,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         }
         else
         {
-            boolean isOwner = FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName());
+            boolean isOwner = FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName());
             this.enableControllerButton.enabled = isOwner;
             this.enablePadRemovalButton.enabled = isOwner;
             this.hideDestinationFrequency.enabled = isOwner;
@@ -125,7 +125,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
 
         if (Math.random() < 0.025 && !destinationFrequency.isTextFocused)
         {
-            if (!Minecraft.getMinecraft().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()) &&
+            if (!Minecraft.getMinecraft().player.getGameProfile().getName().equals(this.launchController.getOwnerName()) &&
                     !this.launchController.getDisabled(2))
             {
                 // in case the player is not equal to the owner of the controller,
@@ -243,7 +243,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        if (!FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        if (!FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName()))
         {
             this.onIntruderInteraction();
             return;
@@ -376,7 +376,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
     @Override
     public void onTextChanged(GuiElementTextBox textBox, String newText)
     {
-        if (FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        if (FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName()))
         {
             if (textBox.equals(this.frequency))
             {
@@ -400,7 +400,7 @@ public class GuiLaunchController extends GuiContainerGC implements IDropboxCallb
         }
         else if (textBox.equals(this.destinationFrequency))
         {
-            if (Minecraft.getMinecraft().thePlayer.getGameProfile().getName().equals(this.launchController.getOwnerName()) || this.launchController.getDisabled(2))
+            if (Minecraft.getMinecraft().player.getGameProfile().getName().equals(this.launchController.getOwnerName()) || this.launchController.getDisabled(2))
             {
                 return String.valueOf(this.launchController.destFrequency);
             }

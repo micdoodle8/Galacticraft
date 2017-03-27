@@ -313,7 +313,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
         {
             final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-            final WorldClient world = minecraft.theWorld;
+            final WorldClient world = minecraft.world;
 
             if (world != null)
             {

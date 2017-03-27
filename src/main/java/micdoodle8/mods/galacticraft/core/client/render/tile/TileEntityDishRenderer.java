@@ -31,7 +31,7 @@
 //    {
 //        TileEntityDish dish = (TileEntityDish) tile;
 //        float time = (dish.ticks + partialTickTime) % 1440F;
-//        final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+//        final EntityPlayer player = FMLClientHandler.instance().getClient().player;
 //
 //        GL11.glPushMatrix();
 //        GL11.glEnable(GL12.GL_RESCALE_NORMAL);

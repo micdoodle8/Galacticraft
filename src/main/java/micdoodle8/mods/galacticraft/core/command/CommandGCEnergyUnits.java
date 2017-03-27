@@ -17,7 +17,7 @@ public class CommandGCEnergyUnits extends CommandBase
 {
 
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
         String options = " [gJ";
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
@@ -29,7 +29,7 @@ public class CommandGCEnergyUnits extends CommandBase
             options = options + "|J";
         }
         options = options + "|RF";
-        return "/" + this.getCommandName() + options + "]";
+        return "/" + this.getName() + options + "]";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CommandGCEnergyUnits extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "gcenergyunits";
     }
@@ -84,16 +84,16 @@ public class CommandGCEnergyUnits extends CommandBase
 
                 if (paramvalue > 0)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_ENERGYUNITS, GCCoreUtil.getDimensionID(playerBase.worldObj), new Object[] { paramvalue }), playerBase);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_ENERGYUNITS, GCCoreUtil.getDimensionID(playerBase.world), new Object[] { paramvalue }), playerBase);
                     return;
                 }
 
             }
 
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalid_units", this.getCommandUsage(sender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.invalid_units", this.getUsage(sender)), new Object[0]);
         }
 
-        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.no_units", this.getCommandUsage(sender)), new Object[0]);
+        throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.gcenergyunits.no_units", this.getUsage(sender)), new Object[0]);
     }
 
 

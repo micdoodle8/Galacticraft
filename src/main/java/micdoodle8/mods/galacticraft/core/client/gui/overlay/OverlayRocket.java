@@ -63,9 +63,9 @@ public class OverlayRocket extends Overlay
 
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
-        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(OverlayRocket.minecraft.thePlayer.getRidingEntity().getClass());
+        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(OverlayRocket.minecraft.player.getRidingEntity().getClass());
 
-        final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.thePlayer) / 10.5F);
+        final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.player) / 10.5F);
         var1 = 2.5F;
         var2 = y1;
         var3 = 8;
@@ -77,7 +77,7 @@ public class OverlayRocket extends Overlay
         var8 = 1.0F / 32.0F;
 
         GL11.glPushMatrix();
-        final int i = OverlayRocket.minecraft.thePlayer.getRidingEntity().getBrightnessForRender(1);
+        final int i = OverlayRocket.minecraft.player.getRidingEntity().getBrightnessForRender(1);
         final int j = i % 65536;
         final int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
@@ -90,7 +90,7 @@ public class OverlayRocket extends Overlay
 
         try
         {
-            spaceshipRender.doRender(OverlayRocket.minecraft.thePlayer.getRidingEntity().getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+            spaceshipRender.doRender(OverlayRocket.minecraft.player.getRidingEntity().getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.player.width), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {
@@ -99,8 +99,8 @@ public class OverlayRocket extends Overlay
 
         GL11.glPopMatrix();
 
-        ResourceLocation resourcelocation = AbstractClientPlayer.getLocationSkin(OverlayRocket.minecraft.thePlayer.getGameProfile().getName());
-        AbstractClientPlayer.getDownloadImageSkin(resourcelocation, OverlayRocket.minecraft.thePlayer.getGameProfile().getName());
+        ResourceLocation resourcelocation = AbstractClientPlayer.getLocationSkin(OverlayRocket.minecraft.player.getGameProfile().getName());
+        AbstractClientPlayer.getDownloadImageSkin(resourcelocation, OverlayRocket.minecraft.player.getGameProfile().getName());
 
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(resourcelocation);
 

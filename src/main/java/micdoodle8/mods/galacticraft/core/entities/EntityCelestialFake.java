@@ -53,7 +53,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
     public EntityCelestialFake(EntityPlayerMP player)
     {
-        this(player.worldObj, player.posX, player.posY, player.posZ);
+        this(player.world, player.posX, player.posY, player.posZ);
 
         this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
 
@@ -74,7 +74,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         {
             if (this.getPassengers().isEmpty())
             {
-                final EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 5);
+                final EntityPlayer player = this.world.getClosestPlayerToEntity(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
@@ -85,7 +85,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
         AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
 
-        final List<Entity> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
+        final List<Entity> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 
         if (var15 != null && !var15.isEmpty())
         {
@@ -105,11 +105,11 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         {
             double d0 = this.posX - entityToPush.posX;
             double d1 = this.posZ - entityToPush.posZ;
-            double d2 = MathHelper.abs_max(d0, d1);
+            double d2 = MathHelper.absMax(d0, d1);
 
             if (d2 >= 0.009999999776482582D)
             {
-                d2 = MathHelper.sqrt_double(d2);
+                d2 = MathHelper.sqrt(d2);
                 d0 /= d2;
                 d1 /= d2;
                 double d3 = 1.0D / d2;
@@ -162,7 +162,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public void tickInAir()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.motionY = this.motionX = this.motionZ = 0.0F;
 
@@ -175,7 +175,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     {
         final ArrayList<Object> objList = new ArrayList<Object>();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.shouldMoveClient = this.shouldMove();
             objList.add(this.shouldMoveClient);
@@ -214,7 +214,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     {
         try
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 this.hasReceivedPacket = true;
                 this.shouldMoveServer = buffer.readBoolean();

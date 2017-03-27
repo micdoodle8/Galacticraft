@@ -26,6 +26,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -44,9 +45,9 @@ public class PlayerClient implements IPlayerClient
 	public static boolean startup;
 
     @Override
-    public void moveEntity(EntityPlayerSP player, double par1, double par3, double par5)
+    public void move(EntityPlayerSP player, MoverType type, double x, double y, double z)
     {
-        this.updateFeet(player, par1, par5);
+        this.updateFeet(player, x, z);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class PlayerClient implements IPlayerClient
     {
         IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
-        if (player.worldObj.provider instanceof IGalacticraftWorldProvider)
+        if (player.world.provider instanceof IGalacticraftWorldProvider)
         {
             if (!startup)
             {
@@ -94,7 +95,7 @@ public class PlayerClient implements IPlayerClient
                 stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
                 startup = true;
             }
-            if (player.worldObj.provider instanceof IZeroGDimension)
+            if (player.world.provider instanceof IZeroGDimension)
             {
                 stats.setInFreefallLast(stats.isInFreefall());
                 stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
@@ -123,7 +124,7 @@ public class PlayerClient implements IPlayerClient
     {
         IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
 
-        if (player.worldObj.provider instanceof IZeroGDimension)
+        if (player.world.provider instanceof IZeroGDimension)
         {
             stats.getFreefallHandler().postVanillaMotion(player);
 
@@ -253,10 +254,10 @@ public class PlayerClient implements IPlayerClient
     {
         if (player.bedLocation != null)
         {
-            if (player.worldObj.getTileEntity(player.bedLocation) instanceof TileEntityAdvanced)
+            if (player.world.getTileEntity(player.bedLocation) instanceof TileEntityAdvanced)
             {
-//                int j = player.worldObj.getBlock(x, y, z).getBedDirection(player.worldObj, x, y, z);
-                IBlockState state = player.worldObj.getBlockState(player.bedLocation);
+//                int j = player.world.getBlock(x, y, z).getBedDirection(player.world, x, y, z);
+                IBlockState state = player.world.getBlockState(player.bedLocation);
                 switch (state.getBlock().getMetaFromState(state) - 4)
                 {
                 case 0:
@@ -284,13 +285,13 @@ public class PlayerClient implements IPlayerClient
         double motionSqrd = motionX * motionX + motionZ * motionZ;
 
         // If the player is on the moon, not airbourne and not riding anything
-        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.getRidingEntity() == null && !player.capabilities.isFlying)
+        if (motionSqrd > 0.001 && player.world != null && player.world.provider instanceof WorldProviderMoon && player.getRidingEntity() == null && !player.capabilities.isFlying)
         {
             int iPosX = (int) Math.floor(player.posX);
             int iPosY = (int) Math.floor(player.posY - 1);
             int iPosZ = (int) Math.floor(player.posZ);
             BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
-            IBlockState state = player.worldObj.getBlockState(pos1);
+            IBlockState state = player.world.getBlockState(pos1);
 
             // If the block below is the moon block
             if (state.getBlock() == GCBlocks.blockMoon)
@@ -316,10 +317,10 @@ public class PlayerClient implements IPlayerClient
                             break;
                         }
 
-                        pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
+                        pos = WorldUtil.getFootprintPosition(player.world, player.rotationYaw - 180, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkPos.asLong(pos.intX() >> 4, pos.intZ() >> 4);
-                        FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimension(), pos, player.rotationYaw, player.getName());
+                        FootprintRenderer.addFootprint(chunkKey, player.world.provider.getDimension(), pos, player.rotationYaw, player.getName());
 
                         // Increment and cap step counter at 1
                         stats.setLastStep((stats.getLastStep() + 1) % 2);
@@ -377,7 +378,7 @@ public class PlayerClient implements IPlayerClient
         }
         flag |= 1 << i;
         stats.setBuildFlags((flag & 511) + (repeatCount << 9));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { stats.getBuildFlags() }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionID(player.world), new Object[] { stats.getBuildFlags() }));
         switch (i)
         {
         case 0:

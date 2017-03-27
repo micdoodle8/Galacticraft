@@ -19,10 +19,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -94,13 +91,12 @@ public class ItemBasic extends Item implements ISortableItem
         return super.getIconFromDamage(damage);
     }*/
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(itemIn, 1, i));
         }
     }
 
@@ -165,7 +161,7 @@ public class ItemBasic extends Item implements ISortableItem
     {
         if (stack.getItemDamage() > 14 && stack.getItemDamage() < 19)
         {
-            --stack.stackSize;
+            stack.shrink(1);
             if (entityLiving instanceof EntityPlayer)
             {
                 ((EntityPlayer) entityLiving).getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
@@ -204,8 +200,9 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
         if (itemStackIn.getItemDamage() > 14 && itemStackIn.getItemDamage() < 19 && playerIn.canEat(false))
         {
             playerIn.setActiveHand(hand);
@@ -221,7 +218,7 @@ public class ItemBasic extends Item implements ISortableItem
                 if (gear == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(5, itemStackIn.copy());
-                    itemStackIn.stackSize = 0;
+                    itemStackIn = ItemStack.EMPTY;
                 }
             }
         }
@@ -238,7 +235,7 @@ public class ItemBasic extends Item implements ISortableItem
         }
 
         //Frequency module
-        if (!player.worldObj.isRemote && entity != null && !(entity instanceof EntityPlayer))
+        if (!player.world.isRemote && entity != null && !(entity instanceof EntityPlayer))
         {
             if (itemStack.getTagCompound() == null)
             {

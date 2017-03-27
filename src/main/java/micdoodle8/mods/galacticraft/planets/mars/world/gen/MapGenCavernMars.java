@@ -16,7 +16,7 @@ public class MapGenCavernMars extends MapGenBaseMeta
     public void generate(World world, int chunkX, int chunkZ, ChunkPrimer primer)
     {
         final int var6 = this.range;
-        this.worldObj = world;
+        this.world = world;
         this.rand.setSeed(world.getSeed());
         final long var7 = this.rand.nextLong();
         final long var9 = this.rand.nextLong();

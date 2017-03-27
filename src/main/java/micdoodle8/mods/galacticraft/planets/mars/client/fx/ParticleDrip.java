@@ -66,7 +66,7 @@ public class ParticleDrip extends Particle
         }
 
         BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-        IBlockState state = this.worldObj.getBlockState(pos);
+        IBlockState state = this.world.getBlockState(pos);
         Material material = state.getBlock().getMaterial(state);
 
         if (material.isLiquid() || material.isSolid())

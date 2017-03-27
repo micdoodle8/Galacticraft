@@ -28,7 +28,7 @@ public class EventHandlerClient
 
         final EntityPlayer player = event.getEntityPlayer();
 
-        if (player.getRidingEntity() instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
+        if (player.getRidingEntity() instanceof EntityTieredRocket && player == Minecraft.getMinecraft().player
                 && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
             EntityTieredRocket entity = (EntityTieredRocket) player.getRidingEntity();

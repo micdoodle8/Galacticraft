@@ -61,7 +61,6 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
         }
     }
 
-    @Override
     public ItemStack getItemStackFromSlot(EntityLivingBase living, EntityEquipmentSlot slotIn)
     {
         PlayerGearData gearData = ModelPlayerGC.getGearData((EntityPlayer) living);
@@ -127,9 +126,9 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             float g = 1.0F * sTime;
             float b = 0.2F * sTime;
 
-            if (entityLivingBaseIn.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (entityLivingBaseIn.world.provider instanceof IGalacticraftWorldProvider)
             {
-                float modifier = ((IGalacticraftWorldProvider) entityLivingBaseIn.worldObj.provider).getThermalLevelModifier();
+                float modifier = ((IGalacticraftWorldProvider) entityLivingBaseIn.world.provider).getThermalLevelModifier();
 
                 if (modifier > 0)
                 {

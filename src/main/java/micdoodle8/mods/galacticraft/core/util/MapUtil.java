@@ -114,7 +114,7 @@ public class MapUtil
                 }
             }
         }
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimension(), new Object[] {}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, FMLClientHandler.instance().getClient().world.provider.getDimension(), new Object[] {}));
 		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
 		MapUtil.biomeColours.clear();
 		setupColours();
@@ -166,7 +166,7 @@ public class MapUtil
         {
             return;
         }
-        World world = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).worldObj;
+        World world = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).world;
         if (world == null)
         {
             return;
@@ -196,7 +196,7 @@ public class MapUtil
         {
             try
             {
-                File baseFolder = new File(client.worldObj.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                File baseFolder = new File(client.world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
                 if (!baseFolder.exists())
                 {
                     GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
@@ -225,7 +225,7 @@ public class MapUtil
     {
         try
         {
-            File baseFolder = new File(client.worldObj.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+            File baseFolder = new File(client.world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
             if (!baseFolder.exists())
             {
                 GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
@@ -250,7 +250,7 @@ public class MapUtil
     {
     	if (largeMap.length < 1000000)
     	{
-    		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.worldObj.provider.getDimension(), new Object[] { cx, cz, largeMap }), client);
+    		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, client.world.provider.getDimension(), new Object[] { cx, cz, largeMap }), client);
     	}
     	else if (largeMap.length < 2000000)
 		{
@@ -258,8 +258,8 @@ public class MapUtil
 			//These two arrays are deliberately different sizes to signal to client (receiving them) which is which
 			byte[] largeMapPartA = Arrays.copyOf(largeMap, halfSize);
 			byte[] largeMapPartB = Arrays.copyOfRange(largeMap, halfSize, halfSize + halfSize + 2);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMapPartA }), client);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMapPartB }), client);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.world), new Object[] { cx, cz, largeMapPartA }), client);
+			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.world), new Object[] { cx, cz, largeMapPartB }), client);
 		}
     }
 
@@ -829,7 +829,7 @@ public class MapUtil
             {
                 clientRequests.add(filename.getName());
                 //GCLog.debug("Info: Client requested map file" + filename.getName());
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { dim, cx, cz }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { dim, cx, cz }));
             }
             return true;
         }

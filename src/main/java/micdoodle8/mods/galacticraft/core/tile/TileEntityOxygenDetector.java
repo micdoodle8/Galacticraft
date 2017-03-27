@@ -11,13 +11,13 @@ public class TileEntityOxygenDetector extends TileEntityAdvanced
     {
         super.update();
 
-        if (this.worldObj != null && !this.worldObj.isRemote && this.ticks % 50 == 0)
+        if (this.world != null && !this.world.isRemote && this.ticks % 50 == 0)
         {
             this.blockType = this.getBlockType();
 
             if (this.blockType != null && this.blockType instanceof BlockOxygenDetector)
             {
-                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.getPos(), OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new AxisAlignedBB(this.getPos().getX() - 1, this.getPos().getY() - 1, this.getPos().getZ() - 1, this.getPos().getX() + 2, this.getPos().getY() + 2, this.getPos().getZ() + 2)));
+                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.world, this.getPos(), OxygenUtil.isAABBInBreathableAirBlock(this.world, new AxisAlignedBB(this.getPos().getX() - 1, this.getPos().getY() - 1, this.getPos().getZ() - 1, this.getPos().getX() + 2, this.getPos().getY() + 2, this.getPos().getZ() + 2)));
             }
         }
     }

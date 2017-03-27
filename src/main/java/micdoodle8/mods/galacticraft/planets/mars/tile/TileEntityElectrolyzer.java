@@ -60,7 +60,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.containingItems[1] != null)
             {
@@ -437,7 +437,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public int getBlockMetadata()
     {
-        return getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
+        return getBlockType().getMetaFromState(this.world.getBlockState(getPos()));
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
@@ -555,7 +555,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (provide > 0)
         {
-            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.world);
             FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)
@@ -610,7 +610,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (provide > 0)
         {
-            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.worldObj);
+            TileEntity outputTile = new BlockVec3(this).modifyPositionFromSide(outputDirection).getTileEntity(this.world);
             FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)
@@ -764,6 +764,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+        return this.world.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
     }
 }

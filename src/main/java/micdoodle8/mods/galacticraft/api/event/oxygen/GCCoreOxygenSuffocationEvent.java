@@ -18,7 +18,7 @@ public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
     public GCCoreOxygenSuffocationEvent(EntityLivingBase entity)
     {
         super(entity);
-        this.provider = entity.worldObj.provider;
+        this.provider = entity.world.provider;
     }
 
     /**

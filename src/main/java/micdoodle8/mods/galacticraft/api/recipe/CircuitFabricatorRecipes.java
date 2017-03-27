@@ -2,10 +2,7 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 public class CircuitFabricatorRecipes
@@ -78,9 +75,9 @@ public class CircuitFabricatorRecipes
      * @param inputList ItemStack array of input items
      * @return The result ItemStack
      */
-    public static ItemStack getOutputForInput(ItemStack[] inputList)
+    public static ItemStack getOutputForInput(List<ItemStack> inputList)
     {
-        if (inputList.length != 5)
+        if (inputList.size() != 5)
         {
             return null;
         }
@@ -92,7 +89,7 @@ public class CircuitFabricatorRecipes
             for (int i = 0; i < 5; i++)
             {
                 ItemStack recipeStack = recipe.getKey()[i];
-                ItemStack inputStack = inputList[i];
+                ItemStack inputStack = inputList.get(i);
 
                 if (recipeStack == null || inputStack == null)
                 {

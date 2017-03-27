@@ -49,7 +49,7 @@ public class ContainerAstroMinerDock extends Container
     @Override
     public boolean canInteractWith(EntityPlayer var1)
     {
-        return this.tileEntity.isUseableByPlayer(var1);
+        return this.tileEntity.isUsableByPlayer(var1);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ContainerAstroMinerDock extends Container
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var5);
+            slot.onTake(par1EntityPlayer, var5);
         }
 
         return var3;
