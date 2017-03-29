@@ -11,26 +11,32 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler, ILandingPadAttachable
+import javax.annotation.Nullable;
+
+public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable
 {
     private final int tankCapacity = 12000;
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-    private ItemStack[] containingItems = new ItemStack[2];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public IFuelable attachedFuelable;
     private boolean loadedFuelLastTick = false;
 
@@ -55,27 +61,27 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.loadedFuelLastTick = false;
 
-            if (this.containingItems[1] != null)
+            if (!this.stacks.get(1).isEmpty())
             {
-                if (this.containingItems[1].getItem() instanceof ItemCanisterGeneric)
+                if (this.stacks.get(1).getItem() instanceof ItemCanisterGeneric)
                 {
-                    if (this.containingItems[1].getItem() == GCItems.fuelCanister)
+                    if (this.stacks.get(1).getItem() == GCItems.fuelCanister)
                     {
-                        int originalDamage = this.containingItems[1].getItemDamage();
+                        int originalDamage = this.stacks.get(1).getItemDamage();
                         int used = this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
                         if (originalDamage + used == ItemCanisterGeneric.EMPTY)
                         {
-                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
+                            this.stacks.set(1, new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY));
                         }
                         else
                         {
-                            this.containingItems[1] = new ItemStack(GCItems.fuelCanister, 1, originalDamage + used);
+                            this.stacks.set(1, new ItemStack(GCItems.fuelCanister, 1, originalDamage + used));
                         }
                     }
                 }
                 else
                 {
-                    final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+                    FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
 
                     if (liquid != null)
                     {
@@ -87,23 +93,18 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                             {
                                 this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), true);
 
-                                if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
+                                if (FluidUtil.isBucket(this.stacks.get(1)) && net.minecraftforge.fluids.FluidUtil.getFluidHandler(this.stacks.get(1)) != null)
                                 {
-                                    final int amount = this.containingItems[1].stackSize;
+                                    final int amount = this.stacks.get(1).getCount();
                                     if (amount > 1)
                                     {
                                         this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * Fluid.BUCKET_VOLUME), true);
                                     }
-                                    this.containingItems[1] = new ItemStack(Items.BUCKET, amount);
+                                    this.stacks.set(1, new ItemStack(Items.BUCKET, amount));
                                 }
                                 else
                                 {
-                                    this.containingItems[1].stackSize--;
-
-                                    if (this.containingItems[1].stackSize == 0)
-                                    {
-                                        this.containingItems[1] = null;
-                                    }
+                                    this.stacks.get(1).shrink(1);
                                 }
                             }
                         }
@@ -156,7 +157,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        this.stacks = this.readStandardItemsFromNBT(par1NBTTagCompound);
 
         if (par1NBTTagCompound.hasKey("fuelTank"))
         {
@@ -168,7 +169,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.fuelTank.getFluid() != null)
         {
@@ -178,9 +179,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -312,5 +313,22 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public EnumFacing getElectricInputDirection()
     {
         return getFront().rotateY();
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+        return super.getCapability(capability, facing);
     }
 }

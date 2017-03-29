@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -28,6 +27,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.HashSet;
 import java.util.List;
@@ -78,7 +79,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 this.toUpdate = null;
             }
 
-            String name;
+            String name = null;
             int[] data = { -1, -1, -1, -1, -1 };
             String strUUID = "";
 
@@ -99,7 +100,11 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                     }
                     else
                     {
-                        name = EntityList.CLASS_TO_NAME.get(linkedEntity.getClass());
+                        EntityEntry entityEntry = EntityRegistry.getEntry(linkedEntity.getClass());
+                        if (entityEntry != null && entityEntry.getRegistryName() != null)
+                        {
+                            name = entityEntry.getRegistryName().toString();
+                        }
                     }
 
                     if (name == null)
@@ -162,7 +167,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         }
                         else if (eLiving instanceof EntityHorse)
                         {
-                            data[3] = ((EntityHorse) eLiving).getType().ordinal();
+//                            data[3] = ((EntityHorse) eLiving).getType().ordinal();
                             data[4] = ((EntityHorse) eLiving).getHorseVariant();
                         }
                         else if (eLiving instanceof EntityVillager)
@@ -186,7 +191,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         }
                         else if (eLiving instanceof EntitySkeleton)
                         {
-                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType().ordinal();
+//                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType().ordinal();
                         }
                         else if (eLiving instanceof EntityZombie)
                         {

@@ -13,17 +13,23 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandler
+import javax.annotation.Nullable;
+
+public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandlerWrapper
 {
     private IGridNetwork network;
     public TileEntity[] adjacentConnections = null;
@@ -113,14 +119,18 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
                 {
                     TileEntity sideTile = tiles[side.ordinal()];
 
-                    if (sideTile != null && !(sideTile instanceof IBufferTransmitter) && sideTile instanceof IFluidHandler)
+                    if (sideTile != null && !(sideTile instanceof IBufferTransmitter))
                     {
-                        IFluidHandler handler = (IFluidHandler) sideTile;
-                        FluidStack received = handler.drain(side.getOpposite(), this.pullAmount, false);
+                        IFluidHandler handler = sideTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
 
-                        if (received != null && received.amount != 0)
+                        if (handler != null)
                         {
-                            handler.drain(side.getOpposite(), this.fill(EnumFacing.DOWN, received, true), true);
+                            FluidStack received = handler.drain(this.pullAmount, false);
+
+                            if (received != null && received.amount != 0)
+                            {
+                                handler.drain(this.fill(EnumFacing.DOWN, received, true), true);
+                            }
                         }
                     }
                 }
@@ -296,5 +306,22 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     public boolean canTubeConnect(EnumFacing side)
     {
         return this.canConnect(side, NetworkType.FLUID);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+        return super.getCapability(capability, facing);
     }
 }

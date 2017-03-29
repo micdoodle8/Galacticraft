@@ -729,7 +729,7 @@ public class WorldUtil
             ridingRocket.removePassengers();
             ridingRocket.writeToNBTOptional(nbt);
 
-            ((WorldServer) ridingRocket.world).getEntityTracker().untrackEntity(ridingRocket);
+            ((WorldServer) ridingRocket.world).getEntityTracker().untrack(ridingRocket);
             removeEntityFromWorld(ridingRocket.world, ridingRocket, true);
 
             ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(nbt, worldNew);
@@ -911,31 +911,31 @@ public class WorldUtil
                 GCPlayerHandler.setUsingParachute(player, stats, false);
             }
 
-            if (stats.getRocketStacks() != null && stats.getRocketStacks().length > 0)
+            if (stats.getRocketStacks() != null && !stats.getRocketStacks().isEmpty())
             {
-                for (int stack = 0; stack < stats.getRocketStacks().length; stack++)
+                for (int stack = 0; stack < stats.getRocketStacks().size(); stack++)
                 {
                     if (transferInv)
                     {
-                        if (stats.getRocketStacks()[stack] == null)
+                        if (stats.getRocketStacks().get(stack).isEmpty())
                         {
-                            if (stack == stats.getRocketStacks().length - 1)
+                            if (stack == stats.getRocketStacks().size() - 1)
                             {
                                 if (stats.getRocketItem() != null)
                                 {
-                                    stats.getRocketStacks()[stack] = new ItemStack(stats.getRocketItem(), 1, stats.getRocketType());
+                                    stats.getRocketStacks().set(stack, new ItemStack(stats.getRocketItem(), 1, stats.getRocketType()));
                                 }
                             }
-                            else if (stack == stats.getRocketStacks().length - 2)
+                            else if (stack == stats.getRocketStacks().size() - 2)
                             {
-                                stats.getRocketStacks()[stack] = stats.getLaunchpadStack();
+                                stats.getRocketStacks().set(stack, stats.getLaunchpadStack());
                                 stats.setLaunchpadStack(null);
                             }
                         }
                     }
                     else
                     {
-                        stats.getRocketStacks()[stack] = null;
+                        stats.getRocketStacks().set(stack, ItemStack.EMPTY);
                     }
                 }
             }

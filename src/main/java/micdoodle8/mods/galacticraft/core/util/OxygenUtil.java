@@ -35,7 +35,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -469,8 +470,9 @@ public class OxygenUtil
         for (EnumFacing direction : EnumFacing.values())
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+            IFluidHandler handler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite());
 
-            if (tileEntity instanceof IFluidHandler)
+            if (handler != null)
             {
                 if (ignoreConnect || !(tileEntity instanceof IConnector) || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID))
                 {

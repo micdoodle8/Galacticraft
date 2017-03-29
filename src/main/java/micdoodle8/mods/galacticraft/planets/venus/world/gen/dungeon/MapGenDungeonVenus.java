@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -86,6 +87,12 @@ public class MapGenDungeonVenus extends MapGenStructure
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
         return new MapGenDungeonVenus.Start(this.world, this.rand, chunkX, chunkZ, this.configuration);
+    }
+
+    @Override
+    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_)
+    {
+        return null;
     }
 
     public static class Start extends StructureStart

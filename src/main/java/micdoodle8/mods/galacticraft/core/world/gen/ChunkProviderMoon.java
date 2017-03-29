@@ -38,7 +38,7 @@ public class ChunkProviderMoon extends ChunkProviderOverworld
     private final NoiseModule noiseGen3;
     private final NoiseModule noiseGen4;
 
-    private final World worldObj;
+    private final World world;
     private final MapGenVillageMoon villageGenerator = new MapGenVillageMoon();
 
     private final MapGenDungeon dungeonGeneratorMoon = new MapGenDungeon(new DungeonConfiguration(GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK), 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class));

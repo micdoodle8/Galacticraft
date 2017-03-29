@@ -7,6 +7,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
@@ -35,9 +36,9 @@ public class StructureComponentVillageField extends StructureComponentVillage
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        super.readStructureFromNBT(nbt);
+        super.readStructureFromNBT(nbt, manager);
 
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
@@ -86,7 +87,7 @@ public class StructureComponentVillageField extends StructureComponentVillage
                 {
                     if (par2Random.nextInt(3) == 0)
                     {
-                        this.setBlockState(par1World, Blocks.SAPLING.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 0, 2)), i, 1, var4, par3StructureBoundingBox);
+                        this.setBlockState(par1World, Blocks.SAPLING.getStateFromMeta(MathHelper.getInt(par2Random, 0, 2)), i, 1, var4, par3StructureBoundingBox);
                     }
                 }
             }

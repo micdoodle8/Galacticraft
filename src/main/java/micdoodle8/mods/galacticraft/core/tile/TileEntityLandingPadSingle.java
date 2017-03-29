@@ -45,7 +45,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
 
                 if (tilePadFull != null)
                 {
-                    tilePadFull.onCreate(worldObj, this.getPos());
+                    tilePadFull.onCreate(this.world, this.getPos());
                 }
             }
         }

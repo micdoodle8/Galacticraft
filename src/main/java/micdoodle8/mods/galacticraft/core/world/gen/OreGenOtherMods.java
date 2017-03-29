@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class OreGenOtherMods
 {
-    private World worldObj;
+    private World world;
     private Random randomGenerator;
 
     private BlockPos pos;
@@ -213,13 +213,13 @@ public class OreGenOtherMods
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
-        this.world = event.world;
+        this.world = event.worldObj;
         this.randomGenerator = event.rand;
         this.pos = event.pos;
 
         int dimDetected = 0;
 
-        WorldProvider prov = worldObj.provider;
+        WorldProvider prov = world.provider;
         if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderSpaceStation))
         {
             return;

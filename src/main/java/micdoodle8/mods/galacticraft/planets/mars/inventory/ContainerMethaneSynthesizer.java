@@ -118,7 +118,7 @@ public class ContainerMethaneSynthesizer extends Container
                             return null;
                         }
                     }
-                    else if (FluidUtil.isEmptyContainer(var4, AsteroidsItems.methaneCanister))
+                    else if (FluidUtil.isPartialContainer(var4, AsteroidsItems.methaneCanister))
                     {
                         if (!this.mergeItemStack(var4, 4, 5, false))
                         {

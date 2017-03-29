@@ -497,7 +497,7 @@ public class MapGen extends BiomeProvider implements Runnable
                     double d7 = noiseField1[l] / 512.0D;
                     double d8 = noiseField2[l] / 512.0D;
                     double d9 = (noiseField3[l] / 10.0D + 1.0D) / 2.0D;
-                    heighttemp[l] = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
+                    heighttemp[l] = MathHelper.clampedLerp(d7, d8, d9) - d6;
                     ++l;
                 }
                 l += 16;

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -36,7 +37,7 @@ public abstract class StructureComponentGC extends StructureComponent
         return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
     }
 
-    protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, String var6, StructureBoundingBox var7)
+    protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, StructureBoundingBox var7)
     {
         final int var8 = this.getXWithOffset(var3, var5);
         final int var9 = this.getYWithOffset(var4);
@@ -50,7 +51,7 @@ public abstract class StructureComponentGC extends StructureComponent
 
             if (var11 != null)
             {
-                var11.getSpawnerBaseLogic().setEntityName(var6);
+                var11.getSpawnerBaseLogic().setEntityId(var6);
             }
         }
     }

@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class BiomeDecoratorMoon extends BiomeDecorator
 {
-    private World worldObj;
+    private World world;
     private Random randomGenerator;
 
     private WorldGenerator dirtGen;
@@ -84,11 +84,11 @@ public class BiomeDecoratorMoon extends BiomeDecorator
             {
                 BlockPos blockpos = this.chunkPos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(28) + 4, this.randomGenerator.nextInt(16));
 
-                IBlockState toReplace = worldObj.getBlockState(blockpos);
+                IBlockState toReplace = this.world.getBlockState(blockpos);
 
-                if (toReplace.getBlock() == GCBlocks.blockMoon && toReplace.getBlock().isReplaceableOreGen(toReplace, worldObj, blockpos, BlockMatcher.forBlock(Blocks.STONE)))
+                if (toReplace.getBlock() == GCBlocks.blockMoon && toReplace.getBlock().isReplaceableOreGen(toReplace, this.world, blockpos, BlockMatcher.forBlock(Blocks.STONE)))
                 {
-                    worldObj.setBlockState(blockpos, GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.ORE_SAPPHIRE), 2);
+                    this.world.setBlockState(blockpos, GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.ORE_SAPPHIRE), 2);
                 }
             }
         }

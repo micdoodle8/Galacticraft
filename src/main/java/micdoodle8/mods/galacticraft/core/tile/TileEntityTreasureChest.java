@@ -10,18 +10,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerChest;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -37,7 +30,7 @@ import java.util.Random;
 
 public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, IPacketReceiver
 {
-    private ItemStack[] chestContents = new ItemStack[27];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(27, ItemStack.EMPTY);
     public boolean adjacentChestChecked;
     public float lidAngle;
     public float prevLidAngle;
@@ -61,94 +54,62 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         this.tier = tier;
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     @Override
     public int getSizeInventory()
     {
         return 27;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     @Override
-    public ItemStack getStackInSlot(int index)
+    public ItemStack getStackInSlot(int var1)
     {
-        return this.chestContents[index];
+        return this.stacks.get(var1);
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        if (this.chestContents[index] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack itemstack;
-
-            if (this.chestContents[index].stackSize <= count)
-            {
-                itemstack = this.chestContents[index];
-                this.chestContents[index] = null;
-                this.markDirty();
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.chestContents[index].splitStack(count);
-
-                if (this.chestContents[index].stackSize == 0)
-                {
-                    this.chestContents[index] = null;
-                }
-
-                this.markDirty();
-                return itemstack;
-            }
+            this.markDirty();
         }
-        else
-        {
-            return null;
-        }
+
+        return itemstack;
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        if (this.chestContents[index] != null)
-        {
-            ItemStack itemstack = this.chestContents[index];
-            this.chestContents[index] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
+        return ItemStackHelper.getAndRemove(this.stacks, index);
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     @Override
     public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.chestContents[index] = stack;
+        this.stacks.set(index, stack);
 
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
+        if (stack.getCount() > this.getInventoryStackLimit())
         {
-            stack.stackSize = this.getInventoryStackLimit();
+            stack.setCount(this.getInventoryStackLimit());
         }
 
         this.markDirty();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -174,52 +135,29 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(compound);
-        this.locked = compound.getBoolean("isLocked");
-        this.tier = compound.getInteger("tier");
-        NBTTagList nbttaglist = compound.getTagList("Items", 10);
-        this.chestContents = new ItemStack[this.getSizeInventory()];
+        super.readFromNBT(nbt);
+        this.locked = nbt.getBoolean("isLocked");
+        this.tier = nbt.getInteger("tier");
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 255;
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
 
-            if (j >= 0 && j < this.chestContents.length)
-            {
-                this.chestContents[j] = new ItemStack(nbttagcompound1);
-            }
-        }
-
-        checkLootAndRead(compound);
+        checkLootAndRead(nbt);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(compound);
-        compound.setBoolean("isLocked", this.locked);
-        compound.setInteger("tier", this.tier);
-        NBTTagList nbttaglist = new NBTTagList();
+        super.writeToNBT(nbt);
+        nbt.setBoolean("isLocked", this.locked);
+        nbt.setInteger("tier", this.tier);
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
-        for (int i = 0; i < this.chestContents.length; ++i)
-        {
-            if (this.chestContents[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.chestContents[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
+        checkLootAndWrite(nbt);
 
-        compound.setTag("Items", nbttaglist);
-
-        checkLootAndWrite(compound);
-
-        return compound;
+        return nbt;
     }
 
     /**
@@ -363,8 +301,8 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
             ++this.numPlayersUsing;
             this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
-            this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
+            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
+            this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
         }
     }
 
@@ -429,9 +367,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public void clear()
     {
-        for (int i = 0; i < this.chestContents.length; ++i)
+        for (int i = 0; i < this.stacks.size(); ++i)
         {
-            this.chestContents[i] = null;
+            this.stacks.set(i, ItemStack.EMPTY);
         }
     }
 
@@ -479,9 +417,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             }
             else
             {
-                if (!player.capabilities.isCreativeMode && --player.inventory.getCurrentItem().stackSize == 0)
+                if (!player.capabilities.isCreativeMode)
                 {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                    player.inventory.getCurrentItem().shrink(1);
                 }
 
                 return true;

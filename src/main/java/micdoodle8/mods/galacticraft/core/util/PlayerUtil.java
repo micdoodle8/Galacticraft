@@ -38,7 +38,7 @@ public class PlayerUtil
             }
             else
             {
-                Iterator iterator = server.getPlayerList().getPlayerList().iterator();
+                Iterator iterator = server.getPlayerList().getPlayers().iterator();
                 EntityPlayerMP entityplayermp;
 
                 do
@@ -123,7 +123,7 @@ public class PlayerUtil
 
     public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
     {
-        List players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+        List players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
         EntityPlayerMP entityplayermp;
         for (int i = players.size() - 1; i >= 0; --i)
         {
@@ -140,6 +140,6 @@ public class PlayerUtil
 
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
-        return player.world.getMinecraftServer().getPlayerList().getPlayerList().contains(player);
+        return player.world.getMinecraftServer().getPlayerList().getPlayers().contains(player);
     }
 }

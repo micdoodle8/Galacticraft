@@ -10,7 +10,7 @@ public class BiomeFlatMoon extends BiomeMoon
         super(properties);
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
-            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+            BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
         }
     }
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -43,7 +44,7 @@ public abstract class StructureComponentMoon extends StructureComponent
         }
     }
 
-    protected TileEntityMobSpawner placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, String var6, StructureBoundingBox var7)
+    protected TileEntityMobSpawner placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, StructureBoundingBox var7)
     {
         TileEntityMobSpawner var8 = null;
         final int var9 = this.getXWithOffset(var3, var5);
@@ -57,7 +58,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
             if (var8 != null)
             {
-                var8.getSpawnerBaseLogic().setEntityName(var6);
+                var8.getSpawnerBaseLogic().setEntityId(var6);
             }
         }
 

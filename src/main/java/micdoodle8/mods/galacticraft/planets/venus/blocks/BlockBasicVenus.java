@@ -224,7 +224,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             switch (type)
             {
             case ORE_SILICON:
-                i = MathHelper.getRandomIntegerInRange(rand, 2, 5);
+                i = MathHelper.getInt(rand, 2, 5);
                 break;
             default:
                 i = 0;

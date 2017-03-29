@@ -28,6 +28,11 @@ public class CreativeTabGC extends CreativeTabs
         return this.itemForTab;
     }
 
+    public void setItemForTab(ItemStack itemForTab)
+    {
+        this.itemForTab = itemForTab;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public String getTranslatedTabLabel()

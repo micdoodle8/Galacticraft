@@ -301,7 +301,7 @@ public class ChunkProviderVenus implements IChunkGenerator
                     double d2 = this.octaves2[i] / 512.0;
                     double d3 = this.octaves3[i] / 1024.0;
                     double d4 = (this.octaves1[i] / 10.0D + 1.0D) / 2.0D;
-//                    double d5 = MathHelper.denormalizeClamp(d2, d3, d4) - d1;
+//                    double d5 = MathHelper.clampedLerp(d2, d3, d4) - d1;
                     double d5 = d3 - d1;
 
                     if (l1 > 29)

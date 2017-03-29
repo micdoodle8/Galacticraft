@@ -150,7 +150,7 @@ public class TileEntityPainter extends TileEntity
     {
         Set<BlockVec3> loaded = getLoadedTiles(world);
         int dimID = GCCoreUtil.getDimensionID(world);
-        List<EntityPlayerMP> allPlayers = (List<EntityPlayerMP>)FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+        List<EntityPlayerMP> allPlayers = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
         for (final EntityPlayerMP player : allPlayers)
         {
             if (player.dimension != dimID) continue;

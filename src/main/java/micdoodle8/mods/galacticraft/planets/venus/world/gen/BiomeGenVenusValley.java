@@ -19,7 +19,7 @@ public class BiomeGenVenusValley extends BiomeVenus
         super(properties);
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
-            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
+            BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
         }
     }
 

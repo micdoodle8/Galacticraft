@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Ordering;
-
 import micdoodle8.mods.galacticraft.core.blocks.*;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
@@ -15,15 +15,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -307,7 +310,35 @@ public class GCBlocks
     {
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
-        GameRegistry.registerBlock(block, itemClass, name, itemCtorArgs);
+        if (block.getRegistryName() == null)
+        {
+            block.setRegistryName(name);
+        }
+        GameRegistry.register(block);
+        ItemBlock item = null;
+
+        Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
+        ctorArgClasses[0] = Block.class;
+        for (int idx = 1; idx < ctorArgClasses.length; idx++)
+        {
+            ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
+        }
+
+        try
+        {
+            Constructor<? extends ItemBlock> constructor = itemClass.getConstructor(ctorArgClasses);
+            item = constructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        if (item != null)
+        {
+            GameRegistry.register(item.setRegistryName(name));
+        }
+
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {
             GCBlocks.registerSorted(block);
@@ -321,9 +352,9 @@ public class GCBlocks
         if (block instanceof ISortableBlock)
         {
             ISortableBlock sortableBlock = (ISortableBlock) block;
-            List<ItemStack> blocks = Lists.newArrayList();
+            NonNullList<ItemStack> blocks = NonNullList.create();
             Item item = Item.getItemFromBlock(block);
-            if (item == null)
+            if (item == Items.AIR)
             {
                 return;
             }

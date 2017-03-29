@@ -69,7 +69,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
         return false;
     }
 
-    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (this.mainBlockPosition != null)
         {
@@ -77,7 +77,7 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
 
             if (state.getBlock() instanceof BlockAdvanced)
             {
-                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, hand, side, hitX, hitY, hitZ);
             }
         }
 

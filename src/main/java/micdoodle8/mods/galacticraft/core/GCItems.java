@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -186,7 +187,7 @@ public class GCItems
         if (item instanceof ISortableItem)
         {
             ISortableItem sortableItem = (ISortableItem) item;
-            List<ItemStack> items = Lists.newArrayList();
+            NonNullList<ItemStack> items = NonNullList.create();
             item.getSubItems(item, null, items);
             for (ItemStack stack : items)
             {
@@ -258,7 +259,7 @@ public class GCItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
-        GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+        GameRegistry.register(item.setRegistryName(name));
         GalacticraftCore.proxy.postRegisterItem(item);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {

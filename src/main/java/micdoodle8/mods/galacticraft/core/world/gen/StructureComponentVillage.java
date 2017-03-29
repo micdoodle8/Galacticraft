@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
@@ -45,9 +46,9 @@ public abstract class StructureComponentVillage extends StructureComponent
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbttagcompound)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        this.villagersSpawned = nbttagcompound.getInteger("VCount");
+        this.villagersSpawned = nbt.getInteger("VCount");
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

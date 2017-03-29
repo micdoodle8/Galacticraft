@@ -17,7 +17,7 @@ public class ChunkProviderOrbit extends ChunkProviderOverworld
 {
     private final Random rand;
 
-    private final World worldObj;
+    private final World world;
 
     public ChunkProviderOrbit(World par1World, long par2, boolean par4)
     {
