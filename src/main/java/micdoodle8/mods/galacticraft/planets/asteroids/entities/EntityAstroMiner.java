@@ -34,6 +34,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,6 +46,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -57,10 +59,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
@@ -93,7 +92,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private boolean TEMPDEBUG = false;
     private boolean TEMPFAST = false;
 
-    public ItemStack[] cargoItems;
+    public NonNullList<ItemStack> stacks;
 
     public int energyLevel;
     public int mineCount = 0;
@@ -198,10 +197,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         //Add configurable blacklist
     }
 
-    public EntityAstroMiner(World world, ItemStack[] cargo, int energy)
+    public EntityAstroMiner(World world, NonNullList<ItemStack> cargo, int energy)
     {
         this(world);
-        this.cargoItems = cargo.clone();
+        Collections.copy(this.stacks, cargo);
         this.energyLevel = energy;
     }
 
@@ -245,70 +244,59 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public int getSizeInventory()
     {
-        return this.cargoItems.length;
+        return this.stacks.size();
     }
 
     @Override
     public ItemStack getStackInSlot(int var1)
     {
-        return this.cargoItems[var1];
+        return this.stacks.get(var1);
     }
 
     @Override
-    public ItemStack decrStackSize(int var1, int var2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.cargoItems[var1] != null)
-        {
-            ItemStack var3;
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
 
-            if (this.cargoItems[var1].stackSize <= var2)
+        if (!itemstack.isEmpty())
+        {
+            this.markDirty();
+        }
+
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        return ItemStackHelper.getAndRemove(this.stacks, index);
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.stacks.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
             {
-                var3 = this.cargoItems[var1];
-                this.cargoItems[var1] = null;
-                return var3;
-            }
-            else
-            {
-                var3 = this.cargoItems[var1].splitStack(var2);
-
-                if (this.cargoItems[var1].stackSize == 0)
-                {
-                    this.cargoItems[var1] = null;
-                }
-
-                return var3;
+                return false;
             }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    @Override
-    public ItemStack removeStackFromSlot(int var1)
-    {
-        if (this.cargoItems[var1] != null)
-        {
-            final ItemStack var2 = this.cargoItems[var1];
-            this.cargoItems[var1] = null;
-            return var2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2)
-    {
-        this.cargoItems[var1] = var2;
-
-        if (var2 != null && var2.stackSize > this.getInventoryStackLimit())
-        {
-            var2.stackSize = this.getInventoryStackLimit();
-        }
+        return true;
     }
 
     @Override
@@ -359,29 +347,28 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private boolean emptyInventory(TileEntityMinerBase minerBase)
     {
         boolean doneOne = false;
-        for (int i = 0; i < this.cargoItems.length; i++)
+        for (int i = 0; i < this.stacks.size(); i++)
         {
-            ItemStack stack = this.cargoItems[i];
+            ItemStack stack = this.stacks.get(i);
             if (stack == null)
             {
                 continue;
             }
-            if (stack.stackSize == 0)
+            if (stack.isEmpty())
             {
-                this.cargoItems[i] = null;
                 continue;
             }
-            int sizeprev = stack.stackSize;
+            int sizeprev = stack.getCount();
             minerBase.addToInventory(stack);
-            if (stack == null || stack.stackSize == 0)
+            if (stack.isEmpty())
             {
-                this.cargoItems[i] = null;
+                this.stacks.set(i, ItemStack.EMPTY);
                 this.markDirty();
                 return true;
             }
-            else if (stack.stackSize < sizeprev)
+            else if (stack.getCount() < sizeprev)
             {
-                this.cargoItems[i] = stack;
+                this.stacks.set(i, stack);
                 this.markDirty();
                 //Something was transferred although some stacks remaining
                 return true;
@@ -793,13 +780,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         for (int i = 0; i < this.getSizeInventory(); i++)
         {
-            if (this.cargoItems[i] == null)
+            if (this.stacks.get(i) == null)
             {
                 return true;
             }
-            if (this.cargoItems[i].stackSize == 0)
+            if (this.stacks.get(i).isEmpty())
             {
-                this.cargoItems[i] = null;
+                this.stacks.set(i, ItemStack.EMPTY);
                 return true;
             }
         }
@@ -1634,24 +1621,24 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         if (itemstack.isStackable())
         {
-            while (itemstack.stackSize > 0 && k < invSize)
+            while (!itemstack.isEmpty() && k < invSize)
             {
-                itemstack1 = this.cargoItems[k];
+                itemstack1 = this.stacks.get(k);
 
-                if (itemstack1 != null && itemstack1.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, itemstack1))
+                if (!itemstack1.isEmpty() && itemstack1.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, itemstack1))
                 {
-                    int l = itemstack1.stackSize + itemstack.stackSize;
+                    int l = itemstack1.getCount() + itemstack.getCount();
 
                     if (l <= itemstack.getMaxStackSize())
                     {
-                        itemstack.stackSize = 0;
-                        itemstack1.stackSize = l;
+                        itemstack.setCount(0);
+                        itemstack1.setCount(l);
                         flag1 = true;
                     }
-                    else if (itemstack1.stackSize < itemstack.getMaxStackSize())
+                    else if (itemstack1.getCount() < itemstack.getMaxStackSize())
                     {
-                        itemstack.stackSize -= itemstack.getMaxStackSize() - itemstack1.stackSize;
-                        itemstack1.stackSize = itemstack.getMaxStackSize();
+                        itemstack.shrink(itemstack.getMaxStackSize() - itemstack1.getCount());
+                        itemstack1.setCount(itemstack.getMaxStackSize());
                         flag1 = true;
                     }
                 }
@@ -1660,18 +1647,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
         }
 
-        if (itemstack.stackSize > 0)
+        if (!itemstack.isEmpty())
         {
             k = 0;
 
             while (k < invSize)
             {
-                itemstack1 = this.cargoItems[k];
+                itemstack1 = this.stacks.get(k);
 
-                if (itemstack1 == null)
+                if (itemstack1.isEmpty())
                 {
-                    this.cargoItems[k] = itemstack.copy();
-                    itemstack.stackSize = 0;
+                    this.stacks.set(k, itemstack.copy());
+                    itemstack.setCount(0);
                     flag1 = true;
                     break;
                 }
@@ -1971,7 +1958,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             return true;
         }
-        final EntityAstroMiner miner = new EntityAstroMiner(world, new ItemStack[EntityAstroMiner.INV_SIZE], 0);
+        final EntityAstroMiner miner = new EntityAstroMiner(world, NonNullList.withSize(EntityAstroMiner.INV_SIZE, ItemStack.EMPTY), 0);
         miner.setPlayer(player);
         if (player.capabilities.isCreativeMode)
         {
@@ -2069,7 +2056,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        if (this.isDead || par1DamageSource.equals(DamageSource.cactus))
+        if (this.isDead || par1DamageSource.equals(DamageSource.CACTUS))
         {
             return true;
         }
@@ -2246,13 +2233,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         ItemStack rocket = new ItemStack(AsteroidsItems.astroMiner, 1, 0);
         droppedItems.add(rocket);
-        for (int i = 0; i < this.cargoItems.length; i++)
+        for (int i = 0; i < this.stacks.size(); i++)
         {
-            if (this.cargoItems[i] != null)
+            if (!this.stacks.get(i).isEmpty())
             {
-                droppedItems.add(this.cargoItems[i]);
+                droppedItems.add(this.stacks.get(i));
             }
-            this.cargoItems[i] = null;
+            this.stacks.set(i, ItemStack.EMPTY);
         }
         return droppedItems;
     }
@@ -2353,22 +2340,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        final NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.cargoItems = new ItemStack[this.INV_SIZE];
-
-        if (var2 != null)
-        {
-            for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-            {
-                final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-                final int var5 = var4.getByte("Slot") & 255;
-
-                if (var5 < this.cargoItems.length)
-                {
-                    this.cargoItems[var5] = new ItemStack(var4);
-                }
-            }
-        }
+        this.stacks = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
 
         if (nbt.hasKey("Energy"))
         {
@@ -2456,19 +2429,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         final NBTTagList var2 = new NBTTagList();
 
-        if (this.cargoItems != null)
-        {
-            for (int var3 = 0; var3 < this.cargoItems.length; ++var3)
-            {
-                if (this.cargoItems[var3] != null)
-                {
-                    final NBTTagCompound var4 = new NBTTagCompound();
-                    var4.setByte("Slot", (byte) var3);
-                    this.cargoItems[var3].writeToNBT(var4);
-                    var2.appendTag(var4);
-                }
-            }
-        }
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         nbt.setTag("Items", var2);
         nbt.setInteger("Energy", this.energyLevel);

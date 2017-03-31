@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -34,14 +35,14 @@ public class EntityTier2Rocket extends EntityTieredRocket
     {
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
-        this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         this.setSize(1.2F, 4.5F);
     }
 
-    public EntityTier2Rocket(World par1World, double par2, double par4, double par6, boolean reversed, EnumRocketType rocketType, ItemStack[] inv)
+    public EntityTier2Rocket(World par1World, double par2, double par4, double par6, boolean reversed, EnumRocketType rocketType, NonNullList<ItemStack> inv)
     {
         this(par1World, par2, par4, par6, rocketType);
-        this.cargoItems = inv;
+        this.stacks = inv;
     }
 
     @Override
@@ -162,13 +163,13 @@ public class EntityTier2Rocket extends EntityTieredRocket
         {
             IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
 
-            if (this.cargoItems == null || this.cargoItems.length == 0)
+            if (this.stacks == null || this.stacks.size() == 0)
             {
-                stats.setRocketStacks(new ItemStack[2]);
+                stats.setRocketStacks(NonNullList.withSize(2, ItemStack.EMPTY));
             }
             else
             {
-                stats.setRocketStacks(this.cargoItems);
+                stats.setRocketStacks(this.stacks);
             }
 
             stats.setRocketType(this.rocketType.getIndex());

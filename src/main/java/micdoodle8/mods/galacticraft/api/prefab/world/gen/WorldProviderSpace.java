@@ -272,14 +272,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return null;
     }
 
-    @Override
-    protected void createBiomeProvider()
+    protected void init()
     {
-        if (this.getBiomeProviderClass() == null)
-        {
-            super.createBiomeProvider();
-        }
-        else
+        super.init();
+
+        if (this.getBiomeProviderClass() != null)
         {
             try
             {

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.world.biome.Biome;
 
@@ -21,6 +22,7 @@ public class BiomeAsteroids extends Biome
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.resetMonsterListByMode(ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning);
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 2, GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName(), this);
     }
 
     public void resetMonsterListByMode(boolean challengeMode)

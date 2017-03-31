@@ -317,26 +317,29 @@ public class GCBlocks
         GameRegistry.register(block);
         ItemBlock item = null;
 
-        Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
-        ctorArgClasses[0] = Block.class;
-        for (int idx = 1; idx < ctorArgClasses.length; idx++)
+        if (itemClass != null)
         {
-            ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
-        }
+            Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
+            ctorArgClasses[0] = Block.class;
+            for (int idx = 1; idx < ctorArgClasses.length; idx++)
+            {
+                ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
+            }
 
-        try
-        {
-            Constructor<? extends ItemBlock> constructor = itemClass.getConstructor(ctorArgClasses);
-            item = constructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+            try
+            {
+                Constructor<? extends ItemBlock> constructor = itemClass.getConstructor(ctorArgClasses);
+                item = constructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-        if (item != null)
-        {
-            GameRegistry.register(item.setRegistryName(name));
+            if (item != null)
+            {
+                GameRegistry.register(item.setRegistryName(name));
+            }
         }
 
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)

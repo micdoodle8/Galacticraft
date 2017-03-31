@@ -84,9 +84,7 @@ public class GCCoreUtil
         if (nextEggID < 65536)
         {
             ResourceLocation resourcelocation = new ResourceLocation(Constants.MOD_ID_CORE, name);
-            name = Constants.MOD_ID_CORE + "." + name;
-            net.minecraftforge.fml.common.registry.EntityEntry entry = new net.minecraftforge.fml.common.registry.EntityEntry(clazz, name);
-            net.minecraftforge.fml.common.registry.GameData.getEntityRegistry().register(nextEggID, resourcelocation, entry);
+//            name = Constants.MOD_ID_CORE + "." + name;
             EntityList.ENTITY_EGGS.put(resourcelocation, new EntityList.EntityEggInfo(resourcelocation, back, fore));
         }
     }

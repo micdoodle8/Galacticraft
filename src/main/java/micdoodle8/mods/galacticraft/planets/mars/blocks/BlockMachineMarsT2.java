@@ -28,6 +28,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -35,7 +36,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription, ISortableBlock
@@ -252,13 +252,12 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(this, 1, BlockMachineMarsT2.GAS_LIQUEFIER));
-        par3List.add(new ItemStack(this, 1, BlockMachineMarsT2.METHANE_SYNTHESIZER));
-        par3List.add(new ItemStack(this, 1, BlockMachineMarsT2.ELECTROLYZER));
+        list.add(new ItemStack(itemIn, 1, BlockMachineMarsT2.GAS_LIQUEFIER));
+        list.add(new ItemStack(itemIn, 1, BlockMachineMarsT2.METHANE_SYNTHESIZER));
+        list.add(new ItemStack(itemIn, 1, BlockMachineMarsT2.ELECTROLYZER));
     }
 
     @Override

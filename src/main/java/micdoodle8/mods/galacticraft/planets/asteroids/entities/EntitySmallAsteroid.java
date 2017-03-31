@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -68,7 +69,7 @@ public class EntitySmallAsteroid extends Entity
             this.motionZ *= 1.001D;
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.firstUpdate = false;
     }
 

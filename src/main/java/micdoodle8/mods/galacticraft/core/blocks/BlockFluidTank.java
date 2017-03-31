@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -170,7 +171,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
 
         ItemStack current = playerIn.inventory.getCurrentItem();
 
-        if (current != null)
+        if (!current.isEmpty())
         {
             TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -178,7 +179,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
             {
                 TileEntityFluidTank tank = (TileEntityFluidTank) tile;
 
-                if (FluidUtil.interactWithFluidHandler(current, tank, playerIn).isSuccess())
+                if (FluidUtil.interactWithFluidHandler(current, tank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), playerIn).isSuccess())
                 {
                     return true;
                 }

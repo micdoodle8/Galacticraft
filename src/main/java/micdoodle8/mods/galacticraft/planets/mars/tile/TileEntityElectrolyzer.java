@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
@@ -53,7 +54,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
-    private ItemStack[] containingItems = new ItemStack[4];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(4, ItemStack.EMPTY);
 
     public TileEntityElectrolyzer()
     {
@@ -68,9 +69,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (!this.world.isRemote)
         {
-            if (this.containingItems[1] != null)
+            if (!this.stacks.get(1).isEmpty())
             {
-                FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.containingItems[1]);
+                FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
 
                 if (liquid != null && liquid.getFluid().getName().equals(FluidRegistry.WATER.getName()))
                 {
@@ -78,7 +79,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
                     {
                         this.waterTank.fill(liquid, true);
 
-                        this.containingItems[1] = FluidUtil.getUsedContainer(this.containingItems[1]);
+                        ItemStack stack = FluidUtil.getUsedContainer(this.stacks.get(1));
+                        this.stacks.set(1, stack == null ? ItemStack.EMPTY : stack);
                     }
                 }
             }
@@ -154,7 +156,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (this.containingItems[slot] != null && this.containingItems[slot].getItem() instanceof ItemAtmosphericValve)
+        if (!this.stacks.get(slot).isEmpty() && this.stacks.get(slot).getItem() instanceof ItemAtmosphericValve)
         {
             tank.drain(4, true);
         }
@@ -193,7 +195,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("processTicks");
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         if (nbt.hasKey("waterTank"))
         {
@@ -215,7 +217,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         super.writeToNBT(nbt);
         nbt.setInteger("processTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.waterTank.getFluid() != null)
         {
@@ -235,9 +237,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
 
     private final Random rand;
 
-    private final World worldObj;
+    private final World world;
 
     private final NoiseModule asteroidDensity;
 
@@ -673,25 +673,25 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                         }
                     }
 
-                    worldObj.setBlockState(new BlockPos(px, y, pz), block.getStateFromMeta(meta), 2);
+                    world.setBlockState(new BlockPos(px, y, pz), block.getStateFromMeta(meta), 2);
                     int count = 7;
-                    if (!(worldObj.getBlockState(new BlockPos(px - 1, y, pz)).getBlock() instanceof BlockAir))
+                    if (!(world.getBlockState(new BlockPos(px - 1, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 1;
                     }
-                    else if (!(worldObj.getBlockState(new BlockPos(px - 2, y, pz)).getBlock() instanceof BlockAir))
+                    else if (!(world.getBlockState(new BlockPos(px - 2, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 3;
                     }
-                    else if (!(worldObj.getBlockState(new BlockPos(px - 3, y, pz)).getBlock() instanceof BlockAir))
+                    else if (!(world.getBlockState(new BlockPos(px - 3, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 5;
                     }
-                    else if (!(worldObj.getBlockState(new BlockPos(px - 4, y, pz)).getBlock() instanceof BlockAir))
+                    else if (!(world.getBlockState(new BlockPos(px - 4, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 6;
                     }
-                    worldObj.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(px, y, pz), count);
+                    world.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(px, y, pz), count);
                 }
             }
         }
@@ -735,7 +735,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                     {
                         int i = rand.nextInt(16) + x + 8;
                         int k = rand.nextInt(16) + z + 8;
-                        if (wg.generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k)))
+                        if (wg.generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k)))
                         {
                             break;
                         }
@@ -746,26 +746,26 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;
-                    new WorldGenTallGrass(GRASS_TYPE).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
+                    new WorldGenTallGrass(GRASS_TYPE).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
                 }
                 if (rand.nextInt(ChunkProviderAsteroids.FLOWER_CHANCE) == 0)
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;
                     BlockFlower.EnumFlowerType[] types = BlockFlower.EnumFlowerType.getTypes(BlockFlower.EnumFlowerColor.RED);
-                    new WorldGenFlowers(this.FLOWER, types[rand.nextInt(types.length)]).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
+                    new WorldGenFlowers(this.FLOWER, types[rand.nextInt(types.length)]).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
                 }
                 if (rand.nextInt(ChunkProviderAsteroids.LAVA_CHANCE) == 0)
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;
-                    new WorldGenLakes(this.LAVA).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
+                    new WorldGenLakes(this.LAVA).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
                 }
                 if (rand.nextInt(ChunkProviderAsteroids.WATER_CHANCE) == 0)
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;
-                    new WorldGenLakes(this.WATER).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
+                    new WorldGenLakes(this.WATER).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
                 }
             }
         }
@@ -781,7 +781,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                 //Asteroid at min height 48, size 20, can't have lit blocks below 16
                 for (int y = 16; y < 240; y++)
                 {
-                    worldObj.checkLightFor(EnumSkyBlock.BLOCK, new BlockPos(xPos, y, zPos));
+                    world.checkLightFor(EnumSkyBlock.BLOCK, new BlockPos(xPos, y, zPos));
                 }
             }
         }

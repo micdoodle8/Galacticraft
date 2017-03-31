@@ -13,22 +13,19 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
     private String allowedFluid = null;
     public final static int EMPTY = Fluid.BUCKET_VOLUME + 1;
     private static boolean isTELoaded = Loader.isModLoaded("ThermalExpansion");
+    private final ItemStack containerStack = new ItemStack(this, 1, 1);
+    private final ItemStack emptyContainerStack = this.getContainerItem(this.containerStack);
 
     public ItemCanisterGeneric(String assetName)
     {
@@ -44,8 +41,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
     {
-        ItemStack thisStack = new ItemStack(this, 1, 1);
-        return new FluidHandlerItemStack.SwapEmpty(thisStack, this.getContainerItem(thisStack), this.capacity);
+        return new FluidHandlerItemStack.SwapEmpty(containerStack, emptyContainerStack, this.capacity);
     }
 
     @Override

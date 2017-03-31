@@ -95,16 +95,16 @@ public class ContainerShortRangeTelepad extends Container
                 }
             }
 
-            if (stack.stackSize == 0)
+            if (stack.isEmpty())
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (stack.stackSize == var2.stackSize)
+            if (stack.getCount() == var2.getCount())
             {
                 return null;
             }

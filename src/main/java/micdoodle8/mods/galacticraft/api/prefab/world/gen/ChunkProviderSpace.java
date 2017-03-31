@@ -32,7 +32,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
     private final Gradient noiseGen6;
     private final Gradient noiseGen7;
 
-    protected final World worldObj;
+    protected final World world;
 
     private Biome[] biomesForGeneration = this.getBiomesForGeneration();
 

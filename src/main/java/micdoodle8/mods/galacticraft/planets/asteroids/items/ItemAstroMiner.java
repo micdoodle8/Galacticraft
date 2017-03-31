@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
@@ -62,7 +60,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = null;
 
@@ -128,7 +126,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 if (!playerIn.capabilities.isCreativeMode)
                 {
                     stats.setAstroMinerCount(stats.getAstroMinerCount() + 1);
-                    --stack.stackSize;
+                    playerIn.getHeldItem(hand).shrink(1);
                 }
                 return EnumActionResult.SUCCESS;
             }

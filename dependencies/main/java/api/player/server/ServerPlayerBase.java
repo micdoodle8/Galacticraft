@@ -745,22 +745,22 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	public void beforeMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 	}
 
-	public void moveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	public void moveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMoveEntity(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+			playerAPI.localMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 		else if(overwritten != this)
-			overwritten.moveEntity(paramDouble1, paramDouble2, paramDouble3);
+			overwritten.moveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 	}
 
-	public void afterMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	public void afterMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 	}
 

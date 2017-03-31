@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.ai.PathNavigateCeilin
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
@@ -189,9 +190,9 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    public void moveEntity(double x, double y, double z)
+    public void move(MoverType type, double x, double y, double z)
     {
-        super.moveEntity(x, y, z);
+        super.move(type, x, y, z);
         if (this.isHanging())
         {
             this.onGround = true;
@@ -281,7 +282,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    protected PathNavigate getNewNavigator(World worldIn)
+    protected PathNavigate createNavigator(World worldIn)
     {
         return new PathNavigateCeiling(this, worldIn);
     }

@@ -82,16 +82,4 @@ public class RoomSpawner extends RoomEmpty
             return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_zombie");
         }
     }
-
-    @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
-    {
-        super.writeStructureToNBT(tagCompound);
-    }
-
-    @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
-    {
-        super.readStructureFromNBT(tagCompound);
-    }
 }

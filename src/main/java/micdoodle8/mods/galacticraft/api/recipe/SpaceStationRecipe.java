@@ -144,7 +144,7 @@ public class SpaceStationRecipe
                         {
                             final int amountToRemove = Math.min(slot.getCount(), amountRemaining);
                             ItemStack newStack = slot.copy();
-                            newStack.stackSize -= amountToRemove;
+                            newStack.shrink(amountToRemove);
 
                             if (newStack.getCount() <= 0)
                             {
@@ -163,7 +163,7 @@ public class SpaceStationRecipe
                             {
                                 final int amountToRemove = Math.min(slot.getCount(), amountRemaining);
                                 ItemStack newStack = slot.copy();
-                                newStack.stackSize -= amountToRemove;
+                                newStack.shrink(amountToRemove);
 
                                 if (newStack.getCount() <= 0)
                                 {

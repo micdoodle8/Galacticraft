@@ -14,13 +14,13 @@ import java.util.Random;
  */
 public class GCCoreEventPopulate extends Event
 {
-    public final World worldObj;
+    public final World world;
     public final Random rand;
     public final BlockPos pos;
 
-    public GCCoreEventPopulate(World worldObj, Random rand, BlockPos pos)
+    public GCCoreEventPopulate(World world, Random rand, BlockPos pos)
     {
-        this.world = worldObj;
+        this.world = world;
         this.rand = rand;
         this.pos = pos;
     }

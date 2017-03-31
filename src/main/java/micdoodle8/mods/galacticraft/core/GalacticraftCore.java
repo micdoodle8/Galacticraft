@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
+import api.player.server.ServerPlayerAPI;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -19,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
@@ -64,7 +66,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[13.20.0.2228,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:IC2", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
@@ -148,7 +150,7 @@ public class GalacticraftCore
 
         if (Loader.isModLoaded("PlayerAPI"))
         {
-//            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
+            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
         }
 
         GCBlocks.initBlocks();
@@ -279,9 +281,6 @@ public class GalacticraftCore
 
         GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidOil, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png"));
 		GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidFuel, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underfuel.png"));
-
-		Biome.registerBiome(ConfigManagerCore.biomeIDbase, Constants.TEXTURE_PREFIX + BiomeMoon.moonFlat.getBiomeName(), BiomeMoon.moonFlat);
-		Biome.registerBiome(ConfigManagerCore.biomeIDbase + 3, Constants.TEXTURE_PREFIX + BiomeOrbit.space.getBiomeName(), BiomeOrbit.space);
 
 //        switch (this.getSlotIndex())
 //        {

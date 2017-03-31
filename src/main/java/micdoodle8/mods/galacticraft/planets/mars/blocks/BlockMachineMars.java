@@ -34,6 +34,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -43,7 +44,6 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockMachineMars extends BlockTileGC implements IShiftDescription, ISortableBlock, IPartialSealableBlock
@@ -267,13 +267,12 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         return new ItemStack(this, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(this.getTerraformer());
-        par3List.add(this.getChamber());
-        par3List.add(this.getLaunchController());
+        list.add(this.getTerraformer());
+        list.add(this.getChamber());
+        list.add(this.getLaunchController());
     }
 
     @Override

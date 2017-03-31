@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -352,12 +353,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
             if (this.shouldMoveClientSide())
             {
-                this.moveEntity(this.motionX, this.motionY, this.motionZ);
+                this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
             }
         }
         else
         {
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         }
 
         this.setRotation(this.rotationYaw, this.rotationPitch);

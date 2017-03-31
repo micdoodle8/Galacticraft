@@ -22,11 +22,11 @@ import java.util.*;
 
 import net.minecraftforge.fml.relauncher.*;
 
-@IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.MCVersion("1.11")
 @IFMLLoadingPlugin.TransformerExclusions("api.player.forge")
 public class PlayerAPIPlugin implements IFMLLoadingPlugin
 {
-	public static String Version = "1.1";
+	public static String Version = "1.0";
 
 	public static boolean isObfuscated;
 

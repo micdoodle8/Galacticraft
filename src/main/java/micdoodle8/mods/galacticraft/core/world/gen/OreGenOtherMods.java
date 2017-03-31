@@ -213,7 +213,7 @@ public class OreGenOtherMods
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
-        this.world = event.worldObj;
+        this.world = event.world;
         this.randomGenerator = event.rand;
         this.pos = event.pos;
 

@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -61,8 +62,9 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
+        ItemStack stack = player.getHeldItem(hand);
         boolean padFound = false;
         TileEntity tile = null;
 
@@ -140,9 +142,9 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
 
                 if (!player.capabilities.isCreativeMode)
                 {
-                    stack.stackSize--;
+                    stack.shrink(1);
 
-                    if (stack.stackSize <= 0)
+                    if (stack.isEmpty())
                     {
                         stack = null;
                     }
@@ -168,18 +170,17 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
         return EnumActionResult.SUCCESS;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < EnumRocketType.values().length; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(itemIn, 1, i));
         }
 
         for (int i = 11; i < 10 + EnumRocketType.values().length; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(itemIn, 1, i));
         }
     }
 

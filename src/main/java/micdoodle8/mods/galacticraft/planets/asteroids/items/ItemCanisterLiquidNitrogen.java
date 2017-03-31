@@ -98,8 +98,10 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+        ItemStack itemStack = playerIn.getHeldItem(hand);
+
         int damage = itemStack.getItemDamage() + 125;
         if (damage > itemStack.getMaxDamage())
         {

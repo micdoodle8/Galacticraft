@@ -9,6 +9,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import java.util.Collections;
+
 public class ContainerSlimeling extends Container
 {
     private final InventorySlimeling slimelingInventory;
@@ -49,7 +51,7 @@ public class ContainerSlimeling extends Container
     
     public static void removeSlots(ContainerSlimeling container)
     {
-        container.inventoryItemStacks = container.inventoryItemStacks.subList(0, 37);
+        Collections.copy(container.inventoryItemStacks, container.inventoryItemStacks.subList(0, 37));
         container.inventorySlots = container.inventorySlots.subList(0, 37);
     }
 
@@ -169,16 +171,16 @@ public class ContainerSlimeling extends Container
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.isEmpty())
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
                 return null;
             }

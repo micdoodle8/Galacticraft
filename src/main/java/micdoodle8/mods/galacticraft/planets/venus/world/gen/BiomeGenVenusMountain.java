@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -14,6 +16,7 @@ public class BiomeGenVenusMountain extends BiomeVenus
     public BiomeGenVenusMountain(BiomeProperties properties)
     {
         super(properties);
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 5, GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName(), this);
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
             BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);

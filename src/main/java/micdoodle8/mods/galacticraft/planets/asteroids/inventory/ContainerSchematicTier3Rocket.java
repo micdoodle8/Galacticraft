@@ -18,7 +18,7 @@ public class ContainerSchematicTier3Rocket extends Container
 {
     public InventorySchematicTier3Rocket craftMatrix = new InventorySchematicTier3Rocket(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerSchematicTier3Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
@@ -181,16 +181,16 @@ public class ContainerSchematicTier3Rocket extends Container
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.isEmpty())
             {
-                var3.putStack((ItemStack) null);
+                var3.putStack(ItemStack.EMPTY);
             }
             else
             {
                 var3.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
                 return null;
             }
@@ -204,7 +204,7 @@ public class ContainerSchematicTier3Rocket extends Container
     protected boolean mergeOneItemTestValid(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (!par1ItemStack.isEmpty())
         {
             Slot slot;
             ItemStack slotStack;
@@ -217,8 +217,8 @@ public class ContainerSchematicTier3Rocket extends Container
                 if (slotStack == null && slot.isItemValid(par1ItemStack))
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

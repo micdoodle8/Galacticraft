@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.Random;
 
@@ -39,13 +40,13 @@ public abstract class DirectionalPiece extends Piece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        super.readStructureFromNBT(tagCompound);
+        super.readStructureFromNBT(nbt, manager);
 
-        if (tagCompound.hasKey("direction"))
+        if (nbt.hasKey("direction"))
         {
-            this.direction = EnumFacing.getFront(tagCompound.getInteger("direction"));
+            this.direction = EnumFacing.getFront(nbt.getInteger("direction"));
         }
         else
         {

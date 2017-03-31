@@ -22,6 +22,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -341,30 +343,32 @@ public class TeleportTypeAsteroids implements ITeleportType
         SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 2)); //Knows how to build Astro Miner
-        ItemStack[] rocketStacks = new ItemStack[20];
+        NonNullList<ItemStack> rocketStacks = NonNullList.create();
         stats.setFuelLevel(1000);
-        int i = 0;
-        rocketStacks[i++] = new ItemStack(GCItems.oxMask);
-        rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
-        rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
-        rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
-        rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
-        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
-        rocketStacks[i++] = new ItemStack(Blocks.GLASS_PANE, 16);
-        rocketStacks[i++] = new ItemStack(Blocks.PLANKS, 32, 2);
-        rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
-        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
-        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
-        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
-        rocketStacks[i++] = new ItemStack(Items.EGG, 12);
+        rocketStacks.add(new ItemStack(GCItems.oxMask));
+        rocketStacks.add(new ItemStack(GCItems.oxygenGear));
+        rocketStacks.add(new ItemStack(GCItems.oxTankMedium));
+        rocketStacks.add(new ItemStack(GCItems.oxTankHeavy));
+        rocketStacks.add(new ItemStack(GCItems.oxTankHeavy));
+        rocketStacks.add(new ItemStack(AsteroidsItems.canisterLOX));
+        rocketStacks.add(new ItemStack(AsteroidsItems.canisterLOX));
+        rocketStacks.add(new ItemStack(AsteroidsItems.canisterLOX));
+        rocketStacks.add(new ItemStack(AsteroidsItems.basicItem, 32, 7));
+        rocketStacks.add(new ItemStack(Blocks.GLASS_PANE, 16));
+        rocketStacks.add(new ItemStack(Blocks.PLANKS, 32, 2));
+        rocketStacks.add(new ItemStack(MarsItems.marsItemBasic, 16, 2)); //Desh ingot
+        rocketStacks.add(new ItemStack(GCItems.basicItem, 8, 13)); //Basic Wafer
+        rocketStacks.add(new ItemStack(GCItems.basicItem, 2, 1)); //Solar Panels
+        rocketStacks.add(new ItemStack(GCItems.basicItem, 16, 15));  //Canned food
+        rocketStacks.add(new ItemStack(Items.EGG, 12));
 
-        rocketStacks[i++] = new ItemStack(Items.SPAWN_EGG, 2, EntityList.CLASS_TO_ID.get(EntityCow.class));
-        rocketStacks[i++] = new ItemStack(Items.POTIONITEM, 4, 8262); //Night Vision Potion
-        rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
-        rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
+        ItemStack spawnEgg = new ItemStack(Items.SPAWN_EGG, 2);
+        ResourceLocation name = EntityList.getKey(EntityCow.class);
+        net.minecraft.item.ItemMonsterPlacer.applyEntityIdToItemStack(spawnEgg, name);
+        rocketStacks.add(spawnEgg);
+        rocketStacks.add(new ItemStack(Items.POTIONITEM, 4, 8262)); //Night Vision Potion
+        rocketStacks.add(new ItemStack(MarsBlocks.machine, 1, 4)); //Cryogenic Chamber
+        rocketStacks.add(new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal()));
         //rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
         //rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
         stats.setRocketStacks(rocketStacks);

@@ -20,7 +20,7 @@ public class BiomeDecoratorVenus extends BiomeDecorator
     private WorldGenerator quartzGen;
     private WorldGenerator siliconGen;
     private WorldGenerator tinGen;
-    private World worldObj;
+    private World world;
 
     public BiomeDecoratorVenus()
     {

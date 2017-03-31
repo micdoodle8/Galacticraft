@@ -25,6 +25,7 @@ import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -42,7 +43,7 @@ public class ChunkProviderVenus implements IChunkGenerator
     private NoiseGeneratorOctaves noiseGen6;
     private NoiseGeneratorOctaves mobSpawnerNoise;
     private final Gradient noiseGenSmooth1;
-    private World worldObj;
+    private World world;
     private WorldType worldType;
     private final double[] terrainCalcs;
     private final float[] parabolicField;
@@ -377,7 +378,7 @@ public class ChunkProviderVenus implements IChunkGenerator
     }
 
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position)
+    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean p_180513_4_)
     {
         return null;
     }

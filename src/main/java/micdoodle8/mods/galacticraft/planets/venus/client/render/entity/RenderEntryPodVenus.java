@@ -80,7 +80,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            GlStateManager.cullFace(GL11.GL_FRONT);
+            GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
 
             int color = ColorUtil.to32BitColor(entityEntryPod.posY >= 790.0F ? 255 : (int) Math.max(Math.min(255, -(entityEntryPod.motionY + 0.6F) * 100.0F), 0), 255, 255, 255);
 
@@ -95,7 +95,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             GlStateManager.rotate(entityEntryPod.ticksExisted * 5.0F, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModelColored(modelFlame, color);
 
-            GlStateManager.cullFace(GL11.GL_BACK);
+            GlStateManager.cullFace(GlStateManager.CullFace.BACK);
             GlStateManager.enableCull();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.enableStandardItemLighting();

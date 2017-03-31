@@ -21,6 +21,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -45,7 +46,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
-        this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         this.setSize(0.98F, 2F);
     }
 
@@ -59,9 +60,9 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         float weight = 1;
 
-        for (ItemStack stack : this.cargoItems)
+        for (ItemStack stack : this.stacks)
         {
-            if (stack != null)
+            if (stack != null && !stack.isEmpty())
             {
                 weight += 0.1D;
             }
@@ -283,7 +284,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
         if (!this.world.isRemote && player instanceof EntityPlayerMP)
         {

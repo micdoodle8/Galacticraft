@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -38,7 +39,7 @@ import java.util.UUID;
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
 {
     public static final int HOLDSIZE = 72;
-    private ItemStack[] containingItems = new ItemStack[HOLDSIZE + 1];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(HOLDSIZE + 1, ItemStack.EMPTY);
     private int[] slotArray;
     public boolean isMaster = false;
     public EnumFacing facing = EnumFacing.NORTH;
@@ -233,7 +234,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
         this.isMaster = nbt.getBoolean("isMaster");
         if (!this.isMaster)
         {
@@ -270,7 +271,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setBoolean("isMaster", this.isMaster);
         if (!this.isMaster && this.mainBlockPosition != null)
         {
@@ -325,24 +326,24 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (itemstack.isStackable())
         {
-            while (itemstack.stackSize > 0 && k < invSize)
+            while (!itemstack.isEmpty() && k < invSize)
             {
-                existingStack = this.containingItems[k];
+                existingStack = this.stacks.get(k);
 
-                if (existingStack != null && existingStack.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == existingStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, existingStack))
+                if (!existingStack.isEmpty() && existingStack.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == existingStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, existingStack))
                 {
-                    int combined = existingStack.stackSize + itemstack.stackSize;
+                    int combined = existingStack.getCount() + itemstack.getCount();
 
                     if (combined <= itemstack.getMaxStackSize())
                     {
-                        itemstack.stackSize = 0;
-                        existingStack.stackSize = combined;
+                        itemstack.setCount(0);
+                        existingStack.setCount(combined);
                         flag1 = true;
                     }
-                    else if (existingStack.stackSize < itemstack.getMaxStackSize())
+                    else if (existingStack.getCount() < itemstack.getMaxStackSize())
                     {
-                        itemstack.stackSize -= itemstack.getMaxStackSize() - existingStack.stackSize;
-                        existingStack.stackSize = itemstack.getMaxStackSize();
+                        itemstack.shrink(itemstack.getMaxStackSize() - existingStack.getCount());
+                        existingStack.setCount(itemstack.getMaxStackSize());
                         flag1 = true;
                     }
                 }
@@ -351,18 +352,18 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             }
         }
 
-        if (itemstack.stackSize > 0)
+        if (!itemstack.isEmpty())
         {
             k = 1;
 
             while (k < invSize)
             {
-                existingStack = this.containingItems[k];
+                existingStack = this.stacks.get(k);
 
                 if (existingStack == null)
                 {
-                    this.containingItems[k] = itemstack.copy();
-                    itemstack.stackSize = 0;
+                    this.stacks.set(k, itemstack.copy());
+                    itemstack.setCount(0);
                     flag1 = true;
                     break;
                 }
@@ -420,11 +421,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
         if (this.isMaster)
         {
-            return this.containingItems;
+            return this.stacks;
         }
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
@@ -432,7 +433,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             return master.getContainingItems();
         }
 
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -588,8 +589,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {
                 IBlockState state = this.world.getBlockState(offset);
-                state.getBlock().onNeighborChange(worldObj, this.getPos(), offset);
-                worldObj.markBlockRangeForRenderUpdate(offset, offset);
+                state.getBlock().onNeighborChange(this.world, this.getPos(), offset);
+                this.world.markBlockRangeForRenderUpdate(offset, offset);
             }
         }
 

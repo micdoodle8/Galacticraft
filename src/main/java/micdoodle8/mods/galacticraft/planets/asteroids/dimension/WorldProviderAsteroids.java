@@ -445,9 +445,9 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    protected void createBiomeProvider()
+    protected void init()
     {
-        super.createBiomeProvider();
+        super.init();
         this.hasNoSky = true;
     }
 

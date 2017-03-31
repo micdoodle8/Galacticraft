@@ -28,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
@@ -53,7 +54,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = -10;
-    private ItemStack[] containingItems = new ItemStack[4];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(4, ItemStack.EMPTY);
     private int airProducts = -1;
 
     @NetworkedField(targetSide = Side.CLIENT)
@@ -145,8 +146,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             }
 
             //First, see if any gas needs to be put into the gas storage
-            ItemStack inputCanister = this.containingItems[1];
-            if (inputCanister != null)
+            ItemStack inputCanister = stacks.get(1);
+            if (!inputCanister.isEmpty())
             {
                 if (inputCanister.getItem() instanceof ItemAtmosphericValve && this.airProducts > 0)
                 {
@@ -193,11 +194,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                             int used = this.gasTank.fill(canisterGas, true) / factor;
                             if (used == amount)
                             {
-                                this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
+                                stacks.set(1, new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY));
                             }
                             else
                             {
-                                this.containingItems[1] = new ItemStack(canisterType, 1, ItemCanisterGeneric.EMPTY - amount + used);
+                                stacks.set(1, new ItemStack(canisterType, 1, ItemCanisterGeneric.EMPTY - amount + used));
                             }
                         }
                     }
@@ -217,7 +218,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                                 this.gasTank.fill(gcMethane, true);
                                 this.gasTankType = 0;
 
-                                this.containingItems[1] = FluidUtil.getUsedContainer(inputCanister);
+                                ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
+                                stacks.set(1, stack == null ? ItemStack.EMPTY : stack);
                             }
                         }
                         else                        //Oxygen -> Oxygen tank
@@ -229,7 +231,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                                     this.gasTank.fill(gcgas, true);
                                     this.gasTankType = TankGases.OXYGEN.index;
 
-                                    this.containingItems[1] = FluidUtil.getUsedContainer(inputCanister);
+                                    ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
+                                    stacks.set(1, stack == null ? ItemStack.EMPTY : stack);
                                 }
                             }
                             else                        //Nitrogen -> Nitrogen tank
@@ -241,7 +244,8 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                                         this.gasTank.fill(gcgas, true);
                                         this.gasTankType = TankGases.NITROGEN.index;
 
-                                        this.containingItems[1] = FluidUtil.getUsedContainer(inputCanister);
+                                        ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
+                                        stacks.set(1, stack == null ? ItemStack.EMPTY : stack);
                                     }
                                 }
                     }
@@ -289,7 +293,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (FluidUtil.isValidContainer(this.containingItems[slot]))
+        if (FluidUtil.isValidContainer(this.stacks.get(slot)))
         {
             final FluidStack liquid = tank.getFluid();
 
@@ -298,19 +302,19 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 String liquidname = liquid.getFluid().getName();
                 if (liquidname.startsWith("fuel"))
                 {
-                    FluidUtil.tryFillContainerFuel(tank, this.containingItems, slot);
+                    FluidUtil.tryFillContainerFuel(tank, this.stacks, slot);
                 }
                 else if (liquidname.equals(TankGases.OXYGEN.liquid))
                 {
-                    FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, AsteroidsItems.canisterLOX);
+                    FluidUtil.tryFillContainer(tank, liquid, this.stacks, slot, AsteroidsItems.canisterLOX);
                 }
                 else if (liquidname.equals(TankGases.NITROGEN.liquid))
                 {
-                    FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, AsteroidsItems.canisterLN2);
+                    FluidUtil.tryFillContainer(tank, liquid, this.stacks, slot, AsteroidsItems.canisterLN2);
                 }
             }
         }
-        else if (this.containingItems[slot] != null && this.containingItems[slot].getItem() instanceof ItemAtmosphericValve)
+        else if (!this.stacks.get(slot).isEmpty() && this.stacks.get(slot).getItem() instanceof ItemAtmosphericValve)
         {
             tank.drain(4, true);
         }
@@ -506,7 +510,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         if (nbt.hasKey("gasTank"))
         {
@@ -528,7 +532,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.gasTank.getFluid() != null)
         {
@@ -548,9 +552,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -741,7 +745,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 {
                     float conversion = 2F * Constants.LOX_GAS_RATIO;
                     FluidStack fluidToFill = new FluidStack(resource.getFluid(), (int) (resource.amount * conversion));
-                    used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doFill) / conversion);
+                    used = MathHelper.ceil(this.gasTank.fill(fluidToFill, doFill) / conversion);
                 }
                 else
                 {
@@ -793,7 +797,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         {
             float conversion = 2F * Constants.LOX_GAS_RATIO;
             FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
-            int used = MathHelper.ceiling_float_int(this.gasTank.fill(fluidToFill, doReceive) / conversion);
+            int used = MathHelper.ceil(this.gasTank.fill(fluidToFill, doReceive) / conversion);
             return used;
         }
 

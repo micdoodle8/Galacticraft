@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,11 +58,11 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
         for (int i = 0; i < ItemThermalPaddingTier2.names.length; i++)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            subItems.add(new ItemStack(itemIn, 1, i));
         }
     }
 
@@ -101,8 +102,10 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
             IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
@@ -116,7 +119,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(6, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
             else if (itemStack.getItemDamage() == 1)
@@ -124,7 +127,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear1 == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(7, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
             else if (itemStack.getItemDamage() == 2)
@@ -132,7 +135,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear2 == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(8, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
             else if (itemStack.getItemDamage() == 3)
@@ -140,7 +143,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear3 == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(9, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
         }

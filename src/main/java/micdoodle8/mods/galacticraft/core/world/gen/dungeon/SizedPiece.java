@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 public abstract class SizedPiece extends DirectionalPiece
 {
@@ -32,13 +33,13 @@ public abstract class SizedPiece extends DirectionalPiece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        super.readStructureFromNBT(tagCompound);
+        super.readStructureFromNBT(nbt, manager);
 
-        this.sizeX = tagCompound.getInteger("sizeX");
-        this.sizeY = tagCompound.getInteger("sizeY");
-        this.sizeZ = tagCompound.getInteger("sizeZ");
+        this.sizeX = nbt.getInteger("sizeX");
+        this.sizeY = nbt.getInteger("sizeY");
+        this.sizeZ = nbt.getInteger("sizeZ");
     }
 
     public int getSizeX()

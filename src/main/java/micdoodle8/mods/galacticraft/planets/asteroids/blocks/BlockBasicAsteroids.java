@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -134,16 +135,15 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         int var4;
 
         for (var4 = 0; var4 < EnumBlockBasic.values().length; ++var4)
         {
-            par3List.add(new ItemStack(par1, 1, var4));
+            list.add(new ItemStack(itemIn, 1, var4));
         }
     }
 

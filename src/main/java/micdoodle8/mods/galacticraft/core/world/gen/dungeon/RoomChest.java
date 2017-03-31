@@ -46,16 +46,4 @@ public class RoomChest extends RoomEmpty
 
         return false;
     }
-
-    @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
-    {
-        super.writeStructureToNBT(tagCompound);
-    }
-
-    @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
-    {
-        super.readStructureFromNBT(tagCompound);
-    }
 }

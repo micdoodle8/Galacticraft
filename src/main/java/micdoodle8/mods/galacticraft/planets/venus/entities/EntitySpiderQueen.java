@@ -75,7 +75,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected PathNavigate getNewNavigator(World worldIn)
+    protected PathNavigate createNavigator(World worldIn)
     {
         return new PathNavigateGround(this, worldIn);
     }

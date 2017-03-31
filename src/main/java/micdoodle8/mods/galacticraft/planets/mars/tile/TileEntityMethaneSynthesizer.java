@@ -28,6 +28,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.capabilities.Capability;
@@ -52,7 +53,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = -8;
-    private ItemStack[] containingItems = new ItemStack[5];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(5, ItemStack.EMPTY);
     private int hasCO2 = -1;
     private boolean noCoal = true;
     private int coalPartial = 0;
@@ -86,8 +87,8 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             //TODO add support for hydrogen atmospheres
 
             //Now check the CO2 storage
-            ItemStack inputCanister = this.containingItems[2];
-            if (inputCanister != null)
+            ItemStack inputCanister = this.stacks.get(2);
+            if (!inputCanister.isEmpty())
             {
                 if (inputCanister.getItem() instanceof ItemAtmosphericValve && this.hasCO2 > 0)
                 {
@@ -96,7 +97,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     {
                         IBlockState stateAbove = this.world.getBlockState(this.getPos().up());
                         Block blockAbove = stateAbove.getBlock();
-                        if (blockAbove != null && blockAbove.getMaterial(stateAbove) == Material.AIR && blockAbove != GCBlocks.breatheableAir && blockAbove != GCBlocks.brightBreatheableAir)
+                        if (blockAbove.getMaterial(stateAbove) == Material.AIR && blockAbove != GCBlocks.breatheableAir && blockAbove != GCBlocks.brightBreatheableAir)
                         {
                             if (!OxygenUtil.inOxygenBubble(this.world, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
@@ -149,16 +150,16 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (FluidUtil.isValidContainer(this.containingItems[slot]))
+        if (FluidUtil.isValidContainer(this.stacks.get(slot)))
         {
             final FluidStack liquid = tank.getFluid();
 
             if (liquid != null)
             {
-                FluidUtil.tryFillContainer(tank, liquid, this.containingItems, slot, AsteroidsItems.methaneCanister);
+                FluidUtil.tryFillContainer(tank, liquid, this.stacks, slot, AsteroidsItems.methaneCanister);
             }
         }
-        else if (this.containingItems[slot] != null && this.containingItems[slot].getItem() instanceof ItemAtmosphericValve)
+        else if (!this.stacks.get(slot).isEmpty() && this.stacks.get(slot).getItem() instanceof ItemAtmosphericValve)
         {
             tank.drain(4, true);
         }
@@ -186,7 +187,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             return false;
         }
 
-        this.noCoal = this.containingItems[3] == null || this.containingItems[3].stackSize == 0 || this.containingItems[3].getItem() != MarsItems.carbonFragments;
+        this.noCoal = this.stacks.get(3).isEmpty() || this.stacks.get(3).getItem() != MarsItems.carbonFragments;
 
         if (this.noCoal && this.coalPartial == 0 && (this.gasTank2.getFluid() == null || this.gasTank2.getFluidAmount() <= 0))
         {
@@ -279,7 +280,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         if (nbt.hasKey("gasTank"))
         {
@@ -302,7 +303,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.gasTank.getFluid() != null)
         {
@@ -323,9 +324,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    protected ItemStack[] getContainingItems()
+    protected NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override

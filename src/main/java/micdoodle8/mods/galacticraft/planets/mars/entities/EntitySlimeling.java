@@ -405,7 +405,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack)
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.inventory.getCurrentItem();
 
@@ -417,11 +417,11 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 {
                     if (this.isOwner(player))
                     {
-                        --itemstack.stackSize;
+                        itemstack.shrink(1);
 
-                        if (itemstack.stackSize <= 0)
+                        if (itemstack.isEmpty())
                         {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
                         }
 
                         if (this.world.isRemote)
@@ -465,16 +465,16 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
             return true;
         }
-        else if (itemstack != null && itemstack.getItem() == Items.SLIME_BALL)
+        else if (!itemstack.isEmpty() && itemstack.getItem() == Items.SLIME_BALL)
         {
             if (!player.capabilities.isCreativeMode)
             {
-                --itemstack.stackSize;
+                itemstack.shrink(1);
             }
 
-            if (itemstack.stackSize <= 0)
+            if (itemstack.isEmpty())
             {
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
             }
 
             if (!this.world.isRemote)
@@ -501,7 +501,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
             return true;
         }
 
-        return super.processInteract(player, hand, stack);
+        return super.processInteract(player, hand);
     }
 
     public void setSittingAI(boolean sitting)

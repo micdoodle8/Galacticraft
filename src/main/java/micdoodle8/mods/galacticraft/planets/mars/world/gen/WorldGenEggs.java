@@ -26,7 +26,7 @@ public class WorldGenEggs extends WorldGenerator
 
         if (!par1World.isBlockLoaded(newPos)) return false;
 
-        if (par1World.isAirBlock(newPos) && (!par1World.provider.getHasNoSky() || j1 < 127) && this.eggBlock.canPlaceBlockAt(par1World, newPos))
+        if (par1World.isAirBlock(newPos) && (!par1World.provider.hasNoSky() || j1 < 127) && this.eggBlock.canPlaceBlockAt(par1World, newPos))
         {
             par1World.setBlockState(newPos, this.eggBlock.getStateFromMeta(par2Random.nextInt(3)), 2);
         }

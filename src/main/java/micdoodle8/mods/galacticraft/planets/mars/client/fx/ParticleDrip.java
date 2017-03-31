@@ -50,7 +50,7 @@ public class ParticleDrip extends Particle
             this.setParticleTextureIndex(112);
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9800000190734863D;
         this.motionY *= 0.9800000190734863D;
         this.motionZ *= 0.9800000190734863D;
@@ -60,7 +60,7 @@ public class ParticleDrip extends Particle
             this.setExpired();
         }
 
-        if (this.isCollided)
+        if (this.onGround)
         {
             this.setExpired();
         }

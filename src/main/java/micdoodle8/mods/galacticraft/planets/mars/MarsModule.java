@@ -33,7 +33,6 @@ import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
-import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeMars;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -41,18 +40,15 @@ import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -105,7 +101,7 @@ public class MarsModule implements IPlanetsModule
         {
             MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucket_sludge");
             MarsItems.registerItem(MarsItems.bucketSludge);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", Fluid.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.BUCKET));
+//            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", Fluid.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.BUCKET));
         }
 
         EventHandlerGC.bucketList.put(MarsBlocks.blockSludge, MarsItems.bucketSludge);
@@ -145,8 +141,6 @@ public class MarsModule implements IPlanetsModule
         CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : "ingotDesh");
 
         GalacticraftCore.proxy.registerFluidTexture(MarsModule.sludge, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underbecterial.png"));
-
-        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 1, GalacticraftPlanets.TEXTURE_PREFIX + BiomeMars.marsFlat.getBiomeName(), BiomeMars.marsFlat);
     }
 
     @Override
@@ -232,16 +226,18 @@ public class MarsModule implements IPlanetsModule
         int nextEggID = GCCoreUtil.getNextValidID();
         if (nextEggID < 65536)
         {
-            name = Constants.MOD_ID_PLANETS + "." + name;
-            EntityList.ID_TO_CLASS.put(nextEggID, clazz);
-            EntityList.CLASS_TO_ID.put(clazz, nextEggID);
-            EntityList.ENTITY_EGGS.put(name, new EntityList.EntityEggInfo(name, back, fore));
+            ResourceLocation resourcelocation = new ResourceLocation(Constants.MOD_ID_PLANETS, name);
+//            name = Constants.MOD_ID_PLANETS + "." + name;
+//            net.minecraftforge.fml.common.registry.EntityEntry entry = new net.minecraftforge.fml.common.registry.EntityEntry(clazz, name);
+//            net.minecraftforge.fml.common.registry.GameData.getEntityRegistry().register(nextEggID, resourcelocation, entry);
+            EntityList.ENTITY_EGGS.put(resourcelocation, new EntityList.EntityEggInfo(resourcelocation, back, fore));
         }
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
+        ResourceLocation registryName = new ResourceLocation(Constants.MOD_ID_PLANETS, var1);
+        EntityRegistry.registerModEntity(registryName, var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }
 
     @Override

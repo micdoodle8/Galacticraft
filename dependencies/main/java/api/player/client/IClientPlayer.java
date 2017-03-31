@@ -260,11 +260,11 @@ public interface IClientPlayer
 
 	void localKnockBack(net.minecraft.entity.Entity paramEntity, float paramFloat, double paramDouble1, double paramDouble2);
 
-	void realMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
+	void realMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void superMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
+	void superMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void localMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
+	void localMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
 	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2);
 
@@ -529,10 +529,6 @@ public interface IClientPlayer
 	float getFallDistanceField();
 
 	void setFallDistanceField(float fallDistance);
-
-	int getFireResistanceField();
-
-	void setFireResistanceField(int fireResistance);
 
 	boolean getFirstUpdateField();
 

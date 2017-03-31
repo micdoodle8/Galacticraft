@@ -758,9 +758,9 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideKnockBackHookTypes, "knockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 		addMethod(id, baseClass, afterKnockBackHookTypes, "afterKnockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 
-		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", double.class, double.class, double.class);
-		addMethod(id, baseClass, overrideMoveEntityHookTypes, "move", double.class, double.class, double.class);
-		addMethod(id, baseClass, afterMoveEntityHookTypes, "afterMoveEntity", double.class, double.class, double.class);
+		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
+		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
+		addMethod(id, baseClass, afterMoveEntityHookTypes, "afterMoveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
 
 		addMethod(id, baseClass, beforeMoveEntityWithHeadingHookTypes, "beforeMoveEntityWithHeading", float.class, float.class);
 		addMethod(id, baseClass, overrideMoveEntityWithHeadingHookTypes, "moveEntityWithHeading", float.class, float.class);
@@ -5252,29 +5252,29 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterKnockBackSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterKnockBackInferiors = new Hashtable<String, String[]>(0);
 
-	public static void moveEntity(IClientPlayerAPI target, double paramDouble1, double paramDouble2, double paramDouble3)
+	public static void moveEntity(IClientPlayerAPI target, net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isMoveEntityModded)
-			clientPlayerAPI.moveEntity(paramDouble1, paramDouble2, paramDouble3);
+			clientPlayerAPI.moveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 		else
-			target.localMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+			target.localMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 	}
 
-	private void moveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	private void moveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 		if(beforeMoveEntityHooks != null)
 			for(int i = beforeMoveEntityHooks.length - 1; i >= 0 ; i--)
-				beforeMoveEntityHooks[i].beforeMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+				beforeMoveEntityHooks[i].beforeMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 		if(overrideMoveEntityHooks != null)
-			overrideMoveEntityHooks[overrideMoveEntityHooks.length - 1].moveEntity(paramDouble1, paramDouble2, paramDouble3);
+			overrideMoveEntityHooks[overrideMoveEntityHooks.length - 1].moveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 		else
-			player.localMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+			player.localMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 		if(afterMoveEntityHooks != null)
 			for(int i = 0; i < afterMoveEntityHooks.length; i++)
-				afterMoveEntityHooks[i].afterMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+				afterMoveEntityHooks[i].afterMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 	}
 

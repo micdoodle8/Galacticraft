@@ -93,16 +93,16 @@ public class ContainerAstroMinerDock extends Container
                 }
             }
 
-            if (var5.stackSize == 0)
+            if (var5.isEmpty())
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var5.stackSize == var3.stackSize)
+            if (var5.getCount() == var3.getCount())
             {
                 return null;
             }

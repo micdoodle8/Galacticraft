@@ -26,9 +26,9 @@ public abstract class WorldProviderSpaceStation extends WorldProviderSpace
      * so this provides a handy initialisation method
      */
     @Override
-    protected void createBiomeProvider()
+    protected void init()
     {
-        super.createBiomeProvider();
+        super.init();
         this.getSpinManager().registerServerSide();
     }
 

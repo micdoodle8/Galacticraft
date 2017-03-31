@@ -22,11 +22,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -65,7 +66,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public int teleportTime = 0;
     @NetworkedField(targetSide = Side.CLIENT)
     public String owner = "";
-    private ItemStack[] containingItems = new ItemStack[1];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean teleporting;
 
@@ -101,7 +102,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public void update()
     {
-        if (this.ticks % 40 == 0 && !worldObj.isRemote)
+        if (this.ticks % 40 == 0 && !this.world.isRemote)
         {
             this.setAddress(this.address);
             this.setTargetAddress(this.targetAddress);
@@ -111,7 +112,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         {
             if (this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
-                List containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                List containedEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                         this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                 if (containedEntities.size() > 0 && this.getEnergyStoredGC() >= ENERGY_USE_ON_TELEPORT)
@@ -142,7 +143,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                     if (finalPos != null)
                     {
                         TileEntity tileAt = finalPos.getTileEntity(this.world);
-                        List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                        List<EntityLivingBase> containedEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                                 this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                         if (tileAt != null && tileAt instanceof TileEntityShortRangeTelepad)
@@ -177,7 +178,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString("Cannot Send client-side")); // No need for translation, since this should never happen
+                                            e.sendMessage(new TextComponentString("Cannot Send client-side")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -186,7 +187,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString("Target address invalid")); // No need for translation, since this should never happen
+                                            e.sendMessage(new TextComponentString("Target address invalid")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -195,7 +196,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            e.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.target_no_energy.name")));
                                         }
                                     }
                                     break;
@@ -221,19 +222,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        NBTTagList var2 = nbt.getTagList("Items", 10);
-        this.containingItems = new ItemStack[this.getSizeInventory()];
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-        {
-            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
-
-            if (var5 < this.containingItems.length)
-            {
-                this.containingItems[var5] = new ItemStack(var4);
-            }
-        }
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
 
         this.setAddress(nbt.getInteger("Address"));
         this.targetAddress = nbt.getInteger("TargetAddress");
@@ -244,20 +235,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        NBTTagList var2 = new NBTTagList();
-
-        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-        {
-            if (this.containingItems[var3] != null)
-            {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) var3);
-                this.containingItems[var3].writeToNBT(var4);
-                var2.appendTag(var4);
-            }
-        }
-
-        nbt.setTag("Items", var2);
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         nbt.setInteger("TargetAddress", this.targetAddress);
         nbt.setInteger("Address", this.address);
@@ -503,7 +481,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             this.addressValid = false;
         }
 
-        if (worldObj != null && !worldObj.isRemote)
+        if (this.world != null && !this.world.isRemote)
         {
             ShortRangeTelepadHandler.addShortRangeTelepad(this);
         }
@@ -562,70 +540,59 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public int getSizeInventory()
     {
-        return this.containingItems.length;
+        return this.stacks.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int var1)
     {
-        return this.containingItems[par1];
+        return this.stacks.get(var1);
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.containingItems[par1] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
+            this.markDirty();
+        }
 
-            if (this.containingItems[par1].stackSize <= par2)
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        return ItemStackHelper.getAndRemove(this.stacks, index);
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.stacks.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
             {
-                var3 = this.containingItems[par1];
-                this.containingItems[par1] = null;
-                return var3;
-            }
-            else
-            {
-                var3 = this.containingItems[par1].splitStack(par2);
-
-                if (this.containingItems[par1].stackSize == 0)
-                {
-                    this.containingItems[par1] = null;
-                }
-
-                return var3;
+                return false;
             }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    @Override
-    public ItemStack removeStackFromSlot(int par1)
-    {
-        if (this.containingItems[par1] != null)
-        {
-            ItemStack var2 = this.containingItems[par1];
-            this.containingItems[par1] = null;
-            return var2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.containingItems[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
+        return true;
     }
 
     public void setOwner(String owner)

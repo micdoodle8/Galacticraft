@@ -118,7 +118,7 @@ public class AsteroidsItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
-        GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+        GameRegistry.register(item.setRegistryName(name));
         GalacticraftPlanets.proxy.postRegisterItem(item);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
         {

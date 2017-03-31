@@ -23,6 +23,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -44,7 +45,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public boolean active;
     public boolean lastActive;
     public static final int WATTS_PER_TICK = 1;
-    private ItemStack[] containingItems = new ItemStack[14];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(14, ItemStack.EMPTY);
     private ArrayList<BlockPos> terraformableBlocksList = new ArrayList<BlockPos>();
     private ArrayList<BlockPos> grassBlockList = new ArrayList<BlockPos>();
     private ArrayList<BlockPos> grownTreesList = new ArrayList<BlockPos>();
@@ -105,9 +106,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (!this.world.isRemote)
         {
-            if (this.containingItems[0] != null)
+            if (!this.stacks.get(0).isEmpty())
             {
-                FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.containingItems[0]);
+                FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(0));
 
                 if (liquid != null && liquid.getFluid().getName().equals(FluidRegistry.WATER.getName()))
                 {
@@ -115,7 +116,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                     {
                         this.waterTank.fill(liquid, true);
 
-                        this.containingItems[0] = FluidUtil.getUsedContainer(this.containingItems[0]);
+                        ItemStack stack = FluidUtil.getUsedContainer(this.stacks.get(0));
+                        this.stacks.set(0, stack == null ? ItemStack.EMPTY : stack);
                     }
                 }
             }
@@ -322,11 +324,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
             if (stack != null)
             {
-                stack.stackSize--;
+                stack.shrink(1);
 
-                if (stack.stackSize <= 0)
+                if (stack.isEmpty())
                 {
-                    this.containingItems[this.getSelectiveStack(2, 6)] = null;
+                    this.stacks.set(this.getSelectiveStack(2, 6), ItemStack.EMPTY);
                 }
             }
         }
@@ -334,15 +336,15 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         switch (type)
         {
         case 0:
-            stack = this.containingItems[this.saplingIndex];
+            stack = this.stacks.get(this.saplingIndex);
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
-                stack.stackSize--;
+                stack.shrink(1);
 
-                if (stack.stackSize <= 0)
+                if (stack.isEmpty())
                 {
-                    this.containingItems[this.saplingIndex] = null;
+                    this.stacks.set(this.saplingIndex, ItemStack.EMPTY);
                 }
             }
             break;
@@ -353,11 +355,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
                 if (stack != null)
                 {
-                    stack.stackSize--;
+                    stack.shrink(1);
 
-                    if (stack.stackSize <= 0)
+                    if (stack.isEmpty())
                     {
-                        this.containingItems[this.getSelectiveStack(10, 14)] = null;
+                        this.stacks.set(this.getSelectiveStack(10, 14), ItemStack.EMPTY);
                     }
                 }
             }
@@ -372,9 +374,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         for (int i = start; i < end; i++)
         {
-            ItemStack stack = this.containingItems[i];
+            ItemStack stack = this.stacks.get(i);
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
                 return i;
             }
@@ -388,7 +390,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         int stackcount = 0;
         for (int i = start; i < end; i++)
         {
-            if (this.containingItems[i] != null)
+            if (!this.stacks.get(i).isEmpty())
             {
                 stackcount++;
             }
@@ -402,7 +404,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         int random = this.world.rand.nextInt(stackcount);
         for (int i = start; i < end; i++)
         {
-            if (this.containingItems[i] != null)
+            if (!this.stacks.get(i).isEmpty())
             {
                 if (random == 0)
                 {
@@ -421,7 +423,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (index != -1)
         {
-            return this.containingItems[index];
+            return this.stacks.get(index);
         }
 
         return null;
@@ -434,7 +436,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         if (index != -1)
         {
             this.saplingIndex = index;
-            return this.containingItems[index];
+            return this.stacks.get(index);
         }
 
         return null;
@@ -446,7 +448,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (index != -1)
         {
-            return this.containingItems[index];
+            return this.stacks.get(index);
         }
 
         return null;
@@ -456,7 +458,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         this.bubbleSize = nbt.getFloat("BubbleSize");
         this.useCount = nbt.getIntArray("UseCountArray");
@@ -481,7 +483,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setFloat("BubbleSize", this.bubbleSize);
         nbt.setIntArray("UseCountArray", this.useCount);
 
@@ -495,9 +497,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public ItemStack[] getContainingItems()
+    public NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -525,7 +527,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         if (slotID == 0)
         {
-            return FluidContainerRegistry.isEmptyContainer(itemstack);
+            return FluidUtil.isEmptyContainer(itemstack);
         }
         if (slotID == 1)
         {
@@ -547,7 +549,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         switch (slotID)
         {
         case 0:
-            return FluidContainerRegistry.containsFluid(itemstack, new FluidStack(FluidRegistry.WATER, 1));
+            FluidStack stack = net.minecraftforge.fluids.FluidUtil.getFluidContained(itemstack);
+            return stack != null && stack.getFluid() == FluidRegistry.WATER;
         case 1:
             return ItemElectricBase.isElectricItem(itemstack.getItem());
         case 2:

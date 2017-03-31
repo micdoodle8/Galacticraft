@@ -25,6 +25,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.ChunkPos;
@@ -44,7 +45,7 @@ import java.util.List;
 public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
     public static final int WATTS_PER_TICK = 1;
-    private ItemStack[] containingItems = new ItemStack[1];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
@@ -244,7 +245,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         this.ownerName = nbt.getString("OwnerName");
         this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
@@ -261,7 +262,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setString("OwnerName", this.ownerName);
         nbt.setInteger("LaunchSelection", this.launchDropdownSelection);
         nbt.setInteger("ControllerFrequency", this.frequency);
@@ -273,9 +274,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public ItemStack[] getContainingItems()
+    public NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override

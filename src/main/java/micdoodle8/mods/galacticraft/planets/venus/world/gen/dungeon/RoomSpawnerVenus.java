@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -48,7 +49,7 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
 
             if (spawner != null)
             {
-                spawner.getSpawnerBaseLogic().setEntityName(getMob(random));
+                spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
             }
 
             blockpos = new BlockPos(this.getXWithOffset(this.sizeX - 1, this.sizeZ - 1), this.getYWithOffset(0), this.getZWithOffset(this.sizeX - 1, this.sizeZ - 1));
@@ -56,7 +57,7 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
 
             if (spawner != null)
             {
-                spawner.getSpawnerBaseLogic().setEntityName(getMob(random));
+                spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
             }
 
             return true;
@@ -65,19 +66,19 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
         return false;
     }
 
-    private static String getMob(Random rand)
+    private static ResourceLocation getMob(Random rand)
     {
         switch (rand.nextInt(4))
         {
         case 0:
-            return Constants.MOD_ID_CORE + ".evolved_spider";
+            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_spider");
         case 1:
-            return Constants.MOD_ID_CORE + ".evolved_creeper";
+            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_creeper");
         case 2:
-            return Constants.MOD_ID_CORE + ".evolved_skeleton";
+            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_skeleton");
         case 3:
         default:
-            return Constants.MOD_ID_CORE + ".evolved_zombie";
+            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_zombie");
         }
     }
 }
