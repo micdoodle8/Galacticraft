@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/heavyPlating"
+        "layer0": "galacticraftcore:items/heavy_plating"
     },
     "display": {
         "thirdperson": {

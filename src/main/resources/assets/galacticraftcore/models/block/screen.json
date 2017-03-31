@@ -1,7 +1,7 @@
 {
 "parent": "block/block",
 "textures": {
-    "texture": "galacticraftcore:blocks/screenSide"
+    "texture": "galacticraftcore:blocks/screen_side"
 },
 "elements": [ 
 {

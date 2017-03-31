@@ -1,4 +1,4 @@
-mtllib landingBalloon.mtl
+mtllib landing_balloon.mtl
 o Sphere
 v -1.025688 -2.186153 1.175247
 v -1.325416 -1.969380 1.299398

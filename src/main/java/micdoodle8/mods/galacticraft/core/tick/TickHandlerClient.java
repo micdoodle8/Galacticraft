@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
+import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
@@ -21,8 +22,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
@@ -49,10 +49,13 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -161,11 +164,11 @@ public class TickHandlerClient
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayerSP player = minecraft.player;
         final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
-        IStatsClientCapability stats = null;
+        GCPlayerStatsClient stats = null;
 
         if (player != null)
         {
-            stats = playerBaseClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            stats = GCPlayerStatsClient.get(playerBaseClient);
         }
 
         if (event.phase == Phase.END)
@@ -294,25 +297,25 @@ public class TickHandlerClient
         }
     }
 
-//    @SubscribeEvent
-//    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
-//    {
-//        final Minecraft minecraft = FMLClientHandler.instance().getClient();
-//        final EntityPlayerSP player = minecraft.player;
-//
-//        if (event.type == RenderGameOverlayEvent.ElementType.ALL)
-//        {
-//            if (player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit())
-//            {
-//                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
-//                String str = I18n.format("mount.onboard", new Object[] { GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode()) });
-//                if (minecraft.ingameGUI.recordPlaying.equals(str))
-//                {
-//                    minecraft.ingameGUI.recordPlaying = "";
-//                }
-//            }
-//        }
-//    } TODO
+    @SubscribeEvent
+    public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
+    {
+        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final EntityPlayerSP player = minecraft.player;
+
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
+        {
+            if (player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit())
+            {
+                // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
+                String str = I18n.format("mount.onboard", new Object[] { GameSettings.getKeyDisplayString(minecraft.gameSettings.keyBindSneak.getKeyCode()) });
+                if (minecraft.ingameGUI.overlayMessage.equals(str))
+                {
+                    minecraft.ingameGUI.overlayMessage = "";
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event)
@@ -476,7 +479,7 @@ public class TickHandlerClient
                     {
                         world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
                         ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderSpaceStation) world.provider).getSpinManager().getSpinRate();
-                        player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null).setInFreefallFirstCheck(false);
+                        GCPlayerStatsClient.get(player).setInFreefallFirstCheck(false);
                     }
 
                     if (world.provider.getCloudRenderer() == null)

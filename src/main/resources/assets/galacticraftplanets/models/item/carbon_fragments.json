@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/carbonFragments"
+        "layer0": "galacticraftplanets:items/carbon_fragments"
     },
     "display": {
         "thirdperson": {

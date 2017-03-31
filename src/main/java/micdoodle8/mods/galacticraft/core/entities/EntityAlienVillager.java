@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -178,7 +177,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                     if (player instanceof EntityPlayerMP)
                     {
                         EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                        IStatsCapability stats = playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                        GCPlayerStats stats = GCPlayerStats.get(playerMP);
                         if (stats.getChatCooldown() == 0)
                         {
                             player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));

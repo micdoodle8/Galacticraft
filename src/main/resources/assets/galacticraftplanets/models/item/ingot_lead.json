@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/ingotLead"
+        "layer0": "galacticraftplanets:items/ingot_lead"
     },
     "display": {
         "thirdperson": {

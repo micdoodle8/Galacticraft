@@ -1,7 +1,7 @@
 {
 "parent": "block/block",
 "textures": {
-    "particle": "galacticraftplanets:blocks/treasureChestMars",
+    "particle": "galacticraftplanets:blocks/treasure_chest_mars",
     "texture": "galacticraftplanets:model/treasure"
 },
 "elements": [ 

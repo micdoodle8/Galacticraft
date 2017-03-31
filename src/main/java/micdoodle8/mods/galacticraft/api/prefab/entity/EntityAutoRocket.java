@@ -13,8 +13,8 @@ import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -815,12 +815,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
         if (!this.world.isRemote)
         {
-        	IStatsCapability stats = null;
+        	GCPlayerStats stats = null;
         	
         	if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
             {
                 EntityPlayerMP player = (EntityPlayerMP) this.getPassengers().get(0);
-                stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                stats = GCPlayerStats.get(player);
 
                 if (!(this.world.provider instanceof IOrbitDimension))
                 {

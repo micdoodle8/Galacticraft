@@ -17,7 +17,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiOxygenStorageModule extends GuiContainerGC
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygenStorageModule.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_storage_module.png");
 
     private TileEntityOxygenStorageModule tileEntity;
 

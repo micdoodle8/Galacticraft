@@ -3,15 +3,15 @@
     "category": "music",
     "sounds": [
       {
-        "name": "galacticraftcore:music/mars_JC",
+        "name": "galacticraftcore:music/mars_jc",
         "stream": true
       },
       {
-        "name": "galacticraftcore:music/mimas_JC",
+        "name": "galacticraftcore:music/mimas_jc",
         "stream": true
       },
       {
-        "name": "galacticraftcore:music/orbit_JC",
+        "name": "galacticraftcore:music/orbit_jc",
         "stream": true
       },
       {
@@ -19,7 +19,7 @@
         "stream": true
       },
       {
-        "name": "galacticraftcore:music/spacerace_JC",
+        "name": "galacticraftcore:music/spacerace_jc",
         "stream": true
       }
     ]

@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/airVent"
+        "layer0": "galacticraftcore:items/air_vent"
     },
     "display": {
         "thirdperson": {

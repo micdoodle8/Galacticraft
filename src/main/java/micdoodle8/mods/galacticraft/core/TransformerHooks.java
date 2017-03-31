@@ -11,10 +11,9 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.EnumGravity;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.Minecraft;
@@ -545,7 +544,7 @@ public class TransformerHooks
     public static void orientCamera(float partialTicks)
     {
         EntityPlayerSP player = ClientProxyCore.mc.player;
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         Entity viewEntity = ClientProxyCore.mc.getRenderViewEntity();
 

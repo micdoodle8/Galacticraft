@@ -106,10 +106,10 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     {
         replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, new ItemTransformVec3f(new Vector3f(30, 225, 0), new Vector3f(-1.0F, 0.0F, 0.0F), new Vector3f(1.0F, 1.0F, 1.0F)));
         replaceModelDefault(event, "beam_reflector", "block/reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, new ItemTransformVec3f(new Vector3f(30, 225, 0), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)));
-        replaceModelDefault(event, "telepad_short", "block/telepadShort.obj", ImmutableList.of("Top", "Bottom", "Connector"), ItemModelTelepad.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "telepad_short", "block/telepad_short.obj", ImmutableList.of("Top", "Bottom", "Connector"), ItemModelTelepad.class, TRSRTransformation.identity());
         replaceModelDefault(event, "grapple", "grapple.obj", ImmutableList.of("Grapple"), ItemModelGrapple.class, TRSRTransformation.identity());
         replaceModelDefault(event, "rocket_t3", "tier3rocket.obj", ImmutableList.of("Boosters", "Cube", "NoseCone", "Rocket"), ItemModelRocketT3.class, TRSRTransformation.identity());
-        replaceModelDefault(event, "astro_miner", "astroMinerInv.obj", ImmutableList.of("Hull_Center"), ItemModelAstroMiner.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "astro_miner", "astro_miner_inv.obj", ImmutableList.of("Hull_Center"), ItemModelAstroMiner.class, TRSRTransformation.identity());
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
@@ -122,16 +122,16 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     public void loadTextures(TextureStitchEvent.Pre event)
     {
         registerTexture(event, "minerbase");
-        registerTexture(event, "beamReflector");
-        registerTexture(event, "beamReceiver");
-        registerTexture(event, "telepadShort");
-        registerTexture(event, "telepadShort0");
+        registerTexture(event, "beam_reflector");
+        registerTexture(event, "beam_receiver");
+        registerTexture(event, "telepad_short");
+        registerTexture(event, "telepad_short0");
         registerTexture(event, "grapple");
         registerTexture(event, "tier3rocket");
-        registerTexture(event, "astroMiner");
-        registerTexture(event, "astroMiner_off");
-        registerTexture(event, "astroMinerFX");
-        registerTexture(event, "spacePod");
+        registerTexture(event, "astro_miner");
+        registerTexture(event, "astro_miner_off");
+        registerTexture(event, "astro_miner_fx");
+        registerTexture(event, "space_pod");
         registerTexture(event, "fluids/argon");
         registerTexture(event, "fluids/atmosphericgases");
         registerTexture(event, "fluids/carbondioxide");

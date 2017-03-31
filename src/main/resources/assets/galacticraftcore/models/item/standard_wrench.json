@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/standardWrench"
+        "layer0": "galacticraftcore:items/standard_wrench"
     },
     "display": {
         "thirdperson": {

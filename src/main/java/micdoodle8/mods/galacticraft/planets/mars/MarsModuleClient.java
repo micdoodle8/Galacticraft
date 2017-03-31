@@ -134,9 +134,9 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
-        registerTexture(event, "rocketT2");
-        registerTexture(event, "cargoRocket");
-        registerTexture(event, "landingBalloon");
+        registerTexture(event, "rocket_t2");
+        registerTexture(event, "cargo_rocket");
+        registerTexture(event, "landing_balloon");
     }
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
@@ -148,8 +148,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_t2", "rocketT2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
-        replaceModelDefault(event, "rocket_cargo", "cargoRocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "rocket_t2", "rocket_t2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "rocket_cargo", "cargo_rocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)

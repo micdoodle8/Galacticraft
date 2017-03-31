@@ -114,8 +114,8 @@ public class GCPlayerHandler
     {
         if (event.isWasDeath())
         {
-            IStatsCapability oldStats = event.getOriginal().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
-            IStatsCapability newStats = event.getEntityPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats oldStats = GCPlayerStats.get(event.getOriginal());
+            GCPlayerStats newStats = GCPlayerStats.get(event.getEntityPlayer());
 
             newStats.copyFrom(oldStats, false);
         }
@@ -126,11 +126,11 @@ public class GCPlayerHandler
     {
         if (event.getObject() instanceof EntityPlayerMP)
         {
-            event.addCapability(CapabilityStatsHandler.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
+            event.addCapability(GCCapabilities.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
         }
         else if (event.getObject() instanceof EntityPlayerSP)
         {
-            event.addCapability(CapabilityStatsClientHandler.GC_PLAYER_CLIENT_PROP, new CapabilityProviderStatsClient((EntityPlayerSP) event.getObject()));
+            event.addCapability(GCCapabilities.GC_PLAYER_CLIENT_PROP, new CapabilityProviderStatsClient((EntityPlayerSP) event.getObject()));
         }
     }
 
@@ -170,7 +170,7 @@ public class GCPlayerHandler
 //            oldData.saveNBTData(player.getEntityData());
 //        }
 
-        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        GCPlayerStats stats = GCPlayerStats.get(player);
 
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_GET_CELESTIAL_BODY_LIST, GCCoreUtil.getDimensionID(player.world), new Object[] {}), player);
         int repeatCount = stats.getBuildFlags() >> 9;
@@ -189,7 +189,7 @@ public class GCPlayerHandler
 //    private void onPlayerRespawn(EntityPlayerMP player)
 //    {
 //        GCPlayerStats oldData = this.playerStatsMap.remove(player.getPersistentID());
-//        GCPlayerStats stats = GCPlayerStats.get(player);\
+//        GCPlayerStats stats = GCPlayerStats.get(player);
 //
 //        if (oldData != null)
 //        {
@@ -199,7 +199,7 @@ public class GCPlayerHandler
 //        stats.player = new WeakReference<EntityPlayerMP>(player);
 //    }
 
-    public static void checkGear(EntityPlayerMP player, IStatsCapability stats, boolean forceSend)
+    public static void checkGear(EntityPlayerMP player, GCPlayerStats stats, boolean forceSend)
     {
         stats.setMaskInSlot(stats.getExtendedInventory().getStackInSlot(0));
         stats.setGearInSlot(stats.getExtendedInventory().getStackInSlot(1));
@@ -512,7 +512,7 @@ public class GCPlayerHandler
         }
     }
 
-    protected void checkThermalStatus(EntityPlayerMP player, IStatsCapability playerStats)
+    protected void checkThermalStatus(EntityPlayerMP player, GCPlayerStats playerStats)
     {
         if (player.world.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
         {
@@ -660,7 +660,7 @@ public class GCPlayerHandler
         }
     }
 
-    public void normaliseThermalLevel(EntityPlayerMP player, IStatsCapability stats, int increment)
+    public void normaliseThermalLevel(EntityPlayerMP player, GCPlayerStats stats, int increment)
     {
         final int last = stats.getThermalLevel();
 
@@ -679,7 +679,7 @@ public class GCPlayerHandler
         }
     }
 
-    protected void checkShield(EntityPlayerMP playerMP, IStatsCapability playerStats)
+    protected void checkShield(EntityPlayerMP playerMP, GCPlayerStats playerStats)
     {
         if (playerMP.ticksExisted % 20 == 0 && playerMP.world.provider instanceof IGalacticraftWorldProvider)
         {
@@ -712,7 +712,7 @@ public class GCPlayerHandler
         }
     }
 
-    protected void checkOxygen(EntityPlayerMP player, IStatsCapability stats)
+    protected void checkOxygen(EntityPlayerMP player, GCPlayerStats stats)
     {
         if ((player.dimension == 0 || player.world.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.world.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.getRidingEntity() instanceof EntityLanderBase) && !(player.getRidingEntity() instanceof EntityAutoRocket) && !(player.getRidingEntity() instanceof EntityCelestialFake))
         {
@@ -954,7 +954,7 @@ public class GCPlayerHandler
         torchItems.put(itemSpaceTorch, itemVanillaTorch);
     }
 
-    public static void setUsingParachute(EntityPlayerMP player, IStatsCapability playerStats, boolean tf)
+    public static void setUsingParachute(EntityPlayerMP player, GCPlayerStats playerStats, boolean tf)
     {
         playerStats.setUsingParachute(tf);
 
@@ -991,7 +991,7 @@ public class GCPlayerHandler
                 // And is the correct metadata (moon turf)
                 if (state.getBlock().getMetaFromState(state) == 5)
                 {
-                    IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                    GCPlayerStats stats = GCPlayerStats.get(player);
                     // If it has been long enough since the last step
                     if (stats.getDistanceSinceLastStep() > 0.35D)
                     {
@@ -1031,7 +1031,7 @@ public class GCPlayerHandler
         }
     }
 
-    protected void updateSchematics(EntityPlayerMP player, IStatsCapability stats)
+    protected void updateSchematics(EntityPlayerMP player, GCPlayerStats stats)
     {
         SchematicRegistry.addUnlockedPage(player, SchematicRegistry.getMatchingRecipeForID(0));
         SchematicRegistry.addUnlockedPage(player, SchematicRegistry.getMatchingRecipeForID(Integer.MAX_VALUE));
@@ -1081,7 +1081,7 @@ public class GCPlayerHandler
     }
 
 
-    protected void sendPlanetList(EntityPlayerMP player, IStatsCapability stats)
+    protected void sendPlanetList(EntityPlayerMP player, GCPlayerStats stats)
     {
         HashMap<String, Integer> map;
         if (player.ticksExisted % 50 == 0)
@@ -1112,14 +1112,14 @@ public class GCPlayerHandler
         }
     }
 
-    protected static void sendAirRemainingPacket(EntityPlayerMP player, IStatsCapability stats)
+    protected static void sendAirRemainingPacket(EntityPlayerMP player, GCPlayerStats stats)
     {
         final float f1 = stats.getTankInSlot1() == null ? 0.0F : stats.getTankInSlot1().getMaxDamage() / 90.0F;
         final float f2 = stats.getTankInSlot2() == null ? 0.0F : stats.getTankInSlot2().getMaxDamage() / 90.0F;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_AIR_REMAINING, GCCoreUtil.getDimensionID(player.world), new Object[] { MathHelper.floor(stats.getAirRemaining() / f1), MathHelper.floor(stats.getAirRemaining2() / f2), player.getGameProfile().getName() }), player);
     }
 
-    protected void sendThermalLevelPacket(EntityPlayerMP player, IStatsCapability stats)
+    protected void sendThermalLevelPacket(EntityPlayerMP player, GCPlayerStats stats)
     {
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, GCCoreUtil.getDimensionID(player.world), new Object[] { stats.getThermalLevel(), stats.isThermalLevelNormalising() }), player);
     }
@@ -1149,7 +1149,7 @@ public class GCPlayerHandler
         int tick = player.ticksExisted - 1;
 
         //This will speed things up a little
-        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        GCPlayerStats stats = GCPlayerStats.get(player);
 
         if ((ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
         {

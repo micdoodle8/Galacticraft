@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/basicItem.compressedTin"
+        "layer0": "galacticraftcore:items/basic_item.compressed_tin"
     },
     "display": {
         "thirdperson": {

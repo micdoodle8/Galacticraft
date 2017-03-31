@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshSpade"
+        "layer0": "galacticraftplanets:items/desh_spade"
     },
     "display": {
         "thirdperson": {

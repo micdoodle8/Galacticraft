@@ -130,12 +130,4 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
 
         RenderHelper.enableStandardItemLighting();
     }
-
-    private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads, int color)
-    {
-        for (BakedQuad bakedquad : quads)
-        {
-            LightUtil.renderQuadColor(renderer, bakedquad, color);
-        }
-    }
 }

@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:blocks/telepadShort"
+        "layer0": "galacticraftplanets:blocks/telepad_short"
     },
     "display": {
         "thirdperson": {

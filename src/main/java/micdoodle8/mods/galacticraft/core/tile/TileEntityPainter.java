@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -55,7 +55,7 @@ public class TileEntityPainter extends TileEntity
             color = ColorUtil.lighten(color, 0.03F);
             this.setGlassColors(color, color, color);
 
-            //IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            //GCPlayerStats stats = GCPlayerStats.get(player);
             //stats.setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
         }
     }
@@ -185,7 +185,7 @@ public class TileEntityPainter extends TileEntity
 
     private void dominantToPlayer(EntityPlayerMP player)
     {
-        player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+        GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
     }
 
     //TODO: create a GUI and inventory, place specific colourable items (glass, flags etc) in this

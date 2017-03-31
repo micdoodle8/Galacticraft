@@ -59,7 +59,7 @@ public class PlayerClient implements IPlayerClient
     @Override
     public void onUpdate(EntityPlayerSP player)
     {
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         stats.setTick(stats.getTick() + 1);
 
         if (stats.isUsingParachute() && !player.capabilities.isFlying && !player.handleWaterMovement())
@@ -73,7 +73,7 @@ public class PlayerClient implements IPlayerClient
     @Override
     public boolean isEntityInsideOpaqueBlock(EntityPlayerSP player, boolean vanillaInside)
     {
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         if (vanillaInside && stats.isInFreefall())
         {
             stats.setInFreefall(false);
@@ -85,7 +85,7 @@ public class PlayerClient implements IPlayerClient
     @Override
     public void onLivingUpdatePre(EntityPlayerSP player)
     {
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         if (player.world.provider instanceof IGalacticraftWorldProvider)
         {
@@ -122,7 +122,7 @@ public class PlayerClient implements IPlayerClient
     @Override
     public void onLivingUpdatePost(EntityPlayerSP player)
     {
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         if (player.world.provider instanceof IZeroGDimension)
         {
@@ -281,7 +281,7 @@ public class PlayerClient implements IPlayerClient
 
     private void updateFeet(EntityPlayerSP player, double motionX, double motionZ)
     {
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         double motionSqrd = motionX * motionX + motionZ * motionZ;
 
         // If the player is on the moon, not airbourne and not riding anything
@@ -361,7 +361,7 @@ public class PlayerClient implements IPlayerClient
         // 4,5,6 : Fuel loader, Launchpad, NASA Workbench
         // 7: oil found 8: placed rocket
 
-        IStatsClientCapability stats = player.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         int flag = stats.getBuildFlags();
         if (flag == -1)
         {

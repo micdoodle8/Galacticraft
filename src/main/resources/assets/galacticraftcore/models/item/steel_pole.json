@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/steelPole"
+        "layer0": "galacticraftcore:items/steel_pole"
     },
     "display": {
         "thirdperson": {

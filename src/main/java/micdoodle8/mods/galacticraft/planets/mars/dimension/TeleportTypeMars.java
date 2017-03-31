@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.entity.Entity;
@@ -26,7 +25,7 @@ public class TeleportTypeMars implements ITeleportType
     {
         if (player != null)
         {
-            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(player);
             double x = stats.getCoordsTeleportedFromX();
             double z = stats.getCoordsTeleportedFromZ();
             int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
@@ -76,7 +75,7 @@ public class TeleportTypeMars implements ITeleportType
     {
         if (!ridingAutoRocket && player != null)
         {
-            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(player);
 
             if (stats.getTeleportCooldown() <= 0)
             {

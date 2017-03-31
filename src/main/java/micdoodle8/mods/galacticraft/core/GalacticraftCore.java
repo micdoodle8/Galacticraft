@@ -18,8 +18,7 @@ import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.core.entities.*;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -114,8 +113,7 @@ public class GalacticraftCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        CapabilityStatsHandler.register();
-        CapabilityStatsClientHandler.register();
+        GCCapabilities.register();
 
     	this.initModInfo(event.getModMetadata());
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
@@ -201,7 +199,7 @@ public class GalacticraftCore
         //Satellites must always have a WorldProvider implementing IOrbitDimension
         GalacticraftCore.satelliteSpaceStation = (Satellite) new Satellite("spacestation.overworld").setParentBody(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(9F, 9F)).setRelativeOrbitTime(1 / 0.05F);
         GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOverworldOrbit.class).setTierRequired(1);
-        GalacticraftCore.satelliteSpaceStation.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/spaceStation.png"));
+        GalacticraftCore.satelliteSpaceStation.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/space_station.png"));
         GalacticraftCore.satelliteSpaceStation.addChecklistKeys("equipOxygenSuit", "createGrapple");
 
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
@@ -235,9 +233,9 @@ public class GalacticraftCore
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
         GalacticraftRegistry.registerTeleportType(WorldProviderOverworldOrbit.class, new TeleportTypeOrbit());
         GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
-        GalacticraftRegistry.registerRocketGui(WorldProviderOverworldOrbit.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/overworldRocketGui.png"));
-        GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/overworldRocketGui.png"));
-        GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/moonRocketGui.png"));
+        GalacticraftRegistry.registerRocketGui(WorldProviderOverworldOrbit.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/overworld_rocket_gui.png"));
+        GalacticraftRegistry.registerRocketGui(WorldProviderSurface.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/overworld_rocket_gui.png"));
+        GalacticraftRegistry.registerRocketGui(WorldProviderMoon.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/moon_rocket_gui.png"));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 0));
         GalacticraftRegistry.addDungeonLoot(1, new ItemStack(GCItems.schematic, 1, 1));
 

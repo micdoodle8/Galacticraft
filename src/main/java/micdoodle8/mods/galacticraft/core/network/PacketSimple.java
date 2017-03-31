@@ -263,12 +263,12 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
     public void handleClientSide(EntityPlayer player)
     {
         EntityPlayerSP playerBaseClient = null;
-        IStatsClientCapability stats = null;
+        GCPlayerStatsClient stats = null;
 
         if (player instanceof EntityPlayerSP)
         {
             playerBaseClient = (EntityPlayerSP) player;
-            stats = playerBaseClient.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+            stats = GCPlayerStatsClient.get(playerBaseClient);
         }
         else
         {
@@ -831,7 +831,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             return;
         }
 
-        final IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
         {
@@ -1115,7 +1115,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
 
                 if (race != null)
                 {
-                    playerInvited.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setSpaceRaceInviteTeamID(teamInvitedTo);
+                    GCPlayerStats.get(playerInvited).setSpaceRaceInviteTeamID(teamInvitedTo);
                     String dA = EnumColor.DARK_AQUA.getCode();
                     String bG = EnumColor.BRIGHT_GREEN.getCode();
                     String dB = EnumColor.PURPLE.getCode();
@@ -1227,7 +1227,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             EntityPlayerMP e = PlayerUtil.getPlayerBaseServerFromPlayerUsername(name, true);
             if (e != null)
             {
-                GCPlayerHandler.checkGear(e, e.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null), true);
+                GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
             }
             break;
         case S_REQUEST_ARCLAMP_FACING:

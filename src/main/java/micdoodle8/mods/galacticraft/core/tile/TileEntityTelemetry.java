@@ -6,8 +6,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -157,7 +156,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         if (eLiving instanceof EntityPlayerMP)
                         {
                             data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
-                            IStatsCapability stats = eLiving.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                            GCPlayerStats stats = GCPlayerStats.get(eLiving);
                             data[4] = stats.getAirRemaining() * 4096 + stats.getAirRemaining2();
                             UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
                             if (uuid != null)

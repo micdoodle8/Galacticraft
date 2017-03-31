@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
@@ -59,7 +58,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
                 if (playerBase != null)
                 {
-                    IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
                     if (stats.getSpaceStationDimensionData().isEmpty())
                     {
@@ -124,7 +123,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(playerBase);
             if (!stats.getSpaceStationDimensionData().isEmpty())
             {
                 String[] allNames = server.getOnlinePlayerNames();
