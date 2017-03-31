@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:blocks/aluminumWireHeavy"
+        "layer0": "galacticraftcore:blocks/aluminum_wire_heavy_item"
     },
     "display": {
         "thirdperson": {

@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/basicItem.solar_module_0"
+        "layer0": "galacticraftcore:items/basic_item.solar_module_0"
     },
     "display": {
         "thirdperson": {

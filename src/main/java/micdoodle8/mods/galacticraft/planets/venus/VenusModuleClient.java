@@ -112,7 +112,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
-        registerTexture(event, "podFlame");
+        registerTexture(event, "pod_flame");
         registerTexture(event, "web");
     }
 

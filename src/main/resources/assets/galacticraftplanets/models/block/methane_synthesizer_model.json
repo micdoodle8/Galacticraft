@@ -4,7 +4,7 @@
         "particle": "galacticraftplanets:blocks/machine",
         "down": "galacticraftplanets:blocks/machine_input",
         "up": "galacticraftplanets:blocks/machine",
-        "north": "galacticraftplanets:blocks/methaneSynthesizer",
+        "north": "galacticraftplanets:blocks/methane_synthesizer",
         "east": "galacticraftplanets:blocks/machine_oxygen_input_warning",
         "south": "galacticraftplanets:blocks/machine_side_warning",
         "west": "galacticraftplanets:blocks/machine_oxygen_output_warning"

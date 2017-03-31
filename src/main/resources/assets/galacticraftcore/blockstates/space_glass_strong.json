@@ -5,8 +5,8 @@
        "textures": {
                  "edge": "blocks/glass_pane_top",
                  "particle": "blocks/glass",
-                 "0": "galacticraftcore:blocks/spaceGlass_strong",
-                 "1": "galacticraftcore:blocks/spaceGlass_frame_white"
+                 "0": "galacticraftcore:blocks/space_glass_strong",
+                 "1": "galacticraftcore:blocks/space_glass_frame_white"
        }
     },
     "variants": {

@@ -1,5 +1,0 @@
-newmtl Connector
-map_Kd galacticraftplanets:blocks/telepadShort0
-
-newmtl Main
-map_Kd galacticraftplanets:blocks/telepadShort

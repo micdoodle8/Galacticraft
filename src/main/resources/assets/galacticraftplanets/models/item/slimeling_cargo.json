@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/slimelingCargo"
+        "layer0": "galacticraftplanets:items/slimeling_cargo"
     },
     "display": {
         "thirdperson": {

@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: 'podFlame.blend'
 # www.blender.org
-mtllib podFlame.mtl
+mtllib pod_flame.mtl
 o Flame_Sphere
 v 0.308348 0.922904 -1.550171
 v 0.302423 0.685997 -1.520385

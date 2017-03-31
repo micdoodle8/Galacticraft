@@ -4,7 +4,7 @@
         "particle": "galacticraftcore:blocks/machine",
         "down": "galacticraftcore:blocks/machine",
         "up": "galacticraftcore:blocks/machine",
-        "north": "galacticraftcore:blocks/electricFurnace",
+        "north": "galacticraftcore:blocks/electric_furnace",
         "east": "galacticraftcore:blocks/machine_input",
         "south": "galacticraftcore:blocks/machine_side",
         "west": "galacticraftcore:blocks/machine_side"

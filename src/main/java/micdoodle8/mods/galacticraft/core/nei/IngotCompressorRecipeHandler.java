@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 
 public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingotCompressor.png");
+    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor.png");
     private static int ticksPassed;
     public static ArrayList<FuelPair> afuels;
     public static TreeSet<Integer> efuels;
@@ -245,7 +245,7 @@ public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return Constants.TEXTURE_PREFIX + "textures/gui/ingotCompressor.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/ingot_compressor.png";
     }
 
     static

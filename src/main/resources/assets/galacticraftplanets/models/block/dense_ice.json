@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "galacticraftplanets:blocks/denseIce"
+        "all": "galacticraftplanets:blocks/dense_ice"
     }
 }

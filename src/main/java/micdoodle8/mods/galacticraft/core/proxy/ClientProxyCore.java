@@ -124,8 +124,8 @@ public class ClientProxyCore extends CommonProxyCore
     public static boolean overworldTextureRequestSent;
     public static boolean overworldTexturesValid;
     public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
-    public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/saturnRings.png");
-    public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/uranusRings.png");
+    public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/saturn_rings.png");
+    public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/uranus_tings.png");
     private static List<Item> itemsToRegisterJson = Lists.newArrayList();
     private static ModelResourceLocation fuelLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "fuel", "fluid");
     private static ModelResourceLocation oilLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "oil", "fluid");
@@ -332,12 +332,12 @@ public class ClientProxyCore extends CommonProxyCore
     public void onTextureStitchedPre(TextureStitchEvent.Pre event)
     {
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocketT1"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyMain"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyStorage"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggyWheels"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocket_t1"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggy_main"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggy_storage"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggy_wheels"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/frequencyModule"));
+        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/frequency_module"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
         event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
@@ -348,7 +348,7 @@ public class ClientProxyCore extends CommonProxyCore
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.6F, 0.04F, 0.0F), new javax.vecmath.Quat4f(), new javax.vecmath.Vector3f(0.42F, 0.42F, 0.42F), new javax.vecmath.Quat4f()));
-        replaceModelDefault(event, "rocket_t1", "rocketT1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
+        replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
         {
@@ -367,7 +367,7 @@ public class ClientProxyCore extends CommonProxyCore
                 objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
                 break;
             }
-            replaceModelDefault(event, "buggy" + (i > 0 ? "_" + i : ""), "buggyInv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
+            replaceModelDefault(event, "buggy" + (i > 0 ? "_" + i : ""), "buggy_inv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
         }
 
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
@@ -391,7 +391,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static void registerEntityRenderers()
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (RenderManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.ASSET_PREFIX, "rocketT1"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (RenderManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.ASSET_PREFIX, "rocket_t1"));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (RenderManager manager) -> new RenderEvolvedSpider(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (RenderManager manager) -> new RenderEvolvedZombie(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (RenderManager manager) -> new RenderEvolvedCreeper(manager));

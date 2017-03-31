@@ -3,15 +3,15 @@
     "category": "music",
     "sounds": [
       {
-        "name": "music/mars_JC",
+        "name": "music/mars_jc",
         "stream": true
       },
       {
-        "name": "music/mimas_JC",
+        "name": "music/mimas_jc",
         "stream": true
       },
       {
-        "name": "music/orbit_JC",
+        "name": "music/orbit_jc",
         "stream": true
       },
       {
@@ -19,7 +19,7 @@
         "stream": true
       },
       {
-        "name": "music/spacerace_JC",
+        "name": "music/spacerace_jc",
         "stream": true
       }
     ]

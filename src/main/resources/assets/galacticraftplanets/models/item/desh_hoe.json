@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshHoe"
+        "layer0": "galacticraftplanets:items/desh_hoe"
     },
     "display": {
         "thirdperson": {

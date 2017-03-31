@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/meteoricIronIngot"
+        "layer0": "galacticraftcore:items/meteoric_iron_ingot"
     },
     "display": {
         "thirdperson": {

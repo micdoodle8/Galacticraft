@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/oxygenConcentrator"
+        "layer0": "galacticraftcore:items/oxygen_concentrator"
     },
     "display": {
         "thirdperson": {

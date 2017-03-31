@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/sensorGlasses"
+        "layer0": "galacticraftcore:items/sensor_glasses"
     },
     "display": {
         "thirdperson": {

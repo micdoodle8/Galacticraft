@@ -1,8 +1,8 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "galacticraftplanets:blocks/creeperEgg",
-        "all": "galacticraftplanets:blocks/creeperEgg"
+        "particle": "galacticraftplanets:blocks/creeper_egg",
+        "all": "galacticraftplanets:blocks/creeper_egg"
     },
     "elements": [
         {   "from": [ 6, 15, 6 ],

@@ -4,9 +4,9 @@
         "particle": "galacticraftcore:blocks/machine",
         "down": "galacticraftcore:blocks/machine",
         "up": "galacticraftcore:blocks/machine",
-        "north": "galacticraftplanets:blocks/launchController",
+        "north": "galacticraftplanets:blocks/launch_controller",
         "east": "galacticraftcore:blocks/machine_input",
-        "south": "galacticraftplanets:blocks/launchController",
+        "south": "galacticraftplanets:blocks/launch_controller",
         "west": "galacticraftcore:blocks/machine"
     }
 }
