@@ -1,8 +1,8 @@
 {
 "parent": "block/block",
 "textures": {
-    "particle": "galacticraftplanets:blocks/yellowEgg_0",
-    "texture": "galacticraftplanets:blocks/yellowEgg_0"
+    "particle": "galacticraftplanets:blocks/yellow_egg_0",
+    "texture": "galacticraftplanets:blocks/yellow_egg_0"
 },
 "elements": [ 
 {

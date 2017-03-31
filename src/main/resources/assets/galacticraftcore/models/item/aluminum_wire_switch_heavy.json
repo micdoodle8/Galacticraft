@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:blocks/aluminumWireHeavySwitch"
+        "layer0": "galacticraftcore:blocks/aluminum_wire_heavy_switch_item"
     },
     "display": {
         "thirdperson": {

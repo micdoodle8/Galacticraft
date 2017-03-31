@@ -2,8 +2,7 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -52,7 +51,7 @@ public class CommandJoinSpaceRace extends CommandBase
             {
                 if (playerBase != null)
                 {
-                    IStatsCapability stats = playerBase.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                    GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
                     if (stats.getSpaceRaceInviteTeamID() > 0)
                     {

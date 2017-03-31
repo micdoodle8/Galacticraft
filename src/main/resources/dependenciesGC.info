@@ -1,6 +1,0 @@
-{
-	"repo": "http://central.maven.org/maven2/commons-codec/commons-codec/1.9/",
-	"file": "commons-codec-1.9.jar",
-	"class": "org.apache.commons.codec.binary.Base64",
-	"coreLib": true
-}

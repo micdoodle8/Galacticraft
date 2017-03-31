@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
@@ -102,7 +102,7 @@ public class EventHandlerMars
                 if (!event.getEntityPlayer().worldObj.isRemote)
                 {
                     event.getEntityPlayer().heal(5.0F);
-                    event.getEntityPlayer().getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null).setCryogenicChamberCooldown(6000);
+                    GCPlayerStats.get(event.getEntityPlayer()).setCryogenicChamberCooldown(6000);
 
                     for (WorldServer worldServer : event.getEntity().getServer().worldServers)
                     {

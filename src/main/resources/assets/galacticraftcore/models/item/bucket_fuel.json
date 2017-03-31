@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/bucketFuel"
+        "layer0": "galacticraftcore:items/bucket_fuel"
     },
     "display": {
         "thirdperson": {

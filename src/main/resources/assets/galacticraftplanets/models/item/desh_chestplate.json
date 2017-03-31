@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshChestplate"
+        "layer0": "galacticraftplanets:items/desh_chestplate"
     },
     "display": {
         "thirdperson": {

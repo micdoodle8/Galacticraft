@@ -3,8 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsClientHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsClientCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.Block;
@@ -205,7 +204,7 @@ public class EntityGrapple extends Entity implements IProjectile
                     shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
                     if (shootingEntity.worldObj.isRemote && shootingEntity.worldObj.provider instanceof IZeroGDimension)
                     {
-                        IStatsClientCapability stats = shootingEntity.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+                        GCPlayerStatsClient stats = GCPlayerStatsClient.get(shootingEntity);
                         stats.getFreefallHandler().updateFreefall(shootingEntity);
                     }
                 }

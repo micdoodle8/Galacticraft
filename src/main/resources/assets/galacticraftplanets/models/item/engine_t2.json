@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/engineT2"
+        "layer0": "galacticraftplanets:items/engine_t2"
     },
     "display": {
         "thirdperson": {

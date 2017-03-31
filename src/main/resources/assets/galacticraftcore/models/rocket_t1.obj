@@ -1,6 +1,6 @@
 # Blender v2.76 (sub 0) OBJ File: 'rocket.blend'
 # www.blender.org
-mtllib rocketT1.mtl
+mtllib rocket_t1.mtl
 o Rocket
 v -0.867203 4.457249 0.867203
 v -0.867203 4.557249 0.867203

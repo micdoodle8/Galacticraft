@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/shardTitanium"
+        "layer0": "galacticraftplanets:items/shard_titanium"
     },
     "display": {
         "thirdperson": {

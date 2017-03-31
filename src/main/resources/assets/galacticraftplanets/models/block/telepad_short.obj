@@ -1,6 +1,6 @@
 # Blender v2.76 (sub 0) OBJ File: 'tele.blend'
 # www.blender.org
-mtllib telepadShort.mtl
+mtllib telepad_short.mtl
 o Connector
 v -0.262909 3.388816 0.262909
 v -0.262909 3.691933 0.262909

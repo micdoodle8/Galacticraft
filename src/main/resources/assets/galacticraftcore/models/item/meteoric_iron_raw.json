@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/meteoricIronRaw"
+        "layer0": "galacticraftcore:items/meteoric_iron_raw"
     },
     "display": {
         "thirdperson": {

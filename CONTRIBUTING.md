@@ -11,12 +11,18 @@ Issues means:
 
 Posting new issues - guidelines
 -------------------------------
-1. If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
-2. Do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
-3. When posting, always tell us your exact Galacticraft version.
-4. You should download the __latest__ GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
-5. If reporting a crash, please always post your full crash report, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
-6. Issues in add-on mods like [GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace),[MorePlanets](https://github.com/MCCommanderTH/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[4Space](https://github.com/4Space/4Space-5) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
+1. IS IT GALACTICRAFT?
+If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
+2. SEARCH FIRST!
+Do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
+3. WHICH VERSION?
+When posting, always tell us your exact Galacticraft version.  If it's a conflict with another mod, also tell us the other mod's version.
+4. CHECK THE LATEST!
+You should download the __latest__ GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
+5. GIVE US THE LOGS!
+If reporting a crash, please always post your full crash report or log, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
+6. IS IT AN ADD-ON?
+Issues in add-on mods like [GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace),[MorePlanets](https://github.com/MCCommanderTH/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[4Space](https://github.com/4Space/4Space-5) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
 
 Issue reports not meeting these guidelines will be flagged as __Invalid__ and closed.
 
@@ -26,24 +32,24 @@ If reporting a mod conflict, we might ask you to do some testing to isolate whic
 
 How to search before posting your issue
 ---------------------------------------
-You're in the Galacticraft repository here, so it's pretty easy to do a search, just enter the search at the top of this page.  The Github results page shows you both "Code" results and "Issues" results.  You need to click on "Issues" to see what has been found.
+You're in the Galacticraft repository here, so it's easy to do a search, just enter the search at the top of this page.  The Github results page shows you both "Code" results and "Issues" results.  You need to click on "Issues" to see what has been found.
 
-If you have a crash, how about searching for some of the info which shows up at the top of that crash report?
+If you have a crash, it's best to search for some of the info which shows up at the top of that crash report - this search should lead you to any other issues with a similar crash report.
 
 
 Are you sure it's a Galacticraft issue?
 ---------------------------------------
-If posting a crash report, please first be reasonably sure that it's a Galacticraft issue and not an issue in another mod.  (If it _could_ be Galacticraft or it _could_ be something else we will help you figure out the cause: obviously we want to fix anything which __is__ being caused by Galacticraft.)
+If posting a crash, please first be reasonably sure that it's a Galacticraft issue and not an issue in another mod.  (If it _could_ be Galacticraft or it _could_ be something else we will help you figure out the cause: obviously we want to fix anything which __is__ being caused by Galacticraft.)
 
-One to watch out for is crash reports involving the player which include somewhere in the middle of the report this line:
+One to watch out for is crash reports involving the __player__ which include somewhere in the middle of the report this line:
 >         at micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP.func_70097_a(GCEntityPlayerMP.java:73)
 
-If you have Galacticraft installed, that line will show up in the middle of the report whenever another mod crashes in a way which involves the player.  __It does not mean Galacticraft is crashing or causing a problem!__  All that's happening here is that Galacticraft has changed the name of the vanilla player code in Minecraft, in a way which does not break anything else.  So usually you will also see this line in the report just above the Galacticraft player line:
+If you have Galacticraft installed, that line will always show up in the middle of the report whenever another mod crashes in a way which involves the player.  __It does not mean Galacticraft is crashing or causing a problem!__  All that's happening here is that Galacticraft has changed the name of the vanilla player code in Minecraft, in a way which does not break anything else.  So usually you will also see this line in the report just above the Galacticraft player line:
 >         at net.minecraft.entity.player.EntityPlayerMP.func_70097_a(EntityPlayerMP.java:491)
 
 That's not a vanilla Minecraft crash: likewise, Galacticraft does not have an issue here.  If you want to be 100% sure, you can install the PlayerAPI mod alongside Galacticraft and see if the same crash still happens.  (If PlayerAPI is installed then Galacticraft does not change the name of the vanilla player code in Minecraft.)
 
-In summary: don't post crash reports suggesting Galacticraft is at fault, if the only connection with Galacticraft is that ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` line in the middle of the report.  Or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` or other similar variants, the same guidance applies.
+In summary: don't post crashes to this issues list if the only connection with Galacticraft is that ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` line in the __middle__ of the report.  Or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` or other similar variants, the same guidance applies.
 
 
 What else is not OK on the issues list?
@@ -52,7 +58,7 @@ The issues list is __not__ for:
 * suggestions and feature requests - go to the [suggestions forum](http://forum.micdoodle8.com/index.php?forums/suggestions.7/)
 * questions and general support issues - go to the [support forum](http://forum.micdoodle8.com/index.php?forums/support.5/)
 * problems downloading, installing or launching the mod: the mod works if you followed the [installation guide](http://wiki.micdoodle8.com/wiki/Tutorials/Galacticraft_Installation_Guide), if it is not working for you that's a support issue for the forum
-* questions about when a 1.8 version or more planets will come - see [sticky topic on this]( http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/)
+* questions about when a 1.8 / 1.10 / 1.11 version or more planets will come - see [sticky topic on this]( http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/)
 * communicating with micdoodle8 - use other communication channels like Twitter or email
 * modpack permission requests - modpack permissions are found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission.
 
@@ -60,7 +66,7 @@ On the suggestions thing, we of course make an exception for developers of other
 
 Translation fixes
 -----------------
-If you spot an error or something missing in the translation of Galacticraft for your language, the best is to fix it yourself.  That's very easy to do in 5 simple steps:
+If you spot an error or something missing in the translation of Galacticraft for your language, the best is to fix it yourself.  That's easy to do in 5 simple steps:
 
 1.  Find the .lang file on Github and take a look at what needs fixing.  The language files are here, you'll need to figure out whether it is a Galacticraft core, moon, mars or asteroids item
 
@@ -83,7 +89,7 @@ If you spot an error or something missing in the translation of Galacticraft for
 
 Pull Requests
 =============
-Galacticraft is an open source project and Pull Requests from any competent coder are extremely welcome - we could use the help.
+Galacticraft is an open source project and Pull Requests from any competent coder are extremely welcome - we could use the help!
 
 Pull Requests meeting the following guidelines can be automatically merged:
 
@@ -117,5 +123,5 @@ You should be able to figure things out for yourself if you know Java and you un
 * Especially, look at Galacticraft Mars.  Mars is coded just like an Add-On planet should be: it uses the API in the same way as an Add-On can.
 * Setup instructions are here:  http://wiki.micdoodle8.com/wiki/GC3_API
 * Micdoodle8 wrote a nice series of beginner modding tutorials a long time ago (2 years), they are still relevant and well-explained: http://micdoodle8.com/oldsite/become.html
-* Believe it or not, coding a (good) planet is not easy.  Algorithmic worldgen is a special skill.  A large part of the creativity in vanilla Minecraft is in its high quality, varied worldgen.  You are recommended to study it carefully before attempting to make your own world.  There are also plenty of books and online tutorials about how to generate terrain in computer games: read them.
+* Coding a (good) planet is not easy.  Algorithmic worldgen is a special skill.  A large part of the creativity in vanilla Minecraft is in its high quality, varied worldgen.  You are recommended to study it carefully before attempting to make your own world.  There are also plenty of books and online tutorials about how to generate terrain in computer games: read them.
 

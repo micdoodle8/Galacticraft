@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:blocks/glowstoneTorch"
+        "layer0": "galacticraftcore:blocks/glowstone_torch"
     },
     "display": {
         "thirdperson": {

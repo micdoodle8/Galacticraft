@@ -1,8 +1,8 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "galacticraftcore:blocks/unlitTorch",
-		"ultorch": "galacticraftcore:blocks/unlitTorch"
+        "particle": "galacticraftcore:blocks/unlit_torch",
+		"ultorch": "galacticraftcore:blocks/unlit_torch"
     },
     "elements": [
         {   "from": [ -1, 3.5, 7 ],

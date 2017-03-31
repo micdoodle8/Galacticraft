@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/thermalChestplate"
+        "layer0": "galacticraftplanets:items/thermal_chestplate"
     },
     "display": {
         "thirdperson": {

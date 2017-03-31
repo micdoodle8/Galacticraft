@@ -6,8 +6,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -44,7 +43,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     {
         if (player != null)
         {
-            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(player);
             int x = MathHelper.floor_double(stats.getCoordsTeleportedFromX());
             int z = MathHelper.floor_double(stats.getCoordsTeleportedFromZ());
             int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
@@ -313,7 +312,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     {
         if (!ridingAutoRocket && player != null)
         {
-            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(player);
 
             if (stats.getTeleportCooldown() <= 0)
             {
@@ -337,7 +336,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     @Override
     public void setupAdventureSpawn(EntityPlayerMP player)
     {
-        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        GCPlayerStats stats = GCPlayerStats.get(player);
         SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 2)); //Knows how to build Astro Miner

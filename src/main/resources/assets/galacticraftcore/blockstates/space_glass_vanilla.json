@@ -3,8 +3,8 @@
     "defaults": {
        "model": "forge:multi-layer",
        "textures": {
-           "0": "galacticraftcore:blocks/spaceGlass_vanilla",
-           "1": "galacticraftcore:blocks/spaceGlass_frame_white"
+           "0": "galacticraftcore:blocks/space_glass_vanilla",
+           "1": "galacticraftcore:blocks/space_glass_frame_white"
       }
     },
     "variants": {

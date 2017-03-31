@@ -4,9 +4,9 @@
         "particle": "galacticraftcore:blocks/machine",
         "down": "galacticraftcore:blocks/machine",
         "up": "galacticraftcore:blocks/machine",
-        "north": "galacticraftcore:blocks/energyStorageModule_12",
+        "north": "galacticraftcore:blocks/energy_storage_module_12",
         "east": "galacticraftcore:blocks/machine_output",
-        "south": "galacticraftcore:blocks/energyStorageModule_12",
+        "south": "galacticraftcore:blocks/energy_storage_module_12",
         "west": "galacticraftcore:blocks/machine_input"
     }
 }

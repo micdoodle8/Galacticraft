@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshStick"
+        "layer0": "galacticraftplanets:items/desh_stick"
     },
     "display": {
         "thirdperson": {

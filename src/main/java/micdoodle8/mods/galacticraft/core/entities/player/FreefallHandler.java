@@ -87,7 +87,7 @@ public class FreefallHandler
         {
             return false;
         }
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         if (this.pjumpticks > 0 || (stats.isSsOnGroundLast() && p.movementInput.jump))
         {
             return false;
@@ -272,7 +272,7 @@ public class FreefallHandler
         double posOffsetZ = -p.motionZ;
         //if (p.capabilities.isFlying)
 
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         ///Undo whatever vanilla tried to do to our y motion
         if (dY < 0D && p.motionY != 0.0D)
         {
@@ -397,7 +397,7 @@ public class FreefallHandler
     public void preVanillaMotion(EntityPlayerSP p)
     {
         this.setupFreefallPre(p);
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         stats.setSsOnGroundLast(p.onGround);
     }
 
@@ -410,7 +410,7 @@ public class FreefallHandler
         {
             return;
         }
-        IStatsClientCapability stats = p.getCapability(CapabilityStatsClientHandler.GC_STATS_CLIENT_CAPABILITY, null);
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
         boolean freefall = stats.isInFreefall();
         freefall = this.testFreefall(p, freefall);
         stats.setInFreefall(freefall);

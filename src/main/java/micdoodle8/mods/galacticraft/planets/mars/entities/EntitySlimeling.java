@@ -3,8 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -438,7 +437,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                     {
                         if (player instanceof EntityPlayerMP)
                         {
-                            IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+                            GCPlayerStats stats = GCPlayerStats.get(player);
                             if (stats.getChatCooldown() == 0)
                             {
                                 player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.slimeling.chat.wrong_player")));

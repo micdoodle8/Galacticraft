@@ -3,8 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
@@ -84,7 +83,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
 
-        IStatsCapability stats = player.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+        GCPlayerStats stats = GCPlayerStats.get(player);
         this.containedItems = new ItemStack[stats.getRocketStacks().length + 1];
         this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.getFuelLevel()));
 

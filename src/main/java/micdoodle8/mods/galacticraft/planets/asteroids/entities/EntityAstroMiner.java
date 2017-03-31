@@ -9,9 +9,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import micdoodle8.mods.galacticraft.core.entities.player.CapabilityStatsHandler;
-import micdoodle8.mods.galacticraft.core.entities.player.IStatsCapability;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -64,7 +62,7 @@ import java.util.UUID;
 
 public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
-    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityAstroMiner.class, DataSerializers.FLOAT);
 
     public static final int MINE_LENGTH = 24;
     public static final int MINE_LENGTH_AST = 12;
@@ -2212,7 +2210,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         if (!this.worldObj.isRemote && this.playerMP != null && !this.spawnedInCreative)
         {
-            IStatsCapability stats = this.playerMP.getCapability(CapabilityStatsHandler.GC_STATS_CAPABILITY, null);
+            GCPlayerStats stats = GCPlayerStats.get(this.playerMP);
             int astroCount = stats.getAstroMinerCount();
             if (astroCount > 0)
             {

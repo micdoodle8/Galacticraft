@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class StatsCapability implements IStatsCapability
+public class StatsCapability extends GCPlayerStats
 {
     public WeakReference<EntityPlayerMP> player;
 
@@ -1221,7 +1221,7 @@ public class StatsCapability implements IStatsCapability
     }
 
     @Override
-    public void copyFrom(IStatsCapability oldData, boolean keepInv)
+    public void copyFrom(GCPlayerStats oldData, boolean keepInv)
     {
         if (keepInv)
         {

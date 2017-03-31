@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/compressedDesh"
+        "layer0": "galacticraftplanets:items/compressed_desh"
     },
     "display": {
         "thirdperson": {

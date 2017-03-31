@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshBoots"
+        "layer0": "galacticraftplanets:items/desh_boots"
     },
     "display": {
         "thirdperson": {
