@@ -322,7 +322,7 @@ public class ThreadFindSeal
         // If it is sealed, cooldown can be extended as frequent checks are not needed
         if (headSealer != null)
         {
-            headSealer.stopSealThreadCooldown += 75;
+            headSealer.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
         }
 
         for (TileEntityOxygenSealer sealer : this.sealers)

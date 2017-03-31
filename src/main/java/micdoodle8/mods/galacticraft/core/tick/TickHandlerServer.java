@@ -222,6 +222,8 @@ public class TickHandlerServer
             }
 
             SpaceRaceManager.tick();
+            
+            TileEntityOxygenSealer.onServerTick();
 
             if (TickHandlerServer.tickCount % 100 == 0)
             {
