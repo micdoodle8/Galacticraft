@@ -28,9 +28,9 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiMethaneSynthesizer extends GuiContainerGC
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methane_synthesizer.png");
 
-    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
 
     private final TileEntityMethaneSynthesizer tileEntity;
 

@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
-import java.io.IOException;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -13,11 +11,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
+import java.io.IOException;
+
 public class GuiSlimelingFeed extends GuiScreen
 {
     private final int xSize;
     private final int ySize;
-    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimelingPanel1.png");
+    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimeling_panel1.png");
     private final EntitySlimeling slimeling;
 
 //    public static RenderItem drawItems = new RenderItem();

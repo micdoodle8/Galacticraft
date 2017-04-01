@@ -6,6 +6,7 @@
 			"wall_bot": "galacticraftcore:blocks/deco_block_up",
 			"wall_top": "galacticraftcore:blocks/deco_block"
 		},
+		"model": "builtin/generated",
 		"uvlock": true
 	},
 	"variants": {
