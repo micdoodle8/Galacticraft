@@ -347,7 +347,7 @@ public class ClientProxyCore extends CommonProxyCore
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.6F, 0.04F, 0.0F), new javax.vecmath.Quat4f(), new javax.vecmath.Vector3f(0.42F, 0.42F, 0.42F), new javax.vecmath.Quat4f()), "inventory", "normal");
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, TRSRTransformation.identity(), "inventory", "normal");
         replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
