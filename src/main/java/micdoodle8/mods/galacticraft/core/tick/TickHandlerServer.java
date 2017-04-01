@@ -531,7 +531,7 @@ public class TickHandlerServer
                         }
 
                         ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 2000, new ArrayList<TileEntityOxygenSealer>());
-                        checkedThisTick.addAll(done.checked);
+                        checkedThisTick.addAll(done.checkedAll());
                     }
                 }
 
