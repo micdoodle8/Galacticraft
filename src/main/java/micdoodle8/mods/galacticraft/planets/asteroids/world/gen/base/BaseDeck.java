@@ -26,8 +26,8 @@ public class BaseDeck extends SizedPiece
     public enum EnumDeckType 
     {
         HUMANOID(3, 3, GCBlocks.basicBlock.getStateFromMeta(4)),
-        CLAUSTROPHOBIC(3, 3, GCBlocks.blockMoon.getStateFromMeta(4)),
-        TUNNEL(4, 4, GCBlocks.blockMoon.getStateFromMeta(4));
+        AVIAN(3, 3, GCBlocks.blockMoon.getStateFromMeta(4)),
+        TUNNELER(4, 4, GCBlocks.blockMoon.getStateFromMeta(4));
         
         public final int height;
         public final int width;
@@ -137,10 +137,10 @@ public class BaseDeck extends SizedPiece
                             }
                         }
                     }
-                    else if (this.configuration.getDeckType().ordinal() >= EnumDeckType.CLAUSTROPHOBIC.ordinal() && (y == 1 || y == this.sizeY - 1))
+                    else if (this.configuration.getDeckType().ordinal() >= EnumDeckType.AVIAN.ordinal() && (y == 1 || y == this.sizeY - 1))
                     {
                         int top = (y == 1) ? 0 : 4;
-                        if (this.configuration.getDeckType() == EnumDeckType.TUNNEL)
+                        if (this.configuration.getDeckType() == EnumDeckType.TUNNELER)
                             top ++;
                         
                         if (directionNS)
@@ -154,7 +154,7 @@ public class BaseDeck extends SizedPiece
                                 this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, boundingBox);
                             }
                             
-                            if (this.configuration.getDeckType() == EnumDeckType.CLAUSTROPHOBIC)
+                            if (this.configuration.getDeckType() == EnumDeckType.AVIAN)
                             {
                                 if (z == ceilingDeco && x == 2 && top >= 4)
                                 {
@@ -309,7 +309,7 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockLintel, x, 1, z, boundingBox);
             this.setBlockState(worldIn, blockLintel, x, 2, z, boundingBox);
             break;
-        case CLAUSTROPHOBIC:
+        case AVIAN:
             this.setBlockState(worldIn, blockStair.getStateFromMeta(0 + meta), x, 1, z, boundingBox);
             this.setBlockState(worldIn, blockAir, x, 2, z, boundingBox);
             this.setBlockState(worldIn, blockStair.getStateFromMeta(4 + meta), x, 3, z, boundingBox);
@@ -318,7 +318,7 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockAir, x, 2, z, boundingBox);
             this.setBlockState(worldIn, blockStair.getStateFromMeta(5 + meta), x, 3, z, boundingBox);
             break;
-        case TUNNEL:
+        case TUNNELER:
             if (directionNS) z--; else x--;
             this.setBlockState(worldIn, blockStair.getStateFromMeta(1 + meta), x, 2, z, boundingBox);
             this.setBlockState(worldIn, blockStair.getStateFromMeta(5 + meta), x, 3, z, boundingBox);

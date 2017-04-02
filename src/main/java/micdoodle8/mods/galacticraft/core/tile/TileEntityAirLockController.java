@@ -19,7 +19,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean redstoneActivation;
     @NetworkedField(targetSide = Side.CLIENT)
-    public boolean playerDistanceActivation;
+    public boolean playerDistanceActivation = true;
     @NetworkedField(targetSide = Side.CLIENT)
     public int playerDistanceSelection;
     @NetworkedField(targetSide = Side.CLIENT)

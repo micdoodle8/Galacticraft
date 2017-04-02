@@ -70,7 +70,7 @@ public class BaseRoom extends SizedPiece
                         {
                             this.buildRoomContents(worldIn, xx, yy, zz, maxX, maxZ);
                         }
-                        else if (this.configuration.getDeckType() == EnumDeckType.TUNNEL && (yy == 1 || yy == this.sizeY - 1))
+                        else if (this.configuration.getDeckType() == EnumDeckType.TUNNELER && (yy == 1 || yy == this.sizeY - 1))
                         {
                             int meta = 1;
                             if (xx == 1) meta = 3;
