@@ -246,7 +246,11 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
-        registerCoreGameScreens();
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            registerCoreGameScreens();
+        }
 
         GCFluids.registerLegacyFluids();
 
