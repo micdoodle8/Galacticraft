@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
@@ -19,7 +20,7 @@ public class BaseStart extends BaseDeck
 
     public BaseStart(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(configuration, rand, blockPosX, configuration.getYPosition(), blockPosZ, 1);
+        super(configuration, rand, blockPosX, configuration.getYPosition(), blockPosZ, 1, EnumFacing.Plane.HORIZONTAL.random(rand));
     }
 
     @Override

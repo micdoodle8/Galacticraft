@@ -39,6 +39,7 @@ public class MapGenAbandonedBase extends MapGenStructure
               MapGenStructureIO.registerStructureComponent(BaseStart.class, "AbandonedBaseStart");
               MapGenStructureIO.registerStructureComponent(BaseRoom.class, "AbandonedBaseRoom");
               MapGenStructureIO.registerStructureComponent(BaseDeck.class, "AbandonedBaseDeck");
+              MapGenStructureIO.registerStructureComponent(BasePlate.class, "AbandonedBasePlate");
               MapGenStructureIO.registerStructureComponent(BaseHangar.class, "AbandonedBaseHangar");
 
               //Currently in fact unused, but just in case...

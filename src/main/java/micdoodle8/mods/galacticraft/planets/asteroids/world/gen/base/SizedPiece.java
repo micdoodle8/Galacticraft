@@ -2,10 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import java.util.Random;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 public abstract class SizedPiece extends Piece
@@ -131,30 +129,6 @@ public abstract class SizedPiece extends Piece
                     return z;
             }
         }
-    }
-
-    public void setBlockStateDirectional(World worldIn, IBlockState blockState, int xx, int yy, int zz)
-    {
-        this.coordBaseMode = this.direction;
-//        int xtrue = xx;
-//        int ztrue = zz;
-//        if (getDirection() == EnumFacing.SOUTH)
-//        {
-//            xtrue = this.sizeX - xx;
-//            ztrue = this.sizeZ - zz;
-//        }
-//        else if (getDirection() == EnumFacing.WEST)
-//        {
-//            xtrue = this.sizeX - zz;
-//            ztrue = xx;
-//        }
-//        else if (getDirection() == EnumFacing.EAST)
-//        {
-//            xtrue = zz;
-//            ztrue = this.sizeZ - xx;
-//        }
-        this.setBlockState(worldIn, blockState, xx, yy, zz, boundingBox);
-        this.coordBaseMode = EnumFacing.SOUTH;
     }
 
     //Unused currently

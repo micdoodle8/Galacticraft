@@ -49,9 +49,9 @@ public class BaseDeck extends SizedPiece
     {
     }
 
-    public BaseDeck(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosY, int blockPosZ, int tier)
+    public BaseDeck(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosY, int blockPosZ, int tier, EnumFacing dir)
     {
-        super(configuration, configuration.getCorridorWidth() + 1, configuration.getRoomHeight() + 1, configuration.getCorridorLength(), EnumFacing.NORTH);//TODO EnumFacing.Plane.HORIZONTAL.random(rand));
+        super(configuration, configuration.getCorridorWidth() + 1, configuration.getRoomHeight() + 1, configuration.getCorridorLength(), dir);
         this.roomsOnSide = configuration.getRoomsNo();
         this.roomDepth = configuration.getRoomDepth() + (tier == 0 ? 1 : 0);
         this.deckTier = tier;
@@ -122,12 +122,12 @@ public class BaseDeck extends SizedPiece
         this.otherDecks = new ArrayList<BaseDeck>();
         if (this.configuration.isHangarDeck())
         {
-            this.otherDecks.add(new BaseDeck(configuration, rand, blockPosX, blockPosY + this.sizeY + 1, blockPosZ, 6));
+            this.otherDecks.add(new BaseDeck(configuration, rand, blockPosX, blockPosY + this.sizeY + 1, blockPosZ, 6, this.direction));
         }
         else
         {
-            this.otherDecks.add(new BaseDeck(configuration, rand, blockPosX, blockPosY + this.sizeY + 1, blockPosZ, 0));
-            this.otherDecks.add(new BaseDeck(configuration, rand, blockPosX, blockPosY + this.sizeY + this.sizeY + 1, blockPosZ, 2));
+            this.otherDecks.add(new BaseDeck(configuration, rand, blockPosX, blockPosY + this.sizeY + 1, blockPosZ, 0, this.direction));
+            this.otherDecks.add(new BaseDeck(configuration, rand, blockPosX, blockPosY + this.sizeY + this.sizeY + 1, blockPosZ, 2, this.direction));
         }
     }
     
@@ -210,6 +210,7 @@ public class BaseDeck extends SizedPiece
                 {
                     if (x == startX || x == endX || y == 0 || y == this.sizeY || z == startZ || z == endZ)
                     {
+                        boolean skipCap = false;
                         if (this.configuration.isHangarDeck() && this.deckTier == 1 && (this.getDirection() == EnumFacing.NORTH && z == endZ || this.getDirection() == EnumFacing.SOUTH && z == startZ || this.getDirection() == EnumFacing.WEST && x == endX || this.getDirection() == EnumFacing.EAST && x == startX))
                         {
                             //Make airlock at the hangar end, if it's a hangar deck
@@ -230,12 +231,14 @@ public class BaseDeck extends SizedPiece
                                     this.setBlockState(worldIn, blockAirlock, x, y, z, boundingBox);
                                 else
                                     this.setBlockState(worldIn, blockLintel, x, y, z, boundingBox);
+                                skipCap = true;
                             }
                             else
                             {
                                 this.setBlockState(worldIn, blockAir, x, y, z, boundingBox);
                             }
                         }
+                        //Skip certain blocks at top and bottom to give chamfered edge
                         else if (!((y == 0 && (this.deckTier & 1) == 1 || y == this.sizeY && (this.deckTier & 1) == 2) && (directionNS && (z == startZ || z == endZ) || !directionNS && (x == startX || x == endX))))
                         {
                             if (y == 0 && (this.deckTier & 1) == 1 && this.configuration.getDeckType() == EnumBaseType.HUMANOID && (directionNS && (x == startX + 2 + (this.configuration.isHangarDeck() ? 1 : 0) || x == startX + 4 + (this.configuration.isHangarDeck() ? 1 : 0)) || !directionNS && (z == startZ + 2 + (this.configuration.isHangarDeck() ? 1 : 0) || z == startZ + 4 + (this.configuration.isHangarDeck() ? 1 : 0))))
@@ -247,6 +250,19 @@ public class BaseDeck extends SizedPiece
                                 this.setBlockState(worldIn, blockWall, x, y, z, boundingBox);
                             }
                         }
+                        
+                        //Special case: cap the grid ends
+                        if (y == 0 && (this.deckTier & 1) == 1 && this.configuration.getDeckType() == EnumBaseType.HUMANOID && (directionNS && (x >= startX + 2 + (this.configuration.isHangarDeck() ? 1 : 0) && x <= startX + 4 + (this.configuration.isHangarDeck() ? 1 : 0)) || !directionNS && (z >= startZ + 2 + (this.configuration.isHangarDeck() ? 1 : 0) && z <= startZ + 4 + (this.configuration.isHangarDeck() ? 1 : 0))))
+                        {
+                            if (directionNS && (z == startZ || z == endZ) || !directionNS && (x == startX || x == endX))
+                            {
+                                if (!skipCap)
+                                {
+                                    this.setBlockState(worldIn, blockWall, x, y, z, boundingBox);
+                                }
+                            }
+                        }
+                        
                     }
                     else if (this.configuration.getDeckType().ordinal() >= EnumBaseType.AVIAN.ordinal() && (y == 1 || y == this.sizeY - 1))
                     {
@@ -316,32 +332,42 @@ public class BaseDeck extends SizedPiece
         {
             boolean largeRoom = (i == largeRoomPosA || i == largeRoomPosB);
             int roomsize = largeRoom ? ROOMLARGE : ROOMSMALL;
+            int largeRoomOffset = largeRoom ? 2 : 0;
 
             if (directionNS)
             {
-                this.makeDoorway(worldIn, this.sizeX, leftZ, directionNS);
-                this.makeDoorway(worldIn, 0, rightZ, directionNS);
+                this.makeDoorway(worldIn, this.sizeX, leftZ + largeRoomOffset, directionNS);
+                this.makeDoorway(worldIn, 0, rightZ + largeRoomOffset, directionNS);
 
                 leftZ += roomsize;
                 rightZ += roomsize;
             }
             else
             {
-                this.makeDoorway(worldIn, leftX, this.sizeZ, directionNS);
-                this.makeDoorway(worldIn, rightX, 0, directionNS);
+                this.makeDoorway(worldIn, leftX + largeRoomOffset, this.sizeZ, directionNS);
+                this.makeDoorway(worldIn, rightX + largeRoomOffset, 0, directionNS);
 
                 leftX += roomsize;
                 rightX += roomsize;
             }
         }
         
-        this.coordBaseMode = this.direction;
+        if (directionNS)
+        {
+            this.coordBaseMode = this.direction;
+        }
+        else
+        {
+            this.coordBaseMode = this.direction.getOpposite(); //bug in Vanilla?
+        }
         if (this.configuration.isHangarDeck() && this.deckTier == 1)
         {
             //Create an access hole between the floors
             int width = directionNS ? this.sizeX : this.sizeZ;
             this.setBlockState(worldIn, blockAir, 0, this.sizeY, 1, boundingBox);
             this.setBlockState(worldIn, blockAir, 1, this.sizeY, 1, boundingBox);
+            this.setBlockState(worldIn, blockAir, 1, this.sizeY - 1, 1, boundingBox);
+            this.setBlockState(worldIn, blockAir, width - 1, this.sizeY - 1, 1, boundingBox);
             this.setBlockState(worldIn, blockAir, width - 1, this.sizeY, 1, boundingBox);
             this.setBlockState(worldIn, blockAir, width, this.sizeY, 1, boundingBox);
         }
@@ -363,11 +389,17 @@ public class BaseDeck extends SizedPiece
                 blockGlass = GCBlocks.spaceGlassTinClear.getDefaultState();
                 break;
             }
+            if (!directionNS)
+            {
+                int w = endX;
+                endX = endZ;
+                endZ = w;
+            }
             for (int y = 1; y < 5; y++)
             {
-                for (int x = 3; x < this.sizeX - 2; x++)
+                for (int x = 3; x < endX - 2; x++)
                 {
-                    this.setBlockState(worldIn, blockGlass, x, y, this.sizeZ, boundingBox);
+                    this.setBlockState(worldIn, blockGlass, x, y, endZ, boundingBox);
                 }
             }
             
@@ -377,6 +409,7 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockAir, 11, 0, 1, boundingBox);
             this.setBlockState(worldIn, blockAir, 10, 0, 1, boundingBox);
         }
+        this.coordBaseMode = EnumFacing.NORTH;
         
         return true;
     }
@@ -386,12 +419,24 @@ public class BaseDeck extends SizedPiece
         List<Piece> rooms = new ArrayList<Piece>();
         
         boolean directionNS = this.getDirection().getAxis() == EnumFacing.Axis.Z;
-        EnumFacing left = directionNS ? EnumFacing.WEST : EnumFacing.NORTH;
-        EnumFacing right = directionNS ? EnumFacing.EAST : EnumFacing.SOUTH;
+        EnumFacing left = directionNS ? EnumFacing.WEST : EnumFacing.SOUTH;
+        EnumFacing right = directionNS ? EnumFacing.EAST : EnumFacing.NORTH;
         int leftX = directionNS ? this.boundingBox.maxX + 1: this.boundingBox.minX;
         int leftZ = directionNS ? this.boundingBox.minZ : this.boundingBox.maxZ + 1;
         int rightX = directionNS ? this.boundingBox.minX - this.roomDepth - 1: this.boundingBox.minX;
         int rightZ = directionNS ? this.boundingBox.minZ : this.boundingBox.minZ - this.roomDepth - 1;
+        //now offset effect of moving control room 1 position North or West, in two cases
+        if ((this.deckTier & 4) == 4 && this.direction == EnumFacing.SOUTH)
+        {
+            rightZ++;
+            leftZ++;
+        }
+        if ((this.deckTier & 4) == 4 && this.direction == EnumFacing.EAST)
+        {
+            rightX++;
+            leftX++;
+        }
+        
         for (int i = 0; i < this.roomsOnSide; i++)
         {
             boolean largeRoom = (i == largeRoomPosA || i == largeRoomPosB);
@@ -436,6 +481,44 @@ public class BaseDeck extends SizedPiece
             
             rooms.add(new BaseHangar(this.configuration, rand, blockX, blockZ, this.direction.getOpposite()));
         }
+
+        if ((this.configuration.isHangarDeck() || this.configuration.getDeckType() == EnumBaseType.HUMANOID) && (this.deckTier & 1) == 1)
+        {
+            int blockX = this.boundingBox.minX;
+            int blockZ = this.boundingBox.minZ;
+            int sX = this.sizeX;
+            int sZ = this.sizeZ;
+            switch(this.direction)
+            {
+            case NORTH:
+                blockZ++;
+                sZ--;
+                if (!this.configuration.isHangarDeck()) sZ--;
+                break;
+            case SOUTH:
+                sZ--;
+                if (!this.configuration.isHangarDeck())
+                {
+                    blockZ++;
+                    sZ--;
+                }
+                break;
+            case WEST:
+                blockX++;
+                sX--;
+                if (!this.configuration.isHangarDeck()) sX--;
+                break;
+            case EAST:
+            default:
+                sX--;
+                if (!this.configuration.isHangarDeck())
+                {
+                    blockX++;
+                    sX--;
+                }
+            }
+            rooms.add(new BasePlate(this.configuration, blockX, this.boundingBox.minY - 1, blockZ, sX, sZ, this.direction));
+        }
         
         if (this.otherDecks != null)
         {
@@ -473,13 +556,13 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockLintel, x, 2, z, boundingBox);
             break;
         case AVIAN:
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(0 + meta), x, 1, z, boundingBox);
-            this.setBlockState(worldIn, blockAir, x, 2, z, boundingBox);
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(4 + meta), x, 3, z, boundingBox);
+            this.setBlockState(worldIn, blockStair.getStateFromMeta(0 + meta), x, this.sizeY - 4, z, boundingBox);
+            this.setBlockState(worldIn, blockAir, x, this.sizeY - 3, z, boundingBox);
+            this.setBlockState(worldIn, blockStair.getStateFromMeta(4 + meta), x, this.sizeY - 2, z, boundingBox);
             if (directionNS) z++; else x++;
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(1 + meta), x, 1, z, boundingBox);
-            this.setBlockState(worldIn, blockAir, x, 2, z, boundingBox);
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(5 + meta), x, 3, z, boundingBox);
+            this.setBlockState(worldIn, blockStair.getStateFromMeta(1 + meta), x, this.sizeY - 4, z, boundingBox);
+            this.setBlockState(worldIn, blockAir, x, this.sizeY - 3, z, boundingBox);
+            this.setBlockState(worldIn, blockStair.getStateFromMeta(5 + meta), x, this.sizeY - 2, z, boundingBox);
             break;
         case TUNNELER:
             if (directionNS) z--; else x--;

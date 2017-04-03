@@ -26,10 +26,7 @@ public class BaseRoom extends SizedPiece
     public BaseRoom(BaseConfiguration configuration, Random rand, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir, EnumRoomType roomType, boolean near, boolean far, int deckTier)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.coordBaseMode = EnumFacing.SOUTH;
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.sizeZ = sizeZ;
+        this.coordBaseMode = this.direction;
         this.type = roomType;
         this.nearEnd = near;
         this.farEnd = far;
@@ -85,6 +82,8 @@ public class BaseRoom extends SizedPiece
         int maxZ = axisEW ? this.sizeX : this.sizeZ;
         for (int xx = 0; xx <= maxX; xx++)
         {
+            boolean near = this.nearEnd && xx == maxX;
+            boolean far = this.farEnd && xx == 0;
             for (int yy = 0; yy <= this.sizeY; yy++)
             {
                 for (int zz = 0; zz <= maxZ; zz++)
@@ -93,11 +92,17 @@ public class BaseRoom extends SizedPiece
                     if (xx == 0 || xx == maxX || yy == 0 || yy == this.sizeY || zz == maxZ)
                     {
                         //Shave the top and bottom corners
-                        boolean near = this.nearEnd && xx == maxX;
-                        boolean far = this.farEnd && xx == 0;
                         if (!((zz == maxZ || near || far) && (yy == 0 && (this.deckTier & 1) == 1 || yy == this.sizeY && (this.deckTier & 2) == 2 || (zz == maxZ && (near || far)))))
                         {
-                            this.setBlockStateDirectional(worldIn, this.configuration.getWallBlock(), xx, yy, zz);
+                            this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy, zz, boundingBox);
+                        }
+                        //Special case, fill in some corners on hangardeck top deck
+                        else if (yy == this.sizeY && (this.deckTier & 2) == 2 && this.configuration.isHangarDeck() && zz < 3)
+                        {
+                            if (xx == 0 || xx == maxX)
+                            {
+                                this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy, zz, boundingBox);
+                            }
                         }
                     }
                     else
@@ -120,11 +125,11 @@ public class BaseRoom extends SizedPiece
                             if (this.direction == EnumFacing.EAST) 
                                 meta ^= 1;
                             meta += (yy == 1) ? 0 : 4;
-                            this.setBlockStateDirectional(worldIn, blockStair.getStateFromMeta(meta), xx, yy, zz);
+                            this.setBlockState(worldIn, blockStair.getStateFromMeta(meta), xx, yy, zz, boundingBox);
                         }
                         else
                         {
-                            this.setBlockStateDirectional(worldIn, blockAir, xx, yy, zz);
+                            this.setBlockState(worldIn, blockAir, xx, yy, zz, boundingBox);
                         }
                     }
                 }
@@ -147,9 +152,9 @@ public class BaseRoom extends SizedPiece
         //if (this.configuration.getDeckType() != EnumDeckType.TUNNEL)
             
         if ((y == 2 || y == 3) && x == 1)
-            this.setBlockStateDirectional(worldIn, this.type.blockRight, x, y, z);
+            this.setBlockState(worldIn, this.type.blockRight, x, y, z, boundingBox);
         else
-            this.setBlockStateDirectional(worldIn, blockAir, x, y, z);
+            this.setBlockState(worldIn, blockAir, x, y, z, boundingBox);
     }
 
     

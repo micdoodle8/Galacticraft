@@ -15,19 +15,25 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 public class BaseHangar extends SizedPiece
 {
     public static final int HANGARWIDTH = 26;
-    public static final int HANGARLENGTH = 41;
+    public static final int HANGARLENGTH = 42;
     public static final int HANGARHEIGHT = 15;
+
+    public BaseHangar()
+    {
+    }
 
     public BaseHangar(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing direction)
     {
         super(configuration, HANGARWIDTH, HANGARHEIGHT, HANGARLENGTH, direction);
-        this.coordBaseMode = direction;
         if (direction.getAxis() == EnumFacing.Axis.X)
         {
             int w = this.sizeX;
             this.sizeX = this.sizeZ;
             this.sizeZ = w;
+            this.coordBaseMode = direction.getOpposite();  //Maybe a bug in vanilla here?
         }
+        else
+            this.coordBaseMode = direction;
         int yPos = configuration.getYPosition();
         this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
         //TODO check save nbt
@@ -51,16 +57,31 @@ public class BaseHangar extends SizedPiece
         Block arcLamp = GCBlocks.brightLamp;
         int stairmeta = 1;
         int stairmetaB = 2;
+        int lampmeta = 3;
         if (direction == EnumFacing.SOUTH)
         {
             stairmeta ^= 1;
             stairmetaB ^= 1;
+            lampmeta ^= 1;
         }
+        else if (direction == EnumFacing.EAST)
+        {
+            stairmeta ^= 2;
+            stairmetaB ^= 3;
+            lampmeta = 4;
+        }
+        else if (direction == EnumFacing.WEST)
+        {
+            stairmeta ^= 3;
+            stairmetaB ^= 2;
+            lampmeta = 5;
+        }
+        
         
         int maxX = HANGARWIDTH;
         int maxZ = HANGARLENGTH;
         int maxY = this.sizeY;
-        int midPoint = HANGARLENGTH - 21;
+        int midPoint = HANGARLENGTH - 22;
         
         //AIR
         for (int zz = HANGARLENGTH; zz >= 0; zz--)
@@ -92,9 +113,9 @@ public class BaseHangar extends SizedPiece
             
             for (int x = 5; x < 22; x++)
             {
-                this.setBlockState(worldIn, blockPlain, x, y, HANGARLENGTH, structureBoundingBoxIn);
+                this.setBlockState(worldIn, this.configuration.getWallBlock(), x, y, HANGARLENGTH, structureBoundingBoxIn);
                 if (y == 7 && (x < 9 || x > 17))
-                    this.setBlockState(worldIn, blockPlain, x, maxY, HANGARLENGTH, structureBoundingBoxIn);
+                    this.setBlockState(worldIn, this.configuration.getWallBlock(), x, maxY, HANGARLENGTH, structureBoundingBoxIn);
             }
         }
         
@@ -127,10 +148,10 @@ public class BaseHangar extends SizedPiece
         this.setBlockState(worldIn, blockStair.getStateFromMeta(stairmetaB + 4), 22, maxY - 2, HANGARLENGTH - 2, structureBoundingBoxIn);
         this.setBlockState(worldIn, blockStair.getStateFromMeta(stairmetaB + 4), 22, maxY - 3, HANGARLENGTH - 1, structureBoundingBoxIn);
 
-        this.setBlockState(worldIn, arcLamp.getStateFromMeta(stairmetaB ^ 1), 5, maxY - 3, HANGARLENGTH, structureBoundingBoxIn);
-        this.setBlockState(worldIn, arcLamp.getStateFromMeta(stairmetaB ^ 1), 5, maxY - 6, HANGARLENGTH, structureBoundingBoxIn);
-        this.setBlockState(worldIn, arcLamp.getStateFromMeta(stairmetaB ^ 1), 21, maxY - 3, HANGARLENGTH, structureBoundingBoxIn);
-        this.setBlockState(worldIn, arcLamp.getStateFromMeta(stairmetaB ^ 1), 21, maxY - 6, HANGARLENGTH, structureBoundingBoxIn);
+        this.setBlockState(worldIn, arcLamp.getStateFromMeta(lampmeta), 5, maxY - 3, HANGARLENGTH, structureBoundingBoxIn);
+        this.setBlockState(worldIn, arcLamp.getStateFromMeta(lampmeta), 5, maxY - 6, HANGARLENGTH, structureBoundingBoxIn);
+        this.setBlockState(worldIn, arcLamp.getStateFromMeta(lampmeta), 21, maxY - 3, HANGARLENGTH, structureBoundingBoxIn);
+        this.setBlockState(worldIn, arcLamp.getStateFromMeta(lampmeta), 21, maxY - 6, HANGARLENGTH, structureBoundingBoxIn);
         
         //FIRST SECTION
         for (int zz = HANGARLENGTH; zz > HANGARLENGTH - 5; zz--)
@@ -150,7 +171,7 @@ public class BaseHangar extends SizedPiece
                 this.setBlockState(worldIn, blockWall, xx, 8, zz, structureBoundingBoxIn);
             }
 
-            if (zz % 3 == 0)
+            if (zz % 3 == 1)
             {
                 this.setBlockState(worldIn, blockPlain, 4, maxY, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockPlain, 22, maxY, zz, structureBoundingBoxIn);
@@ -215,7 +236,7 @@ public class BaseHangar extends SizedPiece
         for (int zz = HANGARLENGTH - 5; zz > midPoint; zz--)
         {
             //Top sides
-            if (zz % 3 == 0)
+            if (zz % 3 == 1)
             {
                 this.setBlockState(worldIn, blockSlab, 3, maxY, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockPlain, 4, maxY, zz, structureBoundingBoxIn);
@@ -263,7 +284,7 @@ public class BaseHangar extends SizedPiece
                 this.setBlockState(worldIn, blockPlain, xx, maxY - 4, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockPlain, xx, 2, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockPlain, xx, 4, zz, structureBoundingBoxIn);
-                if (zz % 3 == 0)
+                if (zz % 3 == 1)
                 {
                     this.setBlockState(worldIn, blockPattern, xx, maxY - 3, zz, structureBoundingBoxIn);
                     this.setBlockState(worldIn, blockPlain, xx, 3, zz, structureBoundingBoxIn);
@@ -278,7 +299,7 @@ public class BaseHangar extends SizedPiece
             }
             
             //Floor
-            IBlockState blockBeam = (zz % 2 == 1) ? blockPattern : blockPlain;
+            IBlockState blockBeam = (zz % 2 == 0) ? blockPattern : blockPlain;
             this.setBlockState(worldIn, blockBeam, 7, 0, zz, structureBoundingBoxIn);
             this.setBlockState(worldIn, blockBeam, 9, 0, zz, structureBoundingBoxIn);
             this.setBlockState(worldIn, blockBeam, 19, 0, zz, structureBoundingBoxIn);
@@ -291,8 +312,8 @@ public class BaseHangar extends SizedPiece
         int zz = midPoint;
 
         //Top sides
-        extrudeTrio(worldIn, randomIn, 2, blockPlain, blockPattern, 4, maxY, zz, structureBoundingBoxIn);
-        extrudeTrio(worldIn, randomIn, 2, blockPlain, blockPattern, 22, maxY, zz, structureBoundingBoxIn);
+        extrudeTrioOff(worldIn, randomIn, 2, blockPlain, blockPattern, 4, maxY, zz, structureBoundingBoxIn);
+        extrudeTrioOff(worldIn, randomIn, 2, blockPlain, blockPattern, 22, maxY, zz, structureBoundingBoxIn);
         extrude(worldIn, randomIn, 2, blockGrid, 23, maxY, zz, structureBoundingBoxIn);
         extrude(worldIn, randomIn, 2, blockGrid, 3, maxY, zz, structureBoundingBoxIn);
 
@@ -337,6 +358,23 @@ public class BaseHangar extends SizedPiece
         this.setBlockState(worldIn, moonWall, 16, 0, zz, structureBoundingBoxIn);
         extrude(worldIn, randomIn, 2, blockGrid, 10, 0, zz - 1, structureBoundingBoxIn);
         extrude(worldIn, randomIn, 2, blockGrid, 16, 0, zz - 1, structureBoundingBoxIn);
+        
+        //WHERE SECOND AND THIRD SECTION MEET
+        //Extend the mid-side walls a little way past the midPoint
+        for (int xx = 0; xx <= maxX; xx+= maxX)
+        {
+            this.setBlockState(worldIn, blockWall, xx, 7, midPoint, structureBoundingBoxIn);
+            this.setBlockState(worldIn, blockWall, xx, 8, midPoint, structureBoundingBoxIn);
+            this.setBlockState(worldIn, blockBars, xx, 3, midPoint + 1, structureBoundingBoxIn);
+            this.setBlockState(worldIn, blockBars, xx, maxY - 3, midPoint + 1, structureBoundingBoxIn);
+        }
+        //Extend the walkways a little way also
+        this.setBlockState(worldIn, blockGrid, 1, 1, midPoint + 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockGrid, 2, 1, midPoint + 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockGrid, 5, 0, midPoint + 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockGrid, 21, 0, midPoint + 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockGrid, 24, 1, midPoint + 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockGrid, 25, 1, midPoint + 1, structureBoundingBoxIn);
 
         return true;
     }
@@ -375,4 +413,9 @@ public class BaseHangar extends SizedPiece
             this.setBlockState(worldIn, (zz % 3 == 0) ? blockA : blockB, x, y, zz, boundingBoxIn);
     }
 
+    private void extrudeTrioOff(World worldIn, Random rand, int solid, IBlockState blockA, IBlockState blockB, int x, int y, int z, StructureBoundingBox boundingBoxIn)
+    {
+        for (int zz = z; zz >= rand.nextInt(4 * (4 - solid)); zz--)
+            this.setBlockState(worldIn, (zz % 3 == 1) ? blockA : blockB, x, y, zz, boundingBoxIn);
+    }
 }
