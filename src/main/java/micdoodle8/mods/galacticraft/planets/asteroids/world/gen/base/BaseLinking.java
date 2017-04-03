@@ -13,11 +13,11 @@ public class BaseLinking extends SizedPiece
     {
     }
 
-    public BaseLinking(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
+    public BaseLinking(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosY, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
     {
         super(configuration, sizeX, sizeY, sizeZ, direction);
         this.coordBaseMode = EnumFacing.SOUTH;
-        this.boundingBox = new StructureBoundingBox(blockPosX, configuration.getYPosition(), blockPosZ, blockPosX + sizeX, configuration.getYPosition() + sizeY, blockPosZ + sizeZ);
+        this.boundingBox = new StructureBoundingBox(blockPosX, blockPosY, blockPosZ, blockPosX + sizeX, blockPosY + sizeY, blockPosZ + sizeZ);
     }
 
     @Override

@@ -37,13 +37,12 @@ public class MapGenAbandonedBase extends MapGenStructure
         {
               MapGenStructureIO.registerStructure(MapGenAbandonedBase.Start.class, "AbandonedBase");
               MapGenStructureIO.registerStructureComponent(BaseStart.class, "AbandonedBaseStart");
-              MapGenStructureIO.registerStructureComponent(BaseLinking.class, "AbandonedBaseCorridor");
               MapGenStructureIO.registerStructureComponent(BaseRoom.class, "AbandonedBaseRoom");
+              MapGenStructureIO.registerStructureComponent(BaseDeck.class, "AbandonedBaseDeck");
               MapGenStructureIO.registerStructureComponent(BaseHangar.class, "AbandonedBaseHangar");
-//            MapGenStructureIO.registerStructureComponent(RoomBoss.class, "MoonDungeonBossRoom");
-//            MapGenStructureIO.registerStructureComponent(RoomTreasure.class, "MoonDungeonTreasureRoom");
-//            MapGenStructureIO.registerStructureComponent(RoomSpawner.class, "MoonDungeonSpawnerRoom");
-//            MapGenStructureIO.registerStructureComponent(RoomChest.class, "MoonDungeonChestRoom");
+
+              //Currently in fact unused, but just in case...
+              MapGenStructureIO.registerStructureComponent(BaseLinking.class, "AbandonedBaseCorridor");
         }
 
         MapGenAbandonedBase.initialized = true;
@@ -137,7 +136,7 @@ public class MapGenAbandonedBase extends MapGenStructure
         {
             super(chunkX, chunkZ);
             this.configuration = configuration;
-            BaseStart startPiece = new BaseStart(worldIn, configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+            BaseStart startPiece = new BaseStart(configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             startPiece.buildComponent(startPiece, this.components, rand);
             List<StructureComponent> list = startPiece.attachedComponents;
 

@@ -43,10 +43,10 @@ public abstract class SizedPiece extends Piece
     {
         super.writeStructureToNBT(tagCompound);
 
-        tagCompound.setInteger("direction", this.direction.ordinal());
-        tagCompound.setInteger("sizeX", this.sizeX);
-        tagCompound.setInteger("sizeY", this.sizeY);
-        tagCompound.setInteger("sizeZ", this.sizeZ);
+        tagCompound.setInteger("dir", this.direction.ordinal());
+        tagCompound.setInteger("sX", this.sizeX);
+        tagCompound.setInteger("sY", this.sizeY);
+        tagCompound.setInteger("sZ", this.sizeZ);
     }
 
     @Override
@@ -54,11 +54,11 @@ public abstract class SizedPiece extends Piece
     {
         super.readStructureFromNBT(tagCompound);
 
-        this.sizeX = tagCompound.getInteger("sizeX");
-        this.sizeY = tagCompound.getInteger("sizeY");
-        this.sizeZ = tagCompound.getInteger("sizeZ");
+        this.sizeX = tagCompound.getInteger("sX");
+        this.sizeY = tagCompound.getInteger("sY");
+        this.sizeZ = tagCompound.getInteger("sZ");
 
-        if (tagCompound.hasKey("direction"))
+        if (tagCompound.hasKey("dir"))
         {
             this.direction = EnumFacing.getFront(tagCompound.getInteger("direction"));
         }
@@ -176,7 +176,7 @@ public abstract class SizedPiece extends Piece
             blockZ = extension.minZ;
             sizeX = extension.maxX - extension.minX;
             sizeZ = extension.maxZ - extension.minZ;
-            valid = !startPiece.checkIntersection(extension);
+            valid = true;
             attempts--;
         }
         while (!valid && attempts > 0);
@@ -186,6 +186,6 @@ public abstract class SizedPiece extends Piece
             return null;
         }
 
-        return new BaseLinking(this.configuration, rand, blockX, blockZ, sizeX, 3, sizeZ, randomDir);
+        return new BaseLinking(this.configuration, rand, blockX, this.boundingBox.minY, blockZ, sizeX, 3, sizeZ, randomDir);
     }
 }

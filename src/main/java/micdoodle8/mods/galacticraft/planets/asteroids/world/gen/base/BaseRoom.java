@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumDeckType;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -16,12 +17,13 @@ public class BaseRoom extends SizedPiece
     private EnumRoomType type;
     private boolean nearEnd;
     private boolean farEnd;
+    private int deckTier;
     
     public BaseRoom()
     {
     }
 
-    public BaseRoom(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir, EnumRoomType roomType, boolean near, boolean far)
+    public BaseRoom(BaseConfiguration configuration, Random rand, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir, EnumRoomType roomType, boolean near, boolean far, int deckTier)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.coordBaseMode = EnumFacing.SOUTH;
@@ -29,14 +31,49 @@ public class BaseRoom extends SizedPiece
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
         this.type = roomType;
-        int yPos = configuration.getYPosition();
         this.nearEnd = near;
         this.farEnd = far;
+        this.deckTier = deckTier;
 
         this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
-        //TODO check save nbt
     }
 
+    @Override
+    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    {
+        super.writeStructureToNBT(tagCompound);
+
+        int details = this.deckTier + (this.nearEnd ? 16 : 0) + (this.farEnd ? 32 : 0);
+        tagCompound.setInteger("brT", type.ordinal());
+        tagCompound.setInteger("brD", details);
+    }
+
+    @Override
+    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    {
+        super.readStructureFromNBT(tagCompound);
+        try
+        {
+            int typeNo = tagCompound.getInteger("brT");
+            if (typeNo < EnumRoomType.values().length)
+            {
+                this.type = EnumRoomType.values()[typeNo];
+            }
+            else
+                this.type = EnumRoomType.EMPTY;
+
+            int details = tagCompound.getInteger("brD");
+            this.deckTier = details & 15;
+            this.nearEnd = (details & 16) == 16;
+            this.farEnd = (details & 32) == 32;
+        }
+        catch (Exception e)
+        {
+            System.err.println("Failed to read Abandoned Base configuration from NBT");
+            System.err.println(tagCompound.toString());
+        }
+    }
+    
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
     {
@@ -58,7 +95,7 @@ public class BaseRoom extends SizedPiece
                         //Shave the top and bottom corners
                         boolean near = this.nearEnd && xx == maxX;
                         boolean far = this.farEnd && xx == 0;
-                        if (!((zz == maxZ || near || far) && (yy == 0 || yy == this.sizeY || (zz == maxZ && (near || far)))))
+                        if (!((zz == maxZ || near || far) && (yy == 0 && (this.deckTier & 1) == 1 || yy == this.sizeY && (this.deckTier & 2) == 2 || (zz == maxZ && (near || far)))))
                         {
                             this.setBlockStateDirectional(worldIn, this.configuration.getWallBlock(), xx, yy, zz);
                         }
@@ -70,7 +107,7 @@ public class BaseRoom extends SizedPiece
                         {
                             this.buildRoomContents(worldIn, xx, yy, zz, maxX, maxZ);
                         }
-                        else if (this.configuration.getDeckType() == EnumDeckType.TUNNELER && (yy == 1 || yy == this.sizeY - 1))
+                        else if (this.configuration.getDeckType() == EnumBaseType.TUNNELER && (yy == 1 || yy == this.sizeY - 1))
                         {
                             int meta = 1;
                             if (xx == 1) meta = 3;
@@ -118,9 +155,11 @@ public class BaseRoom extends SizedPiece
     
     public enum EnumRoomType 
     {
+        EMPTY(Blocks.air.getDefaultState(), Blocks.air.getDefaultState()),
         STORE(GCBlocks.cargoLoader.getStateFromMeta(3), GCBlocks.cargoLoader.getStateFromMeta(2)),
         MACHINE(GCBlocks.aluminumWire.getStateFromMeta(1), GCBlocks.aluminumWire.getStateFromMeta(0)),
-        SALON(Blocks.trapdoor.getDefaultState(), GCBlocks.slabGCHalf.getDefaultState()),
+        ENGINEERING(GCBlocks.aluminumWire.getStateFromMeta(1), GCBlocks.aluminumWire.getStateFromMeta(0)),
+        SALOON(Blocks.trapdoor.getDefaultState(), GCBlocks.slabGCHalf.getDefaultState()),
         CREW(Blocks.wool.getStateFromMeta(8), Blocks.wool.getStateFromMeta(0)),
         CONTROL(GCBlocks.screen.getStateFromMeta(3), GCBlocks.screen.getStateFromMeta(2));
         //gym, medical, galley, power, 
