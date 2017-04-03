@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
@@ -64,5 +66,11 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                 }
             }
         }
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }

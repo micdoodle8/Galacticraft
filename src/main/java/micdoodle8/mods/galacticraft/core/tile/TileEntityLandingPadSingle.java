@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
@@ -49,5 +51,11 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
                 }
             }
         }
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }
