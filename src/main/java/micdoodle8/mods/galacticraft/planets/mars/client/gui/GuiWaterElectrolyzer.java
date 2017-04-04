@@ -166,10 +166,10 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - waterLevel, 1 + 4 * 17, 38 - waterLevel, 16, waterLevel);
         //Oxygen
         int displayInt = this.tileEntity.getScaledFuelLevel(38);
-        this.drawTexturedModalRect(edgeLeft + 132, edgeTop + 17 + 49 - displayInt, 17 + 1, 38 - displayInt, 16, displayInt);
+        this.drawTexturedModalRect(edgeLeft + 132, edgeTop + 17 + 49 - displayInt, 34 + 1, 38 - displayInt, 16, displayInt);
         //Hydrogen
         displayInt = this.tileEntity.getScaledFuelLevel2(38);
-        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 2 * 17 + 1, 38 - displayInt, 16, displayInt);
+        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 17 + 1, 38 - displayInt, 16, displayInt);
 
         this.addToolTips();
 

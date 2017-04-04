@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -270,7 +271,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         int used = 0;
 
-        if (from.equals(this.worldObj.getBlockState(getPos()).getValue(BlockFuelLoader.FACING).getOpposite()))
+        if (this.getElectricInputDirection().getOpposite().equals(from))
         {
             if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {
@@ -309,5 +310,23 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public EnumFacing getElectricInputDirection()
     {
         return getFront().rotateY();
+    }
+
+    @Override
+    public boolean canConnect(EnumFacing direction, NetworkType type)
+    {
+        if (direction == null)
+        {
+            return false;
+        } 
+        if (type == NetworkType.POWER)
+        {
+            return direction == this.getElectricInputDirection();
+        }
+        if (type == NetworkType.FLUID)
+        {
+            return direction == this.getElectricInputDirection().getOpposite();
+        }
+        return false;
     }
 }

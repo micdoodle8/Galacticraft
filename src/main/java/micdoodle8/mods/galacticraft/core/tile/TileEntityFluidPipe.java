@@ -157,14 +157,29 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeToNBT(NBTTagCompound tagCompound)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.writeToNBT(tagCompound);
+        if (this.buffer.getFluid() != null)
+        {
+            tagCompound.setTag("buff", this.buffer.writeToNBT(new NBTTagCompound()));
+        }
+    }
+        
+    @Override
+    public void readFromNBT(NBTTagCompound tagCompound)
+    {
+        super.readFromNBT(tagCompound);
 
-        if (par1NBTTagCompound.hasKey("pipeColor"))
+        if (tagCompound.hasKey("pipeColor"))
         {
             // Backwards compatibility
-            this.worldObj.setBlockState(getPos(), this.worldObj.getBlockState(getPos()).withProperty(BlockFluidPipe.COLOR, EnumDyeColor.byDyeDamage(par1NBTTagCompound.getByte("pipeColor"))));
+            this.worldObj.setBlockState(getPos(), this.worldObj.getBlockState(getPos()).withProperty(BlockFluidPipe.COLOR, EnumDyeColor.byDyeDamage(tagCompound.getByte("pipeColor"))));
+        }
+        
+        if (tagCompound.hasKey("buff"))
+        {
+            this.buffer.readFromNBT(tagCompound.getCompoundTag("buff"));
         }
     }
 
