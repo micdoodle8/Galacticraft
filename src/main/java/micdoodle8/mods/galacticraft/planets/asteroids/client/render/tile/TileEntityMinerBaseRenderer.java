@@ -22,7 +22,6 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileEntityMinerBase>
@@ -38,19 +37,13 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
             {
                 minerBaseModel = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "minerbase0.obj"));
                 minerBaseModel = (OBJModel) minerBaseModel.process(ImmutableMap.of("flip-v", "true"));
+                minerBaseModel = (OBJModel) minerBaseModel.process(ImmutableMap.of("ambient", "false"));
             }
             catch (Exception e)
             {
                 throw new RuntimeException(e);
             }
-            Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()
-            {
-                @Override
-                public TextureAtlasSprite apply(ResourceLocation location)
-                {
-                    return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                }
-            };
+            Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
             minerBaseModelBaked = (OBJModel.OBJBakedModel) minerBaseModel.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, spriteFunction);
         }
         return minerBaseModelBaked;
@@ -63,8 +56,6 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
         {
             return;
         }
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 
         int i = tile.getWorld().getLightFor(EnumSkyBlock.SKY, tile.getPos().up());
         int j = i % 65536;
@@ -96,15 +87,6 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
 
         RenderHelper.disableStandardItemLighting();
         this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
-        if (Minecraft.isAmbientOcclusionEnabled())
-        {
-            GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        }
-        else
-        {
-            GlStateManager.shadeModel(GL11.GL_FLAT);
-        }
 
         Tessellator tessellator = Tessellator.getInstance();
         tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);

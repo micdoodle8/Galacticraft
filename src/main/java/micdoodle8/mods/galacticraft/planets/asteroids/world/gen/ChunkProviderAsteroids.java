@@ -9,11 +9,14 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.MapGenAbandonedBase;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.IProgressUpdate;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -67,24 +70,6 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
     private final SpecialAsteroidBlockHandler coreHandler;
     private final SpecialAsteroidBlockHandler shellHandler;
 
-    //	private final MapGenDungeon dungeonGenerator = new MapGenDungeon(MarsBlocks.marsBlock, 7, 8, 16, 6);
-
-    //	{
-    //		this.dungeonGenerator.otherRooms.add(new RoomEmptyMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomSpawnerMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.otherRooms.add(new RoomChestsMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.bossRooms.add(new RoomBossMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //		this.dungeonGenerator.treasureRooms.add(new RoomTreasureMars(null, 0, 0, 0, EnumFacing.UNKNOWN));
-    //	} TODO Asteroid dungeons?
-
     // DO NOT CHANGE
     private static final int CHUNK_SIZE_X = 16;
     private static final int CHUNK_SIZE_Y = 256;
@@ -134,6 +119,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
     private static HashSet<BlockVec3> chunksDone = new HashSet<BlockVec3>();
     private int largeAsteroidsLastChunkX;
     private int largeAsteroidsLastChunkZ;
+    private final MapGenAbandonedBase dungeonGenerator = new MapGenAbandonedBase();
 
     public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
     {
@@ -544,6 +530,8 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         this.generateTerrain(par1, par2, primer, false);
         //this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 
+        this.dungeonGenerator.generate(this.worldObj, par1, par2, primer);
+
 //        long time2 = System.nanoTime();
         final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
@@ -786,6 +774,13 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
             }
         }
 
+        this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(chunkX, chunkZ));
+    }
+
+    @Override
+    public void recreateStructures(Chunk chunk, int x, int z)
+    {
+        this.dungeonGenerator.generate(this.worldObj, x, z, null);
     }
 
     public void generateSkylightMap(Chunk chunk, int cx, int cz)
@@ -940,7 +935,11 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         chunk.isModified = true;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void resetBase()
+    {
+        this.dungeonGenerator.reset();
+    }
+
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {

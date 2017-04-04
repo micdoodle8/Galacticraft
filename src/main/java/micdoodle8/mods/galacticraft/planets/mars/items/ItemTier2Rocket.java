@@ -183,12 +183,11 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)
     {
-        EnumRocketType type = null;
+        EnumRocketType type;
 
         if (par1ItemStack.getItemDamage() < 10)
         {

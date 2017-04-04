@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCallback
 {
-    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/shortRangeTelepad.png");
+    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/short_range_telepad.png");
 
     private TileEntityShortRangeTelepad telepad;
 

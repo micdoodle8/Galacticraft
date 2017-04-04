@@ -27,10 +27,9 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiWaterElectrolyzer extends GuiContainerGC
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
-    private static final ResourceLocation terraformerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/terraformer.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gas_liquefier.png");
 
-    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
 
     private final TileEntityElectrolyzer tileEntity;
 
@@ -167,10 +166,10 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - waterLevel, 1 + 4 * 17, 38 - waterLevel, 16, waterLevel);
         //Oxygen
         int displayInt = this.tileEntity.getScaledFuelLevel(38);
-        this.drawTexturedModalRect(edgeLeft + 132, edgeTop + 17 + 49 - displayInt, 17 + 1, 38 - displayInt, 16, displayInt);
+        this.drawTexturedModalRect(edgeLeft + 132, edgeTop + 17 + 49 - displayInt, 34 + 1, 38 - displayInt, 16, displayInt);
         //Hydrogen
         displayInt = this.tileEntity.getScaledFuelLevel2(38);
-        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 2 * 17 + 1, 38 - displayInt, 16, displayInt);
+        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 17 + 1, 38 - displayInt, 16, displayInt);
 
         this.addToolTips();
 

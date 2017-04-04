@@ -25,8 +25,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.util.List;
-
 @SideOnly(Side.CLIENT)
 public class RenderTier3Rocket extends Render<EntityTier3Rocket>
 {

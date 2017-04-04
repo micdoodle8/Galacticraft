@@ -165,8 +165,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
-        return new int[] {};
-//        return side != this.getBlockMetadata() - 2 ? new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] { };
+        return side != this.getElectricInputDirection() ? new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] { };
     }
 
     @Override
@@ -178,17 +177,17 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-//        if (side != this.getBlockMetadata() - 2)
-//        {
-//            if (slotID == 0)
-//            {
-//                return ItemElectricBase.isElectricItem(itemstack.getItem());
-//            }
-//            else
-//            {
-//                return true;
-//            }
-//        }
+        if (side != this.getElectricInputDirection())
+        {
+            if (slotID == 0)
+            {
+                return ItemElectricBase.isElectricItem(itemstack.getItem());
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         return false;
     }

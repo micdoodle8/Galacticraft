@@ -403,4 +403,10 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     {
         return !RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos());
     }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
+    }
 }

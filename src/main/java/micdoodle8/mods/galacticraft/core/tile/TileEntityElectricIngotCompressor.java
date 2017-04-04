@@ -29,6 +29,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
@@ -451,9 +452,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                     {
                         if ( OreDictionary.itemMatches((ItemStack)next, stack, false)) match++;
                     }
-                    else if (next instanceof ArrayList)
+                    else if (next instanceof List)
                     {
-                        Iterator<ItemStack> itr = ((ArrayList<ItemStack>)next).iterator();
+                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
                         while (itr.hasNext())
                         {
                             if (OreDictionary.itemMatches(itr.next(), stack, false))
@@ -477,7 +478,6 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 	if (inMatrix != null && inMatrix.isItemEqual(stack))
                 		slotsFilled++;
                 }
-                System.err.println("Comp " + slotsFilled + " " + match + " " + id);
                 if (slotsFilled < match)
                 {
                 	return this.getStackInSlot(id + 3) == null;

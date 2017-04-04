@@ -29,6 +29,48 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     }
 
     @Override
+    public void update()
+    {
+        super.update();
+
+        // TODO: Find a more efficient way to fix this
+        //          Broken since 1.8 and this is an inefficient fix
+        int buildHeight = this.worldObj.getHeight() - 1;
+
+        for (int y = 1; y < 3; y++)
+        {
+            if (getPos().getY() + y > buildHeight)
+            {
+                return;
+            }
+
+            for (int x = -1; x < 2; x++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY() + y, getPos().getZ() + z);
+
+                    if (!vecToAdd.equals(getPos()))
+                    {
+                        if (Math.abs(x) != 1 || Math.abs(z) != 1)
+                        {
+                            TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
+                            if (tile instanceof TileEntityMulti)
+                            {
+                                BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
+                                if (pos == null || !pos.equals(getPos()))
+                                {
+                                    ((TileEntityMulti) tile).mainBlockPosition = getPos();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void onCreate(World world, BlockPos placedPosition)
     {
         this.mainBlockPosition = placedPosition;
