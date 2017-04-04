@@ -54,20 +54,18 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.*;
 import java.util.Map.Entry;
 
 public class GCPlayerHandler
@@ -128,7 +126,7 @@ public class GCPlayerHandler
         {
             event.addCapability(GCCapabilities.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
         }
-        else if (event.getObject() instanceof EntityPlayerSP)
+        else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.getObject() instanceof EntityPlayerSP)
         {
             event.addCapability(GCCapabilities.GC_PLAYER_CLIENT_PROP, new CapabilityProviderStatsClient((EntityPlayerSP) event.getObject()));
         }

@@ -23,7 +23,7 @@
 //public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
 //{
 //    private static final ResourceLocation liquefierGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
-//    private static final ResourceLocation liquefierGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+//    private static final ResourceLocation liquefierGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
 //    int ticksPassed;
 //    int extra = 0;
 //    int inputGas = 0;  //0 is methane   1 is oxygen   2 is atmosphere or nitrogen

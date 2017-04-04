@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
@@ -657,7 +658,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return fluid != null && "water".equals(fluid.getName());
+        return fluid != null && "water".equals(fluid.getName()) && from != this.getElectricInputDirection();
     }
 
     @Override
@@ -731,5 +732,23 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             return (T) new FluidHandlerWrapper(this, facing);
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean canConnect(EnumFacing direction, NetworkType type)
+    {
+        if (direction == null)
+        {
+            return false;
+        } 
+        if (type == NetworkType.POWER)
+        {
+            return direction == this.getElectricInputDirection();
+        }
+        if (type == NetworkType.FLUID)
+        {
+            return direction != this.getElectricInputDirection();
+        }
+        return false;
     }
 }

@@ -29,7 +29,7 @@
 //public class MethaneSynthesizerRecipeHandler extends TemplateRecipeHandler
 //{
 //    private static final ResourceLocation synthesizerGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
-//    private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+//    private static final ResourceLocation synthesizerGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
 //    int ticksPassed;
 //    int extra = 0;
 //

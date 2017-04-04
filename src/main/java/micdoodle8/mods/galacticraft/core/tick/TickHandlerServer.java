@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -73,7 +72,7 @@ public class TickHandlerServer
     private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
     private final int MAX_BLOCKS_PER_TICK = 50000;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
-    private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
+    private static List<FluidNetwork> fluidNetworks = Lists.newArrayList();
 
     public static void addFluidNetwork(FluidNetwork network)
     {
@@ -439,18 +438,15 @@ public class TickHandlerServer
         }
         else if (event.phase == Phase.END)
         {
-            Iterator<FluidNetwork> it = fluidNetworks.iterator();
-            while (it.hasNext())
+            for (FluidNetwork network : new ArrayList<>(fluidNetworks))
             {
-                FluidNetwork network = it.next();
-
                 if (!network.pipes.isEmpty())
                 {
                     network.tickEnd();
                 }
                 else
                 {
-                    it.remove();
+                    fluidNetworks.remove(network);
                 }
             }
 

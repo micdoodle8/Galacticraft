@@ -199,6 +199,8 @@ public class GCBlocks
         List<StackSorted> itemOrderListBlocks = Lists.newArrayList();
         for (EnumSortCategoryBlock type : EnumSortCategoryBlock.values())
         {
+            if (!GalacticraftCore.isPlanetsLoaded && type == EnumSortCategoryBlock.EGG)
+                continue;
             List<StackSorted> stackSorteds = sortMapBlocks.get(type);
             itemOrderListBlocks.addAll(stackSorteds);
         }

@@ -63,6 +63,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -317,6 +319,7 @@ public class TickHandlerClient
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event)
     {

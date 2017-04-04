@@ -213,7 +213,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public int damageDropped(IBlockState state)
     {
-        return getMetaFromState(state);
+        return ((EnumLoaderType) state.getValue(TYPE)).ordinal();
     }
 
     @Override

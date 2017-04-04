@@ -1,6 +1,7 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "galacticraftcore:blocks/rocket_workbench"
+        "all": "galacticraftcore:blocks/rocket_workbench",
+		"particle": "galacticraftcore:blocks/rocket_workbench"
     }
 }

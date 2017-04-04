@@ -15,6 +15,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -186,6 +187,12 @@ public class TileEntityPainter extends TileEntity
     private void dominantToPlayer(EntityPlayerMP player)
     {
         GCPlayerStats.get(player).setGlassColors(this.glassColor1, this.glassColor2, this.glassColor3);
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 
     //TODO: create a GUI and inventory, place specific colourable items (glass, flags etc) in this

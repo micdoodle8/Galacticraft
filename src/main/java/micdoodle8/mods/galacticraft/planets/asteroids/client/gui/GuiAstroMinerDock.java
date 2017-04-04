@@ -29,7 +29,7 @@ import java.util.List;
 
 public class GuiAstroMinerDock extends GuiContainerGC
 {
-    private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/guiAstroMinerDock.png");
+    private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gui_astro_miner_dock.png");
 
     private TileEntityMinerBase tile;
 

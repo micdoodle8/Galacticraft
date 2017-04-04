@@ -189,9 +189,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                             match++;
                         }
                     }
-                    else if (next instanceof ArrayList)
+                    else if (next instanceof List)
                     {
-                        for (ItemStack itemStack : ((ArrayList<ItemStack>) next))
+                        for (ItemStack itemStack : ((List<ItemStack>) next))
                         {
                             if (OreDictionary.itemMatches(itemStack, stack, false))
                             {

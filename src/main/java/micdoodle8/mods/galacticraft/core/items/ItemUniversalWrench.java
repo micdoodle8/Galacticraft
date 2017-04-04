@@ -104,11 +104,39 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         IBlockState state = world.getBlockState(pos);
         Block blockID = state.getBlock();
 
-        if (blockID == Blocks.FURNACE || blockID == Blocks.LIT_FURNACE || blockID == Blocks.DROPPER || blockID == Blocks.HOPPER || blockID == Blocks.DISPENSER || blockID == Blocks.PISTON || blockID == Blocks.STICKY_PISTON)
+        if (blockID == Blocks.FURNACE || blockID == Blocks.LIT_FURNACE || blockID == Blocks.DISPENSER || blockID == Blocks.DROPPER)
         {
             int metadata = blockID.getMetaFromState(state);
 
             world.setBlockState(pos, blockID.getStateFromMeta(EnumFacing.getFront(metadata).rotateY().ordinal()), 3);
+            this.wrenchUsed(player, pos);
+
+            return EnumActionResult.SUCCESS;
+        }
+        else if (blockID == Blocks.HOPPER || blockID == Blocks.PISTON || blockID == Blocks.STICKY_PISTON)
+        {
+            int metadata = blockID.getMetaFromState(state);
+            int metaDir = ((metadata & 7) + 1) % 6;
+            //DOWN->UP->NORTH->*EAST*->*SOUTH*->WEST
+            //0->1 1->2 2->5 3->4 4->0 5->3 
+            if (metaDir == 3) //after north
+            {
+                metaDir = 5;
+            }
+            else if (metaDir == 0)
+            {
+                metaDir = 3;
+            }
+            else if (metaDir == 5)
+            {
+                metaDir = 0;
+            }
+            if (blockID == Blocks.HOPPER && metaDir == 1)
+            {
+                metaDir = 2;
+            }
+                
+            world.setBlockState(pos, blockID.getStateFromMeta((metadata & 8) + metaDir), 3);
             this.wrenchUsed(player, pos);
 
             return EnumActionResult.SUCCESS;

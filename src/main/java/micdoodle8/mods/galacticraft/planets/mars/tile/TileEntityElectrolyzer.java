@@ -334,15 +334,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (side == (metaside ^ 1))
+        if (from == this.getHydrogenOutputDirection())
         {
             return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
         }
-
-        //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (from == this.getOxygenOutputDirection())
         {
             return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
         }
@@ -353,9 +349,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (side == (metaside ^ 1))
+        if (from == this.getHydrogenOutputDirection())
         {
             if (resource != null && resource.isFluidEqual(this.liquidTank2.getFluid()))
             {
@@ -363,8 +357,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             }
         }
 
-        //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (from == this.getOxygenOutputDirection())
         {
             if (resource != null && resource.isFluidEqual(this.liquidTank.getFluid()))
             {
@@ -378,15 +371,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (side == (metaside ^ 1))
+        if (from == this.getHydrogenOutputDirection())
         {
             return this.liquidTank2.drain(maxDrain, doDrain);
         }
 
-        //2->5 3->4 4->2 5->3
-        if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        if (from == this.getOxygenOutputDirection())
         {
             return this.liquidTank.drain(maxDrain, doDrain);
         }
@@ -397,7 +387,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        if (from.ordinal() == this.getBlockMetadata() + 2)
+        if (from == this.getFront().rotateY())
         {
             //Can fill with water
             return fluid != null && fluid.getName().equals(FluidRegistry.WATER.getName());
@@ -423,18 +413,16 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
 
-        if (metaside == side)
+        if (from == this.getFront().rotateY())
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
         }
-        else if (metaside == (side ^ 1))
+        else if (from == this.getHydrogenOutputDirection())
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank2) };
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        else if (from == this.getOxygenOutputDirection())
         {
             tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
         }
@@ -463,15 +451,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (metaside == (side ^ 1) && this.liquidTank2.getFluid() != null)
+        if (from == this.getHydrogenOutputDirection() && this.liquidTank2.getFluid() != null)
         {
             int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
             amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
             return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1) && this.liquidTank.getFluid() != null)
+        else if (from == this.getOxygenOutputDirection() && this.liquidTank.getFluid() != null)
         {
             int amountO = Math.min(8, this.liquidTank.getFluidAmount());
             amountO = this.liquidTank.drain(amountO, doTransfer).amount;
@@ -495,13 +481,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
     public boolean canDrawGas(EnumFacing from, Gas type)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (metaside == (side ^ 1))
+        if (from == this.getHydrogenOutputDirection())
         {
             return type.getName().equals("hydrogen");
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        else if (from == this.getOxygenOutputDirection())
         {
             return type.getName().equals("oxygen");
         }
@@ -511,13 +495,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
     public boolean canTubeConnect(EnumFacing from)
     {
-        int metaside = this.getBlockMetadata() + 2;
-        int side = from.ordinal();
-        if (metaside == (side ^ 1))
+        if (from == this.getHydrogenOutputDirection())
         {
             return true;
         }
-        else if (7 - (metaside ^ (metaside > 3 ? 0 : 1)) == (side ^ 1))
+        else if (from == this.getOxygenOutputDirection())
         {
             return true;
         }
@@ -554,7 +536,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     private EnumFacing getHydrogenOutputDirection()
     {
-        return this.getFront().rotateY().getOpposite();
+        return this.getFront().rotateYCCW();
     }
 
     private boolean produceOxygen(EnumFacing outputDirection)
@@ -752,7 +734,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.FLUID)
         {
-            return this.getOxygenOutputDirection() == direction || this.getHydrogenOutputDirection() == direction;
+            return this.getOxygenOutputDirection() == direction || this.getHydrogenOutputDirection() == direction || direction == this.getFront().rotateY();
         }
 
         if (type == NetworkType.POWER)

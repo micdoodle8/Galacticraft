@@ -816,6 +816,7 @@ public class MapUtil
         return result;
     }
 
+    @SideOnly(Side.CLIENT)
     private static boolean makeRGBimage(int[] array, File baseFolder, int cx, int cz, int offsetX, int offsetZ, int xCoord, int zCoord, int dim, boolean prevResult)
     {
         File filename = makeFileName(baseFolder, cx, cz);

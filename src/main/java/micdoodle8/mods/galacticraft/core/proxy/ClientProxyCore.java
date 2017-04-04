@@ -365,7 +365,7 @@ public class ClientProxyCore extends CommonProxyCore
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()));
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()), "inventory", "normal");
         replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
@@ -402,9 +402,9 @@ public class ClientProxyCore extends CommonProxyCore
 //        }
     }
 
-    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
+    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
-        ClientUtil.replaceModel(Constants.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState);
+        ClientUtil.replaceModel(Constants.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
     }
 
     public static void registerEntityRenderers()

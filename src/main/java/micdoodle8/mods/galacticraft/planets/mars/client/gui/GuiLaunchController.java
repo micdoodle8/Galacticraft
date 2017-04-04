@@ -41,7 +41,7 @@ import java.util.Random;
 
 public class GuiLaunchController extends GuiContainerGC implements IDropboxCallback, ITextBoxCallback, ICheckBoxCallback
 {
-    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launchController.png");
+    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launch_controller.png");
 
     private TileEntityLaunchController launchController;
 
