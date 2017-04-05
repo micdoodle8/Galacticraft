@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine3;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -468,6 +469,9 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassTinVanilla, 5), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassVanilla, 'Y', GCBlocks.basicBlock  });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassTinStrong, 5), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassStrong, 'Y', GCBlocks.basicBlock  });
 
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.machineBase3, 1, BlockMachine3.PAINTER_METADATA), new Object[] { "ABC", "DEF", "GHI", 'A', new ItemStack(Items.dye, 1, 1), 'B', new ItemStack(Items.dye, 1, 13), 'C', new ItemStack(Items.dye, 1, 4), 'D', new ItemStack(Items.dye, 1, 14), 'E', "compressedSteel", 'F', new ItemStack(Items.dye, 1, 6), 'G', new ItemStack(Items.dye, 1, 11), 'H', new ItemStack(Items.dye, 1, 10), 'I', new ItemStack(Items.dye, 1, 2) });
+        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCBlocks.crafting, 1), new Object[] { Blocks.crafting_table, "compressedIron" }));
+        
 //		// Tin Stairs 1
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.tinStairs1, 4), new Object[] { "  X", " XX", "XXX", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.tinStairs1, 4), new Object[] { "X  ", "XX ", "XXX", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
