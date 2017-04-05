@@ -791,11 +791,12 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
 //        boolean flagXZUChunk = w.getChunkProvider().chunkExists(cx - 1, cz + 1);
 //        boolean flagXZDChunk = w.getChunkProvider().chunkExists(cx - 1, cz - 1);
 
+        boolean flag = world.provider.hasSkyLight();
         for (int j = 0; j < 16; j++)
         {
             if (chunk.getBlockStorageArray()[j] == null)
             {
-                chunk.getBlockStorageArray()[j] = new ExtendedBlockStorage(j << 4, false);
+                chunk.getBlockStorageArray()[j] = new ExtendedBlockStorage(j << 4, flag);
             }
         }
 

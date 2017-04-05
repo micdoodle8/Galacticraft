@@ -927,7 +927,8 @@ public class WorldUtil
                             }
                             else if (stack == stats.getRocketStacks().size() - 2)
                             {
-                                stats.getRocketStacks().set(stack, stats.getLaunchpadStack());
+                                ItemStack launchpad = stats.getLaunchpadStack();
+                                stats.getRocketStacks().set(stack, launchpad == null ? ItemStack.EMPTY : launchpad);
                                 stats.setLaunchpadStack(null);
                             }
                         }
