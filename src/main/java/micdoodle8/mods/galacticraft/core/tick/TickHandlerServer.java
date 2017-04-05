@@ -300,6 +300,8 @@ public class TickHandlerServer
             }
 
             SpaceRaceManager.tick();
+            
+            TileEntityOxygenSealer.onServerTick();
 
             if (TickHandlerServer.tickCount % 33 == 0)
             {
@@ -637,7 +639,7 @@ public class TickHandlerServer
             }
 
             List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(GCCoreUtil.getDimensionID(world));
-            final HashSet<BlockVec3> checkedThisTick = new HashSet();
+            final HashSet<BlockPos> checkedThisTick = new HashSet();
 
             if (edgesList != null && !edgesList.isEmpty())
             {
@@ -653,7 +655,7 @@ public class TickHandlerServer
                         }
 
                         ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 2000, new ArrayList<TileEntityOxygenSealer>());
-                        checkedThisTick.addAll(done.checked);
+                        checkedThisTick.addAll(done.checkedAll());
                     }
                 }
 

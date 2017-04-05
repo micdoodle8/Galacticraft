@@ -56,6 +56,6 @@ public class BlockBrightAir extends BlockAir
     @Override
     public int getLightValue(IBlockAccess world, BlockPos pos)
     {
-        return 15 - getMetaFromState(world.getBlockState(pos));
+        return 15;  //TODO - getMetadata;
     }
 }

@@ -48,7 +48,6 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public boolean calculatingSealed;
     public static int countEntities = 0;
     private static int countTemp = 0;
-    private static long ticksSave = 0L;
     private static boolean sealerCheckedThisTick = false;
     public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList();
     private static final int UNSEALED_OXYGENPERTICK = 12;
@@ -73,6 +72,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             {
                 TileEntityOxygenSealer.loadedTiles.add(this);
             }
+            this.stopSealThreadCooldown = 126 + countEntities;
         }
     }
 
@@ -166,17 +166,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         {
             // Some code to count the number of Oxygen Sealers being updated,
             // tick by tick - needed for queueing
-            if (this.ticks == TileEntityOxygenSealer.ticksSave)
-            {
-                TileEntityOxygenSealer.countTemp++;
-            }
-            else
-            {
-                TileEntityOxygenSealer.ticksSave = this.ticks;
-                TileEntityOxygenSealer.countEntities = TileEntityOxygenSealer.countTemp;
-                TileEntityOxygenSealer.countTemp = 1;
-                TileEntityOxygenSealer.sealerCheckedThisTick = false;
-            }
+            TileEntityOxygenSealer.countTemp++;
 
             this.active = this.getOxygenStored() >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
 
@@ -213,6 +203,13 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             this.lastDisabled = this.disabled;
             this.lastSealed = this.sealed;
         }
+    }
+    
+    public static void onServerTick()
+    {
+        TileEntityOxygenSealer.countEntities = TileEntityOxygenSealer.countTemp;
+        TileEntityOxygenSealer.countTemp = 0;
+        TileEntityOxygenSealer.sealerCheckedThisTick = false;
     }
 
     @Override
