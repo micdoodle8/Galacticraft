@@ -72,9 +72,8 @@ public class BlockBrightBreathableAir extends BlockAir
     @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        if (Blocks.air != neighborBlock && neighborBlock != GCBlocks.brightAir)
-        //Do nothing if an air neighbour was replaced (probably because replacing with breatheableAir)
-        //but do a check if replacing breatheableAir as that could be dividing a sealed space
+        if (Blocks.air == neighborBlock)
+        //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
             OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
         }
@@ -96,5 +95,11 @@ public class BlockBrightBreathableAir extends BlockAir
     public int getMetaFromState(IBlockState state)
     {
         return (state.getValue(THERMAL) ? 1 : 0);
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, BlockPos pos)
+    {
+        return 15;  //TODO - getMetadata;
     }
 }

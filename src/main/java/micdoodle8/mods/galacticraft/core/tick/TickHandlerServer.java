@@ -638,7 +638,8 @@ public class TickHandlerServer
                 handler.tick(world);
             }
 
-            List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(GCCoreUtil.getDimensionID(world));
+            int dimID = GCCoreUtil.getDimensionID(world);
+            List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID);
             final HashSet<BlockPos> checkedThisTick = new HashSet();
 
             if (edgesList != null && !edgesList.isEmpty())
@@ -649,12 +650,12 @@ public class TickHandlerServer
                 {
                     if (edgeBlock != null && !checkedThisTick.contains(edgeBlock))
                     {
-                        if (TickHandlerServer.scheduledForChange(GCCoreUtil.getDimensionID(world), edgeBlock))
+                        if (TickHandlerServer.scheduledForChange(dimID, edgeBlock))
                         {
                             continue;
                         }
 
-                        ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 2000, new ArrayList<TileEntityOxygenSealer>());
+                        ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 0, new ArrayList<TileEntityOxygenSealer>());
                         checkedThisTick.addAll(done.checkedAll());
                     }
                 }

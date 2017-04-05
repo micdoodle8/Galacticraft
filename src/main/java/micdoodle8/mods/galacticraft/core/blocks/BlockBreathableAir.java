@@ -71,9 +71,8 @@ public class BlockBreathableAir extends BlockAir
     @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        if (Blocks.air != neighborBlock && neighborBlock != GCBlocks.brightAir)
-        //Do nothing if an air neighbour was replaced (probably because replacing with breatheableAir)
-        //but do a check if replacing breatheableAir as that could be dividing a sealed space
+        if (Blocks.air == neighborBlock)
+        //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
             OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
         }
