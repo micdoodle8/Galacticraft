@@ -57,6 +57,7 @@ public class GCBlocks
     public static BlockSpaceGlass spaceGlassTinClear;
     public static BlockSpaceGlass spaceGlassTinVanilla;
     public static BlockSpaceGlass spaceGlassTinStrong;
+    public static Block crafting;
     public static Block crudeOil;
     public static Block fuel;
     public static Block refinery;
@@ -123,6 +124,7 @@ public class GCBlocks
         GCBlocks.spaceGlassTinVanilla = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_vanilla_tin", GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla).setHardness(0.3F).setResistance(4F);
         GCBlocks.spaceGlassTinClear = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_clear_tin", GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear).setHardness(0.3F).setResistance(4F);
         GCBlocks.spaceGlassTinStrong = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_strong_tin", GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong).setHardness(4F).setResistance(35F);
+        GCBlocks.crafting = new BlockCrafting("magnetic_table");
         GCBlocks.refinery = new BlockRefinery("refinery");
         GCBlocks.oxygenCompressor = new BlockOxygenCompressor(false, "oxygen_compressor");
         GCBlocks.fuelLoader = new BlockFuelLoader("fuel_loader");
@@ -373,6 +375,7 @@ public class GCBlocks
         registerBlock(GCBlocks.spaceGlassTinClear, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.spaceGlassTinVanilla, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.spaceGlassTinStrong, null);  //The corresponding item is already registered
+        registerBlock(GCBlocks.crafting, ItemBlockGC.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
