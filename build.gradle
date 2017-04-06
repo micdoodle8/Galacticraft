@@ -59,7 +59,7 @@ ext.dependencies = ['codechicken/**',
 					'cofh/**',
 					'ic2/**',
 					'mekanism/**',
-					'mezz/**'
+					'mezz/**',
 					'powercrystals/**']
 					
 // Keep a list of core files/directories for easy jar packing
