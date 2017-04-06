@@ -38,6 +38,7 @@ public class ThreadFindSeal
     private HashMap<BlockVec3, TileEntityOxygenSealer> sealersAround;
     private List<BlockVec3> currentLayer;
     private List<BlockVec3> airToReplace;
+    private List<BlockVec3> fireToReplace;
     private List<BlockVec3> breatheableToReplace;
     private List<BlockVec3> airToReplaceBright;
     private List<BlockVec3> breatheableToReplaceBright;
@@ -196,6 +197,7 @@ public class ThreadFindSeal
             this.checkedClear();
             this.breatheableToReplace = new LinkedList<BlockVec3>();
             this.breatheableToReplaceBright = new LinkedList<BlockVec3>();
+            this.fireToReplace = new LinkedList<BlockVec3>();
             this.otherSealers = new LinkedList<TileEntityOxygenSealer>();
             // unseal() will mark breatheableAir blocks for change as it
             // finds them, also searches for unchecked sealers
@@ -412,6 +414,10 @@ public class ThreadFindSeal
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.toBlockPos(), Blocks.air, 0, 0));
             }
+            for (BlockVec3 checkedVec : this.fireToReplace)
+            {
+                changeList.add(new ScheduledBlockChange(checkedVec.toBlockPos(), Blocks.air, 0, 2));
+            }
             for (BlockVec3 checkedVec : this.breatheableToReplaceBright)
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.toBlockPos(), GCBlocks.brightAir, 0, 0));
@@ -434,6 +440,7 @@ public class ThreadFindSeal
         Block airBlock = Blocks.air;
         Block airBlockBright = GCBlocks.brightAir;
         List<BlockVec3> toReplaceLocal = this.breatheableToReplace;
+        List<BlockVec3> toReplaceLocalBright = this.breatheableToReplaceBright;
         LinkedList nextLayer = new LinkedList<BlockVec3>();
         World world = this.world;
         int side, bits;
@@ -461,13 +468,13 @@ public class ThreadFindSeal
                             }
                             else if (id == breatheableAirIDBright)
                             {
-                                this.breatheableToReplaceBright.add(sideVec);
+                                toReplaceLocalBright.add(sideVec);
                                 nextLayer.add(sideVec);
                                 checkedAdd(sideVec);
                             }
                             else if (id == fireBlock)
                             {
-                                toReplaceLocal.add(sideVec);
+                                this.fireToReplace.add(sideVec);
                                 nextLayer.add(sideVec);
                                 checkedAdd(sideVec);
                             }
@@ -570,7 +577,7 @@ public class ThreadFindSeal
                             }
                             else if (id == fireBlock)
                             {
-                                toReplaceLocal.add(sideVec);
+                                this.fireToReplace.add(sideVec);
                                 nextLayer.add(sideVec);
                                 checkedAdd(sideVec);
                             }
