@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -82,7 +86,7 @@ public class ContainerCrafting extends Container
         ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(index);
 
-        if (slot != null && slot.getHasStack())
+        if (slot != null && slot.getHasStack() && slot.getStack().stackSize > 0)
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
@@ -95,6 +99,20 @@ public class ContainerCrafting extends Container
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
+            }
+            else if (index < 10)
+            {
+                if (!this.mergeItemStack(itemstack1, 10, 46, false))
+                {
+                    return null;
+                }
+            }
+            else if (this.matchesCrafting(itemstack1))
+            {
+                if (!this.mergeToCrafting(itemstack1, false))
+                {
+                    return null;
+                }
             }
             else if (index >= 10 && index < 37)
             {
@@ -109,10 +127,6 @@ public class ContainerCrafting extends Container
                 {
                     return null;
                 }
-            }
-            else if (!this.mergeItemStack(itemstack1, 10, 46, false))
-            {
-                return null;
             }
 
             if (itemstack1.stackSize == 0)
@@ -133,6 +147,160 @@ public class ContainerCrafting extends Container
         }
 
         return itemstack;
+    }
+
+    private boolean mergeToCrafting(ItemStack stack, boolean b)
+    {
+        List<Slot> acceptSlots = new LinkedList();
+        List<Integer> acceptQuantity = new LinkedList();
+        int minQuantity = 64;
+        int acceptTotal = 0;
+        for (int i = 1; i < 10; i++)
+        {
+            Slot slot = (Slot)this.inventorySlots.get(i);
+
+            if (slot != null && slot.getHasStack())
+            {
+                ItemStack target = slot.getStack();
+                if (matchingStacks(stack, target))
+                {
+                    acceptSlots.add(slot);
+                    int availSpace = target.getMaxStackSize() - target.stackSize;
+                    acceptQuantity.add(availSpace);
+                    acceptTotal += availSpace;
+                    if (availSpace < minQuantity) minQuantity = availSpace;
+                }
+            }
+        }
+        
+        //The stack more than exceeds what the crafting inventory requires
+        if (stack.stackSize >= acceptTotal)
+        {
+            if (acceptTotal == 0)
+                return false;
+            
+            for (Slot slot : acceptSlots)
+            {
+                if (slot != null && slot.getHasStack())
+                {
+                    ItemStack target = slot.getStack();
+                    stack.stackSize -= target.getMaxStackSize() - target.stackSize;
+                    target.stackSize = target.getMaxStackSize();
+                    slot.onSlotChanged();
+                }
+            }
+            return true;
+        }
+        
+        int uneven = 0;
+        for (int q : acceptQuantity)
+        {
+            uneven += q - minQuantity;
+        }
+        
+        //Use the whole stack to try to even up the neediest slots
+        if (stack.stackSize < uneven)
+        {
+            do
+            {
+                Slot neediest = null;
+                int smallestStack = 64; 
+                for (Slot slot : acceptSlots)
+                {
+                    if (slot != null && slot.getHasStack())
+                    {
+                        ItemStack target = slot.getStack();
+                        if (target.stackSize < smallestStack)
+                        {
+                            smallestStack = target.stackSize;
+                            neediest = slot;
+                        }
+                    }
+                }
+                neediest.getStack().stackSize++;
+            }
+            while (--stack.stackSize > 0);
+            for (Slot slot : acceptSlots)
+            {
+                slot.onSlotChanged();
+            }
+            return true;
+        }
+
+        //Use some of the stack to even things up
+        if (uneven > 0)
+        {
+            int targetSize = stack.getMaxStackSize() - minQuantity;
+            for (Slot slot : acceptSlots)
+            {
+                if (slot != null && slot.getHasStack())
+                {
+                    ItemStack target = slot.getStack();
+                    stack.stackSize -= targetSize - target.stackSize;
+                    acceptTotal -= targetSize - target.stackSize;
+                    target.stackSize = targetSize;
+                    slot.onSlotChanged();
+                }
+            }
+        }
+        
+        //Spread the remaining stack over all slots evenly
+        int average = stack.stackSize / acceptSlots.size();
+        int modulus = stack.stackSize - average * acceptSlots.size();
+        for (Slot slot : acceptSlots)
+        {
+            if (slot != null && slot.getHasStack())
+            {
+                ItemStack target = slot.getStack();
+                int transfer = average;
+                if (modulus > 0)
+                {
+                    transfer++;
+                    modulus--;
+                }
+                stack.stackSize -= transfer;
+                target.stackSize += transfer;
+                if (target.stackSize > target.getMaxStackSize())
+                {
+                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.stackSize);
+                    stack.stackSize += target.stackSize - target.getMaxStackSize();
+                    target.stackSize = target.getMaxStackSize();
+                }
+                slot.onSlotChanged();
+                if (stack.stackSize < 0)
+                {
+                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " emptied the whole stack: " + stack.stackSize);
+                    target.stackSize += stack.stackSize;
+                    stack.stackSize = 0;
+                    break;
+                }
+            }
+        }
+    
+        return true;
+    }
+
+    private boolean matchesCrafting(ItemStack itemstack1)
+    {
+        for (int i = 1; i < 10; i++)
+        {
+            Slot slot = (Slot)this.inventorySlots.get(i);
+
+            if (slot != null && slot.getHasStack())
+            {
+                ItemStack target = slot.getStack();
+                if (matchingStacks(itemstack1, target))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean matchingStacks(ItemStack stack, ItemStack target)
+    {
+        return target != null && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && target.isStackable() && target.stackSize < target.getMaxStackSize();
     }
 
     /**
