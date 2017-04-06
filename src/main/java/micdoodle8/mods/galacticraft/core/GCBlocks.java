@@ -69,6 +69,7 @@ public class GCBlocks
     public static Block cargoLoader;
     public static Block parachest;
     public static Block solarPanel;
+    public static Block radioTelescope;
     public static Block machineBase;
     public static Block machineBase2;
     public static Block machineBase3;
@@ -136,6 +137,7 @@ public class GCBlocks
         GCBlocks.cargoLoader = new BlockCargoLoader("cargo");
         GCBlocks.parachest = new BlockParaChest("parachest");
         GCBlocks.solarPanel = new BlockSolar("solar");
+        GCBlocks.radioTelescope = new BlockDish("dish");
         GCBlocks.machineBase = new BlockMachine("machine");
         GCBlocks.machineBase2 = new BlockMachine2("machine2");
         GCBlocks.machineBase3 = new BlockMachine3("machine3");
@@ -382,6 +384,7 @@ public class GCBlocks
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
         registerBlock(GCBlocks.parachest, ItemBlockDesc.class);
         registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class);
+        registerBlock(GCBlocks.radioTelescope, ItemBlockGC.class);
         registerBlock(GCBlocks.machineBase, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase3, ItemBlockMachine.class);
