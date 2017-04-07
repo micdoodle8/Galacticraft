@@ -1,0 +1,20 @@
+{
+	"textures": {
+		"texture": "galacticraftcore:blocks/arc_lamp_off",
+		"particle": "galacticraftcore:blocks/arc_lamp_off"
+	},
+    "elements": [ 
+    {
+        "from": [ 2, 0, 2 ],
+        "to": [ 14, 1, 14 ],
+        "faces": {
+            "down":  { "uv": [ 8, 8, 0, 0 ], "texture": "#texture" },
+            "up":    { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" },
+            "north": { "uv": [ 0, 7, 8, 8 ], "texture": "#texture" },
+            "south": { "uv": [ 0, 7, 8, 8 ], "texture": "#texture" },
+            "west":  { "uv": [ 0, 7, 8, 8 ], "texture": "#texture" },
+            "east":  { "uv": [ 0, 7, 8, 8 ], "texture": "#texture" }
+        }
+    }
+    ]
+}

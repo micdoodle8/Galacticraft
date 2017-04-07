@@ -58,7 +58,11 @@ public class GuiHandler implements IGuiHandler
 
         if (tile != null)
         {
-            if (tile instanceof TileEntityRefinery)
+            if (tile instanceof TileEntityCrafting)
+            {
+                return new ContainerCrafting(player.inventory, (TileEntityCrafting) tile);
+            }
+            else if (tile instanceof TileEntityRefinery)
             {
                 return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile, player);
             }
@@ -188,7 +192,11 @@ public class GuiHandler implements IGuiHandler
 
         if (tile != null)
         {
-            if (tile instanceof TileEntityRefinery)
+            if (tile instanceof TileEntityCrafting)
+            {
+                return new GuiCrafting(player.inventory, (TileEntityCrafting) tile);
+            }
+            else if (tile instanceof TileEntityRefinery)
             {
                 return new GuiRefinery(player.inventory, (TileEntityRefinery) world.getTileEntity(position));
             }

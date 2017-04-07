@@ -249,6 +249,7 @@ public class FreefallHandler
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
     public void setupFreefallPre(EntityPlayerSP p)
     {
         double dY = p.motionY - pPrevMotionY;
@@ -259,6 +260,7 @@ public class FreefallHandler
         pPrevMotionZ = p.motionZ;
     }
 
+    @SideOnly(Side.CLIENT)
     public void freefallMotion(EntityPlayerSP p)
     {
         boolean jetpackUsed = false;

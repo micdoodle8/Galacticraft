@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -113,7 +114,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
 
             return EnumActionResult.SUCCESS;
         }
-        else if (blockID == Blocks.HOPPER || blockID == Blocks.PISTON || blockID == Blocks.STICKY_PISTON)
+        else if (blockID == Blocks.HOPPER || blockID == Blocks.PISTON || blockID == Blocks.STICKY_PISTON || blockID == GCBlocks.crafting)
         {
             int metadata = blockID.getMetaFromState(state);
             int metaDir = ((metadata & 7) + 1) % 6;

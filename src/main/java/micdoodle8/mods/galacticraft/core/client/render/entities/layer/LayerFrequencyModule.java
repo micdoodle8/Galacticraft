@@ -41,7 +41,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "frequencyModule.obj"));
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "frequency_module.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
                 Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());

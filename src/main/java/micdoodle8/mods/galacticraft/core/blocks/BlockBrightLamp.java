@@ -11,7 +11,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +29,7 @@ import net.minecraft.world.World;
 public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+//    public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
@@ -42,7 +41,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     public BlockBrightLamp(String assetName)
     {
         super(Material.GLASS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ACTIVE, true));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));  //.withProperty(ACTIVE, true));
         this.setHardness(0.1F);
         this.setSoundType(SoundType.WOOD);
         this.setUnlocalizedName(assetName);
@@ -251,15 +250,15 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] { FACING, ACTIVE });
+        return new BlockStateContainer(this, FACING);  //, ACTIVE });
     }
 
-    @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
-    }
-
+//    @Override
+//    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        return state.withProperty(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
+//    }
+//
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {

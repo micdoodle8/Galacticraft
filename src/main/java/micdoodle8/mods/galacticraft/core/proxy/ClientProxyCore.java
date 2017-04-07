@@ -451,7 +451,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityFluidPipeRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
@@ -580,6 +580,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassClear, 1, "space_glass_tin_clear");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassVanilla, 1, "space_glass_tin_vanilla");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.spaceGlassStrong, 1, "space_glass_tin_strong");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.crafting);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.refinery);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fuelLoader);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.landingPadFull, 0, "landing_pad_full");

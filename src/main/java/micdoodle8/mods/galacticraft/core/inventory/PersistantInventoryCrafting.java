@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
-public class PersistantInventoryCrafting implements IInventory
+public class PersistantInventoryCrafting extends InventoryCrafting
 {
     /**
      * List of the stacks in the crafting matrix.
@@ -26,6 +26,7 @@ public class PersistantInventoryCrafting implements IInventory
 
     public PersistantInventoryCrafting()
     {
+        super(null, 3, 3);
         int k = 9;
         this.stackList = new ItemStack[k];
         this.inventoryWidth = 3;
@@ -53,6 +54,7 @@ public class PersistantInventoryCrafting implements IInventory
      * Returns the itemstack in the slot specified (Top left is 0, 0). Args:
      * row, column
      */
+    @Override
     public ItemStack getStackInRowAndColumn(int par1, int par2)
     {
         if (par1 >= 0 && par1 < this.inventoryWidth)

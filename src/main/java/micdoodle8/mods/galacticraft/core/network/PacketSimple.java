@@ -702,14 +702,14 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             int par4 = (Integer) this.data.get(3);
             WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
-//        case C_UPDATE_ARCLAMP_FACING:
-//            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
-//            int facingNew = (Integer) this.data.get(1);
-//            if (tile instanceof TileEntityArclamp)
-//            {
-//                ((TileEntityArclamp) tile).facing = facingNew;
-//            }
-//            break;
+        case C_UPDATE_ARCLAMP_FACING:
+            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            int facingNew = (Integer) this.data.get(1);
+            if (tile instanceof TileEntityArclamp)
+            {
+                ((TileEntityArclamp) tile).facing = facingNew;
+            }
+            break;
         case C_UPDATE_STATS:
             stats.setBuildFlags((Integer) this.data.get(0));
             break;

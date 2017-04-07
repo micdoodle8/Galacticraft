@@ -54,10 +54,13 @@ minecraft {
 // Keep a list of dependencies files/directories for easy jar packing
 ext.dependencies = ['codechicken/**',
 					'**/nei_at.cfg',
+					'api/**',
 					'buildcraft/**',
 					'cofh/**',
 					'ic2/**',
-					'mekanism/**']
+					'mekanism/**',
+					'mezz/**',
+					'powercrystals/**']
 					
 // Keep a list of core files/directories for easy jar packing
 ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
