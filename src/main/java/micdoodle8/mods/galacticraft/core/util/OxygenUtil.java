@@ -469,25 +469,29 @@ public class OxygenUtil
         for (EnumFacing direction : EnumFacing.values())
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
-            IFluidHandler handler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite());
 
-            if (handler != null)
+            if (tileEntity != null)
             {
-                if (ignoreConnect || !(tileEntity instanceof IConnector) || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID))
+                IFluidHandler handler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite());
+
+                if (handler != null)
                 {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
+                    if (ignoreConnect || !(tileEntity instanceof IConnector) || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID))
+                    {
+                        adjacentConnections[direction.ordinal()] = tileEntity;
+                    }
                 }
+    //            else if (isMekLoaded)
+    //            {
+    //                if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
+    //                {
+    //                    if (((ITubeConnection) tileEntity).canTubeConnect(direction))
+    //                    {
+    //                        adjacentConnections[direction.ordinal()] = tileEntity;
+    //                    }
+    //                }
+    //            }
             }
-//            else if (isMekLoaded)
-//            {
-//                if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
-//                {
-//                    if (((ITubeConnection) tileEntity).canTubeConnect(direction))
-//                    {
-//                        adjacentConnections[direction.ordinal()] = tileEntity;
-//                    }
-//                }
-//            }
         }
 
         return adjacentConnections;
