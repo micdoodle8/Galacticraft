@@ -283,11 +283,11 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
-                Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
+                IBlockState mainBlockState = world.getBlockState(mainBlockPosition);
 
-                if (Blocks.AIR != mainBlockID)
+                if (Blocks.AIR != mainBlockState.getBlock())
                 {
-                    return mainBlockID.getPickBlock(state, target, world, mainBlockPosition, player);
+                    return mainBlockState.getBlock().getPickBlock(mainBlockState, target, world, mainBlockPosition, player);
                 }
             }
         }
