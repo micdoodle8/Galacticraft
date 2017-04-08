@@ -90,7 +90,7 @@ public class OverlayRocket extends Overlay
 
         try
         {
-            spaceshipRender.doRender(OverlayRocket.minecraft.player.getRidingEntity().getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.player.width), 0, 0, 0, 0, 0);
+            spaceshipRender.doRender(OverlayRocket.minecraft.player.getRidingEntity().getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.player.world), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {
