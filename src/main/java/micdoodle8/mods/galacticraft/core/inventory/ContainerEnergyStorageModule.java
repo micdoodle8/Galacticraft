@@ -110,7 +110,7 @@ public class ContainerEnergyStorageModule extends Container
 
             if (itemStack.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {

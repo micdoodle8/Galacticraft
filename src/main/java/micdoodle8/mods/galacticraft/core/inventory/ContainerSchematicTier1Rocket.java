@@ -192,7 +192,7 @@ public class ContainerSchematicTier1Rocket extends Container
                 {
                     var3.onTake(par1EntityPlayer, var4);
                 }
-                var3.putStack((ItemStack) null);
+                var3.putStack(ItemStack.EMPTY);
                 return var2;
             }
 

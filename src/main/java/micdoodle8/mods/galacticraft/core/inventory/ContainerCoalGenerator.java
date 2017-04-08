@@ -90,7 +90,7 @@ public class ContainerCoalGenerator extends Container
 
             if (var4.getCount() == 0)
             {
-                var3.putStack((ItemStack) null);
+                var3.putStack(ItemStack.EMPTY);
             }
             else
             {

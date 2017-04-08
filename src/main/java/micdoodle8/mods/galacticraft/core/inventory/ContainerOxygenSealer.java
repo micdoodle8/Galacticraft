@@ -107,7 +107,7 @@ public class ContainerOxygenSealer extends Container
 
             if (stack.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
