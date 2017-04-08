@@ -38,6 +38,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     public EntityParachest(World world, NonNullList<ItemStack> cargo, int fuelLevel)
     {
         this(world);
+        this.cargo = NonNullList.withSize(cargo.size(), ItemStack.EMPTY);
         Collections.copy(this.cargo, cargo);
         this.placedChest = false;
         this.fuelLevel = fuelLevel;
