@@ -297,6 +297,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
+    	if (world.isRemote) return;
         nbt.setInteger("Type", this.rocketType.getIndex());
 
         super.writeEntityToNBT(nbt);

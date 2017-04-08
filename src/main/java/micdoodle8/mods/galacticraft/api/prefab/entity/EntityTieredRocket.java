@@ -454,7 +454,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
-        nbt.setInteger("Type", this.rocketType.getIndex());
+    	if (world.isRemote) return;
+    	nbt.setInteger("Type", this.rocketType.getIndex());
         super.writeEntityToNBT(nbt);
     }
 

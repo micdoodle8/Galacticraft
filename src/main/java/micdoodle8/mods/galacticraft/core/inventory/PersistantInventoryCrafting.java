@@ -2,25 +2,30 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
-public class PersistantInventoryCrafting implements IInventory
+import javax.annotation.Nonnull;
+
+public class PersistantInventoryCrafting extends InventoryCrafting
 {
     public NonNullList<ItemStack> stacks;
 
     private int inventoryWidth;
+    private int inventoryHeight;
 
     public Container eventHandler;
 
     public PersistantInventoryCrafting()
     {
+        super(null, 3, 3);
         int k = 9;
         this.stacks = NonNullList.withSize(k, ItemStack.EMPTY);
         this.inventoryWidth = 3;
+        this.inventoryHeight = 3;
     }
 
     @Override
@@ -30,6 +35,7 @@ public class PersistantInventoryCrafting implements IInventory
     }
 
     @Override
+    @Nonnull
     public ItemStack getStackInSlot(int index)
     {
         return this.stacks.get(index);
@@ -46,6 +52,12 @@ public class PersistantInventoryCrafting implements IInventory
         }
 
         return itemstack;
+    }
+
+    @Override
+    public ItemStack getStackInRowAndColumn(int row, int column)
+    {
+        return row >= 0 && row < this.inventoryWidth && column >= 0 && column <= this.inventoryHeight ? this.getStackInSlot(row + column * this.inventoryWidth) : ItemStack.EMPTY;
     }
 
     @Override

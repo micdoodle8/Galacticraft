@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 
+import javax.annotation.Nullable;
+
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
  * 
  * But for speed it uses integer arithmetic not doubles, for block coordinates
@@ -191,6 +193,7 @@ public class BlockVec3 implements Cloneable
      * greater than 256. Returns Blocks.BEDROCK if the coordinates being
      * checked are in an unloaded chunk
      */
+    @Nullable
     public IBlockState getBlockStateSafe_noChunkLoad(World world)
     {
         if (this.y < 0 || this.y >= 256)

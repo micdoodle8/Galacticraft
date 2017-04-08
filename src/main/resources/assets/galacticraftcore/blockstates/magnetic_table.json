@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "inventory": { "model": "galacticraftcore:magnetic_table_model" },
+        "facing=down": { "model": "galacticraftcore:magnetic_table_model", "x": 180 },
+        "facing=up": { "model": "galacticraftcore:magnetic_table_model" },
+        "facing=north": { "model": "galacticraftcore:magnetic_table_model", "x": 90 },
+        "facing=south": { "model": "galacticraftcore:magnetic_table_model", "x": 90, "y": 180 },
+        "facing=west": { "model": "galacticraftcore:magnetic_table_model", "x": 90, "y": 270 },
+        "facing=east": { "model": "galacticraftcore:magnetic_table_model", "x": 90, "y": 90 }
+    }
+}

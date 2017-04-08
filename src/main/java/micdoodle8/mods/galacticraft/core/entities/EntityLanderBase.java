@@ -205,6 +205,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
+        if (world.isRemote) return;
         nbt.setInteger("rocketStacksLength", this.stacks.size());
 
         ItemStackHelper.saveAllItems(nbt, this.stacks);

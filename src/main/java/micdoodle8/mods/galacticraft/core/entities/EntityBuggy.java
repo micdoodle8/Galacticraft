@@ -491,7 +491,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
+    	if (world.isRemote) return;
         nbt.setInteger("buggyType", this.buggyType);
+        final NBTTagList var2 = new NBTTagList();
 
         if (this.buggyFuelTank.getFluid() != null)
         {

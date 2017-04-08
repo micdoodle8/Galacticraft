@@ -35,12 +35,13 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     private int sideRear = 0;
     public int facing = 0;
     private HashSet<BlockVec3> airToRestore = new HashSet();
+    private intBucket[] buckets;
     private boolean isActive = false;
     private AxisAlignedBB thisAABB;
     private Vec3d thisPos;
     private int facingSide = 0;
     public boolean updateClientFlag;
-
+    
     @Override
     public void update()
     {
@@ -195,6 +196,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         else
         {
             this.isActive = true;
+            if (this.buckets == null)
+            {
+                this.buckets = new intBucket[256];
+                this.checkedInit();
+            }
         }
     }
 
@@ -215,7 +221,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         Block breatheableAirID = GCBlocks.breatheableAir;
         Block brightAir = GCBlocks.brightAir;
         Block brightBreatheableAir = GCBlocks.brightBreatheableAir;
-        HashSet<BlockVec3> checked = new HashSet();
+        this.checkedClear();
         LinkedList<BlockVec3> currentLayer = new LinkedList();
         LinkedList<BlockVec3> nextLayer = new LinkedList();
         BlockVec3 thisvec = new BlockVec3(this);
@@ -261,12 +267,10 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                     //and never go 'backwards'
                     if ((bits & (1 << side)) == 0)
                     {
-                        BlockVec3 sideVec = vec.newVecSide(side);
-                        BlockPos sideVecPos = sideVec.toBlockPos();
-
-                        if (!checked.contains(sideVec))
+                        if (!checkedContains(vec, side))
                         {
-                            checked.add(sideVec);
+                            BlockVec3 sideVec = vec.newVecSide(side);
+                            checkedAdd(sideVec);
 
                             IBlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
                             if (state.getBlock() instanceof BlockAir)
@@ -279,7 +283,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                             else
                             {
                                 allAir = false;
-                                if (state.getBlock().getLightOpacity(state, world, sideVecPos) == 0)
+                                if (state.getBlock().getLightOpacity(state, world, sideVec.toBlockPos()) == 0)
                                 {
                                     if (side != sideskip1 && side != sideskip2)
                                     {
@@ -293,25 +297,24 @@ public class TileEntityArclamp extends TileEntity implements ITickable
                 }
                 while (side < 6);
 
+                boolean dirty = false;
                 if (!allAir)
                 {
                     IBlockState state = vec.getBlockStateSafe_noChunkLoad(world);
-                    if (state.getBlock().isAir(state, world, vec.toBlockPos()))
+                    if (Blocks.AIR == state.getBlock())
                     {
-                        if (Blocks.AIR == state.getBlock())
-                        {
-                            world.setBlockState(vec.toBlockPos(), brightAir.getDefaultState(), 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
-                        else if (state.getBlock() == breatheableAirID)
-                        {
-                            world.setBlockState(vec.toBlockPos(), brightBreatheableAir.getDefaultState(), 2);
-                            this.airToRestore.add(vec);
-                            this.markDirty();
-                        }
+                        world.setBlockState(vec.toBlockPos(), brightAir.getDefaultState(), 2);
+                        this.airToRestore.add(vec);
+                        dirty = true;
+                    }
+                    else if (state.getBlock() == breatheableAirID)
+                    {
+                        world.setBlockState(vec.toBlockPos(), brightBreatheableAir.getDefaultState(), 2);
+                        this.airToRestore.add(vec);
+                        dirty = true;
                     }
                 }
+                if (dirty) this.markDirty();
             }
             currentLayer = nextLayer;
             nextLayer = new LinkedList<BlockVec3>();
@@ -408,5 +411,126 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+
+    private void checkedAdd(BlockVec3 vec)
+    {
+        int dx = this.pos.getX() - vec.x;
+        int dz = this.pos.getZ() - vec.z;
+        if (dx < -8191 || dx > 8192) return;
+        if (dz < -8191 || dz > 8192) return;
+        intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
+        bucket.add(vec.y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
+    }
+
+    /**
+     * Currently unused - the sided implementation is used instead
+     */
+    private boolean checkedContains(BlockVec3 vec)
+    {
+        int dx = this.pos.getX() - vec.x;
+        int dz = this.pos.getZ() - vec.z;
+        if (dx < -8191 || dx > 8192) return true;
+        if (dz < -8191 || dz > 8192) return true;
+        intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
+        return bucket.contains(vec.y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
+    }
+
+    private boolean checkedContains(BlockVec3 vec, int side)
+    {
+        int y = vec.y;
+        int dx = this.pos.getX() - vec.x;
+        int dz = this.pos.getZ() - vec.z;
+        switch (side)
+        {
+        case 0:
+            y--;
+            if (y < 0) return true;
+            break;
+        case 1:
+            y++;
+            if (y > 255) return true;
+            break;
+        case 2:
+            dz++;
+            break;
+        case 3:
+            dz--;
+            break;
+        case 4:
+            dx++;
+            break;
+        case 5:
+            dx--;
+        }
+        if (dx < -8191 || dx > 8192) return true;
+        if (dz < -8191 || dz > 8192) return true;
+        intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
+        return bucket.contains(y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
+    }
+
+    private void checkedInit()
+    {
+        for (int i = 0; i < 256; i++)
+        {
+            this.buckets[i] = new intBucket();
+        }
+    }
+
+    private void checkedClear()
+    {
+        for (int i = 0; i < 256; i++)
+        {
+            this.buckets[i].clear();
+        }
+    }
+
+    public class intBucket
+    {
+        private int maxSize = 24;  //default size
+        private int size = 0;
+        private int[] table = new int[maxSize];
+        
+        public void add(int i)
+        {
+            if (this.contains(i))
+                return;
+            
+            if (size >= maxSize)
+            {
+                int[] newTable = new int[maxSize + maxSize];
+                System.arraycopy(table, 0, newTable, 0, maxSize);
+                table = newTable;
+                maxSize += maxSize;
+            }
+            table[size] = i;
+            size++;
+        }
+
+        public boolean contains(int test)
+        {
+            for (int i = size - 1; i >= 0; i--)
+            {
+                if (table[i] == test)
+                    return true;
+            }
+            return false;
+        }
+        
+        public void clear()
+        {
+            size = 0;
+        }
+        
+        public int size()
+        {
+            return size;
+        }
+          
+        public int[] contents()
+        {
+            return table;
+        }
     }
 }

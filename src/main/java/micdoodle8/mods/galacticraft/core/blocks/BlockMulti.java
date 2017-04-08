@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -283,11 +282,11 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
-                Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
+                IBlockState mainBlockState = world.getBlockState(mainBlockPosition);
 
-                if (Blocks.AIR != mainBlockID)
+                if (Blocks.AIR != mainBlockState.getBlock())
                 {
-                    return mainBlockID.getPickBlock(state, target, world, mainBlockPosition, player);
+                    return mainBlockState.getBlock().getPickBlock(mainBlockState, target, world, mainBlockPosition, player);
                 }
             }
         }
