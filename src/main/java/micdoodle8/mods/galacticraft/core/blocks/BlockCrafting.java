@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -23,7 +22,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockCrafting extends Block implements ITileEntityProvider, ISortableBlock
+public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
@@ -42,11 +41,62 @@ public class BlockCrafting extends Block implements ITileEntityProvider, ISortab
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        //TODO do we need to test for sneaking here?
+        if (this.isUsableWrench(playerIn, playerIn.inventory.getCurrentItem(), pos))
+        {
+            this.damageWrench(playerIn, playerIn.inventory.getCurrentItem(), pos);
+
+            if (playerIn.isSneaking())
+            {
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+                {
+                    playerIn.swingArm(hand);
+                    return true;
+                }
+            }
+
+            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+            {
+                playerIn.swingArm(hand);
+                return true;
+            }
+        }
+
+        if (playerIn.isSneaking())
+        {
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+            {
+                return true;
+            }
+        }
+
         if (!worldIn.isRemote)
         {
             playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
+        return true;
+    }
+
+    @Override
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        int metadata = this.getMetaFromState(world.getBlockState(pos));
+        int metaDir = ((metadata & 7) + 1) % 6;
+        //DOWN->UP->NORTH->*EAST*->*SOUTH*->WEST
+        //0->1 1->2 2->5 3->4 4->0 5->3 
+        if (metaDir == 3) //after north
+        {
+            metaDir = 5;
+        }
+        else if (metaDir == 0)
+        {
+            metaDir = 3;
+        }
+        else if (metaDir == 5)
+        {
+            metaDir = 0;
+        }
+            
+        world.setBlockState(pos, this.getStateFromMeta(metaDir), 3);
         return true;
     }
 
@@ -91,8 +141,7 @@ public class BlockCrafting extends Block implements ITileEntityProvider, ISortab
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
     @Override
