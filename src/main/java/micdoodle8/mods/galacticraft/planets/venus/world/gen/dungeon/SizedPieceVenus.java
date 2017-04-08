@@ -35,6 +35,8 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     @Override
     protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
     {
+        super.readStructureFromNBT(tagCompound, manager);
+
         this.sizeX = tagCompound.getInteger("sizeX");
         this.sizeY = tagCompound.getInteger("sizeY");
         this.sizeZ = tagCompound.getInteger("sizeZ");
