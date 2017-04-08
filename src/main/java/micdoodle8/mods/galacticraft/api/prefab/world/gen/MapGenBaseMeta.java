@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
-
 import java.util.Random;
 
 /**

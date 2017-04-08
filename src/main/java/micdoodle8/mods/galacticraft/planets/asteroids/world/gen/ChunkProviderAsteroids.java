@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;

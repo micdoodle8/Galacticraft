@@ -21,7 +21,6 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.Arrays;

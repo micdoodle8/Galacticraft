@@ -8,8 +8,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
 
-import java.util.concurrent.Callable;
-
 public abstract class GenLayerGCMap extends net.minecraft.world.gen.layer.GenLayer
 {
     /** seed from World#getWorldSeed that is used in the LCG prng */

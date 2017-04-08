@@ -7,7 +7,6 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.IntCache;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
