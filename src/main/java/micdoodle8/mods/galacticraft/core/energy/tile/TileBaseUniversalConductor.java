@@ -33,7 +33,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     //Update ticks only required if IC2 is loaded
-    @RuntimeInterface(clazz = "net.minecraft.util.ITickable", modID = "IC2")
+    @RuntimeInterface(clazz = "net.minecraft.util.ITickable", modID = "IC2", deobfName = "func_73660_a")
     public void update()
     {
         if (!this.isAddedToEnergyNet)
