@@ -1,6 +1,7 @@
 {
 "textures": {
-    "texture": "galacticraftcore:blocks/thruster"
+    "texture": "galacticraftcore:blocks/thruster",
+    "particle": "galacticraftcore:blocks/thruster"
 },
 "elements": [ 
 {

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world;
 
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -95,7 +96,7 @@ public class ChunkLoadingCallback implements LoadingCallback
             ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         }
 
-        HashSet<BlockPos> chunkLoaders = dimensionMap.get(world.provider.getDimensionId());
+        HashSet<BlockPos> chunkLoaders = dimensionMap.get(GCCoreUtil.getDimensionID(world));
 
         if (chunkLoaders == null)
         {
@@ -103,7 +104,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
 
         chunkLoaders.add(new BlockPos(x, y, z));
-        dimensionMap.put(world.provider.getDimensionId(), chunkLoaders);
+        dimensionMap.put(GCCoreUtil.getDimensionID(world), chunkLoaders);
         ChunkLoadingCallback.chunkLoaderList.put(playerName, dimensionMap);
         ChunkLoadingCallback.dirtyData = true;
     }
@@ -119,7 +120,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // if (tile instanceof IChunkLoader)
         // {
         // IChunkLoader chunkLoader = (IChunkLoader) tile;
-        // int dimID = world.provider.getDimensionId();
+        // int dimID = world);
         //
         // HashSet<IChunkLoader> chunkList = loadedChunks.get(dimID);
         //

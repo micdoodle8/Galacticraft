@@ -86,7 +86,7 @@ public class OxygenUtil
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;
 
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.fromBounds(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin));
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.fromBounds(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin), testThermal);
     }
 
     public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
@@ -343,7 +343,7 @@ public class OxygenUtil
 
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-        if (stats.extendedInventory.getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, stats.extendedInventory.getStackInSlot(0)))
+        if (stats.getExtendedInventory().getStackInSlot(0) == null || !OxygenUtil.isItemValidForPlayerTankInv(0, stats.getExtendedInventory().getStackInSlot(0)))
         {
             boolean handled = false;
 
@@ -369,7 +369,7 @@ public class OxygenUtil
             }
         }
 
-        if (stats.extendedInventory.getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, stats.extendedInventory.getStackInSlot(1)))
+        if (stats.getExtendedInventory().getStackInSlot(1) == null || !OxygenUtil.isItemValidForPlayerTankInv(1, stats.getExtendedInventory().getStackInSlot(1)))
         {
             boolean handled = false;
 
@@ -395,7 +395,7 @@ public class OxygenUtil
             }
         }
 
-        if ((stats.extendedInventory.getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, stats.extendedInventory.getStackInSlot(2))) && (stats.extendedInventory.getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, stats.extendedInventory.getStackInSlot(3))))
+        if ((stats.getExtendedInventory().getStackInSlot(2) == null || !OxygenUtil.isItemValidForPlayerTankInv(2, stats.getExtendedInventory().getStackInSlot(2))) && (stats.getExtendedInventory().getStackInSlot(3) == null || !OxygenUtil.isItemValidForPlayerTankInv(3, stats.getExtendedInventory().getStackInSlot(3))))
         {
             boolean handled = false;
 
@@ -498,9 +498,10 @@ public class OxygenUtil
 
     public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
     {
+        int dimID = GCCoreUtil.getDimensionID(worldObj);
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
-            if (blockVec != null && blockVec.dim == worldObj.provider.getDimensionId())
+            if (blockVec != null && blockVec.dim == dimID)
             {
                 TileEntity tile = blockVec.getTileEntity();
                 if (tile instanceof TileEntityOxygenDistributor)

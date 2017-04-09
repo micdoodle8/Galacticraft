@@ -9,10 +9,12 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -22,9 +24,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Calclavia
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public abstract class TileBaseConductor extends TileEntityAdvanced implements IConductor
+public abstract class TileBaseConductor extends TileEntity implements IConductor
 {
-    private IGridNetwork network;
+    protected IGridNetwork network;
 
     public TileEntity[] adjacentConnections = null;
 
@@ -55,13 +57,6 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
         super.invalidate();
         super.onChunkUnload();
     }
-
-
-//    @Override
-//    public boolean canUpdate()
-//    {
-//        return false;
-//    }
 
     @Override
     public IElectricityNetwork getNetwork()
@@ -94,15 +89,19 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
             BlockVec3 thisVec = new BlockVec3(this);
             for (EnumFacing side : EnumFacing.values())
             {
-                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            	TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
-                if (tileEntity != null)
-                {
-                    if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && !this.getNetwork().equals(((INetworkProvider) tileEntity).getNetwork()))
-                    {
-                        ((INetworkProvider) tileEntity).getNetwork().merge(this.getNetwork());
-                    }
-                }
+            	if (tileEntity instanceof TileBaseConductor && ((TileBaseConductor)tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+            	{
+            		IGridNetwork otherNet = ((INetworkProvider) tileEntity).getNetwork();
+            		if (!this.getNetwork().equals(otherNet))
+            		{
+            			if (!otherNet.getTransmitters().isEmpty())
+            			{
+            				otherNet.merge(this.getNetwork());
+            			}
+            		}
+            	}
             }
         }
     }
@@ -125,10 +124,10 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
 
                 if (tileEntity instanceof IConnector)
                 {
-                    if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
-                    {
-                        this.adjacentConnections[i] = tileEntity;
-                    }
+                	if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+                	{
+                		this.adjacentConnections[i] = tileEntity;
+                	}
                 }
             }
         }
@@ -165,5 +164,11 @@ public abstract class TileBaseConductor extends TileEntityAdvanced implements IC
     public boolean canTransmit()
     {
         return true;
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }

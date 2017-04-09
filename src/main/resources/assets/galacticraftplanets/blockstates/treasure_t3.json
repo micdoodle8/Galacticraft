@@ -1,0 +1,20 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "facing=north": { 
+			"model": "galacticraftplanets:treasure_t3"
+		},
+        "facing=east":  { 
+			"model": "galacticraftplanets:treasure_t3",
+			"y": 90
+		},
+        "facing=south": { 
+			"model": "galacticraftplanets:treasure_t3", 
+			"y": 180
+		},
+        "facing=west":  { 
+			"model": "galacticraftplanets:treasure_t3", 
+			"y": 270
+		}
+    }
+}

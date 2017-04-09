@@ -30,12 +30,6 @@ public class CommandGCAstroMiner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
-    {
-        return true;
-    }
-
-    @Override
     public String getCommandName()
     {
         return "gcastrominer";
@@ -125,14 +119,14 @@ public class CommandGCAstroMiner extends CommandBase
                     switch (type)
                     {
                     case 1:
-                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.astroMinerCount)));
+                        sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + stats.getAstroMinerCount())));
                         break;
                     case 2:
-                        stats.astroMinerCount = 0;
+                        stats.setAstroMinerCount(0);
                         sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + 0)));
                         break;
                     case 3:
-                        stats.astroMinerCount = newvalue;
+                        stats.setAstroMinerCount(newvalue);
                         sender.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("command.gcastrominer.count", playerBase.getGameProfile().getName(), "" + newvalue)));
                         break;
                     }

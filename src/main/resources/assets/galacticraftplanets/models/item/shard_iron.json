@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/shardIron"
+        "layer0": "galacticraftplanets:items/shard_iron"
     },
     "display": {
         "thirdperson": {

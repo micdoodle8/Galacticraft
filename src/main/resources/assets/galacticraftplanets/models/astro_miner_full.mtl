@@ -5,40 +5,40 @@ newmtl 05___Default
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMiner
+map_Kd galacticraftplanets:blocks/astro_miner
 
 newmtl 05___Default.004
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMiner
+map_Kd galacticraftplanets:blocks/astro_miner
 
 newmtl 05___Default.005
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMiner
+map_Kd galacticraftplanets:blocks/astro_miner
 
 newmtl 05___Default.006
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMiner
+map_Kd galacticraftplanets:blocks/astro_miner
 
 newmtl 05___Default.007
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMiner
+map_Kd galacticraftplanets:blocks/astro_miner
 
 newmtl 05___Default.008
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMiner
+map_Kd galacticraftplanets:blocks/astro_miner
 
 newmtl Material__2
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftplanets:blocks/astroMinerFX
+map_Kd galacticraftplanets:blocks/astro_miner_fx

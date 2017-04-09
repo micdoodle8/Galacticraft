@@ -9,9 +9,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,14 +16,11 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class RenderTier3Rocket extends Render<EntityTier3Rocket>
@@ -100,13 +94,7 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.8F, 0.8F, 0.8F);
 
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-
-        worldrenderer.begin(GL11.GL_QUADS, rocketModel.getFormat());
-
         ClientUtil.drawBakedModel(rocketModel);
-        tessellator.draw();
 
         Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getName(), true);
         if (teamColor != null)
@@ -135,13 +123,5 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         GL11.glPopMatrix();
 
         RenderHelper.enableStandardItemLighting();
-    }
-
-    private void renderQuads(WorldRenderer renderer, List<BakedQuad> quads, int color)
-    {
-        for (BakedQuad bakedquad : quads)
-        {
-            LightUtil.renderQuadColor(renderer, bakedquad, color);
-        }
     }
 }

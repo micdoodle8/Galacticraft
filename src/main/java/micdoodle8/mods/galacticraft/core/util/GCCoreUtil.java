@@ -18,6 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.LanguageRegistry;
@@ -53,7 +55,7 @@ public class GCCoreUtil
         player.getNextWindowId();
         player.closeContainer();
         int id = player.currentWindowId;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, player.worldObj.provider.getDimensionId(), new Object[] { id, 0, 0 }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { id, 0, 0 }), player);
         player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
         player.openContainer.windowId = id;
         player.openContainer.onCraftGuiOpened(player);
@@ -64,7 +66,7 @@ public class GCCoreUtil
         player.getNextWindowId();
         player.closeContainer();
         int windowId = player.currentWindowId;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, player.worldObj.provider.getDimensionId(), new Object[] { windowId, 1, landerInv.getEntityId() }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { windowId, 1, landerInv.getEntityId() }), player);
         player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
         player.openContainer.windowId = windowId;
         player.openContainer.onCraftGuiOpened(player);
@@ -202,6 +204,16 @@ public class GCCoreUtil
             return string;
         }
         return GCCoreUtil.translate(string).toLowerCase();
+    }
+
+    public static int getDimensionID(World world)
+    {
+        return world.provider.getDimensionId();
+    }
+
+    public static int getDimensionID(WorldProvider provider)
+    {
+        return provider.getDimensionId();
     }
 
 //    public static void sortBlock(Block block, int meta, StackSorted beforeStack)

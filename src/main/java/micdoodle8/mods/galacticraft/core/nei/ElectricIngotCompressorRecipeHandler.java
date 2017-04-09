@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_IngotCompressor.png");
+    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_ingot_compressor.png");
     public static int ticksPassed;
     private int alternate = 0;
 
@@ -208,7 +208,7 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return Constants.TEXTURE_PREFIX + "textures/gui/electric_IngotCompressor.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/electric_ingot_compressor.png";
     }
 
     @Override

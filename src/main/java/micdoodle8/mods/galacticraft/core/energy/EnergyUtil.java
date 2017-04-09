@@ -8,7 +8,9 @@ import ic2.api.energy.tile.*;
 import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
@@ -16,8 +18,10 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class EnergyUtil
 {
@@ -26,8 +30,6 @@ public class EnergyUtil
     private static boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
     private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
     private static boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
-    private static boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded();
-    private static boolean isBC6Loaded = isBCLoaded && EnergyConfigHandler.getBuildcraftVersion() == 6;
     private static boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftReallyLoaded();
 
     public static boolean voltageParameterIC2 = false;
@@ -35,7 +37,8 @@ public class EnergyUtil
     public static Method injectEnergyIC2 = null;
     public static Method offeredEnergyIC2 = null;
     public static Method drawEnergyIC2 = null;
-    private static Class<?> clazzMekCable = null;
+    public static Class<?> clazzIC2Cable = null;
+    public static Class<?> clazzMekCable = null;
     public static Class<?> clazzEnderIOCable = null;
     public static Class<?> clazzMFRRednetEnergyCable = null;
     public static Class<?> clazzRailcraftEngine = null;
@@ -50,7 +53,12 @@ public class EnergyUtil
         BlockVec3 thisVec = new BlockVec3(tile);
         for (EnumFacing direction : EnumFacing.values())
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+        	if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
+            {
+                continue;
+            }
+        	
+        	TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity == null)
             {
@@ -99,11 +107,7 @@ public class EnergyUtil
                 {
                     if (clazzPipeTile.isInstance(tileEntity))
                     {
-//                        Object pipe = clazzPipeTile.getField("pipe").get(tileEntity);
-//                        if (clazzPipeWood.isInstance(pipe))
-//                        {
                         continue;
-//                        }
                     }
                 }
                 catch (Exception e)
@@ -167,7 +171,97 @@ public class EnergyUtil
 
         return adjacentConnections;
     }
+    /**
+     * Similar to getAdjacentPowerConnections but specific to energy receivers only
+     * Adds the adjacent power connections found to the passed acceptors, directions parameter Lists
+     * (Note: an acceptor can therefore sometimes be entered in the Lists more than once, with a different direction each time:
+     * this would represent GC wires connected to the acceptor on more than one side.)
+     * 
+     * @param conductor
+     * @param acceptors
+     * @param directions
+     * @throws Exception
+     */
+    public static void setAdjacentPowerConnections(TileEntity conductor, List <TileEntity> acceptors, List <EnumFacing> directions) throws Exception
+    {
+        final BlockVec3 thisVec = new BlockVec3(conductor);
+        final World world = conductor.getWorld(); 
+        for (EnumFacing direction : EnumFacing.values())
+        {
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
+            
+            if (tileEntity == null || tileEntity instanceof IConductor)  //world.getTileEntity will not have returned an invalid tile, invalid tiles are null
+            {
+            	continue;
+            }
+            
+            EnumFacing sideFrom = direction.getOpposite();
 
+            if (tileEntity instanceof IElectrical)
+            {
+                if (((IElectrical) tileEntity).canConnect(sideFrom, NetworkType.POWER))
+                {
+                    acceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
+            }
+            
+            if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+            {
+                if (clazzMekCable != null && clazzMekCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+                if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(sideFrom))
+                {
+                    acceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
+            }
+            
+            if (isBCReallyLoaded && clazzPipeTile.isInstance(tileEntity))
+            {
+            	continue;
+            }
+
+            if (isIC2Loaded && tileEntity instanceof IEnergyAcceptor)
+            {
+                if (tileEntity instanceof IEnergyConductor)
+                {
+                    continue;
+                }
+                if (((IEnergyAcceptor) tileEntity).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
+                {
+                    acceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
+            }
+            
+            if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
+            {
+            	if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+            	{
+            		continue;
+            	}
+            	if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
+            	{
+            		continue;
+            	}
+
+            	if (((IEnergyConnection) tileEntity).canConnectEnergy(sideFrom))
+            	{
+            		acceptors.add(tileEntity);
+            		directions.add(sideFrom);
+            	}
+            	continue;
+            }
+        }
+        return;
+    }
+    
     public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
     {
         if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput && tileAdj instanceof IStrictEnergyAcceptor)
@@ -407,7 +501,8 @@ public class EnergyUtil
 
             try
             {
-                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
+               clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+               Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
                 GCLog.debug("Found IC2 IEnergySink class OK");
 
@@ -461,6 +556,9 @@ public class EnergyUtil
                 e.printStackTrace();
             }
         }
+        if (clazzPipeTile == null)
+        	isBCReallyLoaded = false;
+        
         return true;
     }
 }

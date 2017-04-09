@@ -5,12 +5,16 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeGenBaseAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.MFRSpawnHandlerSlimeling;
 import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeGenBaseVenus;
 import net.minecraftforge.common.MinecraftForge;
+import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeGenBaseMars;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -71,6 +75,13 @@ public class GalacticraftPlanets
         GalacticraftPlanets.commonModules.add(new VenusModule());
         GalacticraftPlanets.proxy.preInit(event);
         GalacticraftPlanets.proxy.registerVariants();
+        
+        //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker
+        BiomeGenBase biomeMarsPreInit = BiomeGenBaseMars.marsFlat;
+        BiomeGenBase biomeAsteroidsPreInit = BiomeGenBaseAsteroids.asteroid;
+        BiomeGenBase biomeVenusPreInit1 = BiomeGenBaseVenus.venusFlat;
+        BiomeGenBase biomeVenusPreInit2 = BiomeGenBaseVenus.venusMountain;
+        BiomeGenBase biomeVenusPreInit3 = BiomeGenBaseVenus.venusValley;
     }
 
     @EventHandler

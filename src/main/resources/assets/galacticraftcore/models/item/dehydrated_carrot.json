@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/basicItem.dehydratedCarrot"
+        "layer0": "galacticraftcore:items/basic_item.dehydrated_carrot"
     },
     "display": {
         "thirdperson": {

@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/deshHelmet"
+        "layer0": "galacticraftplanets:items/desh_helmet"
     },
     "display": {
         "thirdperson": {

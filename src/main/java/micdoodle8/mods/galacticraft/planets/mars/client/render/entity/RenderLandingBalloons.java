@@ -39,7 +39,7 @@ public class RenderLandingBalloons extends Render<EntityLandingBalloons>
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "landingBalloon.obj"));
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "landing_balloon.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
                 Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()

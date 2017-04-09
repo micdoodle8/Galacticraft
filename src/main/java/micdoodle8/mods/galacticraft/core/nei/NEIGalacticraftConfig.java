@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -44,11 +45,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         for (Block block : GCBlocks.hiddenBlocks)
         {
             API.hideItem(new ItemStack(block, 1, 0));
-//            if (block == GCBlocks.slabGCDouble) TODO
-//            {
-//            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
-//            		API.hideItem(new ItemStack(block, 1, j));
-//            }
+            if (block == GCBlocks.slabGCDouble)
+            {
+            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
+            		API.hideItem(new ItemStack(block, 1, j));
+            }
         }
 
         API.registerRecipeHandler(new RocketT1RecipeHandler());
@@ -258,11 +259,11 @@ public class NEIGalacticraftConfig implements IConfigureNEI
         HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
         input1.put(0, new PositionedStack(new ItemStack(Items.diamond), 10, 22));
         int siliconCount = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).size();
-        ItemStack[] silicons = new ItemStack[siliconCount + 1];
-        silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);
+        ItemStack[] silicons = new ItemStack[siliconCount];
+//        silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);  //This is now included in the oredict
         for (int j = 0; j < siliconCount; j++)
         {
-            silicons[j + 1] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j);
+        	silicons[j] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j); 
         }
         input1.put(1, new PositionedStack(silicons, 69, 51));
         input1.put(2, new PositionedStack(silicons, 69, 69));

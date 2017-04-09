@@ -8,9 +8,4 @@ public class TileEntityTreasureChestMars extends TileEntityTreasureChest
     {
         super(2);
     }
-
-    public TileEntityTreasureChestMars(int tier)
-    {
-        super(tier);
-    }
 }

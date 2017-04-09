@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -40,7 +40,7 @@ public class DrawGameScreen extends IScreenManager
     public String telemetryLastName;
     public Entity telemetryLastEntity;
     public Render telemetryLastRender;
-    public static DynamicTexture reusableMap;// = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+    public static DynamicTexture reusableMap;  //This will be set up in MapUtil.resetClientBody()
     public int[] localMap = null;
     public boolean mapDone = false;
     public boolean mapFirstTick = false;
@@ -65,7 +65,7 @@ public class DrawGameScreen extends IScreenManager
 
     private void makeMap()
     {
-        if (this.mapDone || this.reusableMap == null || this.driver.getWorld().provider.getDimensionId() != 0)
+        if (this.mapDone || reusableMap == null || GCCoreUtil.getDimensionID(this.driver.getWorld()) != 0)
         {
             return;
         }
@@ -75,7 +75,6 @@ public class DrawGameScreen extends IScreenManager
         {
             TextureUtil.uploadTexture(reusableMap.getGlTextureId(), this.localMap, MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
             mapDone = true;
-            GCLog.debug("Created texture no:" + texCount++);
         }
     }
 
@@ -89,7 +88,7 @@ public class DrawGameScreen extends IScreenManager
 
         if (cornerBlock)
         {
-            if ((this.mapFirstTick || ((int) ticks) % 400 == 0) && !mapDone)
+            if ((this.mapFirstTick || ((int) ticks) % 99 == 0) && !mapDone)
             {
                 if (this.tickMapDone != (int) ticks)
                 {

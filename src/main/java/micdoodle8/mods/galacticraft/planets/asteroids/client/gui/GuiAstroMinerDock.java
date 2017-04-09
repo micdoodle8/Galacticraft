@@ -29,7 +29,7 @@ import java.util.List;
 
 public class GuiAstroMinerDock extends GuiContainerGC
 {
-    private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/guiAstroMinerDock.png");
+    private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gui_astro_miner_dock.png");
 
     private TileEntityMinerBase tile;
 
@@ -104,7 +104,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.tile.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.tile.getPos(), 0 }));
                 break;
             default:
                 break;

@@ -3,7 +3,10 @@ package micdoodle8.mods.galacticraft.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+
 import micdoodle8.mods.galacticraft.core.blocks.*;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -48,6 +51,13 @@ public class GCBlocks
     public static Block basicBlock;
     public static Block airLockFrame;
     public static Block airLockSeal;
+    public static BlockSpaceGlass spaceGlassClear;
+    public static BlockSpaceGlass spaceGlassVanilla;
+    public static BlockSpaceGlass spaceGlassStrong;
+    public static BlockSpaceGlass spaceGlassTinClear;
+    public static BlockSpaceGlass spaceGlassTinVanilla;
+    public static BlockSpaceGlass spaceGlassTinStrong;
+    public static Block crafting;
     public static Block crudeOil;
     public static Block fuel;
     public static Block refinery;
@@ -59,8 +69,10 @@ public class GCBlocks
     public static Block cargoLoader;
     public static Block parachest;
     public static Block solarPanel;
+    public static Block radioTelescope;
     public static Block machineBase;
     public static Block machineBase2;
+    public static Block machineBase3;
     public static Block machineTiered;
     public static Block aluminumWire;
     public static Block glowstoneTorch;
@@ -93,7 +105,7 @@ public class GCBlocks
         GCBlocks.brightAir = new BlockBrightAir("bright_air");
         GCBlocks.brightBreatheableAir = new BlockBrightBreathableAir("bright_breathable_air");
         GCBlocks.brightLamp = new BlockBrightLamp("arclamp");
-        GCBlocks.treasureChestTier1 = new BlockT1TreasureChest("treasure_chest");
+        GCBlocks.treasureChestTier1 = new BlockTier1TreasureChest("treasure_chest");
         GCBlocks.landingPad = new BlockLandingPad("landing_pad");
         GCBlocks.landingPadFull = new BlockLandingPadFull("landing_pad_full");
         GCBlocks.unlitTorch = new BlockUnlitTorch(false, "unlit_torch");
@@ -107,6 +119,13 @@ public class GCBlocks
         GCBlocks.basicBlock = new BlockBasic("basic_block_core");
         GCBlocks.airLockFrame = new BlockAirLockFrame("air_lock_frame");
         GCBlocks.airLockSeal = new BlockAirLockWall("air_lock_seal");
+        GCBlocks.spaceGlassVanilla = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_vanilla", GlassType.VANILLA, GlassFrame.PLAIN, null).setHardness(0.3F).setResistance(3F);
+        GCBlocks.spaceGlassClear = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_clear", GlassType.CLEAR, GlassFrame.PLAIN, null).setHardness(0.3F).setResistance(3F);
+        GCBlocks.spaceGlassStrong = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_strong", GlassType.STRONG, GlassFrame.PLAIN, null).setHardness(4F).setResistance(35F);
+        GCBlocks.spaceGlassTinVanilla = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_vanilla_tin", GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla).setHardness(0.3F).setResistance(4F);
+        GCBlocks.spaceGlassTinClear = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_clear_tin", GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear).setHardness(0.3F).setResistance(4F);
+        GCBlocks.spaceGlassTinStrong = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_strong_tin", GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong).setHardness(4F).setResistance(35F);
+        GCBlocks.crafting = new BlockCrafting("magnetic_table");
         GCBlocks.refinery = new BlockRefinery("refinery");
         GCBlocks.oxygenCompressor = new BlockOxygenCompressor(false, "oxygen_compressor");
         GCBlocks.fuelLoader = new BlockFuelLoader("fuel_loader");
@@ -118,8 +137,10 @@ public class GCBlocks
         GCBlocks.cargoLoader = new BlockCargoLoader("cargo");
         GCBlocks.parachest = new BlockParaChest("parachest");
         GCBlocks.solarPanel = new BlockSolar("solar");
+        GCBlocks.radioTelescope = new BlockDish("dish");
         GCBlocks.machineBase = new BlockMachine("machine");
         GCBlocks.machineBase2 = new BlockMachine2("machine2");
+        GCBlocks.machineBase3 = new BlockMachine3("machine3");
         GCBlocks.machineTiered = new BlockMachineTiered("machine_tiered");
         GCBlocks.aluminumWire = new BlockAluminumWire("aluminum_wire");
         GCBlocks.glowstoneTorch = new BlockGlowstoneTorch("glowstone_torch");
@@ -143,6 +164,7 @@ public class GCBlocks
         GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.brightBreatheableAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.brightAir);
+        GCBlocks.hiddenBlocks.add(GCBlocks.oxygenPipePull);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
         GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
@@ -179,6 +201,8 @@ public class GCBlocks
         List<StackSorted> itemOrderListBlocks = Lists.newArrayList();
         for (EnumSortCategoryBlock type : EnumSortCategoryBlock.values())
         {
+            if (!GalacticraftCore.isPlanetsLoaded && type == EnumSortCategoryBlock.EGG)
+                continue;
             List<StackSorted> stackSorteds = sortMapBlocks.get(type);
             itemOrderListBlocks.addAll(stackSorteds);
         }
@@ -344,17 +368,26 @@ public class GCBlocks
         registerBlock(GCBlocks.refinery, ItemBlockDesc.class);
         registerBlock(GCBlocks.fuelLoader, ItemBlockDesc.class);
         registerBlock(GCBlocks.cargoLoader, ItemBlockCargoLoader.class);
-        registerBlock(GCBlocks.nasaWorkbench, ItemBlockDesc.class);
+        registerBlock(GCBlocks.nasaWorkbench, ItemBlockNasaWorkbench.class);
         registerBlock(GCBlocks.basicBlock, ItemBlockBase.class);
         registerBlock(GCBlocks.airLockFrame, ItemBlockAirLock.class);
         registerBlock(GCBlocks.airLockSeal, ItemBlockGC.class);
+        registerBlock(GCBlocks.spaceGlassClear, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassVanilla, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassStrong, ItemBlockGlassGC.class);
+        registerBlock(GCBlocks.spaceGlassTinClear, null);  //The corresponding item is already registered
+        registerBlock(GCBlocks.spaceGlassTinVanilla, null);  //The corresponding item is already registered
+        registerBlock(GCBlocks.spaceGlassTinStrong, null);  //The corresponding item is already registered
+        registerBlock(GCBlocks.crafting, ItemBlockGC.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
         registerBlock(GCBlocks.parachest, ItemBlockDesc.class);
         registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class);
+        registerBlock(GCBlocks.radioTelescope, ItemBlockGC.class);
         registerBlock(GCBlocks.machineBase, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
+        registerBlock(GCBlocks.machineBase3, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class);
         registerBlock(GCBlocks.glowstoneTorch, ItemBlockDesc.class);
         registerBlock(GCBlocks.fallenMeteor, ItemBlockDesc.class);

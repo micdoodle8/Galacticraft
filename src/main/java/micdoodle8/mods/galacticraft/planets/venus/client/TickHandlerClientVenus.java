@@ -22,6 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Iterator;
 import java.util.Map;
 
+@SideOnly(Side.CLIENT)
 public class TickHandlerClientVenus
 {
     private Map<BlockPos, Integer> lightning = Maps.newHashMap();

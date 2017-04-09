@@ -2,33 +2,35 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.MapUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.EnumPacketDirection;
 import net.minecraft.network.Packet;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
+
 import org.apache.logging.log4j.LogManager;
 
 public class ConnectionEvents
 {
     private static boolean clientConnected = false;
+    private static boolean initialisedJEI = false;
 
     static
     {
@@ -75,7 +77,7 @@ public class ConnectionEvents
             EntityPlayerMP thePlayer = (EntityPlayerMP) event.player;
             GCPlayerStats stats = GCPlayerStats.get(thePlayer);
             SpaceStationWorldData.checkAllStations(thePlayer, stats);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, thePlayer.worldObj.provider.getDimensionId(), new Object[] { WorldUtil.spaceStationDataToString(stats.spaceStationDimensionData) }), thePlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(thePlayer.worldObj), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), thePlayer);
             SpaceRace raceForPlayer = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
             if (raceForPlayer != null)
             {
@@ -83,9 +85,9 @@ public class ConnectionEvents
             }
         }
 
-        if (event.player.worldObj.provider instanceof WorldProviderZeroGravity && event.player instanceof EntityPlayerMP)
+        if (event.player.worldObj.provider instanceof WorldProviderSpaceStation && event.player instanceof EntityPlayerMP)
         {
-            ((WorldProviderZeroGravity) event.player.worldObj.provider).getSpinManager().sendPackets((EntityPlayerMP) event.player);
+            ((WorldProviderSpaceStation) event.player.worldObj.provider).getSpinManager().sendPackets((EntityPlayerMP) event.player);
         }
     }
 
@@ -115,6 +117,14 @@ public class ConnectionEvents
             ConnectionEvents.clientConnected = true;
         }
         MapUtil.resetClient();
+        if (!initialisedJEI)
+        {
+            initialisedJEI = true;
+            if (Loader.isModLoaded("JEI"))
+            {
+                GCItems.hideItemsJEI();
+            }
+        }
     }
 
     @SubscribeEvent

@@ -1,5 +1,7 @@
 {
+    "forge_marker": 1,
     "variants": {
+        "inventory": [{ "model": "galacticraftplanets:asteroid_rock_0_model" }],
         "basictypeasteroids=asteroid_rock_0": { "model": "galacticraftplanets:asteroid_rock_0_model" },
         "basictypeasteroids=asteroid_rock_1": { "model": "galacticraftplanets:asteroid_rock_1_model" },
         "basictypeasteroids=asteroid_rock_2": { "model": "galacticraftplanets:asteroid_rock_2_model" },

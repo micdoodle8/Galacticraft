@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities.player;
 
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,10 +42,10 @@ public class AsteroidsPlayerHandler
     @SubscribeEvent
     public void onEntityConstructing(EntityEvent.EntityConstructing event)
     {
-        if (event.entity instanceof EntityPlayerMP && GCPlayerStats.get((EntityPlayerMP) event.entity) == null)
-        {
-            GCPlayerStats.register((EntityPlayerMP) event.entity);
-        }
+//        if (event.entity instanceof EntityPlayerMP && GCPlayerStats.get((EntityPlayerMP) event.entity) == null)
+//        {
+//            GCPlayerStats.register((EntityPlayerMP) event.entity);
+//        }
     }
 
     private void onPlayerLogin(EntityPlayerMP player)

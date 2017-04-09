@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/basicItem.waferBasic"
+        "layer0": "galacticraftcore:items/basic_item.wafer_basic"
     },
     "display": {
         "thirdperson": {

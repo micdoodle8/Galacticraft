@@ -51,11 +51,13 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
         return new TileEntitySpout();
     }
 
+    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(VenusBlocks.venusBlock);
     }
 
+    @Override
     public int damageDropped(IBlockState state)
     {
         return BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT.getMeta();

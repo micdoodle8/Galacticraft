@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTier3TreasureChest;
 import net.minecraft.init.Blocks;
@@ -93,11 +92,6 @@ public class RoomTreasureVenus extends SizedPieceVenus
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
                         this.setBlockState(worldIn, VenusBlocks.treasureChestTier3.getDefaultState().withProperty(BlockTier3TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
-                        BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        if (worldIn.getTileEntity(blockpos) == null)
-                        {
-                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(3));
-                        }
                     }
                     else
                     {

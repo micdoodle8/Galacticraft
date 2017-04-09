@@ -31,7 +31,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     public BlockFallenMeteor(String assetName)
     {
         super(Material.rock);
-        this.setBlockBounds(0.2F, 0.2F, 0.2F, 0.8F, 0.8F, 0.8F);
+        this.setBlockBounds(0.175F, 0.0F, 0.175F, 0.825F, 0.75F, 0.825F);
         this.setHardness(50.0F);
         this.setStepSound(Block.soundTypeStone);
         this.setUnlocalizedName(assetName);

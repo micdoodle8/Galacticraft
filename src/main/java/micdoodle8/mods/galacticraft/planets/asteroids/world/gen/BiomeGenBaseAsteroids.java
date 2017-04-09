@@ -17,23 +17,25 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
     private BiomeGenBaseAsteroids(int var1)
     {
         super(var1);
-        this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
-        spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 3000, 1, 3));
-        spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
-        spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
-        spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-        if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning)
-        {
-            spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
-        }
+        this.resetMonsterListByMode(ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning);
         this.rainfall = 0F;
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
             BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
         }
+    }
+
+    public void resetMonsterListByMode(boolean challengeMode)
+    {
+        this.spawnableMonsterList.clear();
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 3000, 1, 3));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
+        if (challengeMode) this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
     }
 
     @Override

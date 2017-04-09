@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -42,7 +41,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "frequencyModule.obj"));
+                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "frequency_module.obj"));
                 model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
 
                 Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
@@ -73,7 +72,6 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                 {
                     this.updateModels();
                     GlStateManager.pushMatrix();
-                    RenderHelper.disableStandardItemLighting();
                     Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
                     if (Minecraft.isAmbientOcclusionEnabled())
@@ -106,7 +104,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                     GlStateManager.rotate((float) (Math.cos(player.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
                     ClientUtil.drawBakedModel(this.radarModel);
                     GlStateManager.popMatrix();
-                    RenderHelper.enableStandardItemLighting();
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GlStateManager.popMatrix();
                 }
             }

@@ -1,0 +1,6 @@
+newmtl None
+Ks 0.8 0.8 0.8
+d 1
+
+newmtl Receiver
+map_Kd galacticraftplanets:blocks/beam_receiver

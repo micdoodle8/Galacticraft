@@ -4,9 +4,9 @@
         "particle": "galacticraftcore:blocks/machine",
         "down": "galacticraftcore:blocks/machine",
         "up": "galacticraftcore:blocks/machine",
-        "north": "galacticraftcore:blocks/oxygenStorageModuleFull",
+        "north": "galacticraftcore:blocks/oxygen_storage_module_full",
         "east": "galacticraftcore:blocks/machine_oxygen_input",
-        "south": "galacticraftcore:blocks/oxygenStorageModuleFull",
+        "south": "galacticraftcore:blocks/oxygen_storage_module_full",
         "west": "galacticraftcore:blocks/machine_oxygen_output"
     }
 }

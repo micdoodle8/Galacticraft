@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
@@ -41,16 +42,16 @@ public class OrbitSpinSaveData extends WorldSavedData
         {
             worldData = new OrbitSpinSaveData("");
             world.setItemData(OrbitSpinSaveData.saveDataID, worldData);
-            if (world.provider instanceof WorldProviderZeroGravity)
+            if (world.provider instanceof WorldProviderSpaceStation)
             {
-                worldData.dim = world.provider.getDimensionId();
-                ((WorldProviderZeroGravity) world.provider).getSpinManager().writeToNBT(worldData.datacompound);
+                worldData.dim = GCCoreUtil.getDimensionID(world);
+                ((WorldProviderSpaceStation) world.provider).getSpinManager().writeToNBT(worldData.datacompound);
             }
             worldData.markDirty();
         }
-        else if (world.provider instanceof WorldProviderZeroGravity)
+        else if (world.provider instanceof WorldProviderSpaceStation)
         {
-            worldData.dim = world.provider.getDimensionId();
+            worldData.dim = GCCoreUtil.getDimensionID(world);
 
             worldData.datacompound = null;
             if (worldData.alldata != null)

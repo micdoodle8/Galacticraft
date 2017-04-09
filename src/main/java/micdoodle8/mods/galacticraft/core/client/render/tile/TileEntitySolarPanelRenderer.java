@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL12;
 
 public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer<TileEntitySolar>
 {
-    private static final ResourceLocation solarPanelTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solarPanelBasic.png");
-    private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solarPanelAdvanced.png");
+    private static final ResourceLocation solarPanelTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solar_panel_basic.png");
+    private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solar_panel_advanced.png");
     public ModelSolarPanel model = new ModelSolarPanel();
 
     @Override

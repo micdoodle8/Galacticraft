@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
@@ -145,14 +144,15 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
         int metadata = getMetaFromState(world.getBlockState(pos));
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
 
-        if (metadata < BlockMachine.COMPRESSOR_METADATA)
-        {
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileBaseUniversalElectrical)
-            {
-                ((TileBaseUniversalElectrical) te).updateFacing();
-            }
-        }
+//(Currently neither of these machines is electric, so the following is unnecessary)
+//        if (metadata < BlockMachine.COMPRESSOR_METADATA)
+//        {
+//            TileEntity te = world.getTileEntity(pos);
+//            if (te instanceof TileBaseUniversalElectrical)
+//            {
+//                ((TileBaseUniversalElectrical) te).updateFacing();
+//            }
+//        }
 
         world.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
         return true;
@@ -164,20 +164,10 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     @Override
     public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = getMetaFromState(world.getBlockState(pos));
-
         if (!world.isRemote)
         {
-            if (metadata >= BlockMachine.COMPRESSOR_METADATA)
-            {
-                entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
-                return true;
-            }
-            else
-            {
-                entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
-                return true;
-            }
+            entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
+            return true;
         }
 
         return true;

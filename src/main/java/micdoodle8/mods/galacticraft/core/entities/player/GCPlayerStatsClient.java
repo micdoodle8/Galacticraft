@@ -1,259 +1,147 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class GCPlayerStatsClient implements IExtendedEntityProperties
+public abstract class GCPlayerStatsClient
 {
-    public static final String GC_PLAYER_PROP = "GCPlayerStatsClient";
-
-    public WeakReference<EntityPlayerSP> player;
-
-    public boolean usingParachute;
-    public boolean lastUsingParachute;
-    public boolean usingAdvancedGoggles;
-    public int thermalLevel;
-    public boolean thermalLevelNormalising;
-    public int thirdPersonView = 0;
-    public long tick;
-    public boolean oxygenSetupValid = true;
-    AxisAlignedBB boundingBoxBefore;
-    public boolean lastOnGround;
-
-    public double distanceSinceLastStep;
-    public int lastStep;
-    public boolean inFreefall;
-    public boolean inFreefallLast;
-    public boolean inFreefallFirstCheck;
-    public double downMotionLast;
-    public boolean lastRidingCameraZoomEntity;
-    public int landingTicks;
-
-    public EnumGravity gdir = EnumGravity.down;
-    public float gravityTurnRate;
-    public float gravityTurnRatePrev;
-    public float gravityTurnVecX;
-    public float gravityTurnVecY;
-    public float gravityTurnVecZ;
-    public float gravityTurnYaw;
-
-    public int spaceRaceInviteTeamID;
-    public boolean lastZoomed;
-    public int buildFlags = -1;
-
-    public boolean ssOnGroundLast;
-
-    public FreefallHandler freefallHandler = new FreefallHandler();
-
-    public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
-
-    public GCPlayerStatsClient(EntityPlayerSP player)
+    public static GCPlayerStatsClient get(Entity entity)
     {
-        this.player = new WeakReference<EntityPlayerSP>(player);
+        return entity.getCapability(GCCapabilities.GC_STATS_CLIENT_CAPABILITY, null);
     }
 
-    public void setGravity(EnumGravity newGravity)
-    {
-        if (this.gdir == newGravity)
-        {
-            return;
-        }
-        this.gravityTurnRatePrev = this.gravityTurnRate = 0.0F;
-        float turnSpeed = 0.05F;
-        this.gravityTurnVecX = 0.0F;
-        this.gravityTurnVecY = 0.0F;
-        this.gravityTurnVecZ = 0.0F;
-        this.gravityTurnYaw = 0.0F;
+    public abstract void setGravity(EnumGravity newGravity);
 
-        switch (this.gdir.getIntValue())
-        {
-        case 1:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                break;
-            case 2:
-                this.gravityTurnVecX = -2.0F;
-                break;
-            case 3:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 4:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 6:
-                this.gravityTurnVecX = -1.0F;
-            }
+    public abstract boolean isUsingParachute();
 
-            break;
-        case 2:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = -2.0F;
-                break;
-            case 2:
-                break;
-            case 3:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 4:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 6:
-                this.gravityTurnVecX = 1.0F;
-            }
+    public abstract void setUsingParachute(boolean usingParachute);
 
-            break;
-        case 3:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 2:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 3:
-                break;
-            case 4:
-                this.gravityTurnVecZ = -2.0F;
-                break;
-            case 5:
-                this.gravityTurnVecZ = -1.0F;
-                this.gravityTurnYaw = -180.0F;
-                break;
-            case 6:
-                this.gravityTurnVecZ = 1.0F;
-            }
+    public abstract boolean isLastUsingParachute();
 
-            break;
-        case 4:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 2:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = -2.0F;
-                break;
-            case 4:
-                break;
-            case 5:
-                this.gravityTurnVecZ = 1.0F;
-                this.gravityTurnYaw = -180.0F;
-                break;
-            case 6:
-                this.gravityTurnVecZ = -1.0F;
-            }
+    public abstract void setLastUsingParachute(boolean lastUsingParachute);
 
-            break;
-        case 5:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 2:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = 1.0F;
-                this.gravityTurnYaw = 180.0F;
-                break;
-            case 4:
-                this.gravityTurnVecZ = -1.0F;
-                this.gravityTurnYaw = 180.0F;
-                break;
-            case 5:
-                break;
-            case 6:
-                this.gravityTurnVecX = -2.0F;
-            }
+    public abstract boolean isUsingAdvancedGoggles();
 
-            break;
-        case 6:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 2:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = -1.0F;
-                break;
-            case 4:
-                this.gravityTurnVecZ = 1.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = -2.0F;
-            case 6:
-            }
-            break;
-        }
+    public abstract void setUsingAdvancedGoggles(boolean usingAdvancedGoggles);
 
-        this.gdir = newGravity;
-    }
+    public abstract int getThermalLevel();
 
-    public void setParachute(boolean tf)
-    {
-        this.usingParachute = tf;
+    public abstract void setThermalLevel(int thermalLevel);
 
-        if (!tf)
-        {
-            this.lastUsingParachute = false;
-        }
-    }
+    public abstract boolean isThermalLevelNormalising();
 
-    @Override
-    public void saveNBTData(NBTTagCompound nbt)
-    {
-    }
+    public abstract void setThermalLevelNormalising(boolean thermalLevelNormalising);
 
-    @Override
-    public void loadNBTData(NBTTagCompound nbt)
-    {
-    }
+    public abstract int getThirdPersonView();
 
-    @Override
-    public void init(Entity entity, World world)
-    {
-    }
+    public abstract void setThirdPersonView(int thirdPersonView);
 
-    public static void register(EntityPlayerSP player)
-    {
-        player.registerExtendedProperties(GCPlayerStatsClient.GC_PLAYER_PROP, new GCPlayerStatsClient(player));
-    }
+    public abstract long getTick();
 
-    public static GCPlayerStatsClient get(EntityPlayerSP player)
-    {
-        return (GCPlayerStatsClient) player.getExtendedProperties(GCPlayerStatsClient.GC_PLAYER_PROP);
-    }
+    public abstract void setTick(long tick);
+
+    public abstract boolean isOxygenSetupValid();
+
+    public abstract void setOxygenSetupValid(boolean oxygenSetupValid);
+
+    public abstract AxisAlignedBB getBoundingBoxBefore();
+
+    public abstract void setBoundingBoxBefore(AxisAlignedBB boundingBoxBefore);
+
+    public abstract boolean isLastOnGround();
+
+    public abstract void setLastOnGround(boolean lastOnGround);
+
+    public abstract double getDistanceSinceLastStep();
+
+    public abstract void setDistanceSinceLastStep(double distanceSinceLastStep);
+
+    public abstract int getLastStep();
+
+    public abstract void setLastStep(int lastStep);
+
+    public abstract boolean isInFreefall();
+
+    public abstract void setInFreefall(boolean inFreefall);
+
+    public abstract boolean isInFreefallLast();
+
+    public abstract void setInFreefallLast(boolean inFreefallLast);
+
+    public abstract boolean isInFreefallFirstCheck();
+
+    public abstract void setInFreefallFirstCheck(boolean inFreefallFirstCheck);
+
+    public abstract double getDownMotionLast();
+
+    public abstract void setDownMotionLast(double downMotionLast);
+
+    public abstract boolean isLastRidingCameraZoomEntity();
+
+    public abstract void setLastRidingCameraZoomEntity(boolean lastRidingCameraZoomEntity);
+
+    public abstract int getLandingTicks();
+
+    public abstract void setLandingTicks(int landingTicks);
+
+    public abstract EnumGravity getGdir();
+
+    public abstract void setGdir(EnumGravity gdir);
+
+    public abstract float getGravityTurnRate();
+
+    public abstract void setGravityTurnRate(float gravityTurnRate);
+
+    public abstract float getGravityTurnRatePrev();
+
+    public abstract void setGravityTurnRatePrev(float gravityTurnRatePrev);
+
+    public abstract float getGravityTurnVecX();
+
+    public abstract void setGravityTurnVecX(float gravityTurnVecX);
+
+    public abstract float getGravityTurnVecY();
+
+    public abstract void setGravityTurnVecY(float gravityTurnVecY);
+
+    public abstract float getGravityTurnVecZ();
+
+    public abstract void setGravityTurnVecZ(float gravityTurnVecZ);
+
+    public abstract float getGravityTurnYaw();
+
+    public abstract void setGravityTurnYaw(float gravityTurnYaw);
+
+    public abstract int getSpaceRaceInviteTeamID();
+
+    public abstract void setSpaceRaceInviteTeamID(int spaceRaceInviteTeamID);
+
+    public abstract boolean isLastZoomed();
+
+    public abstract void setLastZoomed(boolean lastZoomed);
+
+    public abstract int getBuildFlags();
+
+    public abstract void setBuildFlags(int buildFlags);
+
+    public abstract boolean isSsOnGroundLast();
+
+    public abstract void setSsOnGroundLast(boolean ssOnGroundLast);
+
+    public abstract FreefallHandler getFreefallHandler();
+
+    public abstract void setFreefallHandler(FreefallHandler freefallHandler);
+
+    public abstract ArrayList<ISchematicPage> getUnlockedSchematics();
+
+    public abstract void setUnlockedSchematics(ArrayList<ISchematicPage> unlockedSchematics);
+
+    public abstract int getMaxLandingticks();
+
+    public abstract float[] getLandingYOffset();
+
+    public abstract void setLandingYOffset(float[] landingYOffset);
 }

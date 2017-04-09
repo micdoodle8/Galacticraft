@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,7 +36,7 @@ public class SlotSchematicTier3Rocket extends Slot
             {
                 final EntityPlayerMP playerMP = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
 
-                if (playerMP.dimension == this.player.worldObj.provider.getDimensionId())
+                if (playerMP.dimension == GCCoreUtil.getDimensionID(this.player.worldObj))
                 {
                     final double var14 = this.pos.getX() - playerMP.posX;
                     final double var16 = this.pos.getY() - playerMP.posY;
@@ -43,7 +44,7 @@ public class SlotSchematicTier3Rocket extends Slot
 
                     if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, playerMP.worldObj.provider.getDimensionId(), new Object[] { this.pos }), playerMP);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, GCCoreUtil.getDimensionID(playerMP.worldObj), new Object[] { this.pos }), playerMP);
                     }
                 }
             }

@@ -37,12 +37,6 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
-    {
-        return true;
-    }
-
-    @Override
     public String getCommandName()
     {
         return "gcinv";
@@ -93,12 +87,12 @@ public class CommandGCInv extends CommandBase
 
                     if (args[0].equalsIgnoreCase("drop"))
                     {
-                        InventoryExtended gcInventory = stats.extendedInventory;
+                        InventoryExtended gcInventory = stats.getExtendedInventory();
                         gcInventory.dropExtendedItems(thePlayer);
                     }
                     else if (args[0].equalsIgnoreCase("save"))
                     {
-                        InventoryExtended gcInventory = stats.extendedInventory;
+                        InventoryExtended gcInventory = stats.getExtendedInventory();
                         ItemStack[] saveinv = new ItemStack[gcInventory.getSizeInventory()];
                         for (int i = 0; i < gcInventory.getSizeInventory(); i++)
                         {
@@ -125,7 +119,7 @@ public class CommandGCInv extends CommandBase
                     }
                     else if (args[0].equalsIgnoreCase("clear"))
                     {
-                        InventoryExtended gcInventory = stats.extendedInventory;
+                        InventoryExtended gcInventory = stats.getExtendedInventory();
                         for (int i = 0; i < gcInventory.getSizeInventory(); i++)
                         {
                             gcInventory.setInventorySlotContents(i, null);
@@ -186,7 +180,7 @@ public class CommandGCInv extends CommandBase
         // auto-restore on a server restart.
         {
             ItemStack[] saveinv = CommandGCInv.savedata.get(theName);
-            InventoryExtended gcInventory = GCPlayerStats.get(thePlayer).extendedInventory;
+            InventoryExtended gcInventory = GCPlayerStats.get(thePlayer).getExtendedInventory();
             for (int i = 0; i < gcInventory.getSizeInventory(); i++)
             {
                 gcInventory.setInventorySlotContents(i, saveinv[i]);

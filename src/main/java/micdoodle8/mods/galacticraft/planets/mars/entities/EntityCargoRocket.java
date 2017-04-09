@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -234,7 +235,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-            if (this.targetDimension != this.worldObj.provider.getDimensionId())
+            if (this.targetDimension != GCCoreUtil.getDimensionID(this.worldObj))
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
                 WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
@@ -249,10 +250,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                         GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
                         e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                         ((EntityCargoRocket) e).landing = true;
-                        if (e != this)
-                        {
-                            this.setDead();
-                        }
+            			//No setDead() following successful transferEntityToDimension() - see javadoc on that
                     }
                     else
                     {

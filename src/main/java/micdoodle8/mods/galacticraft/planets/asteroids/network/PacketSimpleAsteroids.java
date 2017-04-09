@@ -197,7 +197,7 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case S_REQUEST_MINERBASE_FACING:
-//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.worldObj.provider.getDimensionId(), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.worldObj), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
             break;
         default:
             break;

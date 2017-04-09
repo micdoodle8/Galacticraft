@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/compressedTitanium"
+        "layer0": "galacticraftplanets:items/compressed_titanium"
     },
     "display": {
         "thirdperson": {

@@ -250,12 +250,12 @@ public class ItemParaChute extends Item implements ISortableItem
     {
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-            ItemStack gear = stats.extendedInventory.getStackInSlot(4);
+            GCPlayerStats stats = GCPlayerStats.get(player);
+            ItemStack gear = stats.getExtendedInventory().getStackInSlot(4);
 
             if (gear == null)
             {
-                stats.extendedInventory.setInventorySlotContents(4, itemStack.copy());
+                stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
                 itemStack.stackSize = 0;
             }
         }

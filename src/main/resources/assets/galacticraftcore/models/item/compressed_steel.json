@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/basicItem.compressedSteel"
+        "layer0": "galacticraftcore:items/basic_item.compressed_steel"
     },
     "display": {
         "thirdperson": {

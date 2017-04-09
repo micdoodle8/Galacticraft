@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
-import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -18,9 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -103,60 +100,6 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         final TileEntity tile = worldIn.getTileEntity(pos);
-
-        boolean validSpot = true;
-
-        for (int x = -1; x < 2; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                for (int z = -1; z < 2; z++)
-                {
-                    if (!(x == 0 && y == 0 && z == 0))
-                    {
-                        if (Math.abs(x) != 1 || Math.abs(z) != 1)
-                        {
-                            Block blockAt = worldIn.getBlockState(new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z)).getBlock();
-
-                            if ((y == 0 || y == 3) && x == 0 && z == 0)
-                            {
-                                if (!blockAt.getMaterial().isReplaceable())
-                                {
-                                    validSpot = false;
-                                }
-                            }
-                            else if (y != 0 && y != 3)
-                            {
-                                if (!blockAt.getMaterial().isReplaceable())
-                                {
-                                    validSpot = false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!validSpot)
-        {
-            worldIn.setBlockToAir(pos);
-
-            if (!worldIn.isRemote && placer instanceof EntityPlayerMP)
-            {
-                EntityPlayerMP player = (EntityPlayerMP) placer;
-                player.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
-                if (!player.capabilities.isCreativeMode)
-                {
-                    final ItemStack nasaWorkbench = new ItemStack(this, 1, 0);
-                    final EntityItem entityitem = player.dropPlayerItemWithRandomChoice(nasaWorkbench, false);
-                    entityitem.setPickupDelay(0);
-                    entityitem.setOwner(player.getName());
-                }
-            }
-
-            return;
-        }
 
         if (tile instanceof IMultiBlock)
         {

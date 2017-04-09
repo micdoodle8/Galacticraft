@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -17,9 +19,12 @@ import java.util.Random;
 
 public class BlockBreathableAir extends BlockAir
 {
+    public static final PropertyBool THERMAL = PropertyBool.create("thermal");
+    
     public BlockBreathableAir(String assetName)
     {
         this.setResistance(1000.0F);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(THERMAL, false));
         this.setHardness(0.0F);
         this.setUnlocalizedName(assetName);
         this.setStepSound(new SoundType("sand", 0.0F, 1.0F));
@@ -66,11 +71,28 @@ public class BlockBreathableAir extends BlockAir
     @Override
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        if (Blocks.air != neighborBlock && neighborBlock != GCBlocks.brightAir)
-        //Do nothing if an air neighbour was replaced (probably because replacing with breatheableAir)
-        //but do a check if replacing breatheableAir as that could be dividing a sealed space
+        if (Blocks.air == neighborBlock)
+        //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
             OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
         }
+    }
+
+    @Override
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, THERMAL);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(THERMAL, meta % 2 == 1);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return (state.getValue(THERMAL) ? 1 : 0);
     }
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,7 +26,33 @@ public class TeleportTypeVenus implements ITeleportType
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            return new Vector3(stats.coordsTeleportedFromX, 900.0, stats.coordsTeleportedFromZ);
+            double x = stats.getCoordsTeleportedFromX();
+            double z = stats.getCoordsTeleportedFromZ();
+            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            if (limit > 20)
+            {
+                if (x > limit)
+                {
+                    z *= limit / x;
+                    x = limit;
+                }
+                else if (x < -limit)
+                {   
+                    z *= -limit / x;
+                    x = -limit;
+                }
+                if (z > limit)
+                {
+                    x *= limit / z;
+                    z = limit;
+                }
+                else if (z < -limit)
+                {
+                    x *= - limit / z;
+                    z = -limit;
+                }
+            }
+            return new Vector3(x, 900.0, z);
         }
 
         return null;
@@ -50,7 +77,7 @@ public class TeleportTypeVenus implements ITeleportType
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
 
-            if (stats.teleportCooldown <= 0)
+            if (stats.getTeleportCooldown() <= 0)
             {
                 if (player.capabilities.isFlying)
                 {
@@ -64,7 +91,7 @@ public class TeleportTypeVenus implements ITeleportType
                     newWorld.spawnEntityInWorld(entryPod);
                 }
 
-                stats.teleportCooldown = 10;
+                stats.setTeleportCooldown(10);
             }
         }
     }

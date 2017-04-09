@@ -12,12 +12,14 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedContainer;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -26,10 +28,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
-import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -43,6 +42,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -64,6 +64,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -95,7 +96,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void playerJoinWorld(EntityJoinWorldEvent event)
     {
-        TickHandlerServer.markWorldNeedsUpdate(event.world.provider.getDimensionId());
+        TickHandlerServer.markWorldNeedsUpdate(GCCoreUtil.getDimensionID(event.world));
     }
 
     @SubscribeEvent
@@ -203,10 +204,15 @@ public class EventHandlerGC
         {
             if (GalacticraftCore.isPlanetsLoaded)
             {
-                GCPlayerStats.tryBedWarning((EntityPlayerMP) event.entityPlayer);
+                GCPlayerStats stats = GCPlayerStats.get(event.entityPlayer);
+                if (!stats.hasReceivedBedWarning())
+                {
+                    event.entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.bed_fail.message")));
+                    stats.setReceivedBedWarning(true);
+                }
             }
 
-            if (worldObj.provider instanceof WorldProviderZeroGravity)
+            if (worldObj.provider instanceof WorldProviderSpaceStation)
             {
                 //On space stations simply block the bed activation => no explosion
                 event.setCanceled(true);
@@ -221,7 +227,7 @@ public class EventHandlerGC
                 EventHandlerGC.bedActivated = true;
 
                 //On planets allow the bed to be used to designate a player spawn point
-                event.entityPlayer.setSpawnChunk(event.pos, false, event.world.provider.getDimensionId());
+                event.entityPlayer.setSpawnChunk(event.pos, false, GCCoreUtil.getDimensionID(event.world));
             }
             else
             {
@@ -328,6 +334,19 @@ public class EventHandlerGC
             }
         }
     }
+    
+    @SubscribeEvent
+    public void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
+    {
+        if (event.entity.worldObj.provider instanceof IZeroGDimension)
+        {
+            if (((IZeroGDimension)event.entity.worldObj.provider).inFreefall(event.entity))
+            {
+                event.canUpdate = true;
+//                event.entity.moveEntity(event.entity.motionX, event.entity.motionY, event.entity.motionZ);
+            }
+        }
+    }
 
     private ItemStack fillBucket(World world, MovingObjectPosition position)
     {
@@ -382,7 +401,7 @@ public class EventHandlerGC
 
         for (Integer dim : ConfigManagerCore.externalOilGen)
         {
-            if (dim == world.provider.getDimensionId())
+            if (dim == GCCoreUtil.getDimensionID(world))
             {
                 doGen2 = true;
                 break;
@@ -583,25 +602,25 @@ public class EventHandlerGC
     {
         GCPlayerStats stats = GCPlayerStats.get(event.player);
 
-        if (!stats.unlockedSchematics.contains(event.page))
+        if (!stats.getUnlockedSchematics().contains(event.page))
         {
-            stats.unlockedSchematics.add(event.page);
-            Collections.sort(stats.unlockedSchematics);
+            stats.getUnlockedSchematics().add(event.page);
+            Collections.sort(stats.getUnlockedSchematics());
 
             if (event.player != null && event.player.playerNetServerHandler != null)
             {
-                Integer[] iArray = new Integer[stats.unlockedSchematics.size()];
+                Integer[] iArray = new Integer[stats.getUnlockedSchematics().size()];
 
                 for (int i = 0; i < iArray.length; i++)
                 {
-                    ISchematicPage page = stats.unlockedSchematics.get(i);
+                    ISchematicPage page = stats.getUnlockedSchematics().get(i);
                     iArray[i] = page == null ? -2 : page.getPageID();
                 }
 
                 List<Object> objList = new ArrayList<Object>();
                 objList.add(iArray);
 
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, event.player.worldObj.provider.getDimensionId(), objList), event.player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, GCCoreUtil.getDimensionID(event.player.worldObj), objList), event.player);
             }
         }
     }
@@ -624,8 +643,18 @@ public class EventHandlerGC
 
         if (page != null)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { page.getPageID() }));
-            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, (int) FMLClientHandler.instance().getClient().thePlayer.posX, (int) FMLClientHandler.instance().getClient().thePlayer.posY, (int) FMLClientHandler.instance().getClient().thePlayer.posZ);
+            GuiScreen cs = event.currentGui;
+            int benchX = (int) FMLClientHandler.instance().getClient().thePlayer.posX;
+            int benchY = (int) FMLClientHandler.instance().getClient().thePlayer.posY;
+            int benchZ = (int) FMLClientHandler.instance().getClient().thePlayer.posZ;
+            if (cs instanceof GuiPositionedContainer)
+            {
+                benchX = ((GuiPositionedContainer)cs).getX();
+                benchY = ((GuiPositionedContainer)cs).getY();
+                benchZ = ((GuiPositionedContainer)cs).getZ();
+            }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
+            FMLClientHandler.instance().getClient().thePlayer.openGui(GalacticraftCore.instance, page.getGuiID(), FMLClientHandler.instance().getClient().thePlayer.worldObj, benchX, benchY, benchZ);
         }
     }
 
@@ -637,9 +666,9 @@ public class EventHandlerGC
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        for (int i = 0; i < stats.unlockedSchematics.size(); i++)
+        for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
         {
-            idList.put(i, stats.unlockedSchematics.get(i).getPageID());
+            idList.put(i, stats.getUnlockedSchematics().get(i).getPageID());
         }
 
         final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
@@ -652,9 +681,9 @@ public class EventHandlerGC
 
             if (page.getPageID() == currentIndex)
             {
-                if (count + 1 < stats.unlockedSchematics.size())
+                if (count + 1 < stats.getUnlockedSchematics().size())
                 {
-                    return stats.unlockedSchematics.get(count + 1);
+                    return stats.getUnlockedSchematics().get(count + 1);
                 }
                 else
                 {
@@ -674,9 +703,9 @@ public class EventHandlerGC
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        for (int i = 0; i < stats.unlockedSchematics.size(); i++)
+        for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
         {
-            idList.put(i, stats.unlockedSchematics.get(i).getPageID());
+            idList.put(i, stats.getUnlockedSchematics().get(i).getPageID());
         }
 
         final SortedSet<Integer> keys = new TreeSet<Integer>(idList.keySet());
@@ -691,7 +720,7 @@ public class EventHandlerGC
             {
                 if (count - 1 >= 0)
                 {
-                    return stats.unlockedSchematics.get(count - 1);
+                    return stats.getUnlockedSchematics().get(count - 1);
                 }
                 else
                 {
@@ -708,18 +737,18 @@ public class EventHandlerGC
     {
         if (event.entityLiving instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) event.entityLiving);
+            GCPlayerStats stats = GCPlayerStats.get(event.entityPlayer);
             if (!event.entityLiving.worldObj.getGameRules().getBoolean("keepInventory"))
             {
                 event.entityLiving.captureDrops = true;
-                for (int i = stats.extendedInventory.getSizeInventory() - 1; i >= 0; i--)
+                for (int i = stats.getExtendedInventory().getSizeInventory() - 1; i >= 0; i--)
                 {
-                    ItemStack stack = stats.extendedInventory.getStackInSlot(i);
+                    ItemStack stack = stats.getExtendedInventory().getStackInSlot(i);
 
                     if (stack != null)
                     {
                         ((EntityPlayerMP) event.entityLiving).dropItem(stack, true, false);
-                        stats.extendedInventory.setInventorySlotContents(i, null);
+                        stats.getExtendedInventory().setInventorySlotContents(i, null);
                     }
                 }
                 event.entityLiving.captureDrops = false;

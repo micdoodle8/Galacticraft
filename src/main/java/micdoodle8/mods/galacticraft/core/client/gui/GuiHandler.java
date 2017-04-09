@@ -50,7 +50,7 @@ public class GuiHandler implements IGuiHandler
         }
         else if (ID == GuiIdsCore.EXTENDED_INVENTORY)
         {
-            return new ContainerExtendedInventory(player, stats.extendedInventory);
+            return new ContainerExtendedInventory(player, stats.getExtendedInventory());
         }
 
         BlockPos pos = new BlockPos(x, y, z);
@@ -58,7 +58,11 @@ public class GuiHandler implements IGuiHandler
 
         if (tile != null)
         {
-            if (tile instanceof TileEntityRefinery)
+            if (tile instanceof TileEntityCrafting)
+            {
+                return new ContainerCrafting(player.inventory, (TileEntityCrafting) tile);
+            }
+            else if (tile instanceof TileEntityRefinery)
             {
                 return new ContainerRefinery(player.inventory, (TileEntityRefinery) tile, player);
             }
@@ -132,7 +136,7 @@ public class GuiHandler implements IGuiHandler
             }
         }
 
-        for (ISchematicPage page : stats.unlockedSchematics)
+        for (ISchematicPage page : stats.getUnlockedSchematics())
         {
             if (ID == page.getGuiID())
             {
@@ -188,7 +192,11 @@ public class GuiHandler implements IGuiHandler
 
         if (tile != null)
         {
-            if (tile instanceof TileEntityRefinery)
+            if (tile instanceof TileEntityCrafting)
+            {
+                return new GuiCrafting(player.inventory, (TileEntityCrafting) tile);
+            }
+            else if (tile instanceof TileEntityRefinery)
             {
                 return new GuiRefinery(player.inventory, (TileEntityRefinery) world.getTileEntity(position));
             }
@@ -269,7 +277,8 @@ public class GuiHandler implements IGuiHandler
         if (playerClient != null)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerClient);
-            for (ISchematicPage page : stats.unlockedSchematics)
+
+            for (ISchematicPage page : stats.getUnlockedSchematics())
             {
                 if (ID == page.getGuiID())
                 {

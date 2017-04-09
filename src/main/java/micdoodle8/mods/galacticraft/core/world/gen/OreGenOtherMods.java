@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -220,7 +220,7 @@ public class OreGenOtherMods
         int dimDetected = 0;
 
         WorldProvider prov = worldObj.provider;
-        if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderZeroGravity))
+        if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderSpaceStation))
         {
             return;
         }

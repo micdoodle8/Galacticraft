@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
-public class GuiSchematicBuggy extends GuiContainerGC implements ISchematicResultPage
+public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchematicResultPage
 {
     private static final ResourceLocation buggyBenchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/buggybench.png");
 
@@ -20,7 +20,7 @@ public class GuiSchematicBuggy extends GuiContainerGC implements ISchematicResul
 
     public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().thePlayer), pos);
         this.ySize = 221;
     }
 
@@ -42,10 +42,10 @@ public class GuiSchematicBuggy extends GuiContainerGC implements ISchematicResul
             switch (par1GuiButton.id)
             {
             case 0:
-                SchematicRegistry.flipToLastPage(this.pageIndex);
+                SchematicRegistry.flipToLastPage(this, this.pageIndex);
                 break;
             case 1:
-                SchematicRegistry.flipToNextPage(this.pageIndex);
+                SchematicRegistry.flipToNextPage(this, this.pageIndex);
                 break;
             }
         }

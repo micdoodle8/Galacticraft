@@ -26,6 +26,12 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
+    }
+
+    @Override
     public String getCommandName()
     {
         return "dimensiontp";
@@ -52,15 +58,15 @@ public class CommandPlanetTeleport extends CommandBase
                 if (playerBase != null)
                 {
                     MinecraftServer server = MinecraftServer.getServer();
-                    WorldServer worldserver = server.worldServerForDimension(server.worldServers[0].provider.getDimensionId());
+                    WorldServer worldserver = server.worldServerForDimension(GCCoreUtil.getDimensionID(server.worldServers[0]));
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
-                    stats.rocketStacks = new ItemStack[2];
-                    stats.rocketType = IRocketType.EnumRocketType.DEFAULT.ordinal();
-                    stats.rocketItem = GCItems.rocketTier1;
-                    stats.fuelLevel = 1000;
-                    stats.coordsTeleportedFromX = spawnPoint.getX();
-                    stats.coordsTeleportedFromZ = spawnPoint.getZ();
+                    stats.setRocketStacks(new ItemStack[2]);
+                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
+                    stats.setRocketItem(GCItems.rocketTier1);
+                    stats.setFuelLevel(1000);
+                    stats.setCoordsTeleportedFromX(spawnPoint.getX());
+                    stats.setCoordsTeleportedFromZ(spawnPoint.getZ());
 
                     try
                     {

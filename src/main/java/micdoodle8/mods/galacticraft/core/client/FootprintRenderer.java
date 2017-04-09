@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -52,7 +53,7 @@ public class FootprintRenderer
         {
             for (Footprint footprint : footprintList)
             {
-                if (footprint.dimension == player.worldObj.provider.getDimensionId())
+                if (footprint.dimension == GCCoreUtil.getDimensionID(player.worldObj))
                 {
                     GL11.glPushMatrix();
                     float ageScale = footprint.age / (float) Footprint.MAX_AGE;

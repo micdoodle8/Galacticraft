@@ -55,10 +55,11 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         {
         case OK:
             ((EntityPlayerMP) entityPlayer).playerNetServerHandler.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, entityPlayer.worldObj.provider.getDimensionId(), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.worldObj), new Object[] { this.getPos() }), (EntityPlayerMP) entityPlayer);
             return true;
         case NOT_POSSIBLE_NOW:
-            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown / 20)));
+            GCPlayerStats stats = GCPlayerStats.get(entityPlayer);
+            entityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", stats.getCryogenicChamberCooldown() / 20)));
             return false;
         default:
             return false;
@@ -79,9 +80,10 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
                 return EnumStatus.NOT_POSSIBLE_HERE;
             }
 
-            if (GCPlayerStats.get((EntityPlayerMP) entityPlayer).cryogenicChamberCooldown > 0)
+            GCPlayerStats stats = GCPlayerStats.get(entityPlayer);
+            if (stats.getCryogenicChamberCooldown() > 0)
             {
-//                return EnumStatus.NOT_POSSIBLE_NOW;
+                return EnumStatus.NOT_POSSIBLE_NOW;
             }
         }
 

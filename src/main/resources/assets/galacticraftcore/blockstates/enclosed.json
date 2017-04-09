@@ -1,5 +1,8 @@
 {
+    "forge_marker": 1,
     "variants": {
+        "inventory": [{ "model": "galacticraftcore:enclosed_aluminum_wire_model" }],
+
         "type=enclosed_hv_cable": { "model": "galacticraftcore:enclosed_hv_cable_model" },
         "type=enclosed_fluid_pipe": { "model": "galacticraftcore:enclosed_fluid_pipe_model" },
         "type=enclosed_copper_cable": { "model": "galacticraftcore:enclosed_copper_cable_model" },

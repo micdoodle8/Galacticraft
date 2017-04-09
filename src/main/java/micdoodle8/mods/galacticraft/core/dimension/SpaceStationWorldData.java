@@ -348,20 +348,20 @@ public class SpaceStationWorldData extends WorldSavedData
         if (stationData.owner.equals(playerName))
         {
             //This player is the owner of the station - ensure stats data matches
-            if (!(stats.spaceStationDimensionData.values().contains(stationID)))
+            if (!(stats.getSpaceStationDimensionData().values().contains(stationID)))
             {
                 GCLog.debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
-                stats.spaceStationDimensionData.put(stationData.getHomePlanet(), stationID);
+                stats.getSpaceStationDimensionData().put(stationData.getHomePlanet(), stationID);
             }
         }
         else
         {
             //This player is the owner of the station - remove from stats data
-            Integer savedOwned = stats.spaceStationDimensionData.get(stationData.getHomePlanet());
+            Integer savedOwned = stats.getSpaceStationDimensionData().get(stationData.getHomePlanet());
             if (savedOwned != null && savedOwned == stationID)
             {
                 GCLog.debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
-                stats.spaceStationDimensionData.remove(savedOwned);
+                stats.getSpaceStationDimensionData().remove(savedOwned);
             }
         }
     }

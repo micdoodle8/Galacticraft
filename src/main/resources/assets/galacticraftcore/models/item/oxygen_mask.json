@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/oxygenMask"
+        "layer0": "galacticraftcore:items/oxygen_mask"
     },
     "display": {
         "thirdperson": {

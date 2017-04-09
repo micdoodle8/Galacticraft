@@ -1,22 +1,17 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
-import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -39,7 +34,6 @@ public class EnergyNetwork implements IElectricityNetwork
     private boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput;
     private boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
     private boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
-    private boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
 
     /* Re-written by radfast for better performance
      *
@@ -108,18 +102,6 @@ public class EnergyNetwork implements IElectricityNetwork
             this.ignoreAcceptors.clear();
             this.ignoreAcceptors.addAll(Arrays.asList(ignoreTiles));
             this.doTickStartCalc();
-
-            if (EnergyConfigHandler.isBuildcraftLoaded())
-            {
-                for (IConductor wire : this.conductors)
-                {
-                    if (wire instanceof TileBaseUniversalConductor)
-                    {
-                        //This will call getRequest() but that's no problem, on the second call it will just return the totalRequested
-//                        ((TileBaseUniversalConductor) wire).reconfigureBC(); TODO
-                    }
-                }
-            }
         }
         return this.totalRequested - this.totalEnergy - this.totalSent;
     }
@@ -459,7 +441,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 GCLog.severe("DEBUG Energy network loop issue, please report this");
                 if (debugTE != null)
                 {
-                    GCLog.severe("Problem was likely caused by tile in dim " + debugTE.getWorld().provider.getDimensionId() + " at " + debugTE.getPos() + " Type:" + debugTE.getClass().getSimpleName());
+                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(debugTE.getWorld()) + " at " + debugTE.getPos() + " Type:" + debugTE.getClass().getSimpleName());
                 }
             }
         }
@@ -587,55 +569,12 @@ public class EnergyNetwork implements IElectricityNetwork
             //(Chunk loading can change the network if new conductors are found)
             for (IConductor conductor : conductorsCopy)
             {
-                final TileEntity[] adjacentConnections = EnergyUtil.getAdjacentPowerConnections((TileEntity) conductor);
-                for (int i = 0; i < 6; i++)
-                {
-                    TileEntity acceptor = adjacentConnections[i];
-
-                    if (!(acceptor instanceof IConductor) && acceptor != null && !acceptor.isInvalid())
-                    {
-                        // The direction 'sideFrom' is from the perspective of the acceptor, that's more useful than the conductor's perspective
-                        EnumFacing sideFrom = EnumFacing.getFront(i).getOpposite();
-
-                        if (acceptor instanceof IElectrical)
-                        {
-                            if (((IElectrical) acceptor).canConnect(sideFrom, NetworkType.POWER))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                        else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-                        {
-                            if (((IStrictEnergyAcceptor) acceptor).canReceiveEnergy(sideFrom))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                        else if (isIC2Loaded && acceptor instanceof IEnergyAcceptor && conductor instanceof IEnergyEmitter)
-                        {
-                            if (((IEnergyAcceptor) acceptor).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                        else if ((isRF2Loaded && acceptor instanceof IEnergyReceiver) || (isRF1Loaded && acceptor instanceof IEnergyHandler))
-                        {
-                            if (((IEnergyConnection) acceptor).canConnectEnergy(sideFrom))
-                            {
-                                this.connectedAcceptors.add(acceptor);
-                                this.connectedDirections.add(sideFrom);
-                            }
-                        }
-                    }
-                }
+                EnergyUtil.setAdjacentPowerConnections((TileEntity) conductor, this.connectedAcceptors, this.connectedDirections);
             }
         }
         catch (Exception e)
         {
-            FMLLog.severe("Energy Network: Error when trying to refresh list of power acceptors.");
+            FMLLog.severe("GC Aluminium Wire: Error when testing whether another mod's tileEntity can accept energy.");
             e.printStackTrace();
         }
     }
@@ -682,16 +621,7 @@ public class EnergyNetwork implements IElectricityNetwork
         this.availableAcceptors.clear();
         this.totalEnergy = 0F;
         this.totalRequested = 0F;
-        try
-        {
-            Class<?> clazz = Class.forName("micdoodle8.mods.galacticraft.core.tick.TickHandlerServer");
-            clazz.getMethod("removeNetworkTick", this.getClass()).invoke(null, this);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        TickHandlerServer.removeNetworkTick(this);
     }
 
     @Override

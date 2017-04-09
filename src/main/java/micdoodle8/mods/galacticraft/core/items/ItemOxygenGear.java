@@ -46,12 +46,12 @@ public class ItemOxygenGear extends Item implements ISortableItem
     {
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-            ItemStack gear = stats.extendedInventory.getStackInSlot(1);
+            GCPlayerStats stats = GCPlayerStats.get(player);
+            ItemStack gear = stats.getExtendedInventory().getStackInSlot(1);
 
             if (gear == null)
             {
-                stats.extendedInventory.setInventorySlotContents(1, itemStack.copy());
+                stats.getExtendedInventory().setInventorySlotContents(1, itemStack.copy());
                 itemStack.stackSize = 0;
             }
         }

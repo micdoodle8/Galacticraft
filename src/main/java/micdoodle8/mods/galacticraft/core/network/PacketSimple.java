@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -33,15 +34,13 @@ import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
+import micdoodle8.mods.galacticraft.core.entities.player.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler.EnumModelPacketType;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
@@ -95,7 +94,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_RESPAWN_PLAYER(Side.SERVER, String.class),
         S_TELEPORT_ENTITY(Side.SERVER, String.class),
         S_IGNITE_ROCKET(Side.SERVER),
-        S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class),
+        S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_OPEN_FUEL_GUI(Side.SERVER, String.class),
         S_UPDATE_SHIP_YAW(Side.SERVER, Float.class),
         S_UPDATE_SHIP_PITCH(Side.SERVER, Float.class),
@@ -128,7 +127,7 @@ public class PacketSimple extends PacketBase implements Packet
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
-        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, Integer.class, Integer.class, Integer.class),
+        C_SPAWN_SPARK_PARTICLES(Side.CLIENT, BlockPos.class),
         C_UPDATE_GEAR_SLOT(Side.CLIENT, String.class, Integer.class, Integer.class, Integer.class),
         C_CLOSE_GUI(Side.CLIENT),
         C_RESET_THIRD_PERSON(Side.CLIENT),
@@ -165,7 +164,8 @@ public class PacketSimple extends PacketBase implements Packet
         C_UPDATE_TELEMETRY(Side.CLIENT, BlockPos.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
-        C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class);
+        C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class),
+        C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class);  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -360,19 +360,14 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_SPAWN_SPARK_PARTICLES:
-            int x,
-                    y,
-                    z;
-            x = (Integer) this.data.get(0);
-            y = (Integer) this.data.get(1);
-            z = (Integer) this.data.get(2);
+            BlockPos pos = (BlockPos) this.data.get(0);
             Minecraft mc = Minecraft.getMinecraft();
 
             for (int i = 0; i < 4; i++)
             {
                 if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null && mc.theWorld != null)
                 {
-                    final EntityFX fx = new EntityFXSparks(mc.theWorld, x - 0.15 + 0.5, y + 1.2, z + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
+                    final EntityFX fx = new EntityFXSparks(mc.theWorld, pos.getX() - 0.15 + 0.5, pos.getY() + 1.2, pos.getZ() + 0.15 + 0.5, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
 
                     if (fx != null)
                     {
@@ -477,7 +472,7 @@ public class PacketSimple extends PacketBase implements Packet
             FMLClientHandler.instance().getClient().displayGuiScreen(null);
             break;
         case C_RESET_THIRD_PERSON:
-            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.thirdPersonView;
+            FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = stats.getThirdPersonView();
             break;
         case C_UPDATE_SPACESTATION_LIST:
             WorldUtil.decodeSpaceStationListClient(data);
@@ -498,9 +493,9 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case C_ADD_NEW_SCHEMATIC:
             final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
-            if (!stats.unlockedSchematics.contains(page))
+            if (!stats.getUnlockedSchematics().contains(page))
             {
-                stats.unlockedSchematics.add(page);
+                stats.getUnlockedSchematics().add(page);
             }
             break;
         case C_UPDATE_SCHEMATIC_LIST:
@@ -510,11 +505,11 @@ public class PacketSimple extends PacketBase implements Packet
 
                 if (schematicID != -2)
                 {
-                    Collections.sort(stats.unlockedSchematics);
+                    Collections.sort(stats.getUnlockedSchematics());
 
-                    if (!stats.unlockedSchematics.contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
+                    if (!stats.getUnlockedSchematics().contains(SchematicRegistry.getMatchingRecipeForID(schematicID)))
                     {
-                        stats.unlockedSchematics.add(SchematicRegistry.getMatchingRecipeForID(schematicID));
+                        stats.getUnlockedSchematics().add(SchematicRegistry.getMatchingRecipeForID(schematicID));
                     }
                 }
             }
@@ -532,7 +527,7 @@ public class PacketSimple extends PacketBase implements Packet
             player.playSound("random.bow", 10.0F, 0.2F);
             break;
         case C_UPDATE_OXYGEN_VALIDITY:
-            stats.oxygenSetupValid = (Boolean) this.data.get(0);
+            stats.setOxygenSetupValid((Boolean) this.data.get(0));
             break;
         case C_OPEN_PARACHEST_GUI:
             switch ((Integer) this.data.get(1))
@@ -596,7 +591,7 @@ public class PacketSimple extends PacketBase implements Packet
             SpaceRaceManager.addSpaceRace(race);
             break;
         case C_OPEN_JOIN_RACE_GUI:
-            stats.spaceRaceInviteTeamID = (Integer) this.data.get(0);
+            stats.setSpaceRaceInviteTeamID((Integer) this.data.get(0));
             player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
             break;
         case C_UPDATE_FOOTPRINT_LIST:
@@ -637,26 +632,26 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case C_UPDATE_STATION_SPIN:
-            if (playerBaseClient.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (playerBaseClient.worldObj.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderZeroGravity) playerBaseClient.worldObj.provider).getSpinManager().setSpinRate((Float) this.data.get(0), (Boolean) this.data.get(1));
+                ((WorldProviderSpaceStation) playerBaseClient.worldObj.provider).getSpinManager().setSpinRate((Float) this.data.get(0), (Boolean) this.data.get(1));
             }
             break;
         case C_UPDATE_STATION_DATA:
-            if (playerBaseClient.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (playerBaseClient.worldObj.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderZeroGravity) playerBaseClient.worldObj.provider).getSpinManager().setSpinCentre((Double) this.data.get(0), (Double) this.data.get(1));
+                ((WorldProviderSpaceStation) playerBaseClient.worldObj.provider).getSpinManager().setSpinCentre((Double) this.data.get(0), (Double) this.data.get(1));
             }
             break;
         case C_UPDATE_STATION_BOX:
-            if (playerBaseClient.worldObj.provider instanceof WorldProviderZeroGravity)
+            if (playerBaseClient.worldObj.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderZeroGravity) playerBaseClient.worldObj.provider).getSpinManager().setSpinBox((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4), (Integer) this.data.get(5));
+                ((WorldProviderSpaceStation) playerBaseClient.worldObj.provider).getSpinManager().setSpinBox((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4), (Integer) this.data.get(5));
             }
             break;
         case C_UPDATE_THERMAL_LEVEL:
-            stats.thermalLevel = (Integer) this.data.get(0);
-            stats.thermalLevelNormalising = (Boolean) this.data.get(1);
+            stats.setThermalLevel((Integer) this.data.get(0));
+            stats.setThermalLevelNormalising((Boolean) this.data.get(1));
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
             player.addChatMessage(new ChatComponentText(GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
@@ -694,7 +689,7 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case C_RESPAWN_PLAYER:
             final WorldProvider provider = WorldUtil.getProviderForNameClient((String) this.data.get(0));
-            final int dimID = provider.getDimensionId();
+            final int dimID = GCCoreUtil.getDimensionID(provider);
             if (ConfigManagerCore.enableDebug)
             {
                 GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
@@ -704,16 +699,16 @@ public class PacketSimple extends PacketBase implements Packet
             int par4 = (Integer) this.data.get(3);
             WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
-//        case C_UPDATE_ARCLAMP_FACING:
-//            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
-//            int facingNew = (Integer) this.data.get(1);
-//            if (tile instanceof TileEntityArclamp)
-//            {
-//                ((TileEntityArclamp) tile).facing = facingNew;
-//            }
-//            break;
+        case C_UPDATE_ARCLAMP_FACING:
+            tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            int facingNew = (Integer) this.data.get(1);
+            if (tile instanceof TileEntityArclamp)
+            {
+                ((TileEntityArclamp) tile).facing = facingNew;
+            }
+            break;
         case C_UPDATE_STATS:
-            stats.buildFlags = (Integer) this.data.get(0);
+            stats.setBuildFlags((Integer) this.data.get(0));
             break;
         case C_UPDATE_VIEWSCREEN:
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
@@ -789,14 +784,14 @@ public class PacketSimple extends PacketBase implements Packet
 
                 try
                 {
-                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/temp");
+                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
                     if (folder.exists() || folder.mkdir())
                     {
                         MapUtil.getOverworldImageFromRaw(folder, cx, cz, bytes);
                     }
                     else
                     {
-                        System.err.println("Cannot create directory %minecraftDir%/assets/temp!");
+                        System.err.println("Cannot create directory %minecraftDir%/assets/galacticraftMaps!");
                     }
                 }
                 catch (Exception e)
@@ -816,6 +811,9 @@ public class PacketSimple extends PacketBase implements Packet
                 pipe.getNetwork().split(pipe);
                 pipe.setNetwork(null);
             }
+            break;
+        case C_RECOLOR_ALL_GLASS:
+            ColorUtil.updateGlassColors((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
             break;
         default:
             break;
@@ -849,27 +847,26 @@ public class PacketSimple extends PacketBase implements Packet
 
                 if (!ship.landing)
                 {
-                    System.err.println(ConfigManagerCore.rocketFuelFactor);
                     if (ship.hasValidFuel())
                     {
-                        ItemStack stack2 = stats.extendedInventory.getStackInSlot(4);
+                        ItemStack stack2 = stats.getExtendedInventory().getStackInSlot(4);
 
-                        if (stack2 != null && stack2.getItem() instanceof ItemParaChute || stats.launchAttempts > 0)
+                        if (stack2 != null && stack2.getItem() instanceof ItemParaChute || stats.getLaunchAttempts() > 0)
                         {
                             ship.igniteCheckingCooldown();
-                            stats.launchAttempts = 0;
+                            stats.setLaunchAttempts(0);
                         }
-                        else if (stats.chatCooldown == 0 && stats.launchAttempts == 0)
+                        else if (stats.getChatCooldown() == 0 && stats.getLaunchAttempts() == 0)
                         {
                             player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
-                            stats.chatCooldown = 250;
-                            stats.launchAttempts = 1;
+                            stats.setChatCooldown(250);
+                            stats.setLaunchAttempts(1);
                         }
                     }
-                    else if (stats.chatCooldown == 0)
+                    else if (stats.getChatCooldown() == 0)
                     {
                         player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.rocket.warning.nofuel")));
-                        stats.chatCooldown = 250;
+                        stats.setChatCooldown(250);
                     }
                 }
             }
@@ -879,7 +876,7 @@ public class PacketSimple extends PacketBase implements Packet
             {
                 final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
 
-                player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+                player.openGui(GalacticraftCore.instance, page.getGuiID(), player.worldObj, (Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3));
             }
             break;
         case S_OPEN_FUEL_GUI:
@@ -924,7 +921,7 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case S_BIND_SPACE_STATION_ID:
             int homeID = (Integer) this.data.get(0);
-            if ((!stats.spaceStationDimensionData.containsKey(homeID) || stats.spaceStationDimensionData.get(homeID) == -1 || stats.spaceStationDimensionData.get(homeID) == 0)
+            if ((!stats.getSpaceStationDimensionData().containsKey(homeID) || stats.getSpaceStationDimensionData().get(homeID) == -1 || stats.getSpaceStationDimensionData().get(homeID) == 0)
                     && !ConfigManagerCore.disableSpaceStationCreation)
             {
                 if (playerBase.capabilities.isCreativeMode || WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
@@ -974,10 +971,10 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_ON_FAILED_CHEST_UNLOCK:
-            if (stats.chatCooldown == 0)
+            if (stats.getChatCooldown() == 0)
             {
                 player.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.chest.warning.wrongkey", this.data.get(0))));
-                stats.chatCooldown = 100;
+                stats.setChatCooldown(100);
             }
             break;
         case S_RENAME_SPACE_STATION:
@@ -1120,7 +1117,7 @@ public class PacketSimple extends PacketBase implements Packet
 
                 if (race != null)
                 {
-                    GCPlayerStats.get(playerInvited).spaceRaceInviteTeamID = teamInvitedTo;
+                    GCPlayerStats.get(playerInvited).setSpaceRaceInviteTeamID(teamInvitedTo);
                     String dA = EnumColor.DARK_AQUA.getCode();
                     String bG = EnumColor.BRIGHT_GREEN.getCode();
                     String dB = EnumColor.PURPLE.getCode();
@@ -1243,7 +1240,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_BUILDFLAGS_UPDATE:
-            stats.buildFlags = (Integer) this.data.get(0);
+            stats.setBuildFlags((Integer) this.data.get(0));
             break;
         case S_UPDATE_VIEWSCREEN_REQUEST:
             TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));

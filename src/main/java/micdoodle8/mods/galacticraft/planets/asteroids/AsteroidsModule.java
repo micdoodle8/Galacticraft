@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicAstroMi
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -253,6 +254,7 @@ public class AsteroidsModule implements IPlanetsModule
     public void serverStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandGCAstroMiner());
+        ChunkProviderAsteroids.reset();
     }
 
     @Override
@@ -346,12 +348,12 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerTileEntities()
     {
-        GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");
-        GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
-        GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
-        GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "Fake Short Range Telepad");
-        GameRegistry.registerTileEntity(TileEntityMinerBaseSingle.class, "Astro Miner Base Builder");
-        GameRegistry.registerTileEntity(TileEntityMinerBase.class, "Astro Miner Base");
+        GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "GC Beam Reflector");
+        GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "GC Beam Receiver");
+        GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "GC Short Range Telepad");
+        GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "GC Fake Short Range Telepad");
+        GameRegistry.registerTileEntity(TileEntityMinerBaseSingle.class, "GC Astro Miner Base Builder");
+        GameRegistry.registerTileEntity(TileEntityMinerBase.class, "GC Astro Miner Base");
     }
 
     @Override

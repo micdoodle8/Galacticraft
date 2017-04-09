@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNull;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
@@ -135,7 +136,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             return new TileEntityAluminumWire(2);
         }
 
-        return null;
+        return new TileEntityNull();
     }
 
     @Override
@@ -316,9 +317,10 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
             if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY)
             {
-                Block block = worldIn.getBlockState(pos.offset(direction)).getBlock();
+                BlockPos neighbour = pos.offset(direction);
+                Block block = worldIn.getBlockState(neighbour).getBlock();
 
-                if (!block.isAir(worldIn, pos.offset(direction)))
+                if (block == this || block.isSideSolid(worldIn, neighbour, direction.getOpposite()))
                 {
                     connectable[direction.ordinal()] = block;
                 }

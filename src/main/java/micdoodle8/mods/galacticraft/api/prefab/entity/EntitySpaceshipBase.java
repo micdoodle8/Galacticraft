@@ -32,7 +32,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
+
+import com.google.common.base.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -210,7 +213,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         	this.addToTelemetry = false;
 			for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
 			{
-				TileEntity t1 = vec.getTileEntity();
+				TileEntity t1 = vec.getTileEntityNoLoad();
 				if (t1 instanceof TileEntityTelemetry && !t1.isInvalid())
 				{
 					if (((TileEntityTelemetry)t1).linkedEntity == this)
@@ -252,14 +255,19 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        {
 	        	if (this.riddenByEntity instanceof EntityPlayerMP)
 	        	{
-	        		GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) this.riddenByEntity);
-	        		if (stats.usingPlanetSelectionGui)
+                    GCPlayerStats stats = GCPlayerStats.get(this.riddenByEntity);
+	        		if (stats.isUsingPlanetSelectionGui())
 	        		{
 	        			this.kill();
 	        		}
 	        	}
 	        	else
 	        		this.kill();
+	        }
+
+	        if (this.timeSinceLaunch > 50 && this.onGround)
+	        {
+	            this.failRocket();
 	        }
         }
         
@@ -319,11 +327,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         this.motionX = -(50 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
         this.motionZ = -(50 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * 0.01 * Math.PI / 180.0D));
-
-        if (this.timeSinceLaunch > 50 && this.onGround)
-        {
-            this.failRocket();
-        }
 
         if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
         {
@@ -598,6 +601,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		return returnList;
 	}
 	
+    @Override
     public void transmitData(int[] data)
     {
 		data[0] = this.timeUntilLaunch;
@@ -607,6 +611,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		data[4] = (int) this.rotationPitch;
     }
 	
+    @Override
     public void receiveData(int[] data, String[] str)
     {
 		//Spaceships:
@@ -623,6 +628,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 		str[4] = GCCoreUtil.translate("gui.message.fuel.name") + ": " + data[3] + "%";
     }
 
+    @Override
     public void adjustDisplay(int[] data)
     {
 		GL11.glRotatef(data[4], -1, 0, 0);
@@ -638,4 +644,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         return 1.34F;
     }
+
+    public static final Predicate<Entity> rocketSelector = new Predicate<Entity>()
+    {
+        public boolean apply(Entity e)
+        {
+            return e instanceof EntitySpaceshipBase && e.isEntityAlive();
+        }
+    };
 }

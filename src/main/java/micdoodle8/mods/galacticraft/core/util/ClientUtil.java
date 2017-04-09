@@ -95,7 +95,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -112,46 +112,48 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, FMLClientHandler.instance().getClient().theWorld.provider.getDimensionId(), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
         return new Vector3(1, 1, 1);
     }
 
-    public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState)
+    public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, "inventory");
-        IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
-        if (object != null)
+        if (variants.length == 0)
         {
-            IBakedModel newModel;
+            variants = new String[] { "inventory" };
+        }
 
-            try
+        IBakedModel newModel;
+
+        try
+        {
+            OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
+            model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+
+            Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+            newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+            if (clazz != null)
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
-                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = new Function<ResourceLocation, TextureAtlasSprite>()
-                {
-                    @Override
-                    public TextureAtlasSprite apply(ResourceLocation location)
-                    {
-                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    }
-                };
-                newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
-                if (clazz != null)
-                {
-                    newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
-                }
+                newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
             }
-            catch (Exception e)
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        for (String variant : variants)
+        {
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, variant);
+            IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+            if (object != null)
             {
-                throw new RuntimeException(e);
-            }
 
-            event.modelRegistry.putObject(modelResourceLocation, newModel);
+                event.modelRegistry.putObject(modelResourceLocation, newModel);
+            }
         }
     }
 

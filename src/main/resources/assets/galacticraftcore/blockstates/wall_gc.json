@@ -1,201 +1,108 @@
 {
-    "variants": {
-        "east=false,north=false,south=false,up=false,variant=tin_1_wall,west=false": { "model": "galacticraftcore:tin_1_wall_post" },
-        "east=false,north=true,south=false,up=false,variant=tin_1_wall,west=false":  { "model": "galacticraftcore:tin_1_wall_n" },
-        "east=true,north=false,south=false,up=false,variant=tin_1_wall,west=false":  { "model": "galacticraftcore:tin_1_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=tin_1_wall,west=false":  { "model": "galacticraftcore:tin_1_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=false,variant=tin_1_wall,west=true":  { "model": "galacticraftcore:tin_1_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=tin_1_wall,west=false":   { "model": "galacticraftcore:tin_1_wall_ne" },
-        "east=true,north=false,south=true,up=false,variant=tin_1_wall,west=false":   { "model": "galacticraftcore:tin_1_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=tin_1_wall,west=true":   { "model": "galacticraftcore:tin_1_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=false,variant=tin_1_wall,west=true":   { "model": "galacticraftcore:tin_1_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=tin_1_wall,west=false":   { "model": "galacticraftcore:tin_1_wall_ns" },
-        "east=true,north=false,south=false,up=false,variant=tin_1_wall,west=true":   { "model": "galacticraftcore:tin_1_wall_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=tin_1_wall,west=false":    { "model": "galacticraftcore:tin_1_wall_nse" },
-        "east=true,north=false,south=true,up=false,variant=tin_1_wall,west=true":    { "model": "galacticraftcore:tin_1_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=tin_1_wall,west=true":    { "model": "galacticraftcore:tin_1_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=tin_1_wall,west=true":    { "model": "galacticraftcore:tin_1_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=tin_1_wall,west=true":     { "model": "galacticraftcore:tin_1_wall_nsew" },
-        "east=false,north=false,south=false,up=true,variant=tin_1_wall,west=false":  { "model": "galacticraftcore:tin_1_wall_post" },
-        "east=false,north=true,south=false,up=true,variant=tin_1_wall,west=false":   { "model": "galacticraftcore:tin_1_wall_n" },
-        "east=true,north=false,south=false,up=true,variant=tin_1_wall,west=false":   { "model": "galacticraftcore:tin_1_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=tin_1_wall,west=false":   { "model": "galacticraftcore:tin_1_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=true,variant=tin_1_wall,west=true":   { "model": "galacticraftcore:tin_1_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=tin_1_wall,west=false":    { "model": "galacticraftcore:tin_1_wall_ne" },
-        "east=true,north=false,south=true,up=true,variant=tin_1_wall,west=false":    { "model": "galacticraftcore:tin_1_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=tin_1_wall,west=true":    { "model": "galacticraftcore:tin_1_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=true,variant=tin_1_wall,west=true":    { "model": "galacticraftcore:tin_1_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=tin_1_wall,west=false":    { "model": "galacticraftcore:tin_1_wall_ns_above" },
-        "east=true,north=false,south=false,up=true,variant=tin_1_wall,west=true":    { "model": "galacticraftcore:tin_1_wall_ns_above", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=tin_1_wall,west=false":     { "model": "galacticraftcore:tin_1_wall_nse" },
-        "east=true,north=false,south=true,up=true,variant=tin_1_wall,west=true":     { "model": "galacticraftcore:tin_1_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=tin_1_wall,west=true":     { "model": "galacticraftcore:tin_1_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=tin_1_wall,west=true":     { "model": "galacticraftcore:tin_1_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=tin_1_wall,west=true":      { "model": "galacticraftcore:tin_1_wall_nsew" },
-		
-        "east=false,north=false,south=false,up=false,variant=tin_2_wall,west=false": { "model": "galacticraftcore:tin_2_wall_post" },
-        "east=false,north=true,south=false,up=false,variant=tin_2_wall,west=false":  { "model": "galacticraftcore:tin_2_wall_n" },
-        "east=true,north=false,south=false,up=false,variant=tin_2_wall,west=false":  { "model": "galacticraftcore:tin_2_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=tin_2_wall,west=false":  { "model": "galacticraftcore:tin_2_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=false,variant=tin_2_wall,west=true":  { "model": "galacticraftcore:tin_2_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=tin_2_wall,west=false":   { "model": "galacticraftcore:tin_2_wall_ne" },
-        "east=true,north=false,south=true,up=false,variant=tin_2_wall,west=false":   { "model": "galacticraftcore:tin_2_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=tin_2_wall,west=true":   { "model": "galacticraftcore:tin_2_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=false,variant=tin_2_wall,west=true":   { "model": "galacticraftcore:tin_2_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=tin_2_wall,west=false":   { "model": "galacticraftcore:tin_2_wall_ns" },
-        "east=true,north=false,south=false,up=false,variant=tin_2_wall,west=true":   { "model": "galacticraftcore:tin_2_wall_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=tin_2_wall,west=false":    { "model": "galacticraftcore:tin_2_wall_nse" },
-        "east=true,north=false,south=true,up=false,variant=tin_2_wall,west=true":    { "model": "galacticraftcore:tin_2_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=tin_2_wall,west=true":    { "model": "galacticraftcore:tin_2_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=tin_2_wall,west=true":    { "model": "galacticraftcore:tin_2_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=tin_2_wall,west=true":     { "model": "galacticraftcore:tin_2_wall_nsew" },
-        "east=false,north=false,south=false,up=true,variant=tin_2_wall,west=false":  { "model": "galacticraftcore:tin_2_wall_post" },
-        "east=false,north=true,south=false,up=true,variant=tin_2_wall,west=false":   { "model": "galacticraftcore:tin_2_wall_n" },
-        "east=true,north=false,south=false,up=true,variant=tin_2_wall,west=false":   { "model": "galacticraftcore:tin_2_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=tin_2_wall,west=false":   { "model": "galacticraftcore:tin_2_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=true,variant=tin_2_wall,west=true":   { "model": "galacticraftcore:tin_2_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=tin_2_wall,west=false":    { "model": "galacticraftcore:tin_2_wall_ne" },
-        "east=true,north=false,south=true,up=true,variant=tin_2_wall,west=false":    { "model": "galacticraftcore:tin_2_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=tin_2_wall,west=true":    { "model": "galacticraftcore:tin_2_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=true,variant=tin_2_wall,west=true":    { "model": "galacticraftcore:tin_2_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=tin_2_wall,west=false":    { "model": "galacticraftcore:tin_2_wall_ns_above" },
-        "east=true,north=false,south=false,up=true,variant=tin_2_wall,west=true":    { "model": "galacticraftcore:tin_2_wall_ns_above", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=tin_2_wall,west=false":     { "model": "galacticraftcore:tin_2_wall_nse" },
-        "east=true,north=false,south=true,up=true,variant=tin_2_wall,west=true":     { "model": "galacticraftcore:tin_2_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=tin_2_wall,west=true":     { "model": "galacticraftcore:tin_2_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=tin_2_wall,west=true":     { "model": "galacticraftcore:tin_2_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=tin_2_wall,west=true":      { "model": "galacticraftcore:tin_2_wall_nsew" },
-		
-        "east=false,north=false,south=false,up=false,variant=moon_stone_wall,west=false": { "model": "galacticraftcore:moon_stone_wall_post" },
-        "east=false,north=true,south=false,up=false,variant=moon_stone_wall,west=false":  { "model": "galacticraftcore:moon_stone_wall_n" },
-        "east=true,north=false,south=false,up=false,variant=moon_stone_wall,west=false":  { "model": "galacticraftcore:moon_stone_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=moon_stone_wall,west=false":  { "model": "galacticraftcore:moon_stone_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=false,variant=moon_stone_wall,west=true":  { "model": "galacticraftcore:moon_stone_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=moon_stone_wall,west=false":   { "model": "galacticraftcore:moon_stone_wall_ne" },
-        "east=true,north=false,south=true,up=false,variant=moon_stone_wall,west=false":   { "model": "galacticraftcore:moon_stone_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=moon_stone_wall,west=true":   { "model": "galacticraftcore:moon_stone_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=false,variant=moon_stone_wall,west=true":   { "model": "galacticraftcore:moon_stone_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=moon_stone_wall,west=false":   { "model": "galacticraftcore:moon_stone_wall_ns" },
-        "east=true,north=false,south=false,up=false,variant=moon_stone_wall,west=true":   { "model": "galacticraftcore:moon_stone_wall_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=moon_stone_wall,west=false":    { "model": "galacticraftcore:moon_stone_wall_nse" },
-        "east=true,north=false,south=true,up=false,variant=moon_stone_wall,west=true":    { "model": "galacticraftcore:moon_stone_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=moon_stone_wall,west=true":    { "model": "galacticraftcore:moon_stone_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=moon_stone_wall,west=true":    { "model": "galacticraftcore:moon_stone_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=moon_stone_wall,west=true":     { "model": "galacticraftcore:moon_stone_wall_nsew" },
-        "east=false,north=false,south=false,up=true,variant=moon_stone_wall,west=false":  { "model": "galacticraftcore:moon_stone_wall_post" },
-        "east=false,north=true,south=false,up=true,variant=moon_stone_wall,west=false":   { "model": "galacticraftcore:moon_stone_wall_n" },
-        "east=true,north=false,south=false,up=true,variant=moon_stone_wall,west=false":   { "model": "galacticraftcore:moon_stone_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=moon_stone_wall,west=false":   { "model": "galacticraftcore:moon_stone_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=true,variant=moon_stone_wall,west=true":   { "model": "galacticraftcore:moon_stone_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=moon_stone_wall,west=false":    { "model": "galacticraftcore:moon_stone_wall_ne" },
-        "east=true,north=false,south=true,up=true,variant=moon_stone_wall,west=false":    { "model": "galacticraftcore:moon_stone_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=moon_stone_wall,west=true":    { "model": "galacticraftcore:moon_stone_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=true,variant=moon_stone_wall,west=true":    { "model": "galacticraftcore:moon_stone_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=moon_stone_wall,west=false":    { "model": "galacticraftcore:moon_stone_wall_ns_above" },
-        "east=true,north=false,south=false,up=true,variant=moon_stone_wall,west=true":    { "model": "galacticraftcore:moon_stone_wall_ns_above", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=moon_stone_wall,west=false":     { "model": "galacticraftcore:moon_stone_wall_nse" },
-        "east=true,north=false,south=true,up=true,variant=moon_stone_wall,west=true":     { "model": "galacticraftcore:moon_stone_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=moon_stone_wall,west=true":     { "model": "galacticraftcore:moon_stone_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=moon_stone_wall,west=true":     { "model": "galacticraftcore:moon_stone_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=moon_stone_wall,west=true":      { "model": "galacticraftcore:moon_stone_wall_nsew" },
-		
-        "east=false,north=false,south=false,up=false,variant=moon_dungeon_brick_wall,west=false": { "model": "galacticraftcore:moon_dungeon_brick_wall_post" },
-        "east=false,north=true,south=false,up=false,variant=moon_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:moon_dungeon_brick_wall_n" },
-        "east=true,north=false,south=false,up=false,variant=moon_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:moon_dungeon_brick_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=moon_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:moon_dungeon_brick_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=false,variant=moon_dungeon_brick_wall,west=true":  { "model": "galacticraftcore:moon_dungeon_brick_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=moon_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:moon_dungeon_brick_wall_ne" },
-        "east=true,north=false,south=true,up=false,variant=moon_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:moon_dungeon_brick_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=moon_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:moon_dungeon_brick_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=false,variant=moon_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:moon_dungeon_brick_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=moon_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:moon_dungeon_brick_wall_ns" },
-        "east=true,north=false,south=false,up=false,variant=moon_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:moon_dungeon_brick_wall_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=moon_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:moon_dungeon_brick_wall_nse" },
-        "east=true,north=false,south=true,up=false,variant=moon_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:moon_dungeon_brick_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=moon_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:moon_dungeon_brick_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=moon_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:moon_dungeon_brick_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=moon_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:moon_dungeon_brick_wall_nsew" },
-        "east=false,north=false,south=false,up=true,variant=moon_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:moon_dungeon_brick_wall_post" },
-        "east=false,north=true,south=false,up=true,variant=moon_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:moon_dungeon_brick_wall_n" },
-        "east=true,north=false,south=false,up=true,variant=moon_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:moon_dungeon_brick_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=moon_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:moon_dungeon_brick_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=true,variant=moon_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:moon_dungeon_brick_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=moon_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:moon_dungeon_brick_wall_ne" },
-        "east=true,north=false,south=true,up=true,variant=moon_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:moon_dungeon_brick_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=moon_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:moon_dungeon_brick_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=true,variant=moon_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:moon_dungeon_brick_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=moon_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:moon_dungeon_brick_wall_ns_above" },
-        "east=true,north=false,south=false,up=true,variant=moon_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:moon_dungeon_brick_wall_ns_above", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=moon_dungeon_brick_wall,west=false":     { "model": "galacticraftcore:moon_dungeon_brick_wall_nse" },
-        "east=true,north=false,south=true,up=true,variant=moon_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:moon_dungeon_brick_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=moon_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:moon_dungeon_brick_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=moon_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:moon_dungeon_brick_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=moon_dungeon_brick_wall,west=true":      { "model": "galacticraftcore:moon_dungeon_brick_wall_nsew" },
-		
-        "east=false,north=false,south=false,up=false,variant=mars_cobblestone_wall,west=false": { "model": "galacticraftcore:mars_cobblestone_wall_post" },
-        "east=false,north=true,south=false,up=false,variant=mars_cobblestone_wall,west=false":  { "model": "galacticraftcore:mars_cobblestone_wall_n" },
-        "east=true,north=false,south=false,up=false,variant=mars_cobblestone_wall,west=false":  { "model": "galacticraftcore:mars_cobblestone_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=mars_cobblestone_wall,west=false":  { "model": "galacticraftcore:mars_cobblestone_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=false,variant=mars_cobblestone_wall,west=true":  { "model": "galacticraftcore:mars_cobblestone_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=mars_cobblestone_wall,west=false":   { "model": "galacticraftcore:mars_cobblestone_wall_ne" },
-        "east=true,north=false,south=true,up=false,variant=mars_cobblestone_wall,west=false":   { "model": "galacticraftcore:mars_cobblestone_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=mars_cobblestone_wall,west=true":   { "model": "galacticraftcore:mars_cobblestone_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=false,variant=mars_cobblestone_wall,west=true":   { "model": "galacticraftcore:mars_cobblestone_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=mars_cobblestone_wall,west=false":   { "model": "galacticraftcore:mars_cobblestone_wall_ns" },
-        "east=true,north=false,south=false,up=false,variant=mars_cobblestone_wall,west=true":   { "model": "galacticraftcore:mars_cobblestone_wall_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=mars_cobblestone_wall,west=false":    { "model": "galacticraftcore:mars_cobblestone_wall_nse" },
-        "east=true,north=false,south=true,up=false,variant=mars_cobblestone_wall,west=true":    { "model": "galacticraftcore:mars_cobblestone_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=mars_cobblestone_wall,west=true":    { "model": "galacticraftcore:mars_cobblestone_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=mars_cobblestone_wall,west=true":    { "model": "galacticraftcore:mars_cobblestone_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=mars_cobblestone_wall,west=true":     { "model": "galacticraftcore:mars_cobblestone_wall_nsew" },
-        "east=false,north=false,south=false,up=true,variant=mars_cobblestone_wall,west=false":  { "model": "galacticraftcore:mars_cobblestone_wall_post" },
-        "east=false,north=true,south=false,up=true,variant=mars_cobblestone_wall,west=false":   { "model": "galacticraftcore:mars_cobblestone_wall_n" },
-        "east=true,north=false,south=false,up=true,variant=mars_cobblestone_wall,west=false":   { "model": "galacticraftcore:mars_cobblestone_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=mars_cobblestone_wall,west=false":   { "model": "galacticraftcore:mars_cobblestone_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=true,variant=mars_cobblestone_wall,west=true":   { "model": "galacticraftcore:mars_cobblestone_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=mars_cobblestone_wall,west=false":    { "model": "galacticraftcore:mars_cobblestone_wall_ne" },
-        "east=true,north=false,south=true,up=true,variant=mars_cobblestone_wall,west=false":    { "model": "galacticraftcore:mars_cobblestone_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=mars_cobblestone_wall,west=true":    { "model": "galacticraftcore:mars_cobblestone_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=true,variant=mars_cobblestone_wall,west=true":    { "model": "galacticraftcore:mars_cobblestone_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=mars_cobblestone_wall,west=false":    { "model": "galacticraftcore:mars_cobblestone_wall_ns_above" },
-        "east=true,north=false,south=false,up=true,variant=mars_cobblestone_wall,west=true":    { "model": "galacticraftcore:mars_cobblestone_wall_ns_above", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=mars_cobblestone_wall,west=false":     { "model": "galacticraftcore:mars_cobblestone_wall_nse" },
-        "east=true,north=false,south=true,up=true,variant=mars_cobblestone_wall,west=true":     { "model": "galacticraftcore:mars_cobblestone_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=mars_cobblestone_wall,west=true":     { "model": "galacticraftcore:mars_cobblestone_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=mars_cobblestone_wall,west=true":     { "model": "galacticraftcore:mars_cobblestone_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=mars_cobblestone_wall,west=true":      { "model": "galacticraftcore:mars_cobblestone_wall_nsew" },
-		
-        "east=false,north=false,south=false,up=false,variant=mars_dungeon_brick_wall,west=false": { "model": "galacticraftcore:mars_dungeon_brick_wall_post" },
-        "east=false,north=true,south=false,up=false,variant=mars_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:mars_dungeon_brick_wall_n" },
-        "east=true,north=false,south=false,up=false,variant=mars_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:mars_dungeon_brick_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=mars_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:mars_dungeon_brick_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=false,variant=mars_dungeon_brick_wall,west=true":  { "model": "galacticraftcore:mars_dungeon_brick_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=mars_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:mars_dungeon_brick_wall_ne" },
-        "east=true,north=false,south=true,up=false,variant=mars_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:mars_dungeon_brick_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=false,variant=mars_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:mars_dungeon_brick_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=false,variant=mars_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:mars_dungeon_brick_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=mars_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:mars_dungeon_brick_wall_ns" },
-        "east=true,north=false,south=false,up=false,variant=mars_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:mars_dungeon_brick_wall_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=mars_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:mars_dungeon_brick_wall_nse" },
-        "east=true,north=false,south=true,up=false,variant=mars_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:mars_dungeon_brick_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=false,variant=mars_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:mars_dungeon_brick_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=false,variant=mars_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:mars_dungeon_brick_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=false,variant=mars_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:mars_dungeon_brick_wall_nsew" },
-        "east=false,north=false,south=false,up=true,variant=mars_dungeon_brick_wall,west=false":  { "model": "galacticraftcore:mars_dungeon_brick_wall_post" },
-        "east=false,north=true,south=false,up=true,variant=mars_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:mars_dungeon_brick_wall_n" },
-        "east=true,north=false,south=false,up=true,variant=mars_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:mars_dungeon_brick_wall_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=mars_dungeon_brick_wall,west=false":   { "model": "galacticraftcore:mars_dungeon_brick_wall_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,up=true,variant=mars_dungeon_brick_wall,west=true":   { "model": "galacticraftcore:mars_dungeon_brick_wall_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=mars_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:mars_dungeon_brick_wall_ne" },
-        "east=true,north=false,south=true,up=true,variant=mars_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:mars_dungeon_brick_wall_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,up=true,variant=mars_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:mars_dungeon_brick_wall_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,up=true,variant=mars_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:mars_dungeon_brick_wall_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=mars_dungeon_brick_wall,west=false":    { "model": "galacticraftcore:mars_dungeon_brick_wall_ns_above" },
-        "east=true,north=false,south=false,up=true,variant=mars_dungeon_brick_wall,west=true":    { "model": "galacticraftcore:mars_dungeon_brick_wall_ns_above", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=mars_dungeon_brick_wall,west=false":     { "model": "galacticraftcore:mars_dungeon_brick_wall_nse" },
-        "east=true,north=false,south=true,up=true,variant=mars_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:mars_dungeon_brick_wall_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,up=true,variant=mars_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:mars_dungeon_brick_wall_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,up=true,variant=mars_dungeon_brick_wall,west=true":     { "model": "galacticraftcore:mars_dungeon_brick_wall_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,up=true,variant=mars_dungeon_brick_wall,west=true":      { "model": "galacticraftcore:mars_dungeon_brick_wall_nsew" }
-    }
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"wall": "galacticraftcore:blocks/deco_block_side",
+			"wall_bot": "galacticraftcore:blocks/deco_block_up",
+			"wall_top": "galacticraftcore:blocks/deco_block"
+		},
+		"model": "galacticraftcore:wall_post",
+		"uvlock": true
+	},
+	"variants": {
+		"north": {
+			"true": {
+				"submodel": {
+					"north": { "model": "galacticraftcore:wall_side" }
+				}
+			},
+			"false": {
+			
+			}
+		},
+		"east": {
+			"true": {
+				"submodel": {
+					"east": { "model": "galacticraftcore:wall_side", "y": 90, "uvlock": true }
+				}
+			},
+			"false": {
+			
+			}
+		},
+		"south": {
+			"true": {
+				"submodel": {
+					"south": { "model": "galacticraftcore:wall_side", "y": 180, "uvlock": true }
+				}
+			},
+			"false": {
+			
+			}
+		},
+		"west": {
+			"true": {
+				"submodel": {
+					"west": { "model": "galacticraftcore:wall_side", "y": 270, "uvlock": true }
+				}
+			},
+			"false": {
+			
+			}
+		},
+		"up": {
+			"true": {
+				"submodel": {
+					"up": { "model": "galacticraftcore:wall_post" }
+				}
+			},
+			"false": {
+			
+			}
+		},
+		"variant": {
+			"tin_1_wall": {
+				"textures": {
+					"wall": "galacticraftcore:blocks/deco_block_side",
+					"wall_bot": "galacticraftcore:blocks/deco_block_up",
+					"wall_top": "galacticraftcore:blocks/deco_block"
+				}
+			},
+			"tin_2_wall": {
+				"textures": {
+					"wall": "galacticraftcore:blocks/deco_block",
+					"wall_bot": "galacticraftcore:blocks/deco_block",
+					"wall_top": "galacticraftcore:blocks/deco_block"
+				}
+			},
+			"moon_stone_wall": {
+				"textures": {
+					"wall": "galacticraftcore:blocks/bottom",
+					"wall_bot": "galacticraftcore:blocks/bottom",
+					"wall_top": "galacticraftcore:blocks/bottom"
+				}
+			},
+			"moon_dungeon_brick_wall": {
+				"textures": {
+					"wall": "galacticraftcore:blocks/brick",
+					"wall_bot": "galacticraftcore:blocks/brick",
+					"wall_top": "galacticraftcore:blocks/brick"
+				}
+			},
+			"mars_cobblestone_wall": {
+				"textures": {
+					"wall": "galacticraftplanets:blocks/cobblestone",
+					"wall_bot": "galacticraftplanets:blocks/cobblestone",
+					"wall_top": "galacticraftplanets:blocks/cobblestone"
+				}
+			},
+			"mars_dungeon_brick_wall": {
+				"textures": {
+					"wall": "galacticraftplanets:blocks/brick",
+					"wall_bot": "galacticraftplanets:blocks/brick",
+					"wall_top": "galacticraftplanets:blocks/brick"
+				}
+			}
+		}
+	}
 }

@@ -19,10 +19,6 @@ public class CommandGCEnergyUnits extends CommandBase
     public String getCommandUsage(ICommandSender var1)
     {
         String options = " [gJ";
-        if (EnergyConfigHandler.isBuildcraftLoaded())
-        {
-            options = options + "|MJ";
-        }
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
             options = options + "|EU";
@@ -72,10 +68,6 @@ public class CommandGCEnergyUnits extends CommandBase
                 {
                     paramvalue = 1;
                 }
-                else if ("mj".equals(param) && EnergyConfigHandler.isBuildcraftLoaded())
-                {
-                    paramvalue = 2;
-                }
                 else if ("eu".equals(param) && EnergyConfigHandler.isIndustrialCraft2Loaded())
                 {
                     paramvalue = 3;
@@ -91,7 +83,7 @@ public class CommandGCEnergyUnits extends CommandBase
 
                 if (paramvalue > 0)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_ENERGYUNITS, playerBase.worldObj.provider.getDimensionId(), new Object[] { paramvalue }), playerBase);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_ENERGYUNITS, GCCoreUtil.getDimensionID(playerBase.worldObj), new Object[] { paramvalue }), playerBase);
                     return;
                 }
 
@@ -109,15 +101,6 @@ public class CommandGCEnergyUnits extends CommandBase
         if (param == 1)
         {
             EnergyConfigHandler.displayEnergyUnitsBC = false;
-            EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-            EnergyConfigHandler.displayEnergyUnitsMek = false;
-            EnergyConfigHandler.displayEnergyUnitsRF = false;
-            return;
-        }
-
-        if (param == 2 && EnergyConfigHandler.isBuildcraftLoaded())
-        {
-            EnergyConfigHandler.displayEnergyUnitsBC = true;
             EnergyConfigHandler.displayEnergyUnitsIC2 = false;
             EnergyConfigHandler.displayEnergyUnitsMek = false;
             EnergyConfigHandler.displayEnergyUnitsRF = false;

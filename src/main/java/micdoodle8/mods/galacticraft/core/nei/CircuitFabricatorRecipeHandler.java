@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuitFabricator.png");
+    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuit_fabricator.png");
     int ticksPassed;
 
     public String getRecipeId()
@@ -173,7 +173,7 @@ public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return Constants.TEXTURE_PREFIX + "textures/gui/circuitFabricator.png";
+        return Constants.TEXTURE_PREFIX + "textures/gui/circuit_fabricator.png";
     }
 
     @Override

@@ -27,7 +27,7 @@ public class GuiSlimeling extends GuiScreen
 {
     private final int xSize;
     private final int ySize;
-    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimelingPanel0.png");
+    private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimeling_panel0.png");
     private final EntitySlimeling slimeling;
 
 //    public static RenderItem drawItems = new RenderItem();
@@ -134,7 +134,7 @@ public class GuiSlimeling extends GuiScreen
             }
         }
 
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimensionId(), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
 
         super.keyTyped(keyChar, keyID);
     }
@@ -152,7 +152,7 @@ public class GuiSlimeling extends GuiScreen
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimensionId(), new Object[] { this.slimeling.getEntityId(), 0, "" }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 0, "" }));
                 break;
             }
         }
@@ -181,7 +181,7 @@ public class GuiSlimeling extends GuiScreen
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
             Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimensionId(), new Object[] { this.slimeling.getEntityId(), 6, "" }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 6, "" }));
         }
 
         super.mouseClicked(px, py, par3);
@@ -231,7 +231,7 @@ public class GuiSlimeling extends GuiScreen
                 if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.slimeling.isOwner(this.mc.thePlayer))
                 {
                     this.slimeling.setName(this.slimeling.getName().substring(0, this.slimeling.getName().length() - 1));
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, this.slimeling.worldObj.provider.getDimensionId(), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
                     this.timeBackspacePressed = System.currentTimeMillis();
                     this.backspacePressed++;
                 }

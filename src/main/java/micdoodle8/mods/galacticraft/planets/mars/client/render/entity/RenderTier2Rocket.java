@@ -8,8 +8,6 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -94,13 +92,7 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glScalef(0.8F, 0.8F, 0.8F);
 
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-
-        worldrenderer.begin(GL11.GL_QUADS, rocketModel.getFormat());
-
         ClientUtil.drawBakedModel(rocketModel);
-        tessellator.draw();
 
         GL11.glPopMatrix();
 

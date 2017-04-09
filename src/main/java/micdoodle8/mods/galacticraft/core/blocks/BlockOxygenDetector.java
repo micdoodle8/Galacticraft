@@ -28,6 +28,12 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     }
 
     @Override
+    public int getRenderType()
+    {
+        return 3;
+    }
+
+    @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;

@@ -44,8 +44,32 @@ public class TeleportTypeAsteroids implements ITeleportType
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            int x = MathHelper.floor_double(stats.coordsTeleportedFromX);
-            int z = MathHelper.floor_double(stats.coordsTeleportedFromZ);
+            int x = MathHelper.floor_double(stats.getCoordsTeleportedFromX());
+            int z = MathHelper.floor_double(stats.getCoordsTeleportedFromZ());
+            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            if (limit > 20)
+            {
+                if (x > limit)
+                {
+                    z *= limit / x;
+                    x = limit;
+                }
+                else if (x < -limit)
+                {   
+                    z *= -limit / x;
+                    x = -limit;
+                }
+                if (z > limit)
+                {
+                    x *= limit / z;
+                    z = limit;
+                }
+                else if (z < -limit)
+                {
+                    x *= - limit / z;
+                    z = -limit;
+                }
+            }
 
             int attemptCount = 0;
 
@@ -290,7 +314,7 @@ public class TeleportTypeAsteroids implements ITeleportType
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
 
-            if (stats.teleportCooldown <= 0)
+            if (stats.getTeleportCooldown() <= 0)
             {
                 if (player.capabilities.isFlying)
                 {
@@ -304,7 +328,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                     newWorld.spawnEntityInWorld(entryPod);
                 }
 
-                stats.teleportCooldown = 10;
+                stats.setTeleportCooldown(10);
             }
         }
     }
@@ -316,31 +340,32 @@ public class TeleportTypeAsteroids implements ITeleportType
         SchematicRegistry.unlockNewPage(player, new ItemStack(GCItems.schematic, 1, 1)); //Knows how to build T2 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 0)); //Knows how to build T3 rocket
         SchematicRegistry.unlockNewPage(player, new ItemStack(MarsItems.schematic, 1, 2)); //Knows how to build Astro Miner
-        stats.rocketStacks = new ItemStack[20];
-        stats.fuelLevel = 1000;
+        ItemStack[] rocketStacks = new ItemStack[20];
+        stats.setFuelLevel(1000);
         int i = 0;
-        stats.rocketStacks[i++] = new ItemStack(GCItems.oxMask);
-        stats.rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
-        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
-        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
-        stats.rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
-        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
-        stats.rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
-        stats.rocketStacks[i++] = new ItemStack(Blocks.glass_pane, 16);
-        stats.rocketStacks[i++] = new ItemStack(Blocks.planks, 32, 2);
-        stats.rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
-        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
-        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
-        stats.rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
-        stats.rocketStacks[i++] = new ItemStack(Items.egg, 12);
+        rocketStacks[i++] = new ItemStack(GCItems.oxMask);
+        rocketStacks[i++] = new ItemStack(GCItems.oxygenGear);
+        rocketStacks[i++] = new ItemStack(GCItems.oxTankMedium);
+        rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        rocketStacks[i++] = new ItemStack(GCItems.oxTankHeavy);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
+        rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
+        rocketStacks[i++] = new ItemStack(Blocks.glass_pane, 16);
+        rocketStacks[i++] = new ItemStack(Blocks.planks, 32, 2);
+        rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
+        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
+        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
+        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
+        rocketStacks[i++] = new ItemStack(Items.egg, 12);
 
-        stats.rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, EntityList.classToIDMapping.get(EntityCow.class));
-        stats.rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
-        stats.rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
-        stats.rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
-        //stats.rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
-        //stats.rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
+        rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, EntityList.classToIDMapping.get(EntityCow.class));
+        rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
+        rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
+        rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
+        //rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
+        //rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
+        stats.setRocketStacks(rocketStacks);
     }
 }

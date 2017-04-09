@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/basicItem.ingotCopper"
+        "layer0": "galacticraftcore:items/basic_item.ingot_copper"
     },
     "display": {
         "thirdperson": {

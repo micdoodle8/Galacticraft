@@ -37,24 +37,6 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     }
 
     @Override
-    public double getPacketRange()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getPacketCooldown()
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean isNetworkedTile()
-    {
-        return false;
-    }
-
-    @Override
     public int getTierGC()
     {
         return this.tier;

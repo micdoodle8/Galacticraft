@@ -82,12 +82,12 @@ public class ItemBasicVenus extends ItemDesc implements ISortableItem
     {
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-            ItemStack gear = stats.extendedInventory.getStackInSlot(10);
+            GCPlayerStats stats = GCPlayerStats.get(player);
+            ItemStack gear = stats.getExtendedInventory().getStackInSlot(10);
 
             if (gear == null)
             {
-                stats.extendedInventory.setInventorySlotContents(10, itemStack.copy());
+                stats.getExtendedInventory().setInventorySlotContents(10, itemStack.copy());
                 itemStack.stackSize = 0;
             }
         }

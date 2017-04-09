@@ -48,7 +48,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o instanceof IDockable)
+                if (o instanceof IDockable && !((Entity)o).isDead) 
                 {
                     docked = true;
 
@@ -188,30 +188,37 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     {
         HashSet<ILandingPadAttachable> connectedTiles = new HashSet<ILandingPadAttachable>();
 
-        for (int x = -2; x < 3; x++)
+        for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
         {
-            for (int z = -2; z < 3; z++)
-            {
-                if (x == -2 || x == 2 || z == -2 || z == 2)
-                {
-                    if (Math.abs(x) != Math.abs(z))
-                    {
-                        final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z));
+        	this.testConnectedTile(x, this.getPos().getZ() - 2, connectedTiles);
+        	this.testConnectedTile(x, this.getPos().getZ() + 2, connectedTiles);
+        }
 
-                        if (tile != null && tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
-                        {
-                            connectedTiles.add((ILandingPadAttachable) tile);
-                            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
-                            {
-                                ((TileEntityLaunchController) tile).setAttachedPad(this);
-                            }
-                        }
-                    }
-                }
-            }
+        for (int z = this.getPos().getZ() -1; z < this.getPos().getZ() + 2; z++)
+                {
+        	this.testConnectedTile(this.getPos().getX() - 2, z, connectedTiles);
+        	this.testConnectedTile(this.getPos().getX() + 2, z, connectedTiles);
         }
 
         return connectedTiles;
+    }
+    
+    private void testConnectedTile(int x, int z, HashSet<ILandingPadAttachable> connectedTiles)
+    {
+        BlockPos testPos = new BlockPos(x, this.getPos().getY(), z);
+        if (!this.worldObj.isBlockLoaded(testPos, false))
+            return;
+
+        final TileEntity tile = this.worldObj.getTileEntity(testPos);
+
+        if (tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
+        {
+            connectedTiles.add((ILandingPadAttachable) tile);
+            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
+            {
+                ((TileEntityLaunchController) tile).setAttachedPad(this);
+            }
+        }
     }
 
     @Override

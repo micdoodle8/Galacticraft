@@ -84,14 +84,14 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         this(player.worldObj, player.posX, player.posY, player.posZ, yOffset);
 
         GCPlayerStats stats = GCPlayerStats.get(player);
-        this.containedItems = new ItemStack[stats.rocketStacks.length + 1];
-        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.fuelLevel));
+        this.containedItems = new ItemStack[stats.getRocketStacks().length + 1];
+        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, stats.getFuelLevel()));
 
-        for (int i = 0; i < stats.rocketStacks.length; i++)
+        for (int i = 0; i < stats.getRocketStacks().length; i++)
         {
-            if (stats.rocketStacks[i] != null)
+            if (stats.getRocketStacks()[i] != null)
             {
-                this.containedItems[i] = stats.rocketStacks[i].copy();
+                this.containedItems[i] = stats.getRocketStacks()[i].copy();
             }
             else
             {

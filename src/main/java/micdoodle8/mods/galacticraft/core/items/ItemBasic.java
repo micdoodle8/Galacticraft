@@ -204,12 +204,12 @@ public class ItemBasic extends Item implements ISortableItem
         {
             if (par3EntityPlayer instanceof EntityPlayerMP)
             {
-                GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) par3EntityPlayer);
-                ItemStack gear = stats.extendedInventory.getStackInSlot(5);
+                GCPlayerStats stats = GCPlayerStats.get(par3EntityPlayer);
+                ItemStack gear = stats.getExtendedInventory().getStackInSlot(5);
 
                 if (gear == null)
                 {
-                    stats.extendedInventory.setInventorySlotContents(5, par1ItemStack.copy());
+                    stats.getExtendedInventory().setInventorySlotContents(5, par1ItemStack.copy());
                     par1ItemStack.stackSize = 0;
                 }
             }

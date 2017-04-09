@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
-import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
@@ -82,7 +81,7 @@ public class RoomBossVenus extends SizedPieceVenus
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
     {
         StructureBoundingBox box = new StructureBoundingBox(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE });
 
@@ -100,11 +99,11 @@ public class RoomBossVenus extends SizedPieceVenus
 
                     if (j == 0)
                     {
-                        this.setBlockState(worldIn, this.configuration.getBrickBlockFloor(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, this.configuration.getBrickBlockFloor(), i, j, k, chunkBox);
                     }
                     else if (j < f)
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, chunkBox);
 
                         if (j + 1 >= f && (dXZ > 5) && random.nextInt(12) == 0)
                         {
@@ -120,7 +119,7 @@ public class RoomBossVenus extends SizedPieceVenus
                                 {
                                     webType = BlockTorchWeb.EnumWebType.WEB_0;
                                 }
-                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().withProperty(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, boundingBox);
+                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().withProperty(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, chunkBox);
                             }
                         }
 
@@ -183,11 +182,11 @@ public class RoomBossVenus extends SizedPieceVenus
 
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, chunkBox);
                         }
                     }
                 }
@@ -197,24 +196,24 @@ public class RoomBossVenus extends SizedPieceVenus
         int spawnerX = this.sizeX / 2;
         int spawnerY = 1;
         int spawnerZ = this.sizeZ / 2;
-        this.setBlockState(worldIn, VenusBlocks.bossSpawner.getDefaultState(), spawnerX, spawnerY, spawnerZ, boundingBox);
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
-        TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);
-
-        if (spawner == null)
+        //Is this position inside the chunk currently being generated?
+        if (chunkBox.isVecInside(blockpos))
         {
-            spawner = new TileEntityDungeonSpawner(EntitySpiderQueen.class);
-            worldIn.setTileEntity(blockpos, spawner);
-        }
-
-        if (box.getXSize() > 10000 || box.getYSize() > 10000 || box.getZSize() > 10000)
-        {
-            GCLog.severe("Failed to set correct boss room size. This is a bug!");
-        }
-        else
-        {
-            spawner.setRoom(new Vector3(box.minX + this.boundingBox.minX, box.minY + this.boundingBox.minY, box.minZ + this.boundingBox.minZ), new Vector3(box.maxX - box.minX + 1, box.maxY - box.minY + 1, box.maxZ - box.minZ + 1));
-            spawner.setChestPos(this.chestPos);
+            worldIn.setBlockState(blockpos, VenusBlocks.bossSpawner.getDefaultState(), 2);
+            TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);
+            if (spawner != null)
+            {
+                if (box.getXSize() > 10000 || box.getYSize() > 10000 || box.getZSize() > 10000)
+                {
+                    GCLog.severe("Failed to set correct boss room size. This is a bug!");
+                }
+                else
+                {
+                    spawner.setRoom(new Vector3(box.minX + this.boundingBox.minX, box.minY + this.boundingBox.minY, box.minZ + this.boundingBox.minZ), new Vector3(box.maxX - box.minX + 1, box.maxY - box.minY + 1, box.maxZ - box.minZ + 1));
+                    spawner.setChestPos(this.chestPos);
+                }
+            }
         }
 
         return true;

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
@@ -21,7 +22,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-import java.lang.reflect.Constructor;
 import java.util.EnumSet;
 
 
@@ -302,9 +302,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             try
             {
                 Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
-                Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
-                Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
-                Object o = constr.newInstance(this);
+                Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
 
                 if (o != null && o instanceof Event)
                 {
@@ -329,9 +327,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
                 try
                 {
                     Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
-                    Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
-                    Constructor<?> constr = tileLoadEvent.getConstructor(energyTile);
-                    Object o = constr.newInstance(this);
+                    Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
 
                     if (o != null && o instanceof Event)
                     {
@@ -412,22 +408,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
-        if (emitter instanceof IElectrical || emitter instanceof IConductor)
+        if (emitter instanceof IElectrical || emitter instanceof IConductor || !(emitter instanceof IEnergyTile))
         {
             return false;
-        }
-
-        try
-        {
-            Class<?> energyTile = Class.forName("ic2.api.energy.tile.IEnergyTile");
-            if (!energyTile.isInstance(emitter))
-            {
-                return false;
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
         }
 
         return this.getElectricalInputDirections().contains(direction);

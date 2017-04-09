@@ -3,11 +3,15 @@ package micdoodle8.mods.galacticraft.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+
+import mezz.jei.api.IItemBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -155,6 +159,46 @@ public class GCItems
 
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
+        OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
+    }
+
+    /**
+     * Do not call this until after mod loading is complete
+     * because JEI doesn't have an internal item blacklist
+     * until it services an FMLLoadCompleteEvent.
+     * (Seriously?!)
+     */
+    public static void hideItemsJEI()
+    {
+        IItemBlacklist jeiHidden = null;
+        
+        try {
+            //Internal.getHelpers().getItemBlacklist()
+            Object helpers = Class.forName("mezz.jei.Internal").getMethod("getHelpers").invoke(null);
+            Object IIB = Class.forName("mezz.jei.JeiHelpers").getMethod("getItemBlacklist").invoke(helpers);
+            if (IIB instanceof IItemBlacklist)
+            {
+                jeiHidden = (IItemBlacklist)IIB;
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+
+        if (jeiHidden != null)
+        {
+            for (Item item : GCItems.hiddenItems)
+            {
+                jeiHidden.addItemToBlacklist(new ItemStack(item, 1, 0));
+            }
+
+            for (Block block : GCBlocks.hiddenBlocks)
+            {
+                jeiHidden.addItemToBlacklist(new ItemStack(block, 1, 0));
+                if (block == GCBlocks.slabGCDouble)
+                {
+                    for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
+                        jeiHidden.addItemToBlacklist(new ItemStack(block, 1, j));
+                }
+            }
+        }
     }
 
     public static void finalizeSort()

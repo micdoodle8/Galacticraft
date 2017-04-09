@@ -140,7 +140,7 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return EnumFacing.getFront((this.getBlockMetadata() & 3) + 2);
+        return EnumFacing.getHorizontal(((this.getBlockMetadata() & 3) + 1) % 4);
     }
 
     @Override

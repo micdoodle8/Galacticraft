@@ -6,7 +6,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 
 public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 {
@@ -98,5 +100,11 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
         nbt.setInteger("TimeToHatch", this.timeToHatch);
         nbt.setString("OwnerUUID", this.lastTouchedPlayerUUID);
         nbt.setString("OwnerUsername", this.lastTouchedPlayerName);
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }

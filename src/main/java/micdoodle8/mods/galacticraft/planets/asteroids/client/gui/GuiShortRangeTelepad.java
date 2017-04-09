@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCallback
 {
-    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/shortRangeTelepad.png");
+    private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/short_range_telepad.png");
 
     private TileEntityShortRangeTelepad telepad;
 
@@ -130,7 +130,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.theWorld.provider.getDimensionId(), new Object[] { this.telepad.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.telepad.getPos(), 0 }));
                 break;
             default:
                 break;
@@ -192,12 +192,12 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
         if (textBox.equals(this.address))
         {
             this.telepad.address = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, this.mc.theWorld.provider.getDimensionId(), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
         }
         else if (textBox.equals(this.targetAddress))
         {
             this.telepad.targetAddress = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, this.mc.theWorld.provider.getDimensionId(), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
         }
     }
 

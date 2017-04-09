@@ -12,7 +12,9 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
@@ -28,7 +30,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -86,9 +87,8 @@ public class EventHandlerMars
         BlockPos c = event.entityPlayer.playerLocation;
         IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
-        int metadata = blockID.getMetaFromState(state);
 
-        if (blockID == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+        if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             if (!event.flag1 && event.flag2 && event.flag3)
             {
@@ -96,7 +96,7 @@ public class EventHandlerMars
 
                 if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, event.entityPlayer.worldObj.provider.getDimensionId(), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(event.entityPlayer.worldObj), new Object[] {}));
                 }
             }
             else if (!event.flag1 && !event.flag2 && event.flag3)
@@ -104,7 +104,7 @@ public class EventHandlerMars
                 if (!event.entityPlayer.worldObj.isRemote)
                 {
                     event.entityPlayer.heal(5.0F);
-                    GCPlayerStats.get((EntityPlayerMP) event.entityPlayer).cryogenicChamberCooldown = 6000;
+                    GCPlayerStats.get(event.entityPlayer).setCryogenicChamberCooldown(6000);
 
                     for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
                     {
@@ -225,22 +225,17 @@ public class EventHandlerMars
         {
             IFuelDock dock = (IFuelDock) tile;
 
-            TileEntityLaunchController launchController = null;
-
             for (ILandingPadAttachable connectedTile : dock.getConnectedTiles())
             {
                 if (connectedTile instanceof TileEntityLaunchController)
                 {
-                    launchController = (TileEntityLaunchController) event.world.getTileEntity(((TileEntityLaunchController) connectedTile).getPos());
+                    final TileEntityLaunchController launchController = (TileEntityLaunchController) connectedTile;
+                    if (launchController.getEnergyStoredGC() > 0.0F && launchController.launchPadRemovalDisabled && !launchController.getDisabled(0))
+                    {
+                    	event.allow = false;
+                    	return;
+                    }
                     break;
-                }
-            }
-
-            if (launchController != null)
-            {
-                if (!launchController.getDisabled(0) && launchController.getEnergyStoredGC() > 0.0F)
-                {
-                    event.allow = !launchController.launchPadRemovalDisabled;
                 }
             }
         }

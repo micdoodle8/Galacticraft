@@ -13,7 +13,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -138,11 +137,11 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
                     fmData.setInteger("teCoordX", pos.getX());
                     fmData.setInteger("teCoordY", pos.getY());
                     fmData.setInteger("teCoordZ", pos.getZ());
-                    fmData.setInteger("teDim", world.provider.getDimensionId());
+                    fmData.setInteger("teDim", GCCoreUtil.getDimensionID(world));
                     return true;
                 }
 
-                ItemStack wearing = GCPlayerStats.get((EntityPlayerMP) entityPlayer).frequencyModuleInSlot;
+                ItemStack wearing = GCPlayerStats.get(entityPlayer).getFrequencyModuleInSlot();
                 if (wearing != null)
                 {
                     if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim"))

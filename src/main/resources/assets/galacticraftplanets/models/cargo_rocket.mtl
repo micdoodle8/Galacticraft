@@ -1,0 +1,29 @@
+newmtl None
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/cargo_rocket
+
+newmtl None_NONE
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/cargo_rocket
+
+newmtl None_uv.png
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/cargo_rocket
+
+newmtl None_uv.png.004
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/cargo_rocket
+
+newmtl None_uv.png.005
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+d 1.000000
+map_Kd galacticraftplanets:blocks/cargo_rocket

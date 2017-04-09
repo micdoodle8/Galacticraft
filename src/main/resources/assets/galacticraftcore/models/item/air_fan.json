@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/airFan"
+        "layer0": "galacticraftcore:items/air_fan"
     },
     "display": {
         "thirdperson": {

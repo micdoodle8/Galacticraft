@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiSchematicInput extends GuiContainerGC implements ISchematicResultPage
+public class GuiSchematicInput extends GuiPositionedContainer implements ISchematicResultPage
 {
     private static final ResourceLocation schematicInputTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/schematicpage.png");
 
@@ -26,7 +26,7 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
 
     public GuiSchematicInput(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerSchematic(par1InventoryPlayer, pos));
+        super(new ContainerSchematic(par1InventoryPlayer, pos), pos);
     }
 
     @SuppressWarnings("unchecked")
@@ -55,13 +55,13 @@ public class GuiSchematicInput extends GuiContainerGC implements ISchematicResul
             switch (par1GuiButton.id)
             {
             case 0:
-                SchematicRegistry.flipToLastPage(this.pageIndex);
+                SchematicRegistry.flipToLastPage(this, this.pageIndex);
                 break;
             case 1:
-                SchematicRegistry.flipToNextPage(this.pageIndex);
+                SchematicRegistry.flipToNextPage(this, this.pageIndex);
                 break;
             case 2:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, mc.theWorld.provider.getDimensionId(), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] {}));
                 break;
             }
         }

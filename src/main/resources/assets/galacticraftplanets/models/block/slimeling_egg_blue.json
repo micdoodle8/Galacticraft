@@ -1,7 +1,7 @@
 {
 "textures": {
-    "particle": "galacticraftplanets:blocks/blueEgg_0",
-    "texture": "galacticraftplanets:blocks/blueEgg_0"
+    "particle": "galacticraftplanets:blocks/blue_egg_0",
+    "texture": "galacticraftplanets:blocks/blue_egg_0"
 },
 "elements": [ 
 {

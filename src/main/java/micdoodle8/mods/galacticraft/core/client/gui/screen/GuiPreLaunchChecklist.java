@@ -139,7 +139,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
         }
 
         // Send changed tag compound to server
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, mc.thePlayer.worldObj.provider.getDimensionId(), new Object[] { this.tagCompound }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(mc.thePlayer.worldObj), new Object[] { this.tagCompound }));
 
         // Update client item
         ItemStack stack = mc.thePlayer.getHeldItem();
@@ -241,6 +241,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
             this.forward = forward;
         }
 
+        @Override
         public void drawButton(Minecraft mc, int mouseX, int mouseY)
         {
             if (this.visible)

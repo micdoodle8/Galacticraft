@@ -19,7 +19,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiElectricIngotCompressor extends GuiContainerGC
 {
-    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_IngotCompressor.png");
+    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_ingot_compressor.png");
     private TileEntityElectricIngotCompressor tileEntity;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);

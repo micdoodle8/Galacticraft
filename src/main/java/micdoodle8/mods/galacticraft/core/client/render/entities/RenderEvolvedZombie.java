@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -48,8 +50,19 @@ public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
     }
 
     @Override
-    protected void preRenderCallback(EntityEvolvedZombie par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityEvolvedZombie zombie, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
+    }
+    
+    @Override
+    protected void rotateCorpse(EntityEvolvedZombie zombie, float pitch, float yaw, float partialTicks)
+    {
+        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        GL11.glTranslatef(0F, -zombie.height * 0.55F, 0F);
+        GL11.glRotatef(zombie.getTumbleAngle(partialTicks), zombie.getTumbleAxisX(), 0F, zombie.getTumbleAxisZ());
+        GL11.glTranslatef(0F, zombie.height * 0.55F, 0F);
+        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        super.rotateCorpse(zombie, pitch, yaw, partialTicks);
     }
 }

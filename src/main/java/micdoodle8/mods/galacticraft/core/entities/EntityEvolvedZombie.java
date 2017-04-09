@@ -14,15 +14,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable
+public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable, ITumblable
 {
     private int conversionTime = 0;
+    private float tumbling = 0F;
+    private float tumbleAngle = 0F;
 
     public EntityEvolvedZombie(World par1World)
     {
@@ -157,5 +160,113 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         //Drop copper ingot as semi-rare drop if player hit and if dropping rotten flesh (50% chance)
         if (p_70628_1_ && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) == 0)
             this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
+    }
+
+    @Override
+    public void setTumbling(float value)
+    {
+        if (value !=0F)
+        {
+            if (this.tumbling == 0F)
+                this.tumbling = (this.worldObj.rand.nextFloat() + 0.5F) * value;
+        }
+        else
+            this.tumbling = 0F;
+    }
+    
+    @Override
+    public void onEntityUpdate()
+    {
+        super.onEntityUpdate();
+        if (!this.isDead)
+        {
+            if (this.tumbling != 0F)
+            {
+                if (this.onGround)
+                {
+                    this.tumbling = 0F;
+                }
+            }
+
+            if (!this.worldObj.isRemote)
+            {
+                this.setSpinPitch(this.tumbling);
+            }
+            else
+            {
+                this.tumbling = this.getSpinPitch();
+                this.tumbleAngle -= this.tumbling;
+                if (this.tumbling == 0F && this.tumbleAngle != 0F)
+                {
+                    this.tumbleAngle *= 0.8F;
+                    if (Math.abs(this.tumbleAngle) < 1F)
+                        this.tumbleAngle = 0F;
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataWatcher.addObject(16, 0.0F);
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt)
+    {
+        super.readEntityFromNBT(nbt);
+        this.tumbling = nbt.getFloat("tumbling");
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbt)
+    {
+        super.writeEntityToNBT(nbt);
+        nbt.setFloat("tumbling", this.tumbling);
+    }
+
+    public float getSpinPitch()
+    {
+        return this.dataWatcher.getWatchableObjectFloat(16);
+    }
+
+    public void setSpinPitch(float pitch)
+    {
+        this.dataWatcher.updateObject(16, pitch);
+    }
+
+    @Override
+    public float getTumbleAngle(float partial)
+    {
+        float angle = this.tumbleAngle - partial * this.tumbling;
+        if (angle > 360F)
+        {   
+            this.tumbleAngle -= 360F;
+            angle -= 360F;
+        }
+        if (angle < 0F)
+        {
+            this.tumbleAngle += 360F;
+            angle += 360F;
+        }
+        return angle;
+    }
+
+    @Override
+    public float getTumbleAxisX()
+    {
+        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        if (velocity2 == 0D) return 1F;
+        return (float) (this.motionZ / MathHelper.sqrt_double(velocity2));
+    }
+
+    @Override
+    public float getTumbleAxisZ()
+    {
+        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        if (velocity2 == 0D) return 0F;
+        return (float) (this.motionX / MathHelper.sqrt_double(velocity2));
     }
 }

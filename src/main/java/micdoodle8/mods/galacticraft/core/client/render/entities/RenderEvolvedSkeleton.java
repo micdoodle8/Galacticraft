@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import net.minecraft.client.model.ModelSkeleton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -58,5 +60,16 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     protected void preRenderCallback(EntityEvolvedSkeleton par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
+    }
+    
+    @Override
+    protected void rotateCorpse(EntityEvolvedSkeleton skellie, float pitch, float yaw, float partialTicks)
+    {
+        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        GL11.glTranslatef(0F, -skellie.height * 0.55F, 0F);
+        GL11.glRotatef(skellie.getTumbleAngle(partialTicks), skellie.getTumbleAxisX(), 0F, skellie.getTumbleAxisZ());
+        GL11.glTranslatef(0F, skellie.height * 0.55F, 0F);
+        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        super.rotateCorpse(skellie, pitch, yaw, partialTicks);
     }
 }

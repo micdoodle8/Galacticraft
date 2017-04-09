@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.gui;
 
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -9,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
 import net.minecraft.client.gui.GuiButton;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class GuiGeothermal extends GuiContainerGC
 {
-    private static final ResourceLocation solarGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/solar.png");
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/geothermal.png");
 
     private final TileEntityGeothermalGenerator geothermalGenerator;
 
@@ -42,7 +42,7 @@ public class GuiGeothermal extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.mc.theWorld.provider.getDimensionId(), new Object[] { this.geothermalGenerator.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { this.geothermalGenerator.getPos(), 0 }));
             break;
         }
     }
@@ -133,15 +133,13 @@ public class GuiGeothermal extends GuiContainerGC
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiGeothermal.solarGuiTexture);
+        this.mc.getTextureManager().bindTexture(GuiGeothermal.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         List<String> electricityDesc = new ArrayList<String>();
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.geothermalGenerator.getEnergyStoredGC(), this.geothermalGenerator.getMaxEnergyStoredGC(), electricityDesc);
-//		electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
-//		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.geothermalGenerator.getEnergyStoredGC()) + " / " + (int) Math.floor(this.geothermalGenerator.getMaxEnergyStoredGC())));
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
         if (this.geothermalGenerator.getEnergyStoredGC() > 0)
@@ -149,10 +147,11 @@ public class GuiGeothermal extends GuiContainerGC
             this.drawTexturedModalRect(var5 + 83, var6 + 24, 176, 0, 11, 10);
         }
 
-//        if (this.geothermalGenerator.solarStrength > 0)
-//        {
-//            this.drawTexturedModalRect(var5 + 48, var6 + 21, 176, 10, 16, 16);
-//        }
+        if (this.geothermalGenerator.hasValidSpout())
+        {
+            int ySize = 16 * this.geothermalGenerator.generateWatts / (TileEntityGeothermalGenerator.MAX_GENERATE_GJ_PER_TICK - 1);
+            this.drawTexturedModalRect(var5 + 33, var6 + 21 + (16 - ySize), 176, (int) (10 + ((this.geothermalGenerator.ticks / 3) % 7) * 16) + (16 - ySize), 46, ySize);
+        }
 
         this.drawTexturedModalRect(var5 + 97, var6 + 25, 187, 0, Math.min(this.geothermalGenerator.getScaledElecticalLevel(54), 54), 7);
     }

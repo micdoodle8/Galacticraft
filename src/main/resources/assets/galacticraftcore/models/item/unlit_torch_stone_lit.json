@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:blocks/unlitTorchLit_Stone"
+        "layer0": "galacticraftcore:blocks/unlit_torch_lit_stone"
     },
     "display": {
         "thirdperson": {

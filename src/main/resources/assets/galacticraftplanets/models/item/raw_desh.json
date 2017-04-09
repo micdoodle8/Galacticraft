@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftplanets:items/rawDesh"
+        "layer0": "galacticraftplanets:items/raw_desh"
     },
     "display": {
         "thirdperson": {

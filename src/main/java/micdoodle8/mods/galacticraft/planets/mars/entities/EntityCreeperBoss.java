@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -25,7 +26,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -140,7 +140,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         {
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, this.worldObj.provider.getDimensionId(), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
             }
         }
     }
@@ -244,10 +244,10 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
         if (player != null)
         {
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            GCPlayerStats stats = GCPlayerStats.get(player);
             if (stats != null)
             {
-                for (ISchematicPage page : stats.unlockedSchematics)
+                for (ISchematicPage page : stats.getUnlockedSchematics())
                 {
                     if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
                     {
@@ -255,7 +255,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
                         break;
                     }
                 }
-                if (stats.rocketItem == AsteroidsItems.tier3Rocket)
+                if (stats.getRocketItem() == AsteroidsItems.tier3Rocket)
                 {
                     range = 3;
                 }

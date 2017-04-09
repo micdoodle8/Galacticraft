@@ -22,7 +22,7 @@ import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
-    private static final ResourceLocation distributorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygenDistributor.png");
+    private static final ResourceLocation distributorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_distributor.png");
 
     private final TileEntityOxygenDistributor distributor;
 
@@ -146,7 +146,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.distributor.setBubbleVisible(newSelected);
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, mc.theWorld.provider.getDimensionId(), new Object[] { 6, this.distributor.getPos(), newSelected ? 1 : 0 }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 6, this.distributor.getPos(), newSelected ? 1 : 0 }));
     }
 
     @Override

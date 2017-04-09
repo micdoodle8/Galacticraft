@@ -28,9 +28,9 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiMethaneSynthesizer extends GuiContainerGC
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methaneSynthesizer.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methane_synthesizer.png");
 
-    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasesMethaneOxygenNitrogen.png");
+    private static final ResourceLocation gasTextures = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
 
     private final TileEntityMethaneSynthesizer tileEntity;
 
@@ -123,7 +123,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, this.tileEntity.getWorld().provider.getDimensionId(), new Object[] { this.tileEntity.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.tileEntity.getWorld()), new Object[] { this.tileEntity.getPos(), 0 }));
             break;
         }
     }
@@ -185,11 +185,11 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
         this.mc.renderEngine.bindTexture(GuiMethaneSynthesizer.gasTextures);
         int displayInt = this.tileEntity.getScaledGasLevel(38);
-        this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - displayInt, 1 + 2 * 17, 38 - displayInt, 16, displayInt);
+        this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - displayInt, 1 + 17, 38 - displayInt, 16, displayInt);
         displayInt = this.tileEntity.getScaledGasLevel2(20);
         this.drawTexturedModalRect(edgeLeft + 28, edgeTop + 48 - displayInt, 1 + 2 * 17, 38 - displayInt, 16, displayInt);
         displayInt = this.tileEntity.getScaledFuelLevel(38);
-        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 1, 38 - displayInt, 16, displayInt);
+        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 1 + 2 * 17, 38 - displayInt, 16, displayInt);
 
         this.addToolTips();
 

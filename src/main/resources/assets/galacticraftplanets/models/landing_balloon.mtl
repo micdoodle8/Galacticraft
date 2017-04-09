@@ -1,0 +1,5 @@
+newmtl None
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+d 1
+map_Kd galacticraftplanets:blocks/landing_balloon

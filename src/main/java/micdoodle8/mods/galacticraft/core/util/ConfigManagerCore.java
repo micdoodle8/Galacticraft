@@ -1,12 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeGenBaseAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.File;
@@ -65,6 +68,7 @@ public class ConfigManagerCore
     public static int[] staticLoadDimensions = {};
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
     public static boolean disableRocketLaunchAllNonGC;
+    public static int otherPlanetWorldBorders = 0;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -214,6 +218,12 @@ public class ConfigManagerCore
             prop.comment = "If true, rockets will be unable to reach the Overworld (only use this in special modpacks!)";
             prop.setLanguageKey("gc.configgui.rocketDisableOverworldReturn");
             disableRocketsToOverworld = prop.getBoolean(false);
+            propOrder.add(prop.getName());
+
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "World border for landing location on other planets (Moon, Mars, etc)", false);
+            prop.comment = "Set this to 0 for no borders (default).  If set to e.g. 2000, players will land on the Moon inside the x,z range -2000 to 2000.)";
+            prop.setLanguageKey("gc.configgui.planet_worldborders");
+            otherPlanetWorldBorders = prop.getInt(0);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Force Overworld Spawn", false);
@@ -553,7 +563,7 @@ public class ConfigManagerCore
             keyOverrideMapI = parseKeyValue(keyOverrideMap);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Fuel GUI", "KEY_F");
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Fuel GUI", "KEY_G");
             prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
             prop.setLanguageKey("gc.configgui.keyOverrideFuelLevel").setRequiresMcRestart(true);
             keyOverrideFuelLevel = prop.getString();
@@ -633,6 +643,8 @@ public class ConfigManagerCore
             {
                 config.save();
             }
+            
+            challengeModeUpdate();
         }
         catch (final Exception e)
         {
@@ -723,6 +735,22 @@ public class ConfigManagerCore
         return foundCount > 0;
     }
 
+    private static void challengeModeUpdate()
+    {
+    	if (challengeMode)
+    	{
+    		challengeRecipes = true;
+    		challengeMobDropsAndSpawning = true;
+    		challengeSpawnHandling = true;
+    		challengeAsteroidPopulation = true;
+    	}
+
+    	//This enables Endermen on Asteroids in Asteroids Challenge mode
+    	if (GalacticraftCore.isPlanetsLoaded)
+    		((BiomeGenBaseAsteroids)BiomeGenBaseAsteroids.asteroid).resetMonsterListByMode(challengeMobDropsAndSpawning);
+    	//TODO: could also increase mob spawn frequency in Hard Mode on various dimensions e.g. Moon and Mars?
+    }
+    
     /**
      * Note for this to be effective, the prop = config.get() call has to provide a String[] as the default values
      * If you use an Integer[] then the config parser deletes all non-numerical lines from the config before GC even sees them
@@ -825,56 +853,60 @@ public class ConfigManagerCore
     	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
     	modeFlags += ConfigManagerCore.disableSpaceStationCreation ? 8 : 0;
     	modeFlags += ConfigManagerCore.recipesRequireGCAdvancedMetals ? 16 : 0;
+    	modeFlags += ConfigManagerCore.challengeRecipes ? 32 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
     	returnList.add(ConfigManagerCore.suffocationCooldown);
     	returnList.add(ConfigManagerCore.rocketFuelFactor);
     	returnList.add(ConfigManagerCore.otherModsSilicon);
-    	returnList.add(ConfigManagerCore.challengeRecipes);
+    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS - see comment in setConfigOverride() below
     	EnergyConfigHandler.serverConfigOverride(returnList);
     	
     	returnList.add(ConfigManagerCore.detectableIDs.clone());  	
     	//TODO Should this include any other client-side configurables too?
-    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS
     	return returnList;
     }
 
     @SideOnly(Side.CLIENT)
     public static void setConfigOverride(List<Object> configs)
     {
-
-    	int modeFlag = (Integer) configs.get(0);
+        int dataCount = 0;
+    	int modeFlag = (Integer) configs.get(dataCount++);
     	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
     	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
     	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
     	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
     	ConfigManagerCore.recipesRequireGCAdvancedMetals = (modeFlag & 16) != 0;
-    	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(1);
-    	ConfigManagerCore.suffocationDamage = (Integer) configs.get(2);
-    	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(3);
-    	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(4);
-    	ConfigManagerCore.otherModsSilicon = (String) configs.get(5);
-    	ConfigManagerCore.challengeRecipes = (Boolean) configs.get(6);
+    	ConfigManagerCore.challengeRecipes = (modeFlag & 32) != 0;
+    	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(dataCount++);
+    	ConfigManagerCore.suffocationDamage = (Integer) configs.get(dataCount++);
+    	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(dataCount++);
+    	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(dataCount++);
+    	ConfigManagerCore.otherModsSilicon = (String) configs.get(dataCount++);
+    	//If adding any additional data objects here, also remember to update the packet definition of EnumSimplePacket.C_UPDATE_CONFIGS in PacketSimple
+    	//Current working packet definition: Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class
     	
-    	EnergyConfigHandler.setConfigOverride((Float) configs.get(6), (Float) configs.get(7), (Float) configs.get(8), (Float) configs.get(9), (Integer) configs.get(10));
+    	EnergyConfigHandler.setConfigOverride((Float) configs.get(dataCount++), (Float) configs.get(dataCount++), (Float) configs.get(dataCount++), (Float) configs.get(dataCount++), (Integer) configs.get(dataCount++));
     	
-    	int sizeIDs = configs.size() - 11;
+    	int sizeIDs = configs.size() - dataCount;
     	if (sizeIDs > 0)
     	{
-    		if (configs.get(11) instanceof String)
+    	    Object dataLast = configs.get(dataCount); 
+    		if (dataLast instanceof String)
     		{
     			ConfigManagerCore.detectableIDs = new String[sizeIDs];
 		    	for (int j = 0; j < sizeIDs; j++)
-		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(11 + j));
+		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(dataCount++));
     		}
-    		else if (configs.get(11) instanceof String[])
+    		else if (dataLast instanceof String[])
     		{
-    			ConfigManagerCore.detectableIDs = ((String[])configs.get(11));
+    			ConfigManagerCore.detectableIDs = ((String[])dataLast);
     		}
         	TickHandlerClient.registerDetectableBlocks(false);
     	}
     	
+    	challengeModeUpdate();
     	RecipeManagerGC.setConfigurableRecipes();
     }
 

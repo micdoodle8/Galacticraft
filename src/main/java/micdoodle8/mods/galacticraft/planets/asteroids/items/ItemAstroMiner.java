@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderZeroGravity;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -86,7 +86,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 
             if (tile instanceof TileEntityMinerBase)
             {
-                if (worldIn.provider instanceof WorldProviderZeroGravity)
+                if (worldIn.provider instanceof WorldProviderSpaceStation)
                 {
                     playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
                     return false;
@@ -105,8 +105,9 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 }
 
                 EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
+                GCPlayerStats stats = GCPlayerStats.get(playerIn);
 
-                int astroCount = GCPlayerStats.get(playerMP).astroMinerCount;
+                int astroCount = stats.getAstroMinerCount();
                 if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
                 {
                     playerIn.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
@@ -121,7 +122,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 
                 if (!playerIn.capabilities.isCreativeMode)
                 {
-                    GCPlayerStats.get(playerMP).astroMinerCount++;
+                    stats.setAstroMinerCount(stats.getAstroMinerCount() + 1);
                     --stack.stackSize;
                 }
                 return true;

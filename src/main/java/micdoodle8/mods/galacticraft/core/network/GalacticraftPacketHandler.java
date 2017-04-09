@@ -9,6 +9,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.world.World;
@@ -46,7 +47,7 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
     public void unload(World world)
     {
         Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
-        int dimId = world.provider.getDimensionId();
+        int dimId = GCCoreUtil.getDimensionID(world);
         Queue<PacketPlayerPair> queue = getQueue(side, dimId);
         queue.clear();
     }
@@ -55,7 +56,7 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
     {
         PacketPlayerPair pair;
         Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
-        int dimID = world.provider.getDimensionId();
+        int dimID = GCCoreUtil.getDimensionID(world);
         Queue<PacketPlayerPair> queue = getQueue(side, dimID);
         while ((pair = queue.poll()) != null)
         {

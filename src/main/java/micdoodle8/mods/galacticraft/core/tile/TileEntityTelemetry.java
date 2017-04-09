@@ -9,8 +9,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
@@ -150,8 +153,8 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         if (eLiving instanceof EntityPlayerMP)
                         {
                             data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
-                            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) eLiving);
-                            data[4] = stats.airRemaining * 4096 + stats.airRemaining2;
+                            GCPlayerStats stats = GCPlayerStats.get(eLiving);
+                            data[4] = stats.getAirRemaining() * 4096 + stats.getAirRemaining2();
                             UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
                             if (uuid != null)
                             {
@@ -198,7 +201,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.worldObj.provider.getDimensionId(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.worldObj.provider.getDimensionId(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
         }
     }
 
@@ -270,7 +273,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 
         int distSq = 1025;
         BlockVec3Dim nearest = null;
-        int dim = te.getWorld().provider.getDimensionId();
+        int dim = GCCoreUtil.getDimensionID(te.getWorld());
         for (BlockVec3Dim telemeter : loadedList)
         {
             if (telemeter.dim != dim)
@@ -345,7 +348,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     {
         for (BlockVec3Dim telemeter : loadedList)
         {
-            TileEntity te = telemeter.getTileEntity();
+			TileEntity te = telemeter.getTileEntityNoLoad();
             if (te instanceof TileEntityTelemetry)
             {
                 if (((TileEntityTelemetry) te).linkedEntity == playerOld)
@@ -354,5 +357,11 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 }
             }
         }
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 }
