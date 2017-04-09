@@ -376,6 +376,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
+    public int damageDropped(IBlockState state)
+    {
+        return this.getMetaFromState(state);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
