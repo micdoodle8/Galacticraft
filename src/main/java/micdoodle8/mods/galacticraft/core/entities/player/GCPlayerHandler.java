@@ -61,6 +61,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +72,6 @@ import java.util.Map.Entry;
 public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
-    private boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 //    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
     private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
 
@@ -126,7 +126,7 @@ public class GCPlayerHandler
         {
             event.addCapability(GCCapabilities.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
         }
-        else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        else if (event.getObject() instanceof EntityPlayer && ((EntityPlayer)event.getObject()).worldObj.isRemote)
         {
             this.onAttachCapabilityClient(event);
         }
@@ -149,7 +149,7 @@ public class GCPlayerHandler
 //            GCPlayerStats.register((EntityPlayerMP) event.getEntity());
 //        }
 //
-//        if (isClient)
+//        if (event.entity instanceof EntityPlayer && event.entity.worldObj.isRemote)
 //        {
 //            this.onEntityConstructingClient(event);
 //        }
