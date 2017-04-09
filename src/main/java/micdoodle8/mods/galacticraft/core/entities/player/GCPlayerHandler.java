@@ -70,7 +70,6 @@ import java.util.Map.Entry;
 public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
-    private boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
 //    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
     private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
 
@@ -125,7 +124,7 @@ public class GCPlayerHandler
         {
             event.addCapability(GCCapabilities.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
         }
-        else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        else if (event.getObject() instanceof EntityPlayer && ((EntityPlayer)event.getObject()).worldObj.isRemote)
         {
             this.onAttachCapabilityClient(event);
         }
@@ -148,7 +147,7 @@ public class GCPlayerHandler
 //            GCPlayerStats.register((EntityPlayerMP) event.entity);
 //        }
 
-        if (isClient)
+        if (event.entity instanceof EntityPlayer && event.entity.worldObj.isRemote)
         {
             this.onEntityConstructingClient(event);
         }
