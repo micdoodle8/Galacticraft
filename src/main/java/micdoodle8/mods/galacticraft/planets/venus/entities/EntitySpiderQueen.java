@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.entities;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.entities.EntityBossBase;
@@ -22,6 +23,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -158,12 +160,13 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
 
         if (!this.worldObj.isRemote && this.shouldEvade)
         {
-            if (this.roomCoords != null && this.roomSize != null)
+            if (this.spawner != null)
             {
-                double tarX = this.roomCoords.x + this.roomSize.x / 2.0;
-                double tarZ = this.roomCoords.z + this.roomSize.z / 2.0;
+                AxisAlignedBB roomBounds = this.spawner.getRangeBounds();
+                double tarX = (roomBounds.minX + roomBounds.maxX) / 2.0;
+                double tarZ = (roomBounds.minZ + roomBounds.maxZ) / 2.0;
                 double dX = tarX - this.posX;
-                double dY = (this.roomCoords.y + this.roomSize.y) - this.posY;
+                double dY = roomBounds.maxY - this.posY;
                 double dZ = tarZ - this.posZ;
 
                 double movespeed = 1.0 * this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
