@@ -200,15 +200,15 @@ public class MarsModule implements IPlanetsModule
 
     public void registerTileEntities()
     {
-        GameRegistry.registerTileEntity(TileEntitySlimelingEgg.class, "Slimeling Egg");
-        GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "Tier 2 Treasure Chest");
-        GameRegistry.registerTileEntity(TileEntityTerraformer.class, "Planet Terraformer");
-        GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "Cryogenic Chamber");
-        GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "Gas Liquefier");
-        GameRegistry.registerTileEntity(TileEntityMethaneSynthesizer.class, "Methane Synthesizer");
-        GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "Water Electrolyzer");
-        GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "Mars Dungeon Spawner");
-        GameRegistry.registerTileEntity(TileEntityLaunchController.class, "Launch Controller");
+        GameRegistry.registerTileEntity(TileEntitySlimelingEgg.class, "GC Slimeling Egg");
+        GameRegistry.registerTileEntity(TileEntityTreasureChestMars.class, "GC Tier 2 Treasure Chest");
+        GameRegistry.registerTileEntity(TileEntityTerraformer.class, "GC Planet Terraformer");
+        GameRegistry.registerTileEntity(TileEntityCryogenicChamber.class, "GC Cryogenic Chamber");
+        GameRegistry.registerTileEntity(TileEntityGasLiquefier.class, "GC Gas Liquefier");
+        GameRegistry.registerTileEntity(TileEntityMethaneSynthesizer.class, "GC Methane Synthesizer");
+        GameRegistry.registerTileEntity(TileEntityElectrolyzer.class, "GC Water Electrolyzer");
+        GameRegistry.registerTileEntity(TileEntityDungeonSpawnerMars.class, "GC Mars Dungeon Spawner");
+        GameRegistry.registerTileEntity(TileEntityLaunchController.class, "GC Launch Controller");
     }
 
     public void registerCreatures()
