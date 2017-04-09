@@ -6,11 +6,6 @@ public class TileEntityTreasureChestVenus extends TileEntityTreasureChest
 {
     public TileEntityTreasureChestVenus()
     {
-        this(3);
-    }
-
-    public TileEntityTreasureChestVenus(int tier)
-    {
-        super(tier);
+        super(3);
     }
 }

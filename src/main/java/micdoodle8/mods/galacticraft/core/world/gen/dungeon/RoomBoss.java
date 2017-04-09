@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +39,7 @@ public class RoomBoss extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -85,21 +84,21 @@ public class RoomBoss extends SizedPiece
                         }
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
                         }
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.FLOWING_LAVA.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.FLOWING_LAVA.getDefaultState(), i, j, k, chunkBox);
                     }
                     else if (j % 3 == 0 && j >= 2 && ((i == 1 || i == this.sizeX - 1 || k == 1 || k == this.sizeZ - 1) || (i == 2 && k == 2) || (i == 2 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == 2) || (i == this.sizeX - 2 && k == this.sizeZ - 2)))
                     {
                         // Horizontal bars
-                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, chunkBox);
                     }
                     else if ((i == 1 && k == 2) || (i == 2 && k == 1) ||
                             (i == 1 && k == this.sizeZ - 2) || (i == 2 && k == this.sizeZ - 1) ||
@@ -107,11 +106,11 @@ public class RoomBoss extends SizedPiece
                             (i == this.sizeX - 1 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == this.sizeZ - 1))
                     {
                         // Vertical bars
-                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, chunkBox);
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
                     }
                 }
             }
@@ -120,18 +119,18 @@ public class RoomBoss extends SizedPiece
         int spawnerX = this.sizeX / 2;
         int spawnerY = 1;
         int spawnerZ = this.sizeZ / 2;
-        this.setBlockState(worldIn, GCBlocks.bossSpawner.getDefaultState(), spawnerX, spawnerY, spawnerZ, boundingBox);
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
-        TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);
-
-        if (spawner == null)
+        //Is this position inside the chunk currently being generated?
+        if (chunkBox.isVecInside(blockpos))
         {
-            spawner = new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
-            worldIn.setTileEntity(blockpos, spawner);
+            worldIn.setBlockState(blockpos, GCBlocks.bossSpawner.getDefaultState(), 2);
+            TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);
+            if (spawner != null)
+            {
+                spawner.setRoom(new Vector3(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1), new Vector3(this.sizeX - 1, this.sizeY - 1, this.sizeZ - 1));
+                spawner.setChestPos(this.chestPos);
+            }
         }
-
-        spawner.setRoom(new Vector3(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1), new Vector3(this.sizeX - 1, this.sizeY - 1, this.sizeZ - 1));
-        spawner.setChestPos(this.chestPos);
 
         return true;
     }

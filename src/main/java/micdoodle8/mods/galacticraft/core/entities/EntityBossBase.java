@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
@@ -11,11 +10,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -27,11 +24,8 @@ import java.util.Random;
 
 public abstract class EntityBossBase extends EntityMob implements IBoss
 {
-    private TileEntityDungeonSpawner spawner;
+    protected TileEntityDungeonSpawner spawner;
     public int deathTicks = 0;
-
-    protected Vector3 roomCoords;
-    protected Vector3 roomSize;
 
     public int entitiesWithin;
     public int entitiesWithinLast;
@@ -158,6 +152,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
             if (this.spawner != null)
             {
+                //Note: spawner.isBossDefeated is true, so it's properly dead
                 this.spawner.isBossDefeated = true;
                 this.spawner.boss = null;
                 this.spawner.spawned = false;
@@ -173,22 +168,15 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
     @Override
     public void onLivingUpdate()
     {
-        if (this.roomCoords != null && this.roomSize != null)
+        if (this.spawner != null)
         {
-            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class,
-                    new AxisAlignedBB(
-                            this.roomCoords.intX(),
-                            this.roomCoords.intY(),
-                            this.roomCoords.intZ(),
-                            this.roomCoords.intX() + this.roomSize.intX(),
-                            this.roomCoords.intY() + this.roomSize.intY(),
-                            this.roomCoords.intZ() + this.roomSize.intZ()));
+            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.spawner.getRangeBounds());
 
             this.entitiesWithin = playersWithin.size();
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
-                List<EntityPlayer> entitiesWithin2 = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.roomCoords.intX() - 11, this.roomCoords.intY() - 11, this.roomCoords.intZ() - 11, this.roomCoords.intX() + this.roomSize.intX() + 10, this.roomCoords.intY() + this.roomSize.intY() + 10, this.roomCoords.intZ() + this.roomSize.intZ() + 10));
+                List<EntityPlayer> entitiesWithin2 = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.spawner.getRangeBoundsPlus11());
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
@@ -196,11 +184,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
                 }
 
                 this.setDead();
-
-                if (this.spawner != null)
-                {
-                    this.spawner.playerCheated = true;
-                }
+                //Note: spawner.isBossDefeated is false, so the boss will respawn if any player comes back inside the room
 
                 return;
             }
@@ -222,43 +206,6 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
         }
 
         super.setDead();
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound nbt)
-    {
-        super.writeEntityToNBT(nbt);
-
-        if (this.roomCoords != null)
-        {
-            nbt.setDouble("roomCoordsX", this.roomCoords.x);
-            nbt.setDouble("roomCoordsY", this.roomCoords.y);
-            nbt.setDouble("roomCoordsZ", this.roomCoords.z);
-            nbt.setDouble("roomSizeX", this.roomSize.x);
-            nbt.setDouble("roomSizeY", this.roomSize.y);
-            nbt.setDouble("roomSizeZ", this.roomSize.z);
-        }
-    }
-
-    @Override
-    public void readEntityFromNBT(NBTTagCompound nbt)
-    {
-        super.readEntityFromNBT(nbt);
-        this.roomCoords = new Vector3();
-        this.roomCoords.x = nbt.getDouble("roomCoordsX");
-        this.roomCoords.y = nbt.getDouble("roomCoordsY");
-        this.roomCoords.z = nbt.getDouble("roomCoordsZ");
-        this.roomSize = new Vector3();
-        this.roomSize.x = nbt.getDouble("roomSizeX");
-        this.roomSize.y = nbt.getDouble("roomSizeY");
-        this.roomSize.z = nbt.getDouble("roomSizeZ");
-    }
-
-    @Override
-    public void setRoom(Vector3 roomCoords, Vector3 roomSize)
-    {
-        this.roomCoords = roomCoords;
-        this.roomSize = roomSize;
     }
 
     @Override

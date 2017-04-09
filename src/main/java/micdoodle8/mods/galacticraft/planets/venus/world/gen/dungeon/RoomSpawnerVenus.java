@@ -23,9 +23,9 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
     {
-        if (super.addComponentParts(worldIn, random, boundingBox))
+        if (super.addComponentParts(worldIn, random, chunkBox))
         {
             for (int i = 1; i <= this.sizeX - 1; ++i)
             {
@@ -35,35 +35,31 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
                     {
                         if (random.nextFloat() < 0.05F)
                         {
-                            this.setBlockState(worldIn, Blocks.WEB.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.WEB.getDefaultState(), i, j, k, chunkBox);
                         }
                     }
                 }
             }
 
-            this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), 1, 0, 1, boundingBox);
-            this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), this.sizeX - 1, 0, this.sizeZ - 1, boundingBox);
-
-            BlockPos blockpos = new BlockPos(this.getXWithOffset(1, 1), this.getYWithOffset(0), this.getZWithOffset(1, 1));
-            TileEntityMobSpawner spawner = (TileEntityMobSpawner) worldIn.getTileEntity(blockpos);
-
-            if (spawner != null)
-            {
-                spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
-            }
-
-            blockpos = new BlockPos(this.getXWithOffset(this.sizeX - 1, this.sizeZ - 1), this.getYWithOffset(0), this.getZWithOffset(this.sizeX - 1, this.sizeZ - 1));
-            spawner = (TileEntityMobSpawner) worldIn.getTileEntity(blockpos);
-
-            if (spawner != null)
-            {
-                spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
-            }
+            this.placeMobSpawner(worldIn, random, chunkBox, 1, 0, 1);
+            this.placeMobSpawner(worldIn, random, chunkBox, this.sizeX - 1, 0, this.sizeZ - 1);
 
             return true;
         }
 
         return false;
+    }
+
+    private void placeMobSpawner(World worldIn, Random random, StructureBoundingBox chunkBox, int x, int y, int z)
+    {
+        this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), 1, 0, 1, boundingBox);
+        BlockPos blockpos = new BlockPos(this.getXWithOffset(1, 1), this.getYWithOffset(0), this.getZWithOffset(1, 1));
+        TileEntityMobSpawner spawner = (TileEntityMobSpawner) worldIn.getTileEntity(blockpos);
+
+        if (spawner != null)
+        {
+            spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
+        }
     }
 
     private static ResourceLocation getMob(Random rand)
