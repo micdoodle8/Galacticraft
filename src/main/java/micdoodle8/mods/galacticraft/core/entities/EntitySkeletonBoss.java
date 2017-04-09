@@ -112,7 +112,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
-        if (this.getPassengers().isEmpty() && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity) && this.deathTicks == 0)
+        if (!this.isAIDisabled() && this.getPassengers().isEmpty() && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity) && this.deathTicks == 0)
         {
             if (!this.worldObj.isRemote)
             {

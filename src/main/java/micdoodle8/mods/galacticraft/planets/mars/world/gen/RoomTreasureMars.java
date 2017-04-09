@@ -4,9 +4,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -89,11 +87,6 @@ public class RoomTreasureMars extends RoomTreasure
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
                         this.setBlockState(worldIn, MarsBlocks.treasureChestTier2.getDefaultState().withProperty(BlockTier2TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
-                        BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        if (worldIn.getTileEntity(blockpos) == null)
-                        {
-                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChestMars(1));
-                        }
                     }
                     else
                     {

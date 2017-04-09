@@ -38,7 +38,7 @@ public class RoomTreasure extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -83,30 +83,33 @@ public class RoomTreasure extends SizedPiece
                         }
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
                         }
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, chunkBox);
                     }
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
-                        this.setBlockState(worldIn, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        if (worldIn.getTileEntity(blockpos) == null)
+                        if (chunkBox.isVecInside(blockpos))
                         {
-                            worldIn.setTileEntity(blockpos, new TileEntityTreasureChest(1));
+                            worldIn.setBlockState(blockpos, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), 2);
+                            TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
+                            if (treasureChest != null)
+                            {
+                                treasureChest.setLootTable(TABLE_TIER_1_DUNGEON, random.nextLong());
+                            }
                         }
-                        ((TileEntityTreasureChest) worldIn.getTileEntity(blockpos)).setLootTable(TABLE_TIER_1_DUNGEON, random.nextLong());
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
                     }
                 }
             }
