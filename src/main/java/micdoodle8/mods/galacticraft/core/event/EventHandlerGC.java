@@ -951,9 +951,9 @@ public class EventHandlerGC
                         {
                             try
                             {
-                                volumeField = PositionedSound.class.getDeclaredField("volume"); // TODO Obfuscated environment support
+                                volumeField = PositionedSound.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "volume" : "field_147662_b"); // TODO Obfuscated environment support
                                 volumeField.setAccessible(true);
-                                pitchField = PositionedSound.class.getDeclaredField("pitch"); // TODO Obfuscated environment support
+                                pitchField = PositionedSound.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "pitch" : "field_147663_c"); // TODO Obfuscated environment support
                                 pitchField.setAccessible(true);
                             }
                             catch (Exception e)
