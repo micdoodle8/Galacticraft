@@ -348,12 +348,12 @@ public class AsteroidsModule implements IPlanetsModule
 
     private void registerTileEntities()
     {
-        GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "Beam Reflector");
-        GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "Beam Receiver");
-        GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "Short Range Telepad");
-        GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "Fake Short Range Telepad");
-        GameRegistry.registerTileEntity(TileEntityMinerBaseSingle.class, "Astro Miner Base Builder");
-        GameRegistry.registerTileEntity(TileEntityMinerBase.class, "Astro Miner Base");
+        GameRegistry.registerTileEntity(TileEntityBeamReflector.class, "GC Beam Reflector");
+        GameRegistry.registerTileEntity(TileEntityBeamReceiver.class, "GC Beam Receiver");
+        GameRegistry.registerTileEntity(TileEntityShortRangeTelepad.class, "GC Short Range Telepad");
+        GameRegistry.registerTileEntity(TileEntityTelepadFake.class, "GC Fake Short Range Telepad");
+        GameRegistry.registerTileEntity(TileEntityMinerBaseSingle.class, "GC Astro Miner Base Builder");
+        GameRegistry.registerTileEntity(TileEntityMinerBase.class, "GC Astro Miner Base");
     }
 
     @Override
