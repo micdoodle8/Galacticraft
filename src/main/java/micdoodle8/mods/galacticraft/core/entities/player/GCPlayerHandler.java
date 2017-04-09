@@ -125,7 +125,16 @@ public class GCPlayerHandler
         {
             event.addCapability(GCCapabilities.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
         }
-        else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT && event.getObject() instanceof EntityPlayerSP)
+        else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        {
+            this.onAttachCapabilityClient(event);
+        }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    private void onAttachCapabilityClient(AttachCapabilitiesEvent event)
+    {
+        if (event.getObject() instanceof EntityPlayerSP)
         {
             event.addCapability(GCCapabilities.GC_PLAYER_CLIENT_PROP, new CapabilityProviderStatsClient((EntityPlayerSP) event.getObject()));
         }
