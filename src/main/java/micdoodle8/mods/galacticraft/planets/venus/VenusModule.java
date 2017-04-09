@@ -170,7 +170,7 @@ public class VenusModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntitySpout.class, "Venus Spout");
         GameRegistry.registerTileEntity(TileEntityDungeonSpawnerVenus.class, "Venus Dungeon Spawner");
         GameRegistry.registerTileEntity(TileEntityTreasureChestVenus.class, "Tier 3 Treasure Chest");
-        GameRegistry.registerTileEntity(TileEntityGeothermalGenerator.class, "Geothermal Generator");
+        GameRegistry.registerTileEntity(TileEntityGeothermalGenerator.class, "GC Geothermal Generator");
         GameRegistry.registerTileEntity(TileEntityCrashedProbe.class, "Crashed Probe");
     }
 
