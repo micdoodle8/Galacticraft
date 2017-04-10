@@ -306,7 +306,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
                 Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
                 Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
 
-                if (o != null && o instanceof Event)
+                if (o instanceof Event)
                 {
                     MinecraftForge.EVENT_BUS.post((Event) o);
                 }
@@ -331,7 +331,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
                     Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
                     Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
 
-                    if (o != null && o instanceof Event)
+                    if (o instanceof Event)
                     {
                         MinecraftForge.EVENT_BUS.post((Event) o);
                     }
@@ -378,11 +378,12 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
     public double injectEnergy(EnumFacing direction, double amount, double voltage)
     {
-        if (!EnergyConfigHandler.disableIC2Input && (direction == null || this.getElectricalInputDirections().contains(direction)))
+        //IC2 in 1.8.9 seems to have reversed the sense of direction here, but not in acceptsEnergyFrom.  (Seriously?!)
+        if (!EnergyConfigHandler.disableIC2Input && (direction == null || this.getElectricalInputDirections().contains(direction.getOpposite())))
         {
             float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
             int tierFromIC2 = ((int) voltage > 120) ? 2 : 1;
-            float receive = this.receiveElectricity(direction, convertedEnergy, tierFromIC2, true);
+            float receive = this.receiveElectricity(direction == null ? null : direction.getOpposite(), convertedEnergy, tierFromIC2, true);
 
             if (convertedEnergy > receive)
             {
