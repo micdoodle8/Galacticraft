@@ -169,6 +169,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
          return BlockRenderLayer.TRANSLUCENT;
     }
 
+    @Override
+    public boolean canRenderInLayer(BlockRenderLayer layer)
+    {
+        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
+    }
+    
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
@@ -277,6 +283,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 //    }
 //
+//TODO:  Set up predefined AABBs
 //    @Override
 //    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
 //    {
