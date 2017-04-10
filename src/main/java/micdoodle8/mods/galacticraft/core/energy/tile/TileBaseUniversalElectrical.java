@@ -286,15 +286,15 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     @Override
     public void invalidate()
     {
-        this.unloadTileIC2();
         super.invalidate();
+        this.unloadTileIC2();
     }
 
     @Override
     public void onChunkUnload()
     {
-        this.unloadTileIC2();
         super.onChunkUnload();
+        this.unloadTileIC2();
     }
 
     protected void initIC()
@@ -410,6 +410,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction)
     {
+        if (this.tileEntityInvalid) return false;
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (emitter instanceof IElectrical || emitter instanceof IConductor || !(emitter instanceof IEnergyTile))
         {
