@@ -172,7 +172,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     @Override
     public boolean canRenderInLayer(BlockRenderLayer layer)
     {
-        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
+        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.CUTOUT;
     }
     
 //    @Override
