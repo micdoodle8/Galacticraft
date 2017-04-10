@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -108,7 +109,7 @@ public class ContainerCircuitFabricator extends Container
             else
             {
                 Item i = var4.getItem();
-                if (i instanceof IItemElectric)
+                if (EnergyUtil.isElectricItem(i))
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
