@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.MapGenAbandonedBase;
 import net.minecraft.block.*;
+import net.minecraft.block.BlockFlower.EnumFlowerType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -751,8 +752,8 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                 {
                     int i = rand.nextInt(16) + x + 8;
                     int k = rand.nextInt(16) + z + 8;
-                    BlockFlower.EnumFlowerType[] types = BlockFlower.EnumFlowerType.getTypes(BlockFlower.EnumFlowerColor.RED);
-                    new WorldGenFlowers(this.FLOWER, types[rand.nextInt(types.length)]).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
+                    int[] types = new int[]{2, 4, 5, 7};
+                    new WorldGenFlowers(this.FLOWER, EnumFlowerType.getType(BlockFlower.EnumFlowerColor.RED, types[rand.nextInt(types.length)])).generate(worldObj, rand, new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k));
                 }
                 if (rand.nextInt(ChunkProviderAsteroids.LAVA_CHANCE) == 0)
                 {
