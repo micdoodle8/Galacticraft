@@ -239,12 +239,6 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
-
-        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
-        {
-            enumfacing = EnumFacing.NORTH;
-        }
-
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 

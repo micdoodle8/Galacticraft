@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
@@ -163,14 +162,15 @@ public class GCItems
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
         OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
-        
-        if (Loader.isModLoaded("JEI"))
-        {
-            GCItems.hideItemsJEI();
-        }
     }
 
-    private static void hideItemsJEI()
+    /**
+     * Do not call this until after mod loading is complete
+     * because JEI doesn't have an internal item blacklist
+     * until it services an FMLLoadCompleteEvent.
+     * (Seriously?!)
+     */
+    public static void hideItemsJEI()
     {
         IItemBlacklist jeiHidden = null;
         

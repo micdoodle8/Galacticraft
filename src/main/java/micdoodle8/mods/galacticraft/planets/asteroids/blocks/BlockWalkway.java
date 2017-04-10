@@ -314,9 +314,15 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         Object[] connectable = new Object[EnumFacing.values().length];
 
+        TileEntity tileEntity = null;
+        
+        if (state.getValue(WALKWAY_TYPE) != EnumWalkwayType.WALKWAY)
+        {
+            tileEntity = worldIn.getTileEntity(pos);
+        }
         for (EnumFacing direction : EnumFacing.values())
         {
-            if (direction == EnumFacing.UP || (direction == EnumFacing.DOWN && state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY))
+            if (direction == EnumFacing.UP || (direction == EnumFacing.DOWN && tileEntity == null))
             {
                 continue;
             }
@@ -331,14 +337,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                     connectable[direction.ordinal()] = block;
                 }
             }
-            else if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+            else if (tileEntity !=null && state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
             {
-                TileEntity tileEntity = worldIn.getTileEntity(pos);
                 connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
             }
-            else if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
+            else if (tileEntity !=null && state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
             {
-                TileEntity tileEntity = worldIn.getTileEntity(pos);
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
             }
         }
@@ -368,6 +372,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         list.add(new ItemStack(itemIn, 1, 0));
         list.add(new ItemStack(itemIn, 1, 1));
         list.add(new ItemStack(itemIn, 1, 2));
+    }
+
+    @Override
+    public int damageDropped(IBlockState state)
+    {
+        return this.getMetaFromState(state);
     }
 
     @Override

@@ -126,7 +126,7 @@ public class GCPlayerHandler
         {
             event.addCapability(GCCapabilities.GC_PLAYER_PROP, new CapabilityProviderStats((EntityPlayerMP) event.getObject()));
         }
-        else if (event.getObject() instanceof EntityPlayer && ((EntityPlayer)event.getObject()).worldObj.isRemote)
+        else if (event.getObject() instanceof EntityPlayer && ((EntityPlayer)event.getObject()).world.isRemote)
         {
             this.onAttachCapabilityClient(event);
         }
@@ -149,7 +149,7 @@ public class GCPlayerHandler
 //            GCPlayerStats.register((EntityPlayerMP) event.getEntity());
 //        }
 //
-//        if (event.entity instanceof EntityPlayer && event.entity.worldObj.isRemote)
+//        if (event.entity instanceof EntityPlayer && event.entity.world.isRemote)
 //        {
 //            this.onEntityConstructingClient(event);
 //        }
