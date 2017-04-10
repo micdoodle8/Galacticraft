@@ -464,7 +464,6 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 	if (inMatrix != null && inMatrix.isItemEqual(stack))
                 		slotsFilled++;
                 }
-                System.err.println("Comp " + slotsFilled + " " + match + " " + id);
                 if (slotsFilled < match)
                 {
                 	return this.getStackInSlot(id + 3) == null;

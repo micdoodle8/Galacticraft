@@ -466,7 +466,6 @@ public class ThreadFindSeal
                                         //Accessing the vent side of the sealer, so add it
                                         this.otherSealers.add(sealer);
                                         checkedAdd(sideVec);
-                                        this.checkedAdd(sideVec);
                                     }
                                     //if side is not 0, do not add to checked so can be rechecked from other sides
                                 }
