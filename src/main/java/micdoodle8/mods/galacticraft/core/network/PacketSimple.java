@@ -81,6 +81,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -755,7 +756,15 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 }
                 else
                 {
-                    ((TileEntityTelemetry) tile).clientClass = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name)).getEntityClass();
+                    if (name.isEmpty())
+                    {
+                        ((TileEntityTelemetry) tile).clientClass = null;
+                    }
+                    else
+                    {
+                        EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
+                        ((TileEntityTelemetry) tile).clientClass = entityEntry == null ? null : entityEntry.getEntityClass();
+                    }
                 }
                 ((TileEntityTelemetry) tile).clientData = new int[5];
                 for (int i = 4; i < 7; i++)
