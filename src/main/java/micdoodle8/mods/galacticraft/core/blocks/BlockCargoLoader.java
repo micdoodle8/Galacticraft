@@ -36,8 +36,8 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
 {
     private enum EnumLoaderType implements IStringSerializable
     {
-        CARGO_LOADER(0, "cargo_loader"),
-        CARGO_UNLOADER(1, "cargo_unloader");
+        CARGO_LOADER(METADATA_CARGO_LOADER, "cargo_loader"),
+        CARGO_UNLOADER(METADATA_CARGO_UNLOADER, "cargo_unloader");
 
         private final int meta;
         private final String name;
@@ -51,16 +51,6 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         public int getMeta()
         {
             return this.meta;
-        }
-
-        public static EnumLoaderType byMetadata(int meta)
-        {
-            return values()[meta];
-        }
-
-        public static EnumLoaderType byIndex(int index)
-        {
-            return values()[index];
         }
 
         @Override
@@ -212,7 +202,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public int damageDropped(IBlockState state)
     {
-        return ((EnumLoaderType) state.getValue(TYPE)).ordinal();
+        return ((EnumLoaderType) state.getValue(TYPE)).getMeta();
     }
 
     @Override
@@ -238,7 +228,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumLoaderType type = EnumLoaderType.byMetadata((int) Math.floor(meta / 4.0));
+        EnumLoaderType type = meta >= METADATA_CARGO_UNLOADER ? EnumLoaderType.CARGO_UNLOADER : EnumLoaderType.CARGO_LOADER;
 
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
@@ -246,7 +236,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType) state.getValue(TYPE)).getMeta() * 4;
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType) state.getValue(TYPE)).getMeta();
     }
 
     @Override

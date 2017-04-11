@@ -68,10 +68,28 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
     
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (int i = 0; i < GlassFrame.values().length; i++)
-            list.add(new ItemStack(itemIn, 1, i));
+        //The plain block variety produces items carrying all variants as damage values
+        //Other block varieties have no corresponding ItemBlock (see registration in GCBlocks)
+        if (this.frame == GlassFrame.PLAIN)
+        {
+            for (int i = 0; i < GlassFrame.values().length; i++)
+                list.add(new ItemStack(itemIn, 1, i));
+        }
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.DECORATION;
     }
 
     @Override
@@ -172,7 +190,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     @Override
     public boolean canRenderInLayer(BlockRenderLayer layer)
     {
-        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.CUTOUT;
+        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
     }
     
 //    @Override
@@ -661,18 +679,6 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             return GCCoreUtil.translate("tile.space_glass.strong.description");
         }
         
-    }
-
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
-
-    @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override

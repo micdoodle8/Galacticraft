@@ -119,6 +119,7 @@ public class GCBlocks
         GCBlocks.basicBlock = new BlockBasic("basic_block_core");
         GCBlocks.airLockFrame = new BlockAirLockFrame("air_lock_frame");
         GCBlocks.airLockSeal = new BlockAirLockWall("air_lock_seal");
+        //These glass types have to be registered as 6 separate blocks, (a) to allow different coloring of each one and (b) because the Forge MultiLayer custom model does not allow for different textures to be set for different variants
         GCBlocks.spaceGlassVanilla = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_vanilla", GlassType.VANILLA, GlassFrame.PLAIN, null).setHardness(0.3F).setResistance(3F);
         GCBlocks.spaceGlassClear = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_clear", GlassType.CLEAR, GlassFrame.PLAIN, null).setHardness(0.3F).setResistance(3F);
         GCBlocks.spaceGlassStrong = (BlockSpaceGlass) new BlockSpaceGlass("space_glass_strong", GlassType.STRONG, GlassFrame.PLAIN, null).setHardness(4F).setResistance(35F);
