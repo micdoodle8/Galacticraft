@@ -53,7 +53,7 @@
 
         "base": [{  "model": "minecraft:cube_all", "textures": { "all": "blocks/glass" }  }],
 
-        "none": [{  "model": "forge:multi-layer"  }],
+        "none": [{  "model": "galacticraftcore:dummy"  }],
 
         "ns_g": [{  "model": "galacticraftcore:glass/glass_ns" }],
 
