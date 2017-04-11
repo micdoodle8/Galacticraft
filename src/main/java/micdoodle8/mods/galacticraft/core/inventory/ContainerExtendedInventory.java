@@ -62,8 +62,8 @@ public class ContainerExtendedInventory extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -74,7 +74,7 @@ public class ContainerExtendedInventory extends Container
             {
                 if (!this.mergeItemStack(stack, 0, 36, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else
@@ -86,7 +86,7 @@ public class ContainerExtendedInventory extends Container
                     {
                         if (!this.mergeOneItem(stack, j, j + 1, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                         flag = true;
                         break;
@@ -99,7 +99,7 @@ public class ContainerExtendedInventory extends Container
                     {
                         if (!this.mergeOneItem(stack, 42, 44, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                         flag = true;
                     }
@@ -111,7 +111,7 @@ public class ContainerExtendedInventory extends Container
                             {
                                 if (!this.mergeOneItem(stack, j, j + 1, false))
                                 {
-                                    return null;
+                                    return ItemStack.EMPTY;
                                 }
                                 flag = true;
                                 break;
@@ -126,12 +126,12 @@ public class ContainerExtendedInventory extends Container
                     {
                         if (!this.mergeItemStack(stack, 27, 36, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(stack, 0, 27, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
@@ -147,7 +147,7 @@ public class ContainerExtendedInventory extends Container
 
             if (stack.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, stack);
@@ -166,10 +166,10 @@ public class ContainerExtendedInventory extends Container
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null)
+                if (slotStack.isEmpty())
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
                     stackOneItem.setCount(1);

@@ -949,7 +949,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
 
                 ItemStack stack = schematicContainer.craftMatrix.getStackInSlot(0);
 
-                if (stack != null)
+                if (!stack.isEmpty())
                 {
                     final ISchematicPage page = SchematicRegistry.getMatchingRecipeForItemStack(stack);
 

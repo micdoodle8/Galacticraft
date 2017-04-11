@@ -95,7 +95,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     private boolean canCompress()
     {
         ItemStack itemstack = this.producingStack;
-        if (itemstack == null)
+        if (itemstack.isEmpty())
         {
             return false;
         }

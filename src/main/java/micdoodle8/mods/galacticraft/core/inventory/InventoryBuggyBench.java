@@ -30,7 +30,7 @@ public class InventoryBuggyBench implements IInventory
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stackList.get(par1);
+        return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stackList.get(par1);
     }
 
     public ItemStack getStackInRowAndColumn(int par1, int par2)
@@ -42,7 +42,7 @@ public class InventoryBuggyBench implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -64,7 +64,7 @@ public class InventoryBuggyBench implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -99,7 +99,7 @@ public class InventoryBuggyBench implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

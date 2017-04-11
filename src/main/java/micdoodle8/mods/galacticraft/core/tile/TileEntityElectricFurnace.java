@@ -255,11 +255,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
-        if (itemStack == null)
+        if (itemStack.isEmpty())
         {
             return false;
         }
-        return slotID == 1 ? FurnaceRecipes.instance().getSmeltingResult(itemStack) != null : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+        return slotID == 1 ? !FurnaceRecipes.instance().getSmeltingResult(itemStack).isEmpty() : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override

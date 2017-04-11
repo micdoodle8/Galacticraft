@@ -432,7 +432,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        if (itemstack == null)
+        if (itemstack.isEmpty())
         {
             return false;
         }

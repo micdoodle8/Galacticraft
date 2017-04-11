@@ -83,9 +83,9 @@ public class CompressorRecipes
         {
             char c0 = s.charAt(i1);
 
-            if (hashmap.containsKey(Character.valueOf(c0)))
+            if (hashmap.containsKey(c0))
             {
-                aitemstack[i1] = hashmap.get(Character.valueOf(c0)).copy();
+                aitemstack[i1] = hashmap.get(c0).copy();
             }
             else
             {
@@ -149,21 +149,20 @@ public class CompressorRecipes
     	adventureOnly = true;
     	CompressorRecipes.addShapelessRecipe(par1ItemStack, par2ArrayOfObj);
     	adventureOnly = false;
-    	return;
     }
     
     public static ItemStack findMatchingRecipe(IInventory inventory, World par2World)
     {
         int i = 0;
-        ItemStack itemstack = null;
-        ItemStack itemstack1 = null;
+        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack1 = ItemStack.EMPTY;
         int j;
 
         for (j = 0; j < inventory.getSizeInventory(); ++j)
         {
             ItemStack itemstack2 = inventory.getStackInSlot(j);
 
-            if (itemstack2 != null)
+            if (!itemstack2.isEmpty())
             {
                 if (i == 0)
                 {
@@ -244,7 +243,7 @@ public class CompressorRecipes
             {
                 int i1 = k - par2;
                 int j1 = l - par3;
-                ItemStack itemstack = null;
+                ItemStack itemstack = ItemStack.EMPTY;
 
                 if (i1 >= 0 && j1 >= 0 && i1 < recipe.recipeWidth && j1 < recipe.recipeHeight)
                 {
@@ -258,7 +257,7 @@ public class CompressorRecipes
                     }
                 }
 
-                ItemStack itemstack1 = null;
+                ItemStack itemstack1 = ItemStack.EMPTY;
 
                 if (k >= 0 && l < 3)
                 {
@@ -266,9 +265,9 @@ public class CompressorRecipes
                     itemstack1 = inventory.getStackInSlot(k2);
                 }
 
-                if (itemstack1 != null || itemstack != null)
+                if (!itemstack1.isEmpty() || !itemstack.isEmpty())
                 {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
+                    if (itemstack1.isEmpty() && !itemstack.isEmpty() || !itemstack1.isEmpty() && itemstack.isEmpty())
                     {
                         return false;
                     }
@@ -297,24 +296,21 @@ public class CompressorRecipes
         {
             ItemStack slot = var1.getStackInSlot(x);
 
-            if (slot != null)
+            if (!slot.isEmpty())
             {
                 boolean inRecipe = false;
-                Iterator<Object> req = required.iterator();
 
-                while (req.hasNext())
+                for (Object next : required)
                 {
                     boolean match = false;
 
-                    Object next = req.next();
-
                     if (next instanceof ItemStack)
                     {
-                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
+                        match = OreDictionary.itemMatches((ItemStack) next, slot, false);
                     }
                     else if (next instanceof List)
                     {
-                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
+                        Iterator<ItemStack> itr = ((List<ItemStack>) next).iterator();
                         while (itr.hasNext() && !match)
                         {
                             match = OreDictionary.itemMatches(itr.next(), slot, false);
@@ -346,11 +342,6 @@ public class CompressorRecipes
     
     public static void removeRecipe(ItemStack match)
     {
-    	for (Iterator<IRecipe> it = CompressorRecipes.getRecipeList().iterator(); it.hasNext(); )
-        {
-            IRecipe irecipe = it.next();
-            if (ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()))
-            	it.remove();
-        }
+        CompressorRecipes.getRecipeList().removeIf(irecipe -> ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
     }
 }

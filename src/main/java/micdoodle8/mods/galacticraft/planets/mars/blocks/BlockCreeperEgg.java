@@ -103,7 +103,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
         ItemStack stack = player.inventory.getCurrentItem();
-        if (stack == null)
+        if (stack.isEmpty())
         {
             return player.canHarvestBlock(world.getBlockState(pos));
         }

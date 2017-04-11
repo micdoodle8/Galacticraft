@@ -367,7 +367,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        if (itemstack == null)
+        if (itemstack.isEmpty())
         {
             return false;
         }

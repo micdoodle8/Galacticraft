@@ -53,7 +53,7 @@ public class ContainerSchematic extends Container
             {
                 final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
-                if (var3 != null)
+                if (!var3.isEmpty())
                 {
                     par1EntityPlayer.entityDropItem(var3, 0.0F);
                 }
@@ -70,7 +70,7 @@ public class ContainerSchematic extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var3 = null;
+        ItemStack var3 = ItemStack.EMPTY;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
@@ -82,12 +82,12 @@ public class ContainerSchematic extends Container
             {
                 if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (!this.mergeItemStack(var5, 0, 1, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (var5.getCount() == 0)

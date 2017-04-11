@@ -148,7 +148,7 @@ public class SpaceStationRecipe
 
                             if (newStack.getCount() <= 0)
                             {
-                                newStack = null;
+                                newStack = ItemStack.EMPTY;
                             }
 
                             player.inventory.setInventorySlotContents(x, newStack);
@@ -167,7 +167,7 @@ public class SpaceStationRecipe
 
                                 if (newStack.getCount() <= 0)
                                 {
-                                    newStack = null;
+                                    newStack = ItemStack.EMPTY;
                                 }
 
                                 player.inventory.setInventorySlotContents(x, newStack);

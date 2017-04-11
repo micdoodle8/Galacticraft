@@ -174,11 +174,11 @@ public class TileEntityCrafting extends TileEntity implements IInventory, ISided
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack stack)
     {
         if (par1 >= 0 && par1 < SIZEINVENTORY)
         {
-            this.craftMatrix.setInventorySlotContents(par1, par2ItemStack);
+            this.craftMatrix.setInventorySlotContents(par1, stack);
         }
     }
 

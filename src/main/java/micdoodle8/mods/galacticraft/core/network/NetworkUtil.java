@@ -472,7 +472,7 @@ public class NetworkUtil
 
     public static void writeItemStack(ItemStack itemStack, ByteBuf buffer) throws IOException
     {
-        if (itemStack == null)
+        if (itemStack.isEmpty())
         {
             buffer.writeShort(-1);
         }

@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nonnull;
+
 public class InventoryExtended implements IInventoryGC
 {
     public NonNullList<ItemStack> stacks = NonNullList.withSize(11, ItemStack.EMPTY);
@@ -34,6 +36,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
+    @Nonnull
     public ItemStack getStackInSlot(int index)
     {
         return this.stacks.get(index);

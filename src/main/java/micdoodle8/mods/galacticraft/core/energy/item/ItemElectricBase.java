@@ -198,7 +198,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     public static boolean isElectricItemEmpty(ItemStack itemstack)
     {
-        if (itemstack == null)
+        if (itemstack.isEmpty())
         {
             return false;
         }

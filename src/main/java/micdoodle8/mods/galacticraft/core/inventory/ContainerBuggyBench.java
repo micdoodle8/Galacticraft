@@ -79,7 +79,7 @@ public class ContainerBuggyBench extends Container
             {
                 final ItemStack slot = this.craftMatrix.removeStackFromSlot(var2);
 
-                if (slot != null)
+                if (!slot.isEmpty())
                 {
                     par1EntityPlayer.entityDropItem(slot, 0.0F);
                 }
@@ -106,7 +106,7 @@ public class ContainerBuggyBench extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
+        ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = (Slot) this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
@@ -119,7 +119,7 @@ public class ContainerBuggyBench extends Container
             {
                 if (!this.mergeItemStack(var4, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 0)
@@ -146,14 +146,14 @@ public class ContainerBuggyBench extends Container
                     {
                         if (!this.mergeItemStack(var4, b - 9, b, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else
                     {
                         if (!this.mergeItemStack(var4, b - 36, b - 9, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                 }
@@ -166,7 +166,7 @@ public class ContainerBuggyBench extends Container
 
             if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onSlotChanged();
@@ -187,10 +187,10 @@ public class ContainerBuggyBench extends Container
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null)
+                if (slotStack == ItemStack.EMPTY)
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
                     stackOneItem.setCount(1);

@@ -107,12 +107,12 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(2);
             ItemStack gear1 = stats.getExtendedInventory().getStackInSlot(3);
 
-            if (gear == null)
+            if (gear.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(2, itemStack.copy());
                 itemStack = ItemStack.EMPTY;
             }
-            else if (gear1 == null)
+            else if (gear1.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(3, itemStack.copy());
                 itemStack = ItemStack.EMPTY;

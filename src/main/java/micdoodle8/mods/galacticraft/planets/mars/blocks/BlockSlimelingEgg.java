@@ -163,7 +163,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     {
         ItemStack currentStack = player.getActiveItemStack();
 
-        if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
+        if (!currentStack.isEmpty() && currentStack.getItem() instanceof ItemPickaxe)
         {
             player.addStat(StatList.getBlockStats(this));
             player.addExhaustion(0.025F);

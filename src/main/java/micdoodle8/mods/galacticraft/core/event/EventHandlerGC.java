@@ -779,10 +779,10 @@ public class EventHandlerGC
                 {
                     ItemStack stack = stats.getExtendedInventory().getStackInSlot(i);
 
-                    if (stack != null)
+                    if (!stack.isEmpty())
                     {
                         event.getEntityPlayer().dropItem(stack, true, false);
-                        stats.getExtendedInventory().setInventorySlotContents(i, null);
+                        stats.getExtendedInventory().setInventorySlotContents(i, ItemStack.EMPTY);
                     }
                 }
                 event.getEntityLiving().captureDrops = false;

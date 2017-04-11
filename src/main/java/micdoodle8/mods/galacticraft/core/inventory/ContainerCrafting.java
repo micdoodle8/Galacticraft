@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +11,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.NonNullList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ContainerCrafting extends Container
 {
@@ -124,7 +124,7 @@ public class ContainerCrafting extends Container
             {
                 if (!this.mergeItemStack(itemstack1, 10, 46, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
@@ -133,28 +133,28 @@ public class ContainerCrafting extends Container
             {
                 if (!this.mergeItemStack(itemstack1, 10, 46, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (this.matchesCrafting(itemstack1))
             {
                 if (!this.mergeToCrafting(itemstack1, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (index >= 10 && index < 37)
             {
                 if (!this.mergeItemStack(itemstack1, 37, 46, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (index >= 37 && index < 46)
             {
                 if (!this.mergeItemStack(itemstack1, 10, 37, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
@@ -169,7 +169,7 @@ public class ContainerCrafting extends Container
 
             if (itemstack1.getCount() == itemstack.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(playerIn, itemstack1);
@@ -186,7 +186,7 @@ public class ContainerCrafting extends Container
         int acceptTotal = 0;
         for (int i = 1; i < 10; i++)
         {
-            Slot slot = (Slot)this.inventorySlots.get(i);
+            Slot slot = this.inventorySlots.get(i);
 
             if (slot != null)
             {
@@ -338,12 +338,12 @@ public class ContainerCrafting extends Container
 
     private boolean matchesCrafting(ItemStack itemstack1)
     {
-        if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.tileEntity.getWorld()) != null)
+        if (!CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.tileEntity.getWorld()).isEmpty())
         {
             boolean fullMatch = true;
             for (int i = 0; i < 9; i++)
             {
-               if (this.tileEntity.getMemory(i) != null && this.craftMatrix.getStackInSlot(i) != null && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.tileEntity.getMemory(i)))
+               if (this.tileEntity.getMemory(i) != null && !this.craftMatrix.getStackInSlot(i).isEmpty() && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.tileEntity.getMemory(i)))
                {
                    fullMatch = false;
                    break;
@@ -366,7 +366,7 @@ public class ContainerCrafting extends Container
         }
         for (int i = 0; i < 9; i++)
         {
-           if (matchingStacks(itemstack1, this.tileEntity.getMemory(i)) && (this.craftMatrix.getStackInSlot(i) == null || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
+           if (matchingStacks(itemstack1, this.tileEntity.getMemory(i)) && (this.craftMatrix.getStackInSlot(i).isEmpty() || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
            {
                for (int j = 0; j < 9; j++)
                {
@@ -380,7 +380,7 @@ public class ContainerCrafting extends Container
     
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return target != null && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && target.isStackable() && target.getCount() < target.getMaxStackSize();
+        return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && target.isStackable() && target.getCount() < target.getMaxStackSize();
     }
 
     /**

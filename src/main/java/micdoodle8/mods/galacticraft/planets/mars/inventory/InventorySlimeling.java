@@ -30,7 +30,7 @@ public class InventorySlimeling implements IInventory
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stacks.get(par1);
+        return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class InventorySlimeling implements IInventory
     @Override
     public ItemStack removeStackFromSlot(int par1)
     {
-        if (this.stacks.get(par1) != null)
+        if (!this.stacks.get(par1).isEmpty())
         {
             final ItemStack var2 = this.stacks.get(par1);
             this.stacks.set(par1, ItemStack.EMPTY);
@@ -50,7 +50,7 @@ public class InventorySlimeling implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -111,7 +111,7 @@ public class InventorySlimeling implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

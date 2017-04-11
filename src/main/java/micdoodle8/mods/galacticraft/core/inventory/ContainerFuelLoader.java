@@ -49,8 +49,8 @@ public class ContainerFuelLoader extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var3 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par2);
+        ItemStack var3 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack())
         {
@@ -61,7 +61,7 @@ public class ContainerFuelLoader extends Container
             {
                 if (!this.mergeItemStack(var5, 2, 38, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else
@@ -70,7 +70,7 @@ public class ContainerFuelLoader extends Container
                 {
                     if (!this.mergeItemStack(var5, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -79,19 +79,19 @@ public class ContainerFuelLoader extends Container
                     {
                         if (!this.mergeItemStack(var5, 1, 2, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par2 < 29)
                     {
                         if (!this.mergeItemStack(var5, 29, 38, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var5, 2, 29, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
@@ -107,7 +107,7 @@ public class ContainerFuelLoader extends Container
 
             if (var5.getCount() == var3.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, var5);

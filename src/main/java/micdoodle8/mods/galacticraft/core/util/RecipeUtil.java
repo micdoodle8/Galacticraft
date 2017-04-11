@@ -12,10 +12,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public class RecipeUtil
 {
+    @Nonnull
     public static ItemStack findMatchingBuggy(InventoryBuggyBench benchStacks)
     {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getBuggyBenchRecipes())
@@ -26,9 +28,10 @@ public class RecipeUtil
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
+    @Nonnull
     public static ItemStack findMatchingSpaceshipRecipe(InventoryRocketBench inventoryRocketBench)
     {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getRocketT1Recipes())
@@ -39,7 +42,7 @@ public class RecipeUtil
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @SuppressWarnings("unchecked")

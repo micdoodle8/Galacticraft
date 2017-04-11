@@ -92,7 +92,7 @@ public class CommandGCInv extends CommandBase
                         for (int i = 0; i < gcInventory.getSizeInventory(); i++)
                         {
                             saveinv[i] = gcInventory.getStackInSlot(i);
-                            gcInventory.setInventorySlotContents(i, null);
+                            gcInventory.setInventorySlotContents(i, ItemStack.EMPTY);
                         }
 
                         CommandGCInv.savedata.put(args[1].toLowerCase(), saveinv);
@@ -117,12 +117,12 @@ public class CommandGCInv extends CommandBase
                         InventoryExtended gcInventory = stats.getExtendedInventory();
                         for (int i = 0; i < gcInventory.getSizeInventory(); i++)
                         {
-                            gcInventory.setInventorySlotContents(i, null);
+                            gcInventory.setInventorySlotContents(i, ItemStack.EMPTY);
                         }
                     }
                     else
                     {
-                        throw new WrongUsageException("Invalid GCInv command. Usage: " + this.getUsage(sender), new Object[0]);
+                        throw new WrongUsageException("Invalid GCInv command. Usage: " + this.getUsage(sender));
                     }
                 }
                 else

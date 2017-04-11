@@ -29,13 +29,13 @@ public class InventoryRocketBench implements IInventory
             final int var3 = par1 + par2 * this.inventoryWidth;
             if (var3 >= 18)
             {
-                return null;
+                return ItemStack.EMPTY;
             }
             return this.getStackInSlot(var3);
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

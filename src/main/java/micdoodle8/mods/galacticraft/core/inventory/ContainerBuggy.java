@@ -58,7 +58,7 @@ public class ContainerBuggy extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var3 = null;
+        ItemStack var3 = ItemStack.EMPTY;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);
         final int b = this.inventorySlots.size() - 36;
 
@@ -71,12 +71,12 @@ public class ContainerBuggy extends Container
             {
                 if (!this.mergeItemStack(var5, b, b + 36, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (!this.mergeItemStack(var5, 0, b, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (var5.getCount() == 0)

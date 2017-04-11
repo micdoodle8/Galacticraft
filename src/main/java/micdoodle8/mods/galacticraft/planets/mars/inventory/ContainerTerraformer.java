@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -95,8 +94,8 @@ public class ContainerTerraformer extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -108,7 +107,7 @@ public class ContainerTerraformer extends Container
             {
                 if (!this.mergeItemStack(var4, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else
@@ -117,47 +116,47 @@ public class ContainerTerraformer extends Container
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (var4.getItem() == Items.WATER_BUCKET)
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (var4.getItem() == Items.DYE && var4.getItemDamage() == 15)
                 {
                     if (!this.mergeItemStack(var4, 2, 6, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (this.getSlot(6).isItemValid(var4))
                 {
                     if (!this.mergeItemStack(var4, 6, 10, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (var4.getItem() == Items.WHEAT_SEEDS)
                 {
                     if (!this.mergeItemStack(var4, 10, 14, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par1 < b - 9)
                 {
                     if (!this.mergeItemStack(var4, b - 9, b, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
@@ -172,7 +171,7 @@ public class ContainerTerraformer extends Container
 
             if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, var4);
@@ -201,19 +200,16 @@ public class ContainerTerraformer extends Container
 
     private static void initSaplingList()
     {
-        ContainerTerraformer.saplingList = new LinkedList();
-        Iterator iterator = Block.REGISTRY.iterator();
+        ContainerTerraformer.saplingList = new LinkedList<>();
 
-        while (iterator.hasNext())
+        for (Block b : Block.REGISTRY)
         {
-            Block b = (Block) iterator.next();
-
             if (b instanceof BlockBush)
             {
                 try
                 {
                     Item item = Item.getItemFromBlock(b);
-                    if (item != null)
+                    if (item != Items.AIR)
                     {
                         //item.getSubItems(item, null, subItemsList); - can't use because clientside only
                         ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
@@ -222,7 +218,7 @@ public class ContainerTerraformer extends Container
                         {
                             ItemStack testStack = new ItemStack(item, 1, i);
                             String testName = item.getUnlocalizedName(testStack);
-                            if (testName == null || testName.equals("") || testName.equals(basicName))
+                            if (testName.equals("") || testName.equals(basicName))
                             {
                                 break;
                             }

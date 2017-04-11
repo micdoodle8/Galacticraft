@@ -360,7 +360,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
                 existingStack = this.stacks.get(k);
 
-                if (existingStack == null)
+                if (existingStack.isEmpty())
                 {
                     this.stacks.set(k, itemstack.copy());
                     itemstack.setCount(0);

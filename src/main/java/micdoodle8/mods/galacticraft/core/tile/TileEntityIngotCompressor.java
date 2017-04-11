@@ -139,7 +139,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private boolean canSmelt()
     {
         ItemStack itemstack = this.producingStack;
-        if (itemstack == null)
+        if (itemstack.isEmpty())
         {
             return false;
         }
@@ -262,7 +262,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.WATER_BUCKET)
+                if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty() && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.WATER_BUCKET)
                 {
                     this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.BUCKET));
                 }
@@ -418,20 +418,20 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack stack)
     {
         if (par1 >= this.stacks.size())
         {
-            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.stacks.size(), par2ItemStack);
+            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.stacks.size(), stack);
             this.updateInput();
         }
         else
         {
-            this.stacks.set(par1, par2ItemStack);
+            this.stacks.set(par1, stack);
 
-            if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit())
+            if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
             {
-                par2ItemStack.setCount(this.getInventoryStackLimit());
+                stack.setCount(this.getInventoryStackLimit());
             }
         }
     }

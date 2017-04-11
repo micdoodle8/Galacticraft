@@ -68,7 +68,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
 
             if (stack.getCount() <= 0)
             {
-                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);
+                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, ItemStack.EMPTY);
             }
         }
     }

@@ -53,8 +53,8 @@ public class ContainerCoalGenerator extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        Slot var3 = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
@@ -67,25 +67,25 @@ public class ContainerCoalGenerator extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par1 >= 28)
                 {
                     if (!this.mergeItemStack(var4, 1, 28, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var4, 28, 37, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
             }
             else if (!this.mergeItemStack(var4, 1, 37, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (var4.getCount() == 0)
@@ -99,7 +99,7 @@ public class ContainerCoalGenerator extends Container
 
             if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             var3.onTake(par1EntityPlayer, var4);

@@ -29,7 +29,7 @@ public class InventorySchematicAstroMiner implements IInventory
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stacks.get(par1);
+        return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class InventorySchematicAstroMiner implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -82,7 +82,7 @@ public class InventorySchematicAstroMiner implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

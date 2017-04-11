@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -77,7 +78,7 @@ public class WorldGenCrashedProbe extends WorldGenerator
             for (int i = 0; i < probe.getSizeInventory(); ++i)
             {
                 // Clear contents
-                probe.setInventorySlotContents(i, null);
+                probe.setInventorySlotContents(i, ItemStack.EMPTY);
             }
 
             // TODO

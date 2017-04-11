@@ -54,7 +54,7 @@ public class ItemOxygenGear extends Item implements ISortableItem
             GCPlayerStats stats = GCPlayerStats.get(player);
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(1);
 
-            if (gear == null)
+            if (gear.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(1, itemStack.copy());
                 itemStack = ItemStack.EMPTY;

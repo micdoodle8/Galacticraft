@@ -65,8 +65,8 @@ public class ContainerRefinery extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -77,7 +77,7 @@ public class ContainerRefinery extends Container
             {
                 if (!this.mergeItemStack(var4, 3, 39, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 2)
@@ -91,7 +91,7 @@ public class ContainerRefinery extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -100,26 +100,26 @@ public class ContainerRefinery extends Container
                     {
                         if (!this.mergeItemStack(var4, 1, 2, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (FluidUtil.isPartialContainer(var4, GCItems.fuelCanister))
                     {
                         if (!this.mergeItemStack(var4, 2, 3, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 < 30)
                     {
                         if (!this.mergeItemStack(var4, 30, 39, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, 3, 30, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
@@ -135,7 +135,7 @@ public class ContainerRefinery extends Container
 
             if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, var4);

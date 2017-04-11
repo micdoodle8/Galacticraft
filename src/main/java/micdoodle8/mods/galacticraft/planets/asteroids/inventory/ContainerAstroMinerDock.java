@@ -56,8 +56,8 @@ public class ContainerAstroMinerDock extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var3 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par2);
+        ItemStack var3 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par2);
         int b = TileEntityMinerBase.HOLDSIZE + 1;
 
         if (slot != null && slot.getHasStack())
@@ -69,7 +69,7 @@ public class ContainerAstroMinerDock extends Container
             {
                 if (!this.mergeItemStack(var5, b, b + 36, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else
@@ -78,19 +78,19 @@ public class ContainerAstroMinerDock extends Container
                 {
                     if (!this.mergeItemStack(var5, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par2 < b + 27)
                 {
                     if (!this.mergeItemStack(var5, 1, b, false) && !this.mergeItemStack(var5, b + 27, b + 36, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var5, 1, b, false) && !this.mergeItemStack(var5, b, b + 27, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
@@ -105,7 +105,7 @@ public class ContainerAstroMinerDock extends Container
 
             if (var5.getCount() == var3.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, var5);

@@ -129,7 +129,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
                     for (int k = 0; k < chest.getSizeInventory(); k++)
                     {
-                        chest.setInventorySlotContents(k, null);
+                        chest.setInventorySlotContents(k, ItemStack.EMPTY);
                     }
 
                     chest.fillWithLoot(null);

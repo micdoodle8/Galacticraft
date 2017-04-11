@@ -55,7 +55,7 @@ public class ItemOxygenMask extends Item implements ISortableItem
             GCPlayerStats stats = GCPlayerStats.get(player);
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(0);
 
-            if (gear == null)
+            if (gear.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(0, itemStack.copy());
                 itemStack = ItemStack.EMPTY;

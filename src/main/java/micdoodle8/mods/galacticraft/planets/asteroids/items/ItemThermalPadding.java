@@ -106,7 +106,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
 
             if (itemStack.getItemDamage() == 0)
             {
-                if (gear == null)
+                if (gear.isEmpty())
                 {
                     stats.getExtendedInventory().setInventorySlotContents(6, itemStack.copy());
                     itemStack.setCount(0);
@@ -114,7 +114,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
             }
             else if (itemStack.getItemDamage() == 1)
             {
-                if (gear1 == null)
+                if (gear1.isEmpty())
                 {
                     stats.getExtendedInventory().setInventorySlotContents(7, itemStack.copy());
                     itemStack.setCount(0);
@@ -122,7 +122,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
             }
             else if (itemStack.getItemDamage() == 2)
             {
-                if (gear2 == null)
+                if (gear2.isEmpty())
                 {
                     stats.getExtendedInventory().setInventorySlotContents(8, itemStack.copy());
                     itemStack.setCount(0);
@@ -130,7 +130,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
             }
             else if (itemStack.getItemDamage() == 3)
             {
-                if (gear3 == null)
+                if (gear3.isEmpty())
                 {
                     stats.getExtendedInventory().setInventorySlotContents(9, itemStack.copy());
                     itemStack.setCount(0);

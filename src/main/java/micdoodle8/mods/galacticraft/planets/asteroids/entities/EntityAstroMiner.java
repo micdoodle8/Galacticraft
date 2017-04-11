@@ -348,10 +348,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         for (int i = 0; i < this.stacks.size(); i++)
         {
             ItemStack stack = this.stacks.get(i);
-            if (stack == null)
-            {
-                continue;
-            }
             if (stack.isEmpty())
             {
                 continue;

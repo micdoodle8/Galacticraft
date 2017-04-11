@@ -29,7 +29,7 @@ public class InventorySchematicCargoRocket implements IInventory
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stacks.get(par1);
+        return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class InventorySchematicCargoRocket implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -82,14 +82,14 @@ public class InventorySchematicCargoRocket implements IInventory
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack stack)
     {
-        this.stacks.set(par1, par2ItemStack);
+        this.stacks.set(par1, stack);
         this.eventHandler.onCraftMatrixChanged(this);
     }
 

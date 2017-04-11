@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -647,7 +648,7 @@ public class EnergyUtil
     
     public static boolean isChargedElectricItem(ItemStack stack)
     {
-        if (stack == null)
+        if (stack.isEmpty())
             return false;
 
         Item item = stack.getItem();
@@ -656,7 +657,7 @@ public class EnergyUtil
             return ((IItemElectric) item).getElectricityStored(stack) > 0;
         }
 
-        if (item == null)
+        if (item == Items.AIR)
             return false;
 
         if (EnergyConfigHandler.isRFAPILoaded())
@@ -691,7 +692,7 @@ public class EnergyUtil
 
     public static boolean isFillableElectricItem(ItemStack stack)
     {
-        if (stack == null)
+        if (stack.isEmpty())
             return false;
 
         Item item = stack.getItem();
@@ -700,7 +701,7 @@ public class EnergyUtil
             return ((IItemElectric) item).getElectricityStored(stack) < ((IItemElectric) item).getMaxElectricityStored(stack);
         }
 
-        if (item == null)
+        if (item == Items.AIR)
             return false;
 
         if (EnergyConfigHandler.isRFAPILoaded())

@@ -255,7 +255,7 @@ public class ItemParaChute extends Item implements ISortableItem
             GCPlayerStats stats = GCPlayerStats.get(player);
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(4);
 
-            if (gear == null)
+            if (gear.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
                 itemStack = ItemStack.EMPTY;

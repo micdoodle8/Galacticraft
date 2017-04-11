@@ -32,7 +32,7 @@ public class SlotArmorGC extends Slot
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
     {
-        final Item item = par1ItemStack == null ? null : par1ItemStack.getItem();
+        final Item item = par1ItemStack.isEmpty() ? null : par1ItemStack.getItem();
         return item != null && item.isValidArmor(par1ItemStack, VALID_EQUIPMENT_SLOTS[this.armorType], this.thePlayer);
     }
 

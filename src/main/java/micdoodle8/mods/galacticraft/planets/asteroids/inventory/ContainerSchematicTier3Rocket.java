@@ -91,7 +91,7 @@ public class ContainerSchematicTier3Rocket extends Container
             {
                 final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
-                if (var3 != null)
+                if (!var3.isEmpty())
                 {
                     par1EntityPlayer.entityDropItem(var3, 0.0F);
                 }
@@ -114,8 +114,8 @@ public class ContainerSchematicTier3Rocket extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot var3 = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
@@ -127,7 +127,7 @@ public class ContainerSchematicTier3Rocket extends Container
             {
                 if (!this.mergeItemStack(var4, 22, 58, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 var3.onSlotChange(var4, var2);
@@ -137,7 +137,7 @@ public class ContainerSchematicTier3Rocket extends Container
                 boolean valid = false;
                 for (int i = 1; i < 19; i++)
                 {
-                    Slot testSlot = (Slot) this.inventorySlots.get(i);
+                    Slot testSlot = this.inventorySlots.get(i);
                     if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
                     {
                         valid = true;
@@ -148,7 +148,7 @@ public class ContainerSchematicTier3Rocket extends Container
                 {
                     if (!this.mergeOneItemTestValid(var4, 1, 19, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -157,26 +157,26 @@ public class ContainerSchematicTier3Rocket extends Container
                     {
                         if (!this.mergeOneItemTestValid(var4, 19, 22, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 >= 22 && par1 < 49)
                     {
                         if (!this.mergeItemStack(var4, 49, 58, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 >= 49 && par1 < 58)
                     {
                         if (!this.mergeItemStack(var4, 22, 49, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, 22, 58, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
@@ -192,7 +192,7 @@ public class ContainerSchematicTier3Rocket extends Container
 
             if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             var3.onTake(par1EntityPlayer, var4);
@@ -211,10 +211,10 @@ public class ContainerSchematicTier3Rocket extends Container
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null && slot.isItemValid(par1ItemStack))
+                if (slotStack.isEmpty() && slot.isItemValid(par1ItemStack))
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
                     stackOneItem.setCount(1);

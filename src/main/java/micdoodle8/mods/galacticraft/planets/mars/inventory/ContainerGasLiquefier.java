@@ -67,8 +67,8 @@ public class ContainerGasLiquefier extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -79,7 +79,7 @@ public class ContainerGasLiquefier extends Container
             {
                 if (!this.mergeItemStack(var4, 4, 40, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 2)
@@ -93,7 +93,7 @@ public class ContainerGasLiquefier extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -120,19 +120,19 @@ public class ContainerGasLiquefier extends Container
                         {
                             if (!this.mergeItemStack(var4, 1, 2, false))
                             {
-                                return null;
+                                return ItemStack.EMPTY;
                             }
                         }
                         else if (par1 < 31)
                         {
                             if (!this.mergeItemStack(var4, 31, 40, false))
                             {
-                                return null;
+                                return ItemStack.EMPTY;
                             }
                         }
                         else if (!this.mergeItemStack(var4, 4, 31, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                 }
@@ -149,7 +149,7 @@ public class ContainerGasLiquefier extends Container
 
             if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, var4);
