@@ -68,10 +68,17 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
     
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
         for (int i = 0; i < GlassFrame.values().length; i++)
             list.add(new ItemStack(itemIn, 1, i));
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
     }
     
     @Override
