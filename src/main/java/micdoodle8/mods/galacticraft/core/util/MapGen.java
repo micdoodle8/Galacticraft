@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@SuppressWarnings("unused")
 public class MapGen extends BiomeProvider implements Runnable
 {
     public boolean mapNeedsCalculating = false;
