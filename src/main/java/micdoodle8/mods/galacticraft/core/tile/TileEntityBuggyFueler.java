@@ -1,30 +1,32 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import com.google.common.base.Predicate;
+
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ITickable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity, ITickable
+public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
     public TileEntityBuggyFueler()
     {
@@ -32,11 +34,15 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     }
 
     private IDockable dockedEntity;
+    private boolean initialised;
 
     @Override
     public void update()
     {
-        super.update();
+        if (!this.initialised)
+        {
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
+        }
 
         if (!this.worldObj.isRemote)
         {
@@ -79,29 +85,6 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
                 this.dockedEntity = null;
             }
         }
-
-        // TODO: Find a more efficient way to fix this
-        //          Broken since 1.8 and this is an inefficient fix
-        for (int x = -1; x < 2; x++)
-        {
-            for (int z = -1; z < 2; z++)
-            {
-                if (!(x == 0 && z == 0))
-                {
-                    final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
-
-                    TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
-                    if (tile instanceof TileEntityMulti)
-                    {
-                        BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
-                        if (pos == null || !pos.equals(getPos()))
-                        {
-                            ((TileEntityMulti) tile).mainBlockPosition = getPos();
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @Override
@@ -116,16 +99,21 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(placedPosition, positions);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.BUGGY_FUEL_PAD);
+    }
+    
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
+        int y = placedPosition.getY();
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)
             {
-                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY(), placedPosition.getZ() + z);
-
-                if (!vecToAdd.equals(placedPosition))
-                {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 6);
-                }
+                if (x == 0 && z == 0) continue;
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
     }
@@ -133,24 +121,24 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        final BlockVec3 thisBlock = new BlockVec3(this);
+        final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(thisBlock, positions);
 
-        this.worldObj.destroyBlock(new BlockPos(thisBlock.x, thisBlock.y, thisBlock.z), true);
-
-        for (int x = -1; x < 2; x++)
+        for (BlockPos pos : positions)
         {
-            for (int z = -1; z < 2; z++)
-            {
-                BlockPos pos = new BlockPos(thisBlock.x + x, thisBlock.y, thisBlock.z + z);
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
 
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.BUGGY_FUEL_PAD)
+            {
                 if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                 {
                     FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                 }
-
                 this.worldObj.destroyBlock(pos, false);
             }
         }
+        this.worldObj.destroyBlock(thisBlock, true);
 
         if (this.dockedEntity != null)
         {

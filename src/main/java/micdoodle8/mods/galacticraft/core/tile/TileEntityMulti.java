@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,12 +11,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiver
+public class TileEntityMulti extends TileEntity
 {
+    //NOTE: No need for networking in 1.8+: see comment in initialiseMultiTiles()
+    
     // The the position of the main block
-    @NetworkedField(targetSide = Side.CLIENT)
     public BlockPos mainBlockPosition;
 
     public TileEntityMulti()
@@ -121,21 +122,28 @@ public class TileEntityMulti extends TileEntityAdvanced implements IPacketReceiv
         }
     }
 
-    @Override
-    public double getPacketRange()
+    protected boolean initialiseMultiTiles(BlockPos pos, World world)
     {
-        return 30.0D;
-    }
-
-    @Override
-    public int getPacketCooldown()
-    {
-        return 50;
-    }
-
-    @Override
-    public boolean isNetworkedTile()
-    {
-        return (this.mainBlockPosition != null);
+        IMultiBlock thisTile = (IMultiBlock)this;
+        
+        //Client can create its own fake blocks and tiles - no need for networking in 1.8+
+        if (world.isRemote) thisTile.onCreate(world, pos);
+        
+        List<BlockPos> positions = new ArrayList();
+        thisTile.getPositions(pos, positions);
+        boolean result = true;
+        for (BlockPos vecToAdd : positions)
+        {
+            TileEntity tile = world.getTileEntity(vecToAdd);
+            if (tile instanceof TileEntityMulti)
+            {
+                ((TileEntityMulti) tile).mainBlockPosition = pos;
+            }
+            else
+            {
+                result = false;
+            }
+        }
+        return result;
     }
 }

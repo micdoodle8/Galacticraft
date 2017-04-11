@@ -1,15 +1,19 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import java.util.LinkedList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
@@ -28,6 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
 {
     public boolean isOccupied;
+    private boolean initialised;
 
     public TileEntityCryogenicChamber()
     {
@@ -116,23 +121,9 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     @Override
     public void update()
     {
-        super.update();
-
-        // TODO: Find a more efficient way to fix this
-        //          Broken since 1.8 and this is an inefficient fix
-        for (int y = 1; y < 3; y++)
+        if (!this.initialised)
         {
-            final BlockPos vecToAdd = new BlockPos(getPos().getX(), getPos().getY() + y, getPos().getZ());
-
-            TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
-            if (tile instanceof TileEntityMulti)
-            {
-                BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
-                if (pos == null || !pos.equals(getPos()))
-                {
-                    ((TileEntityMulti) tile).mainBlockPosition = getPos();
-                }
-            }
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
         }
     }
 
@@ -141,56 +132,48 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
+
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(placedPosition, positions);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.CRYO_CHAMBER);
+    }
+    
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
         int buildHeight = this.worldObj.getHeight() - 1;
 
-        for (int y = 0; y < 3; y++)
+        for (int y = 1; y < 3; y++)
         {
             if (placedPosition.getY() + y > buildHeight)
             {
                 return;
             }
-            final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ());
-
-            if (!vecToAdd.equals(placedPosition))
-            {
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 5);
-            }
+            positions.add(new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ()));
         }
     }
 
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        final BlockVec3 thisBlock = new BlockVec3(this);
-        int fakeBlockCount = 0;
+        final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(thisBlock, positions);
 
-        for (int y = 0; y < 3; y++)
+        for (BlockPos pos : positions)
         {
-            if (y == 0)
-            {
-                continue;
-            }
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
 
-            if (this.worldObj.getBlockState(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z)).getBlock() == GCBlocks.fakeBlock)
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.CRYO_CHAMBER)
             {
-                fakeBlockCount++;
+                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                {
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
+                }
+                this.worldObj.destroyBlock(pos, false);
             }
         }
-
-        if (fakeBlockCount == 0)
-        {
-            return;
-        }
-
-        for (int y = 0; y < 3; y++)
-        {
-            if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
-            {
-                BlockPos pos1 = new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z);
-                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos1, worldObj.getBlockState(pos1));
-            }
-            this.worldObj.destroyBlock(new BlockPos(thisBlock.x, thisBlock.y + y, thisBlock.z), true);
-        }
+        this.worldObj.destroyBlock(thisBlock, true);
     }
 
     @Override

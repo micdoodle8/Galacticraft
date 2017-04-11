@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -24,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +43,8 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         SOLAR_PANEL_1(4, "solar_panel"),
         CRYO_CHAMBER(5, "cryo_chamber"),
         BUGGY_FUEL_PAD(6, "buggy_pad"),
-        MINER_BASE(7, "miner_base");
+        MINER_BASE(7, "miner_base"),
+        DISH_LARGE(8, "dish_large");
 
         private final int meta;
         private final String name;
@@ -152,9 +155,17 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
     public void makeFakeBlock(World worldObj, BlockPos pos, BlockPos mainBlock, int meta)
     {
-        worldObj.setBlockState(pos, GCBlocks.fakeBlock.getStateFromMeta(meta), 3);
-        TileEntityMulti tileEntityMulti = new TileEntityMulti(mainBlock);
-        worldObj.setTileEntity(pos, tileEntityMulti);
+        worldObj.setBlockState(pos, GCBlocks.fakeBlock.getStateFromMeta(meta), meta == 5 ? 3 : 0);
+        worldObj.setTileEntity(pos, new TileEntityMulti(mainBlock));
+    }
+
+    public void makeFakeBlock(World worldObj, Collection<BlockPos> posList, BlockPos mainBlock, EnumBlockMultiType type)
+    {
+        for (BlockPos pos : posList)
+        {
+            worldObj.setBlockState(pos, this.getDefaultState().withProperty(MULTI_TYPE, type), type == EnumBlockMultiType.CRYO_CHAMBER ? 3 : 0);
+            worldObj.setTileEntity(pos, new TileEntityMulti(mainBlock));
+        }
     }
 
     @Override
@@ -246,7 +257,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public TileEntity createNewTileEntity(World var1, int meta)
     {
-        return new TileEntityMulti(null);
+        return null;
     }
 
     @Override
@@ -384,7 +395,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             {
                 renderType = 4;
             }
-            if (tile != null && tile.mainBlockPosition != null)
+            if (tile != null && tile.mainBlockPosition != null && GalacticraftCore.isPlanetsLoaded)
             {
                 IBlockState stateMain = worldIn.getBlockState(tile.mainBlockPosition);
                 if (stateMain.getBlock() == MarsBlocks.machine && stateMain.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)

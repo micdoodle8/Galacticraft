@@ -9,7 +9,9 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -34,11 +37,15 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
 
     private IDockable dockedEntity;
+    private boolean initialised;
 
     @Override
     public void update()
     {
-        super.update();
+        if (!this.initialised)
+        {
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
+        }
 
         if (!this.worldObj.isRemote)
         {
@@ -75,29 +82,6 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
                 this.dockedEntity = null;
             }
         }
-
-        // TODO: Find a more efficient way to fix this
-        //          Broken since 1.8 and this is an inefficient fix
-        for (int x = -1; x < 2; x++)
-        {
-            for (int z = -1; z < 2; z++)
-            {
-                if (!(x == 0 && z == 0))
-                {
-                    final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
-
-                    TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
-                    if (tile instanceof TileEntityMulti)
-                    {
-                        BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
-                        if (pos == null || !pos.equals(getPos()))
-                        {
-                            ((TileEntityMulti) tile).mainBlockPosition = getPos();
-                        }
-                    }
-                }
-            }
-        }
     }
 
 //    @Override
@@ -118,16 +102,21 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(placedPosition, positions);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.ROCKET_PAD);
+    }
+    
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
+        int y = placedPosition.getY();
         for (int x = -1; x < 2; x++)
         {
             for (int z = -1; z < 2; z++)
             {
-                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY(), placedPosition.getZ() + z);
-
-                if (!vecToAdd.equals(placedPosition))
-                {
-                    ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 2);
-                }
+                if (x == 0 && z == 0) continue;
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
     }
@@ -136,22 +125,23 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(thisBlock, positions);
 
-        this.worldObj.destroyBlock(thisBlock, true);
-
-        for (int x = -1; x < 2; x++)
+        for (BlockPos pos : positions)
         {
-            for (int z = -1; z < 2; z++)
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
+
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.ROCKET_PAD)
             {
-                BlockPos pos = new BlockPos(thisBlock.getX() + x, thisBlock.getY(), thisBlock.getZ() + z);
                 if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.landingPad.getDefaultState());
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                 }
-
                 this.worldObj.destroyBlock(pos, false);
             }
         }
+        this.worldObj.destroyBlock(thisBlock, true);
 
         if (this.dockedEntity != null)
         {

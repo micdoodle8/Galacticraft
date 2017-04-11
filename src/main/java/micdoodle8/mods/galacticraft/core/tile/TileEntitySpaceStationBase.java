@@ -1,7 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +21,16 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     }
 
     public String ownerUsername = "bobby";
+    private boolean initialised;
+
+    @Override
+    public void update()
+    {
+        if (!this.initialised)
+        {
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
+        }
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
@@ -53,24 +68,42 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(placedPosition, positions);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.SPACE_STATION_BASE);
+    }
+
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
+        int buildHeight = this.worldObj.getHeight() - 1;
+
         for (int y = 1; y < 3; y++)
         {
-            final BlockPos vecToAdd = new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ());
-
-            if (!vecToAdd.equals(placedPosition))
+            if (placedPosition.getY() + y > buildHeight)
             {
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, 1);
+                return;
             }
+            positions.add(new BlockPos(placedPosition.getX(), placedPosition.getY() + y, placedPosition.getZ()));
         }
-
     }
 
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        for (int y = 0; y < 3; y++)
+        final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(thisBlock, positions);
+
+        for (BlockPos pos : positions)
         {
-            this.worldObj.destroyBlock(this.getPos().add(0, y, 0), false);
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
+
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.SPACE_STATION_BASE)
+            {
+                this.worldObj.setBlockToAir(pos);
+            }
         }
+        this.worldObj.destroyBlock(this.getPos(), false);
     }
 }

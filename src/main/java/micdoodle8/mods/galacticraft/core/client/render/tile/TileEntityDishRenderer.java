@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -62,7 +61,9 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
     {
         this.updateModels();
         TileEntityDish dish = (TileEntityDish) tile;
-        float time = (dish.ticks + partialTickTime) % 1440F;
+        float hour = dish.rotation(partialTickTime) % 360F;
+        float declination = dish.elevation(partialTickTime) % 360F;
+        
         final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 
         GL11.glPushMatrix();
@@ -75,7 +76,9 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
         this.renderEngine.bindTexture(textureSupport);
         ClientUtil.drawBakedModel(modelSupport);
         GL11.glScalef(1.25F, 1.6F, 1.25F);
-        GL11.glRotatef(time / 4, 0, -1, 0);
+        GL11.glTranslatef(0F, 2.88F * 0.15F / 1.6F, 0F);
+        GL11.glScalef(0.85F, 0.85F, 0.85F);
+        GL11.glRotatef(hour, 0, -1, 0);
         this.renderEngine.bindTexture(textureFork);
         ClientUtil.drawBakedModel(modelFork);
 
@@ -83,7 +86,7 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
 //        float celestialAngle2 = dish.getWorldObj().getCelestialAngle(1.0F) * 360.0F;
 
         GL11.glTranslatef(0.0F, 2.3F, 0.0F);
-        GL11.glRotatef((MathHelper.sin(time / 144) + 1.0F) * 22.5F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(declination, 1.0F, 0.0F, 0.0F);
         GL11.glTranslatef(0.0F, -2.3F, 0.0F);
 
         this.renderEngine.bindTexture(textureDish);

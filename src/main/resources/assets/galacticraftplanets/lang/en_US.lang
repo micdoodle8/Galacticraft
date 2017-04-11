@@ -293,6 +293,7 @@ tile.mars_stairs_cobblestone.name=Mars Cobblestone Stairs
 tile.methane_synthesizer.description=With a source of hydrogen and a source of carbon, this manufactures Methane for further processing in a Gas Liquefier.
 tile.miner_base.description=The Astro Miner Base is the docking point for an Astro Miner.  It's big ... try making a 2 x 2 x 2 cube with these.
 tile.miner_base.name=Astro Miner Base
+tile.miner_base_full.name=Astro Miner Base
 tile.slab_gc_half.mars_bricks_slab.name=Mars Dungeon Brick Slab
 tile.slab_gc_half.mars_slab.name=Mars Cobblestone Slab
 tile.slimeling_egg.blue.name=Blue Slimeling Egg
