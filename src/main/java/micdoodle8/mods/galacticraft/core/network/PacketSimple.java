@@ -60,7 +60,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -729,38 +728,7 @@ public class PacketSimple extends PacketBase implements Packet
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
             if (tile instanceof TileEntityTelemetry)
             {
-                String name = (String) this.data.get(1);
-                if (name.startsWith("$"))
-                {
-                    //It's a player name
-                    ((TileEntityTelemetry) tile).clientClass = EntityPlayerMP.class;
-                    String strName = name.substring(1);
-                    ((TileEntityTelemetry) tile).clientName = strName;
-                    GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
-                    if (!strName.equals(profile.getName()))
-                    {
-                        profile = PlayerUtil.getOtherPlayerProfile(strName);
-                        if (profile == null)
-                        {
-                            String strUUID = (String) this.data.get(7);
-                            profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
-                        }
-                        if (!profile.getProperties().containsKey("textures"))
-                        {
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, this.getDimensionID(), new Object[] { strName }));
-                        }
-                    }
-                    ((TileEntityTelemetry) tile).clientGameProfile = profile;
-                }
-                else
-                {
-                    ((TileEntityTelemetry) tile).clientClass = EntityList.stringToClassMapping.get(name);
-                }
-                ((TileEntityTelemetry) tile).clientData = new int[5];
-                for (int i = 4; i < 7; i++)
-                {
-                    ((TileEntityTelemetry) tile).clientData[i - 4] = (Integer) this.data.get(i);
-                }
+                ((TileEntityTelemetry) tile).receiveUpdate(data, this.getDimensionID());
             }
             break;
         case C_SEND_PLAYERSKIN:

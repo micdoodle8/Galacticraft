@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
+
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -11,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -29,6 +31,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.List;
@@ -202,6 +206,29 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 name = "";
             }
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+        }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void receiveUpdate(List <Object> data, int dimID)
+    {
+        String name = (String) data.get(1);
+        if (name.startsWith("$"))
+        {
+            //It's a player name
+            this.clientClass = EntityPlayerMP.class;
+            String strName = name.substring(1);
+            this.clientName = strName;
+            this.clientGameProfile = PlayerUtil.getSkinForName(strName, (String) data.get(7), dimID);
+        }
+        else
+        {
+            this.clientClass = EntityList.stringToClassMapping.get(name);
+        }
+        this.clientData = new int[5];
+        for (int i = 2; i < 7; i++)
+        {
+            this.clientData[i - 2] = (Integer) data.get(i);
         }
     }
 
