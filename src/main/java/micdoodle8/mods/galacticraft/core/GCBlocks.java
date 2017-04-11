@@ -138,7 +138,7 @@ public class GCBlocks
         GCBlocks.cargoLoader = new BlockCargoLoader("cargo");
         GCBlocks.parachest = new BlockParaChest("parachest");
         GCBlocks.solarPanel = new BlockSolar("solar");
-        GCBlocks.radioTelescope = new BlockDish("dish");
+        GCBlocks.radioTelescope = new BlockDish("dishbase");
         GCBlocks.machineBase = new BlockMachine("machine");
         GCBlocks.machineBase2 = new BlockMachine2("machine2");
         GCBlocks.machineBase3 = new BlockMachine3("machine3");

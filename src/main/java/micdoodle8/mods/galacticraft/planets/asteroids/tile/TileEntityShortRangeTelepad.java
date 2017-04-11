@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTelepadFake;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,6 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -295,7 +297,16 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public void onCreate(World world, BlockPos placedPosition)
     {
-        int buildHeight = world.getHeight() - 1;
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(placedPosition, positions);
+        for (BlockPos vecToAdd : positions)
+            ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().withProperty(BlockTelepadFake.TOP, vecToAdd.getY() == placedPosition.getY() + 2));
+    }
+    
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
+        int buildHeight = this.worldObj.getHeight() - 1;
         for (int y = 0; y < 3; y += 2)
         {
             if (placedPosition.getY() + y > buildHeight)
@@ -306,12 +317,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             {
                 for (int z = -1; z <= 1; z++)
                 {
-                    final BlockPos vecToAdd = placedPosition.add(x, y, z);
-
-                    if (!vecToAdd.equals(placedPosition))
-                    {
-                        ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().withProperty(BlockTelepadFake.TOP, y == 2));
-                    }
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    positions.add(placedPosition.add(x, y, z));
                 }
             }
         }
@@ -320,16 +327,20 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        for (int y = 0; y < 3; y += 2)
+        final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(thisBlock, positions);
+
+        for (BlockPos pos : positions)
         {
-            for (int x = -1; x <= 1; x++)
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
+
+            if (stateAt.getBlock() == AsteroidBlocks.fakeTelepad)
             {
-                for (int z = -1; z <= 1; z++)
-                {
-                    this.worldObj.destroyBlock(new BlockPos(this.getPos().getX() + x, this.getPos().getY() + y, this.getPos().getZ() + z), y == 0 && x == 0 && z == 0);
-                }
+                this.worldObj.destroyBlock(pos, false);
             }
         }
+        this.worldObj.destroyBlock(thisBlock, true);
     }
 
     @Override

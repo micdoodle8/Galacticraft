@@ -1,11 +1,14 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
-public interface IMultiBlock
+public interface IMultiBlock extends ITickable
 {
     /**
      * Called when activated
@@ -25,4 +28,6 @@ public interface IMultiBlock
      * @param callingBlock - The tile entity who called the onDestroy function
      */
     void onDestroy(TileEntity callingBlock);
+    
+    void getPositions(BlockPos placedPosition, List<BlockPos> positions);
 }

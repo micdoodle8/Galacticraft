@@ -4,10 +4,12 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,12 +21,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TileEntityDish extends TileBaseUniversalElectrical implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
@@ -42,18 +48,27 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     {
         this.storage.setMaxExtract(100);
         this.setTierGC(1);
-        this.initialised = true;
+    }
+    
+    public float rotation(float partial)
+    {
+        return (this.ticks + partial) / 12;
+    }
+
+    public float elevation(float partial)
+    {
+        return (MathHelper.sin(rotation(partial) / 40) + 1.0F) * 22.5F;
     }
 
     @Override
     public void update()
     {
+        super.update();
+
         if (!this.initialised)
         {
-            this.initialised = true;
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
         }
-
-        super.update();
 
         if (!this.worldObj.isRemote)
         {
@@ -94,6 +109,29 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
         this.currentAngle += difference / 20.0F;
     }
 
+    protected boolean initialiseMultiTiles(BlockPos pos, World world)
+    {
+        //Client can create its own fake blocks and tiles - no need for networking in 1.8+
+        if (world.isRemote) this.onCreate(world, pos);
+        
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(pos, positions);
+        boolean result = true;
+        for (BlockPos vecToAdd : positions)
+        {
+            TileEntity tile = world.getTileEntity(vecToAdd);
+            if (tile instanceof TileEntityMulti)
+            {
+                ((TileEntityMulti) tile).mainBlockPosition = pos;
+            }
+            else
+            {
+                result = false;
+            }
+        }
+        return result;
+    }
+
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
@@ -104,26 +142,60 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @Override
     public void onCreate(World world, BlockPos placedPosition)
     {
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(placedPosition, positions);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.DISH_LARGE);
+    }
+    
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
         int buildHeight = this.worldObj.getHeight() - 1;
-
-        if (placedPosition.getY() + 1 > buildHeight)
+        int y = placedPosition.getY() + 1; 
+        if (y > buildHeight)
         {
             return;
         }
-        final BlockPos vecStrut = new BlockPos(placedPosition.getX(), placedPosition.getY() + 1, placedPosition.getZ());
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecStrut, placedPosition, 0);
-
-        if (placedPosition.getY() + 2 > buildHeight)
-        {
-            return;
-        }
+        
         for (int x = -1; x < 2; x++)
-        {
             for (int z = -1; z < 2; z++)
             {
-                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + 2, placedPosition.getZ() + z);
+                positions.add(new BlockPos(x + placedPosition.getX(), y, z + placedPosition.getZ()));
+            }
 
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, (this.getTierGC() == 1) ? 4 : 0);
+        y++;
+        if (y <= buildHeight)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
+                }
+            }
+        }
+
+        y++;
+        if (y <= buildHeight)
+        {
+            for (int x = -2; x < 3; x++)
+            {
+                for (int z = -2; z < 3; z++)
+                {
+                    positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
+                }
+            }
+        }
+
+        y++;
+        if (y <= buildHeight)
+        {
+            for (int x = -3; x < 4; x++)
+            {
+                for (int z = -3; z < 4; z++)
+                {
+                    positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
+                }
             }
         }
     }
@@ -132,25 +204,22 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(thisBlock, positions);
 
-        for (int y = 1; y <= 2; y++)
+        for (BlockPos pos : positions)
         {
-            for (int x = -1; x < 2; x++)
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
+
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.DISH_LARGE)
             {
-                for (int z = -1; z < 2; z++)
+                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
                 {
-                    BlockPos pos = new BlockPos(thisBlock.getX() + (y == 2 ? x : 0), thisBlock.getY() + y, thisBlock.getZ() + (y == 2 ? z : 0));
-
-                    if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
-                    {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
-                    }
-
-                    this.worldObj.setBlockToAir(pos);
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
                 }
+                this.worldObj.setBlockToAir(pos);
             }
         }
-
         this.worldObj.destroyBlock(thisBlock, true);
     }
 

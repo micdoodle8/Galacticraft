@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -27,12 +30,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
@@ -68,6 +73,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     public EntityAstroMiner linkedMiner = null;
     public UUID linkedMinerID = null;
+    private boolean initialised;
 
     public TileEntityMinerBase()
     {
@@ -85,30 +91,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         super.update();
 
-        if (this.isMaster)
+        if (this.isMaster && !this.initialised)
         {
-            // TODO: Find a more efficient way to fix this
-            //          Broken since 1.8 and this is an inefficient fix
-            for (int x = 0; x <= 2; x++)
-            {
-                for (int z = 0; z <= 2; z++)
-                {
-                    if (!(x == 0 && z == 0))
-                    {
-                        final BlockPos vecToAdd = new BlockPos(getPos().getX() + x, getPos().getY(), getPos().getZ() + z);
-
-                        TileEntity tile = this.worldObj.getTileEntity(vecToAdd);
-                        if (tile instanceof TileEntityMinerBase)
-                        {
-                            BlockPos pos = ((TileEntityMinerBase) tile).mainBlockPosition;
-                            if (pos == null || !pos.equals(getPos()))
-                            {
-                                ((TileEntityMinerBase) tile).mainBlockPosition = getPos();
-                            }
-                        }
-                    }
-                }
-            }
+            this.initialised = true;
+//TODO - maybe unnecessary?           this.initialiseMultiTiles(this.getPos(), this.worldObj);   
         }
 
 //        if (this.updateClientFlag)
@@ -155,6 +141,21 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         if (this.linkCountDown > 0)
         {
             this.linkCountDown--;
+        }
+    }
+
+    //TODO - currently unused, the master position replaces this?
+    protected void initialiseMultiTiles(BlockPos pos, World world)
+    {
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(pos, positions);
+        for (BlockPos vecToAdd : positions)
+        {
+            TileEntity tile = world.getTileEntity(vecToAdd);
+            if (tile instanceof TileEntityMinerBase)
+            {
+                ((TileEntityMinerBase) tile).mainBlockPosition = pos;
+            }
         }
     }
 
@@ -518,18 +519,43 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void onDestroy(TileEntity callingBlock)
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {
-        for (int x = 0; x < 2; x++)
+        for (int y = 0; y < 2; y++)
         {
-            for (int y = 0; y < 2; y++)
+            if (placedPosition.getY() + y >= this.worldObj.getHeight()) break;
+            for (int x = 0; x < 2; x++)
             {
                 for (int z = 0; z < 2; z++)
                 {
-                    this.worldObj.destroyBlock(this.getPos().add(x, y, z), false);
+                    if (x + y + z == 0) continue;
+                    positions.add(new BlockPos(placedPosition.getX() + x, placedPosition.getY() + y, placedPosition.getZ() + z));
                 }
             }
         }
+    }
+
+    @Override
+    public void onDestroy(TileEntity callingBlock)
+    {
+        final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(thisBlock, positions);
+
+        for (BlockPos pos : positions)
+        {
+            IBlockState stateAt = this.worldObj.getBlockState(pos);
+
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.MINER_BASE)
+            {
+                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.1D)
+                {
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(pos));
+                }
+                this.worldObj.destroyBlock(pos, false);
+            }
+        }
+        this.worldObj.destroyBlock(thisBlock, true);
     }
 
     //TODO
@@ -552,16 +578,16 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             switch (this.facing)
             {
             case SOUTH:
-                this.facing = EnumFacing.EAST;
+                this.facing = EnumFacing.WEST;
                 break;
             case EAST:
-                this.facing = EnumFacing.WEST;
+                this.facing = EnumFacing.SOUTH;
                 break;
             case WEST:
                 this.facing = EnumFacing.NORTH;
                 break;
             case NORTH:
-                this.facing = EnumFacing.SOUTH;
+                this.facing = EnumFacing.EAST;
                 break;
             }
 
