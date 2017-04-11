@@ -41,6 +41,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -51,16 +52,24 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.RecipeSorter;
 
+import java.io.File;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class AsteroidsModule implements IPlanetsModule
 {
     public static Planet planetAsteroids;
+    private File GCPlanetsSource;
 
     public static AsteroidsPlayerHandler playerHandler;
     public static Fluid fluidMethaneGas;
@@ -88,6 +97,7 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
+        GCPlanetsSource = event.getSourceFile();
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
@@ -247,7 +257,25 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-
+        try {
+            ZipFile zf = new ZipFile(GCPlanetsSource);
+            final Pattern assetENUSLang = Pattern.compile("assets/(.*)/lang/(?:.+/|)([\\w_-]+).lang");
+            for (ZipEntry ze : Collections.list(zf.entries()))
+            {
+                if (!ze.getName().contains("galacticraftasteroids/lang")) continue;
+                Matcher matcher = assetENUSLang.matcher(ze.getName());
+                if (matcher.matches())
+                {
+                    String lang = matcher.group(2);
+                    LanguageRegistry.instance().injectLanguage(lang, StringTranslate.parseLangFile(zf.getInputStream(ze)));
+                    if ("en_US".equals(lang) && event.getSide() == Side.SERVER)
+                    {
+                        StringTranslate.inject(zf.getInputStream(ze));
+                    }
+                }
+            }
+            zf.close();
+        } catch (Exception e) {}
     }
 
     @Override
