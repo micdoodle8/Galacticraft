@@ -3,10 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.venus.items.ItemBasicVenus;
-import micdoodle8.mods.galacticraft.planets.venus.items.ItemKeyVenus;
-import micdoodle8.mods.galacticraft.planets.venus.items.ItemThermalPaddingTier2;
-import micdoodle8.mods.galacticraft.planets.venus.items.ItemVolcanicPickaxe;
+import micdoodle8.mods.galacticraft.planets.venus.items.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -20,6 +17,7 @@ public class VenusItems
     public static Item volcanicPickaxe;
     public static Item key;
     public static Item bucketSulphuricAcid;
+    public static Item atomicBattery;
 
     public static Item.ToolMaterial TOOL_VOLCANIC = EnumHelper.addToolMaterial("volcanic", 3, 1561, 32.0F, 1.5F, 10);
 
@@ -29,6 +27,7 @@ public class VenusItems
         VenusItems.basicItem = new ItemBasicVenus("basic_item_venus");
         VenusItems.volcanicPickaxe = new ItemVolcanicPickaxe("volcanic_pickaxe");
         VenusItems.key = new ItemKeyVenus("key_t3");
+        VenusItems.atomicBattery = new ItemBatteryAtomic("atomic_battery");
 
         VenusItems.registerItems();
         VenusItems.registerHarvestLevels();
@@ -44,6 +43,7 @@ public class VenusItems
         VenusItems.registerItem(VenusItems.basicItem);
         VenusItems.registerItem(VenusItems.volcanicPickaxe);
         VenusItems.registerItem(VenusItems.key);
+        VenusItems.registerItem(VenusItems.atomicBattery);
     }
 
     public static void registerItem(Item item)

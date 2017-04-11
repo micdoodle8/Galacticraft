@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -65,7 +66,7 @@ public class ContainerFuelLoader extends Container
             }
             else
             {
-                if (var5.getItem() instanceof IItemElectric)
+                if (EnergyUtil.isElectricItem(var5.getItem()))
                 {
                     if (!this.mergeItemStack(var5, 0, 1, false))
                     {

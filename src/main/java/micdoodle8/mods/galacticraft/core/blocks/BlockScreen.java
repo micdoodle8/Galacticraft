@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -33,6 +34,15 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
 
+    protected static final float boundsFront = 0.094F;
+    protected static final float boundsBack = 1.0F - boundsFront;
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
+    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
+    
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
     public BlockScreen(String assetName)
     {
@@ -136,37 +146,26 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
         return true;
     }
 
-//    @Override
-//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
-//    {
-//        final int metadata = getMetaFromState(worldIn.getBlockState(pos)) & 7;
-//        float boundsFront = 0.094F;
-//        float boundsBack = 1.0F - boundsFront;
-//
-//        switch (metadata)
-//        {
-//        case 0:
-//            this.setBlockBounds(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
-//            break;
-//        case 1:
-//            this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
-//            break;
-//        case 2:
-//            this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
-//            break;
-//        case 3:
-//            this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
-//            break;
-//        case 4:
-//            this.setBlockBounds(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
-//            break;
-//        case 5:
-//            this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
-//            break;
-//        }
-//
-//        return super.collisionRayTrace(worldIn, pos, start, end);
-//    }
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+        case EAST:
+            return EAST_AABB;
+        case WEST:
+            return WEST_AABB;
+        case SOUTH:
+            return SOUTH_AABB;
+        case NORTH:
+            return NORTH_AABB;
+        case DOWN:
+            return DOWN_AABB;
+        case UP:
+        default:
+            return UP_AABB;
+        }
+    }
 
     @Override
     public IBlockState getStateFromMeta(int meta)

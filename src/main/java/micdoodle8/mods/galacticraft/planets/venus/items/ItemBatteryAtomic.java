@@ -1,7 +1,8 @@
-package micdoodle8.mods.galacticraft.core.items;
+package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -17,30 +18,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemBatteryInfinite extends ItemElectricBase implements ISortableItem
+public class ItemBatteryAtomic extends ItemElectricBase implements ISortableItem
 {
-    public ItemBatteryInfinite(String assetName)
+    public ItemBatteryAtomic(String assetName)
     {
         super();
         this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack)
-    {
-        return true;
-    }
-
-    @Override
     protected void setMaxTransfer()
     {
-        this.transferMax = 1000;
+        this.transferMax = 12;
     }
 
     @Override
     public int getTierGC(ItemStack itemStack)
     {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -56,12 +51,11 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
         tooltip.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
-        tooltip.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
+        tooltip.add(EnumColor.ORANGE + GCCoreUtil.translate("gui.message.low_energy_output.name"));
     }
 
     @Override
@@ -96,13 +90,13 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
     @Override
     public float discharge(ItemStack theItem, float energy, boolean doTransfer)
     {
-        return energy;
+        return super.discharge(theItem, energy, doTransfer);
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
     {
-        list.add(new ItemStack(itemIn, 1, 0));
+        par3List.add(new ItemStack(par1, 1, 0));
     }
 
     @Override

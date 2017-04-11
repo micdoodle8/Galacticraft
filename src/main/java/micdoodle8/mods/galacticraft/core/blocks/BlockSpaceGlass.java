@@ -67,12 +67,30 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     {
         return new BlockStateContainer(this, new IProperty[] {MODEL, ROTATION});
     }
-    
+
+    @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < GlassFrame.values().length; i++)
-            list.add(new ItemStack(itemIn, 1, i));
+        //The plain block variety produces items carrying all variants as damage values
+        //Other block varieties have no corresponding ItemBlock (see registration in GCBlocks)
+        if (this.frame == GlassFrame.PLAIN)
+        {
+            for (int i = 0; i < GlassFrame.values().length; i++)
+                list.add(new ItemStack(itemIn, 1, i));
+        }
+    }
+
+    @Override
+    public CreativeTabs getCreativeTabToDisplayOn()
+    {
+        return GalacticraftCore.galacticraftBlocksTab;
+    }
+
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.DECORATION;
     }
 
     @Override
@@ -170,6 +188,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
          return BlockRenderLayer.TRANSLUCENT;
     }
 
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
+    {
+        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
+    }
+    
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
@@ -278,6 +302,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 //    }
 //
+//TODO:  Set up predefined AABBs
 //    @Override
 //    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
 //    {
@@ -655,18 +680,6 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             return GCCoreUtil.translate("tile.space_glass.strong.description");
         }
         
-    }
-
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
-
-    @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override

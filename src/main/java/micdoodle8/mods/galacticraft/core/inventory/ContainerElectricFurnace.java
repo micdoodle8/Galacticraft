@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -83,7 +84,7 @@ public class ContainerElectricFurnace extends Container
             }
             else if (par1 != 1 && par1 != 0)
             {
-                if (var4.getItem() instanceof IItemElectric)
+                if (EnergyUtil.isElectricItem(var4.getItem()))
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {

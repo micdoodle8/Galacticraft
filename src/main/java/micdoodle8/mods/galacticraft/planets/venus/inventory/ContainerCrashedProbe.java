@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
-import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -67,7 +67,7 @@ public class ContainerCrashedProbe extends Container
             }
             else
             {
-                if (stack.getItem() instanceof IItemElectric)
+                if (EnergyUtil.isElectricItem(stack.getItem()))
                 {
                     if (!this.mergeItemStack(stack, 0, 1, false))
                     {

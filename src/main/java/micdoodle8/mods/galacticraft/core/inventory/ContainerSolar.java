@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -63,7 +64,7 @@ public class ContainerSolar extends Container
             }
             else
             {
-                if (stack.getItem() instanceof IItemElectric)
+                if (EnergyUtil.isElectricItem(stack.getItem()))
                 {
                     if (!this.mergeItemStack(stack, 0, 1, false))
                     {

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
@@ -88,7 +89,7 @@ public class ContainerGasLiquefier extends Container
             }
             else
             {
-                if (var4.getItem() instanceof IItemElectric)
+                if (EnergyUtil.isElectricItem(var4.getItem()))
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {

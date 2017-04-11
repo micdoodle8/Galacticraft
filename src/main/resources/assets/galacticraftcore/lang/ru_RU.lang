@@ -1,3 +1,6 @@
+checklist.createGrapple.key=Создать крюк
+checklist.equipOxygenSuit.key=Оборудовать костюм кислородом
+checklist.equipParachute.key=Оборудовать костюм парашютом
 command.gcastrominer.count=Для игрока %s доступно астрошахтёров - %s
 commands.dimensionteleport=%s был направлен в атмосферу%s
 commands.dimensiontp.too_many=Слишком много аргументов команды! Использование: %s

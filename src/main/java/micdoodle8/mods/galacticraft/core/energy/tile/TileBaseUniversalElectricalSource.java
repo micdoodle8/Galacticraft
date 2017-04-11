@@ -163,6 +163,8 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
     public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing direction)
     {
+        if (this.tileEntityInvalid) return false;
+        
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (receiver instanceof IElectrical || receiver instanceof IConductor || !(receiver instanceof IEnergyTile))
         {
@@ -218,6 +220,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
                 //No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
                 return 0.0F;
             }
+            return this.storage.extractEnergyGC(Float.MAX_VALUE, true);
         }
 
         if (this.getElectricalOutputDirections().contains(direction))
