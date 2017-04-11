@@ -10,6 +10,7 @@
 		"uvlock": true
 	},
 	"variants": {
+	    "inventory": [{ }],
 		"north": {
 			"true": {
 				"submodel": {
