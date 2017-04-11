@@ -94,8 +94,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
 
     private boolean canCompress()
     {
-        ItemStack itemstack = this.producingStack;
-        if (itemstack.isEmpty())
+        if (this.producingStack.isEmpty())
         {
             return false;
         }
@@ -103,12 +102,12 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         {
             return true;
         }
-        if (!this.stacks.get(6).isEmpty() && !this.stacks.get(6).isItemEqual(itemstack))
+        if (!this.stacks.get(6).isEmpty() && !this.stacks.get(6).isItemEqual(this.producingStack))
         {
             return false;
         }
-        int result = this.stacks.get(6).isEmpty() ? 0 : this.stacks.get(6).getCount() + itemstack.getCount();
-        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
+        int result = this.stacks.get(6).isEmpty() ? 0 : this.stacks.get(6).getCount() + this.producingStack.getCount();
+        return result <= this.getInventoryStackLimit() && result <= this.producingStack.getMaxStackSize();
     }
 
     public void compressItems()

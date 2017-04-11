@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -557,9 +558,28 @@ public class RecipeManagerGC
                 silicon = silicons.get(j - 1);
                 if (silicon.getItem() == GCItems.basicItem && silicon.getItemDamage() == 2) continue;
             }
-            CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Items.DYE, 1, 4) });
-            CircuitFabricatorRecipes.addRecipe(basicWafers, new ItemStack[] { new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Blocks.REDSTONE_TORCH) });
-            CircuitFabricatorRecipes.addRecipe(advancedWafers, new ItemStack[] { new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Items.REPEATER) });
+
+            NonNullList<ItemStack> input1 = NonNullList.create();
+            input1.add(new ItemStack(Items.DIAMOND));
+            input1.add(silicon);
+            input1.add(silicon);
+            input1.add(new ItemStack(Items.REDSTONE));
+            input1.add(new ItemStack(Items.DYE, 1, 4));
+            CircuitFabricatorRecipes.addRecipe(solarPanels, input1);
+            NonNullList<ItemStack> input2 = NonNullList.create();
+            input2.add(new ItemStack(Items.DIAMOND));
+            input2.add(silicon);
+            input2.add(silicon);
+            input2.add(new ItemStack(Items.REDSTONE));
+            input2.add(new ItemStack(Blocks.REDSTONE_TORCH));
+            CircuitFabricatorRecipes.addRecipe(basicWafers, input2);
+            NonNullList<ItemStack> input3 = NonNullList.create();
+            input3.add(new ItemStack(Items.DIAMOND));
+            input3.add(silicon);
+            input3.add(silicon);
+            input3.add(new ItemStack(Items.REDSTONE));
+            input3.add(new ItemStack(Items.REPEATER));
+            CircuitFabricatorRecipes.addRecipe(advancedWafers, input3);
         }
 
         CompressorRecipes.removeRecipe(new ItemStack(GCItems.basicItem, 1, 9));

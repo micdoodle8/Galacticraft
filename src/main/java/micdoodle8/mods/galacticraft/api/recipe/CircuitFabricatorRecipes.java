@@ -80,7 +80,7 @@ public class CircuitFabricatorRecipes
     {
         if (inputList.size() != 5)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         for (Entry<NonNullList<ItemStack>, ItemStack> recipe : CircuitFabricatorRecipes.recipes.entrySet())
@@ -115,7 +115,7 @@ public class CircuitFabricatorRecipes
             return recipe.getValue();
         }
 
-        return CircuitFabricatorRecipes.recipes.get(inputList);
+        return ItemStack.EMPTY;
     }
     
     

@@ -24,19 +24,19 @@ public class CanisterRecipes extends ShapelessRecipes
     @Override
     public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_)
     {
-        ItemStack itemCanister = null;
-        ItemStack itemTank = null;
+        ItemStack itemCanister = ItemStack.EMPTY;
+        ItemStack itemTank = ItemStack.EMPTY;
 
         for (int i = 0; i < p_77569_1_.getSizeInventory(); ++i)
         {
             ItemStack itemstack1 = p_77569_1_.getStackInSlot(i);
 
-            if (itemstack1 != null)
+            if (!itemstack1.isEmpty())
             {
                 Item testItem = itemstack1.getItem();
                 if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)
                 {
-                    if (itemCanister != null)
+                    if (!itemCanister.isEmpty())
                     {
                         //Two canisters
                         return false;
@@ -58,7 +58,7 @@ public class CanisterRecipes extends ShapelessRecipes
         }
 
         //Need one canister + one tank
-        if (itemCanister == null || itemTank == null)
+        if (itemCanister.isEmpty() || itemTank.isEmpty())
         {
             return false;
         }
