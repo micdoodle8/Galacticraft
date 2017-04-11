@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription
+public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
     public static final PropertyEnum MODEL = PropertyEnum.create("modeltype", GlassModel.class);
     public static final PropertyEnum ROTATION  = PropertyEnum.create("rot", GlassRotation.class);
@@ -71,8 +72,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (int i = 0; i < GlassFrame.values().length; i++)
-            list.add(new ItemStack(itemIn, 1, i));
+        //The plain block variety produces items carrying all variants as damage values
+        //Other block varieties have no corresponding ItemBlock (see registration in GCBlocks)
+        if (this.frame == GlassFrame.PLAIN)
+        {
+            for (int i = 0; i < GlassFrame.values().length; i++)
+                list.add(new ItemStack(itemIn, 1, i));
+        }
     }
 
     @Override
@@ -81,6 +87,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return GalacticraftCore.galacticraftBlocksTab;
     }
     
+    @Override
+    public EnumSortCategoryBlock getCategory(int meta)
+    {
+        return EnumSortCategoryBlock.DECORATION;
+    }
+
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int damage, EntityLivingBase placer)
     {
