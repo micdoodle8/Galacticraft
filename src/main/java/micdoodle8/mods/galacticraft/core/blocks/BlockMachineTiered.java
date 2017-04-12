@@ -241,7 +241,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING, TYPE, FILL_VALUE); //, SIDES);
+        return new BlockState(this, FACING, TYPE, FILL_VALUE, SIDES);
     }
 
     @Override
@@ -251,10 +251,10 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         if (tile instanceof IMachineSides)
         {
             IMachineSides tileSides = (IMachineSides) tile;
-//            state = state.withProperty(SIDES, tileSides.renderTwo());
+            state = state.withProperty(SIDES, tileSides.renderTwo());
         }
         else
-//            state = state.withProperty(SIDES, RenderFacesTWO.LEFT1);
+            state = state.withProperty(SIDES, RenderFacesTWO.LEFT1);
         if (!(tile instanceof TileEntityEnergyStorageModule))
         {
             return state.withProperty(FILL_VALUE, 0);
@@ -268,5 +268,17 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+    
+    @Override
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            ((IMachineSides)tile).nextSideConfiguration();
+            return true;
+        }
+        return false;
     }
 }

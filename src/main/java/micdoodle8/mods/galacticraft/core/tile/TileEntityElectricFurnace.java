@@ -328,9 +328,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public boolean setSideElectricInput(FaceRelative newSide)
+    public boolean setSideElectricInput(Face newSide)
     {
-        if (newSide != FaceRelative.NOT_SET)
+        if (newSide != Face.NOT_SET)
         {
             this.electricIn = newSide;
             return true;
@@ -345,12 +345,12 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         return new MachineSide[] { MachineSide.ELECTRIC_IN };
     }
 
-    private FaceRelative electricIn = FaceRelative.LEFT;
+    private Face electricIn = Face.LEFT;
 
     @Override
     public MachineSide renderLeft()
     {
-        if (electricIn == FaceRelative.LEFT)
+        if (electricIn == Face.LEFT)
             return MachineSide.ELECTRIC_IN;
         
         return MachineSide.PLAIN;
@@ -359,7 +359,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public MachineSide renderRight()
     {
-        if (electricIn == FaceRelative.RIGHT)
+        if (electricIn == Face.RIGHT)
             return MachineSide.ELECTRIC_IN;
         
         return MachineSide.PLAIN;
@@ -368,7 +368,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public MachineSide renderRear()
     {
-        if (electricIn == FaceRelative.REAR)
+        if (electricIn == Face.REAR)
             return MachineSide.ELECTRIC_IN;
         
         return MachineSide.REARDECO;
@@ -377,7 +377,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public MachineSide renderTop()
     {
-        if (electricIn == FaceRelative.TOP)
+        if (electricIn == Face.TOP)
             return MachineSide.ELECTRIC_IN;
         
         return MachineSide.TOP;
@@ -386,7 +386,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public MachineSide renderBase()
     {
-        if (electricIn == FaceRelative.TOP)
+        if (electricIn == Face.TOP)
             return MachineSide.ELECTRIC_IN;
         
         return MachineSide.BASE;
@@ -412,5 +412,28 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         default:
             return RenderFacesTWO.LEFT1;
         }
+    }
+
+    @Override
+    public void nextSideConfiguration()
+    {
+        System.out.println("Rotating faces test.");
+        switch(electricIn)
+        {
+        case RIGHT:
+            electricIn = Face.LEFT;
+            break;
+        case REAR:
+            electricIn = Face.RIGHT;
+            break;
+//        case TOP:
+//            return RenderFacesTWO.TOP1;
+//        case BOTTOM:
+//            return RenderFacesTWO.BOTTOM1;
+        case LEFT:
+        default:
+            electricIn = Face.REAR;
+        }
+        this.worldObj.markBlockForUpdate(this.getPos());
     }
 }

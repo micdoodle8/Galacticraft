@@ -94,7 +94,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (world.isRemote)
+        if (world.isRemote || player.isSneaking())
         {
             return false;
         }

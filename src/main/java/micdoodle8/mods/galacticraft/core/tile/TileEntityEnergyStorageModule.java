@@ -454,13 +454,13 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         return new MachineSide[] { MachineSide.ELECTRIC_IN };
     }
 
-    private FaceRelative electricIn = FaceRelative.RIGHT;
-    private FaceRelative electricOut = FaceRelative.LEFT;
+    private Face electricIn = Face.RIGHT;
+    private Face electricOut = Face.LEFT;
 
     @Override
-    public boolean setSideElectricInput(FaceRelative newSide)
+    public boolean setSideElectricInput(Face newSide)
     {
-        if (newSide != FaceRelative.NOT_SET && newSide != electricOut)
+        if (newSide != Face.NOT_SET && newSide != electricOut)
         {
             this.electricIn = newSide;
             return true;
@@ -470,9 +470,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public boolean setSideElectricOutput(FaceRelative newSide)
+    public boolean setSideElectricOutput(Face newSide)
     {
-        if (newSide != FaceRelative.NOT_SET && newSide != electricIn)
+        if (newSide != Face.NOT_SET && newSide != electricIn)
         {
             this.electricOut = newSide;
             return true;
@@ -484,8 +484,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public MachineSide renderLeft()
     {
-        if (electricIn == FaceRelative.LEFT) return MachineSide.ELECTRIC_IN;
-        if (electricOut == FaceRelative.LEFT) return MachineSide.ELECTRIC_OUT;
+        if (electricIn == Face.LEFT) return MachineSide.ELECTRIC_IN;
+        if (electricOut == Face.LEFT) return MachineSide.ELECTRIC_OUT;
         
         return MachineSide.PLAIN;
     }
@@ -493,8 +493,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public MachineSide renderRight()
     {
-        if (electricIn == FaceRelative.RIGHT) return MachineSide.ELECTRIC_IN;
-        if (electricOut == FaceRelative.RIGHT) return MachineSide.ELECTRIC_OUT;
+        if (electricIn == Face.RIGHT) return MachineSide.ELECTRIC_IN;
+        if (electricOut == Face.RIGHT) return MachineSide.ELECTRIC_OUT;
         
         return MachineSide.PLAIN;
     }
@@ -502,8 +502,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public MachineSide renderRear()
     {
-        if (electricIn == FaceRelative.REAR) return MachineSide.ELECTRIC_IN;
-        if (electricOut == FaceRelative.REAR) return MachineSide.ELECTRIC_OUT;
+        if (electricIn == Face.REAR) return MachineSide.ELECTRIC_IN;
+        if (electricOut == Face.REAR) return MachineSide.ELECTRIC_OUT;
         
         return MachineSide.REARDECO;
     }
@@ -511,8 +511,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public MachineSide renderTop()
     {
-        if (electricIn == FaceRelative.TOP) return MachineSide.ELECTRIC_IN;
-        if (electricOut == FaceRelative.TOP) return MachineSide.ELECTRIC_OUT;
+        if (electricIn == Face.TOP) return MachineSide.ELECTRIC_IN;
+        if (electricOut == Face.TOP) return MachineSide.ELECTRIC_OUT;
         
         return MachineSide.TOP;
     }
@@ -520,8 +520,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public MachineSide renderBase()
     {
-        if (electricIn == FaceRelative.BOTTOM) return MachineSide.ELECTRIC_IN;
-        if (electricOut == FaceRelative.BOTTOM) return MachineSide.ELECTRIC_OUT;
+        if (electricIn == Face.BOTTOM) return MachineSide.ELECTRIC_IN;
+        if (electricOut == Face.BOTTOM) return MachineSide.ELECTRIC_OUT;
         
         return MachineSide.BASE;
     }
@@ -531,6 +531,51 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public RenderFacesTWO renderTwo()
     {
-        return RenderFacesTWO.getByName(this.electricIn, this.electricOut);
+        RenderFacesTWO result = RenderFacesTWO.getByName(this.electricIn, this.electricOut);
+        System.out.println("rendering " + result.getName());
+        return result;
+    }
+
+    @Override
+    public void nextSideConfiguration()
+    {
+        System.out.println("Rotating faces test.");
+        switch(electricIn)
+        {
+        case RIGHT:
+            if (electricOut == Face.LEFT)
+            {
+                electricOut = Face.REAR;
+            }
+            else
+            {
+                electricIn = Face.LEFT;
+                electricOut = Face.REAR;
+            }
+            break;
+        case REAR:
+            if (electricOut == Face.RIGHT)
+            {
+                electricOut = Face.LEFT;
+            }
+            else
+            {
+                electricIn = Face.RIGHT;
+                electricOut = Face.LEFT;
+            }
+            break;
+        case LEFT:
+        default:
+            if (electricOut == Face.REAR)
+            {
+                electricOut = Face.RIGHT;
+            }
+            else
+            {
+                electricIn = Face.REAR;
+                electricOut = Face.RIGHT;
+            }
+        }
+        if (this.worldObj.isRemote) this.worldObj.markBlockForUpdate(this.getPos());
     }
 }

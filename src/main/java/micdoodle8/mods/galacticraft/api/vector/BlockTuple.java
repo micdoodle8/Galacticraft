@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.api.vector;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.IPlantable;
 
 public class BlockTuple
 {
@@ -19,10 +18,8 @@ public class BlockTuple
     @Override
     public String toString()
     {
-    	if (this.block instanceof IPlantable) return "tile.crops.name";
-
         Item item = Item.getItemFromBlock(this.block);
-    	if (item == null) return "unknown:" + this.block.getUnlocalizedName(); 
+    	if (item == null) return this.block.getUnlocalizedName() + ".name"; 
     	return new ItemStack(item, 1, this.meta).getUnlocalizedName() + ".name";
     }
 }

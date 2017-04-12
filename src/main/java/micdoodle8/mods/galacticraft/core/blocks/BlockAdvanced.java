@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -74,7 +76,10 @@ public abstract class BlockAdvanced extends Block
     {
         if (entityPlayer != null && itemStack != null)
         {
-            Class<? extends Item> wrenchClass = itemStack.getItem().getClass();
+            Item item = itemStack.getItem();
+            if (item == GCItems.wrench) return true;
+            
+            Class<? extends Item> wrenchClass = item.getClass();
 
             /**
              * UE and Buildcraft
@@ -82,7 +87,7 @@ public abstract class BlockAdvanced extends Block
             try
             {
                 Method methodCanWrench = wrenchClass.getMethod("canWrench", EntityPlayer.class, BlockPos.class);
-                return (Boolean) methodCanWrench.invoke(itemStack.getItem(), entityPlayer, pos);
+                return (Boolean) methodCanWrench.invoke(item, entityPlayer, pos);
             }
             catch (NoClassDefFoundError e)
             {
@@ -91,6 +96,8 @@ public abstract class BlockAdvanced extends Block
             {
             }
 
+            if (CompatibilityManager.isIc2Loaded())
+            {
             /**
              * Industrialcraft
              */
@@ -103,6 +110,7 @@ public abstract class BlockAdvanced extends Block
             }
             catch (Exception e)
             {
+            }
             }
         }
 

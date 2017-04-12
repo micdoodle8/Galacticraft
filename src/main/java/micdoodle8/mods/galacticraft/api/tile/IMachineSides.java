@@ -62,7 +62,7 @@ public interface IMachineSides
      * Returns false if the setting failed (e.g.
      * because the side was already taken by something else)
      */
-    public default boolean setSideElectricInput(FaceRelative newSide)
+    public default boolean setSideElectricInput(Face newSide)
     {
         return false;
     }
@@ -74,7 +74,7 @@ public interface IMachineSides
      * Returns false if the setting failed (e.g.
      * because the side was already taken by something else)
      */
-    public default boolean setSideElectricOutput(FaceRelative newSide)
+    public default boolean setSideElectricOutput(Face newSide)
     {
         return false;
     }
@@ -86,7 +86,7 @@ public interface IMachineSides
      * Returns false if the setting failed (e.g.
      * because the side was already taken by something else)
      */
-    public default boolean setSidePipeInput(FaceRelative newSide)
+    public default boolean setSidePipeInput(Face newSide)
     {
         return false;
     }
@@ -98,7 +98,7 @@ public interface IMachineSides
      * Returns false if the setting failed (e.g.
      * because the side was already taken by something else)
      */
-    public default boolean setSidePipeOutput(FaceRelative newSide)
+    public default boolean setSidePipeOutput(Face newSide)
     {
         return false;
     }
@@ -110,7 +110,7 @@ public interface IMachineSides
      * Returns false if the setting failed (e.g.
      * because the side was already taken by something else)
      */
-    public default boolean setSideRearFace(FaceRelative newSide)
+    public default boolean setSideRearFace(Face newSide)
     {
         return false;
     }
@@ -120,7 +120,7 @@ public interface IMachineSides
      * can be set to.  These are relative to the front of the machine
      * (looking at the machine from the normal front). 
      */
-    public enum FaceRelative
+    public enum Face
     {
         LEFT("l"),
         RIGHT("r"),
@@ -131,9 +131,14 @@ public interface IMachineSides
         
         private final String name;
 
-        FaceRelative(String newname)
+        Face(String newname)
         {
             this.name = newname;
+        }
+
+        public String getName()
+        {
+            return this.name;
         }
     }
     
@@ -170,16 +175,16 @@ public interface IMachineSides
     {
         LEFT1("lr"),
         LEFT2("lb"),
-        LEFT3("lu"),
-        LEFT4("ld"),
+//        LEFT3("lu"),
+//        LEFT4("ld"),
         RIGHT1("rl"),
         RIGHT2("rb"),
-        RIGHT3("ru"),
-        RIGHT4("rd"),
+//        RIGHT3("ru"),
+//        RIGHT4("rd"),
         REAR1("bl"),
-        REAR2("br"),
-        REAR3("bu"),
-        REAR4("bd");
+        REAR2("br");
+ //       REAR3("bu"),
+ //       REAR4("bd");
         //Temporarily exclude these, otherwise crazy numbers of blockstates for Energy Storage Module
 //        TOP1("ul"),
 //        TOP2("ur"),
@@ -210,9 +215,10 @@ public interface IMachineSides
          * It could also be electricIn and pipeIn for example - whatever
          * is needed according to the block model
          */
-        public static RenderFacesTWO getByName(FaceRelative electricIn, FaceRelative electricOut)
+        public static RenderFacesTWO getByName(Face electricIn, Face electricOut)
         {
-            String result = electricIn.name() + electricOut.name();
+            String result = electricIn.getName() + electricOut.getName();
+            System.out.println("Trying result: " + result);
             for (RenderFacesTWO test : RenderFacesTWO.values())
             {
                 if (result.equals(test.name)) return test;
@@ -319,4 +325,9 @@ public interface IMachineSides
      *   BASE for bottom 
      */
     public MachineSide[] listConfigurableSides();
+
+    /**
+     * For testing purposes - Sneak Wrench to activate this
+     */
+    public void nextSideConfiguration();
 }
