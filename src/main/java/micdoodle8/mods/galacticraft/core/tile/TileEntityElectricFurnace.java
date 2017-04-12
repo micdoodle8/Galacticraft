@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
+public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver, IMachineSides
 {
     //The electric furnace is 50% faster than a vanilla Furnace
     //but at a cost of some inefficiency:
@@ -310,6 +311,106 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFront().rotateY();
+        switch (this.electricIn)
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
+    }
+
+    @Override
+    public boolean setSideElectricInput(FaceRelative newSide)
+    {
+        if (newSide != FaceRelative.NOT_SET)
+        {
+            this.electricIn = newSide;
+            return true;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+    }
+
+    private FaceRelative electricIn = FaceRelative.LEFT;
+
+    @Override
+    public MachineSide renderLeft()
+    {
+        if (electricIn == FaceRelative.LEFT)
+            return MachineSide.ELECTRIC_IN;
+        
+        return MachineSide.PLAIN;
+    }
+
+    @Override
+    public MachineSide renderRight()
+    {
+        if (electricIn == FaceRelative.RIGHT)
+            return MachineSide.ELECTRIC_IN;
+        
+        return MachineSide.PLAIN;
+    }
+
+    @Override
+    public MachineSide renderRear()
+    {
+        if (electricIn == FaceRelative.REAR)
+            return MachineSide.ELECTRIC_IN;
+        
+        return MachineSide.REARDECO;
+    }
+
+    @Override
+    public MachineSide renderTop()
+    {
+        if (electricIn == FaceRelative.TOP)
+            return MachineSide.ELECTRIC_IN;
+        
+        return MachineSide.TOP;
+    }
+
+    @Override
+    public MachineSide renderBase()
+    {
+        if (electricIn == FaceRelative.TOP)
+            return MachineSide.ELECTRIC_IN;
+        
+        return MachineSide.BASE;
+    }
+    
+    //We have to use renderTwo because the Electric Furnace is a BlockMachineTiered
+    //(shared with the Energy Storage Module which has two configurable input/outputs)
+    
+    @Override
+    public RenderFacesTWO renderTwo()
+    {
+        switch(electricIn)
+        {
+        case RIGHT:
+            return RenderFacesTWO.RIGHT1;
+        case REAR:
+            return RenderFacesTWO.REAR1;
+//        case TOP:
+//            return RenderFacesTWO.TOP1;
+//        case BOTTOM:
+//            return RenderFacesTWO.BOTTOM1;
+        case LEFT:
+        default:
+            return RenderFacesTWO.LEFT1;
+        }
     }
 }

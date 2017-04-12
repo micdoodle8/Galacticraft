@@ -212,7 +212,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     {
         if (direction == null && EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
-            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getElectricalOutputDirectionMain());
+            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, this.getElectricOutputDirection());
             if (tile instanceof IConductor)
             {
                 //No power provide to IC2 mod if it's a Galacticraft wire on the output.  Galacticraft network will provide the power.
@@ -229,7 +229,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return 0F;
     }
 
-    public EnumFacing getElectricalOutputDirectionMain()
+    public EnumFacing getElectricOutputDirection()
     {
         return null;
     }

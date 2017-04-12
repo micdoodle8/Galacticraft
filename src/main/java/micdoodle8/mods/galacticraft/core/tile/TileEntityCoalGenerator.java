@@ -361,7 +361,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(this.getElectricalOutputDirectionMain());
+        return EnumSet.of(this.getElectricOutputDirection());
     }
 
     public EnumFacing getFront()
@@ -370,7 +370,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public EnumFacing getElectricalOutputDirectionMain()
+    public EnumFacing getElectricOutputDirection()
     {
         return getFront().rotateY();
     }
@@ -383,6 +383,6 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
             return false;
         }
 
-        return direction == this.getElectricalOutputDirectionMain();
+        return direction == this.getElectricOutputDirection();
     }
 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -22,7 +23,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector
+public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector, IMachineSides
 {
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
@@ -372,35 +373,16 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
     }
 
-    public EnumFacing getFront()
-    {
-        if (getBlockType() instanceof BlockMachine)
-        {
-            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
-        }
-        else if (getBlockType() instanceof BlockMachineTiered)
-        {
-            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
-        }
-        return EnumFacing.NORTH;
-    }
-
     @Override
     public EnumSet<EnumFacing> getElectricalInputDirections()
     {
-        return EnumSet.of(getFront().rotateY().getOpposite());
+        return EnumSet.of(getElectricInputDirection());
     }
 
     @Override
     public EnumSet<EnumFacing> getElectricalOutputDirections()
     {
-        return EnumSet.of(getFront().rotateY());
-    }
-
-    @Override
-    public EnumFacing getElectricalOutputDirectionMain()
-    {
-        return getFront().rotateY();
+        return EnumSet.of(getElectricOutputDirection());
     }
 
     @Override
@@ -412,5 +394,143 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
 
         return getElectricalInputDirections().contains(direction) || getElectricalOutputDirections().contains(direction);
+    }
+    
+    @Override
+    public EnumFacing getFront()
+    {
+        if (getBlockType() instanceof BlockMachineTiered)
+        {
+            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
+        }
+        else if (getBlockType() instanceof BlockMachine)
+        {
+            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
+        }
+        return EnumFacing.NORTH;
+    }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        switch (this.electricIn)
+        {
+        case LEFT:
+            return getFront().rotateY();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case RIGHT:
+        default:
+            return getFront().rotateYCCW();
+        }
+    }
+
+    @Override
+    public EnumFacing getElectricOutputDirection()
+    {
+        switch (this.electricOut)
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
+    }
+
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+    }
+
+    private FaceRelative electricIn = FaceRelative.RIGHT;
+    private FaceRelative electricOut = FaceRelative.LEFT;
+
+    @Override
+    public boolean setSideElectricInput(FaceRelative newSide)
+    {
+        if (newSide != FaceRelative.NOT_SET && newSide != electricOut)
+        {
+            this.electricIn = newSide;
+            return true;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public boolean setSideElectricOutput(FaceRelative newSide)
+    {
+        if (newSide != FaceRelative.NOT_SET && newSide != electricIn)
+        {
+            this.electricOut = newSide;
+            return true;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public MachineSide renderLeft()
+    {
+        if (electricIn == FaceRelative.LEFT) return MachineSide.ELECTRIC_IN;
+        if (electricOut == FaceRelative.LEFT) return MachineSide.ELECTRIC_OUT;
+        
+        return MachineSide.PLAIN;
+    }
+
+    @Override
+    public MachineSide renderRight()
+    {
+        if (electricIn == FaceRelative.RIGHT) return MachineSide.ELECTRIC_IN;
+        if (electricOut == FaceRelative.RIGHT) return MachineSide.ELECTRIC_OUT;
+        
+        return MachineSide.PLAIN;
+    }
+
+    @Override
+    public MachineSide renderRear()
+    {
+        if (electricIn == FaceRelative.REAR) return MachineSide.ELECTRIC_IN;
+        if (electricOut == FaceRelative.REAR) return MachineSide.ELECTRIC_OUT;
+        
+        return MachineSide.REARDECO;
+    }
+
+    @Override
+    public MachineSide renderTop()
+    {
+        if (electricIn == FaceRelative.TOP) return MachineSide.ELECTRIC_IN;
+        if (electricOut == FaceRelative.TOP) return MachineSide.ELECTRIC_OUT;
+        
+        return MachineSide.TOP;
+    }
+
+    @Override
+    public MachineSide renderBase()
+    {
+        if (electricIn == FaceRelative.BOTTOM) return MachineSide.ELECTRIC_IN;
+        if (electricOut == FaceRelative.BOTTOM) return MachineSide.ELECTRIC_OUT;
+        
+        return MachineSide.BASE;
+    }
+    
+    //We use RenderFaceTwo because there are two configurable faces
+
+    @Override
+    public RenderFacesTWO renderTwo()
+    {
+        return RenderFacesTWO.getByName(this.electricIn, this.electricOut);
     }
 }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.api.tile.IMachineSides.RenderFacesTWO;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
@@ -34,6 +36,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
     public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
+    public static final PropertyEnum SIDES = PropertyEnum.create("sides", RenderFacesTWO.class);
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
@@ -238,13 +241,20 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING, TYPE, FILL_VALUE);
+        return new BlockState(this, FACING, TYPE, FILL_VALUE); //, SIDES);
     }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            IMachineSides tileSides = (IMachineSides) tile;
+//            state = state.withProperty(SIDES, tileSides.renderTwo());
+        }
+        else
+//            state = state.withProperty(SIDES, RenderFacesTWO.LEFT1);
         if (!(tile instanceof TileEntityEnergyStorageModule))
         {
             return state.withProperty(FILL_VALUE, 0);
