@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -78,32 +77,10 @@ public class GCCoreUtil
         return GCCoreUtil.nextID - 1;
     }
 
-    public static void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
+    public static void registerGalacticraftCreature(Class<? extends Entity> entityClass, String name, int back, int fore)
     {
-        registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
-        int nextEggID = getNextValidEggID();
-        if (nextEggID < 65536)
-        {
-            EntityList.idToClassMapping.put(nextEggID, var0);
-            EntityList.classToIDMapping.put(var0, nextEggID);
-            EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
-        }
-    }
-
-    public static int getNextValidEggID()
-    {
-        int eggID = 255;
-
-        //Non-global entity IDs - for egg ID purposes - can be greater than 255
-        //The spawn egg will have this metadata.  Metadata up to 65535 is acceptable (see potions).
-
-        do
-        {
-            eggID++;
-        }
-        while (EntityList.getClassFromID(eggID) != null);
-
-        return eggID;
+        registerGalacticraftNonMobEntity(entityClass, name, 80, 3, true);
+        EntityRegistry.registerEgg(entityClass, back, fore);
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
@@ -215,68 +192,4 @@ public class GCCoreUtil
     {
         return provider.getDimensionId();
     }
-
-//    public static void sortBlock(Block block, int meta, StackSorted beforeStack)
-//    {
-//        StackSorted newStack = new StackSorted(Item.getItemFromBlock(block), meta);
-//
-//        // Remove duplicates
-//        for (Iterator<StackSorted> it = GalacticraftCore.itemOrderListBlocks.iterator(); it.hasNext();)
-//        {
-//            StackSorted stack = it.next();
-//            if (stack.equals(newStack))
-//            {
-//                it.remove();
-//            }
-//        }
-//
-//        if (beforeStack == null)
-//        {
-//            GalacticraftCore.itemOrderListBlocks.add(newStack);
-//        }
-//        else
-//        {
-//            for (int i = 0; i < GalacticraftCore.itemOrderListBlocks.size(); ++i)
-//            {
-//                if (GalacticraftCore.itemOrderListBlocks.get(i).equals(beforeStack))
-//                {
-//                    GalacticraftCore.itemOrderListBlocks.add(i + 1, newStack);
-//                    return;
-//                }
-//            }
-//
-//            throw new RuntimeException("Could not find block to insert before: " + beforeStack);
-//        }
-//    }
-//
-//    public static void sortItem(Item item, int meta, StackSorted beforeStack)
-//    {
-//        StackSorted newStack = new StackSorted(item, meta);
-//
-//        // Remove duplicates
-//        for (Iterator<StackSorted> it = GalacticraftCore.itemOrderListBlocks.iterator(); it.hasNext();)
-//        {
-//            StackSorted stack = it.next();
-//            if (stack.equals(newStack))
-//            {
-//                it.remove();
-//            }
-//        }
-//
-//        if (beforeStack == null)
-//        {
-//            GalacticraftCore.itemOrderListItems.add(newStack);
-//        }
-//        else
-//        {
-//            for (int i = 0; i < GalacticraftCore.itemOrderListItems.size(); ++i)
-//            {
-//                if (GalacticraftCore.itemOrderListItems.get(i).equals(beforeStack))
-//                {
-//                    GalacticraftCore.itemOrderListItems.add(i + 1, newStack);
-//                    break;
-//                }
-//            }
-//        }
-//    }
 }

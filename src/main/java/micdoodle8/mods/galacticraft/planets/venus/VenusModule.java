@@ -217,16 +217,10 @@ public class VenusModule implements IPlanetsModule
         ConfigManagerVenus.syncConfig(false, false);
     }
 
-    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
+    public void registerGalacticraftCreature(Class<? extends Entity> entityClass, String name, int back, int fore)
     {
-        VenusModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
-        int nextEggID = GCCoreUtil.getNextValidEggID();
-        if (nextEggID < 65536)
-        {
-            EntityList.idToClassMapping.put(nextEggID, var0);
-            EntityList.classToIDMapping.put(var0, nextEggID);
-            EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
-        }
+        registerGalacticraftNonMobEntity(entityClass, name, 80, 3, true);
+        EntityRegistry.registerEgg(entityClass, back, fore);
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
