@@ -69,13 +69,12 @@ public class BlockBreathableAir extends BlockAir
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        IBlockState neighborBlock = worldIn.getBlockState(neighborBlockPos);
-        if (Blocks.AIR == neighborBlock.getBlock())
+        if (Blocks.AIR == blockIn)
         //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
-            OxygenPressureProtocol.onEdgeBlockUpdated((World) worldIn, pos);
+            OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
         }
     }
 

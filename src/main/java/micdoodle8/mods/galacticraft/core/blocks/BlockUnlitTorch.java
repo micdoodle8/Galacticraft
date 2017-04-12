@@ -205,21 +205,11 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
      * neighbor blockID
      */
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        this.onNeighborChangeInternal(worldIn, pos, neighborBlockPos);
-    }
-
-    public boolean onNeighborChangeInternal(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
-    {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (!this.checkForDrop((World) worldIn, pos, state))
+        if (this.checkForDrop(worldIn, pos, state))
         {
-            return true;
-        }
-        else
-        {
-            EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
             EnumFacing.Axis enumfacingAxis = enumfacing.getAxis();
             EnumFacing enumfacing1 = enumfacing.getOpposite();
             boolean flag = false;
@@ -228,21 +218,19 @@ public class BlockUnlitTorch extends Block implements IOxygenReliantBlock
             {
                 flag = true;
             }
-            else if (enumfacingAxis.isVertical() && !this.canPlaceOn((World) worldIn, pos.offset(enumfacing1)))
+            else if (enumfacingAxis.isVertical() && !this.canPlaceOn(worldIn, pos.offset(enumfacing1)))
             {
                 flag = true;
             }
 
             if (flag)
             {
-                this.dropBlockAsItem((World) worldIn, pos, state, 0);
-                ((World) worldIn).setBlockToAir(pos);
-                return true;
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+                worldIn.setBlockToAir(pos);
             }
             else
             {
-                this.checkOxygen((World) worldIn, pos);
-                return false;
+                this.checkOxygen(worldIn, pos);
             }
         }
     }

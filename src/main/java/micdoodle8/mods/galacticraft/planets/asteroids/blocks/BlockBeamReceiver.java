@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -82,20 +83,18 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        IBlockState state = worldIn.getBlockState(pos);
-        IBlockState neighborBlock = worldIn.getBlockState(neighborBlockPos);
         int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
-        int meta = this.getMetadataFromAngle((World) worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
+        int meta = this.getMetadataFromAngle(worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
 
         if (meta == -1)
         {
-            ((World) worldIn).destroyBlock(pos, true);
+            worldIn.destroyBlock(pos, true);
         }
         else if (meta != oldMeta)
         {
-            ((World) worldIn).setBlockState(pos, getStateFromMeta(meta), 3);
+            worldIn.setBlockState(pos, getStateFromMeta(meta), 3);
             TileEntity thisTile = worldIn.getTileEntity(pos);
             if (thisTile instanceof TileEntityBeamReceiver)
             {
@@ -106,7 +105,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             }
         }
 
-        super.onNeighborChange(worldIn, pos, neighborBlockPos);
+        super.neighborChanged(state, worldIn, pos, blockIn);
     }
 
     @Override

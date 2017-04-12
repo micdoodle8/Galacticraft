@@ -145,10 +145,9 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
      * neighbor blockID
      */
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        IBlockState state = worldIn.getBlockState(pos);
-        EnumFacing side = (EnumFacing) state.getValue(FACING);
+        EnumFacing side = state.getValue(FACING);
 
         BlockPos offsetPos = pos.offset(side);
         IBlockState state1 = worldIn.getBlockState(offsetPos);
@@ -157,8 +156,8 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
             return;
         }
 
-        this.dropBlockAsItem((World) worldIn, pos, state, 0);
-        ((World) worldIn).setBlockToAir(pos);
+        this.dropBlockAsItem(worldIn, pos, state, 0);
+        worldIn.setBlockToAir(pos);
     }
 
 //    @Override

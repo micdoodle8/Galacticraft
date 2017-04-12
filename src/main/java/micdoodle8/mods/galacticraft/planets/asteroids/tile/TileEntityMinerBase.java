@@ -614,7 +614,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {
                 IBlockState state = this.worldObj.getBlockState(offset);
-                state.getBlock().onNeighborChange(worldObj, this.getPos(), offset);
+                state.getBlock().neighborChanged(state, this.worldObj, offset, this.worldObj.getBlockState(this.getPos()).getBlock());
                 worldObj.markBlockRangeForRenderUpdate(offset, offset);
             }
         }

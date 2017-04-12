@@ -105,9 +105,9 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        super.onNeighborChange(worldIn, pos, neighborBlockPos);
+        super.neighborChanged(state, worldIn, pos, blockIn);
 
         if (!this.canBlockStay((World) worldIn, pos))
         {

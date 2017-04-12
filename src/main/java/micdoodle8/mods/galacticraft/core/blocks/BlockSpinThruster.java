@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -143,46 +144,45 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        IBlockState state = worldIn.getBlockState(pos);
-        if (this.dropTorchIfCantStay((World) worldIn, pos))
+        if (this.dropTorchIfCantStay(worldIn, pos))
         {
             final int var6 = getMetaFromState(state) & 7;
             boolean var7 = false;
 
-            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST) && var6 == 1)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.WEST), EnumFacing.EAST) && var6 == 1)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST) && var6 == 2)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.EAST), EnumFacing.WEST) && var6 == 2)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH) && var6 == 3)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH) && var6 == 3)
             {
                 var7 = true;
             }
 
-            if (!BlockSpinThruster.isBlockSolidOnSide((World) worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH) && var6 == 4)
+            if (!BlockSpinThruster.isBlockSolidOnSide(worldIn, pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH) && var6 == 4)
             {
                 var7 = true;
             }
 
             if (var7)
             {
-                this.dropBlockAsItem((World) worldIn, pos, state, 0);
-                ((World)worldIn).setBlockToAir(pos);
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+                worldIn.setBlockToAir(pos);
             }
         }
 
-        if (!((World) worldIn).isRemote)
+        if (!worldIn.isRemote)
         {
-            if (((World) worldIn).provider instanceof WorldProviderSpaceStation)
+            if (worldIn.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderSpaceStation) ((World) worldIn).provider).getSpinManager().refresh(pos, true);
+                ((WorldProviderSpaceStation) worldIn.provider).getSpinManager().refresh(pos, true);
             }
         }
     }

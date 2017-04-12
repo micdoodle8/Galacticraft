@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -177,10 +178,9 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        IBlockState state = worldIn.getBlockState(pos);
-        ((World) worldIn).notifyBlockUpdate(pos, state, state, 3);
+        worldIn.notifyBlockUpdate(pos, state, state, 3);
     }
 
     @Override
