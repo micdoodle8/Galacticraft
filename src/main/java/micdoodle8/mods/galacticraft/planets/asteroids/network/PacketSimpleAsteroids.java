@@ -145,11 +145,11 @@ public class PacketSimpleAsteroids extends PacketBase
             break;
         case C_UPDATE_MINERBASE_FACING:
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
-            int facingNew = (Integer) this.data.get(1);
             if (tile instanceof TileEntityMinerBase)
             {
+                int facingNew = (Integer) this.data.get(1);
                 ((TileEntityMinerBase) tile).facing = EnumFacing.getFront(facingNew);
-                ((TileEntityMinerBase) tile).setMainBlockPos((Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4));
+                ((TileEntityMinerBase) tile).setMainBlockPos(new BlockPos((Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4)));
                 int link = (Integer) this.data.get(5);
                 if (link > 0)
                 {
@@ -197,7 +197,11 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case S_REQUEST_MINERBASE_FACING:
-//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.worldObj), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+            tile = player.worldObj.getTileEntity(new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
+            if (tile instanceof TileEntityMinerBase)
+            {
+                ((TileEntityMinerBase)tile).updateClientFlag = true; 
+            }
             break;
         default:
             break;

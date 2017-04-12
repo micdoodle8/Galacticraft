@@ -36,19 +36,12 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
             {
                 for (final TileEntity tile : attachedLaunchPads)
                 {
-                    tile.invalidate();
                     tile.getWorld().setBlockState(tile.getPos(), Blocks.air.getDefaultState(), 3);
                     // ((GCCoreBlockLandingPadFull)GCCoreBlocks.landingPadFull).onBlockAdded(worldObj,
                     // tile.xCoord, tile.yCoord, tile.zCoord);
                 }
 
                 this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getDefaultState(), 3);
-                final TileEntityLandingPad tilePadFull = (TileEntityLandingPad) this.worldObj.getTileEntity(this.getPos());
-
-                if (tilePadFull != null)
-                {
-                    tilePadFull.onCreate(worldObj, this.getPos());
-                }
             }
         }
     }

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -17,53 +17,52 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
         if (!this.worldObj.isRemote)
         {
             final ArrayList<TileEntity> attachedBaseBlocks = new ArrayList<TileEntity>();
+            
+            final int thisX = this.getPos().getX();
+            final int thisY = this.getPos().getY();
+            final int thisZ = this.getPos().getZ();
 
+            boolean success = true;
             SEARCH:
-            for (int x = this.getPos().getX(); x < this.getPos().getX() + 2; x++)
+            for (int x = 0; x < 2; x++)
             {
-                for (int y = this.getPos().getY(); y < this.getPos().getY() + 2; y++)
+                for (int y = 0; y < 2; y++)
                 {
-                    for (int z = this.getPos().getZ(); z < this.getPos().getZ() + 2; z++)
+                    for (int z = 0; z < 2; z++)
                     {
-                        final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, y, z));
+                        BlockPos pos = new BlockPos(x + thisX, y + thisY, z + thisZ);
+                        final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;
 
-                        if (tile instanceof TileEntityMinerBaseSingle)
+                        if (tile instanceof TileEntityMinerBaseSingle && !tile.isInvalid())
                         {
                             attachedBaseBlocks.add(tile);
                         }
                         else
                         {
+                            success = false;
                             break SEARCH;
                         }
                     }
                 }
             }
 
-            if (attachedBaseBlocks.size() == 8)
+            if (success)
             {
+                TileEntityMinerBase.addNewMinerBase(GCCoreUtil.getDimensionID(this), this.getPos());
                 for (final TileEntity tile : attachedBaseBlocks)
                 {
-                    tile.invalidate();
-                    tile.getWorld().setBlockState(tile.getPos(), AsteroidBlocks.minerBaseFull.getDefaultState(), 3);
-                    tile.getWorld().setTileEntity(tile.getPos(), new TileEntityMinerBase());
+                    this.worldObj.setBlockToAir(this.getPos());
                 }
-
-                for (int x = this.getPos().getX(); x < this.getPos().getX() + 2; x++)
-                {
-                    for (int y = this.getPos().getY(); y < this.getPos().getY() + 2; y++)
-                    {
-                        for (int z = this.getPos().getZ(); z < this.getPos().getZ() + 2; z++)
-                        {
-                            final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, y, z));
-
-                            if (tile instanceof TileEntityMinerBase)
-                            {
-                                ((TileEntityMinerBase) tile).setMainBlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-                                ((TileEntityMinerBase) tile).updateClientFlag = true;
-                            }
-                        }
-                    }
-                }
+                //Don't try setting a new block with a TileEntity, because new tiles can
+                //get removed after the end of this tileEntity.update() tick - setting a new block
+                //here would automatically invalidate this tile.
+                //
+                //(It's because if this tileEntity is now invalid, World.updateEntities() removes
+                // *any* tileEntity at this position - see call to Chunk.removeTileEntity(pos)nee!)
+                //
+                //Equally if any others of these TileEntityMinerBaseSingle are ticked AFTER this
+                //in the same server update tick, then those new ones will also be removed
+                //because their TileEntityMinerBaseSingle is now, inevitably, invalid!
             }
         }
     }

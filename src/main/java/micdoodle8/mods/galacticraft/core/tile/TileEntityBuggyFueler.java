@@ -41,7 +41,9 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     {
         if (!this.initialised)
         {
-            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
+            if (!this.worldObj.isRemote) this.onCreate(this.worldObj, this.getPos());
+            this.initialiseMultiTiles(this.getPos(), this.worldObj);
+            this.initialised = true;
         }
 
         if (!this.worldObj.isRemote)
