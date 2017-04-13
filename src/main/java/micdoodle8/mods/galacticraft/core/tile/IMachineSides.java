@@ -3,22 +3,20 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.Arrays;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayerMP;
+import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Used as a common interface for any TileEntity with configurable power, pipe, etc sides
  *
  */
-public interface IMachineSides
+public interface IMachineSides extends ITileClientUpdates
 {
     /**
      * The front of this machine, with the graphic.
@@ -470,7 +468,14 @@ public interface IMachineSides
             //Override this for 3 or more configurable sides!
         }
         
-        if (te.getWorld().isRemote) te.getWorld().markBlockForUpdate(te.getPos());
+        if (te.getWorld().isRemote)
+        {
+            te.getWorld().markBlockForUpdate(te.getPos());
+        }
+        else
+        {
+            this.updateAllInDimension();
+        }
     }
 
     /**
@@ -517,11 +522,6 @@ public interface IMachineSides
      */
     public void setupMachineSides(int length);
     
-    /**
-     * This can be an empty method.  (It will never be called!)
-     */
-    public void validate_RememberToSendClientUpdateRequest();
-    
     public default void addMachineSidesToNBT(NBTTagCompound par1nbtTagCompound)
     {
         NBTTagList tagList = new NBTTagList();
@@ -548,17 +548,18 @@ public interface IMachineSides
         }
     }
 
-    public default void sendUpdateToClient(EntityPlayerMP player)
+    @Override
+    public default void buildDataPacket(int[] data)
     {
-        int[] data = new int[4];
         MachineSidePack[] msps = this.getAllMachineSides();
         for (int i = 0; i < msps.length; ++i)
         {
             data[i] = msps[i].get().ordinal();
         }
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_MACHINE_SIDES, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { ((TileEntity)this).getPos(), data[0], data[1], data[2], data[3] }), player);
     }
-
+    
+    @Override
+    @SideOnly(Side.CLIENT)
     public default void updateClient(List<Object> data)
     {
         MachineSidePack[] msps = this.getAllMachineSides();
@@ -566,6 +567,7 @@ public interface IMachineSides
         {
             msps[i].set((Integer) data.get(i + 1));
         }
+        ((TileEntity)this).getWorld().markBlockForUpdate(((TileEntity)this).getPos());
     }
 
     public class MachineSidePack

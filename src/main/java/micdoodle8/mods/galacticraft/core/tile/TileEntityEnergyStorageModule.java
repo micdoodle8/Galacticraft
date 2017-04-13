@@ -3,15 +3,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.ISidedInventoryGC;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -444,15 +441,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     public void validate()
     {
         super.validate();
-        if (this.worldObj.isRemote)
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_MACHINE_SIDES, this.worldObj, new Object[] { this.getPos() }));
-        }
-    }
-    
-    @Override
-    public void validate_RememberToSendClientUpdateRequest()
-    {
+        this.clientValidate();
     }
     //------------------END OF IMachineSides implementation
 }

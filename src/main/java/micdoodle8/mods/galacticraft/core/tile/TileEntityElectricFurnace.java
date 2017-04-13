@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -367,19 +364,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     public void validate()
     {
         super.validate();
-        if (this.worldObj.isRemote)
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_MACHINE_SIDES, this.worldObj, new Object[] { this.getPos() }));
-        }
+        this.clientValidate();
     }
     
-    @Override
-    public void validate_RememberToSendClientUpdateRequest()
-    {
-    }
     //We have to override this and use renderTwo because the Electric Furnace is a BlockMachineTiered
     //(shared with the Energy Storage Module which has *two* configurable input/outputs)
-    
     @Override
     public RenderFacesTWO buildBlockStateProperty()
     {
