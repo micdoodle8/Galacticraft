@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier2Rocket extends GuiPositionedContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_T2.png");
+    private static final ResourceLocation tier2SchematicTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t2.png");
 
     private int pageIndex;
 

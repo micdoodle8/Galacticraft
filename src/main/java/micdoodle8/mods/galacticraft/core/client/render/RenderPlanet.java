@@ -18,8 +18,8 @@ public class RenderPlanet
     private static ResourceLocation textureGanymede = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/ganymede.png");
     private static ResourceLocation textureIo = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/io.png");
     private static ResourceLocation textureSaturn = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/saturn.png");
-    private static ResourceLocation textureJupiterInner = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/jupiterInner.png");
-    private static ResourceLocation textureJupiterUpper = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/jupiterUpper.png");
+    private static ResourceLocation textureJupiterInner = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/jupiter_inner.png");
+    private static ResourceLocation textureJupiterUpper = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/jupiter_upper.png");
 
     public static void renderPlanet(int textureId, float scale, float ticks, float relSize)
     {

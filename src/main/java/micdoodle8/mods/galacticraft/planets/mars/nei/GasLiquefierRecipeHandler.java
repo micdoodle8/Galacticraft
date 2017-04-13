@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation liquefierGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gasLiquefier.png");
+    private static final ResourceLocation liquefierGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gas_liquefier.png");
     private static final ResourceLocation liquefierGasesTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
     int ticksPassed;
     int extra = 0;
@@ -264,7 +264,7 @@ public class GasLiquefierRecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftPlanets.ASSET_PREFIX + "textures/gui/gasLiquefier.png";
+        return GalacticraftPlanets.ASSET_PREFIX + "textures/gui/gas_liquefier.png";
     }
 
     @Override
