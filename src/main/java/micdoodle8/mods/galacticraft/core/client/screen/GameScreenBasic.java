@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.client.gui.screen;
+package micdoodle8.mods.galacticraft.core.client.screen;
 
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
