@@ -50,7 +50,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         SOLAR_PANEL_1(4, "solar_panel"),
         CRYO_CHAMBER(5, "cryo_chamber"),
         BUGGY_FUEL_PAD(6, "buggy_pad"),
-        MINER_BASE(7, "miner_base"),
+        MINER_BASE(7, "miner_base"),  //UNUSED
         DISH_LARGE(8, "dish_large");
 
         private final int meta;

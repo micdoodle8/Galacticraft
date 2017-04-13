@@ -37,17 +37,10 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
             {
                 for (final TileEntity tile : attachedLaunchPads)
                 {
-                    tile.invalidate();
                     tile.getWorld().setBlockState(tile.getPos(), Blocks.AIR.getDefaultState(), 3);
                 }
 
                 this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 3);
-                final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.worldObj.getTileEntity(this.getPos());
-
-                if (tile != null)
-                {
-                    tile.onCreate(worldObj, this.getPos());
-                }
             }
         }
     }

@@ -434,7 +434,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    public EnumFacing getElectricalOutputDirectionMain()
+    public EnumFacing getElectricOutputDirection()
     {
         return getFront();
     }
@@ -602,7 +602,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             return false;
         }
 
-        return direction == this.getElectricalOutputDirectionMain();
+        return direction == this.getElectricOutputDirection();
     }
 
     @Override

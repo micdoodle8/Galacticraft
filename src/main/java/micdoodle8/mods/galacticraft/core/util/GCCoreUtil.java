@@ -18,6 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -208,6 +209,11 @@ public class GCCoreUtil
     public static int getDimensionID(WorldProvider provider)
     {
         return provider.getDimension();
+    }
+
+    public static int getDimensionID(TileEntity tileEntity)
+    {
+        return tileEntity.getWorld().provider.getDimension();
     }
 
 //    public static void sortBlock(Block block, int meta, StackSorted beforeStack)

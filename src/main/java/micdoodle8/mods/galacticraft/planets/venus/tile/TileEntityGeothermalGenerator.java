@@ -190,7 +190,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             return false;
         }
 
-        return direction == this.getElectricalOutputDirectionMain();
+        return direction == this.getElectricOutputDirection();
     }
 
     @Override
@@ -211,7 +211,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public EnumFacing getElectricalOutputDirectionMain()
+    public EnumFacing getElectricOutputDirection()
     {
         return getFront().rotateY();
     }
