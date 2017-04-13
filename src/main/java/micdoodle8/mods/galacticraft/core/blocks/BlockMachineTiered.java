@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
-import micdoodle8.mods.galacticraft.api.tile.IMachineSides.RenderFacesTWO;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides.RenderFacesTWO;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;

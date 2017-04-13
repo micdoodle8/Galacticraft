@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.api.tile;
+package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Arrays;
 import java.util.List;
