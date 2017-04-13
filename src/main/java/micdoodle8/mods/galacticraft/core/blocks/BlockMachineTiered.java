@@ -251,10 +251,12 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         if (tile instanceof IMachineSides)
         {
             IMachineSides tileSides = (IMachineSides) tile;
-            state = state.withProperty(SIDES, tileSides.renderTwo());
+            state = state.withProperty(SIDES, (RenderFacesTWO)tileSides.buildBlockStateProperty());
+            //We use RenderFacesTWO because this tile's listConfigurableSides has two elements (for Energy Storage Module)
         }
         else
             state = state.withProperty(SIDES, RenderFacesTWO.LEFT1);
+
         if (!(tile instanceof TileEntityEnergyStorageModule))
         {
             return state.withProperty(FILL_VALUE, 0);
@@ -276,7 +278,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IMachineSides)
         {
-            ((IMachineSides)tile).nextSideConfiguration();
+            ((IMachineSides)tile).nextSideConfiguration(tile);
             return true;
         }
         return false;

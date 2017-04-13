@@ -2,11 +2,14 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -311,7 +314,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        switch (this.electricIn)
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
         case RIGHT:
             return getFront().rotateYCCW();
@@ -327,78 +330,61 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         }
     }
 
-    @Override
-    public boolean setSideElectricInput(Face newSide)
-    {
-        if (newSide != Face.NOT_SET)
-        {
-            this.electricIn = newSide;
-            return true;
-        }
-        
-        return false;
-    }
-
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
     @Override
     public MachineSide[] listConfigurableSides()
     {
         return new MachineSide[] { MachineSide.ELECTRIC_IN };
     }
 
-    private Face electricIn = Face.LEFT;
-
     @Override
-    public MachineSide renderLeft()
+    public Face[] listDefaultFaces()
     {
-        if (electricIn == Face.LEFT)
-            return MachineSide.ELECTRIC_IN;
-        
-        return MachineSide.PLAIN;
-    }
-
-    @Override
-    public MachineSide renderRight()
-    {
-        if (electricIn == Face.RIGHT)
-            return MachineSide.ELECTRIC_IN;
-        
-        return MachineSide.PLAIN;
-    }
-
-    @Override
-    public MachineSide renderRear()
-    {
-        if (electricIn == Face.REAR)
-            return MachineSide.ELECTRIC_IN;
-        
-        return MachineSide.REARDECO;
-    }
-
-    @Override
-    public MachineSide renderTop()
-    {
-        if (electricIn == Face.TOP)
-            return MachineSide.ELECTRIC_IN;
-        
-        return MachineSide.TOP;
-    }
-
-    @Override
-    public MachineSide renderBase()
-    {
-        if (electricIn == Face.TOP)
-            return MachineSide.ELECTRIC_IN;
-        
-        return MachineSide.BASE;
+        return new Face[] { Face.LEFT };
     }
     
-    //We have to use renderTwo because the Electric Furnace is a BlockMachineTiered
-    //(shared with the Energy Storage Module which has two configurable input/outputs)
+    private MachineSidePack[] machineSides;
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        if (this.machineSides == null)
+        {
+            this.initialiseSides();
+        }
+
+        return this.machineSides;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+        this.machineSides = new MachineSidePack[length];
+    }
     
     @Override
-    public RenderFacesTWO renderTwo()
+    public void validate()
     {
-        switch(electricIn)
+        super.validate();
+        if (this.worldObj.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_MACHINE_SIDES, this.worldObj, new Object[] { this.getPos() }));
+        }
+    }
+    
+    @Override
+    public void validate_RememberToSendClientUpdateRequest()
+    {
+    }
+    //We have to override this and use renderTwo because the Electric Furnace is a BlockMachineTiered
+    //(shared with the Energy Storage Module which has *two* configurable input/outputs)
+    
+    @Override
+    public RenderFacesTWO buildBlockStateProperty()
+    {
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
         case RIGHT:
             return RenderFacesTWO.RIGHT1;
@@ -413,27 +399,5 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             return RenderFacesTWO.LEFT1;
         }
     }
-
-    @Override
-    public void nextSideConfiguration()
-    {
-        System.out.println("Rotating faces test.");
-        switch(electricIn)
-        {
-        case RIGHT:
-            electricIn = Face.LEFT;
-            break;
-        case REAR:
-            electricIn = Face.RIGHT;
-            break;
-//        case TOP:
-//            return RenderFacesTWO.TOP1;
-//        case BOTTOM:
-//            return RenderFacesTWO.BOTTOM1;
-        case LEFT:
-        default:
-            electricIn = Face.REAR;
-        }
-        this.worldObj.markBlockForUpdate(this.getPos());
-    }
+    //------------------END OF IMachineSides implementation
 }

@@ -4,26 +4,27 @@ import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
+import micdoodle8.mods.galacticraft.core.inventory.ISidedInventoryGC;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements IPacketReceiver, ISidedInventory, IConnector, IMachineSides
+public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements IPacketReceiver, ISidedInventoryGC, IConnector, IMachineSides
 {
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
@@ -119,16 +120,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         this.lastScaledEnergyLevel = this.scaledEnergyLevel;
     }
 
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-    }
-
     /**
      * Reads a tile entity from NBT.
      */
@@ -159,6 +150,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
+        
+        this.readMachineSidesFromNBT(par1NBTTagCompound);
     }
 
     /**
@@ -187,6 +180,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
 
         par1NBTTagCompound.setTag("Items", var2);
+        this.addMachineSidesToNBT(par1NBTTagCompound);
     }
 
     @Override
@@ -290,42 +284,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
-    }
-
-    @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return ItemElectricBase.isElectricItem(itemstack.getItem());
@@ -413,7 +371,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        switch (this.electricIn)
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
         case LEFT:
             return getFront().rotateY();
@@ -432,7 +390,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public EnumFacing getElectricOutputDirection()
     {
-        switch (this.electricOut)
+        switch (this.getSide(MachineSide.ELECTRIC_OUT))
         {
         case RIGHT:
             return getFront().rotateYCCW();
@@ -448,134 +406,53 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
     }
 
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+        return new MachineSide[] { MachineSide.ELECTRIC_IN, MachineSide.ELECTRIC_OUT };
     }
 
-    private Face electricIn = Face.RIGHT;
-    private Face electricOut = Face.LEFT;
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return new Face[] { Face.RIGHT, Face.LEFT };
+    }
+
+    private MachineSidePack[] machineSides;
 
     @Override
-    public boolean setSideElectricInput(Face newSide)
+    public MachineSidePack[] getAllMachineSides()
     {
-        if (newSide != Face.NOT_SET && newSide != electricOut)
+        if (this.machineSides == null)
         {
-            this.electricIn = newSide;
-            return true;
+            this.initialiseSides();
         }
-        
-        return false;
+
+        return this.machineSides;
     }
 
     @Override
-    public boolean setSideElectricOutput(Face newSide)
+    public void setupMachineSides(int length)
     {
-        if (newSide != Face.NOT_SET && newSide != electricIn)
-        {
-            this.electricOut = newSide;
-            return true;
-        }
-        
-        return false;
-    }
-
-    @Override
-    public MachineSide renderLeft()
-    {
-        if (electricIn == Face.LEFT) return MachineSide.ELECTRIC_IN;
-        if (electricOut == Face.LEFT) return MachineSide.ELECTRIC_OUT;
-        
-        return MachineSide.PLAIN;
-    }
-
-    @Override
-    public MachineSide renderRight()
-    {
-        if (electricIn == Face.RIGHT) return MachineSide.ELECTRIC_IN;
-        if (electricOut == Face.RIGHT) return MachineSide.ELECTRIC_OUT;
-        
-        return MachineSide.PLAIN;
-    }
-
-    @Override
-    public MachineSide renderRear()
-    {
-        if (electricIn == Face.REAR) return MachineSide.ELECTRIC_IN;
-        if (electricOut == Face.REAR) return MachineSide.ELECTRIC_OUT;
-        
-        return MachineSide.REARDECO;
-    }
-
-    @Override
-    public MachineSide renderTop()
-    {
-        if (electricIn == Face.TOP) return MachineSide.ELECTRIC_IN;
-        if (electricOut == Face.TOP) return MachineSide.ELECTRIC_OUT;
-        
-        return MachineSide.TOP;
-    }
-
-    @Override
-    public MachineSide renderBase()
-    {
-        if (electricIn == Face.BOTTOM) return MachineSide.ELECTRIC_IN;
-        if (electricOut == Face.BOTTOM) return MachineSide.ELECTRIC_OUT;
-        
-        return MachineSide.BASE;
+        this.machineSides = new MachineSidePack[length];
     }
     
-    //We use RenderFaceTwo because there are two configurable faces
-
     @Override
-    public RenderFacesTWO renderTwo()
+    public void validate()
     {
-        RenderFacesTWO result = RenderFacesTWO.getByName(this.electricIn, this.electricOut);
-        System.out.println("rendering " + result.getName());
-        return result;
-    }
-
-    @Override
-    public void nextSideConfiguration()
-    {
-        System.out.println("Rotating faces test.");
-        switch(electricIn)
+        super.validate();
+        if (this.worldObj.isRemote)
         {
-        case RIGHT:
-            if (electricOut == Face.LEFT)
-            {
-                electricOut = Face.REAR;
-            }
-            else
-            {
-                electricIn = Face.LEFT;
-                electricOut = Face.REAR;
-            }
-            break;
-        case REAR:
-            if (electricOut == Face.RIGHT)
-            {
-                electricOut = Face.LEFT;
-            }
-            else
-            {
-                electricIn = Face.RIGHT;
-                electricOut = Face.LEFT;
-            }
-            break;
-        case LEFT:
-        default:
-            if (electricOut == Face.REAR)
-            {
-                electricOut = Face.RIGHT;
-            }
-            else
-            {
-                electricIn = Face.REAR;
-                electricOut = Face.RIGHT;
-            }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_MACHINE_SIDES, this.worldObj, new Object[] { this.getPos() }));
         }
-        if (this.worldObj.isRemote) this.worldObj.markBlockForUpdate(this.getPos());
     }
+    
+    @Override
+    public void validate_RememberToSendClientUpdateRequest()
+    {
+    }
+    //------------------END OF IMachineSides implementation
 }

@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -73,6 +74,7 @@ import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -123,6 +125,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         S_UPDATE_CHECKLIST(Side.SERVER, NBTTagCompound.class),
+        S_REQUEST_MACHINE_SIDES(Side.SERVER, BlockPos.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -164,7 +167,8 @@ public class PacketSimple extends PacketBase implements Packet
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
         C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class),
-        C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class);  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
+        C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class),  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
+        C_UPDATE_MACHINE_SIDES(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -198,6 +202,11 @@ public class PacketSimple extends PacketBase implements Packet
     public PacketSimple(EnumSimplePacket packetType, int dimID, Object[] data)
     {
         this(packetType, dimID, Arrays.asList(data));
+    }
+
+    public PacketSimple(EnumSimplePacket packetType, World world, Object[] data)
+    {
+        this(packetType, GCCoreUtil.getDimensionID(world), Arrays.asList(data));
     }
 
     public PacketSimple(EnumSimplePacket packetType, int dimID, List<Object> data)
@@ -783,6 +792,13 @@ public class PacketSimple extends PacketBase implements Packet
         case C_RECOLOR_ALL_GLASS:
             ColorUtil.updateGlassColors((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
             break;
+        case C_UPDATE_MACHINE_SIDES:
+            TileEntity tile3 = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tile3 instanceof IMachineSides)
+            {
+                ((IMachineSides)tile3).updateClient(this.data);
+            }
+            break;
         default:
             break;
         }
@@ -1324,6 +1340,14 @@ public class PacketSimple extends PacketBase implements Packet
                 stack.setTagCompound(tagCompound);
             }
             break;
+        case S_REQUEST_MACHINE_SIDES:
+            TileEntity tile3 = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tile3 instanceof IMachineSides)
+            {
+                ((IMachineSides)tile3).sendUpdateToClient(playerBase);
+            }
+            break;
+
         default:
             break;
         }
