@@ -312,8 +312,8 @@ public interface IMachineSides<T> extends ITileClientUpdates
 
     /**
      * Essential for block rendering - use in getActualState()
-     * Usage: Cast this to RenderFacesHoriz or RenderFacesTWO
-     * according to the size of this block's listConfigurableSides()
+     * Automatically returns a valid property as long as getConfigurationType() matches the property
+     * (see BlockMachineTiered for an example)
      * 
      * Override this if you want more options.
      */
@@ -323,10 +323,10 @@ public interface IMachineSides<T> extends ITileClientUpdates
         switch (length)
         {
         case 1:
-            return IMachineSidesProperties.getModelForOneFace(this.getAllowedSide(0));
+            return IMachineSidesProperties.getModelForOneFace(this.getAllowedSide(0)).validFor(getConfigurationType());
         case 2:
         default:
-            return IMachineSidesProperties.getModelForTwoFaces(this.getAllowedSide(0), this.getAllowedSide(1));
+            return IMachineSidesProperties.getModelForTwoFaces(this.getAllowedSide(0), this.getAllowedSide(1)).validFor(getConfigurationType());
         }
     }
 
@@ -394,6 +394,12 @@ public interface IMachineSides<T> extends ITileClientUpdates
         return this.getConfigurationType().allowableFaces();
     }
     
+    /** 
+     * The type of configuration (one or two sides to configure,
+     * only horizontal settings or all allowed) - this needs to match
+     * the blockstate model implementation, take it from the Block.
+     * (Look at TileEnergyStorageModule for an example.)
+     */
     public IMachineSidesProperties getConfigurationType();
     
     /**
@@ -473,7 +479,11 @@ public interface IMachineSides<T> extends ITileClientUpdates
         ((TileEntity)this).getWorld().markBlockRangeForRenderUpdate(pos, pos);
     }
 
-    //--------------CONTAINER OBJECT--------------
+    /**
+     * A container object for Machine Sides settings
+     * This should be implemented in an array by each TileEntity
+     *
+     */
     public class MachineSidePack
     {
         private MachineSide theSide;
