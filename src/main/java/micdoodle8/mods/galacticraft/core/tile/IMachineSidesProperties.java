@@ -16,6 +16,7 @@ import net.minecraft.util.IStringSerializable;
  */
 public class IMachineSidesProperties
 {
+    public static IMachineSidesProperties NOT_CONFIGURABLE = new IMachineSidesProperties(MachineSidesModel.noneConfigurable(), Face.Horizontals);
     public static IMachineSidesProperties ONEFACE_HORIZ = new IMachineSidesProperties(MachineSidesModel.oneFacedHoriz(), Face.Horizontals);
     public static IMachineSidesProperties ONEFACE = new IMachineSidesProperties(MachineSidesModel.oneFacedAll(), Face.AllAvailable);
     public static IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
@@ -170,6 +171,18 @@ public class IMachineSidesProperties
                 public boolean apply(MachineSidesModel msm)
                 {
                     return msm.ordinal() < 12 && (msm.ordinal() % 4) < 2;
+                }
+            };
+        }
+
+        private static Predicate noneConfigurable()
+        {
+            return new Predicate<MachineSidesModel>()
+            {
+                @Override
+                public boolean apply(MachineSidesModel msm)
+                {
+                    return msm == LEFT1;
                 }
             };
         }

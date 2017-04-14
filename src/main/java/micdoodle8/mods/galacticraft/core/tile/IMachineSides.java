@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Used as a common interface for any TileEntity with configurable power, pipe, etc sides
  *
  */
-public interface IMachineSides<T> extends ITileClientUpdates
+public interface IMachineSides extends ITileClientUpdates
 {
     /**
      * The different sides which a MachineSide (e.g. electric input)
@@ -152,6 +152,11 @@ public interface IMachineSides<T> extends ITileClientUpdates
      */
     public default boolean setSide(MachineSide sideToSet, Face newSide)
     {
+        if (this.getConfigurationType() == IMachineSidesProperties.NOT_CONFIGURABLE)
+        {
+            return false;
+        }
+        
         for (MachineSidePack msp : this.getAllMachineSides())
         {
             if (msp.test(sideToSet))
@@ -164,8 +169,19 @@ public interface IMachineSides<T> extends ITileClientUpdates
         return false;
     }
 
+    /**
+     * Like setSide() but using index for performance
+     * - for internal use
+     * 
+     * index matches the index in getConfigurableSides()
+     */
     public default boolean setSide(int index, Face newSide)
     {
+        if (this.getConfigurationType() == IMachineSidesProperties.NOT_CONFIGURABLE)
+        {
+            return false;
+        }
+        
         MachineSidePack[] msps = this.getAllMachineSides();
         if (index >= 0 && index < msps.length)
         {
@@ -176,6 +192,12 @@ public interface IMachineSides<T> extends ITileClientUpdates
         return false;
     }
 
+    /**
+     * Like getSide(MachineSide) but using index for performance
+     * - for internal use
+     * 
+     * index matches the index in getConfigurableSides()
+     */
     public default Face getSide(int index)
     {
         MachineSidePack[] msps = this.getAllMachineSides();
@@ -200,6 +222,8 @@ public interface IMachineSides<T> extends ITileClientUpdates
     /*
      * Like getSide() but results limited to sides
      * which the blockstate is allowed to render
+     * 
+     * index matches the index in getConfigurableSides()
      */
     public default Face getAllowedSide(int index)
     {
@@ -209,7 +233,7 @@ public interface IMachineSides<T> extends ITileClientUpdates
             if (face == test)
                 return test;
         }
-        return this.allowableFaces()[0];
+        return this.listDefaultFaces()[index];
     }
     
     /**
@@ -228,6 +252,9 @@ public interface IMachineSides<T> extends ITileClientUpdates
                 return Arrays.asList(this.allowableFaces()).contains(newSide);
             }
         }
+        
+        //TODO: could maybe return true for default settings for this.getConfigurationType()
+        //e.g. front == front, top == top, base == bottom
         return false;
     }
 
@@ -334,8 +361,14 @@ public interface IMachineSides<T> extends ITileClientUpdates
      */
     public default void nextSideConfiguration(TileEntity te)
     {
+        if (this.getConfigurationType() == IMachineSidesProperties.NOT_CONFIGURABLE)
+        {
+            return;
+        }
+        
         int length = listConfigurableSides().length;
         
+        //TODO: adapt result of Face.next() and Face.prior() according to Horiz or All models
         switch (length)
         {
         case 1:
