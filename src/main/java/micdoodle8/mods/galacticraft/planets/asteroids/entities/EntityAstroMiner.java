@@ -1454,7 +1454,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             blockingBlock.block = b;
             blockingBlock.meta = b.getMetaFromState(state);
-            return true;
+            return !(this.AIstate == AISTATE_RETURNING && b == Blocks.LAVA);
         }
         if (b instanceof BlockLiquid)
         {

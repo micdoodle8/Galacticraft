@@ -21,7 +21,7 @@
            "south": { "y": 180 }
         },
         
-        "sides" : {
+        "msm" : {
             "lr": { "model": "galacticraftcore:machine_tiered_lr" },
             "lb": { "model": "galacticraftcore:machine_tiered_lb" },
             "rl": { "model": "galacticraftcore:machine_tiered_rl" },

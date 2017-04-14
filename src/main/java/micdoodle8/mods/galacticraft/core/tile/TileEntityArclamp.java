@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -29,7 +26,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileEntityArclamp extends TileEntity implements ITickable
+public class TileEntityArclamp extends TileEntity implements ITickable, ITileClientUpdates
 {
     private int ticks = 0;
     private int sideRear = 0;
@@ -40,7 +37,6 @@ public class TileEntityArclamp extends TileEntity implements ITickable
     private AxisAlignedBB thisAABB;
     private Vec3d thisPos;
     private int facingSide = 0;
-    public boolean updateClientFlag;
     
     @Override
     public void update()
@@ -51,11 +47,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         }
 
         boolean initialLight = false;
-        if (this.updateClientFlag)
-        {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.worldObj));
-            this.updateClientFlag = false;
-        }
+//        if (this.updateClientFlag)
+//        {
+//            this.updateAllInDimension();
+//            this.updateClientFlag = false;
+//        }
 
         if (RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.getPos()))
         {
@@ -191,7 +187,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         this.thisAABB = null;
         if (this.worldObj.isRemote)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos() }));
+            this.clientValidate();
         }
         else
         {
@@ -331,7 +327,6 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         super.readFromNBT(nbt);
 
         this.facing = nbt.getInteger("Facing");
-        this.updateClientFlag = true;
 
         this.airToRestore.clear();
         NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
@@ -376,7 +371,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable
             //facing sequence: 0 - 3 - 1 - 2
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_ARCLAMP_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing }), GCCoreUtil.getDimensionID(this.worldObj));
+        this.updateAllInDimension();
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();
@@ -532,5 +527,17 @@ public class TileEntityArclamp extends TileEntity implements ITickable
         {
             return table;
         }
+    }
+
+    @Override
+    public void buildDataPacket(int[] data)
+    {
+        data[0] = this.facing;
+    }
+
+    @Override
+    public void updateClient(List<Object> data)
+    {
+        this.facing = (Integer) data.get(1);
     }
 }

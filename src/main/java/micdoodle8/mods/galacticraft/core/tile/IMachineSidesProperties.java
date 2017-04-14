@@ -1,0 +1,158 @@
+package micdoodle8.mods.galacticraft.core.tile;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides.Face;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.util.IStringSerializable;
+
+/**
+ * Used to create the blockState property corresponding to the machine sides,
+ * and to correspondingly constrain the allowable faces.
+ *
+ * It's not compulsory to use this, a block could create its blockState model
+ * from the machine sides in some different way. 
+ */
+public class IMachineSidesProperties
+{
+    public static IMachineSidesProperties ONEFACE = new IMachineSidesProperties(MachineSidesModel.oneFacedAll(), Face.AllAvailable);;
+    public static IMachineSidesProperties ONEFACE_HORIZ = new IMachineSidesProperties(MachineSidesModel.oneFacedHoriz(), Face.Horizontals);;
+    public static IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
+    public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.AllAvailable);
+
+    public PropertyEnum asProperty;
+    private Face[] toFaces;
+    
+    public IMachineSidesProperties(Predicate<MachineSidesModel> theFilter, Face[] faces)
+    {
+        this.asProperty = PropertyEnum.create("msm", MachineSidesModel.class, theFilter);
+        this.toFaces = faces;
+    }
+    
+    /**
+     * Default blockState model to use if the tile can't be read
+     */
+    public MachineSidesModel getDefault()
+    {
+        return MachineSidesModel.LEFT1;
+    }
+
+    /**
+     * Allowable faces for the configurable sides, consistent with the blockState variants 
+     */
+    public Face[] allowableFaces()
+    {
+        return this.toFaces;
+    }
+    
+    public static MachineSidesModel getModelForTwoFaces(Face faceA, Face faceB)
+    {
+        String result = faceA.getName() + faceB.getName();
+        for (MachineSidesModel test : MachineSidesModel.values())
+        {
+            if (result.equals(test.name)) return test;
+        }
+        return MachineSidesModel.RIGHT1;
+    }
+
+    public static MachineSidesModel getModelForOneFace(Face allowedSide)
+    {
+        switch (allowedSide)
+        {
+        case RIGHT:
+            return MachineSidesModel.RIGHT1;
+        case REAR:
+            return MachineSidesModel.REAR1;
+        case TOP:
+            return MachineSidesModel.TOP1;
+        case BOTTOM:
+            return MachineSidesModel.BOTTOM1;
+        case LEFT:
+        default:
+            return MachineSidesModel.LEFT1;
+        }
+    }
+
+    /**
+     * Only used by block rendering.
+     */
+    public static enum MachineSidesModel implements IStringSerializable
+    {
+        //Don't change the order, the ordinal is important for the predicate definitions
+        LEFT1("lr"),
+        LEFT2("lb"),
+        LEFT3("lu"),
+        LEFT4("ld"),
+        RIGHT1("rl"),
+        RIGHT2("rb"),
+        RIGHT3("ru"),
+        RIGHT4("rd"),
+        REAR1("bl"),
+        REAR2("br"),
+        REAR3("bu"),
+        REAR4("bd"),
+        TOP1("ul"),
+        TOP2("ur"),
+        TOP3("ub"),
+        TOP4("ud"),
+        BOTTOM1("dl"),
+        BOTTOM2("dr"),
+        BOTTOM3("db"),
+        BOTTOM4("du");
+
+        private final String name;
+
+        MachineSidesModel(String newname)
+        {
+            this.name = newname;
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+
+        private static Predicate oneFacedAll()
+        {
+            return new Predicate<MachineSidesModel>()
+            {
+                @Override
+                public boolean apply(MachineSidesModel msm)
+                {
+                    return (msm.ordinal() % 4) == 0;
+                }
+            };
+        }
+
+        private static Predicate getPredicateTwoAll()
+        {
+            return Predicates.<MachineSidesModel>alwaysTrue();
+        }
+
+        private static Predicate oneFacedHoriz()
+        {
+            return new Predicate<MachineSidesModel>()
+            {
+                @Override
+                public boolean apply(MachineSidesModel msm)
+                {
+                    return msm.ordinal() < 12 && (msm.ordinal() % 4) == 0;
+                }
+            };
+        }
+        
+        private static Predicate twoFacedHoriz()
+        {
+            return new Predicate<MachineSidesModel>()
+            {
+                @Override
+                public boolean apply(MachineSidesModel msm)
+                {
+                    return msm.ordinal() < 12 && (msm.ordinal() % 4) < 2;
+                }
+            };
+        }
+    }
+}

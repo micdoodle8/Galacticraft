@@ -246,6 +246,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) worldIn.getTileEntity(pos);
+        if (tileEntity == null)
+        {
+            return false;
+        }
         return tileEntity.onBlockActivated(worldIn, pos, playerIn);
     }
 

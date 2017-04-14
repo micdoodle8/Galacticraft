@@ -151,53 +151,89 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {
         int buildHeight = this.worldObj.getHeight() - 1;
-        int y = placedPosition.getY() + 1; 
-        if (y > buildHeight)
+        int y = placedPosition.getY();
+
+        if (++y > buildHeight)
         {
             return;
         }
-        
+        positions.add(new BlockPos(placedPosition.getX(), y, placedPosition.getZ()));
+
+        if (++y > buildHeight)
+        {
+            return;
+        }
+        positions.add(new BlockPos(placedPosition.getX(), y, placedPosition.getZ()));
+
+        if (++y > buildHeight)
+        {
+            return;
+        }
+        positions.add(new BlockPos(placedPosition.getX(), y, placedPosition.getZ()));
+
+        if (++y > buildHeight)
+        {
+            return;
+        }
         for (int x = -1; x < 2; x++)
+        {
             for (int z = -1; z < 2; z++)
             {
-                positions.add(new BlockPos(x + placedPosition.getX(), y, z + placedPosition.getZ()));
-            }
-
-        y++;
-        if (y <= buildHeight)
-        {
-            for (int x = -1; x < 2; x++)
-            {
-                for (int z = -1; z < 2; z++)
-                {
-                    positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
-                }
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
 
-        y++;
-        if (y <= buildHeight)
+        if (++y > buildHeight)
         {
-            for (int x = -2; x < 3; x++)
+            return;
+        }
+        for (int x = -1; x < 2; x++)
+        {
+            for (int z = -1; z < 2; z++)
             {
-                for (int z = -2; z < 3; z++)
-                {
-                    positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
-                }
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
 
-        y++;
-        if (y <= buildHeight)
+        if (++y > buildHeight)
         {
-            for (int x = -3; x < 4; x++)
+            return;
+        }
+        for (int x = -3; x < 4; x++)
+        {
+            for (int z = -3; z < 4; z++)
             {
-                for (int z = -3; z < 4; z++)
-                {
-                    positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
-                }
+                if (Math.abs(x) + Math.abs(z) == 6) continue;
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
+
+        if (++y > buildHeight)
+        {
+            return;
+        }
+        for (int x = -3; x < 4; x++)
+        {
+            for (int z = -3; z < 4; z++)
+            {
+                if (Math.abs(x) + Math.abs(z) == 6) continue;
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
+            }
+        }
+
+        if (++y > buildHeight)
+        {
+            return;
+        }
+        for (int x = -2; x < 3; x++)
+        {
+            for (int z = -2; z < 3; z++)
+            {
+                if (Math.abs(x) + Math.abs(z) == 4) continue;
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
+            }
+        }
+
     }
 
     @Override

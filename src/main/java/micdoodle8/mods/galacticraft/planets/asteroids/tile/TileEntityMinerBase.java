@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -14,8 +14,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids.EnumSimplePacketAsteroids;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,7 +45,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Lists;
 
-public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock
+public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock, ITileClientUpdates
 {
     public static final int HOLDSIZE = 72;
     private ItemStack[] containingItems = new ItemStack[HOLDSIZE + 1];
@@ -171,7 +169,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         if (this.updateClientFlag)
         {
             assert(!this.worldObj.isRemote);  //Just checking: updateClientFlag should not be capable of being set on clients
-            this.updateClient();
+            this.updateAllInDimension();
         	this.updateClientFlag = false;
         }
 
@@ -450,10 +448,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void validate()
     {
         super.validate();
-        if (this.worldObj.isRemote)
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.S_REQUEST_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos().getX(), this.getPos().getY(), this.getPos().getZ() }));
-        }
+        this.clientValidate();
     }
 
     /**
@@ -655,7 +650,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         if (!this.worldObj.isRemote)
         {
-            this.updateClient();
+            this.updateAllInDimension();
         }
 
         for (EnumFacing facing : EnumFacing.values())
@@ -673,7 +668,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         this.markDirty();
     }
 
-    private void updateClient()
+    @Override
+    public void buildDataPacket(int[] data)
     {
         int x, y, z;
         if (this.mainBlockPosition != null)
@@ -688,8 +684,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             y = this.getPos().getY();
             z = this.getPos().getZ();
         }
-        int link = (this.linkedMinerID != null) ? 1 : 0;
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(EnumSimplePacketAsteroids.C_UPDATE_MINERBASE_FACING, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), this.facing, x, y, z, link }), GCCoreUtil.getDimensionID(this.worldObj));
+        int link = (this.linkedMinerID != null) ? 8 : 0;
+        data[0] = link + this.facing.ordinal();
+        data[1] = x;
+        data[2] = y;
+        data[3] = z;
     }
 
     @Override
@@ -997,6 +996,23 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public EnumFacing getFront()
     {
         return this.facing;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void updateClient(List<Object> data)
+    {
+        int data1 = (Integer) data.get(1);
+        this.facing = EnumFacing.getFront(data1 & 7);
+        this.setMainBlockPos(new BlockPos((Integer) data.get(2), (Integer) data.get(3), (Integer) data.get(4)));
+        if (data1 > 7)
+        {
+            this.linkedMinerID = UUID.randomUUID();
+        }
+        else
+        {
+            this.linkedMinerID = null;
+        }
     }
 }
 

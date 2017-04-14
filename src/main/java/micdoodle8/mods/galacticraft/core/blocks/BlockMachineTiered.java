@@ -5,9 +5,9 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.IMachineSides.RenderFacesTWO;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.SoundType;
@@ -36,11 +36,12 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
 {
     public static final int STORAGE_MODULE_METADATA = 0;
     public static final int ELECTRIC_FURNACE_METADATA = 4;
-
+    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
     public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
-    public static final PropertyEnum SIDES = PropertyEnum.create("sides", RenderFacesTWO.class);
+    public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
@@ -247,11 +248,11 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         if (tile instanceof IMachineSides)
         {
             IMachineSides tileSides = (IMachineSides) tile;
-            state = state.withProperty(SIDES, (RenderFacesTWO)tileSides.buildBlockStateProperty());
+            state = state.withProperty(SIDES, tileSides.buildBlockStateProperty());
             //We use RenderFacesTWO because this tile's listConfigurableSides has two elements (for Energy Storage Module)
         }
         else
-            state = state.withProperty(SIDES, RenderFacesTWO.LEFT1);
+            state = state.withProperty(SIDES, MACHINESIDES_RENDERTYPE.getDefault());
 
         if (!(tile instanceof TileEntityEnergyStorageModule))
         {
