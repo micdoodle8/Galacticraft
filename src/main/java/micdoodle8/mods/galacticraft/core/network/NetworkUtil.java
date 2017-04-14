@@ -453,7 +453,7 @@ public class NetworkUtil
 
     public static ItemStack readItemStack(ByteBuf buffer) throws IOException
     {
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         short itemID = buffer.readShort();
 
         if (itemID >= 0)
