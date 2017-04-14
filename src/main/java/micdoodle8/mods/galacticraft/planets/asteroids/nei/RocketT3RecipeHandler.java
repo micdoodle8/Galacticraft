@@ -17,7 +17,7 @@
 //
 //public class RocketT3RecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_T3.png");
+//    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t3.png");
 //
 //    public String getRecipeId()
 //    {
@@ -131,7 +131,7 @@
 //    @Override
 //    public String getGuiTexture()
 //    {
-//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_T3.png";
+//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_t3.png";
 //    }
 //
 //    @Override

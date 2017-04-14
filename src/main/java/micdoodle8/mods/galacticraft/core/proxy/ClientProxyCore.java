@@ -364,6 +364,7 @@ public class ClientProxyCore extends CommonProxyCore
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
+        //Specified transformations only take effect on the "inventory" variant, not other variants.
         Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
         replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()), "inventory", "normal");
         replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
@@ -402,6 +403,11 @@ public class ClientProxyCore extends CommonProxyCore
 //        }
     }
 
+    /**
+     * Specified parentState transformations only take effect on the "inventory" variant, not other variants
+     * Make sure that identity gives the correct model for other variants!
+     * Used for example by the NASA Workbench: transform the model for inventory but not for normal model
+     */
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
         ClientUtil.replaceModel(Constants.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
@@ -446,7 +452,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new TileEntityFluidTankRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityFluidPipeRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
@@ -557,6 +563,7 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.oxygenSealer);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.oxygenDetector);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.nasaWorkbench);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.radioTelescope);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fallenMeteor);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.basicBlock, 3, "deco_block_0");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.basicBlock, 4, "deco_block_1");
@@ -621,8 +628,6 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.screen);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.telemetry);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.fluidTank);
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.unlitTorch);
-        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.unlitTorchLit);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 0, "slab_tin_1");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 1, "slab_tin_2");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.slabGCHalf, 2, "slab_moon_stone");

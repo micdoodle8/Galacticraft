@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -17,14 +16,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class PacketSimpleAsteroids extends PacketBase
 {
@@ -32,11 +29,9 @@ public class PacketSimpleAsteroids extends PacketBase
     {
         // SERVER
         S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
-        S_REQUEST_MINERBASE_FACING(Side.CLIENT, Integer.class, Integer.class, Integer.class),
         // CLIENT
         C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class),
-        C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class),
-        C_UPDATE_MINERBASE_FACING(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class);
+        C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -143,24 +138,6 @@ public class PacketSimpleAsteroids extends PacketBase
                 entity.setPosition(vec.x, vec.y, vec.z);
             }
             break;
-        case C_UPDATE_MINERBASE_FACING:
-            tile = player.world.getTileEntity((BlockPos) this.data.get(0));
-            int facingNew = (Integer) this.data.get(1);
-            if (tile instanceof TileEntityMinerBase)
-            {
-                ((TileEntityMinerBase) tile).facing = EnumFacing.getFront(facingNew);
-                ((TileEntityMinerBase) tile).setMainBlockPos((Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4));
-                int link = (Integer) this.data.get(5);
-                if (link > 0)
-                {
-                    ((TileEntityMinerBase) tile).linkedMinerID = UUID.randomUUID();
-                }
-                else
-                {
-                    ((TileEntityMinerBase) tile).linkedMinerID = null;
-                }
-            }
-            break;
         default:
             break;
         }
@@ -195,9 +172,6 @@ public class PacketSimpleAsteroids extends PacketBase
             default:
                 break;
             }
-            break;
-        case S_REQUEST_MINERBASE_FACING:
-//            AsteroidsTickHandlerServer.requestMinerBaseFacingUpdate(player.world), new BlockPos((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2)));
             break;
         default:
             break;

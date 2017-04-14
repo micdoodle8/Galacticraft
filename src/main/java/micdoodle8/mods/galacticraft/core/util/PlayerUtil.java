@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.mojang.authlib.GameProfile;
+
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -121,6 +125,25 @@ public class PlayerUtil
         return profile;
     }
 
+    @SideOnly(Side.CLIENT)
+    public static GameProfile getSkinForName(String strName, String strUUID, int dimID)
+    {
+        GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
+        if (!strName.equals(profile.getName()))
+        {
+            profile = PlayerUtil.getOtherPlayerProfile(strName);
+            if (profile == null)
+            {
+                profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
+            }
+            if (!profile.getProperties().containsKey("textures"))
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, dimID, new Object[] { strName }));
+            }
+        }
+        return profile;
+    }
+    
     public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
     {
         List players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();

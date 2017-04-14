@@ -128,9 +128,9 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        ((World)worldIn).scheduleUpdate(pos, this, this.tickRate((World) worldIn));
+        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
 
     @Override

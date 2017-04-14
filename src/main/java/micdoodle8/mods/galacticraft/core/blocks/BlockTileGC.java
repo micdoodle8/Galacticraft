@@ -23,6 +23,10 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
     /**
      * ejects contained items into the world, and notifies neighbours of an
      * update, as appropriate
+     * 
+     *   Note: breakBlock is called when placing blocks
+     *   getTileEntity() at this point will give the NEW block's tileEntity, if the old block's tile is already invalid
+     *   so: do NOT invalidate old tileEntities before breaking blocks 
      */
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)

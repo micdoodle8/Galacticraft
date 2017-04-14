@@ -137,9 +137,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        super.onNeighborChange(worldIn, pos, neighborBlockPos);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
 
         if (!this.canBlockStay((World) worldIn, pos))
         {

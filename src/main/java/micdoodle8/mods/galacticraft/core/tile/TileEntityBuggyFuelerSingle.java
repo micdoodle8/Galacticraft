@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
@@ -37,17 +36,10 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
             {
                 for (final TileEntity tile : attachedLaunchPads)
                 {
-                    tile.invalidate();
-                    tile.getWorld().setBlockState(tile.getPos(), Blocks.AIR.getDefaultState(), 3);
+                    this.world.markTileEntityForRemoval(tile);
                 }
 
-                this.world.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 3);
-                final TileEntityBuggyFueler tile = (TileEntityBuggyFueler) this.world.getTileEntity(this.getPos());
-
-                if (tile != null)
-                {
-                    tile.onCreate(world, this.getPos());
-                }
+                this.world.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 2);
             }
         }
     }

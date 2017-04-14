@@ -1015,7 +1015,6 @@ public class ThreadFindSeal
 
     private void traceLeak(BlockVec3 tracer)
     {
-        GCLog.debug("Leak tracing test length = " + this.checkedSize);
         ArrayList<BlockVec3> route = new ArrayList();
         BlockVec3 start = this.head.clone().translate(0, 1, 0);
         int count = 0;

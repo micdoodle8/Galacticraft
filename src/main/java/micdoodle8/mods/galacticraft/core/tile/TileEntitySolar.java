@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
@@ -33,7 +34,10 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TileEntitySolar extends TileBaseUniversalElectricalSource implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
@@ -51,6 +55,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     public int generateWatts = 0;
 
     private boolean initialised = false;
+    private boolean initialisedMulti = false;
 
     public TileEntitySolar()
     {
@@ -75,23 +80,6 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void update()
     {
-        // TODO: Find a more efficient way to fix this
-        //          Broken since 1.8 and this is an inefficient fix
-        for (int y = 1; y < 3; y++)
-        {
-            final BlockPos vecToAdd = new BlockPos(getPos().getX(), getPos().getY() + y, getPos().getZ());
-
-            TileEntity tile = this.world.getTileEntity(vecToAdd);
-            if (tile instanceof TileEntityMulti)
-            {
-                BlockPos pos = ((TileEntityMulti) tile).mainBlockPosition;
-                if (pos == null || !pos.equals(getPos()))
-                {
-                    ((TileEntityMulti) tile).mainBlockPosition = getPos();
-                }
-            }
-        }
-
         if (!this.initialised)
         {
             int metadata = this.getBlockMetadata();
@@ -101,6 +89,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                 this.setTierGC(2);
             }
             this.initialised = true;
+        }
+        
+        if (!this.initialisedMulti)
+        {
+            this.initialisedMulti = this.initialiseMultiTiles(this.getPos(), this.world);
         }
 
         this.receiveEnergyGC(null, this.generateWatts, false);
@@ -238,6 +231,29 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         this.produce();
     }
 
+    protected boolean initialiseMultiTiles(BlockPos pos, World world)
+    {
+        //Client can create its own fake blocks and tiles - no need for networking in 1.8+
+        if (world.isRemote) this.onCreate(world, pos);
+        
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(pos, positions);
+        boolean result = true;
+        for (BlockPos vecToAdd : positions)
+        {
+            TileEntity tile = world.getTileEntity(vecToAdd);
+            if (tile instanceof TileEntityMulti)
+            {
+                ((TileEntityMulti) tile).mainBlockPosition = pos;
+            }
+            else
+            {
+                result = false;
+            }
+        }
+        return result;
+    }
+
     public int getGenerate()
     {
         if (this.getDisabled(0))
@@ -276,57 +292,63 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public void onCreate(World world, BlockPos placedPosition)
     {
+        List<BlockPos> positions = new LinkedList();
+        this.getPositions(placedPosition, positions);
+        if (positions.size() > 0)
+        {
+            ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions.get(0), placedPosition, EnumBlockMultiType.SOLAR_PANEL_0.getMeta());
+            positions.remove(0);
+        }
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, (this.getTierGC() == 1) ? EnumBlockMultiType.SOLAR_PANEL_1 : EnumBlockMultiType.SOLAR_PANEL_0);
+    }
+    
+    @Override
+    public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
+    {
         int buildHeight = this.world.getHeight() - 1;
-
-        if (placedPosition.getY() + 1 > buildHeight)
+        int y = placedPosition.getY() + 1; 
+        if (y > buildHeight)
         {
             return;
         }
-        final BlockPos vecStrut = new BlockPos(placedPosition.getX(), placedPosition.getY() + 1, placedPosition.getZ());
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecStrut, placedPosition, 0);
+        positions.add(new BlockPos(placedPosition.getX(), y, placedPosition.getZ()));
 
-        if (placedPosition.getY() + 2 > buildHeight)
+        y++;
+        if (y > buildHeight)
         {
             return;
         }
-        for (int x = 0; x < 1; ++x)
+        for (int x = -1; x < 2; x++)
         {
-            for (int z = 0; z < 1; ++z)
+            for (int z = -1; z < 2; z++)
             {
-                final BlockPos vecToAdd = new BlockPos(placedPosition.getX() + x, placedPosition.getY() + 2, placedPosition.getZ() + z);
-
-                ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, vecToAdd, placedPosition, (this.getTierGC() == 1) ? 4 : 0);
+                positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
     }
-
+    
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        for (int y = 1; y <= 2; y++)
+        final BlockPos thisBlock = getPos();
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(thisBlock, positions);
+
+        for (BlockPos pos : positions)
         {
-            for (int x = -1; x < 2; x++)
+            IBlockState stateAt = this.world.getBlockState(pos);
+
+            if (stateAt.getBlock() == GCBlocks.fakeBlock)
             {
-                for (int z = -1; z < 2; z++)
+                EnumBlockMultiType type = (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE);
+                if ((type == EnumBlockMultiType.SOLAR_PANEL_0 || type == EnumBlockMultiType.SOLAR_PANEL_1))
                 {
-                    BlockPos pos = getPos().add((y == 2 ? x : 0), y, (y == 2 ? z : 0));
-                    IBlockState stateAt = this.world.getBlockState(pos);
-                    IBlockState stateBelow = this.world.getBlockState(pos.down());
-
-                    if (stateAt.getBlock() == GCBlocks.fakeBlock)
+                    if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                     {
-                        BlockMulti.EnumBlockMultiType type = (BlockMulti.EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE);
-                        if ((type == BlockMulti.EnumBlockMultiType.SOLAR_PANEL_0 || type == BlockMulti.EnumBlockMultiType.SOLAR_PANEL_1) &&
-                                ((x == 0 && z == 0) || (stateBelow.getBlock().isAir(this.world.getBlockState(pos.down()), this.world, pos.down()))))
-                        {
-                            if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
-                            {
-                                FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.solarPanel.getDefaultState());
-                            }
-
-                            this.world.setBlockToAir(pos);
-                        }
+                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.solarPanel.getDefaultState());
                     }
+
+                    this.world.setBlockToAir(pos);
                 }
             }
         }
@@ -390,7 +412,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    public EnumFacing getElectricalOutputDirectionMain()
+    public EnumFacing getElectricOutputDirection()
     {
         return getFront();
     }
@@ -547,7 +569,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             return false;
         }
 
-        return direction == this.getElectricalOutputDirectionMain();
+        return direction == this.getElectricOutputDirection();
     }
 
     @Override

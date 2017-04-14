@@ -420,9 +420,9 @@ public class BlockTier1TreasureChest extends BlockContainer implements ITileEnti
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        super.onNeighborChange(worldIn, pos, neighborBlockPos);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityTreasureChest)

@@ -140,11 +140,11 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighborBlockPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (!this.canBlockStay((World) worldIn, pos))
+        if (!this.canBlockStay(worldIn, pos))
         {
-            ((World) worldIn).setBlockToAir(pos);
+            worldIn.setBlockToAir(pos);
         }
     }
 

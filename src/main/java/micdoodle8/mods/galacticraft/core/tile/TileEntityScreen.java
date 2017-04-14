@@ -1,26 +1,23 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.DrawGameScreen;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.client.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-public class TileEntityScreen extends TileEntityAdvanced
+public class TileEntityScreen extends TileEntityAdvanced implements ITileClientUpdates
 {
     public static float FRAMEBORDER = 0.098F;  //used for rendering
     public int imageType;
@@ -66,15 +63,17 @@ public class TileEntityScreen extends TileEntityAdvanced
     public void validate()
     {
         super.validate();
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        if (this.world.isRemote)
         {
+            this.clientValidate();
             this.screen = new DrawGameScreen(1.0F, 1.0F, this);
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_VIEWSCREEN_REQUEST, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos() }));
         }
     }
 
-    public void updateClients()
+    @Override
+    public void buildDataPacket(int[] data)
     {
+        data[0] = this.imageType;
         int connectedFlags = 0;
         if (this.connectedUp)
         {
@@ -92,7 +91,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         {
             connectedFlags += 1;
         }
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_VIEWSCREEN, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getPos(), this.imageType, connectedFlags }), GCCoreUtil.getDimensionID(this.world));
+        data[1] = connectedFlags;
     }
 
     public EnumFacing getFront()
@@ -371,7 +370,7 @@ public class TileEntityScreen extends TileEntityAdvanced
             this.refreshConnections(true);
             this.markDirty();
 
-            this.updateClients();
+            this.updateAllInDimension();
         }
     }
 
@@ -770,7 +769,7 @@ public class TileEntityScreen extends TileEntityAdvanced
                 {
                     screenTile.imageType = this.imageType;
                     screenTile.markDirty();
-                    screenTile.updateClients();
+                    screenTile.updateAllInDimension();
                 }
                 screenTile.refreshConnections(false);
             }
@@ -809,7 +808,7 @@ public class TileEntityScreen extends TileEntityAdvanced
         }
         else
         {
-        	this.updateClients();
+        	this.updateAllInDimension();
         }
     }
 
@@ -1308,5 +1307,19 @@ public class TileEntityScreen extends TileEntityAdvanced
     public boolean isNetworkedTile()
     {
         return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void updateClient(List<Object> data)
+    {
+        int screenType = (Integer) data.get(1);
+        int flags = (Integer) data.get(2);
+        this.imageType = screenType;
+        this.connectedUp = (flags & 8) != 0;
+        this.connectedDown = (flags & 4) != 0;
+        this.connectedLeft = (flags & 2) != 0;
+        this.connectedRight = (flags & 1) != 0;
+        this.refreshNextTick(true);
     }
 }

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
@@ -28,9 +29,11 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
@@ -125,31 +128,40 @@ public class ClientUtil
             variants = new String[] { "inventory" };
         }
 
-        IBakedModel newModel;
+        OBJModel model;
 
         try
         {
-            OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
+            model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
             model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-            Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-            newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
-            if (clazz != null)
-            {
-                newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
-            }
         }
         catch (Exception e)
         {
             throw new RuntimeException(e);
         }
 
+        Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
         for (String variant : variants)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, variant);
             IBakedModel object = event.getModelRegistry().getObject(modelResourceLocation);
             if (object != null)
             {
+                if (!variant.equals("inventory"))
+                    parentState = TRSRTransformation.identity();
+                
+                IBakedModel newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+                if (clazz != null)
+                {
+                    try
+                    {
+                        newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
+                    } catch (Exception e)
+                    {
+                        GCLog.severe("ItemModel constructor problem for " + modelResourceLocation);
+                        e.printStackTrace();
+                    }
+                }
                 event.getModelRegistry().putObject(modelResourceLocation, newModel);
             }
         }

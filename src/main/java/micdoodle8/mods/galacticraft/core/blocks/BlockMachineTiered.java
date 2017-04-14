@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -35,10 +37,12 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
 {
     public static final int STORAGE_MODULE_METADATA = 0;
     public static final int ELECTRIC_FURNACE_METADATA = 4;
-
+    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
     public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
+    public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
@@ -235,13 +239,22 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING, TYPE, FILL_VALUE);
+        return new BlockStateContainer(this, FACING, TYPE, FILL_VALUE, SIDES);
     }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            IMachineSides tileSides = (IMachineSides) tile;
+            state = state.withProperty(SIDES, tileSides.buildBlockStateProperty());
+            //We use RenderFacesTWO because this tile's listConfigurableSides has two elements (for Energy Storage Module)
+        }
+        else
+            state = state.withProperty(SIDES, MACHINESIDES_RENDERTYPE.getDefault());
+
         if (!(tile instanceof TileEntityEnergyStorageModule))
         {
             return state.withProperty(FILL_VALUE, 0);
@@ -255,5 +268,17 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+    
+    @Override
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            ((IMachineSides)tile).nextSideConfiguration(tile);
+            return true;
+        }
+        return false;
     }
 }

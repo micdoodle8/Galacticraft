@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
+import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -77,6 +78,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -120,15 +122,14 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
         S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
-        S_REQUEST_ARCLAMP_FACING(Side.SERVER, BlockPos.class),
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
         S_REQUEST_MAP_IMAGE(Side.SERVER, Integer.class, Integer.class, Integer.class),
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
-        S_UPDATE_VIEWSCREEN_REQUEST(Side.SERVER, BlockPos.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         S_UPDATE_CHECKLIST(Side.SERVER, NBTTagCompound.class),
+        S_REQUEST_MACHINE_DATA(Side.SERVER, BlockPos.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class),
@@ -164,13 +165,12 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         C_GET_CELESTIAL_BODY_LIST(Side.CLIENT),
         C_UPDATE_ENERGYUNITS(Side.CLIENT, Integer.class),
         C_RESPAWN_PLAYER(Side.CLIENT, String.class, Integer.class, String.class, Integer.class),
-        C_UPDATE_ARCLAMP_FACING(Side.CLIENT, BlockPos.class, Integer.class),
-        C_UPDATE_VIEWSCREEN(Side.CLIENT, BlockPos.class, Integer.class, Integer.class),
         C_UPDATE_TELEMETRY(Side.CLIENT, BlockPos.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class),
         C_SEND_PLAYERSKIN(Side.CLIENT, String.class, String.class, String.class, String.class),
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
         C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class),
-        C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class);  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
+        C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class),  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
+        C_UPDATE_MACHINE_DATA(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -204,6 +204,11 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
     public PacketSimple(EnumSimplePacket packetType, int dimID, Object[] data)
     {
         this(packetType, dimID, Arrays.asList(data));
+    }
+
+    public PacketSimple(EnumSimplePacket packetType, World world, Object[] data)
+    {
+        this(packetType, GCCoreUtil.getDimensionID(world), Arrays.asList(data));
     }
 
     public PacketSimple(EnumSimplePacket packetType, int dimID, List<Object> data)
@@ -701,76 +706,14 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             int par4 = (Integer) this.data.get(3);
             WorldUtil.forceRespawnClient(dimID, par2, par3, par4);
             break;
-        case C_UPDATE_ARCLAMP_FACING:
-            tile = player.world.getTileEntity((BlockPos) this.data.get(0));
-            int facingNew = (Integer) this.data.get(1);
-            if (tile instanceof TileEntityArclamp)
-            {
-                ((TileEntityArclamp) tile).facing = facingNew;
-            }
-            break;
         case C_UPDATE_STATS:
             stats.setBuildFlags((Integer) this.data.get(0));
-            break;
-        case C_UPDATE_VIEWSCREEN:
-            tile = player.world.getTileEntity((BlockPos) this.data.get(0));
-            if (tile instanceof TileEntityScreen)
-            {
-                TileEntityScreen screenTile = (TileEntityScreen) tile;
-                int screenType = (Integer) this.data.get(1);
-                int flags = (Integer) this.data.get(2);
-                screenTile.imageType = screenType;
-                screenTile.connectedUp = (flags & 8) != 0;
-                screenTile.connectedDown = (flags & 4) != 0;
-                screenTile.connectedLeft = (flags & 2) != 0;
-                screenTile.connectedRight = (flags & 1) != 0;
-                screenTile.refreshNextTick(true);
-            }
             break;
         case C_UPDATE_TELEMETRY:
             tile = player.world.getTileEntity((BlockPos) this.data.get(0));
             if (tile instanceof TileEntityTelemetry)
             {
-                String name = (String) this.data.get(1);
-                if (name.startsWith("$"))
-                {
-                    //It's a player name
-                    ((TileEntityTelemetry) tile).clientClass = EntityPlayerMP.class;
-                    String strName = name.substring(1);
-                    ((TileEntityTelemetry) tile).clientName = strName;
-                    GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
-                    if (!strName.equals(profile.getName()))
-                    {
-                        profile = PlayerUtil.getOtherPlayerProfile(strName);
-                        if (profile == null)
-                        {
-                            String strUUID = (String) this.data.get(7);
-                            profile = PlayerUtil.makeOtherPlayerProfile(strName, strUUID);
-                        }
-                        if (!profile.getProperties().containsKey("textures"))
-                        {
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, this.getDimensionID(), new Object[] { strName }));
-                        }
-                    }
-                    ((TileEntityTelemetry) tile).clientGameProfile = profile;
-                }
-                else
-                {
-                    if (name.isEmpty())
-                    {
-                        ((TileEntityTelemetry) tile).clientClass = null;
-                    }
-                    else
-                    {
-                        EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
-                        ((TileEntityTelemetry) tile).clientClass = entityEntry == null ? null : entityEntry.getEntityClass();
-                    }
-                }
-                ((TileEntityTelemetry) tile).clientData = new int[5];
-                for (int i = 4; i < 7; i++)
-                {
-                    ((TileEntityTelemetry) tile).clientData[i - 4] = (Integer) this.data.get(i);
-                }
+                ((TileEntityTelemetry) tile).receiveUpdate(data, this.getDimensionID());
             }
             break;
         case C_SEND_PLAYERSKIN:
@@ -824,6 +767,13 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             break;
         case C_RECOLOR_ALL_GLASS:
             ColorUtil.updateGlassColors((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+            break;
+        case C_UPDATE_MACHINE_DATA:
+            TileEntity tile3 = player.world.getTileEntity((BlockPos) this.data.get(0));
+            if (tile3 instanceof ITileClientUpdates)
+            {
+                ((ITileClientUpdates)tile3).updateClient(this.data);
+            }
             break;
         default:
             break;
@@ -1239,22 +1189,8 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
             }
             break;
-        case S_REQUEST_ARCLAMP_FACING:
-            TileEntity tileAL = player.world.getTileEntity((BlockPos) this.data.get(0));
-            if (tileAL instanceof TileEntityArclamp)
-            {
-                ((TileEntityArclamp) tileAL).updateClientFlag = true;
-            }
-            break;
         case S_BUILDFLAGS_UPDATE:
             stats.setBuildFlags((Integer) this.data.get(0));
-            break;
-        case S_UPDATE_VIEWSCREEN_REQUEST:
-            TileEntity tile = player.world.getTileEntity((BlockPos) this.data.get(0));
-            if (tile instanceof TileEntityScreen)
-            {
-                ((TileEntityScreen) tile).updateClients();
-            }
             break;
         case S_REQUEST_OVERWORLD_IMAGE:
             MapUtil.sendOverworldToClient(playerBase);
@@ -1366,6 +1302,14 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 }
             }
             break;
+        case S_REQUEST_MACHINE_DATA:
+            TileEntity tile3 = player.world.getTileEntity((BlockPos) this.data.get(0));
+            if (tile3 instanceof ITileClientUpdates)
+            {
+                ((ITileClientUpdates)tile3).sendUpdateToClient(playerBase);
+            }
+            break;
+
         default:
             break;
         }
