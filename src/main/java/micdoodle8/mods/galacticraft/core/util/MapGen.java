@@ -17,9 +17,11 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
 
 import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Random;
@@ -148,7 +150,9 @@ public class MapGen extends WorldChunkManager implements Runnable
                 fc.read(databuff);
                 if (testFlag(flagdata))
                 {
-                    progress = (((flagdata[0] << 8) + flagdata[1] << 8) + flagdata[2] << 8) + flagdata[3];
+                    databuff.order(ByteOrder.BIG_ENDIAN);
+                    databuff.position(0);
+                    progress = databuff.getInt();
                     GCLog.debug("Flag flagged, progress is " + progress);
                 }
                 fc.close();
