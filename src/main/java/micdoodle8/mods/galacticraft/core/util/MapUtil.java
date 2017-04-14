@@ -61,6 +61,7 @@ public class MapUtil
     public static ArrayList<BlockVec3> biomeColours = new ArrayList<BlockVec3>(40);
     private static Random rand = new Random();
 	private static byte[] overworldImageBytesPart; //Used client side only
+	private static byte[] overworldImageCompressed = null;
     
     //Map size definitions
     private static final int SIZE_STD = 176;
@@ -95,6 +96,7 @@ public class MapUtil
         queuedMaps.clear();
         calculatingMap.set(false);
         doneOverworldTexture = false;
+        overworldImageCompressed = null;
     }
 
     @SideOnly(Side.CLIENT)
@@ -257,7 +259,20 @@ public class MapUtil
     
     private static void sendMapPacket(int cx, int cz, EntityPlayerMP client, byte[] largeMap) throws IOException
     {
-        sendMapPacketCompressed(cx, cz, client, zipCompress(largeMap));
+        byte[] compressed;
+        if (cx == LARGEMAP_MARKER)
+        {
+            if (overworldImageCompressed == null)
+            {
+                overworldImageCompressed = zipCompress(largeMap);
+            }
+            compressed = overworldImageCompressed;
+        }
+        else
+        {
+            compressed = zipCompress(largeMap);
+        }
+        sendMapPacketCompressed(cx, cz, client, compressed);
     }
     
     private static void sendMapPacketCompressed(int cx, int cz, EntityPlayerMP client, byte[] map) throws IOException
@@ -624,16 +639,15 @@ public class MapUtil
     private static byte[] zipCompress(byte[] data)
     {
         Deflater compressor = new Deflater();
+        compressor.setLevel(Deflater.BEST_SPEED);
         compressor.setInput(data);
         compressor.finish();
-        ByteArrayOutputStream compressed = new ByteArrayOutputStream(data.length * 3 / 4);
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream(data.length * 2 / 3);
         byte[] miniBuffer = new byte[4096];
-        int lengthout = 0;
         while (!compressor.finished())
         {
             int count = compressor.deflate(miniBuffer);
             compressed.write(miniBuffer, 0, count);
-            lengthout += count;
         }
         return compressed.toByteArray();
     }

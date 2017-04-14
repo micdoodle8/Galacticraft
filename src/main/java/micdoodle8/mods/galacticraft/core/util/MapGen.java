@@ -155,6 +155,10 @@ public class MapGen extends WorldChunkManager implements Runnable
                     progress = databuff.getInt();
                     GCLog.debug("Flag flagged, progress is " + progress);
                 }
+                else
+                {
+                    return -1;  
+                }
                 fc.close();
             } catch (IOException e)
             {
