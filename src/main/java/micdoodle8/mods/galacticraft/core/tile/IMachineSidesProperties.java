@@ -16,17 +16,19 @@ import net.minecraft.util.IStringSerializable;
  */
 public class IMachineSidesProperties
 {
-    public static IMachineSidesProperties ONEFACE = new IMachineSidesProperties(MachineSidesModel.oneFacedAll(), Face.AllAvailable);;
-    public static IMachineSidesProperties ONEFACE_HORIZ = new IMachineSidesProperties(MachineSidesModel.oneFacedHoriz(), Face.Horizontals);;
+    public static IMachineSidesProperties ONEFACE_HORIZ = new IMachineSidesProperties(MachineSidesModel.oneFacedHoriz(), Face.Horizontals);
+    public static IMachineSidesProperties ONEFACE = new IMachineSidesProperties(MachineSidesModel.oneFacedAll(), Face.AllAvailable);
     public static IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
-    public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.AllAvailable);
+    public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedAll(), Face.AllAvailable);
 
     public PropertyEnum asProperty;
+    private Predicate<MachineSidesModel> filter;
     private Face[] toFaces;
     
     public IMachineSidesProperties(Predicate<MachineSidesModel> theFilter, Face[] faces)
     {
         this.asProperty = PropertyEnum.create("msm", MachineSidesModel.class, theFilter);
+        this.filter = theFilter;
         this.toFaces = faces;
     }
     
@@ -46,6 +48,11 @@ public class IMachineSidesProperties
         return this.toFaces;
     }
     
+    public boolean isValidFor(MachineSidesModel machineSidesModel)
+    {
+        return filter.apply(machineSidesModel);
+    }
+
     public static MachineSidesModel getModelForTwoFaces(Face faceA, Face faceB)
     {
         String result = faceA.getName() + faceB.getName();
@@ -56,6 +63,9 @@ public class IMachineSidesProperties
         return MachineSidesModel.RIGHT1;
     }
 
+    /**
+     * The return results will all be allowed by the oneFacedAll predicate
+     */
     public static MachineSidesModel getModelForOneFace(Face allowedSide)
     {
         switch (allowedSide)
@@ -75,7 +85,7 @@ public class IMachineSidesProperties
     }
 
     /**
-     * Only used by block rendering.
+     * The strings match the blockState model implementation for rendering
      */
     public static enum MachineSidesModel implements IStringSerializable
     {
@@ -114,6 +124,15 @@ public class IMachineSidesProperties
             return this.name;
         }
 
+        public MachineSidesModel validFor(IMachineSidesProperties configurationType)
+        {
+            if (configurationType.isValidFor(this))
+            {
+                return this;
+            }
+            return configurationType.getDefault();
+        }
+
         private static Predicate oneFacedAll()
         {
             return new Predicate<MachineSidesModel>()
@@ -126,7 +145,7 @@ public class IMachineSidesProperties
             };
         }
 
-        private static Predicate getPredicateTwoAll()
+        private static Predicate twoFacedAll()
         {
             return Predicates.<MachineSidesModel>alwaysTrue();
         }
