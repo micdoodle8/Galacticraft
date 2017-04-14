@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -79,25 +81,13 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        // This is unnecessary as it will be picked up by
-        // OxygenPressureProtocol.onEdgeBlockUpdated anyhow
-        // Also don't want to clear all the breatheableAir if there are still
-        // working sealers in the space
-        /*
-         * TileEntity tile = world.getTileEntity(x, y, z);
-		 * 
-		 * if (tile instanceof GCCoreTileEntityOxygenSealer) {
-		 * GCCoreTileEntityOxygenSealer sealer = (GCCoreTileEntityOxygenSealer)
-		 * tile;
-		 * 
-		 * if (sealer.threadSeal != null && sealer.threadSeal.sealed) { for
-		 * (BlockVec3 checkedVec : sealer.threadSeal.checked) { int blockID =
-		 * checkedVec.getBlockID(world);
-		 * 
-		 * if (blockID == GCCoreBlocks.breatheableAir) {
-		 * world.setBlock(checkedVec.x, checkedVec.y, checkedVec.z, 0, 0, 2); }
-		 * } } }
-		 */
+        //Run a sealer check if needed and if not picked up by BlockBreathableAir.onNeighborBlockChange()
+        BlockPos ventSide = pos.up(1);
+        Block testBlock = worldIn.getBlockState(ventSide).getBlock();
+        if (testBlock == GCBlocks.breatheableAir || testBlock == GCBlocks.brightBreatheableAir)
+        {
+            TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionID(worldIn), pos);
+        }
 
         super.breakBlock(worldIn, pos, state);
     }
