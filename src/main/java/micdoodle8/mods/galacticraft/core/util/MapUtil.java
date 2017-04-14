@@ -65,7 +65,7 @@ public class MapUtil
     //Map size definitions
     private static final int SIZE_STD = 176;
     public static final int SIZE_STD2 = SIZE_STD * 2;
-    private static final int OVERWORLD_LARGEMAP_WIDTH = 1536;   //Do not make a large map whose raw binary exceeds 2MB otherwise sendMapPacket() will not send it.  This raw binary is 576kB
+    public static final int OVERWORLD_LARGEMAP_WIDTH = 1536;   //Do not make a large map whose raw binary exceeds 2MB otherwise sendMapPacket() will not send it.  This raw binary is 576kB
     private static final int OVERWORLD_LARGEMAP_HEIGHT = 960;
     private static final int OVERWORLD_MAP_SCALE = 4;  //Recommended is 4.  This gives a large overworld map of size (1536 x 16) by (960 x 16): that extends 12000 blocks from spawn in both EW directions and 7600 blocks from spawn north and south
     private static final int OVERWORLD_TEXTURE_WIDTH = 192;   //Do not change - planet texture needs to be this size
@@ -89,8 +89,7 @@ public class MapUtil
     {
         if (currentMap != null) currentMap.abort();
         currentMap = null;
-        if (slowMap != null) slowMap.abort();
-        slowMap = null;
+        saveMapProgress();
         threadCurrentMap = null;
         threadSlowMap = null;
         queuedMaps.clear();
@@ -172,13 +171,12 @@ public class MapUtil
 
     public static void makeOverworldTexture()
     {
-        //doneOverworldTexture = true;
         if (doneOverworldTexture)
         {
             return;
         }
-        World world = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).worldObj;
-        if (world == null)
+        World overworld = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).worldObj;
+        if (overworld == null)
         {
             return;
         }
@@ -191,14 +189,14 @@ public class MapUtil
             return;
         }
 
-        if (MapUtil.getBiomeMapForCoords(world, 0, 0, OVERWORLD_TEXTURE_SCALE, OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT, baseFolder))
+        if (MapUtil.getBiomeMapForCoords(overworld, 0, 0, OVERWORLD_TEXTURE_SCALE, OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT, baseFolder))
         {
             doneOverworldTexture = true;
         }
 
         //This will make the 'slow map', a map covering a large part of the world around spawn
-        //(On a typical modern PC, this should take 10-20 minutes to generate in its own thread)
-        MapUtil.getBiomeMapForCoords(world, 0, 0, OVERWORLD_MAP_SCALE, OVERWORLD_LARGEMAP_WIDTH, OVERWORLD_LARGEMAP_HEIGHT, baseFolder);
+        //(On a typical modern PC, this should take 20-30 minutes to generate in its own thread)
+        MapUtil.getBiomeMapForCoords(overworld, 0, 0, OVERWORLD_MAP_SCALE, OVERWORLD_LARGEMAP_WIDTH, OVERWORLD_LARGEMAP_HEIGHT, baseFolder);
     }
 
     public static void sendOverworldToClient(EntityPlayerMP client)
@@ -354,7 +352,26 @@ public class MapUtil
         return true;
     }
    
-    //Multi-threaded version - runs each MapGen in its own thread, polls MapGen.finishedCalculatingMap to know when finished  
+    public static void saveMapProgress()
+    {
+        if (slowMap != null)
+        {
+            slowMap.abort();
+            try
+            {
+                Thread.currentThread().sleep(90);
+            } catch (InterruptedException e)
+            { }
+            slowMap.writeOutputFile(false);
+            slowMap = null;
+        }
+    }
+
+    /**
+     * Poll any map threads to see if they need starting or if they're finished
+     * 
+     *    Multi-threaded version - runs each MapGen in its own thread, polls MapGen.finishedCalculatingMap to know when finished
+     */
     public static void BiomeMapNextTick_MultiThreaded()
     {
         if (currentMap != null)
@@ -364,11 +381,12 @@ public class MapUtil
             	//Create the current map thread, pausing any slow map thread 
 	        	if (slowMap != null)
 	        	{
-//TODO commented out for beta testing purposes - if multithreading is a problem, some blocky artifacts might be seen in the maps
+//TODO commented out for beta testing purposes - if multithreading is a problem, some blocky artifacts might be seen in the maps (none seen currently in 1.8.9 version)
 //	        		slowMap.pause();
 	        	}
 	        	//TODO = should it use a re-usable thread pool?
             	threadCurrentMap = new Thread(currentMap);
+                threadCurrentMap.setName("Background world mapping");
             	threadCurrentMap.setPriority(Thread.NORM_PRIORITY - 1);
 	            threadCurrentMap.start();
             }
@@ -407,6 +425,7 @@ public class MapUtil
             {
             	//Create the slow map thread 
             	threadSlowMap = new Thread(slowMap);
+            	threadSlowMap.setName("Background world mapping");
             	threadSlowMap.setPriority(Thread.NORM_PRIORITY - 1);
 	            threadSlowMap.start();
             }
@@ -422,7 +441,7 @@ public class MapUtil
             return;
         }
     }
-
+    
     //Single Threaded Version of the same code
     //(Currently unused)
     public static void BiomeMapNextTick_SingleThreaded()
@@ -1182,7 +1201,7 @@ public class MapUtil
         File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
         try
         {
-            if (folder.exists() || folder.mkdir())
+            if (folder.exists() || folder.mkdirs())
             {
                 return folder;
             }

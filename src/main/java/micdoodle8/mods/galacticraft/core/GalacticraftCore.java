@@ -439,6 +439,7 @@ public class GalacticraftCore
         // Unregister dimensions
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
+        MapUtil.saveMapProgress();
     }
 
     private static void registerCoreGameScreens()
