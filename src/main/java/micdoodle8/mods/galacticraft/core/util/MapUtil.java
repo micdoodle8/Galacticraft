@@ -35,11 +35,15 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 public class MapUtil
 {
@@ -61,12 +65,14 @@ public class MapUtil
     //Map size definitions
     private static final int SIZE_STD = 176;
     public static final int SIZE_STD2 = SIZE_STD * 2;
-    private static final int OVERWORLD_LARGEMAP_WIDTH = 768;   //Do not make a large map whose raw binary exceeds 2MB otherwise sendMapPacket() will not send it.  This raw binary is 576kB
-    private static final int OVERWORLD_LARGEMAP_HEIGHT = 384;
-    private static final int OVERWORLD_MAP_SCALE = 6;  //Recommended is 6.  This gives a large overworld map of size (768 x 64) by (376 x 64): that extends 24000 blocks from spawn in both directions east-west and 12000 blocks from spawn north and south
+    private static final int OVERWORLD_LARGEMAP_WIDTH = 1536;   //Do not make a large map whose raw binary exceeds 2MB otherwise sendMapPacket() will not send it.  This raw binary is 576kB
+    private static final int OVERWORLD_LARGEMAP_HEIGHT = 960;
+    private static final int OVERWORLD_MAP_SCALE = 4;  //Recommended is 4.  This gives a large overworld map of size (1536 x 16) by (960 x 16): that extends 12000 blocks from spawn in both EW directions and 7600 blocks from spawn north and south
     private static final int OVERWORLD_TEXTURE_WIDTH = 192;   //Do not change - planet texture needs to be this size
     private static final int OVERWORLD_TEXTURE_HEIGHT = 48;   //Do not change - planet texture needs to be this size
     private static final int OVERWORLD_TEXTURE_SCALE = 7;
+    
+    private static final int LARGEMAP_MARKER = 30000001;   //This is a marker to flag world map packets, it must be an impossible cx coordinate
 
     //Color related constants
 	private static final int OCEAN_HEIGHT = 63;
@@ -102,7 +108,6 @@ public class MapUtil
     @SideOnly(Side.CLIENT)
     public static void resetClientBody()
     {
-        ClientProxyCore.overworldTextureRequestSent = false;
         ClientProxyCore.overworldTexturesValid = false;
         clientRequests.clear();
         overworldImageBytesPart = null;
@@ -118,6 +123,7 @@ public class MapUtil
             }
         }
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] {}));
+        ClientProxyCore.overworldTextureRequestSent = true;
 		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
 		MapUtil.biomeColours.clear();
 		setupColours();
@@ -215,7 +221,7 @@ public class MapUtil
                 file = new File(baseFolder, "Overworld" + OVERWORLD_LARGEMAP_WIDTH + ".bin");
                 if (file.exists())
                 {
-                    sendMapPacket(0, 0, client, FileUtils.readFileToByteArray(file));
+                    sendMapPacket(LARGEMAP_MARKER, 0, client, FileUtils.readFileToByteArray(file));
                 }
             }
             catch (Exception ex)
@@ -253,19 +259,23 @@ public class MapUtil
     
     private static void sendMapPacket(int cx, int cz, EntityPlayerMP client, byte[] largeMap) throws IOException
     {
-    	if (largeMap.length < 1000000)
+        sendMapPacketCompressed(cx, cz, client, zipCompress(largeMap));
+    }
+    
+    private static void sendMapPacketCompressed(int cx, int cz, EntityPlayerMP client, byte[] map) throws IOException
+    {
+        if (cx == LARGEMAP_MARKER && map.length < 2040000)
+        {
+            int halfSize = map.length / 2;
+            byte[] largeMapPartA = Arrays.copyOf(map, halfSize);
+            byte[] largeMapPartB = Arrays.copyOfRange(map, halfSize, map.length);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, map.length, largeMapPartA }), client);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx + 1, map.length, largeMapPartB }), client);
+        }
+        else if (map.length < 1020000)  //That's about the limit on a Forge packet length
     	{
-    		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMap }), client);
+    		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, map }), client);
     	}
-    	else if (largeMap.length < 2000000)
-		{
-			int halfSize = largeMap.length / 2 - 1;
-			//These two arrays are deliberately different sizes to signal to client (receiving them) which is which
-			byte[] largeMapPartA = Arrays.copyOf(largeMap, halfSize);
-			byte[] largeMapPartB = Arrays.copyOfRange(largeMap, halfSize, halfSize + halfSize + 2);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMapPartA }), client);
-			GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, largeMapPartB }), client);
-		}
     }
 
     /**
@@ -592,58 +602,110 @@ public class MapUtil
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void getOverworldImageFromRaw(File folder, int cx, int cz, byte[] raw) throws IOException
+    private static byte[] zipCompress(byte[] data)
     {
-    	int largeMapSize = OVERWORLD_LARGEMAP_WIDTH * OVERWORLD_LARGEMAP_HEIGHT * 2;
-    	//Received large map part A
-    	if (raw.length == OVERWORLD_LARGEMAP_WIDTH * OVERWORLD_LARGEMAP_HEIGHT - 1)
-    	{
-    		if (overworldImageBytesPart == null)
-    		{
-    			overworldImageBytesPart = raw;
-    			return;
-    		}
-    		else
-    		{
-    			byte[] overWorldImageComplete = Arrays.copyOf(raw, largeMapSize);
-    			int offsetPartB = OVERWORLD_LARGEMAP_WIDTH * OVERWORLD_LARGEMAP_HEIGHT - 1;
-    			for (int i = offsetPartB; i < largeMapSize; i++)
-    				overWorldImageComplete[i] = overworldImageBytesPart[i - offsetPartB];
-    			overworldImageBytesPart = null;
-    			raw = overWorldImageComplete;
-    		}
-    	}
-    	//Received large map part B
-    	if (raw.length == OVERWORLD_LARGEMAP_WIDTH * OVERWORLD_LARGEMAP_HEIGHT + 1)
-    	{
-    		if (overworldImageBytesPart == null)
-    		{
-    			overworldImageBytesPart = raw;
-    			return;
-    		}
-    		else
-    		{
-    			byte[] overWorldImageComplete = Arrays.copyOf(overworldImageBytesPart, largeMapSize);
-    			int offsetPartB = OVERWORLD_LARGEMAP_WIDTH * OVERWORLD_LARGEMAP_HEIGHT - 1;
-    			for (int i = offsetPartB; i < largeMapSize; i++)
-    				overWorldImageComplete[i] = raw[i - offsetPartB];
-    			overworldImageBytesPart = null;
-    			raw = overWorldImageComplete;
-    		}
-    	}
-    	if (raw.length == largeMapSize)
+        Deflater compressor = new Deflater();
+        compressor.setInput(data);
+        compressor.finish();
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream(data.length * 3 / 4);
+        byte[] miniBuffer = new byte[4096];
+        int lengthout = 0;
+        while (!compressor.finished())
         {
-            File file0 = new File(folder, "overworldRaw.bin");
-
-            if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+            int count = compressor.deflate(miniBuffer);
+            compressed.write(miniBuffer, 0, count);
+            lengthout += count;
+        }
+        return compressed.toByteArray();
+    }
+    
+    private static byte[] zipDeCompress(byte[] data) throws DataFormatException
+    {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);  
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length * 2);  
+        byte[] miniBuffer = new byte[4096];
+        while (!inflater.finished())
+        {  
+            int count = inflater.inflate(miniBuffer);
+            outputStream.write(miniBuffer, 0, count);  
+        }  
+        return outputStream.toByteArray();
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static void receiveOverworldImageCompressed(int cx, int cz, byte[] raw) throws IOException
+    {
+        if (cx == LARGEMAP_MARKER)
+        {
+            //Received large map part A
+            if (overworldImageBytesPart == null)
             {
-                FileUtils.writeByteArrayToFile(file0, raw);
+                overworldImageBytesPart = raw;
+                return;
             }
             else
             {
-                System.err.println("Cannot read/write to file %minecraftDir%/assets/galacticraftMaps/overworldRaw.bin");
+                byte[] overWorldImageComplete = Arrays.copyOf(raw, cz);
+                int offsetPartB = cz / 2;
+                for (int i = offsetPartB; i < cz; i++)
+                    overWorldImageComplete[i] = overworldImageBytesPart[i - offsetPartB];
+                overworldImageBytesPart = null;
+                raw = overWorldImageComplete;
             }
+        }
+        else if (cx == LARGEMAP_MARKER + 1)
+        {
+            //Received large map part B
+            if (overworldImageBytesPart == null)
+            {
+                overworldImageBytesPart = raw;
+                return;
+            }
+            else
+            {
+                byte[] overWorldImageComplete = Arrays.copyOf(overworldImageBytesPart, cz);
+                int offsetPartB = cz / 2;
+                for (int i = offsetPartB; i < cz; i++)
+                    overWorldImageComplete[i] = raw[i - offsetPartB];
+                overworldImageBytesPart = null;
+                raw = overWorldImageComplete;
+            }
+        }
+        
+        try
+        {
+            getOverworldImageFromRaw(cx, cz, zipDeCompress(raw));
+        } catch (DataFormatException e)
+        {  
+            GCLog.debug("Client received a corrupted map image data packet from server");
+        }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static void getOverworldImageFromRaw(int cx, int cz, byte[] raw) throws IOException
+    {
+    	File folder = MapUtil.getClientMapsFolder();
+
+    	if (raw.length == OVERWORLD_LARGEMAP_WIDTH * OVERWORLD_LARGEMAP_HEIGHT * 2)
+        {
+    	    if (folder != null)
+    	    {            
+    	        File file0 = new File(folder, "overworldRaw.bin");
+
+    	        if (!file0.exists() || (file0.canRead() && file0.canWrite()))
+    	        {
+    	            FileUtils.writeByteArrayToFile(file0, raw);
+    	        }
+    	        else
+    	        {
+    	            System.err.println("Cannot write to file %minecraft%/assets/galacticraftMaps/overworldRaw.bin");
+    	        }
+    	    }
+    	    else
+    	    {
+                System.err.println("No folder for file %minecraft%/assets/galacticraftMaps/overworldRaw.bin");
+    	    }
 
             //raw is a WIDTH_WORLD x HEIGHT_WORLD array of 2 byte entries: biome type followed by height
             //Here we will make a texture from that, but twice as large: 4 pixels for each data point, it just looks better that way when the texture is used
@@ -683,8 +745,8 @@ public class MapUtil
 //            }
 //            ClientProxyCore.overworldTextureLarge.update(worldImageLarge);
 
-//Instead write it to a .jpg file on client for beta preview 
-            if (GalacticraftCore.enableJPEG)
+            //Write it to a .jpg file on client for beta preview 
+            if (GalacticraftCore.enableJPEG && folder != null)
             {
                 ImageOutputStream outputStream = new FileImageOutputStream(new File(folder, "large.jpg"));
                 GalacticraftCore.jpgWriter.setOutput(outputStream);
@@ -754,7 +816,7 @@ public class MapUtil
                 ClientProxyCore.overworldTexturesValid = true;
             }
         }
-        else
+        else if (folder != null)
         {
             File file0 = makeFileName(folder, cx, cz);
 
@@ -762,6 +824,10 @@ public class MapUtil
             {
                 FileUtils.writeByteArrayToFile(file0, raw);
             }
+        }
+        else
+        {
+            System.err.println("No folder %minecraft%/assets/galacticraftMaps for local map file.");
         }
     }
 
@@ -860,7 +926,7 @@ public class MapUtil
         }
         if (raw == null || raw.length != SIZE_STD * SIZE_STD * 2)
         {
-            GCLog.debug("Warning: unexpected map size is " + raw.length);
+            GCLog.debug("Warning: unexpected map size is " + raw.length + " for file " + filename.toString());
             return true;
         }
 
@@ -1108,5 +1174,28 @@ public class MapUtil
         {
             e.printStackTrace();
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static File getClientMapsFolder()
+    {
+        File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
+        try
+        {
+            if (folder.exists() || folder.mkdir())
+            {
+                return folder;
+            }
+            else
+            {
+                System.err.println("Cannot create directory %minecraft%/assets/galacticraftMaps! : " + folder.toString());
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println(folder.toString());
+            e.printStackTrace();
+        }
+        return null;
     }
 }
