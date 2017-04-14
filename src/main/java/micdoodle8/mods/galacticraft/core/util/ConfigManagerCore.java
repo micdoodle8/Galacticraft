@@ -563,7 +563,7 @@ public class ConfigManagerCore
             keyOverrideMapI = parseKeyValue(keyOverrideMap);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Fuel GUI", "KEY_G");
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Open Rocket GUI", "KEY_G");
             prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
             prop.setLanguageKey("gc.configgui.keyOverrideFuelLevel").setRequiresMcRestart(true);
             keyOverrideFuelLevel = prop.getString();
