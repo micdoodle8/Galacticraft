@@ -367,25 +367,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         this.clientValidate();
     }
     
-    //We have to override this and use renderTwo because the Electric Furnace is a BlockMachineTiered
-    //(shared with the Energy Storage Module which has *two* configurable input/outputs)
     @Override
-    public RenderFacesTWO buildBlockStateProperty()
+    public IMachineSidesProperties getConfigurationType()
     {
-        switch (this.getSide(MachineSide.ELECTRIC_IN))
-        {
-        case RIGHT:
-            return RenderFacesTWO.RIGHT1;
-        case REAR:
-            return RenderFacesTWO.REAR1;
-//        case TOP:
-//            return RenderFacesTWO.TOP1;
-//        case BOTTOM:
-//            return RenderFacesTWO.BOTTOM1;
-        case LEFT:
-        default:
-            return RenderFacesTWO.LEFT1;
-        }
+        return BlockMachineTiered.MACHINESIDES_RENDERTYPE;
     }
     //------------------END OF IMachineSides implementation
 }

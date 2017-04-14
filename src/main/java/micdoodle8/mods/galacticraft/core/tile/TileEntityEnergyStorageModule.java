@@ -443,5 +443,11 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         super.validate();
         this.clientValidate();
     }
+    
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return BlockMachineTiered.MACHINESIDES_RENDERTYPE;
+    }
     //------------------END OF IMachineSides implementation
 }

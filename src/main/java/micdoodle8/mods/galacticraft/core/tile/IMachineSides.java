@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,8 +15,84 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Used as a common interface for any TileEntity with configurable power, pipe, etc sides
  *
  */
-public interface IMachineSides extends ITileClientUpdates
+public interface IMachineSides<T> extends ITileClientUpdates
 {
+    /**
+     * The different sides which a MachineSide (e.g. electric input)
+     * can be set to.  These are relative to the front of the machine
+     * (looking at the machine from the normal front). 
+     */
+    public enum Face
+    {
+        LEFT("l", 2, 1),
+        RIGHT("r", 0, 2),
+        REAR("b", 1, 0),
+        TOP("u", 4, 4),
+        BOTTOM("d", 3, 3),
+        NOT_SET("n", 5, 5),
+        NOT_CONFIGURABLE("fail", 6, 6);
+        
+        private final String name;
+        private final int next;
+        private final int prior;
+        public static Face[] Horizontals = new Face[] { Face.LEFT, Face.REAR, Face.RIGHT };
+        public static Face[] AllAvailable = new Face[] { Face.LEFT, Face.REAR, Face.RIGHT, Face.TOP, Face.BOTTOM };
+
+        Face(String newname, int theNext, int thePrior)
+        {
+            this.name = newname;
+            this.next = theNext;
+            this.prior = thePrior;
+        }
+        
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public Face next()
+        {
+            return Face.values()[this.next];
+        }
+
+        public Face prior()
+        {
+            return Face.values()[this.prior];
+        }
+    }
+    
+    /*
+     * All the different possible types of configurable side.
+     * 
+     * Each of these can correspond to a texture and a function
+     * according to the block type.  Many may be unused.
+     * 
+     * this.listConfigurableSides() provides a list of which ones
+     * the tile actually uses.
+     */
+    public enum MachineSide
+    {
+        FRONT("front"),
+        REARDECO("reardeco"),
+        PLAIN("plain"),
+        TOP("top"),
+        BASE("bottom"),
+        ELECTRIC_IN("elec_in"),
+        ELECTRIC_OUT("elec_out"),
+        PIPE_IN("pipe_in"),
+        PIPE_OUT("pipe_out"),
+        CUSTOM("custom");
+        
+        private final String name;
+
+        MachineSide(String newname)
+        {
+            this.name = newname;
+        }
+    }
+
+    
+    //--------------METHODS--------------
     /**
      * The front of this machine, with the graphic.
      * This CANNOT be set: use a wrench to change the block's facing to change it
@@ -155,192 +230,6 @@ public interface IMachineSides extends ITileClientUpdates
         }
         return false;
     }
-    
-    public default Face[] allowableFaces()
-    {
-        return Face.Horizontals;
-    }
-
-    /**
-     * The different sides which a MachineSide (e.g. electric input)
-     * can be set to.  These are relative to the front of the machine
-     * (looking at the machine from the normal front). 
-     */
-    public enum Face
-    {
-        LEFT("l", 2, 1),
-        RIGHT("r", 0, 2),
-        REAR("b", 1, 0),
-        TOP("u", 4, 4),
-        BOTTOM("d", 3, 3),
-        NOT_SET("n", 5, 5),
-        NOT_CONFIGURABLE("fail", 6, 6);
-        
-        private final String name;
-        private final int next;
-        private final int prior;
-        public static Face[] Horizontals = new Face[] { Face.LEFT, Face.REAR, Face.RIGHT };
-        public static Face[] AllAvailable = new Face[] { Face.LEFT, Face.REAR, Face.RIGHT, Face.TOP, Face.BOTTOM };
-
-        Face(String newname, int theNext, int thePrior)
-        {
-            this.name = newname;
-            this.next = theNext;
-            this.prior = thePrior;
-        }
-        
-        public String getName()
-        {
-            return this.name;
-        }
-
-        public Face next()
-        {
-            return Face.values()[this.next];
-        }
-
-        public Face prior()
-        {
-            return Face.values()[this.prior];
-        }
-    }
-    
-    /**
-     * Only used by block rendering.
-     */
-    public enum RenderFacesAll implements IStringSerializable
-    {
-        LEFT("l"),
-        RIGHT("r"),
-        REAR("b"),
-        TOP("u"),
-        BOTTOM("d");
-        
-        private final String name;
-
-        RenderFacesAll(String newname)
-        {
-            this.name = newname;
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-    }
-    
-    /**
-     * Only used by block rendering.
-     */
-    public enum RenderFacesHoriz implements IStringSerializable
-    {
-        LEFT("l"),
-        RIGHT("r"),
-        REAR("b");
-        
-        private final String name;
-
-        RenderFacesHoriz(String newname)
-        {
-            this.name = newname;
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-    }
-    
-    /**
-     * Only used by block rendering.
-     * This will add a lot of extra block models, do not use unless you have to
-     */
-    public enum RenderFacesTWO implements IStringSerializable
-    {
-        LEFT1("lr"),
-        LEFT2("lb"),
-//        LEFT3("lu"),
-//        LEFT4("ld"),
-        RIGHT1("rl"),
-        RIGHT2("rb"),
-//        RIGHT3("ru"),
-//        RIGHT4("rd"),
-        REAR1("bl"),
-        REAR2("br");
- //       REAR3("bu"),
- //       REAR4("bd");
-        //Temporarily exclude these, otherwise crazy numbers of blockstates for Energy Storage Module
-//        TOP1("ul"),
-//        TOP2("ur"),
-//        TOP3("ub"),
-//        TOP4("ud"),
-//        BOTTOM1("dl"),
-//        BOTTOM2("dr"),
-//        BOTTOM3("db"),
-//        BOTTOM4("du");
-        
-        private final String name;
-
-        RenderFacesTWO(String newname)
-        {
-            this.name = newname;
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-        
-        /**
-         * The inputs aren't necessarily electricIn and electricOut, these
-         * are only examples - as used for the Energy Storage Module!
-         * 
-         * It could also be electricIn and pipeIn for example - whatever
-         * is needed according to the block model
-         */
-        public static IStringSerializable getByName(Face electricIn, Face electricOut)
-        {
-            String result = electricIn.getName() + electricOut.getName();
-            for (RenderFacesTWO test : RenderFacesTWO.values())
-            {
-                if (result.equals(test.name)) return test;
-            }
-            return RenderFacesTWO.RIGHT1;
-        }
-    }
-
-    /*
-     * All the different possible types of configurable side.
-     * 
-     * Each of these can correspond to a texture and a function
-     * according to the block type.  Many may be unused.
-     * 
-     * this.listConfigurableSides() provides a list of which ones
-     * the tile actually uses.
-     */
-    public enum MachineSide
-    {
-        FRONT("front"),
-        REARDECO("reardeco"),
-        PLAIN("plain"),
-        TOP("top"),
-        BASE("bottom"),
-        ELECTRIC_IN("elec_in"),
-        ELECTRIC_OUT("elec_out"),
-        PIPE_IN("pipe_in"),
-        PIPE_OUT("pipe_out"),
-        CUSTOM("custom");
-        
-        private final String name;
-
-        MachineSide(String newname)
-        {
-            this.name = newname;
-        }
-    }
 
     /**
      * Can be used for rendering this machine in a GUI
@@ -427,16 +316,16 @@ public interface IMachineSides extends ITileClientUpdates
      * 
      * Override this if you want more options.
      */
-    public default IStringSerializable buildBlockStateProperty()
+    public default IMachineSidesProperties.MachineSidesModel buildBlockStateProperty()
     {
         int length = listConfigurableSides().length;
         switch (length)
         {
         case 1:
-            return RenderFacesHoriz.values()[this.getAllowedSide(0).ordinal()];
+            return IMachineSidesProperties.getModelForOneFace(this.getAllowedSide(0));
         case 2:
         default:
-            return RenderFacesTWO.getByName(this.getAllowedSide(0), this.getAllowedSide(1));
+            return IMachineSidesProperties.getModelForTwoFaces(this.getAllowedSide(0), this.getAllowedSide(1));
         }
     }
 
@@ -493,6 +382,18 @@ public interface IMachineSides extends ITileClientUpdates
      * Array with the default faces to match entries in listConfigurableSides()
      */
     public Face[] listDefaultFaces();
+    
+    
+    /**
+     * All the different allowable faces which the configurable sides can be configured to
+     * (for example it might be horizontal faces only, for this machine)
+     */
+    public default Face[] allowableFaces()
+    {
+        return this.getConfigurationType().allowableFaces();
+    }
+    
+    public IMachineSidesProperties getConfigurationType();
     
     /**
      * Call this in getAllMachineSides() or else in the class constructor
@@ -570,6 +471,7 @@ public interface IMachineSides extends ITileClientUpdates
         ((TileEntity)this).getWorld().markBlockForUpdate(((TileEntity)this).getPos());
     }
 
+    //--------------CONTAINER OBJECT--------------
     public class MachineSidePack
     {
         private MachineSide theSide;
