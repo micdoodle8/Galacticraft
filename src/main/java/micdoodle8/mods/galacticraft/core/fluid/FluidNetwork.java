@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -435,21 +437,29 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             this.refreshAcceptors();
         }
 
-        for (BlockPos coords : acceptors.keySet())
+        List<BlockPos> acceptorsCopy = new LinkedList();
+        acceptorsCopy.addAll(acceptors.keySet());
+
+        for (BlockPos coords : acceptorsCopy)
         {
             EnumSet<EnumFacing> sides = acceptorDirections.get(coords);
+            if (sides == null || sides.isEmpty())
+            {
+                continue;
+            }
+            
             TileEntity tile = this.worldObj.getTileEntity(coords);
-
-            if (sides == null || sides.isEmpty() || !(tile instanceof IFluidHandler))
+            if (!(tile instanceof IFluidHandler))
             {
                 continue;
             }
 
             IFluidHandler acceptor = (IFluidHandler) tile;
+            Fluid fluidToSend = toSend.getFluid();
 
             for (EnumFacing side : sides)
             {
-                if (acceptor.canFill(side, toSend.getFluid()))
+                if (acceptor.canFill(side, fluidToSend))
                 {
                     toReturn.add(Pair.of(coords, acceptor));
                 }
