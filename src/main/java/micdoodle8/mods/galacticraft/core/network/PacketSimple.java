@@ -88,7 +88,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -733,26 +732,11 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 int cx = (Integer) this.data.get(0);
                 int cz = (Integer) this.data.get(1);
                 byte[] bytes = (byte[]) this.data.get(2);
-
-                try
-                {
-                    File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
-                    if (folder.exists() || folder.mkdir())
-                    {
-                        MapUtil.getOverworldImageFromRaw(folder, cx, cz, bytes);
-                    }
-                    else
-                    {
-                        System.err.println("Cannot create directory %minecraftDir%/assets/galacticraftMaps!");
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                MapUtil.receiveOverworldImageCompressed(cx, cz, bytes);
             }
             catch (Exception e)
             {
+                e.printStackTrace();
             }
             break;
         case C_RECOLOR_PIPE:
@@ -1196,46 +1180,6 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             break;
         case S_REQUEST_OVERWORLD_IMAGE:
             MapUtil.sendOverworldToClient(playerBase);
-//        	if (GalacticraftCore.enableJPEG)
-//        	{
-//            ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair((int)Math.floor(stats.coordsTeleportedFromX) >> 4, (int)Math.floor(stats.coordsTeleportedFromZ) >> 4);
-//            File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
-//            if (!baseFolder.exists())
-//            {
-//                if (!baseFolder.mkdirs())
-//                {
-//                	GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
-//                }
-//            }
-//            File outputFile = new File(baseFolder, "" + chunkCoordIntPair.chunkXPos + "_" + chunkCoordIntPair.chunkZPos + ".bin");
-//            boolean success = true;
-//
-//            if (!outputFile.exists() || !outputFile.isFile())
-//            {
-//                success = false;
-//                //BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
-//                //MapUtil.getLocalMap(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, image);
-//                int scale = 4;
-//                //ConfigManagerCore.mapsize
-//                MapUtil.getBiomeMapForCoords(MinecraftServer.getServer().worldServerForDimension(0), chunkCoordIntPair.chunkXPos, chunkCoordIntPair.chunkZPos, scale, 64, 64, outputFile, playerBase);
-//            }
-//
-//            if (success)
-//            {
-//                try
-//                {
-//                    byte[] bytes = FileUtils.readFileToByteArray(outputFile);
-//                    //Class c = Launch.classLoader.loadClass("org.apache.commons.codec.binary.Base64");
-//                    //byte[] bytes64 = (byte[])c.getMethod("encodeBase64", byte[].class).invoke(null, bytes);
-//                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { bytes } ), playerBase);
-//                }
-//                catch (Exception ex)
-//                {
-//                    System.err.println("Error sending overworld image to player.");
-//                    ex.printStackTrace();
-//                }
-//            }
-//        	}
             break;
         case S_REQUEST_MAP_IMAGE:
             int dim = (Integer) this.data.get(0);

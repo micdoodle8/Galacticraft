@@ -82,7 +82,7 @@ public class BiomeDecoratorMoon extends BiomeDecorator
             int count = 3 + this.randomGenerator.nextInt(6);
             for (int i = 0; i < count; i++)
             {
-                BlockPos blockpos = this.chunkPos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(28) + 4, this.randomGenerator.nextInt(16));
+                BlockPos blockpos = this.chunkPos.add(this.randomGenerator.nextInt(16) + 8, this.randomGenerator.nextInt(28) + 4, this.randomGenerator.nextInt(16) + 8);
 
                 IBlockState toReplace = worldObj.getBlockState(blockpos);
 

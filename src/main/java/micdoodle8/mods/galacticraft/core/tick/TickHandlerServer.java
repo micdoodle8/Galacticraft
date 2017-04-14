@@ -60,9 +60,9 @@ public class TickHandlerServer
 {
     private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
     private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
-    private static Map<Integer, List<BlockPos>> edgeChecks = new HashMap<Integer, List<BlockPos>>();
+    private static Map<Integer, Set<BlockPos>> edgeChecks = new TreeMap<Integer, Set<BlockPos>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
-    public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<Integer, Map<Long, List<Footprint>>>();
+    public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<Integer, Map<Long, List<Footprint>>>();
     public static List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
     public static ArrayList<EntityPlayerMP> playersRequestingMapData = Lists.newArrayList();
@@ -200,11 +200,11 @@ public class TickHandlerServer
 
     public static void scheduleNewEdgeCheck(int dimID, BlockPos edgeBlock)
     {
-        List<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimID);
+        Set<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimID);
 
         if (updateList == null)
         {
-            updateList = new ArrayList<BlockPos>();
+            updateList = new HashSet<BlockPos>();
         }
 
         updateList.add(edgeBlock);
@@ -639,7 +639,7 @@ public class TickHandlerServer
             }
 
             int dimID = GCCoreUtil.getDimensionID(world);
-            List<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID);
+            Set<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID);
             final HashSet<BlockPos> checkedThisTick = new HashSet();
 
             if (edgesList != null && !edgesList.isEmpty())
