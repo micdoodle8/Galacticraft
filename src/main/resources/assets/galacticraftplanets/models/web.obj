@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib web.mtl
+#mtllib web.mtl
 o Sphere
 v 0.000000 0.980785 -0.345922
 v 0.089531 0.980785 -0.334135
