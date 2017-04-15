@@ -17,10 +17,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.LanguageRegistry;
@@ -220,6 +222,15 @@ public class GCCoreUtil
     public static int getDimensionID(TileEntity tileEntity)
     {
         return tileEntity.getWorld().provider.getDimensionId();
+    }
+
+    public static void sendToAllDimensions(EnumSimplePacket packetType, Object[] data)
+    {
+        for (WorldServer world : MinecraftServer.getServer().worldServers)
+        {
+            int id = getDimensionID(world);
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
+        }
     }
 
 //    public static void sortBlock(Block block, int meta, StackSorted beforeStack)

@@ -257,7 +257,7 @@ public class MapUtil
         }
     }
     
-    private static void sendMapPacket(int cx, int cz, EntityPlayerMP client, byte[] largeMap) throws IOException
+    public static void sendMapPacket(int cx, int cz, EntityPlayerMP client, byte[] largeMap) throws IOException
     {
         byte[] compressed;
         if (cx == LARGEMAP_MARKER)
@@ -275,6 +275,24 @@ public class MapUtil
         sendMapPacketCompressed(cx, cz, client, compressed);
     }
     
+    public static void sendMapPacketToAll(int cx, int cz, byte[] largeMap)
+    {
+        byte[] compressed;
+        if (cx == LARGEMAP_MARKER)
+        {
+            if (overworldImageCompressed == null)
+            {
+                overworldImageCompressed = zipCompress(largeMap);
+            }
+            compressed = overworldImageCompressed;
+        }
+        else
+        {
+            compressed = zipCompress(largeMap);
+        }
+        sendMapPacketAllCompressed(cx, cz, compressed);
+    }
+    
     private static void sendMapPacketCompressed(int cx, int cz, EntityPlayerMP client, byte[] map) throws IOException
     {
         if (cx == LARGEMAP_MARKER && map.length < 2040000)
@@ -289,6 +307,22 @@ public class MapUtil
     	{
     		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, map }), client);
     	}
+    }
+
+    private static void sendMapPacketAllCompressed(int cx, int cz, byte[] map)
+    {
+        if (cx == LARGEMAP_MARKER && map.length < 2040000)
+        {
+            int halfSize = map.length / 2;
+            byte[] largeMapPartA = Arrays.copyOf(map, halfSize);
+            byte[] largeMapPartB = Arrays.copyOfRange(map, halfSize, map.length);
+            GCCoreUtil.sendToAllDimensions(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx, map.length, largeMapPartA });
+            GCCoreUtil.sendToAllDimensions(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx + 1, map.length, largeMapPartB });
+        }
+        else if (map.length < 1020000)  //That's about the limit on a Forge packet length
+        {
+            GCCoreUtil.sendToAllDimensions(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx, cz, map });
+        }
     }
 
     /**
@@ -636,17 +670,17 @@ public class MapUtil
         }
     }
 
-    private static byte[] zipCompress(byte[] data)
+    public static byte[] zipCompress(byte[] data)
     {
-        Deflater compressor = new Deflater();
-        compressor.setLevel(Deflater.BEST_SPEED);
-        compressor.setInput(data);
-        compressor.finish();
+        Deflater deflater = new Deflater();
+        deflater.setLevel(Deflater.BEST_SPEED);
+        deflater.setInput(data);
+        deflater.finish();
         ByteArrayOutputStream compressed = new ByteArrayOutputStream(data.length * 2 / 3);
         byte[] miniBuffer = new byte[4096];
-        while (!compressor.finished())
+        while (!deflater.finished())
         {
-            int count = compressor.deflate(miniBuffer);
+            int count = deflater.deflate(miniBuffer);
             compressed.write(miniBuffer, 0, count);
         }
         return compressed.toByteArray();
@@ -655,15 +689,15 @@ public class MapUtil
     private static byte[] zipDeCompress(byte[] data) throws DataFormatException
     {
         Inflater inflater = new Inflater();
-        inflater.setInput(data);  
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length * 2);  
+        inflater.setInput(data); 
+        ByteArrayOutputStream deCompressed = new ByteArrayOutputStream(data.length * 2);  
         byte[] miniBuffer = new byte[4096];
         while (!inflater.finished())
         {  
             int count = inflater.inflate(miniBuffer);
-            outputStream.write(miniBuffer, 0, count);  
+            deCompressed.write(miniBuffer, 0, count);  
         }  
-        return outputStream.toByteArray();
+        return deCompressed.toByteArray();
     }
     
     @SideOnly(Side.CLIENT)
@@ -711,7 +745,8 @@ public class MapUtil
             getOverworldImageFromRaw(cx, cz, zipDeCompress(raw));
         } catch (DataFormatException e)
         {  
-            GCLog.debug("Client received a corrupted map image data packet from server");
+            GCLog.debug(e.toString());
+            GCLog.debug("Client received a corrupted map image data packet from server " + cx + "_" + cz);
         }
     }
     
