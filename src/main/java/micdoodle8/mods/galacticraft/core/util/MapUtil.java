@@ -21,6 +21,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderSurface;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -131,7 +133,7 @@ public class MapUtil
     }
 
     /**
-     * The BufferedImage needs to be already set up as a 400 x 400 image of TYPE_INT_RGB
+     * The BufferedImage needs to be already set up as a sized image of TYPE_INT_RGB
      */
     public static void getLocalMap(World world, int chunkXPos, int chunkZPos, BufferedImage image)
     {
@@ -180,6 +182,12 @@ public class MapUtil
         World overworld = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).worldObj;
         if (overworld == null)
         {
+            return;
+        }
+        
+        if (overworld.getWorldType() == WorldType.FLAT  || !(overworld.provider instanceof WorldProviderSurface))
+        {
+            doneOverworldTexture = true;
             return;
         }
 
@@ -234,6 +242,13 @@ public class MapUtil
 
     public static void sendOrCreateMap(World world, int cx, int cz, EntityPlayerMP client)
     {
+        
+        if (world.getWorldType() == WorldType.FLAT  || !(world.provider instanceof WorldProviderSurface))
+        {
+            doneOverworldTexture = true;
+            return;
+        }
+        
         try
         {
             File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
@@ -332,6 +347,11 @@ public class MapUtil
      */
     public static boolean buildMaps(World world, int x, int z)
     {
+        if (world.getWorldType() == WorldType.FLAT || !(world.provider instanceof WorldProviderSurface))
+        {
+            return false;
+        }
+
         File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
