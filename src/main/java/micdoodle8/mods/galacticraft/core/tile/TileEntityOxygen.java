@@ -407,7 +407,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        return this.getOxygenOutputDirections().contains(from) && fluid.getName().equals("oxygen");
+        return this.getOxygenOutputDirections().contains(from) && (fluid == null || fluid.getName().equals("oxygen"));
     }
 
     @Override

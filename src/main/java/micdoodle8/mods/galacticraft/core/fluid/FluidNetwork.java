@@ -561,21 +561,25 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 int i = 0;
                 for (TileEntity acceptor : transmitter.getAdjacentConnections())
                 {
-                    if (!(acceptor instanceof IBufferTransmitter) && acceptor instanceof IFluidHandler)
+                    if (!(acceptor instanceof IBufferTransmitter) && acceptor != null)
                     {
                         EnumFacing facing = EnumFacing.getFront(i).getOpposite();
-                        BlockPos acceptorPos = tile.getPos().offset(facing.getOpposite());
-                        EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(tile.getPos());
-                        if (facingSet != null)
+                        IFluidHandler handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+                        if (handler != null)
                         {
-                            facingSet.add(facing);
+                            BlockPos acceptorPos = tile.getPos().offset(facing.getOpposite());
+                            EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(tile.getPos());
+                            if (facingSet != null)
+                            {
+                                facingSet.add(facing);
+                            }
+                            else
+                            {
+                                facingSet = EnumSet.of(facing);
+                            }
+                            this.acceptors.put(acceptorPos, handler);
+                            this.acceptorDirections.put(acceptorPos, facingSet);
                         }
-                        else
-                        {
-                            facingSet = EnumSet.of(facing);
-                        }
-                        this.acceptors.put(acceptorPos, (IFluidHandler) acceptor);
-                        this.acceptorDirections.put(acceptorPos, facingSet);
                     }
                     i++;
                 }
