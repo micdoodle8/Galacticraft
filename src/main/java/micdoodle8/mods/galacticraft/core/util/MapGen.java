@@ -1,21 +1,16 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.GenLayerGCMap;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -82,7 +77,7 @@ public class MapGen extends BiomeProvider implements Runnable
         this.biomeMapSizeX = sx;
         this.biomeMapSizeZ = sz;
         this.biomeMapFactor = scale;
-        int progress = this.checkComplete(file); 
+        int progress = this.checkProgress(file); 
         if (progress < 0)
         {
             this.mapNeedsCalculating = false;
@@ -113,8 +108,19 @@ public class MapGen extends BiomeProvider implements Runnable
         long seed = world.getSeed();
         this.biomeCache = new BiomeCache(this);
         this.worldType = world.getWorldInfo().getTerrainType();
-        GenLayerGCMap[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
-        GenLayer[] agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
+        GenLayer[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
+        GenLayer[] agenlayer;
+        try {
+            agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
+        }
+        catch (Exception e)
+        {
+            GCLog.severe("Galacticraft background map image generator not able to run (probably a mod conflict?)");
+            GCLog.severe("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
+            e.printStackTrace();
+            this.mapNeedsCalculating = false;
+            return;
+        }
         this.genBiomes = agenlayer[0];
         this.biomeIndexLayer = agenlayer[1];
 
@@ -125,8 +131,14 @@ public class MapGen extends BiomeProvider implements Runnable
             this.resumeProgress(progress);
         }
     }
-  
-    private int checkComplete(File file)
+
+    /**
+     * Returns -1 if the map file saved by the server on disk is already complete.
+     * Returns 0 if a new file is needed
+     * Returns >0 if an existing file is in progress (in this case, initialises
+     * biomeAndHeightArray and smaller arrays to match that existing file. 
+     */
+    private int checkProgress(File file)
     {
         if (!file.exists()) return 0;
         
@@ -151,10 +163,10 @@ public class MapGen extends BiomeProvider implements Runnable
                     databuff.order(ByteOrder.BIG_ENDIAN);
                     databuff.position(0);
                     progress = databuff.getInt();
-                    GCLog.debug("Flag flagged, progress is " + progress);
                 }
                 else
                 {
+                    //No progress flag data, therefore the file must be complete
                     return -1;  
                 }
                 fc.close();
@@ -179,7 +191,8 @@ public class MapGen extends BiomeProvider implements Runnable
             
             return 0;
         }
-        
+
+        //Smaller files are always complete, if present and name and size match
         return -1;
     }
 
@@ -190,8 +203,27 @@ public class MapGen extends BiomeProvider implements Runnable
     	try {
 			Thread.currentThread().sleep(90);
 		} catch (InterruptedException e) {}
-    	//Now generate this map from start to finish
-    	while (!this.aborted.get() && !this.BiomeMapOneTick());
+
+    	//Generate this map from start to finish within the thread
+    	while (!this.aborted.get())
+    	{
+    	    if (this.paused.get())
+    	    {
+    	        try {
+    	            //Sleep for a bit, next time around maybe will not be paused?
+    	            Thread.currentThread().sleep(1211);
+    	        } catch (InterruptedException e) {}
+    	    }
+    	    else
+    	    {
+    	        //Do the actual work of the thread
+    	        if (this.BiomeMapOneTick())
+    	        {
+    	            break;  //finished!
+    	        }
+    	    }
+    	}
+
        	this.finishedCalculating.set(true);
     }
 
@@ -250,7 +282,11 @@ public class MapGen extends BiomeProvider implements Runnable
         }
     }
     
-    public void writeOutputFile(boolean flag)
+    /**
+     * This is outside the multithreaded portion of the code
+     * This should be called after the finishedCalculating flag is set.
+     */
+    public void writeOutputFile(boolean sendToClientImmediately)
     {
         if (this.biomeAndHeightArray == null)
             return;
@@ -268,28 +304,12 @@ public class MapGen extends BiomeProvider implements Runnable
             ex.printStackTrace();
         }
 
-        if (flag)
+        if (sendToClientImmediately)
         {
-            this.sendToClient(this.biomeAndHeightArray);
+            MapUtil.sendMapPacketToAll(this.biomeMapCx << 4, this.biomeMapCz << 4, this.biomeAndHeightArray);
         }
 
         this.biomeAndHeightArray = null;
-    }
-
-    private void sendToClient(byte[] toSend)
-    {
-        try
-        {
-            for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
-            {
-                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimension(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimension());
-            }
-        }
-        catch (Exception ex)
-        {
-            System.err.println("Error sending map image to player.");
-            ex.printStackTrace();
-        }
     }
 
     private void initialiseSmallerArrays()
@@ -306,13 +326,6 @@ public class MapGen extends BiomeProvider implements Runnable
 	 */
     public boolean BiomeMapOneTick()
     {
-    	if (this.paused.get())
-        {
-        	try {
-				Thread.currentThread().sleep(1211);
-			} catch (InterruptedException e) {}
-        	return false;
-        }
     	int limit = Math.min(biomeMapFactor, 16);
         if (this.biomeAndHeightArray == null)
         {

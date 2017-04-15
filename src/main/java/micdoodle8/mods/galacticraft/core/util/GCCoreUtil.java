@@ -22,6 +22,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.Arrays;
@@ -214,6 +216,15 @@ public class GCCoreUtil
     public static int getDimensionID(TileEntity tileEntity)
     {
         return tileEntity.getWorld().provider.getDimension();
+    }
+
+    public static void sendToAllDimensions(EnumSimplePacket packetType, Object[] data)
+    {
+        for (WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
+        {
+            int id = getDimensionID(world);
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
+        }
     }
 
 //    public static void sortBlock(Block block, int meta, StackSorted beforeStack)
