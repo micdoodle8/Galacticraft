@@ -43,13 +43,13 @@ public abstract class GuiContainerGC extends GuiContainer
     {
         for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1)
         {
-            Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i1);
+            Slot slot = this.inventorySlots.inventorySlots.get(i1);
 
             if (slot.canBeHovered() && this.isPointInRegion(slot.xPos, slot.yPos, 16, 16, par1, par2))
             {
                 ItemStack itemStack = slot.getStack();
 
-                if (itemStack != null)
+                if (!itemStack.isEmpty())
                 {
                     List list = itemStack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips);
                     int size = list.size();
