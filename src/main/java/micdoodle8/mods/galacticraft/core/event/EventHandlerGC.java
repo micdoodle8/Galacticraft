@@ -992,9 +992,16 @@ public class EventHandlerGC
 
                         this.soundPlayList.add(new SoundPlayEntry(event.getName(), x, y, z, newVolume));
                         SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(event.getResultSound().getSoundLocation());
-                        ISound newSound = new PositionedSoundRecord(soundEvent, SoundCategory.NEUTRAL, newVolume, pitch, x, y, z);
-                        event.getManager().playSound(newSound);
-                        event.setResultSound(null);
+                        if (soundEvent != null)
+                        {
+                            ISound newSound = new PositionedSoundRecord(soundEvent, SoundCategory.NEUTRAL, newVolume, pitch, x, y, z);
+                            event.getManager().playSound(newSound);
+                            event.setResultSound(null);
+                        }
+                        else
+                        {
+                            GCLog.severe("Sound event null! " + event.getName() + " " + event.getResultSound().getSoundLocation());
+                        }
                     }
                 }
             }
