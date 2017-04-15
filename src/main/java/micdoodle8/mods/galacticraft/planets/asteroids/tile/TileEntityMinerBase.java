@@ -1,9 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -46,7 +47,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Lists;
 
-public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock, ITileClientUpdates
+public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock, IMachineSides
 {
     public static final int HOLDSIZE = 72;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(HOLDSIZE + 1, ItemStack.EMPTY);
@@ -999,8 +1000,14 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         return this.facing;
     }
 
+    /**
+     * This would normally be used by IMachineSides
+     * but here it's overridden for the MinerBase's own purposes
+     * (IMachineSides won't be using it because as implemented
+     * here, extending TileEntityElectricBlock, sides are not configurable)
+     */
+    
     @Override
-    @SideOnly(Side.CLIENT)
     public void updateClient(List<Object> data)
     {
         int data1 = (Integer) data.get(1);
@@ -1015,5 +1022,33 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.linkedMinerID = null;
         }
     }
-}
 
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return IMachineSidesProperties.NOT_CONFIGURABLE;
+    }
+
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return null;
+    }
+
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return null;
+    }
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        return null;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+    }
+}

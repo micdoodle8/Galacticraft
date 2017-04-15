@@ -1,46 +1,46 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.GenLayerGCMap;
 import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MapGen extends BiomeProvider implements Runnable
 {
-    public boolean mapNeedsCalculating = false;
-    public AtomicBoolean finishedCalculating = new AtomicBoolean();
-    private AtomicBoolean paused = new AtomicBoolean();
-    private AtomicBoolean aborted = new AtomicBoolean();
-
     private static final float[] parabolicField = new float[25];
+
+    public boolean mapNeedsCalculating = false;
+    public AtomicBoolean finishedCalculating;
+    private AtomicBoolean paused;
+    private AtomicBoolean aborted;
     
-    private int ix = 0;
-    private int iz = 0;
-    private int biomeMapx0 = 0;
-    private int biomeMapz0 = 0;
-    private int biomeMapz00;
+    private AtomicInteger progressX;
+    private int progressZ;
+    private int biomeMapX;
+    private int biomeMapZ;
+    private int biomeMap0;
     private int biomeMapCx;
     private int biomeMapCz;
     private int biomeMapFactor;
+    private int imagefactor;
 
     private BiomeCache biomeCache;
     private GenLayer genBiomes;
@@ -50,10 +50,10 @@ public class MapGen extends BiomeProvider implements Runnable
     private int biomeMapSizeX;
     private int biomeMapSizeZ;
 
-    private Random rand = new Random();
+    private Random rand;
     private int[] heights = null;
     private double[] heighttemp = null;
-    private WorldType worldType = WorldType.DEFAULT;
+    private WorldType worldType;
     private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private Biome[] biomesGridHeights = null;
     private int[] biomeCount = null;
@@ -70,41 +70,132 @@ public class MapGen extends BiomeProvider implements Runnable
             }
         }
     }
-    
+
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
-        this.biomeMapCx = cx >> 4;
-        this.biomeMapCz = cz >> 4;
         this.dimID = GCCoreUtil.getDimensionID(world);
-        if (file.exists())
-        {
-            return;
-        }
-
-        this.mapNeedsCalculating = true;
-        this.biomeMapFile = file;
         this.biomeMapSizeX = sx;
         this.biomeMapSizeZ = sz;
         this.biomeMapFactor = scale;
+        int progress = this.checkProgress(file); 
+        if (progress < 0)
+        {
+            this.mapNeedsCalculating = false;
+            return;
+        }
+        this.mapNeedsCalculating = true;
+
+        this.rand = new Random();
+        this.finishedCalculating = new AtomicBoolean();
+        this.paused = new AtomicBoolean();
+        this.aborted = new AtomicBoolean();
+
+        this.biomeMapCx = cx >> 4;
+        this.biomeMapCz = cz >> 4;
+        this.biomeMapFile = file;
+        this.imagefactor = 16 / biomeMapFactor;
+        if (this.imagefactor < 1)
+        {
+            this.imagefactor = 1;
+        }
         int limitX = biomeMapSizeX * biomeMapFactor / 32;
         int limitZ = biomeMapSizeZ * biomeMapFactor / 32;
-        this.biomeMapz00 = -limitZ;
-        this.biomeMapx0 = -limitX;
-        this.biomeMapz0 = this.biomeMapz00;
-        this.ix = 0;
-        this.iz = 0;
+        this.biomeMap0 = -limitZ;
+        this.biomeMapX = -limitX;
+        this.biomeMapZ = this.biomeMap0;
+        this.progressX = new AtomicInteger();
+        this.progressZ = 0;
         long seed = world.getSeed();
         this.biomeCache = new BiomeCache(this);
         this.worldType = world.getWorldInfo().getTerrainType();
-        GenLayerGCMap[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
-        GenLayer[] agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
+        GenLayer[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
+        GenLayer[] agenlayer;
+        try {
+            agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
+        }
+        catch (Exception e)
+        {
+            GCLog.severe("Galacticraft background map image generator not able to run (probably a mod conflict?)");
+            GCLog.severe("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
+            e.printStackTrace();
+            this.mapNeedsCalculating = false;
+            return;
+        }
         this.genBiomes = agenlayer[0];
         this.biomeIndexLayer = agenlayer[1];
 
         GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
         this.initialise(seed);
+        if (progress > 0)
+        {
+            this.resumeProgress(progress);
+        }
     }
-  
+
+    /**
+     * Returns -1 if the map file saved by the server on disk is already complete.
+     * Returns 0 if a new file is needed
+     * Returns >0 if an existing file is in progress (in this case, initialises
+     * biomeAndHeightArray and smaller arrays to match that existing file. 
+     */
+    private int checkProgress(File file)
+    {
+        if (!file.exists()) return 0;
+        
+        if (file.length() != biomeMapSizeX * biomeMapSizeZ * 2)
+        {
+            return 0;
+        }
+
+        int progress = 0;
+        if (file.getName().equals("Overworld" + MapUtil.OVERWORLD_LARGEMAP_WIDTH + ".bin"))
+        {
+            int len = (int) file.length();
+            FileChannel fc;
+            try {
+                fc = (FileChannel.open(file.toPath()));
+                fc.position(len - 8);
+                byte[] flagdata = new byte[8];
+                ByteBuffer databuff = ByteBuffer.wrap(flagdata);
+                fc.read(databuff);
+                if (testFlag(flagdata))
+                {
+                    databuff.order(ByteOrder.BIG_ENDIAN);
+                    databuff.position(0);
+                    progress = databuff.getInt();
+                }
+                else
+                {
+                    //No progress flag data, therefore the file must be complete
+                    return -1;  
+                }
+                fc.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (progress > 0 && progress <= biomeMapSizeX - imagefactor)
+            {
+                try
+                {
+                    this.biomeAndHeightArray = FileUtils.readFileToByteArray(file);
+                    this.initialiseSmallerArrays();
+                    return progress;
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                    this.biomeAndHeightArray = null;
+                }
+            }
+            
+            return 0;
+        }
+
+        //Smaller files are always complete, if present and name and size match
+        return -1;
+    }
+
     @Override
     public void run()
     {
@@ -112,8 +203,27 @@ public class MapGen extends BiomeProvider implements Runnable
     	try {
 			Thread.currentThread().sleep(90);
 		} catch (InterruptedException e) {}
-    	//Now generate this map from start to finish
-    	while (!this.BiomeMapOneTick());
+
+    	//Generate this map from start to finish within the thread
+    	while (!this.aborted.get())
+    	{
+    	    if (this.paused.get())
+    	    {
+    	        try {
+    	            //Sleep for a bit, next time around maybe will not be paused?
+    	            Thread.currentThread().sleep(1211);
+    	        } catch (InterruptedException e) {}
+    	    }
+    	    else
+    	    {
+    	        //Do the actual work of the thread
+    	        if (this.BiomeMapOneTick())
+    	        {
+    	            break;  //finished!
+    	        }
+    	    }
+    	}
+
        	this.finishedCalculating.set(true);
     }
 
@@ -131,13 +241,61 @@ public class MapGen extends BiomeProvider implements Runnable
     {
         this.aborted.set(true);
     }
-    
-    public void writeOutputFile(boolean flag)
+
+    private void flagProgress()
     {
+        int progX = this.progressX.get(); 
+        if (progX > biomeMapSizeX - imagefactor)
+            return;
+        
+        GCLog.debug("Saving partial map image progress " + progX);
+        int offset = this.biomeAndHeightArray.length;
+        this.biomeAndHeightArray[offset - 1] = (byte) 0xFE;
+        this.biomeAndHeightArray[offset - 2] = (byte) 0x06;
+        this.biomeAndHeightArray[offset - 3] = (byte) 0x03;
+        this.biomeAndHeightArray[offset - 4] = (byte) 0x0E;
+        this.biomeAndHeightArray[offset - 5] = (byte) (progX & 0xFF);
+        this.biomeAndHeightArray[offset - 6] = (byte) (progX >> 8 & 0xFF);
+        this.biomeAndHeightArray[offset - 7] = (byte) (progX >> 16 & 0xFF);
+        this.biomeAndHeightArray[offset - 8] = (byte) (progX >> 24 & 0xFF);
+    }
+    
+    public static boolean testFlag(byte[] bb)
+    {
+        return (bb[7] & 0xFF) == 0xFE && bb[6] == 0x06 && bb[5] == 0x03 && bb[4] == 0x0E;
+    }
+    
+    private void resumeProgress(int progress)
+    {
+        int multifactor = biomeMapFactor >> 4;
+        if (multifactor < 1)
+        {
+            multifactor = 1;
+        }
+        int progCount = progress / imagefactor;
+        
+        progressX.set(progress);
+        biomeMapX = multifactor * progCount - (biomeMapSizeX * biomeMapFactor / 32);
+        if (biomeMapX > -biomeMap0 * 4)
+        {
+            biomeMapX += biomeMap0 * 8;
+        }
+    }
+    
+    /**
+     * This is outside the multithreaded portion of the code
+     * This should be called after the finishedCalculating flag is set.
+     */
+    public void writeOutputFile(boolean sendToClientImmediately)
+    {
+        if (this.biomeAndHeightArray == null)
+            return;
+        
         try
         {
             if (!this.biomeMapFile.exists() || (this.biomeMapFile.canWrite() && this.biomeMapFile.canRead()))
             {
+                this.flagProgress();
                 FileUtils.writeByteArrayToFile(this.biomeMapFile, this.biomeAndHeightArray);
             }
         }
@@ -146,28 +304,20 @@ public class MapGen extends BiomeProvider implements Runnable
             ex.printStackTrace();
         }
 
-        if (flag)
+        if (sendToClientImmediately)
         {
-            this.sendToClient(this.biomeAndHeightArray);
+            MapUtil.sendMapPacketToAll(this.biomeMapCx << 4, this.biomeMapCz << 4, this.biomeAndHeightArray);
         }
 
         this.biomeAndHeightArray = null;
     }
 
-	private void sendToClient(byte[] toSend)
+    private void initialiseSmallerArrays()
     {
-        try
-        {
-            for (WorldServer server : FMLCommonHandler.instance().getMinecraftServerInstance().worlds)
-            {
-                GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, server.provider.getDimension(), new Object[] { this.biomeMapCx << 4, this.biomeMapCz << 4, toSend }), server.provider.getDimension());
-            }
-        }
-        catch (Exception ex)
-        {
-            System.err.println("Error sending map image to player.");
-            ex.printStackTrace();
-        }
+        int limit = Math.min(biomeMapFactor, 16);
+        this.heights = new int[256];
+        this.heighttemp = new double[825];
+        this.biomeCount = new int[limit * limit];
     }
 
 	/*
@@ -176,58 +326,41 @@ public class MapGen extends BiomeProvider implements Runnable
 	 */
     public boolean BiomeMapOneTick()
     {
-        if (this.aborted.get())
-        	return true;
-
-    	if (this.paused.get())
-        {
-        	try {
-				Thread.currentThread().sleep(1211);
-			} catch (InterruptedException e) {}
-        	return false;
-        }
     	int limit = Math.min(biomeMapFactor, 16);
         if (this.biomeAndHeightArray == null)
         {
             this.biomeAndHeightArray = new byte[biomeMapSizeX * biomeMapSizeZ * 2];
-            this.heights = new int[256];
-            this.heighttemp = new double[825];
-            this.biomeCount = new int[limit * limit];
+            this.initialiseSmallerArrays();
         }
         int multifactor = biomeMapFactor >> 4;
         if (multifactor < 1)
         {
             multifactor = 1;
         }
-        int imagefactor = 16 / biomeMapFactor;
-        if (imagefactor < 1)
+        int progX = this.progressX.get();
+        biomeMapOneChunk(biomeMapCx + biomeMapX, biomeMapCz + biomeMapZ, progX, progressZ, limit);
+        biomeMapZ += multifactor;
+        progressZ += imagefactor;
+        if (progressZ > biomeMapSizeZ - imagefactor)
         {
-            imagefactor = 1;
-        }
-        biomeMapOneChunk(biomeMapCx + biomeMapx0, biomeMapCz + biomeMapz0, ix, iz, biomeMapFactor, limit);
-        biomeMapz0 += multifactor;
-        iz += imagefactor;
-        if (iz > biomeMapSizeZ - imagefactor)
-        {
-            iz = 0;
-//Logging only required if generating large-scale world map
-//            if (ix % 25 == 8)
+            progressZ = 0;
+//            if (progX % 3 == 0)
 //            {
-//                GCLog.debug("Finished map column " + ix + " at " + (biomeMapCx + biomeMapx0) + "," + (biomeMapCz + biomeMapz0));
+//                System.out.println("Finished map column " + progX + " at " + (biomeMapCx + biomeMapX) + "," + (biomeMapCz + biomeMapZ));
 //            }
-            ix += imagefactor;
-            biomeMapz0 = biomeMapz00;
-            biomeMapx0 += multifactor;
-            if (biomeMapx0 > -biomeMapz00 * 4)
+            this.progressX.set(progX + imagefactor);
+            biomeMapZ = biomeMap0;
+            biomeMapX += multifactor;
+            if (biomeMapX > -biomeMap0 * 4)
             {
-                biomeMapx0 += biomeMapz00 * 8;
+                biomeMapX += biomeMap0 * 8;
             }
-            return ix > biomeMapSizeX - imagefactor;
+            return progX > biomeMapSizeX - imagefactor - imagefactor;
         }
         return false;
     }
 
-    private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int factor, int limit)
+    private void biomeMapOneChunk(int x0, int z0, int ix, int iz, int limit)
     {
         biomesGrid = this.getBiomeGenAt(biomesGrid, x0 << 4, z0 << 4, 16, 16);
         if (biomesGrid == null)
@@ -235,6 +368,7 @@ public class MapGen extends BiomeProvider implements Runnable
             return;
         }
         this.getHeightMap(x0, z0);
+        int factor = this.biomeMapFactor;
         int halfFactor = limit * limit / 2;
         ArrayList<Integer> cols = new ArrayList<Integer>();
         for (int j = 0; j < biomeCount.length; j++)

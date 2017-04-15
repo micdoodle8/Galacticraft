@@ -394,7 +394,7 @@ public class GalacticraftCore
         }
         catch (UnsatisfiedLinkError e)
         {
-        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_Linux_servers_running_OpenJDK");
+        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
         	e.printStackTrace();
         }
     }
@@ -457,6 +457,7 @@ public class GalacticraftCore
         // Unregister dimensions
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
+        MapUtil.saveMapProgress();
     }
 
     private static void registerCoreGameScreens()
