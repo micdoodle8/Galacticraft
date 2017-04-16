@@ -49,38 +49,38 @@ public class StatsCapability extends GCPlayerStats
 
     public boolean usingParachute;
 
-    public ItemStack parachuteInSlot;
-    public ItemStack lastParachuteInSlot;
+    public ItemStack parachuteInSlot = ItemStack.EMPTY;
+    public ItemStack lastParachuteInSlot = ItemStack.EMPTY;
 
-    public ItemStack frequencyModuleInSlot;
-    public ItemStack lastFrequencyModuleInSlot;
+    public ItemStack frequencyModuleInSlot = ItemStack.EMPTY;
+    public ItemStack lastFrequencyModuleInSlot = ItemStack.EMPTY;
 
-    public ItemStack maskInSlot;
-    public ItemStack lastMaskInSlot;
+    public ItemStack maskInSlot = ItemStack.EMPTY;
+    public ItemStack lastMaskInSlot = ItemStack.EMPTY;
 
-    public ItemStack gearInSlot;
-    public ItemStack lastGearInSlot;
+    public ItemStack gearInSlot = ItemStack.EMPTY;
+    public ItemStack lastGearInSlot = ItemStack.EMPTY;
 
-    public ItemStack tankInSlot1;
-    public ItemStack lastTankInSlot1;
+    public ItemStack tankInSlot1 = ItemStack.EMPTY;
+    public ItemStack lastTankInSlot1 = ItemStack.EMPTY;
 
-    public ItemStack tankInSlot2;
-    public ItemStack lastTankInSlot2;
+    public ItemStack tankInSlot2 = ItemStack.EMPTY;
+    public ItemStack lastTankInSlot2 = ItemStack.EMPTY;
 
-    public ItemStack thermalHelmetInSlot;
-    public ItemStack lastThermalHelmetInSlot;
+    public ItemStack thermalHelmetInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalHelmetInSlot = ItemStack.EMPTY;
 
-    public ItemStack thermalChestplateInSlot;
-    public ItemStack lastThermalChestplateInSlot;
+    public ItemStack thermalChestplateInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalChestplateInSlot = ItemStack.EMPTY;
 
-    public ItemStack thermalLeggingsInSlot;
-    public ItemStack lastThermalLeggingsInSlot;
+    public ItemStack thermalLeggingsInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalLeggingsInSlot = ItemStack.EMPTY;
 
-    public ItemStack thermalBootsInSlot;
-    public ItemStack lastThermalBootsInSlot;
+    public ItemStack thermalBootsInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalBootsInSlot = ItemStack.EMPTY;
 
-    public ItemStack shieldControllerInSlot;
-    public ItemStack lastShieldControllerInSlot;
+    public ItemStack shieldControllerInSlot = ItemStack.EMPTY;
+    public ItemStack lastShieldControllerInSlot = ItemStack.EMPTY;
 
     public int launchAttempts = 0;
 
