@@ -189,11 +189,19 @@ public class EnergyUtil
                         Class clazz = tileEntity.getClass();
                         if (clazz.getName().startsWith("ic2"))
                         {
-                            Field energyField = clazz.getDeclaredField("energy");
-                            while (energyField == null && clazz.getSuperclass() != null)
+                            Field energyField = null;
+                            fieldLoop:
+                            while (energyField == null && clazz != null)
                             {
+                                for (Field f : clazz.getDeclaredFields())
+                                {
+                                    if (f.getName().equals("energy"))
+                                    {
+                                        energyField = f;
+                                        break fieldLoop;
+                                    }
+                                }
                                 clazz = clazz.getSuperclass();
-                                energyField = clazz.getDeclaredField("energy");
                             }
                             energyField.setAccessible(true);
                             Object energy = energyField.get(tileEntity);
