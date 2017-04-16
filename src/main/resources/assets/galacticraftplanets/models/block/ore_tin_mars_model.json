@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "galacticraftplanets:blocks/tin"
+        "all": "galacticraftplanets:blocks/ore_tin_mars"
     }
 }
