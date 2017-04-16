@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
@@ -11,7 +15,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,10 +24,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
@@ -63,12 +62,13 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     public BlockTorchWeb(String assetName)
     {
-        super(Material.vine);
+        super(Material.circuits);
         this.setLightLevel(1.0F);
         this.setUnlocalizedName(assetName);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
         list.add(new ItemStack(itemIn, 1, 0));
@@ -91,41 +91,6 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         }
 
         return super.collisionRayTrace(worldIn, pos, start, end);
-    }
-
-    @Override
-    public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
-    {
-        if (world.setBlockToAir(pos))
-        {
-            int y2 = pos.getY() - 1;
-            while (world.getBlockState(new BlockPos(pos.getX(), y2, pos.getZ())).getBlock() == this)
-            {
-                world.setBlockToAir(new BlockPos(pos.getX(), y2, pos.getZ()));
-                y2--;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean canBlockStay(World worldIn, BlockPos pos)
-    {
-        Block blockAbove = worldIn.getBlockState(pos.up()).getBlock();
-        return (blockAbove == this || blockAbove.getMaterial().isSolid());
-    }
-
-    @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
-    {
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
-
-        if (!this.canBlockStay(worldIn, pos))
-        {
-            worldIn.setBlockToAir(pos);
-        }
     }
 
     @Override
@@ -164,21 +129,52 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         return null;
     }
 
-    @Override
-    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing facing)
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state)
     {
-        return true;
+        IBlockState blockUp = world.getBlockState(pos.up());
+        
+        int meta = this.getMetaFromState(state);
+
+        if (meta == 0)
+        {
+            return blockUp.getBlock().getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
+        }
+        else
+        {
+            return blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
+        }
     }
 
-//    @Override
-//    public void onBlockAdded(World world, int x, int y, int z)
-//    {
-//        if (!world.isRemote)
-//        {
-//            // world.scheduleBlockUpdate(x, y, z, this,
-//            // this.tickRate(world) + world.rand.nextInt(10));
-//        }
-//    }
+    @Override
+    public boolean canReplace(World world, BlockPos pos, EnumFacing side, ItemStack itemStack)
+    {
+        if (world == null || pos == null || side == null || itemStack == null)
+        {
+            return false;
+        }
+        return this.canBlockStay(world, pos, this.getStateFromMeta(itemStack.getMetadata()));
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
+    {
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+        this.checkAndDropBlock(world, pos, state);
+    }
+
+    protected void checkAndDropBlock(World world, BlockPos pos, IBlockState state)
+    {
+        if (!this.canBlockStay(world, pos, state))
+        {
+            this.dropBlockAsItem(world, pos, state, 0);
+            world.setBlockState(pos, Blocks.air.getDefaultState(), 3);
+        }
+    }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
@@ -187,7 +183,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public int quantityDropped(Random par1Random)
+    public int quantityDropped(Random rand)
     {
         return 0;
     }
@@ -202,8 +198,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        IBlockState state = world.getBlockState(pos);
-        ret.add(new ItemStack(this, 1, state.getBlock().getMetaFromState(state)));
+        ret.add(new ItemStack(this, 1, this.getMetaFromState(world.getBlockState(pos))));
         return ret;
     }
 

@@ -49,6 +49,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
         super(Material.iron);
         this.blockHardness = 4.5F;
         this.blockResistance = 2.5F;
+        this.setStepSound(soundTypeMetal);
         this.setTickRandomly(true);
         this.setUnlocalizedName(assetName);
     }
