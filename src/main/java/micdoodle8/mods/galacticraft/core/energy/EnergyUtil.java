@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
@@ -188,7 +189,14 @@ public class EnergyUtil
                         Class clazz = tileEntity.getClass();
                         if (clazz.getName().startsWith("ic2"))
                         {
-                            Object energy = clazz.getField("energy").get(tileEntity);
+                            Field energyField = clazz.getDeclaredField("energy");
+                            while (energyField == null && clazz.getSuperclass() != null)
+                            {
+                                clazz = clazz.getSuperclass();
+                                energyField = clazz.getDeclaredField("energy");
+                            }
+                            energyField.setAccessible(true);
+                            Object energy = energyField.get(tileEntity);
                             Set <EnumFacing> connections;
                             if (tile instanceof IEnergyEmitter)
                             {
