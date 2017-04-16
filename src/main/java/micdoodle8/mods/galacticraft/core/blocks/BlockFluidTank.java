@@ -39,6 +39,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
         super(Material.glass);
         this.setHardness(3.0F);
         this.setResistance(8.0F);
+        this.setStepSound(soundTypeGlass);
         this.setUnlocalizedName(assetName);
     }
 

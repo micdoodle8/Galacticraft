@@ -33,7 +33,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         super(Material.glass);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));  //.withProperty(ACTIVE, true));
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeWood);
+        this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
         this.setLightLevel(1.0F);
     }
