@@ -220,9 +220,15 @@ public class GCBlocks
         {
 	    	Block modTorch = null; 
 	    	try {
-	    		//tconstruct.world.TinkerWorld.stoneTorch
-	    		Class clazz = Class.forName("tconstruct.world.TinkerWorld");
-	    		modTorch = (Block) clazz.getField("stoneTorch").get(null);
+	    		try {
+	    			//This is the more recent TConstruct class
+		    		Class clazz = Class.forName("slimeknights.tconstruct.gadgets.TinkerGadgets");
+		    		modTorch = (Block) clazz.getField("stoneTorch").get(null);
+	    		} catch (Exception e) {
+	    			//This is the older TConstruct class
+		    		Class clazz = Class.forName("tconstruct.world.TinkerWorld");
+		    		modTorch = (Block) clazz.getField("stoneTorch").get(null);
+	    		}
 	    	} catch (Exception e) { }
 	    	if (modTorch != null)
 	    	{
