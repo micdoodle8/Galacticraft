@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "galacticraftplanets:blocks/copper"
+        "all": "galacticraftplanets:blocks/ore_copper_mars"
     }
 }

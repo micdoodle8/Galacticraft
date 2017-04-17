@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -37,6 +38,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
         super(Material.GLASS);
         this.setHardness(3.0F);
         this.setResistance(8.0F);
+        this.setSoundType(SoundType.GLASS);
         this.setUnlocalizedName(assetName);
     }
 

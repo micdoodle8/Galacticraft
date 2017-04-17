@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "galacticraftplanets:blocks/venus_ore_silicon"
+        "all": "galacticraftplanets:blocks/ore_silicon_venus"
     }
 }
