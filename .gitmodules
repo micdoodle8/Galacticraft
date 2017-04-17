@@ -1,0 +1,3 @@
+[submodule "MicdoodleCore"]
+	path = MicdoodleCore
+	url = https://github.com/Micdoodle8/MicdoodleCore
