@@ -73,7 +73,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemRendererUnlitTor
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
@@ -1027,7 +1027,7 @@ public class ClientProxyCore extends CommonProxyCore
             GL11.glTranslatef(0, offset, 0);
         }
 
-        if (entityLivingBase.worldObj.provider instanceof WorldProviderOrbit && !entityLivingBase.isPlayerSleeping())
+        if (entityLivingBase.worldObj.provider instanceof WorldProviderSpaceStation && !entityLivingBase.isPlayerSleeping())
         {
             float f1 = entityLivingBase.yOffset - 1.62F;
             float pitch = entityLivingBase.prevRotationPitch + (entityLivingBase.rotationPitch - entityLivingBase.prevRotationPitch) * partialTicks;

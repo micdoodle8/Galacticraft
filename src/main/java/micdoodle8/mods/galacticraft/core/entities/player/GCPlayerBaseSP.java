@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import api.player.client.ClientPlayerAPI;
 import api.player.client.ClientPlayerBase;
 import cpw.mods.fml.common.Loader;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 
@@ -49,7 +49,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void beforeUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.player.worldObj.provider instanceof IZeroGDimension)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
             if (stats.landingTicks > 0)
@@ -62,9 +62,9 @@ public class GCPlayerBaseSP extends ClientPlayerBase
                     this.player.ySize = 0.2F;
                 }
             }
-            else if (((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks > 0)
+            else if (stats.pjumpticks > 0)
             {
-                this.player.ySize = 0.01F * ((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks;
+                this.player.ySize = 0.01F * stats.pjumpticks;
             }
             else if (!this.player.onGround || stats.inFreefall)
             {
@@ -78,7 +78,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void afterUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.player.worldObj.provider instanceof IZeroGDimension)
         {
             this.player.setJumping(false);
             if ((this.player.boundingBox.minY % 1F) == 0.5F) this.player.boundingBox.minY += 0.00001F;
@@ -114,7 +114,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public boolean isSneaking()
     {
-        if (this.player.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.player.worldObj.provider instanceof IZeroGDimension)
     	{
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
             if (stats.landingTicks > 0)
@@ -126,7 +126,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
              }
          else
              this.lastLandingTicks = 0;
-         if (((WorldProviderOrbit)this.player.worldObj.provider).pjumpticks > 0) return true;
+         if (stats.pjumpticks > 0) return true;
             if (ClientProxyCore.sneakRenderOverride)
             {
                 if (FreefallHandler.testFreefall(this.player)) return false;

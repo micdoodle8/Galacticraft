@@ -27,6 +27,10 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public boolean oxygenSetupValid = true;
     AxisAlignedBB boundingBoxBefore;
     public boolean lastOnGround;
+    
+    //Used by FreefallHandler
+	public int pjumpticks = 0;
+	public boolean pWasOnGround;
 
     public double distanceSinceLastStep;
     public int lastStep;
@@ -52,6 +56,8 @@ public class GCPlayerStatsClient implements IExtendedEntityProperties
     public int buildFlags = -1;
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
+    
+    public FreefallHandler freefallHandler = new FreefallHandler(this);
 
     public GCPlayerStatsClient(EntityPlayerSP player)
     {

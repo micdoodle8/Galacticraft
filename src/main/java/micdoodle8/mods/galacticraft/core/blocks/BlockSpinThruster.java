@@ -4,7 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.SpinManager;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -183,9 +184,9 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 
         if (!par1World.isRemote)
         {
-            if (par1World.provider instanceof WorldProviderOrbit)
+            if (par1World.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderOrbit) par1World.provider).checkSS(baseBlock, true);
+                ((WorldProviderSpaceStation) par1World.provider).getSpinManager().checkSS(baseBlock, true);
             }
         }
     }
@@ -232,9 +233,9 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
 
         if (!par1World.isRemote)
         {
-            if (par1World.provider instanceof WorldProviderOrbit)
+            if (par1World.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderOrbit) par1World.provider).checkSS(new BlockVec3(x, y, z), true);
+                ((WorldProviderSpaceStation) par1World.provider).getSpinManager().checkSS(new BlockVec3(x, y, z), true);
             }
         }
     }
@@ -301,9 +302,9 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
     {
         //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
         //Also make small thrust sounds
-        if (par1World.provider instanceof WorldProviderOrbit)
+        if (par1World.provider instanceof WorldProviderSpaceStation)
         {
-            if (((WorldProviderOrbit) par1World.provider).thrustersFiring || par5Random.nextInt(80) == 0)
+            if (((WorldProviderSpaceStation) par1World.provider).getSpinManager().thrustersFiring || par5Random.nextInt(80) == 0)
             {
                 final int var6 = par1World.getBlockMetadata(x, y, z) & 7;
                 final double var7 = x + 0.5F;
@@ -340,9 +341,9 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         final int change = (8 + metadata) & 15;
         world.setBlockMetadataWithNotify(x, y, z, change, 2);
 
-        if (world.provider instanceof WorldProviderOrbit && !world.isRemote)
+        if (world.provider instanceof WorldProviderSpaceStation && !world.isRemote)
         {
-            WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
+            SpinManager worldOrbital = ((WorldProviderSpaceStation) world.provider).getSpinManager();
             worldOrbital.checkSS(new BlockVec3(x, y, z), true);
         }
         return true;
@@ -360,9 +361,9 @@ public class BlockSpinThruster extends BlockAdvanced implements ItemBlockDesc.IB
         if (!world.isRemote)
         {
             final int facing = metadata & 8;
-            if (world.provider instanceof WorldProviderOrbit)
+            if (world.provider instanceof WorldProviderSpaceStation)
             {
-                WorldProviderOrbit worldOrbital = (WorldProviderOrbit) world.provider;
+                SpinManager worldOrbital = ((WorldProviderSpaceStation) world.provider).getSpinManager();
                 BlockVec3 baseBlock = new BlockVec3(x, y, z);
                 worldOrbital.removeThruster(baseBlock, facing == 0);
                 worldOrbital.updateSpinSpeed();

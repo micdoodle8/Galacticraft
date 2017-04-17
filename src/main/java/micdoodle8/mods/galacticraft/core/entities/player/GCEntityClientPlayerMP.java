@@ -6,7 +6,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -53,7 +53,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     {
         ClientProxyCore.playerClientHandler.onLivingUpdatePre(this);
         try {
-            if (this.worldObj.provider instanceof WorldProviderOrbit)
+            if (this.worldObj.provider instanceof IZeroGDimension)
             {
                 //  from: EntityPlayerSP
                 if (this.sprintingTicksLeft > 0)
@@ -145,9 +145,9 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
                         this.ySize = 0.2F;
                     }
                 }
-                else if (((WorldProviderOrbit)this.worldObj.provider).pjumpticks > 0)
+                else if (stats.pjumpticks > 0)
                 {
-                    this.ySize = 0.01F * ((WorldProviderOrbit)this.worldObj.provider).pjumpticks;
+                    this.ySize = 0.01F * stats.pjumpticks;
                 }
                 else if (this.movementInput.sneak && this.ySize < 0.2F && this.onGround && !stats.inFreefall)
                 {
@@ -346,7 +346,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     @Override
     public boolean isSneaking()
     {
-        if (this.worldObj.provider instanceof WorldProviderOrbit)
+        if (this.worldObj.provider instanceof IZeroGDimension)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.landingTicks > 0)
@@ -358,7 +358,7 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
                 }
             else
                 this.lastLandingTicks = 0;
-            if (((WorldProviderOrbit)this.worldObj.provider).pjumpticks > 0) return true;
+            if (stats.pjumpticks > 0) return true;
             if (ClientProxyCore.sneakRenderOverride)
             {
                 if (FreefallHandler.testFreefall(this)) return false;

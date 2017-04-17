@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -34,7 +35,7 @@ import micdoodle8.mods.galacticraft.core.command.CommandGCEnergyUnits;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
@@ -656,21 +657,21 @@ public class PacketSimple extends Packet implements IPacket
             }
             break;
         case C_UPDATE_STATION_SPIN:
-            if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
+            if (playerBaseClient.worldObj.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderOrbit) playerBaseClient.worldObj.provider).setSpinRate((Float) this.data.get(0), (Boolean) this.data.get(1));
+                ((WorldProviderSpaceStation) playerBaseClient.worldObj.provider).getSpinManager().setSpinRate((Float) this.data.get(0), (Boolean) this.data.get(1));
             }
             break;
         case C_UPDATE_STATION_DATA:
-            if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
+            if (playerBaseClient.worldObj.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderOrbit) playerBaseClient.worldObj.provider).setSpinCentre((Double) this.data.get(0), (Double) this.data.get(1));
+                ((WorldProviderSpaceStation) playerBaseClient.worldObj.provider).getSpinManager().setSpinCentre((Double) this.data.get(0), (Double) this.data.get(1));
             }
             break;
         case C_UPDATE_STATION_BOX:
-            if (playerBaseClient.worldObj.provider instanceof WorldProviderOrbit)
+            if (playerBaseClient.worldObj.provider instanceof WorldProviderSpaceStation)
             {
-                ((WorldProviderOrbit) playerBaseClient.worldObj.provider).setSpinBox((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4), (Integer) this.data.get(5));
+                ((WorldProviderSpaceStation) playerBaseClient.worldObj.provider).getSpinManager().setSpinBox((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2), (Integer) this.data.get(3), (Integer) this.data.get(4), (Integer) this.data.get(5));
             }
             break;
         case C_UPDATE_THERMAL_LEVEL:

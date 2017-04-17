@@ -5,10 +5,10 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -84,13 +84,13 @@ public class PlayerClient implements IPlayerClient
                 stats.inFreefall = FreefallHandler.testFreefall(player);
                 startup = true;
             }
-            if (player.worldObj.provider instanceof WorldProviderOrbit)
+            if (player.worldObj.provider instanceof IZeroGDimension)
             {
                 stats.inFreefallLast = stats.inFreefall;
                 stats.inFreefall = FreefallHandler.testFreefall(player);
                 this.downMot2 = stats.downMotionLast;
                 stats.downMotionLast = player.motionY;
-                ((WorldProviderOrbit) player.worldObj.provider).preVanillaMotion(player);
+                stats.freefallHandler.preVanillaMotion(player);
             }
         }
 
@@ -113,9 +113,9 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        if (player.worldObj.provider instanceof WorldProviderOrbit)
+        if (player.worldObj.provider instanceof IZeroGDimension)
         {
-            ((WorldProviderOrbit) player.worldObj.provider).postVanillaMotion(player);
+            stats.freefallHandler.postVanillaMotion(player);
 
 	        if (stats.inFreefall)
 	        {
@@ -135,7 +135,7 @@ public class PlayerClient implements IPlayerClient
 		    		{
 	                    if (stats.landingTicks > GCPlayerStatsClient.MAX_LANDINGTICKS + 4)
 	                    {
-	                        ((WorldProviderOrbit)player.worldObj.provider).pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 5;
+	                        stats.pjumpticks = stats.landingTicks - GCPlayerStatsClient.MAX_LANDINGTICKS - 5;
 	                    }
 		    		    stats.landingTicks = GCPlayerStatsClient.MAX_LANDINGTICKS;
 		    		}
