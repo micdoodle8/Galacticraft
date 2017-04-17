@@ -241,6 +241,8 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
                 }
 
                 this.updateEntityActionState();
+                this.rotationYawHead = this.rotationYaw;
+
                 if (this.isMovementBlocked())
                 {
                     this.isJumping = false;

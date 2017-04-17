@@ -405,7 +405,7 @@ public class FreefallHandler {
         	doGravity = false;
             stats.pjumpticks = 0;
             //Do spinning
-            if (spinManager.doSpinning && spinManager.angularVelocityRadians != 0F)
+            if (spinManager != null && spinManager.doSpinning && spinManager.angularVelocityRadians != 0F)
             {
                 //TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
                 //TODO think about server + network load (loading/unloading chunks) when movement is rapid
