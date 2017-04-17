@@ -556,7 +556,7 @@ public class FreefallHandler {
             //if (p.motionY != 0) p.motionY = this.pPrevMotionY;
             if (p.movementInput.jump)
             {
-                if (p.onGround || stats.pWasOnGround)
+                if ((p.onGround || stats.pWasOnGround) && !p.capabilities.isCreativeMode)
                 {
                     if (stats.pjumpticks < 25) stats.pjumpticks++;
                     p.motionY -= dy;
