@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -678,6 +680,138 @@ public class SpinManager
             }
     	}
     }
+    
+    @SideOnly(Side.CLIENT)
+    public boolean updatePlayerForSpin(EntityPlayerSP p, float partialTicks)
+    {
+        float angleDelta = partialTicks * this.angularVelocityRadians;
+        if (this.doSpinning && angleDelta != 0F)
+        {
+            //TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
+            //TODO think about server + network load (loading/unloading chunks) when movement is rapid
+            //Maybe reduce chunkloading radius?
+            
+            boolean doGravity = false;
+            float angle;
+            final double xx = p.posX - this.spinCentreX;
+            final double zz = p.posZ - this.spinCentreZ;
+            double arc = Math.sqrt(xx * xx + zz * zz);
+            if (xx == 0D)
+            {
+                angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
+            }
+            else
+            {
+                angle = (float) Math.atan(zz / xx);
+            }
+            if (xx < 0D)
+            {
+                angle += 3.1415926535F;
+            }
+            angle += angleDelta / 3F;
+            arc = arc * angleDelta;
+            double offsetX = -arc * MathHelper.sin(angle);
+            double offsetZ = arc * MathHelper.cos(angle);
+
+            //Check for block collisions here - if so move the player appropriately
+            //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
+            if (p.worldObj.getCollidingBoundingBoxes(p, p.boundingBox).size() == 0)
+            {
+                //Now check for collisions in the new direction and if there are some, try reducing the movement
+                int collisions = 0;
+                do
+                {
+                    List<AxisAlignedBB> list = p.worldObj.getCollidingBoundingBoxes(p, p.boundingBox.addCoord(offsetX, 0.0D, offsetZ));
+                    collisions = list.size();
+                    if (collisions > 0)
+                    {
+                        if (!doGravity)
+                        {
+                            p.motionX += -offsetX;
+                            p.motionZ += -offsetZ;
+                        }
+                        offsetX /= 2D;
+                        offsetZ /= 2D;
+                        if (offsetX < 0.01D && offsetX > -0.01D)
+                        {
+                            offsetX = 0D;
+                        }
+                        if (offsetZ < 0.01D && offsetZ > -0.01D)
+                        {
+                            offsetZ = 0D;
+                        }
+                        doGravity = true;
+                    }
+                }
+                while (collisions > 0);
+
+                p.posX += offsetX;
+                p.posZ += offsetZ;
+                p.boundingBox.offset(offsetX, 0.0D, offsetZ);
+            }
+            
+            p.rotationYaw += this.skyAngularVelocity * partialTicks;
+            p.renderYawOffset += this.skyAngularVelocity * partialTicks;
+            while (p.rotationYaw > 360F)
+            {
+                p.rotationYaw -= 360F;
+            }
+            while (p.rotationYaw < 0F)
+            {
+                p.rotationYaw += 360F;
+            }
+
+            return doGravity;
+        }
+        
+        return false;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void applyCentrifugalForce(EntityPlayerSP p)
+    {
+        int quadrant = 0;
+        double xd = p.posX - this.spinCentreX;
+        double zd = p.posZ - this.spinCentreZ;
+        double accel = Math.sqrt(xd * xd + zd * zd) * this.angularVelocityRadians * this.angularVelocityRadians * 4D;
+
+        if (xd < 0)
+        {
+            if (xd < -Math.abs(zd))
+            {
+                quadrant = 2;
+            }
+            else
+            {
+                quadrant = zd < 0 ? 3 : 1;
+            }
+        }
+        else if (xd > Math.abs(zd))
+        {
+            quadrant = 0;
+        }
+        else
+        {
+            quadrant = zd < 0 ? 3 : 1;
+        }
+
+        switch (quadrant)
+        {
+        case 0:
+            p.motionX += accel;
+            break;
+        case 1:
+            p.motionZ += accel;
+            break;
+        case 2:
+            p.motionX -= accel;
+            break;
+        case 3:
+        default:
+            p.motionZ -= accel;
+        }
+    }
+    
     public void readFromNBT(NBTTagCompound nbt)
     {
         this.doSpinning = true;//nbt.getBoolean("doSpinning");

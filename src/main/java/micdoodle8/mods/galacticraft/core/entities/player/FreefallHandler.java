@@ -1,7 +1,5 @@
  package micdoodle8.mods.galacticraft.core.entities.player;
 
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -396,110 +394,23 @@ public class FreefallHandler {
         SpinManager spinManager = null;
         if (worldProvider instanceof WorldProviderSpaceStation)
         {
-        spinManager = ((WorldProviderSpaceStation) worldProvider).getSpinManager();
+            spinManager = ((WorldProviderSpaceStation) worldProvider).getSpinManager();
         }
-        boolean doGravity = spinManager != null;
+        boolean doCentrifugal = spinManager != null;
 
         if (freefall)
         {
-        	doGravity = false;
             stats.pjumpticks = 0;
-            //Do spinning
-            if (spinManager != null && spinManager.doSpinning && spinManager.angularVelocityRadians != 0F)
-            {
-                //TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
-                //TODO think about server + network load (loading/unloading chunks) when movement is rapid
-                //Maybe reduce chunkloading radius?
-                float angle;
-                final double xx = p.posX - spinManager.spinCentreX;
-                final double zz = p.posZ - spinManager.spinCentreZ;
-                double arc = Math.sqrt(xx * xx + zz * zz);
-                if (xx == 0D)
-                {
-                    angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
-                }
-                else
-                {
-                    angle = (float) Math.atan(zz / xx);
-                }
-                if (xx < 0D)
-                {
-                    angle += 3.1415926535F;
-                }
-                angle += spinManager.angularVelocityRadians / 3F;
-                arc = arc * spinManager.angularVelocityRadians;
-                double offsetX = -arc * MathHelper.sin(angle);
-                double offsetZ = arc * MathHelper.cos(angle);
-
-                //Check for block collisions here - if so move the player appropriately
-                //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
-                if (world.getCollidingBoundingBoxes(p, p.boundingBox).size() == 0)
-                {
-                    //Now check for collisions in the new direction and if there are some, try reducing the movement
-                    int collisions = 0;
-                    do
-                    {
-                        List<AxisAlignedBB> list = world.getCollidingBoundingBoxes(p, p.boundingBox.addCoord(offsetX, 0.0D, offsetZ));
-                        collisions = list.size();
-                        if (collisions > 0)
-                        {
-                            if (!doGravity)
-                            {
-                                p.motionX += -offsetX;
-                                p.motionZ += -offsetZ;
-                            }
-                            offsetX /= 2D;
-                            offsetZ /= 2D;
-                            if (offsetX < 0.01D && offsetX > -0.01D)
-                            {
-                                offsetX = 0D;
-                            }
-                            if (offsetZ < 0.01D && offsetZ > -0.01D)
-                            {
-                                offsetZ = 0D;
-                            }
-                            doGravity = true;
-
-                        }
-                    }
-                    while (collisions > 0);
-
-                    p.posX += offsetX;
-                    p.posZ += offsetZ;
-                    p.boundingBox.offset(offsetX, 0.0D, offsetZ);
-                }
-
-                p.rotationYaw += spinManager.skyAngularVelocity;
-                p.prevRotationYaw += spinManager.skyAngularVelocity;
-                while (p.rotationYaw > 360F)
-                {
-                    p.rotationYaw -= 360F;
-                }
-                while (p.rotationYaw < 0F)
-                {
-                    p.rotationYaw += 360F;
-                }
-                while (p.prevRotationYaw > 360F)
-                {
-                    p.prevRotationYaw -= 360F;
-                }
-                while (p.prevRotationYaw < 0F)
-                {
-                    p.prevRotationYaw += 360F;
-                }
-
-				/*				//Just started freefall - give some impulse
-                                if (!p.inFreefall && p.inFreefallFirstCheck)
-								{
-									p.motionX += offsetX * 0.91F;
-									p.motionZ += offsetZ * 0.91F;
-								}*/
-            }
 
             //Reverse effects of deceleration
             p.motionX /= 0.91F;
             p.motionZ /= 0.91F;
             p.motionY /= 0.9800000190734863D;
+
+            if (spinManager != null)
+            {
+                doCentrifugal = spinManager.updatePlayerForSpin(p, 1F);
+            }
 
             //Do freefall motion
             if (!p.capabilities.isCreativeMode)
@@ -588,50 +499,12 @@ public class FreefallHandler {
             }
         }
 
-        //Artificial gravity
-        if (doGravity && !p.onGround)
+        //Artificial gravity of a sort...
+        if (doCentrifugal && !p.onGround)
         {
-            int quadrant = 0;
-            double xd = p.posX - spinManager.spinCentreX;
-            double zd = p.posZ - spinManager.spinCentreZ;
-            double accel = Math.sqrt(xd * xd + zd * zd) * spinManager.angularVelocityRadians * spinManager.angularVelocityRadians * 4D;
-
-            if (xd < 0)
-            {
-                if (xd < -Math.abs(zd))
-                {
-                    quadrant = 2;
-                }
-                else
-                {
-                    quadrant = zd < 0 ? 3 : 1;
-                }
-            }
-            else if (xd > Math.abs(zd))
-            {
-                quadrant = 0;
-            }
-            else
-            {
-                quadrant = zd < 0 ? 3 : 1;
-            }
-
-            switch (quadrant)
-            {
-            case 0:
-                p.motionX += accel;
-                break;
-            case 1:
-                p.motionZ += accel;
-                break;
-            case 2:
-                p.motionX -= accel;
-                break;
-            case 3:
-            default:
-                p.motionZ -= accel;
-            }
+            spinManager.applyCentrifugalForce(p);
         }
+
         this.pPrevMotionX = p.motionX;
         this.pPrevMotionY = p.motionY;
         this.pPrevMotionZ = p.motionZ;
