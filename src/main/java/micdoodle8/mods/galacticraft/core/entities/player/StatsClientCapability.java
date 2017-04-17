@@ -43,7 +43,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
 
     public boolean ssOnGroundLast;
 
-    public FreefallHandler freefallHandler = new FreefallHandler();
+    public FreefallHandler freefallHandler = new FreefallHandler(this);
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
 
