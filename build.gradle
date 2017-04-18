@@ -1,9 +1,3 @@
-def mcVersion = "1.11.2"
-def versionMajor = 4
-def versionMinor = 0
-def versionRev = 0
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
@@ -16,288 +10,191 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
 
-sourceSets.main {
-    java {
-        srcDirs = ['src/main/java', 'dependencies/main/java']
-    }
-    resources {
-        srcDirs = ['src/main/resources', 'dependencies/main/resources']
+def mcVersion = "1.11.2"
+
+def versionMajor = 4
+def versionMinor = 0
+def versionRev = 0
+
+def versionBuild = System.getenv("BUILD_NUMBER") ?: 0
+
+
+allprojects {
+    apply plugin: 'net.minecraftforge.gradle.forge'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    minecraft {
+        version = "$mcVersion-13.20.0.2259"
+        runDir = "run"
+
+        // the mappings can be changed at any time, and must be in the following format.
+        // snapshot_YYYYMMDD   snapshot are built nightly.
+        // stable_#            stables are built at the discretion of the MCP team.
+        // Use non-default mappings at your own risk. they may not allways work.
+        // simply re-run your setup task after changing the mappings to update your workspace.
+        mappings = "snapshot_20161220"
+        makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     }
 }
 
-def versionBuild = 0
-if (System.getenv("BUILD_NUMBER") != null)
-    versionBuild = System.getenv("BUILD_NUMBER")
-	
-version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionRev}.${versionBuild}-BETA" // Set the version number
-group= "micdoodle8.mods.galacticraft"
-archivesBaseName = "GalacticraftCoreAll"
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+def core = project('MicdoodleCore')
 
 minecraft {
-    version = "1.11.2-13.20.0.2259"
-    runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161220"
-    makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    atSource core.file('src/main/resources/micdoodlecore_at.cfg')
 }
 
-// Keep a list of dependencies files/directories for easy jar packing
-ext.dependencies = ['codechicken/**',
-					'**/nei_at.cfg',
-					'api/**',
-					'buildcraft/**',
-					'cofh/**',
-					'ic2/**',
-					'mekanism/**',
-					'mezz/**',
-					'powercrystals/**']
-					
-// Keep a list of core files/directories for easy jar packing
-ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
-					
-// Keep a list of core files/directories for easy jar packing
-ext.coreFiles = ['micdoodle8/mods/galacticraft/core/**',
-					'assets/minecraft/**',
-					'assets/galacticraftcore/**',
-					'**/dependenciesGC.info']
-					
-// Keep a list of planets addon files/directories for easy jar packing
-ext.planetsFiles = ['micdoodle8/mods/galacticraft/planets/**',
-					'assets/galacticraftplanets/**']
-					
-// Keep a list of coremod files/directories for easy jar packing
-ext.micdoodleCoreFiles = ['**/micdoodlecore_at.cfg',
-					'**/micdoodlecore_at.deobf',
-					'micdoodle8/mods/miccore/**']
+version = "${mcVersion}-${versionMajor}.${versionMinor}.${versionRev}.${versionBuild}-BETA" // Set the version number
+group = "micdoodle8.mods.galacticraft"
+archivesBaseName = "GalacticraftCoreAll"
 
-ext.coreJar = "build/libs/" + archivesBaseName + "-" + version + ".jar"
+dependencies {
+    compile core
+}
+
+// Keep a list of core files/directories for easy jar packing
+def apiFiles = ['micdoodle8/mods/galacticraft/api/**']
+
+// Keep a list of planets addon files/directories for easy jar packing
+def planetsFiles = ['micdoodle8/mods/galacticraft/planets/**',
+                    'assets/galacticraftplanets/**']
 
 // Configure the main jar
-jar
-{
-	// Add necessary files, remove unnecessary ones.
-	includes.addAll(project.ext.coreFiles)
-	includes.addAll(project.ext.apiFiles)
-	includes.addAll('mcmod.info')
-	includes.addAll('LICENSE.txt')
-	includes.addAll('api/player/**')
-	includes.addAll(project.ext.dependencies)
-	includes.addAll(project.ext.planetsFiles)
-	includes.addAll(project.ext.micdoodleCoreFiles)
+jar {
+    from sourceSets.api.output
+    from core.sourceSets.main.output
+
+    manifest {
+        // Add required coremod manifest attributes
+
+        attributes FMLCorePlugin: "micdoodle8.mods.miccore.MicdoodlePlugin"
+        attributes AccessTransformer: "micdoodlecore_at.cfg"
+    }
 }
 
-task moveCoreMcmodInfo(type: Copy, dependsOn: "reobfJar") {
-	from 'LICENSE.txt'
-	from(zipTree(project.ext.coreJar))
-	from 'src/main/resources/assets/galacticraftcore/mcmod.info'
-	into 'temporary'
+task jarCore(type: Jar) {
+    baseName 'GalacticraftCore'
+
+    from sourceSets.main.output
+    exclude planetsFiles
+
 }
 
-task movePlanetsMcmodInfo(type: Copy, dependsOn: "reobfJar") {
-	from 'src/main/resources/assets/galacticraftplanets/mcmod.info'
-	into 'temporary'
+task jarPlanets(type: Jar) {
+    baseName 'Galacticraft-Planets'
+
+    from(sourceSets.main.output) {
+        include planetsFiles
+    }
 }
 
-task rePackAllJarCore(type: Jar, dependsOn: "moveCoreMcmodInfo") {
-	from 'temporary'
+
+task jarMicdoodleCore(type: Jar) {
+    baseName = "MicdoodleCore"
+
+    from core.sourceSets.main.output
+    from(sourceSets.main.output) {
+        include 'micdoodle8/mods/galacticraft/api/entity/IEntityBreathable.class'
+    }
+    // Configure manifest attributes
+    manifest {
+        // Add required coremod manifest attributes
+
+        attributes FMLCorePlugin: "micdoodle8.mods.miccore.MicdoodlePlugin"
+        attributes AccessTransformer: "micdoodlecore_at.cfg"
+    }
 }
 
-task rePackAllJarPlanets(type: Jar, dependsOn: "movePlanetsMcmodInfo") {
-	from 'temporary'
+task jarCoreDev(type: Jar) {
+
+    baseName = "GalacticraftCore-Dev"
+
+    from(sourceSets.main.output) {
+        exclude planetsFiles
+    }
+}
+task jarCoreSrc(type: Jar) {
+
+    baseName = "GalacticraftCore-Dev"
+    classifier = 'src'
+
+    from(sourceSets.main.allSource) {
+        exclude planetsFiles
+    }
 }
 
-task packCoreJar(type: Jar, dependsOn: "rePackAllJarCore") {
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "GalacticraftCore"
-	
-	from(zipTree(project.ext.coreJar)) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.coreFiles)
-		includes.addAll(project.ext.apiFiles)
-		includes.addAll('mcmod.info')
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-	}
+task jarPlanetsDev(type: Jar) {
+
+    baseName = "Galacticraft-Planets-Dev"
+
+    from(sourceSets.main.output) {
+        include planetsFiles
+    }
 }
 
-task packPlanetsJar(type: Jar, dependsOn: "rePackAllJarPlanets") { 
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "Galacticraft-Planets"
-	
-	from(zipTree(project.ext.coreJar)) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.planetsFiles)
-		includes.addAll('mcmod.info')
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.coreFiles)
-		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-	}
+task jarPlanetsSrc(type: Jar) {
+
+    baseName = "Galacticraft-Planets-Dev"
+    classifier = 'src'
+
+    from(sourceSets.main.allSource) {
+        include planetsFiles
+    }
 }
 
-task packMicCoreJar(type: Jar, dependsOn: "reobfJar") {
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "MicdoodleCore"
-	
-	from(zipTree(project.ext.coreJar)) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.micdoodleCoreFiles)
-		includes.addAll('LICENSE.txt')
-		include('micdoodle8/mods/galacticraft/api/entity/IEntityBreathable.class')
-		excludes.addAll(project.ext.coreFiles)
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
-	}
-	
-	// Configure manifest attributes
-	manifest
-	{
-		// Add required coremod manifest attributes
-		attributes.put("FMLCorePlugin", "micdoodle8.mods.miccore.MicdoodlePlugin")
-		attributes.put("AccessTransformer", "micdoodlecore_at.cfg")
-	}
+task jarMicdoodleCoreDev(type: Jar) {
+    // Set the jar's base name
+    baseName = "MicdoodleCore-Dev"
+
+    from core.sourceSets.main.output
+
+    // Configure manifest attributes
+    manifest {
+        // Add required coremod manifest attributes
+        attributes FMLCorePlugin: "micdoodle8.mods.miccore.MicdoodlePlugin"
+        attributes AccessTransformer: "micdoodlecore_at.cfg"
+    }
+}
+task jarMicdoodleCoreSrc(type: Jar) {
+    // Set the jar's base name
+    baseName = "MicdoodleCore-Dev"
+    classifier = 'src'
+
+    from core.sourceSets.main.allSource
+
 }
 
-task packCoreJarDev(type: Jar, dependsOn: "classes") {
-	from (sourceSets.main.output) {
-		includes.addAll(project.ext.coreFiles)
-		includes.addAll(project.ext.apiFiles)
-		includes.addAll('mcmod.info')
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-	}
-	
-	from (sourceSets.main.allSource) {
-		includes.addAll(project.ext.coreFiles)
-		includes.addAll(project.ext.apiFiles)
-		includes.addAll('mcmod.info')
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-		excludes.addAll('assets')
-		into 'src'
-	}
-	
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "GalacticraftCore-Dev"
+task jarApi(type: Jar) {
+    // Set the jar's base name
+    baseName = "Galacticraft-API"
+
+    from(sourceSets.main.output) {
+        // Add necessary files, remove unnecessary ones.
+        include apiFiles
+    }
 }
 
-task packPlanetsJarDev(type: Jar, dependsOn: "classes") {
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "Galacticraft-Planets-Dev"
-	
-	from (sourceSets.main.output) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.planetsFiles)
-		includes.addAll('mcmod.info')
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.coreFiles)
-		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-	}
-	
-	from (sourceSets.main.allSource) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.planetsFiles)
-		includes.addAll('mcmod.info')
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.coreFiles)
-		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-		excludes.addAll('assets')
-		into 'src'
-	}
+task jarApiSrc(type:Jar) {
+    baseName = 'Galacticraft-API'
+    classifier = 'src'
+
+    from (sourceSets.main.allSource) {
+        include apiFiles
+    }
 }
 
-task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "MicdoodleCore-Dev"
-	
-	from (sourceSets.main.output) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.micdoodleCoreFiles)
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.coreFiles)
-		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll('**/*.info')
-	}
-	
-	from (sourceSets.main.allSource) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.micdoodleCoreFiles)
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.coreFiles)
-		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll('**/*.info')
-		excludes.addAll('assets')
-		into 'src'
-	}
-	
-	// Configure manifest attributes
-	manifest
-	{
-		// Add required coremod manifest attributes
-		attributes.put("FMLCorePlugin", "micdoodle8.mods.miccore.MicdoodlePlugin")
-		attributes.put("AccessTransformer", "micdoodlecore_at.cfg")
-	}
+artifacts {
+    archives jarCore, jarCoreDev, jarCoreSrc
+    archives jarPlanets, jarPlanetsDev, jarPlanetsSrc
+    archives jarMicdoodleCore, jarMicdoodleCoreDev, jarMicdoodleCoreDev
 }
 
-task packApi(type: Jar, dependsOn: "classes") {
-	// Jar will always be updated
-	outputs.upToDateWhen {false}
-	// Set the jar's base name
-	baseName = "Galacticraft-API"
-	
-	from (sourceSets.main.allSource) {
-		// Add necessary files, remove unnecessary ones.
-		includes.addAll(project.ext.apiFiles)
-		includes.addAll('LICENSE.txt')
-		excludes.addAll(project.ext.micdoodleCoreFiles)
-		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
-		excludes.addAll('**/*.info')
-		excludes.addAll('assets')
-	}
-}
+tasks.withType(Jar)*.from 'LICENSE.txt'
 
-task cleanOldJar(type: Delete, dependsOn: "packMicCoreJar") {
-	delete 'temporary', project.ext.coreJar
-}
-
-task cleanOldJarDev(type: Delete, dependsOn: "packApi") {
-	delete 'temporary', project.ext.coreJar
+reobf {
+    jarCore {}
+    jarPlanets {}
+    jarMicdoodleCore {}
 }

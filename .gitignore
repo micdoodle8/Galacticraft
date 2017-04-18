@@ -79,6 +79,7 @@ local.properties
 *.iml
 *.ipr
 *.iws
+classes/
 
 #################
 ## Visual Studio
