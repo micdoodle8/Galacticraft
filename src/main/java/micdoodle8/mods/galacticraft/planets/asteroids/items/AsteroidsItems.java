@@ -40,7 +40,7 @@ public class AsteroidsItems
     public static Item titaniumSword;
 
     public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 3, 520, 8.0F, 3.0F, 10);
-    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 10, 7, 5 }, 10);
+    public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 10, 7, 5 }, 12);
 
     public static void initItems()
     {
@@ -69,7 +69,7 @@ public class AsteroidsItems
         AsteroidsItems.registerItems();
 
         OreDictionary.registerOre("compressedTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
-        OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 5));
+        OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 0));
         OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
         OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
 
@@ -110,6 +110,8 @@ public class AsteroidsItems
         registerItem(AsteroidsItems.titaniumSpade);
         registerItem(AsteroidsItems.titaniumHoe);
         registerItem(AsteroidsItems.titaniumSword);
+        
+        ARMOR_TITANIUM.customCraftingMaterial = AsteroidsItems.basicItem;
     }
 
     public static void registerItem(Item item)
