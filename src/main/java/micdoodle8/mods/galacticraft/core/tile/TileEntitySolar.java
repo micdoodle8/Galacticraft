@@ -52,6 +52,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
     private boolean initialised = false;
     private boolean initialisedMulti = false;
+    private AxisAlignedBB renderAABB;
 
     public TileEntitySolar()
     {
@@ -438,7 +439,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2); 
+        }
+        return this.renderAABB;
     }
 
     @Override
