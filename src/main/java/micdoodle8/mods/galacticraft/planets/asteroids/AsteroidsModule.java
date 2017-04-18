@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -46,7 +47,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.LanguageMap;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
@@ -268,7 +268,7 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        GCPlanetDimensions.ASTEROIDS = DimensionType.getById(ConfigManagerAsteroids.dimensionIDAsteroids);
+        GCPlanetDimensions.ASTEROIDS = WorldUtil.getDimensionTypeById(ConfigManagerAsteroids.dimensionIDAsteroids);
 
         loadLanguage("en_US");
         if (event.getSide() == Side.CLIENT)

@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +17,6 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -221,17 +219,6 @@ public class GalacticraftRegistry
 
         DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
         GalacticraftRegistry.dimensionTypeIDs.add(id);
-        
-        try {
-            Class sponge = Class.forName("org.spongepowered.common.world.WorldManager");
-            Method rDT = sponge.getDeclaredMethod("registerDimensionType", int.class, DimensionType.class);
-            boolean result = (boolean) rDT.invoke(null, id, type);
-            if (!result)
-            {
-                GCLog.severe("Another mod or plugin has already taken DimensionType id " + id);
-            }
-        } catch (ClassNotFoundException ignore) { } 
-        catch (Exception e) { e.printStackTrace(); }
         
         return type;
     }

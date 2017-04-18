@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -46,7 +47,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
@@ -153,7 +153,7 @@ public class MarsModule implements IPlanetsModule
     public void postInit(FMLPostInitializationEvent event)
     {
         RecipeManagerMars.loadRecipes();
-        GCPlanetDimensions.MARS = DimensionType.getById(ConfigManagerMars.dimensionIDMars);
+        GCPlanetDimensions.MARS = WorldUtil.getDimensionTypeById(ConfigManagerMars.dimensionIDMars);
     }
 
     @Override
