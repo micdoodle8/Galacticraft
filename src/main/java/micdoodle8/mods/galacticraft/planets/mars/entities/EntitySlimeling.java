@@ -311,11 +311,6 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
             this.ticksAlive++;
 
-            if (this.ticksAlive >= Long.MAX_VALUE)
-            {
-                this.ticksAlive = 0;
-            }
-
             if (this.ticksAlive % 2 == 0)
             {
                 if (this.age < this.MAX_AGE)
