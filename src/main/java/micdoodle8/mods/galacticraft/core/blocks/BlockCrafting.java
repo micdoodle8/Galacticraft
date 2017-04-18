@@ -19,8 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");

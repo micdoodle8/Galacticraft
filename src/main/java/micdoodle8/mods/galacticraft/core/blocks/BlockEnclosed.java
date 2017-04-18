@@ -38,7 +38,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.List;
 
 public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, IShiftDescription, ISortableBlock
 {

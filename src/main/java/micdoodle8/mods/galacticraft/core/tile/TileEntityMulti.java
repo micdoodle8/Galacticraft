@@ -6,7 +6,6 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;

@@ -31,8 +31,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class BlockMachineTiered extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
     public static final int STORAGE_MODULE_METADATA = 0;

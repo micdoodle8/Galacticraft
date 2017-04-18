@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

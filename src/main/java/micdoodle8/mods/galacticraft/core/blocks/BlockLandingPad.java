@@ -28,8 +28,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
 public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
     public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);

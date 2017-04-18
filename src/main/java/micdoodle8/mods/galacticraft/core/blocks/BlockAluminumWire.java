@@ -27,8 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
     public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wiretype", EnumWireType.class);
