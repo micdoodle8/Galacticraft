@@ -43,14 +43,12 @@ public class ConfigGuiFactoryPlanets implements IModGuiFactory
         return null;
     }
 
-	@Override
 	public GuiScreen createConfigGui(GuiScreen arg0)
 	{
 		// TODO  Forge 2282 addition!
 		return new PlanetsConfigGUI(arg0);
 	}
 
-	@Override
 	public boolean hasConfigGui()
 	{
 		return true;
