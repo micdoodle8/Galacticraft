@@ -282,11 +282,6 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IP
     @Override
     public void onUpdate()
     {
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 1;
-        }
-
         this.ticks++;
 
         super.onUpdate();

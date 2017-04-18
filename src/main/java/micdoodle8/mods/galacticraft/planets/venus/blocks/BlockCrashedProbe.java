@@ -33,7 +33,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
 //            new WeightedRandomChestContent(GCItems.heavyPlatingTier1, 0, 3, 6, 5), // Tier 1 plate
 //            new WeightedRandomChestContent(AsteroidsItems.basicItem, 6, 3, 6, 5), // Titanium plate
 //            new WeightedRandomChestContent(Items.IRON_INGOT, 0, 5, 9, 5), // Titanium plate
-//            new WeightedRandomChestContent(AsteroidsItems.basicItem, 0, 3, 6, 5)); // Tier 3 plate
+//            new WeightedRandomChestContent(AsteroidsItems.basicItem, 5, 3, 6, 5)); // Tier 3 plate
 
 //    static
 //    {

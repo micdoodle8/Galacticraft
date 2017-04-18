@@ -68,24 +68,26 @@ public class NEIGalacticraftAsteroidsConfig implements IConfigureNEI
 
         ArrayList<PositionedStack> input1 = new ArrayList<PositionedStack>();
 
+        ItemStack plateTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
+        ItemStack rocketFinsTier2 = new ItemStack(AsteroidsItems.basicItem, 1, 2);
         input1.add(new PositionedStack(new ItemStack(AsteroidsItems.heavyNoseCone), 45, -8 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 36, -6 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 36, -6 + 18 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 36, -6 + 36 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 36, -6 + 54 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 36, -6 + 72 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 54, -6 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 54, -6 + 18 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 54, -6 + 36 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 54, -6 + 54 + 16 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 0), 54, -6 + 72 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 36, -6 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 36, -6 + 18 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 36, -6 + 36 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 36, -6 + 54 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 36, -6 + 72 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 54, -6 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 54, -6 + 18 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 54, -6 + 36 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 54, -6 + 54 + 16 + changeY));
+        input1.add(new PositionedStack(plateTier3, 54, -6 + 72 + 16 + changeY));
         input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 1), 45, 100 + changeY));
         input1.add(new PositionedStack(new ItemStack(GCItems.rocketEngine, 1, 1), 18, 64 + changeY));
         input1.add(new PositionedStack(new ItemStack(GCItems.rocketEngine, 1, 1), 72, 64 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 2), 18, 82 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 2), 18, 100 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 2), 72, 82 + changeY));
-        input1.add(new PositionedStack(new ItemStack(AsteroidsItems.basicItem, 1, 2), 72, 100 + changeY));
+        input1.add(new PositionedStack(rocketFinsTier2, 18, 82 + changeY));
+        input1.add(new PositionedStack(rocketFinsTier2, 18, 100 + changeY));
+        input1.add(new PositionedStack(rocketFinsTier2, 72, 82 + changeY));
+        input1.add(new PositionedStack(rocketFinsTier2, 72, 100 + changeY));
         this.registerRocketBenchRecipe(input1, new PositionedStack(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), 139, 87 + changeY));
 
         ArrayList<PositionedStack> input2 = new ArrayList<PositionedStack>(input1);
