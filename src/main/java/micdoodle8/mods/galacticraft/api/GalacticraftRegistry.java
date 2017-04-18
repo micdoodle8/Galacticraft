@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -218,14 +219,23 @@ public class GalacticraftRegistry
         }
 
         DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
-        GalacticraftRegistry.dimensionTypeIDs.add(id);
+        GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
+        if (type == null)
+        {
+            GCLog.severe("Problem registering dimension type " + id + ".  May be fixable by changing config.");
+        }
         
         return type;
     }
-    
+
     public static int getDimensionTypeID(int index)
     {
     	return GalacticraftRegistry.dimensionTypeIDs.get(index);
+    }
+    
+    public static boolean isDimensionTypeIDRegistered(int typeId)
+    {
+        return GalacticraftRegistry.dimensionTypeIDs.contains(typeId);
     }
     
     /**

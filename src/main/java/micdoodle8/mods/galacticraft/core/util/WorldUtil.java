@@ -55,8 +55,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -464,18 +467,39 @@ public class WorldUtil
                         // Search for id in server-defined statically loaded dimensions
                         int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
 
+                        int providerID = id >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
+                        boolean registrationOK = false;
                         if (!DimensionManager.isDimensionRegistered(registeredID))
                         {
+                            DimensionManager.registerDimension(registeredID, WorldUtil.getDimensionTypeById(providerID));
+                            registrationOK = true;
+                        }
+                        else if (GalacticraftRegistry.isDimensionTypeIDRegistered(providerID))
+                        {
+                            registrationOK = DimensionManager.getProviderType(id).getId() == providerID;
+                            if (!registrationOK)
+                            {
+                                try {
+                                    Class sponge = Class.forName("org.spongepowered.common.world.WorldManager");
+                                    Field dtDI = sponge.getDeclaredField("dimensionTypeByDimensionId");
+                                    dtDI.setAccessible(true);
+                                    Int2ObjectMap<DimensionType> result = (Int2ObjectMap<DimensionType>) dtDI.get(null);
+                                    if (result != null)
+                                    {
+                                        result.put(id, WorldUtil.getDimensionTypeById(providerID));
+                                        GCLog.info("Re-registered dimension type " + providerID);
+                                    }
+                                    registrationOK = true;
+                                } catch (ClassNotFoundException ignore) { }
+                                catch (Exception e) { e.printStackTrace(); }
+                            }
+                        }
+                        if (registrationOK)
+                        {
+                            WorldUtil.registeredSpaceStations.put(registeredID, providerID);
                             if (id >= 0)
                             {
-                                DimensionManager.registerDimension(registeredID, WorldUtil.getDimensionTypeById(worldDataTemp.getDimensionIdStatic()));
-                                WorldUtil.registeredSpaceStations.put(registeredID, worldDataTemp.getDimensionIdStatic());
                                 theServer.worldServerForDimension(registeredID);
-                            }
-                            else
-                            {
-                                DimensionManager.registerDimension(registeredID, WorldUtil.getDimensionTypeById(worldDataTemp.getDimensionIdDynamic()));
-                                WorldUtil.registeredSpaceStations.put(registeredID, worldDataTemp.getDimensionIdDynamic());
                             }
                             WorldUtil.dimNames.put(registeredID, "Space Station " + registeredID);
                         }
@@ -525,6 +549,8 @@ public class WorldUtil
      * <p>
      * IMPORTANT: GalacticraftRegistry.registerDimension() must always be called in parallel with this
      * meaning the CelestialBodies are iterated in the same order when registered there and here.
+     * 
+     * The defaultID should be 0, and the id should be both a dimension ID and a DimensionType id.
      */
     public static boolean registerPlanet(int id, boolean initialiseDimensionAtServerInit, int defaultID)
     {
@@ -543,10 +569,18 @@ public class WorldUtil
             }
             else
             {
-                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + id);
-                //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
-                WorldUtil.registeredPlanets.add(defaultID);
-                return false;
+                if (DimensionManager.getProviderType(id).getId() == id && GalacticraftRegistry.isDimensionTypeIDRegistered(id))
+                {
+                    GCLog.info("Re-registered dimension: " + id);
+                    WorldUtil.registeredPlanets.add(id);
+                }
+                else
+                {
+                    GCLog.severe("Dimension already registered: unable to register planet dimension " + id);
+                    //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
+                    WorldUtil.registeredPlanets.add(defaultID);
+                    return false;
+                }
             }
             World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(id);
             WorldUtil.dimNames.put(id, getDimensionName(w.provider));
