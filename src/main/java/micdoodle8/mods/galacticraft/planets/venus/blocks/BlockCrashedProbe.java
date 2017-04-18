@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,6 +44,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
         super(Material.IRON);
         this.blockHardness = 4.5F;
         this.blockResistance = 2.5F;
+        this.setSoundType(SoundType.METAL);
         this.setTickRandomly(true);
         this.setUnlocalizedName(assetName);
     }

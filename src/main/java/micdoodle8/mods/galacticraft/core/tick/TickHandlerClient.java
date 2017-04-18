@@ -51,7 +51,6 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldProviderSurface;
@@ -479,14 +478,7 @@ public class TickHandlerClient
                 {
                     if (world.provider.getSkyRenderer() == null)
                     {
-                        world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
-                        ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderSpaceStation) world.provider).getSpinManager().getSpinRate();
-                        GCPlayerStatsClient.get(player).setInFreefallFirstCheck(false);
-                    }
-
-                    if (world.provider.getCloudRenderer() == null)
-                    {
-                        world.provider.setCloudRenderer(new CloudRenderer());
+                        ((WorldProviderSpaceStation) world.provider).createSkyProvider();
                     }
                 }
                 else if (world.provider instanceof WorldProviderMoon)

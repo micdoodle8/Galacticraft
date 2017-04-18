@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "galacticraftcore:blocks/moonore_copper"
+        "all": "galacticraftcore:blocks/ore_copper_moon"
     }
 }

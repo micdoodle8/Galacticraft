@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
@@ -1337,10 +1338,10 @@ public class GCPlayerHandler
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.world), new Object[] {}), player);
             }
 
-            if (player.world.provider instanceof WorldProviderSpaceStation)
+            if (player.world.provider instanceof WorldProviderSpaceStation || player.world.provider instanceof IZeroGDimension || GalacticraftCore.isPlanetsLoaded && player.world.provider instanceof WorldProviderAsteroids)
             {
             	this.preventFlyingKicks(player);
-                if (stats.isNewInOrbit())
+                if (player.world.provider instanceof WorldProviderSpaceStation && stats.isNewInOrbit())
                 {
                     ((WorldProviderSpaceStation) player.world.provider).getSpinManager().sendPackets(player);
                     stats.setNewInOrbit(false);
@@ -1349,11 +1350,6 @@ public class GCPlayerHandler
             else
             {
                 stats.setNewInOrbit(true);
-
-                if (GalacticraftCore.isPlanetsLoaded && player.world.provider instanceof WorldProviderAsteroids)
-                {
-                	this.preventFlyingKicks(player);
-                }
             }
         }
         else
