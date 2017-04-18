@@ -13,6 +13,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -225,6 +227,28 @@ public class GCCoreUtil
         {
             int id = getDimensionID(world);
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
+        }
+    }
+
+    public static void sendToAllAround(PacketSimple packet, World world, int dimID, BlockPos pos, double radius)
+    {
+        double x = pos.getX() + 0.5D;
+        double y = pos.getY() + 0.5D;
+        double z = pos.getZ() + 0.5D;
+        double r2 = radius * radius;
+        for (EntityPlayer playerMP : world.playerEntities)
+        {
+            if (playerMP.dimension == dimID)
+            {
+                final double dx = x - playerMP.posX;
+                final double dy = y - playerMP.posY;
+                final double dz = z - playerMP.posZ;
+
+                if (dx * dx + dy * dy + dz * dz < r2)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(packet, (EntityPlayerMP) playerMP);
+                }
+            }
         }
     }
 }
