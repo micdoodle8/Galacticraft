@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
 
-import mezz.jei.gui.RecipeLayout;
+//import mezz.jei.gui.RecipeLayout;
 
 /**
  * A reason that the recipe transfer couldn't happen. See IRecipeTransferError.Type
@@ -27,5 +27,5 @@ public interface IRecipeTransferError {
 	Type getType();
 
 	/** Called on USER_FACING errors */
-	void showError(@Nonnull Minecraft minecraft, int mouseX, int mouseY, @Nonnull RecipeLayout recipeLayout);
+	void showError(@Nonnull Minecraft minecraft, int mouseX, int mouseY, @Nonnull Object recipeLayout);
 }

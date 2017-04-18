@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Map;
 
-import mezz.jei.gui.ingredients.IGuiIngredient;
+//import mezz.jei.gui.ingredients.IGuiIngredient;
 
 /**
  * IGuiIngredientGroup displays recipe ingredients in a gui.
@@ -33,5 +33,5 @@ public interface IGuiIngredientGroup<T> {
 	 * Get the ingredients after they have been set.
 	 * Used by recipe transfer handlers.
 	 */
-	Map<Integer, ? extends IGuiIngredient<T>> getGuiIngredients();
+	Map getGuiIngredients();
 }
