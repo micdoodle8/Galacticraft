@@ -1,51 +1,47 @@
 package mezz.jei.api.recipe;
 
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.fluids.FluidStack;
-
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fluids.FluidStack;
+
+/**
+ * An {@link IRecipeWrapper} that does nothing, inherit from this to avoid implementing methods you don't need.
+ */
 public abstract class BlankRecipeWrapper implements IRecipeWrapper {
 	@Override
-	@Nonnull
+	@Deprecated
 	public List getInputs() {
 		return Collections.emptyList();
 	}
 
 	@Override
-	@Nonnull
+	@Deprecated
 	public List getOutputs() {
 		return Collections.emptyList();
 	}
 
 	@Override
-	@Nonnull
+	@Deprecated
 	public List<FluidStack> getFluidInputs() {
 		return Collections.emptyList();
 	}
 
 	@Override
-	@Nonnull
+	@Deprecated
 	public List<FluidStack> getFluidOutputs() {
 		return Collections.emptyList();
 	}
 
-	@Deprecated
 	@Override
-	public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
 	}
 
 	@Override
-	public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-	}
-
-	@Override
-	public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
 	}
 
@@ -56,7 +52,7 @@ public abstract class BlankRecipeWrapper implements IRecipeWrapper {
 	}
 
 	@Override
-	public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+	public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
 		return false;
 	}
 }

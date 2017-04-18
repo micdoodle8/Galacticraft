@@ -1,33 +1,29 @@
 package mezz.jei.api;
 
-import javax.annotation.Nonnull;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 
+/**
+ * An {@link IModPlugin} that does nothing, inherit from this to avoid implementing methods you don't need.
+ * IModPlugin implementations must have the {@link JEIPlugin} annotation to get loaded by JEI.
+ */
 public abstract class BlankModPlugin implements IModPlugin {
-	@Deprecated
 	@Override
-	public void onJeiHelpersAvailable(IJeiHelpers jeiHelpers) {
-
-	}
-
-	@Deprecated
-	@Override
-	public void onItemRegistryAvailable(IItemRegistry itemRegistry) {
+	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
 
 	}
 
 	@Override
-	public void register(@Nonnull IModRegistry registry) {
-
-	}
-
-	@Deprecated
-	@Override
-	public void onRecipeRegistryAvailable(@Nonnull IRecipeRegistry recipeRegistry) {
+	public void registerIngredients(IModIngredientRegistration ingredientRegistry) {
 
 	}
 
 	@Override
-	public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
+	public void register(IModRegistry registry) {
+
+	}
+
+	@Override
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 
 	}
 }

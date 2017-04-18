@@ -1,15 +1,16 @@
 package mezz.jei.api.gui;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
 import net.minecraftforge.fluids.FluidStack;
 
 /**
- * IGuiFluidStackGroup displays FluidStacks in a gui.
- *
+ * IGuiFluidStackGroup displays one or more {@link FluidStack} in a gui.
+ * <p>
  * If multiple FluidStacks are set, they will be displayed in rotation.
+ * <p>
+ * Get an instance from {@link IRecipeLayout#getFluidStacks()}.
  */
 public interface IGuiFluidStackGroup extends IGuiIngredientGroup<FluidStack> {
 	/**
@@ -29,11 +30,12 @@ public interface IGuiFluidStackGroup extends IGuiIngredientGroup<FluidStack> {
 	void init(int slotIndex, boolean input, int xPosition, int yPosition, int width, int height, int capacityMb, boolean showCapacity, @Nullable IDrawable overlay);
 
 	@Override
-	void set(int slotIndex, @Nonnull Collection<FluidStack> fluidStacks);
+	@Deprecated
+	void set(int slotIndex, Collection<FluidStack> fluidStacks);
 
 	@Override
-	void set(int slotIndex, @Nonnull FluidStack fluidStack);
+	void set(int slotIndex, @Nullable FluidStack fluidStack);
 
 	@Override
-	void addTooltipCallback(@Nonnull ITooltipCallback<FluidStack> tooltipCallback);
+	void addTooltipCallback(ITooltipCallback<FluidStack> tooltipCallback);
 }
