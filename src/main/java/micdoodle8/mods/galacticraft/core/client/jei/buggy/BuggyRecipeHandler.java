@@ -43,4 +43,10 @@ public class BuggyRecipeHandler implements IRecipeHandler<BuggyRecipeWrapper>
         }
         return true;
     }
+
+    @Override
+    public String getRecipeCategoryUid(BuggyRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
 }

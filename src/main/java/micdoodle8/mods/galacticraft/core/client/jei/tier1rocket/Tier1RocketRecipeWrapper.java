@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.jei.tier1rocket;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
@@ -32,4 +34,10 @@ public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements ICra
 	public List<ItemStack> getOutputs() {
 		return Collections.singletonList(recipe.getRecipeOutput());
 	}
+
+    @Override
+    public void getIngredients(IIngredients ingredients)
+    {
+        // TODO Auto-generated method stub
+    }
 }
