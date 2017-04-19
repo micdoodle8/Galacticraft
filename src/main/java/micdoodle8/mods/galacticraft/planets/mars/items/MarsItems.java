@@ -32,7 +32,7 @@ public class MarsItems
     public static Item carbonFragments;
     public static Item bucketSludge;
 
-    public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", "", 42, new int[] { 4, 9, 7, 4 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
+    public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", "", 42, new int[] { 4, 7, 9, 4 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static ToolMaterial TOOLDESH = EnumHelper.addToolMaterial("DESH", 3, 1024, 5.0F, 2.5F, 8);
 
 
