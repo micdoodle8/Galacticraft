@@ -262,6 +262,14 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
 
     @Override
     @SideOnly(Side.CLIENT)
+    public float getSkyRotation()
+    {
+        SkyProviderOrbit skyProvider = ((SkyProviderOrbit)this.getSkyRenderer());
+        return skyProvider.spinAngle;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
     public void createSkyProvider()
     {
         this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
