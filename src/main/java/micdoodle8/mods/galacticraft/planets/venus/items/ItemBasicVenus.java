@@ -76,7 +76,13 @@ public class ItemBasicVenus extends ItemDesc implements ISortableItem
     @Override
     public EnumSortCategoryItem getCategory(int meta)
     {
-        return EnumSortCategoryItem.GENERAL;
+        switch (meta)
+        {
+        case 1:
+            return EnumSortCategoryItem.INGOT;
+        default:
+            return EnumSortCategoryItem.GENERAL;
+        }
     }
 
     @Override
