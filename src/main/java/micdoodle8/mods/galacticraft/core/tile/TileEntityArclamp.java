@@ -21,6 +21,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -35,6 +37,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     private intBucket[] buckets;
     private boolean isActive = false;
     private AxisAlignedBB thisAABB;
+    private AxisAlignedBB renderAABB;
     private Vec3d thisPos;
     private int facingSide = 0;
     
@@ -539,5 +542,16 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     public void updateClient(List<Object> data)
     {
         this.facing = (Integer) data.get(1);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 1, 1));
+        }
+        return this.renderAABB;
     }
 }

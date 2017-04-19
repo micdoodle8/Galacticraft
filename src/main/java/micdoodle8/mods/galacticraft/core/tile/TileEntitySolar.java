@@ -55,6 +55,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
     private boolean initialised = false;
     private boolean initialisedMulti = false;
+    private AxisAlignedBB renderAABB;
 
     public TileEntitySolar()
     {
@@ -191,23 +192,23 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         }
         else
         {
-            if (celestialAngle > 30 && celestialAngle < 150)
+            if (celestialAngle > 27.5F && celestialAngle < 152.5F)
             {
-                float difference = this.targetAngle - celestialAngle;
+                float difference = this.targetAngle - celestialAngle + 12.5F;
 
                 this.targetAngle -= difference / 20.0F;
             }
             else if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
             {
-                this.targetAngle = 77.5F + 180.0F;
+                this.targetAngle = 77.5F;
             }
-            else if (celestialAngle < 50)
+            else if (celestialAngle <= 27.5F || celestialAngle > 270)
             {
-                this.targetAngle = 50;
+                this.targetAngle = 15F;
             }
-            else if (celestialAngle > 150)
+            else if (celestialAngle >= 152.5F)
             {
-                this.targetAngle = 150;
+                this.targetAngle = 140F;
             }
         }
 
@@ -443,7 +444,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2); 
+        }
+        return this.renderAABB;
     }
 
     @Override

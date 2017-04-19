@@ -43,6 +43,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     private ItemStack[] containingItems = new ItemStack[1];
 
     private boolean initialised = false;
+    private AxisAlignedBB renderAABB;
 
     public TileEntityDish()
     {
@@ -323,7 +324,11 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos.add(-3, 0, -3), pos.add(3, 8, 3));
+        }
+        return this.renderAABB;
     }
 
 //    @Override

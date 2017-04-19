@@ -30,7 +30,7 @@ public class SkyProviderOrbit extends IRenderHandler
     private final ResourceLocation planetToRender;
     private final boolean renderMoon;
     private final boolean renderSun;
-    private float spinAngle = 0;
+    public float spinAngle = 0;
     public float spinDeltaPerTick = 0;
     private float prevPartialTicks = 0;
     private long prevTick;
