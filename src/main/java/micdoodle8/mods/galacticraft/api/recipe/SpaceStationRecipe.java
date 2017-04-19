@@ -89,9 +89,9 @@ public class SpaceStationRecipe
                             amountInInv += slot.stackSize;
                         }
                     }
-                    else if (next instanceof ArrayList)
+                    else if (next instanceof List)
                     {
-                        for (final ItemStack item : (ArrayList<ItemStack>) next)
+                        for (final ItemStack item : (List<ItemStack>) next)
                         {
                             if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
