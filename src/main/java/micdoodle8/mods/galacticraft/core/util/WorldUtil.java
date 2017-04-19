@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -51,10 +52,14 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.commons.lang3.ArrayUtils;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -462,18 +467,39 @@ public class WorldUtil
                         // Search for id in server-defined statically loaded dimensions
                         int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
 
+                        int providerID = id >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
+                        boolean registrationOK = false;
                         if (!DimensionManager.isDimensionRegistered(registeredID))
                         {
+                            DimensionManager.registerDimension(registeredID, WorldUtil.getDimensionTypeById(providerID));
+                            registrationOK = true;
+                        }
+                        else if (GalacticraftRegistry.isDimensionTypeIDRegistered(providerID))
+                        {
+                            registrationOK = DimensionManager.getProviderType(id).getId() == providerID;
+                            if (!registrationOK)
+                            {
+                                try {
+                                    Class sponge = Class.forName("org.spongepowered.common.world.WorldManager");
+                                    Field dtDI = sponge.getDeclaredField("dimensionTypeByDimensionId");
+                                    dtDI.setAccessible(true);
+                                    Int2ObjectMap<DimensionType> result = (Int2ObjectMap<DimensionType>) dtDI.get(null);
+                                    if (result != null)
+                                    {
+                                        result.put(id, WorldUtil.getDimensionTypeById(providerID));
+                                        GCLog.info("Re-registered dimension type " + providerID);
+                                    }
+                                    registrationOK = true;
+                                } catch (ClassNotFoundException ignore) { }
+                                catch (Exception e) { e.printStackTrace(); }
+                            }
+                        }
+                        if (registrationOK)
+                        {
+                            WorldUtil.registeredSpaceStations.put(registeredID, providerID);
                             if (id >= 0)
                             {
-                                DimensionManager.registerDimension(registeredID, DimensionType.getById(worldDataTemp.getDimensionIdStatic()));
-                                WorldUtil.registeredSpaceStations.put(registeredID, worldDataTemp.getDimensionIdStatic());
                                 theServer.worldServerForDimension(registeredID);
-                            }
-                            else
-                            {
-                                DimensionManager.registerDimension(registeredID, DimensionType.getById(worldDataTemp.getDimensionIdDynamic()));
-                                WorldUtil.registeredSpaceStations.put(registeredID, worldDataTemp.getDimensionIdDynamic());
                             }
                             WorldUtil.dimNames.put(registeredID, "Space Station " + registeredID);
                         }
@@ -523,6 +549,8 @@ public class WorldUtil
      * <p>
      * IMPORTANT: GalacticraftRegistry.registerDimension() must always be called in parallel with this
      * meaning the CelestialBodies are iterated in the same order when registered there and here.
+     * 
+     * The defaultID should be 0, and the id should be both a dimension ID and a DimensionType id.
      */
     public static boolean registerPlanet(int id, boolean initialiseDimensionAtServerInit, int defaultID)
     {
@@ -535,16 +563,24 @@ public class WorldUtil
         {
             if (!DimensionManager.isDimensionRegistered(id))
             {
-                DimensionManager.registerDimension(id, DimensionType.getById(id));
+                DimensionManager.registerDimension(id, WorldUtil.getDimensionTypeById(id));
                 GCLog.info("Registered Dimension: " + id);
                 WorldUtil.registeredPlanets.add(id);
             }
             else
             {
-                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + id);
-                //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
-                WorldUtil.registeredPlanets.add(defaultID);
-                return false;
+                if (DimensionManager.getProviderType(id).getId() == id && GalacticraftRegistry.isDimensionTypeIDRegistered(id))
+                {
+                    GCLog.info("Re-registered dimension: " + id);
+                    WorldUtil.registeredPlanets.add(id);
+                }
+                else
+                {
+                    GCLog.severe("Dimension already registered: unable to register planet dimension " + id);
+                    //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
+                    WorldUtil.registeredPlanets.add(defaultID);
+                    return false;
+                }
             }
             World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(id);
             WorldUtil.dimNames.put(id, getDimensionName(w.provider));
@@ -589,7 +625,7 @@ public class WorldUtil
             if (!WorldUtil.registeredPlanets.contains(dimID))
             {
                 WorldUtil.registeredPlanets.add(dimID);
-                DimensionManager.registerDimension(dimID, DimensionType.getById(typeID));
+                DimensionManager.registerDimension(dimID, WorldUtil.getDimensionTypeById(typeID));
             }
             else
             {
@@ -631,12 +667,12 @@ public class WorldUtil
         {
             if (id >= 0)
             {
-                DimensionManager.registerDimension(dimID, DimensionType.getById(staticProviderID));
+                DimensionManager.registerDimension(dimID, WorldUtil.getDimensionTypeById(staticProviderID));
                 WorldUtil.registeredSpaceStations.put(dimID, staticProviderID);
             }
             else
             {
-                DimensionManager.registerDimension(dimID, DimensionType.getById(dynamicProviderID));
+                DimensionManager.registerDimension(dimID, WorldUtil.getDimensionTypeById(dynamicProviderID));
                 WorldUtil.registeredSpaceStations.put(dimID, dynamicProviderID);
             }
         }
@@ -1240,7 +1276,7 @@ public class WorldUtil
             if (!DimensionManager.isDimensionRegistered(dimID))
             {
                 WorldUtil.registeredSpaceStations.put(dimID, providerKey);
-                DimensionManager.registerDimension(dimID, DimensionType.getById(providerKey));
+                DimensionManager.registerDimension(dimID, WorldUtil.getDimensionTypeById(providerKey));
             }
             else
             {
@@ -1429,5 +1465,20 @@ public class WorldUtil
         }
 
         return checklistMap;
+    }
+    
+    public static DimensionType getDimensionTypeById(int id)
+    {
+        for (DimensionType dimensiontype : DimensionType.values())
+        {
+            if (dimensiontype.getId() == id)
+            {
+                return dimensiontype;
+            }
+        }
+
+        GCLog.severe("There was a problem getting WorldProvider type " + id);
+        GCLog.severe("(possibly this is a conflict, check Galacticraft config.)");
+        return null;
     }
 }

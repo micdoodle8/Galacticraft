@@ -161,11 +161,6 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     @Override
     public void onLivingUpdate()
     {
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 1;
-        }
-
         this.ticks++;
 
         if (!this.world.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod / 2)

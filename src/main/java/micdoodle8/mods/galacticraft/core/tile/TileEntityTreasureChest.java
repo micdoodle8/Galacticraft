@@ -23,6 +23,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public float prevLidAngle;
     public int numPlayersUsing;
     private int ticksSinceSync;
+    private AxisAlignedBB renderAABB;
 
     protected ResourceLocation lootTable;
     protected long lootTableSeed;
@@ -549,5 +551,16 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
         this.lootTable = lootTable;
         this.lootTableSeed = lootTableSeed;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 2, 1));
+        }
+        return this.renderAABB;
     }
 }

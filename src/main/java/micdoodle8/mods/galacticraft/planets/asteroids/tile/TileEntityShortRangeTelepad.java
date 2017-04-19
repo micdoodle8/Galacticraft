@@ -71,6 +71,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean teleporting;
+    private AxisAlignedBB renderAABB;
 
     public TileEntityShortRangeTelepad()
     {
@@ -325,7 +326,11 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        }
+        return this.renderAABB;
     }
 
     @Override

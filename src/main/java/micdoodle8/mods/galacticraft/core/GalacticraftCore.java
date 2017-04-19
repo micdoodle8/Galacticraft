@@ -372,7 +372,7 @@ public class GalacticraftCore
             }
         }
 
-        GCDimensions.MOON = DimensionType.getById(ConfigManagerCore.idDimensionMoon);
+        GCDimensions.MOON = WorldUtil.getDimensionTypeById(ConfigManagerCore.idDimensionMoon);
 
         CompatibilityManager.checkForCompatibleMods();
         RecipeManagerGC.loadRecipes();

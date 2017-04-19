@@ -91,11 +91,6 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     {
         super.onUpdate();
 
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 1;
-        }
-
         this.ticks++;
 
         if (this.isNetworkedEntity())

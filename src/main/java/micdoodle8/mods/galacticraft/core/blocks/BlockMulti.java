@@ -38,7 +38,8 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("rendertype", 0, 7);
 
     protected static final AxisAlignedBB AABB_PAD = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-    protected static final AxisAlignedBB AABB_SOLAR = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final AxisAlignedBB AABB_SOLAR = new AxisAlignedBB(0.0F, 0.2F, 0.0F, 1.0F, 0.8F, 1.0F);
+    protected static final AxisAlignedBB AABB_SOLAR_POLE = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F);
     protected static final AxisAlignedBB AABB_SOLAR_TOP = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.6F, 0.7F);
 
     public enum EnumBlockMultiType implements IStringSerializable
@@ -95,7 +96,12 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
         case SOLAR_PANEL_0:
         case SOLAR_PANEL_1:
-            return source.getBlockState(pos.up()) == this ? AABB_SOLAR : AABB_SOLAR_TOP;
+            boolean midPole = source.getBlockState(pos.up()).getBlock() == this;
+            boolean topPole = source.getBlockState(pos.down()).getBlock() == this;
+            if (topPole || midPole)
+                return midPole ? AABB_SOLAR_POLE : AABB_SOLAR_TOP;
+            else
+                return AABB_SOLAR; 
         case ROCKET_PAD:
         case BUGGY_FUEL_PAD:
             return AABB_PAD;

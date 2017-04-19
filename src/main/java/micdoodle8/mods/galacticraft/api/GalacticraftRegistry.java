@@ -18,7 +18,6 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -220,25 +219,23 @@ public class GalacticraftRegistry
         }
 
         DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
-        GalacticraftRegistry.dimensionTypeIDs.add(id);
-        
-        try {
-            Class sponge = Class.forName("org.spongepowered.common.world.WorldManager");
-            Method rDT = sponge.getDeclaredMethod("registerDimensionType", int.class, DimensionType.class);
-            boolean result = (boolean) rDT.invoke(null, id, type);
-            if (!result)
-            {
-                GCLog.severe("Another mod or plugin has already taken DimensionType id " + id);
-            }
-        } catch (ClassNotFoundException ignore) { } 
-        catch (Exception e) { e.printStackTrace(); }
+        GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
+        if (type == null)
+        {
+            GCLog.severe("Problem registering dimension type " + id + ".  May be fixable by changing config.");
+        }
         
         return type;
     }
-    
+
     public static int getDimensionTypeID(int index)
     {
     	return GalacticraftRegistry.dimensionTypeIDs.get(index);
+    }
+    
+    public static boolean isDimensionTypeIDRegistered(int typeId)
+    {
+        return GalacticraftRegistry.dimensionTypeIDs.contains(typeId);
     }
     
     /**

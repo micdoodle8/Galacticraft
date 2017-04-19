@@ -210,11 +210,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void onUpdate()
     {
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 0;
-        }
-
         this.ticks++;
 
         super.onUpdate();
@@ -658,6 +653,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public static final Predicate<Entity> rocketSelector = new Predicate<Entity>()
     {
+        @Override
         public boolean apply(Entity e)
         {
             return e instanceof EntitySpaceshipBase && e.isEntityAlive();

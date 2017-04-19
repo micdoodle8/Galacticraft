@@ -644,7 +644,7 @@ public class SpinManager
         }
     }
     
-
+    @SideOnly(Side.CLIENT)
     public boolean updatePlayerForSpin(EntityPlayerSP p, float partial)
     {
         float angleDelta = partial * this.angularVelocityRadians;

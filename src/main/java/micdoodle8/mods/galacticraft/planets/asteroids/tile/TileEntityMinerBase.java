@@ -61,6 +61,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public boolean findTargetPointsFlag;
     public int linkCountDown = 0;
     public static Map<Integer, List<BlockPos>> newMinerBases = new HashMap<Integer, List<BlockPos>>();
+    private AxisAlignedBB renderAABB;
     
     public static void checkNewMinerBases()
     {
@@ -614,7 +615,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return new AxisAlignedBB(getPos().getX(), getPos().getY(), getPos().getZ(), getPos().getX() + 2, getPos().getY() + 2, getPos().getZ() + 2);
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(2, 2, 2));
+        }
+        return this.renderAABB;
     }
 
     @Override

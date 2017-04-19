@@ -65,6 +65,9 @@ public abstract class WorldProviderSpaceStation extends WorldProviderSpace
 	@SideOnly(Side.CLIENT)
 	public abstract void setSpinDeltaPerTick(float angle);
 	
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
+    public abstract float getSkyRotation();
+
+    @SideOnly(Side.CLIENT)
 	public abstract void createSkyProvider();
 }

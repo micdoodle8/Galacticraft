@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.command.CommandGCAstroMiner;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -43,7 +44,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.LanguageMap;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -168,24 +168,26 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
 
         HashMap<Integer, ItemStack> input = new HashMap<>();
+        ItemStack plateTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
+        ItemStack rocketFinsTier2 = new ItemStack(AsteroidsItems.basicItem, 1, 2);
         input.put(1, new ItemStack(AsteroidsItems.heavyNoseCone));
-        input.put(2, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(3, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(4, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(5, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(6, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(7, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(8, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(9, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(10, new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        input.put(11, new ItemStack(AsteroidsItems.basicItem, 1, 0));
+        input.put(2, plateTier3);
+        input.put(3, plateTier3);
+        input.put(4, plateTier3);
+        input.put(5, plateTier3);
+        input.put(6, plateTier3);
+        input.put(7, plateTier3);
+        input.put(8, plateTier3);
+        input.put(9, plateTier3);
+        input.put(10, plateTier3);
+        input.put(11, plateTier3);
         input.put(12, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 2));
-        input.put(14, new ItemStack(AsteroidsItems.basicItem, 1, 2));
+        input.put(13, rocketFinsTier2);
+        input.put(14, rocketFinsTier2);
         input.put(15, new ItemStack(AsteroidsItems.basicItem, 1, 1));
         input.put(16, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(17, new ItemStack(AsteroidsItems.basicItem, 1, 2));
-        input.put(18, new ItemStack(AsteroidsItems.basicItem, 1, 2));
+        input.put(17, rocketFinsTier2);
+        input.put(18, rocketFinsTier2);
         input.put(19, null);
         input.put(20, null);
         input.put(21, null);
@@ -259,7 +261,7 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        GCPlanetDimensions.ASTEROIDS = DimensionType.getById(ConfigManagerAsteroids.dimensionIDAsteroids);
+        GCPlanetDimensions.ASTEROIDS = WorldUtil.getDimensionTypeById(ConfigManagerAsteroids.dimensionIDAsteroids);
 
         loadLanguage("en_US");
         if (event.getSide() == Side.CLIENT)

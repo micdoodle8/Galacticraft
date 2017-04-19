@@ -113,11 +113,6 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             }
         }
 
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 0;
-        }
-
         this.ticks++;
     }
 

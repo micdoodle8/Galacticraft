@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,6 +39,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     private int requiresUpdate = 0;
     //Used on client side only
     public boolean refreshOnUpdate = false;
+    private AxisAlignedBB renderAABB;
 
     public void setConnectedUp(boolean connectedUpL)
     {
@@ -1321,5 +1323,16 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         this.connectedLeft = (flags & 2) != 0;
         this.connectedRight = (flags & 1) != 0;
         this.refreshNextTick(true);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 1, 1));
+        }
+        return this.renderAABB;
     }
 }
