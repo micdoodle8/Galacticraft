@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.mars.nei;
+package micdoodle8.mods.galacticraft.planets.asteroids.client.nei;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class RocketT2RecipeHandler extends TemplateRecipeHandler
+public class RocketT3RecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t2.png");
+    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t3.png");
 
     public String getRecipeId()
     {
-        return "galacticraft.rocketT2";
+        return "galacticraft.rocketT3";
     }
 
     @Override
@@ -32,14 +32,14 @@ public class RocketT2RecipeHandler extends TemplateRecipeHandler
 
     public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
-        return NEIGalacticraftMarsConfig.getRocketBenchRecipes();
+        return NEIGalacticraftAsteroidsConfig.getRocketBenchRecipes();
     }
 
     @Override
     public void drawBackground(int recipe)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiDraw.changeTexture(RocketT2RecipeHandler.rocketGuiTexture);
+        GuiDraw.changeTexture(RocketT3RecipeHandler.rocketGuiTexture);
         GuiDraw.drawTexturedModalRect(0, -8, 3, 4, 168, 140);
     }
 
@@ -131,7 +131,7 @@ public class RocketT2RecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_t2.png";
+        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_t3.png";
     }
 
     @Override

@@ -1,21 +1,21 @@
-package micdoodle8.mods.galacticraft.core.client.jei.buggy;
+package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
-import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull
-    private final INasaWorkbenchRecipe recipe;
+    private final ShapelessOreRecipeGC recipe;
 
-    public BuggyRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    public IngotCompressorShapelessRecipeWrapper(@Nonnull ShapelessOreRecipeGC recipe)
     {
         this.recipe = recipe;
     }
@@ -24,9 +24,7 @@ public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingR
     @Override
     public List getInputs()
     {
-        List<ItemStack> list = new ArrayList<>();
-        list.addAll(recipe.getRecipeInput().values());
-        return list;
+        return recipe.getInput();
     }
 
     @Nonnull

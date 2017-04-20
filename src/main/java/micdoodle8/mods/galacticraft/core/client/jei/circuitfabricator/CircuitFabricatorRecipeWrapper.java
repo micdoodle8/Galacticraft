@@ -1,23 +1,27 @@
-package micdoodle8.mods.galacticraft.core.client.jei.buggy;
+package micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator;
 
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
+import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull
-    private final INasaWorkbenchRecipe recipe;
+    private final ItemStack[] input;
+    @Nonnull
+    private final ItemStack output;
 
-    public BuggyRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    public CircuitFabricatorRecipeWrapper(@Nonnull ItemStack[] input, @Nonnull ItemStack output)
     {
-        this.recipe = recipe;
+        this.input = input;
+        this.output = output;
     }
 
     @Nonnull
@@ -25,7 +29,7 @@ public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingR
     public List getInputs()
     {
         List<ItemStack> list = new ArrayList<>();
-        list.addAll(recipe.getRecipeInput().values());
+        list.addAll(Arrays.asList(this.input));
         return list;
     }
 
@@ -33,6 +37,6 @@ public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingR
     @Override
     public List<ItemStack> getOutputs()
     {
-        return Collections.singletonList(recipe.getRecipeOutput());
+        return Collections.singletonList(this.output);
     }
 }

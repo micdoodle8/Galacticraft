@@ -1,21 +1,21 @@
-package micdoodle8.mods.galacticraft.core.client.jei.tier1rocket;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+package micdoodle8.mods.galacticraft.planets.asteroids.client.jei.tier3rocket;
 
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 
-public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Tier3RocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull
     private final INasaWorkbenchRecipe recipe;
 
-    public Tier1RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    public Tier3RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
     {
         this.recipe = recipe;
     }

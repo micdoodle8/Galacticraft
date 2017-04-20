@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.asteroids.nei;
+package micdoodle8.mods.galacticraft.planets.asteroids.client.nei;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
@@ -6,6 +6,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMiner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -15,13 +16,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class RocketT3RecipeHandler extends TemplateRecipeHandler
+public class AstroMinerRecipeHandler extends TemplateRecipeHandler
 {
-    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t3.png");
+    private static final ResourceLocation rocketGuiTexture = GuiSchematicAstroMiner.schematicTexture;
 
     public String getRecipeId()
     {
-        return "galacticraft.rocketT3";
+        return "galacticraft.astroMiner";
     }
 
     @Override
@@ -32,15 +33,15 @@ public class RocketT3RecipeHandler extends TemplateRecipeHandler
 
     public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
-        return NEIGalacticraftAsteroidsConfig.getRocketBenchRecipes();
+        return NEIGalacticraftAsteroidsConfig.getAstroMinerRecipes();
     }
 
     @Override
     public void drawBackground(int recipe)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiDraw.changeTexture(RocketT3RecipeHandler.rocketGuiTexture);
-        GuiDraw.drawTexturedModalRect(0, -8, 3, 4, 168, 140);
+        GuiDraw.changeTexture(AstroMinerRecipeHandler.rocketGuiTexture);
+        GuiDraw.drawTexturedModalRect(0, -8, 3, 32, 168, 104);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class RocketT3RecipeHandler extends TemplateRecipeHandler
     @Override
     public String getGuiTexture()
     {
-        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_t3.png";
+        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_astro_miner.png";
     }
 
     @Override
