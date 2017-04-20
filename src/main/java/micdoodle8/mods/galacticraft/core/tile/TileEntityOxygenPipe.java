@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -14,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable, IPacketReceiver
+public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements IColorable
 {
     @NetworkedField(targetSide = Side.CLIENT)
     public byte pipeColor = 15;

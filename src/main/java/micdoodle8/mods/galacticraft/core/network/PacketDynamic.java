@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -152,6 +153,12 @@ public class PacketDynamic implements IPacket
             if (entity instanceof IPacketReceiver)
             {
                 ((IPacketReceiver) entity).handlePacketData(side, player);
+                
+                //Treat any packet received by a server from a client as an update request specifically to that client
+                if (side == Side.SERVER && player instanceof EntityPlayerMP)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (EntityPlayerMP) player);
+                }
             }
 
             break;
@@ -161,6 +168,12 @@ public class PacketDynamic implements IPacket
             if (tile instanceof IPacketReceiver)
             {
                 ((IPacketReceiver) tile).handlePacketData(side, player);
+                
+                //Treat any packet received by a server from a client as an update request specifically to that client
+                if (side == Side.SERVER && player instanceof EntityPlayerMP)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (EntityPlayerMP) player);
+                }
             }
 
             break;

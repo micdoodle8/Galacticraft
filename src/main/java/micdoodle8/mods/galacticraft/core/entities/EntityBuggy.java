@@ -81,6 +81,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         this.dataWatcher.addObject(this.rockDirection, new Integer(1));
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
+        
+        if (var1 != null && var1.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     public EntityBuggy(World var1, double var2, double var4, double var6, int type)

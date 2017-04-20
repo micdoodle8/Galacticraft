@@ -69,6 +69,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
+        
+        if (par1World != null && par1World.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     public abstract int getMaxFuel();

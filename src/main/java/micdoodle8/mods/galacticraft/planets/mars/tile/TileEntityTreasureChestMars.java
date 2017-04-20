@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
@@ -23,7 +22,7 @@ import net.minecraft.util.AxisAlignedBB;
 import java.util.Iterator;
 import java.util.List;
 
-public class TileEntityTreasureChestMars extends TileEntityAdvanced implements IInventory, IKeyable, IPacketReceiver
+public class TileEntityTreasureChestMars extends TileEntityAdvanced implements IInventory, IKeyable
 {
     private ItemStack[] chestContents = new ItemStack[36];
 

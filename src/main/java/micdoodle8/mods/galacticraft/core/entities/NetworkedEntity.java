@@ -12,6 +12,11 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
     public NetworkedEntity(World par1World)
     {
         super(par1World);
+        
+        if (par1World != null && par1World.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     @Override
@@ -19,16 +24,21 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
     {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote)
+        PacketDynamic packet = new PacketDynamic(this);
+        if (this.networkedDataChanged())
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
-            // PacketDispatcher.sendPacketToAllAround(this.posX, this.posY,
-            // this.posZ, this.getPacketRange(),
-            // this.worldObj.provider.dimensionId,
-            // GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
-            // this, this.getNetworkedData(new ArrayList<Object>())));
+            if (!this.worldObj.isRemote)
+            {
+                GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
+            }
+            else
+            {
+                GalacticraftCore.packetPipeline.sendToServer(packet);
+            }
         }
     }
+
+    public abstract boolean networkedDataChanged();
 
     public abstract double getPacketRange();
 }

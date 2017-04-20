@@ -31,6 +31,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     public EntityAdvanced(World world)
     {
         super(world);
+        
+        if (world != null && world.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     /**
@@ -119,7 +124,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
                 }
 
                 PacketDynamic packet = new PacketDynamic(this);
-//                if (networkDataChanged)
+                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(this.worldObj.provider.dimensionId, this.posX, this.posY, this.posZ, this.getPacketRange()));
                 }
@@ -140,7 +145,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
                 }
 
                 PacketDynamic packet = new PacketDynamic(this);
-//                if (networkDataChanged)
+                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(packet);
                 }

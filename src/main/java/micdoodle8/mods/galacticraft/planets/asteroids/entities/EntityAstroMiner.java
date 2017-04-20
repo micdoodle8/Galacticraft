@@ -217,8 +217,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
 //        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
 //        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
-        this.isImmuneToFire = true;
         this.noClip = true;
+        
+        if (world != null && world.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     @Override

@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
@@ -18,7 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.EnumSet;
 
-public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical implements IPacketReceiver, IDisableableMachine, IConnector
+public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical implements IDisableableMachine, IConnector
 {
     //	public int energyPerTick = 200;
     //	private final float ueMaxEnergy;
