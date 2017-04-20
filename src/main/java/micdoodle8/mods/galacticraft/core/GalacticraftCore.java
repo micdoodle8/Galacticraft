@@ -395,6 +395,8 @@ public class GalacticraftCore
         	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
         	e.printStackTrace();
         }
+
+        RecipeManagerGC.setConfigurableRecipes();
     }
 
     @EventHandler
@@ -445,8 +447,6 @@ public class GalacticraftCore
                 }
             }
         }
-
-        RecipeManagerGC.setConfigurableRecipes();
     }
 
     @EventHandler
