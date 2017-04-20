@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.client.jei.buggy;
+package micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket;
 
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -7,39 +7,39 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 
 import javax.annotation.Nonnull;
 
-public class BuggyRecipeHandler implements IRecipeHandler<BuggyRecipeWrapper>
+public class Tier2RocketRecipeHandler implements IRecipeHandler<Tier2RocketRecipeWrapper>
 {
     @Nonnull
     @Override
-    public Class<BuggyRecipeWrapper> getRecipeClass()
+    public Class<Tier2RocketRecipeWrapper> getRecipeClass()
     {
-        return BuggyRecipeWrapper.class;
+        return Tier2RocketRecipeWrapper.class;
     }
 
     @Nonnull
     @Override
     public String getRecipeCategoryUid()
     {
-        return RecipeCategories.BUGGY_ID;
+        return RecipeCategories.ROCKET_T2_ID;
     }
 
     @Override
-    public String getRecipeCategoryUid(BuggyRecipeWrapper recipe)
+    public String getRecipeCategoryUid(Tier2RocketRecipeWrapper recipe)
     {
         return this.getRecipeCategoryUid();
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull BuggyRecipeWrapper recipe)
+    public IRecipeWrapper getRecipeWrapper(@Nonnull Tier2RocketRecipeWrapper recipe)
     {
         return recipe;
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull BuggyRecipeWrapper recipe)
+    public boolean isRecipeValid(@Nonnull Tier2RocketRecipeWrapper recipe)
     {
-        if (recipe.getInputs().size() < 17 || recipe.getInputs().size() > 19)
+        if (recipe.getInputs().size() != 21)
         {
             GCLog.severe(this.getClass().getSimpleName() + " JEI recipe has wrong number of inputs!");
         }

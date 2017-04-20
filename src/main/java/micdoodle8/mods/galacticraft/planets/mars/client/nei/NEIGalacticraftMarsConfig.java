@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.mars.nei;
+package micdoodle8.mods.galacticraft.planets.mars.client.nei;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
