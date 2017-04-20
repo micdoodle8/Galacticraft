@@ -659,12 +659,12 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                     }
 
                     worldObj.setBlock(px, y, pz, block, meta, 2);
-                    int count = 7;
+                    int count = 9;
                     if (!(worldObj.getBlock(px - 1,  y, pz) instanceof BlockAir)) count = 1;
                     else if (!(worldObj.getBlock(px - 2,  y, pz) instanceof BlockAir)) count = 3;
                     else if (!(worldObj.getBlock(px - 3,  y, pz) instanceof BlockAir)) count = 5;
-                    else if (!(worldObj.getBlock(px - 4,  y, pz) instanceof BlockAir)) count = 6;
-                    worldObj.setLightValue(EnumSkyBlock.Block, px, y, pz, count);
+                    else if (!(worldObj.getBlock(px - 4,  y, pz) instanceof BlockAir)) count = 7;
+                    worldObj.setLightValue(EnumSkyBlock.Block, px - 1, y, pz, count);
                 }
             }
         }
@@ -839,11 +839,11 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     							if ((z < 15/* || ((xPos & 15) > 3 ? flagZUChunk : flagXZUChunk)*/) && !(chunk.getBlock(x - 4, y, z + 1) instanceof BlockAir)) count++;
     						}
     						if (count > 12) count = 12;
-    						chunk.func_150807_a(x - 1, y & 15, z, GCBlocks.brightAir, 15 - count);
+    						chunk.func_150807_a(x - 1, y, z, GCBlocks.brightAir, 13 - count);
                             ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
                             if (extendedblockstorage != null)
                             {
-                                extendedblockstorage.setExtBlocklightValue(x - 1, y & 15, z, count);
+                                extendedblockstorage.setExtBlocklightValue(x - 1, y & 15, z, count + 2);
                             }
    						}
     				}

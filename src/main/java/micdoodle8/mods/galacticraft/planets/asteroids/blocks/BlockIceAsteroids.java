@@ -110,7 +110,7 @@ public class BlockIceAsteroids extends BlockBreakable
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand)
     {
-        if (world.getSavedLightValue(EnumSkyBlock.Block, x, y, z) > 11 - this.getLightOpacity())
+        if (world.getSavedLightValue(EnumSkyBlock.Block, x, y, z) > 13)
         {
             if (world.provider.isHellWorld || world.provider instanceof IGalacticraftWorldProvider)
             {
