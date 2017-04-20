@@ -98,7 +98,12 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         }
         else if (meta == 0 || meta == 4)
         {
-            this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, worldIn.getBlockState(pos.up()).getBlock() == this ? 1.0F : 0.6F, 0.7F);
+            boolean midPole = worldIn.getBlockState(pos.up()).getBlock() == this;
+            boolean topPole = worldIn.getBlockState(pos.down()).getBlock() == this;
+            if (topPole || midPole)
+                this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, midPole ? 1.0F : 0.6F, 0.7F);
+            else
+                this.setBlockBounds(0.0F, 0.2F, 0.0F, 1.0F, 0.8F, 1.0F);
         }
         else
         {

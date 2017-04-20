@@ -9,10 +9,14 @@ import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -245,5 +249,33 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     {
         freefallingEntities.clear();
         super.updateWeather();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setSpinDeltaPerTick(float angle)
+    {
+        SkyProviderOrbit skyProvider = ((SkyProviderOrbit)this.getSkyRenderer());
+        if (skyProvider != null)
+            skyProvider.spinDeltaPerTick = angle;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getSkyRotation()
+    {
+        SkyProviderOrbit skyProvider = ((SkyProviderOrbit)this.getSkyRenderer());
+        return skyProvider.spinAngle;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void createSkyProvider()
+    {
+        this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
+        this.setSpinDeltaPerTick(this.getSpinManager().getSpinRate());
+        
+        if (this.getCloudRenderer() == null)
+            this.setCloudRenderer(new CloudRenderer());
     }
 }

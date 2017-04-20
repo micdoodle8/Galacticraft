@@ -89,9 +89,9 @@ public class SpaceStationRecipe
                             amountInInv += slot.stackSize;
                         }
                     }
-                    else if (next instanceof ArrayList)
+                    else if (next instanceof List)
                     {
-                        for (final ItemStack item : (ArrayList<ItemStack>) next)
+                        for (final ItemStack item : (List<ItemStack>) next)
                         {
                             if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
@@ -130,6 +130,7 @@ public class SpaceStationRecipe
             final int amountRequired = required.get(next);
             int amountRemoved = 0;
 
+            InventoryLoop:
             for (int x = 0; x < player.inventory.getSizeInventory(); x++)
             {
                 final ItemStack slot = player.inventory.getStackInSlot(x);
@@ -153,11 +154,12 @@ public class SpaceStationRecipe
 
                             player.inventory.setInventorySlotContents(x, newStack);
                             amountRemoved += amountToRemove;
+                            if (amountRemoved == amountRequired) break;
                         }
                     }
-                    else if (next instanceof ArrayList)
+                    else if (next instanceof List)
                     {
-                        for (final ItemStack item : (ArrayList<ItemStack>) next)
+                        for (final ItemStack item : (List<ItemStack>) next)
                         {
                             if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
@@ -172,6 +174,7 @@ public class SpaceStationRecipe
 
                                 player.inventory.setInventorySlotContents(x, newStack);
                                 amountRemoved += amountToRemove;
+                                if (amountRemoved == amountRequired) break InventoryLoop;
                             }
                         }
                     }
