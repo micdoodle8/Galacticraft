@@ -83,7 +83,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem
         		}
         		
         		//Gives a chance for any loaded Astro Miner to link itself
-        		if (((TileEntityMinerBase) tile).ticks < 15L)
+        		if (((TileEntityMinerBase) tile).ticks < 15)
         		{
         			return false;
         		}

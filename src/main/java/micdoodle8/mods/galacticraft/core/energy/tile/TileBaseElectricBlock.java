@@ -127,7 +127,10 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public void slowDischarge()
     {
-       	this.storage.extractEnergyGC(0.5F, false);
+       	if (this.ticks % 10 == 0)
+       	{
+       	    this.storage.extractEnergyGC(5F, false);
+       	}
     }
     
     @Override

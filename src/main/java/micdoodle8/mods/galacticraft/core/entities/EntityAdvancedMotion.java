@@ -219,6 +219,11 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
     public abstract Vector3 getMotionVec();
 
+    /**
+     * Can be called in the superclass init method
+     * before the subclass fields have been initialised!
+     * Therefore include null checks!!!
+     */
     public abstract ArrayList<Object> getNetworkedData();
 
     /**

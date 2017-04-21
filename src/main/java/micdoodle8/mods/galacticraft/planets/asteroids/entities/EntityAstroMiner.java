@@ -667,6 +667,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
         list.add(this.playerMP == null ? AISTATE_OFFLINE : this.AIstate);
         list.add(this.energyLevel);
         list.add(this.targetPitch);

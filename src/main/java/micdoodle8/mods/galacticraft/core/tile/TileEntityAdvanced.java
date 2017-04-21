@@ -21,7 +21,7 @@ import java.util.Set;
 
 public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver
 {
-    public long ticks = 0;
+    public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
     private Map<Field, Object> lastSentData = new HashMap<Field, Object>();

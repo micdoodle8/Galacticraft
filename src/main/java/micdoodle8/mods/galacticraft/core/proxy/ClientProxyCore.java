@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -675,16 +675,21 @@ public class ClientProxyCore extends CommonProxyCore
 
         final EntityPlayer player = event.entityPlayer;
 
-        if (player.ridingEntity instanceof EntityTieredRocket && player == Minecraft.getMinecraft().thePlayer
+        if (player.ridingEntity instanceof ICameraZoomEntity && player == Minecraft.getMinecraft().thePlayer
         		&& Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;
-            GL11.glTranslatef(0, -entity.getRotateOffset() - PLAYER_Y_OFFSET, 0);
-            float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
-            float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
-            GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-            GL11.glTranslatef(0, entity.getRotateOffset() + PLAYER_Y_OFFSET, 0);
+            Entity entity = player.ridingEntity;
+            float rotateOffset = ((ICameraZoomEntity)entity).getRotateOffset();
+            if (rotateOffset > -10F)
+            {
+                rotateOffset += PLAYER_Y_OFFSET;
+                GL11.glTranslatef(0, -rotateOffset, 0);
+                float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
+                float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
+                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                GL11.glTranslatef(0, rotateOffset, 0);
+            }
         }
 
         if (player instanceof EntityPlayerSP)
@@ -1014,17 +1019,20 @@ public class ClientProxyCore extends CommonProxyCore
 
         EntityLivingBase entityLivingBase = ClientProxyCore.mc.renderViewEntity;
         
-        if (player.ridingEntity instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
+        if (player.ridingEntity instanceof ICameraZoomEntity && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.ridingEntity;          
-            float offset = entity.getRotateOffset() + PLAYER_Y_OFFSET;
-            GL11.glTranslatef(0, -offset, 0);
-            float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-            float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-            GL11.glRotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(angleYaw, 0.0F, 1.0F, 0.0F);
-
-            GL11.glTranslatef(0, offset, 0);
+            Entity entity = player.ridingEntity;
+            float offset = ((ICameraZoomEntity)entity).getRotateOffset();
+            if (offset > -10F)
+            {
+                offset += PLAYER_Y_OFFSET;
+                GL11.glTranslatef(0, -offset, 0);
+                float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+                float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
+                GL11.glRotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(angleYaw, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0, offset, 0);
+            }
         }
 
         if (entityLivingBase.worldObj.provider instanceof WorldProviderSpaceStation && !entityLivingBase.isPlayerSleeping())

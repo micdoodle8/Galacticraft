@@ -33,6 +33,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fluids.FluidTank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public float shipDamage; 
     private ArrayList<BlockVec3Dim> telemetryList = new ArrayList<BlockVec3Dim>();
     private boolean addToTelemetry = false;
+    public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
     
     public EntitySpaceshipBase(World par1World)
     {
@@ -69,12 +71,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
-        
-        if (par1World != null && par1World.isRemote)
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
-        }
     }
+
+    public abstract int getFuelTankCapacity();
 
     public abstract int getMaxFuel();
 
@@ -380,6 +379,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
+        if (!this.worldObj.isRemote)
+        {
+            new Exception().printStackTrace();
+        }
         this.setLaunchPhase(EnumLaunchPhase.values()[buffer.readInt()]);
         this.timeSinceLaunch = buffer.readFloat();
         this.timeUntilLaunch = buffer.readInt();
@@ -390,7 +393,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (this.worldObj.isRemote)
         {
-            new Exception().printStackTrace();
+            return;
         }
         list.add(this.launchPhase);
         list.add(this.timeSinceLaunch);

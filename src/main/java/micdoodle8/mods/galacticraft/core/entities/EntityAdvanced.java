@@ -16,7 +16,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +33,8 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
         
         if (world != null && world.isRemote)
         {
+            //Empty packet client->server just to kickstart the server into sending this client an initial packet
+            this.fieldCacheServer = new LinkedHashSet<Field>();
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
     }
@@ -56,23 +57,25 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 
     /**
      * Add any additional data to the stream
+     * (only effective if there are both CLIENT and SERVER targeted
+     * regular networked fields ... currently nothing in GC uses this)
      *
      * @param networkedList List of additional data
      */
-    public void addExtraNetworkedData(List<Object> networkedList)
-    {
-
-    }
+//    public void addExtraNetworkedData(List<Object> networkedList)
+//    {
+//
+//    }
 
     /**
      * Read any additional data from the stream
      *
      * @param stream The ByteBuf stream to read data from
      */
-    public void readExtraNetworkedData(ByteBuf stream)
-    {
-
-    }
+//    public void readExtraNetworkedData(ByteBuf stream)
+//    {
+//
+//    }
 
     /**
      * Called after a packet is read, only on client side.
@@ -132,7 +135,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 
             if (this.worldObj.isRemote && this.ticks % this.getPacketCooldown(Side.SERVER) == 0)
             {
-                if (this.fieldCacheServer == null)
+                if (this.fieldCacheClient == null)  //The target server cache may have been initialised to an empty set
                 {
                     try
                     {
@@ -219,21 +222,23 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
             changed |= fieldChanged;
         }
 
-        if (changed)
-        {
-            this.addExtraNetworkedData(sendData);
-        }
-        else
-        {
-            ArrayList<Object> prevSendData = new ArrayList<Object>(sendData);
-
-            this.addExtraNetworkedData(sendData);
-
-            if (!prevSendData.equals(sendData))
-            {
-                changed = true;
-            }
-        }
+//Currently unused as there is no entity in Galacticraft with extraNetworkedData
+        
+//        if (changed)
+//        {
+//            this.addExtraNetworkedData(sendData);
+//        }
+//        else
+//        {
+//            ArrayList<Object> prevSendData = new ArrayList<Object>(sendData);
+//
+//            this.addExtraNetworkedData(sendData);
+//
+//            if (!prevSendData.equals(sendData))
+//            {
+//                changed = true;
+//            }
+//        }
 
         networkDataChanged = changed;
     }
@@ -286,7 +291,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
             }
         }
 
-        this.readExtraNetworkedData(buffer);
+//        this.readExtraNetworkedData(buffer);
     }
 
     @Override

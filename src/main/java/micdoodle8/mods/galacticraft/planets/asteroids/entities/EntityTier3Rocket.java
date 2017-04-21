@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -102,7 +103,14 @@ public class EntityTier3Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                d = Math.min(d, 1);
+                if (this.worldObj.provider instanceof WorldProviderSpace && !((WorldProviderSpace) this.worldObj.provider).hasAtmosphere())
+                {
+                    d = Math.min(d * 1.2, 2);
+                }
+                else
+                {
+                    d = Math.min(d, 1.4);
+                }
 
                 if (d != 0.0)
                 {
@@ -176,17 +184,17 @@ public class EntityTier3Rocket extends EntityTieredRocket
             if (this.landing && this.targetVec != null)
             {
                 double modifier = this.posY - this.targetVec.y;
-                modifier = Math.max(modifier, 1.0);
-                x1 *= modifier / 60.0D;
-                y1 *= modifier / 60.0D;
-                z1 *= modifier / 60.0D;
+                modifier = Math.max(modifier, 180.0);
+                x1 *= modifier / 200.0D;
+                y1 *= Math.min(modifier / 200.0D, 2.5D);
+                z1 *= modifier / 200.0D;
             }
 
-            final double y2 = this.prevPosY + (this.posY - this.prevPosY) + y1;
+            final double y2 = this.prevPosY + (this.posY - this.prevPosY) + y1 - 0.75 * this.motionY - 0.3;
 
-            final double x2 = this.posX + x1;
-            final double z2 = this.posZ + z1;
-            Vector3 motionVec = new Vector3(x1, y1, z1);
+            final double x2 = this.posX + x1 + this.motionX;
+            final double z2 = this.posZ + z1 + this.motionZ;
+            Vector3 motionVec = new Vector3(x1 + this.motionX, y1 + this.motionY, z1 + this.motionZ);
             Vector3 d1 = new Vector3(y1 * 0.1D, -x1 * 0.1D, z1 * 0.1D).rotate(315 - this.rotationYaw, motionVec);
             Vector3 d2 = new Vector3(x1 * 0.1D, -z1 * 0.1D, y1 * 0.1D).rotate(315 - this.rotationYaw, motionVec);
             Vector3 d3 = new Vector3(-y1 * 0.1D, x1 * 0.1D, z1 * 0.1D).rotate(315 - this.rotationYaw, motionVec);

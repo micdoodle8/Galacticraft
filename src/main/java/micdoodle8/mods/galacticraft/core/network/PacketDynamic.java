@@ -104,7 +104,7 @@ public class PacketDynamic implements IPacket
             {
                 Entity entity = world.getEntityByID((Integer) this.data[0]);
 
-                if (entity instanceof IPacketReceiver)
+                if (entity instanceof IPacketReceiver && buffer.readableBytes() > 0)
                 {
                     ((IPacketReceiver) entity).decodePacketdata(buffer);
                 }

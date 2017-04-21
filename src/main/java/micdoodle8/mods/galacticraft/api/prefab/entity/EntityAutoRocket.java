@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -44,8 +45,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +54,6 @@ import java.util.List;
  */
 public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ILandable, IInventory, IEntityNoisy
 {
-    public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
     public int destinationFrequency = -1;
     public BlockVec3 targetVec;
     public int targetDimension;
@@ -93,6 +91,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         super(world);
         this.yOffset = 0;
+        
+        if (world != null && world.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     public EntityAutoRocket(World world, double posX, double posY, double posZ)
@@ -108,8 +111,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.prevPosY = posY;
         this.prevPosZ = posZ;
     }
-
-    public abstract int getFuelTankCapacity();
 
     //Used for Cargo Rockets, client is asking the server what is the status
     public boolean checkLaunchValidity()
@@ -287,9 +288,42 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             if (this.targetVec != null)
             {
                 double yDiff = this.posY - this.getOnPadYOffset() - this.targetVec.y; 
-                this.motionY = Math.max(-2.0F, (yDiff - 0.05D) / -70.0D);
+                this.motionY = Math.max(-2.0, (yDiff - 0.04) / -70.0);
 
-                if (yDiff > 1F && yDiff < 4F)
+                //Some lateral motion in case not exactly on target (happens if rocket was moving laterally during launch)
+                double diff = this.posX - this.targetVec.x - 0.5D;
+                double motX, motZ;
+                if (diff > 0D)
+                {
+                    motX = Math.max(-0.1, diff / -100.0D);
+                }
+                else if (diff < 0D)
+                {
+                    motX = Math.min(0.1, diff / -100.0D);
+                }
+                else motX = 0D;
+                diff = this.posZ - this.targetVec.z - 0.5D;
+                if (diff > 0D)
+                {
+                    motZ = Math.max(-0.1, diff / -100.0D);
+                }
+                else if (diff < 0D)
+                {
+                    motZ = Math.min(0.1, diff / -100.0D);
+                }
+                else motZ = 0D;
+                if (motZ != 0D || motX != 0D)
+                {
+                    double angleYaw = Math.atan(motZ / motX);
+                    double signed = motX < 0 ? 50D : -50D;
+                    double anglePitch = Math.atan(Math.sqrt(motZ * motZ + motX * motX) / signed) * 100D;
+                    this.rotationYaw = (float)angleYaw * 57.2957795F;
+                    this.rotationPitch = (float)anglePitch * 57.2957795F;
+                }
+                else
+                    this.rotationPitch = 0F;
+                
+                if (yDiff > 1D && yDiff < 4D)
                 {
                     for (Object o : this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.copy().offset(0D, -3D, 0D), EntitySpaceshipBase.rocketSelector))
                     {
@@ -300,7 +334,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         }
                     }
                 }
-                if (yDiff < 0.06F)
+                if (yDiff < 0.04)
                 {
                     int yMin = MathHelper.floor_double(this.boundingBox.minY - this.getOnPadYOffset() - 0.45D) - 2;
                     int yMax = MathHelper.floor_double(this.boundingBox.maxY) + 1;
@@ -316,6 +350,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                 if (this.worldObj.getTileEntity(x, y, z) instanceof IFuelDock)
                                 {
                                     //Land the rocket on the pad found
+                                    this.rotationPitch = 0F;
                                     this.failRocket();
                                 }
                             }
@@ -681,6 +716,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
         super.getNetworkedData(list);
 
         list.add(this.fuelTank.getFluidAmount());

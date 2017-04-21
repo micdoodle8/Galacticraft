@@ -469,6 +469,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
         sendData.add(this.buggyType);
         sendData.add(this.buggyFuelTank);
     }

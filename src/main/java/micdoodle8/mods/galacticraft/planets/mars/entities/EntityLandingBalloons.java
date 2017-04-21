@@ -47,6 +47,13 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     }
 
     @Override
+    public float getRotateOffset()
+    {
+        //Signal no rotate
+        return -20.0F;
+    }
+
+    @Override
     public void onUpdate()
     {
         if (this.riddenByEntity != null)

@@ -510,7 +510,9 @@ public class NetworkUtil
         }
         else if (a instanceof Float && b instanceof Float)
         {
-            return DoubleMath.fuzzyEquals((Float) a, (Float) b, 0.01);
+            float af = (Float) a; 
+            float bf = (Float) b; 
+            return af == bf || Math.abs(af - bf) < 0.01F;
         }
         else if (a instanceof Double && b instanceof Double)
         {
@@ -568,7 +570,9 @@ public class NetworkUtil
         else if (a instanceof FluidTank)
         {
             FluidTank prevTank = (FluidTank)a;
-            FluidTank tank = new FluidTank(prevTank.getFluid(), prevTank.getCapacity());
+            FluidStack prevFluid = prevTank.getFluid();
+            prevFluid = prevFluid == null ? null : prevFluid.copy();
+            FluidTank tank = new FluidTank(prevFluid, prevTank.getCapacity());
             return tank;
         }
         else

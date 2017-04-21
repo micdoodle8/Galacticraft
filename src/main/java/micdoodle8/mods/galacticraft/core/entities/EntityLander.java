@@ -38,7 +38,13 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public double getMountedYOffset()
     {
-        return super.getMountedYOffset();
+        return this.height - 2.0D;
+    }
+    
+    @Override
+    public float getRotateOffset()
+    {
+        return +0.0F;
     }
 
     @Override
