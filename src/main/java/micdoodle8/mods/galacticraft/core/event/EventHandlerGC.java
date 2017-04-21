@@ -82,6 +82,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
@@ -191,6 +192,16 @@ public class EventHandlerGC
         if (event.getEntityLiving().worldObj.provider instanceof IGalacticraftWorldProvider)
         {
             event.setDistance(event.getDistance() * ((IGalacticraftWorldProvider) event.getEntityLiving().worldObj.provider).getFallDamageModifier());
+        }
+    }
+
+    @SubscribeEvent
+    public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
+    {
+        EntityPlayer p = event.getEntityPlayer();
+        if (!p.onGround && p.worldObj.provider instanceof IZeroGDimension && !ConfigManagerCore.hardMode)
+        {
+            event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
         }
     }
 

@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
