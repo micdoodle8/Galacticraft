@@ -72,6 +72,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
@@ -183,6 +184,16 @@ public class EventHandlerGC
         }
     }
 
+    @SubscribeEvent
+    public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
+    {
+        EntityPlayer p = event.entityPlayer;
+        if (!p.onGround && p.worldObj.provider instanceof IZeroGDimension && !ConfigManagerCore.hardMode)
+        {
+            event.newSpeed = event.originalSpeed * 5.0F;
+        }
+    }
+    
     @SubscribeEvent
     public void onPlayerClicked(PlayerInteractEvent event)
     {
