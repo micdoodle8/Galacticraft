@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class TileEntityTelepadFake extends TileBaseElectricBlock
 {
@@ -135,32 +136,40 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     @Override
     public boolean isNetworkedTile()
     {
-        if (this.mainBlockPosition != null) return true;
-        else
-        {
-        	this.resetMainBlockPosition();
-        	return false;
-        }
+        return true;
     }
     
-    private void resetMainBlockPosition()
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
     {
-        for (int y = -2; y < 1; y += 2)
+        if (this.mainBlockPosition == null)
         {
-            for (int x = -1; x <= 1; x++)
+            if (this.worldObj.isRemote || !this.resetMainBlockPosition())
             {
-                for (int z = -1; z <= 1; z++)
+                return;
+            }
+        }
+        super.getNetworkedData(sendData);
+    }
+    
+    private boolean resetMainBlockPosition()
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int z = -1; z <= 1; z++)
+            {
+                for (int y = -2; y < 1; y += 2)
                 {
                     final BlockVec3 vecToCheck = new BlockVec3(this.xCoord + x, this.yCoord  + y, this.zCoord + z);
                     if (vecToCheck.getTileEntity(this.worldObj) instanceof TileEntityShortRangeTelepad)
                     {
                         this.setMainBlock(vecToCheck);
-                        return;
+                        return true;
                     }
                 }
             }
         }
-	
+        return false;
     }
 
     @Override

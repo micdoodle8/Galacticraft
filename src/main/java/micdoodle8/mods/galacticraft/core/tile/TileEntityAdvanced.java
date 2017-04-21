@@ -38,14 +38,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             {
                 if (this.fieldCacheClient == null || this.fieldCacheServer == null)
                 {
-                    try
-                    {
-                        this.initFieldCache();
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                    this.initFieldCache();
                 }
 
                 if (this.worldObj != null && this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
@@ -79,26 +72,33 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
         }
     }
 
-    private void initFieldCache() throws IllegalArgumentException, IllegalAccessException
+    private void initFieldCache()
     {
-        this.fieldCacheClient = new LinkedHashSet<Field>();
-        this.fieldCacheServer = new LinkedHashSet<Field>();
-
-        for (Field field : this.getClass().getFields())
+        try
         {
-            if (field.isAnnotationPresent(NetworkedField.class))
-            {
-                NetworkedField f = field.getAnnotation(NetworkedField.class);
+            this.fieldCacheClient = new LinkedHashSet<Field>();
+            this.fieldCacheServer = new LinkedHashSet<Field>();
 
-                if (f.targetSide() == Side.CLIENT)
+            for (Field field : this.getClass().getFields())
+            {
+                if (field.isAnnotationPresent(NetworkedField.class))
                 {
-                    this.fieldCacheClient.add(field);
-                }
-                else
-                {
-                    this.fieldCacheServer.add(field);
+                    NetworkedField f = field.getAnnotation(NetworkedField.class);
+
+                    if (f.targetSide() == Side.CLIENT)
+                    {
+                        this.fieldCacheClient.add(field);
+                    }
+                    else
+                    {
+                        this.fieldCacheServer.add(field);
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -130,14 +130,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-            try
-            {
-                this.initFieldCache();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            this.initFieldCache();
         }
 
         if (this.worldObj.isRemote)
@@ -201,14 +194,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     {
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-            try
-            {
-                this.initFieldCache();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            this.initFieldCache();
         }
 
         if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)

@@ -71,7 +71,7 @@ public class TileEntityOxygenPipe extends TileEntityOxygenTransmitter implements
     @Override
     public boolean isNetworkedTile()
     {
-        return !this.worldObj.isRemote;
+        return true;
     }
 
     @Override

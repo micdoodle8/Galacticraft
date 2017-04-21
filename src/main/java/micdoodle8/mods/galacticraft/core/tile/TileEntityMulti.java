@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.ArrayList;
+
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -102,6 +104,16 @@ public class TileEntityMulti extends TileEntityAdvanced
     @Override
     public boolean isNetworkedTile()
     {
-    	 return (this.mainBlockPosition != null);
+        return true;
+    }
+    
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
+    {
+        if (this.mainBlockPosition == null)
+        {
+            return;
+        }
+        super.getNetworkedData(sendData);
     }
 }
