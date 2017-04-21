@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.ref.WeakReference;
 
-public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPacketReceiver
+public class TileEntityTelepadFake extends TileBaseElectricBlock
 {
     // The the position of the main block
     @NetworkedField(targetSide = Side.CLIENT)

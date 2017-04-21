@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelBipedGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
@@ -10,6 +10,7 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -116,15 +117,19 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 final EntityPlayer player = (EntityPlayer) par1AbstractClientPlayer;
 
-                if (player.ridingEntity instanceof EntityTieredRocket)
+                if (player.ridingEntity instanceof ICameraZoomEntity)
                 {
-                    EntityTieredRocket rocket = (EntityTieredRocket) player.ridingEntity;
-                    GL11.glTranslatef(0, -rocket.getRotateOffset(), 0);
-                    float anglePitch = rocket.prevRotationPitch;
-                    float angleYaw = rocket.prevRotationYaw;
-                    GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-                    GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-                    GL11.glTranslatef(0, rocket.getRotateOffset(), 0);
+                    Entity rocket = player.ridingEntity;
+                    float rotateOffset = ((ICameraZoomEntity)rocket).getRotateOffset();
+                    if (rotateOffset > -10F)
+                    {
+                        GL11.glTranslatef(0, -rotateOffset, 0);
+                        float anglePitch = rocket.prevRotationPitch;
+                        float angleYaw = rocket.prevRotationYaw;
+                        GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                        GL11.glTranslatef(0, rotateOffset, 0);
+                    }
                 }
             }
             super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);

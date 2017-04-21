@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -109,7 +110,14 @@ public class EntityTier2Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                d = Math.min(d, 1);
+                if (this.worldObj.provider instanceof WorldProviderSpace && !((WorldProviderSpace) this.worldObj.provider).hasAtmosphere())
+                {
+                    d = Math.min(d * 1.2, 1.8);
+                }
+                else
+                {
+                    d = Math.min(d, 1.2);
+                }
 
                 if (d != 0.0)
                 {
@@ -185,15 +193,16 @@ public class EntityTier2Rocket extends EntityTieredRocket
             if (this.landing && this.targetVec != null)
             {
                 double modifier = this.posY - this.targetVec.getY();
-                modifier = Math.max(modifier, 1.0);
-                x1 *= modifier / 60.0D;
-                y1 *= modifier / 60.0D;
-                z1 *= modifier / 60.0D;
+                modifier = Math.min(Math.max(modifier, 80.0), 200.0);
+                x1 *= modifier / 100.0D;
+                y1 *= modifier / 100.0D;
+                z1 *= modifier / 100.0D;
             }
 
-            final double y = this.prevPosY + (this.posY - this.prevPosY) + y1;
-            final double x2 = this.posX + x1;
-            final double z2 = this.posZ + z1;
+            final double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.motionY;
+
+            final double x2 = this.posX + x1 - this.motionX;
+            final double z2 = this.posZ + z1 - this.motionZ;
             final double x3 = x2 + x1 / 2D;
             final double y3 = y + y1 / 2D;
             final double z3 = z2 + z1 / 2D;

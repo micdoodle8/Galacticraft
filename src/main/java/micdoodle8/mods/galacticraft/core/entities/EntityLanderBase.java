@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
+public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IScaleableFuelLevel
 {
     private final int FUEL_TANK_CAPACITY = 5000;
     public FluidTank fuelTank = new FluidTank(this.FUEL_TANK_CAPACITY);
@@ -37,6 +37,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     private UUID persistantRiderUUID;
     private Boolean shouldMoveClient;
     private Boolean shouldMoveServer;
+    private ArrayList prevData;
+    private boolean networkDataChanged;
 
     public EntityLanderBase(World var1)
     {
@@ -261,7 +263,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             return false;
         }
 
-        return this.riddenByEntity != null && !this.onGround;
+        return !this.onGround;
     }
 
     public abstract double getInitialMotionY();
@@ -310,7 +312,15 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             objList.add(this.riddenByEntity == null ? -1 : this.riddenByEntity.getEntityId());
         }
 
+        this.networkDataChanged = !objList.equals(this.prevData);
+        this.prevData = objList;
         return objList;
+    }
+    
+    @Override
+    public boolean networkedDataChanged()
+    {
+        return this.networkDataChanged || this.shouldMoveClient == null || this.shouldMoveServer == null;
     }
 
     @Override
@@ -338,7 +348,12 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             if (this.worldObj.isRemote)
             {
-                this.hasReceivedPacket = true;
+                if (!this.hasReceivedPacket)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+                    this.hasReceivedPacket = true;
+                }
+
                 int cargoLength = buffer.readInt();
                 if (this.containedItems == null || this.containedItems.length == 0)
                 {
