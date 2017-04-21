@@ -8,11 +8,8 @@ import java.util.List;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
-import mezz.jei.plugins.vanilla.VanillaRecipeWrapper;
 
 public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {

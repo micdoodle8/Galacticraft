@@ -1,13 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.jei.refinery;
 
-import com.google.common.collect.ImmutableMap;
-import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class RefineryRecipeMaker
 {
