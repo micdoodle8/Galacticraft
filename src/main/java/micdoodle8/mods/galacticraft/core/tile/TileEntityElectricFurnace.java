@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -23,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver, IMachineSides
+public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMachineSides
 {
     //The electric furnace is 50% faster than a vanilla Furnace
     //but at a cost of some inefficiency:
@@ -215,6 +214,8 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         }
         this.processTicks = nbt.getInteger("smeltingTicks");
         this.stacks = this.readStandardItemsFromNBT(nbt);
+        
+        this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
     @Override
@@ -227,6 +228,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
         this.writeStandardItemsToNBT(nbt, this.stacks);
+        
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+
         return nbt;
     }
 

@@ -1,4 +1,4 @@
-//package micdoodle8.mods.galacticraft.planets.asteroids.nei;
+//package micdoodle8.mods.galacticraft.planets.asteroids.client.nei;
 //
 //import codechicken.nei.api.API;
 //import codechicken.nei.api.IConfigureNEI;

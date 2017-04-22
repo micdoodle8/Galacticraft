@@ -23,6 +23,12 @@ public class Tier1RocketRecipeHandler implements IRecipeHandler<Tier1RocketRecip
         return RecipeCategories.ROCKET_T1_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(Tier1RocketRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull Tier1RocketRecipeWrapper recipe)
@@ -42,11 +48,5 @@ public class Tier1RocketRecipeHandler implements IRecipeHandler<Tier1RocketRecip
             GCLog.severe(this.getClass().getSimpleName() + " JEI recipe has wrong number of outputs!");
         }
         return true;
-    }
-
-    @Override
-    public String getRecipeCategoryUid(Tier1RocketRecipeWrapper recipe)
-    {
-        return this.getRecipeCategoryUid();
     }
 }

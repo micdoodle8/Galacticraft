@@ -14,20 +14,22 @@ import java.util.List;
 
 public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
-	@Nonnull
-	private final INasaWorkbenchRecipe recipe;
+    @Nonnull
+    private final INasaWorkbenchRecipe recipe;
 
-	public BuggyRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe) {
-		this.recipe = recipe;
-	}
+    public BuggyRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    {
+        this.recipe = recipe;
+    }
 
-	@Nonnull
-	@Override
-	public List getInputs() {
-		List<ItemStack> list = new ArrayList<>();
-		list.addAll(recipe.getRecipeInput().values());
-		return list;
-	}
+    @Nonnull
+    @Override
+    public List getInputs()
+    {
+        List<ItemStack> list = new ArrayList<>();
+        list.addAll(recipe.getRecipeInput().values());
+        return list;
+    }
 
 	@Nonnull
 	@Override

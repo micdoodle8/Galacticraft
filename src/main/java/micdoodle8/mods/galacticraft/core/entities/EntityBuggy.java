@@ -87,6 +87,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         this.dataManager.register(ROCK_DIRECTION, 1);
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
+        
+        if (var1 != null && var1.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     public EntityBuggy(World var1, double var2, double var4, double var6, int type)
@@ -452,6 +457,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
     {
+        if (this.world.isRemote)
+        {
+            return;
+        }
         sendData.add(this.buggyType);
         sendData.add(this.buggyFuelTank);
     }

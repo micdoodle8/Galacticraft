@@ -23,6 +23,12 @@ public class BuggyRecipeHandler implements IRecipeHandler<BuggyRecipeWrapper>
         return RecipeCategories.BUGGY_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(BuggyRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull BuggyRecipeWrapper recipe)
@@ -42,11 +48,5 @@ public class BuggyRecipeHandler implements IRecipeHandler<BuggyRecipeWrapper>
             GCLog.severe(this.getClass().getSimpleName() + " JEI recipe has wrong number of outputs!");
         }
         return true;
-    }
-
-    @Override
-    public String getRecipeCategoryUid(BuggyRecipeWrapper recipe)
-    {
-        return this.getRecipeCategoryUid();
     }
 }

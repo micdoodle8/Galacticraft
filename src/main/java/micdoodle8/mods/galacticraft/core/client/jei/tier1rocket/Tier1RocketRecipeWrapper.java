@@ -14,20 +14,22 @@ import net.minecraft.item.ItemStack;
 
 public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
-	@Nonnull
-	private final INasaWorkbenchRecipe recipe;
+    @Nonnull
+    private final INasaWorkbenchRecipe recipe;
 
-	public Tier1RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe) {
-		this.recipe = recipe;
-	}
+    public Tier1RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    {
+        this.recipe = recipe;
+    }
 
-	@Nonnull
-	@Override
-	public List getInputs() {
-		List<ItemStack> list = new ArrayList<>();
-		list.addAll(recipe.getRecipeInput().values());
-		return list;
-	}
+    @Nonnull
+    @Override
+    public List getInputs()
+    {
+        List<ItemStack> list = new ArrayList<>();
+        list.addAll(recipe.getRecipeInput().values());
+        return list;
+    }
 
 	@Nonnull
 	@Override
@@ -38,6 +40,7 @@ public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements ICra
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        // TODO Auto-generated method stub
+        ingredients.setInputs(ItemStack.class, this.getInputs());
+        ingredients.setOutput(ItemStack.class, this.recipe.getRecipeOutput());
     }
 }

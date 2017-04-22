@@ -1,4 +1,4 @@
-//package micdoodle8.mods.galacticraft.planets.mars.nei;
+//package micdoodle8.mods.galacticraft.planets.mars.client.nei;
 //
 //import codechicken.lib.gui.GuiDraw;
 //import codechicken.nei.api.stack.PositionedStack;
@@ -15,13 +15,13 @@
 //import java.util.Map.Entry;
 //import java.util.Set;
 //
-//public class RocketT2RecipeHandler extends TemplateRecipeHandler
+//public class CargoRocketRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t2.png");
+//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
 //
 //    public String getRecipeId()
 //    {
-//        return "galacticraft.rocketT2";
+//        return "galacticraft.cargoRocket";
 //    }
 //
 //    @Override
@@ -32,15 +32,15 @@
 //
 //    public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
 //    {
-//        return NEIGalacticraftMarsConfig.getRocketBenchRecipes();
+//        return NEIGalacticraftMarsConfig.getCargoBenchRecipes();
 //    }
 //
 //    @Override
 //    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GuiDraw.changeTexture(RocketT2RecipeHandler.rocketGuiTexture);
-//        GuiDraw.drawTexturedModalRect(0, -8, 3, 4, 168, 140);
+//        GuiDraw.changeTexture(CargoRocketRecipeHandler.cargoRocketTexture);
+//        GuiDraw.drawTexturedModalRect(0, 0, 3, 4, 168, 125);
 //    }
 //
 //    @Override
@@ -131,7 +131,7 @@
 //    @Override
 //    public String getGuiTexture()
 //    {
-//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_t2.png";
+//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_cargo.png";
 //    }
 //
 //    @Override

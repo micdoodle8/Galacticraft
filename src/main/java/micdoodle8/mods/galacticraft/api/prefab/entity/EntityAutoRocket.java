@@ -15,7 +15,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.block.Block;
@@ -30,6 +30,7 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -38,9 +39,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -54,9 +55,8 @@ import java.util.List;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ILandable, IInventory, IPacketReceiver, IEntityNoisy
+public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ILandable, IInventory, IEntityNoisy
 {
-    public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
     public int destinationFrequency = -1;
     public BlockPos targetVec;
     public int targetDimension;
@@ -93,6 +93,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     public EntityAutoRocket(World world)
     {
         super(world);
+        
+        if (world != null && world.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     public EntityAutoRocket(World world, double posX, double posY, double posZ)
@@ -107,8 +112,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.prevPosY = posY;
         this.prevPosZ = posZ;
     }
-
-    public abstract int getFuelTankCapacity();
 
     //Used for Cargo Rockets, client is asking the server what is the status
     public boolean checkLaunchValidity()
@@ -282,14 +285,83 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onUpdate()
     {
+        //Workaround for a weird bug (?) in vanilla 1.8.9 where - if client view distance is shorter
+        //than the server's chunk loading distance - chunks will unload on the client, but the
+        //entity will still be in the WorldClient.loadedEntityList.  This results in an entity which
+        //is in the world, not dead and still updating on both server and client, but not in any chunk's
+        //chunk.entityLists.  Also, it won't be reloaded into any chunk's entityLists when the chunk comes
+        //back into viewing range - not sure why, maybe because it's already in the World.loadedEntityList?
+        //Because it's now not in any chunk's entityLists, it cannot be iterated for rendering by RenderGlobal,
+        //so it's gone invisible!
+        
+        //Tracing shows that Chunk.onChunkUnload() is called on the chunk clientside when the chunk goes
+        //out of the view distance.  However, even after Chunk.onChunkUnload() - which should remove
+        //this entity from the WorldClient.loadedEntityList - this entity stays in the world loadedEntityList.
+        //That's why an onUpdate() tick is active for it, still!
+        //Weird, huh?
+        if (this.world.isRemote && this.addedToChunk)
+        {
+            Chunk chunk = this.world.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ);
+            if (chunk.isLoaded())
+            {
+                boolean thisfound = false;
+                ClassInheritanceMultiMap<Entity> mapEntities = chunk.getEntityLists()[this.chunkCoordY];
+                for (Entity ent : mapEntities)
+                {
+                    if (ent == this)
+                    {
+                        thisfound = true;
+                        break;
+                    }
+                }
+                if (!thisfound)
+                {
+                    chunk.addEntity(this);
+                }
+            }
+        }
+        
         if (this.landing && this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
             if (this.targetVec != null)
             {
                 double yDiff = this.posY - this.getOnPadYOffset() - this.targetVec.getY();
-                this.motionY = Math.max(-2.0F, (yDiff - 0.05D) / -70.0D);
+                this.motionY = Math.max(-2.0, (yDiff - 0.04) / -70.0);
 
-                if (yDiff > 1F && yDiff < 4F)
+                //Some lateral motion in case not exactly on target (happens if rocket was moving laterally during launch)
+                double diff = this.posX - this.targetVec.getX() - 0.5D;
+                double motX, motZ;
+                if (diff > 0D)
+                {
+                    motX = Math.max(-0.1, diff / -100.0D);
+                }
+                else if (diff < 0D)
+                {
+                    motX = Math.min(0.1, diff / -100.0D);
+                }
+                else motX = 0D;
+                diff = this.posZ - this.targetVec.getZ() - 0.5D;
+                if (diff > 0D)
+                {
+                    motZ = Math.max(-0.1, diff / -100.0D);
+                }
+                else if (diff < 0D)
+                {
+                    motZ = Math.min(0.1, diff / -100.0D);
+                }
+                else motZ = 0D;
+                if (motZ != 0D || motX != 0D)
+                {
+                    double angleYaw = Math.atan(motZ / motX);
+                    double signed = motX < 0 ? 50D : -50D;
+                    double anglePitch = Math.atan(Math.sqrt(motZ * motZ + motX * motX) / signed) * 100D;
+                    this.rotationYaw = (float)angleYaw * 57.2957795F;
+                    this.rotationPitch = (float)anglePitch * 57.2957795F;
+                }
+                else
+                    this.rotationPitch = 0F;
+
+                if (yDiff > 1D && yDiff < 4D)
                 {
                     for (Object o : this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().offset(0D, -3D, 0D), EntitySpaceshipBase.rocketSelector))
                     {
@@ -300,7 +372,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         }
                     }
                 }
-                if (yDiff < 0.06F)
+                if (yDiff < 0.04)
                 {
                     int yMin = MathHelper.floor(this.getEntityBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
                     int yMax = MathHelper.floor(this.getEntityBoundingBox().maxY) + 1;
@@ -316,6 +388,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                 if (this.world.getTileEntity(new BlockPos(x, y, z)) instanceof IFuelDock)
                                 {
                                     //Land the rocket on the pad found
+                                    this.rotationPitch = 0F;
                                     this.failRocket();
                                 }
                             }
@@ -677,6 +750,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.world.isRemote)
+        {
+            return;
+        }
         super.getNetworkedData(list);
 
         list.add(this.fuelTank.getFluidAmount());
@@ -1282,5 +1359,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
     	this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
     	return (ISound) this.rocketSoundUpdater;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isInRangeToRender3d(double x, double y, double z)
+    {
+        double d0 = this.posX - x;
+        double d1 = this.posY - y;
+        double d2 = this.posZ - z;
+        double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+        return d3 < 262144D;  //512 squared
     }
 }
