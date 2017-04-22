@@ -147,15 +147,18 @@ public class PacketDynamic extends PacketBase
         case 0:
             Entity entity = player.worldObj.getEntityByID((Integer) this.data[0]);
 
-            if (entity instanceof IPacketReceiver && this.payloadData.readableBytes() > 0)
+            if (entity instanceof IPacketReceiver)
             {
-                ((IPacketReceiver) entity).decodePacketdata(payloadData);
-            }
+                if (this.payloadData.readableBytes() > 0)
+                {
+                    ((IPacketReceiver) entity).decodePacketdata(payloadData);
+                }
 
-            //Treat any packet received by a server from a client as an update request specifically to that client
-            if (side == Side.SERVER && player instanceof EntityPlayerMP && entity != null)
-            {
-                GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (EntityPlayerMP) player);
+                //Treat any packet received by a server from a client as an update request specifically to that client
+                if (side == Side.SERVER && player instanceof EntityPlayerMP && entity != null)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (EntityPlayerMP) player);
+                }
             }
             break;
 
@@ -164,15 +167,18 @@ public class PacketDynamic extends PacketBase
             {
                 TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
 
-                if (tile instanceof IPacketReceiver && this.payloadData.readableBytes() > 0)
+                if (tile instanceof IPacketReceiver)
                 {
-                    ((IPacketReceiver) tile).decodePacketdata(payloadData);
-                }
+                    if (this.payloadData.readableBytes() > 0)
+                    {
+                        ((IPacketReceiver) tile).decodePacketdata(payloadData);
+                    }
 
-                //Treat any packet received by a server from a client as an update request specifically to that client
-                if (side == Side.SERVER && player instanceof EntityPlayerMP && tile != null)
-                {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (EntityPlayerMP) player);
+                    //Treat any packet received by a server from a client as an update request specifically to that client
+                    if (side == Side.SERVER && player instanceof EntityPlayerMP && tile != null)
+                    {
+                        GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (EntityPlayerMP) player);
+                    }
                 }
             }
             break;
