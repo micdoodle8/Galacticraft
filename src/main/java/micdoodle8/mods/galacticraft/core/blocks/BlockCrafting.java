@@ -38,24 +38,9 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (this.isUsableWrench(playerIn, playerIn.inventory.getCurrentItem(), pos))
+        if (this.useWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
         {
-            this.damageWrench(playerIn, playerIn.inventory.getCurrentItem(), pos);
-
-            if (playerIn.isSneaking())
-            {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
-                {
-                    playerIn.swingItem();
-                    return true;
-                }
-            }
-
-            if (this.onUseWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
-            {
-                playerIn.swingItem();
-                return true;
-            }
+            return true;
         }
 
         if (playerIn.isSneaking())

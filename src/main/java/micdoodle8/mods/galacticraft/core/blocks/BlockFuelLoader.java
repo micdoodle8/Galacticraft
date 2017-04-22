@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -75,40 +75,14 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     {
         final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         worldIn.setBlockState(pos, getStateFromMeta(EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex()), 3);
-
-        for (int dX = -2; dX < 3; dX++)
-        {
-            for (int dZ = -2; dZ < 3; dZ++)
-            {
-                BlockPos offsetPos = new BlockPos(pos.getX() + dX, pos.getY(), pos.getZ() + dZ);
-                final Block block = worldIn.getBlockState(offsetPos).getBlock();
-
-                if (block == GCBlocks.landingPadFull)
-                {
-                    worldIn.markBlockForUpdate(offsetPos);
-                }
-            }
-        }
+        WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockDestroyedByPlayer(worldIn, pos, state);
-
-        for (int dX = -2; dX < 3; dX++)
-        {
-            for (int dZ = -2; dZ < 3; dZ++)
-            {
-                BlockPos offsetPos = new BlockPos(pos.getX() + dX, pos.getY(), pos.getZ() + dZ);
-                final Block block = worldIn.getBlockState(offsetPos).getBlock();
-
-                if (block == GCBlocks.landingPadFull)
-                {
-                    worldIn.markBlockForUpdate(offsetPos);
-                }
-            }
-        }
+        WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
     @Override

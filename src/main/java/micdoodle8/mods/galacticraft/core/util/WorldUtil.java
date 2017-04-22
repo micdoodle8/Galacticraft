@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
@@ -1432,5 +1433,23 @@ public class WorldUtil
         }
 
         return checklistMap;
+    }
+
+    public static void markAdjacentPadForUpdate(World worldIn, BlockPos pos)
+    {
+        BlockPos offsetPos;
+        for (int dX = -2; dX <= 2; dX++)
+        {
+            for (int dZ = -2; dZ <= 2; dZ++)
+            {
+                offsetPos = pos.add(dX, 0, dZ);
+                final Block block = worldIn.getBlockState(offsetPos).getBlock();
+
+                if (block == GCBlocks.landingPadFull)
+                {
+                    worldIn.markBlockForUpdate(offsetPos);
+                }
+            }
+        }
     }
 }

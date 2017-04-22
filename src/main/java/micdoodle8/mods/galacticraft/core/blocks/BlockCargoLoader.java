@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
@@ -8,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -159,39 +159,14 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         }
 
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
-
-        for (int dX = -2; dX < 3; dX++)
-        {
-            for (int dZ = -2; dZ < 3; dZ++)
-            {
-                final Block block = worldIn.getBlockState(pos.add(dX, 0, dZ)).getBlock();
-
-                if (block == GCBlocks.landingPadFull)
-                {
-                    worldIn.markBlockForUpdate(pos.add(dX, 0, dZ));
-                }
-            }
-        }
+        WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockDestroyedByPlayer(worldIn, pos, state);
-
-        for (int dX = -2; dX < 3; dX++)
-        {
-            for (int dZ = -2; dZ < 3; dZ++)
-            {
-                BlockPos newPos = new BlockPos(pos.getX() + dX, pos.getY(), pos.getZ() + dZ);
-                final Block block = worldIn.getBlockState(newPos).getBlock();
-
-                if (block == GCBlocks.landingPadFull)
-                {
-                    worldIn.markBlockForUpdate(newPos);
-                }
-            }
-        }
+        WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
     @Override
