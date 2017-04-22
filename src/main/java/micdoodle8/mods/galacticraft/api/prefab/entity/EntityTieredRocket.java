@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -164,11 +166,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         super.onUpdate();
 
-        if (this.landing)
-        {
-            this.rotationPitch = this.rotationYaw = 0;
-        }
-
         if (!this.world.isRemote)
         {
             if (this.launchCooldown > 0)
@@ -254,6 +251,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.world.isRemote)
+        {
+            return;
+        }
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
 
@@ -341,8 +342,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 {
                 	//Same dimension controlled rocket flight
                 	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                    //Stop any lateral motion, otherwise it will update to an incorrect x,z position first tick after spawning above target
+                    this.motionX = this.motionZ = 0.0D;
+                    //Small upward motion initially, to keep clear of own flame trail from launch
+                    this.motionY = 0.1D;
                     if (!this.getPassengers().isEmpty())
                     {
+                        WorldUtil.forceMoveEntityToPos(this.getPassengers().get(0), (WorldServer) this.world, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F));
                         this.setWaitForPlayer(true);
                         if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                     }
@@ -355,7 +361,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
             	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
-            	this.setDead();
+            	this.fuelTank.drain(Integer.MAX_VALUE, true);
+            	this.posY = Math.max(255, (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200) - 200);
                 return;
             }
         }
@@ -495,6 +502,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
     }
 
+    @Override
     public float getRotateOffset()
     {
         return -1.5F;

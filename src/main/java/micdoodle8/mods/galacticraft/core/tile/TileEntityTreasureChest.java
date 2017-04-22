@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations;
@@ -29,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, IPacketReceiver
+public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable
 {
     private NonNullList<ItemStack> stacks = NonNullList.withSize(27, ItemStack.EMPTY);
     public boolean adjacentChestChecked;

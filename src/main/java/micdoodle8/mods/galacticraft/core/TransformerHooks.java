@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
@@ -43,6 +42,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -548,17 +548,21 @@ public class TransformerHooks
 
         Entity viewEntity = ClientProxyCore.mc.getRenderViewEntity();
 
-        if (player.getRidingEntity() instanceof EntityTieredRocket && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
+        if (player.getRidingEntity() instanceof ICameraZoomEntity && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
-            EntityTieredRocket entity = (EntityTieredRocket) player.getRidingEntity();
-            float offset = entity.getRotateOffset() + PLAYER_Y_OFFSET;
-            GL11.glTranslatef(0, -offset, 0);
-            float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-            float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-            GL11.glRotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(angleYaw, 0.0F, 1.0F, 0.0F);
+            Entity entity = player.getRidingEntity();
+            float offset = ((ICameraZoomEntity)entity).getRotateOffset();
+            if (offset > -10F)
+            {
+                offset += PLAYER_Y_OFFSET;
+                GL11.glTranslatef(0, -offset, 0);
+                float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+                float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
+                GL11.glRotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(angleYaw, 0.0F, 1.0F, 0.0F);
 
-            GL11.glTranslatef(0, offset, 0);
+                GL11.glTranslatef(0, offset, 0);
+            }
         }
 
         if (viewEntity instanceof EntityLivingBase && viewEntity.world.provider instanceof IZeroGDimension && !((EntityLivingBase)viewEntity).isPlayerSleeping())

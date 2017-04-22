@@ -105,7 +105,7 @@ public class GCCoreUtil
         {
             eggID++;
         }
-        while (EntityList.getClassFromID(eggID) != null);
+        while (net.minecraftforge.fml.common.registry.GameData.getEntityRegistry().getObjectById(eggID) != null);
 
         return eggID;
     }

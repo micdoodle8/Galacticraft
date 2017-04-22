@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +12,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
-public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPacketReceiver
+public class TileEntityTelepadFake extends TileBaseElectricBlock
 {
     // The the position of the main block
     @NetworkedField(targetSide = Side.CLIENT)
@@ -153,35 +153,40 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @Override
     public boolean isNetworkedTile()
     {
-        if (this.mainBlockPosition != null)
-        {
             return true;
         }
-        else
+    
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
         {
-            this.resetMainBlockPosition();
-            return false;
-        }
+    	if (this.mainBlockPosition == null)
+    	{
+    		if (this.world.isRemote || !this.resetMainBlockPosition())
+    		{
+    			return;
+    		}
+    	}
+        super.getNetworkedData(sendData);
     }
 
-    private void resetMainBlockPosition()
-    {
-        for (int y = -2; y < 1; y += 2)
+    private boolean resetMainBlockPosition()
         {
             for (int x = -1; x <= 1; x++)
             {
                 for (int z = -1; z <= 1; z++)
                 {
+                for (int y = -2; y < 1; y += 2)
+                {
                     final BlockPos vecToCheck = this.getPos().add(x, y, z);
                     if (this.world.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
                     {
                         this.setMainBlock(vecToCheck);
-                        return;
+                        return true;
                     }
                 }
             }
         }
-
+        return false;
     }
 
     @Override
