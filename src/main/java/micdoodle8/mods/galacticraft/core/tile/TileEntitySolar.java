@@ -81,7 +81,10 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             this.initialised = true;
         }
 
-        this.receiveEnergyGC(null, this.generateWatts, false);
+        if (!this.worldObj.isRemote)
+        {
+            this.receiveEnergyGC(null, this.generateWatts, false);
+        }
 
         super.updateEntity();
 
