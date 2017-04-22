@@ -218,6 +218,8 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         }
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        
+        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -230,6 +232,8 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
+        
+        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
