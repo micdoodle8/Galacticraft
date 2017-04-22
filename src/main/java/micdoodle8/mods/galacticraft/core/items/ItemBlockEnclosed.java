@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.lang.reflect.Method;
+
 import appeng.api.AEApi;
 import appeng.api.util.AEColor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
@@ -57,6 +59,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
         {
             IBlockState iblockstate = worldIn.getBlockState(pos);
             Block block = iblockstate.getBlock();
+            BlockPos origPos = pos;
 
             if (!block.isReplaceable(worldIn, pos))
             {
@@ -84,8 +87,18 @@ public class ItemBlockEnclosed extends ItemBlockDesc
 
                     ItemStack itemME = AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1);
                     itemME.stackSize = 2; //Fool AppEng into not destroying anything in the player inventory
-                    return AEApi.instance().partHelper().placeBus( itemME, pos, side, playerIn, hand, worldIn );
-                    //Might be better to do appeng.parts.PartPlacement.place( is, pos, side, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
+                    AEApi.instance().partHelper().placeBus( itemME, origPos, side, playerIn, hand, worldIn );
+                    //Emulate appeng.parts.PartPlacement.place( is, pos, side, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
+                    try
+                    {
+                        Class clazzpp = Class.forName("appeng.parts.PartPlacement");
+                        Class enumPlaceType = Class.forName("appeng.parts.PartPlacement$PlaceType");
+                        Method methPl = clazzpp.getMethod("place", ItemStack.class, BlockPos.class, EnumFacing.class, EntityPlayer.class, EnumHand.class, World.class, enumPlaceType, int.class);
+                        methPl.invoke(null, itemME, origPos, side, playerIn, hand, worldIn, enumPlaceType.getEnumConstants()[2], 0 );
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 return EnumActionResult.SUCCESS;
             }

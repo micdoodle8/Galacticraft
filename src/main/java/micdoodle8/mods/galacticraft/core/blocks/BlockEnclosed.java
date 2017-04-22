@@ -364,14 +364,18 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         {
             if (CompatibilityManager.isAppEngLoaded())
             {
-            	//Emulate Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class.getName() )
+            	//Emulate Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class )
                 try
                 {
                     IPartHelper apiPart = AEApi.instance().partHelper();
-                    Class<?> clazzApiPart = Class.forName("appeng.core.api.ApiPart");
-                    Class clazz = (Class) clazzApiPart.getDeclaredMethod("getCombinedInstance", String.class).invoke(apiPart, "appeng.tile.networking.TileCableBus");
-                    //Needs to be: appeng.parts.layers.LayerITileStorageMonitorable_TileCableBus
-                    return (TileEntity) clazz.newInstance();
+                    Class classTileCableBus = Class.forName("appeng.tile.networking.TileCableBus"); 
+                    for (Method m : apiPart.getClass().getMethods())
+                    {
+                        if ("getCombinedInstance".equals(m.getName()))
+                        {
+                            return (TileEntity) ((Class)m.invoke(apiPart, classTileCableBus)).newInstance();
+                        }
+                    }
                 }
                 catch (Exception e) { e.printStackTrace(); }
             }
