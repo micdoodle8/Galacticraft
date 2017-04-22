@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -42,7 +41,6 @@ public class SpaceStationRecipe
             else if (obj instanceof String)
             {
                 List<ItemStack> stacks = OreDictionary.getOres((String) obj);
-                FMLLog.info("While registering space station recipe, found " + stacks.size() + " type(s) of " + obj);
                 this.input.put(stacks, amount);
             }
             else if (obj instanceof ArrayList)

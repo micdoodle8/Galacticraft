@@ -70,15 +70,12 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
         public static EnumBlockBasicMoon byMetadata(int meta)
         {
-            for (EnumBlockBasicMoon value : values())
+            if (meta < 7)
             {
-                if (value.getMeta() == meta)
-                {
-                    return value;
-                }
+                return values()[meta];
             }
-
-            return null;
+            
+            return MOON_DUNGEON_BRICK;
         }
 
         @Override

@@ -40,6 +40,7 @@ public class CompatibilityManager
                 {
                     classGTOre = clazz;
                 }
+                GCLog.info("Galacticraft: activating GregTech compatibility feature.");
             }
             catch (Exception e)
             {
@@ -50,6 +51,7 @@ public class CompatibilityManager
         if (Loader.isModLoaded("ThermalExpansion"))
         {
             CompatibilityManager.modTELoaded = true;
+            GCLog.info("Galacticraft: activating ThermalExpansion compatibility features.");
         }
 
         if (Loader.isModLoaded("IC2"))
@@ -63,6 +65,7 @@ public class CompatibilityManager
                 {
                     BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborChange", Block.class);
                 }
+                GCLog.info("Galacticraft: activating IndustrialCraft2 compatibility features.");
             }
             catch (Exception e)
             {
@@ -74,6 +77,7 @@ public class CompatibilityManager
         if (Loader.isModLoaded("BuildCraft|Energy"))
         {
             CompatibilityManager.modBCraftEnergyLoaded = true;
+            GCLog.info("Galacticraft: activating BuildCraft Oil compatibility features.");
         }
 
         if (Loader.isModLoaded("BuildCraft|Transport"))
@@ -105,11 +109,16 @@ public class CompatibilityManager
             {
                 CompatibilityManager.modBCraftTransportLoaded = false;
             }
+            else
+            {
+                GCLog.info("Galacticraft: activating BuildCraft Transport (Pipes) compatibility features.");
+            }
         }
 
         if (Loader.isModLoaded("AetherII"))
         {
             CompatibilityManager.modAetherIILoaded = true;
+            GCLog.info("Galacticraft: activating AetherII compatibility feature.");
         }
 
         if (Loader.isModLoaded("BasicComponents"))
@@ -120,11 +129,13 @@ public class CompatibilityManager
         if (Loader.isModLoaded("appliedenergistics2"))
         {
             CompatibilityManager.modAppEngLoaded = true;
+            GCLog.info("Galacticraft: activating AppliedEnergistics2 compatibility features.");
         }
 
         if (Loader.isModLoaded("PneumaticCraft"))
         {
             CompatibilityManager.modPneumaticCraftLoaded = true;
+            GCLog.info("Galacticraft: activating PneumaticCraft compatibility features.");
         }
     }
 
@@ -201,6 +212,7 @@ public class CompatibilityManager
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 4), "tile.moonBlock.moonstone");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 5), "tile.moonBlock.moongrass");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 14), "tile.moonBlock.bricks");
+                GCLog.info("Galacticraft: activating CodeChicken Microblocks compatibility.");
             }
         }
         catch (Exception e)

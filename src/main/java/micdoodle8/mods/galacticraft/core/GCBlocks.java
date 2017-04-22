@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -246,6 +247,7 @@ public class GCBlocks
                 registerBlock(torch, ItemBlockGC.class);
                 registerBlock(torchLit, ItemBlockGC.class);
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
+                GCLog.info("Galacticraft: activating Tinker's Construct compatibility.");
             }
         }
     }

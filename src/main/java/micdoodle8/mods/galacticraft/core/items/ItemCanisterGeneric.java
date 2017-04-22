@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
@@ -11,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -21,7 +21,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
     private String allowedFluid = null;
     public final static int EMPTY = FluidContainerRegistry.BUCKET_VOLUME + 1;
-    private static boolean isTELoaded = Loader.isModLoaded("ThermalExpansion");
+    private static boolean isTELoaded = CompatibilityManager.isTELoaded();
 
     public ItemCanisterGeneric(String assetName)
     {
