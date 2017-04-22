@@ -22,38 +22,16 @@ public interface IJeiHelpers {
 	/**
 	 * Used to stop JEI from displaying a specific item in the item list.
 	 *
-	 * @deprecated since JEI 3.14.0. Use {@link #getIngredientBlacklist()}.
+	 * @deprecated since JEI 4.2.1. Use {@link #getIngredientBlacklist()}.
 	 */
 	@Deprecated
 	IItemBlacklist getItemBlacklist();
 
 	/*
 	 * Used to stop JEI from displaying a specific ingredient in the ingredient list
-	 * @since JEI 3.14.0
+	 * @since JEI 4.2.1
 	 */
 	IIngredientBlacklist getIngredientBlacklist();
-
-	/**
-	 * Used to tell JEI to ignore NBT tags when comparing items for recipes.
-	 *
-	 * @deprecated all nbt is now ignored by default. If you have nbt that is used to identify your item's subtype, see {@link #getSubtypeRegistry()}.
-	 */
-	@Deprecated
-	INbtIgnoreList getNbtIgnoreList();
-
-	/**
-	 * If your item has subtypes that depend on NBT or capabilities, use this to help JEI identify those subtypes correctly.
-	 *
-	 * @deprecated since JEI 3.12.1. Implement {@link IModPlugin#registerItemSubtypes(ISubtypeRegistry)}
-	 */
-	@Deprecated
-	ISubtypeRegistry getSubtypeRegistry();
-
-	/**
-	 * @deprecated Use {@link #getSubtypeRegistry()}
-	 */
-	@Deprecated
-	INbtRegistry getNbtRegistry();
 
 	/**
 	 * Helps with the implementation of Recipe Transfer Handlers
@@ -64,7 +42,7 @@ public interface IJeiHelpers {
 	 * Reload JEI at runtime.
 	 * Used by mods that add and remove items or recipes like MineTweaker's /mt reload.
 	 *
-	 * @deprecated since JEI 3.14.1. This will be deactivated soon because it takes too long and causes server disconnects.
+	 * @deprecated since JEI 4.2.2. This has been deactivated because it takes too long and causes server disconnects.
 	 * If you need to change recipes, use {@link IRecipeRegistry#addRecipe(Object)} and {@link IRecipeRegistry#removeRecipe(Object)}
 	 */
 	@Deprecated

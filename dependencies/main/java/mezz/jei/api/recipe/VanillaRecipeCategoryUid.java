@@ -2,8 +2,8 @@ package mezz.jei.api.recipe;
 
 import java.util.List;
 
-import mezz.jei.api.IItemRegistry;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.recipe.wrapper.ICustomCraftingRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
@@ -21,11 +21,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 /**
  * List of built-in recipe category UIDs, so that plugins with their own recipe handlers can use them.
  */
-public class VanillaRecipeCategoryUid {
-	private VanillaRecipeCategoryUid() {
-
-	}
-
+public final class VanillaRecipeCategoryUid {
 	/**
 	 * The crafting recipe category.
 	 * <p>
@@ -55,12 +51,20 @@ public class VanillaRecipeCategoryUid {
 	 * The brewing recipe category.
 	 * <p>
 	 * Automatically tries to generate all potion variations from the basic ingredients, determined by {@link PotionHelper#isReagent(ItemStack)}.
-	 * You can get the list of known potion reagents from {@link IItemRegistry#getPotionIngredients()}.
+	 * You can get the list of known potion reagents from {@link IIngredientRegistry#getPotionIngredients()}.
 	 * <p>
 	 * Also automatically adds modded potions from {@link BrewingRecipeRegistry#getRecipes()}.
 	 * JEI can only understand modded potion recipes that are {@link BrewingRecipe} or {@link BrewingOreRecipe}.
 	 */
 	public static final String BREWING = "minecraft.brewing";
+
+	/**
+	 * The anvil recipe category.
+	 * <p>
+	 * This is a built-in category, you can add new recipes with {@link IModRegistry#addAnvilRecipe(ItemStack, List, List)}}
+	 * @since JEI 4.2.6
+	 */
+	public static final String ANVIL = "minecraft.anvil";
 
 	/**
 	 * The JEI description recipe category.
@@ -69,4 +73,8 @@ public class VanillaRecipeCategoryUid {
 	 * {@link IModRegistry#addDescription(ItemStack, String...)} or {@link IModRegistry#addDescription(List, String...)}
 	 */
 	public static final String DESCRIPTION = "jei.description";
+
+	private VanillaRecipeCategoryUid() {
+
+	}
 }

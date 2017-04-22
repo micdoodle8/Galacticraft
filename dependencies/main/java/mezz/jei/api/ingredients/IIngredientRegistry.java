@@ -1,12 +1,10 @@
 package mezz.jei.api.ingredients;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
-import mezz.jei.api.IItemRegistry;
+import java.util.Collection;
+import java.util.List;
+
 import mezz.jei.api.IModRegistry;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
 
 /**
  * The IIngredientRegistry is provided by JEI and has some useful functions related to recipe ingredients.
@@ -16,10 +14,9 @@ import java.util.List;
  */
 public interface IIngredientRegistry {
 	/**
-	 * Returns a list of all the ingredients known to JEI, of the specified class.
-	 * Calling this with ItemStack.class is equivalent to {@link IItemRegistry#getItemList()}.
+	 * Returns an unmodifiable list of all the ingredients known to JEI, of the specified class.
 	 */
-	<V> ImmutableList<V> getIngredients(Class<V> ingredientClass);
+	<V> List<V> getIngredients(Class<V> ingredientClass);
 
 	/**
 	 * Returns the appropriate ingredient helper for this ingredient.
@@ -42,27 +39,27 @@ public interface IIngredientRegistry {
 	<V> IIngredientRenderer<V> getIngredientRenderer(Class<V> ingredientClass);
 
 	/**
-	 * Returns a list of all registered ingredient classes.
+	 * Returns an unmodifiable collection of all registered ingredient classes.
 	 * Without addons, there is ItemStack.class and FluidStack.class.
 	 */
-	ImmutableCollection<Class> getRegisteredIngredientClasses();
+	Collection<Class> getRegisteredIngredientClasses();
 
 	/**
-	 * Returns a list of all the ItemStacks that can be used as fuel in a vanilla furnace.
+	 * Returns an unmodifiable list of all the ItemStacks that can be used as fuel in a vanilla furnace.
 	 */
-	ImmutableList<ItemStack> getFuels();
+	List<ItemStack> getFuels();
 
 	/**
-	 * Returns a list of all the ItemStacks that return true to isPotionIngredient.
+	 * Returns an unmodifiable list of all the ItemStacks that return true to isPotionIngredient.
 	 */
-	ImmutableList<ItemStack> getPotionIngredients();
+	List<ItemStack> getPotionIngredients();
 
 	/**
 	 * Add new ingredients to JEI at runtime.
 	 * Used by mods that have items created while the game is running, or use the server to define items.
 	 * Using this method will reload the ingredient list, do not call it unless necessary.
 	 *
-	 * @since JEI 3.14.4
+	 * @since JEI 4.0.2
 	 */
 	<V> void addIngredientsAtRuntime(Class<V> ingredientClass, List<V> ingredients);
 }

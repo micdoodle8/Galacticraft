@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 import com.google.common.collect.ImmutableList;
+import mezz.jei.api.ingredients.IIngredientRegistry;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -30,8 +31,14 @@ public interface IItemListOverlay {
 	String getFilterText();
 
 	/**
+	 * @return true if the text box is focused by the player.
+	 * @since JEI 4.2.11
+	 */
+	boolean hasKeyboardFocus();
+
+	/**
 	 * @return a list containing all stacks that match the current filter.
-	 * For the list of all ItemStacks known to JEI, see {@link IItemRegistry#getItemList()}.
+	 * For the list of all ItemStacks known to JEI, see {@link IIngredientRegistry#getIngredients(Class)}.
 	 */
 	ImmutableList<ItemStack> getFilteredStacks();
 

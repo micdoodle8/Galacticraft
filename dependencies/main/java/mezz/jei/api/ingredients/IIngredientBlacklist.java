@@ -7,7 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * The Ingredient Blacklist allows mods to hide ingredients from JEI's ingredient list.
  * Get the instance from {@link IJeiHelpers#getIngredientBlacklist()}.
  *
- * @since JEI 3.14.0
+ * @since JEI 4.2.1
  */
 public interface IIngredientBlacklist {
 	/**

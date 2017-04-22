@@ -1,10 +1,7 @@
 package mezz.jei.api.gui;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
 
-import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -25,29 +22,8 @@ public interface IGuiItemStackGroup extends IGuiIngredientGroup<ItemStack> {
 	 * @param xPosition x position of the slot relative to the recipe background
 	 * @param yPosition y position of the slot relative to the recipe background
 	 */
-	void init(int slotIndex, boolean input, int xPosition, int yPosition);
-
-	/**
-	 * Takes a list of ingredients from IRecipeWrapper getInputs or getOutputs
-	 *
-	 * @deprecated since JEI 3.11.2.
-	 * Use {@link IStackHelper#toItemStackList(Object)} to convert to a List<ItemStack> if necessary
-	 */
-	@Deprecated
-	void setFromRecipe(int slotIndex, List ingredients);
-
-	/**
-	 * Takes an Object from IRecipeWrapper getInputs or getOutputs
-	 *
-	 * @deprecated since JEI 3.11.0.
-	 * Use {@link IStackHelper#toItemStackList(Object)} to convert to a List<ItemStack> if necessary
-	 */
-	@Deprecated
-	void setFromRecipe(int slotIndex, Object ingredients);
-
 	@Override
-	@Deprecated
-	void set(int slotIndex, Collection<ItemStack> itemStacks);
+	void init(int slotIndex, boolean input, int xPosition, int yPosition);
 
 	@Override
 	void set(int slotIndex, @Nullable ItemStack itemStack);

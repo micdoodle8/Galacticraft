@@ -1,7 +1,6 @@
 package mezz.jei.api.gui;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,10 +27,6 @@ public interface IGuiFluidStackGroup extends IGuiIngredientGroup<FluidStack> {
 	 *                     Typically the overlay is fluid level lines, but it could also be a mask to shape the tank.
 	 */
 	void init(int slotIndex, boolean input, int xPosition, int yPosition, int width, int height, int capacityMb, boolean showCapacity, @Nullable IDrawable overlay);
-
-	@Override
-	@Deprecated
-	void set(int slotIndex, Collection<FluidStack> fluidStacks);
 
 	@Override
 	void set(int slotIndex, @Nullable FluidStack fluidStack);

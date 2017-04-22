@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
@@ -45,6 +46,14 @@ public interface IGuiIngredientGroup<T> {
 	void set(int slotIndex, @Nullable T ingredient);
 
 	/**
+	 * Set a background image to draw behind the ingredient.
+	 * Some examples are slot background or tank background.
+	 *
+	 * @since JEI 4.3.1
+	 */
+	void setBackground(int slotIndex, IDrawable background);
+
+	/**
 	 * Add a callback to alter the tooltip for these ingredients.
 	 */
 	void addTooltipCallback(ITooltipCallback<T> tooltipCallback);
@@ -56,9 +65,29 @@ public interface IGuiIngredientGroup<T> {
 	Map<Integer, ? extends IGuiIngredient<T>> getGuiIngredients();
 
 	/**
+	 * Initialize a guiIngredient for the given slot.
+	 * This can handle mod ingredients registered with {@link IModIngredientRegistration}.
+	 * <p>
+	 * Uses the default {@link IIngredientRenderer} registered for the ingredient list in {@link IModIngredientRegistration#register(Class, Collection, IIngredientHelper, IIngredientRenderer)}
+	 * Uses the same 16x16 size as the ingredient list.
+	 * <p>
+	 * For more advanced control over rendering, use {@link #init(int, boolean, IIngredientRenderer, int, int, int, int, int, int)}
+	 *
+	 * @param slotIndex the slot index of this ingredient
+	 * @param input     whether this slot is an input
+	 * @param xPosition x position relative to the recipe background
+	 * @param yPosition y position relative to the recipe background
+	 * @see IGuiItemStackGroup#init(int, boolean, int, int)
+	 * @see IGuiFluidStackGroup#init(int, boolean, int, int, int, int, int, boolean, IDrawable)
+	 * @since JEI 4.0.2
+	 */
+	void init(int slotIndex, boolean input, int xPosition, int yPosition);
+
+	/**
 	 * Initialize a custom guiIngredient for the given slot.
-	 * For ItemStacks and FluidStacks, use the much simpler methods in {@link IGuiItemStackGroup} and {@link IGuiFluidStackGroup}.
-	 * This is for handling mod ingredients registered with {@link IModIngredientRegistration}.
+	 * For default behavior, use the much simpler method {@link #init(int, boolean, int, int)}.
+	 * For FluidStack, see {@link IGuiFluidStackGroup#init(int, boolean, int, int, int, int, int, boolean, IDrawable)}
+	 * This can handle mod ingredients registered with {@link IModIngredientRegistration}.
 	 *
 	 * @param slotIndex          the slot index of this ingredient
 	 * @param input              whether this slot is an input
@@ -78,22 +107,6 @@ public interface IGuiIngredientGroup<T> {
 			  int width, int height,
 			  int xPadding, int yPadding);
 
-	/**
-	 * The current search focus. Set by the player when they look up the recipe. The object being looked up is the focus.
-	 *
-	 * @deprecated since JEI 3.11.0. Use {@link IRecipeLayout#getFocus()}
-	 */
-	@Deprecated
-	IFocus<T> getFocus();
-
-	/**
-	 * Set the ingredient at slotIndex to a rotating collection of ingredients.
-	 *
-	 * @deprecated since JEI 3.11.0. Use {@link #set(int, List)}
-	 */
-	@Deprecated
-	void set(int slotIndex, Collection<T> ingredients);
-
 	/*
 	 * Force this ingredient group to display a different focus.
 	 * This must be set before any ingredients are set.
@@ -102,5 +115,5 @@ public interface IGuiIngredientGroup<T> {
 	 *
 	 * @since JEI 3.13.6
 	 */
-	void setOverrideDisplayFocus(IFocus<T> focus);
+	void setOverrideDisplayFocus(@Nullable IFocus<T> focus);
 }

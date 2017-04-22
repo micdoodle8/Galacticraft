@@ -1,5 +1,6 @@
 package mezz.jei.api;
 
+import java.util.Collection;
 import java.util.List;
 
 import mezz.jei.api.gui.IAdvancedGuiHandler;
@@ -7,6 +8,9 @@ import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeRegistryPlugin;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapperFactory;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
@@ -25,15 +29,6 @@ public interface IModRegistry {
 	IJeiHelpers getJeiHelpers();
 
 	/**
-	 * Get useful functions relating to items.
-	 *
-	 * @since JEI 2.27.0
-	 * @deprecated since JEI 3.11.0. Use {@link #getIngredientRegistry()} instead.
-	 */
-	@Deprecated
-	IItemRegistry getItemRegistry();
-
-	/**
 	 * Get useful functions relating to recipe ingredients.
 	 *
 	 * @since JEI 3.11.0
@@ -46,16 +41,42 @@ public interface IModRegistry {
 	void addRecipeCategories(IRecipeCategory... recipeCategories);
 
 	/**
-	 * Add the recipe handlers provided by this plugin.
+	 * Add the recipes provided by your plugin.
+	 * Handle them with {@link #handleRecipes(Class, IRecipeWrapperFactory, String)}.
+	 * Recipes added here that already implement {@link IRecipeWrapper} do not need to add a handler.
+	 *
+	 * @since JEI 4.3.0
 	 */
+	void addRecipes(Collection<?> recipes, String recipeCategoryUid);
+
+	/**
+	 * Add a handler for recipes provided by your plugin.
+	 * Recipes that already implement {@link IRecipeWrapper} do not need to add a handler here.
+	 *
+	 * @param recipeClass          the recipe class being handled.
+	 * @param recipeWrapperFactory turns recipes into recipe wrappers.
+	 * @param recipeCategoryUid    a unique category id. For vanilla category IDs, see {@link VanillaRecipeCategoryUid}.
+	 * @since JEI 4.3.0
+	 */
+	<T> void handleRecipes(Class<T> recipeClass, IRecipeWrapperFactory<T> recipeWrapperFactory, String recipeCategoryUid);
+
+	/**
+	 * Add the recipe handlers provided by this plugin.
+	 *
+	 * @deprecated since JEI 4.3.0, use {@link #handleRecipes(Class, IRecipeWrapperFactory, String)}
+	 */
+	@Deprecated
 	void addRecipeHandlers(IRecipeHandler... recipeHandlers);
 
 	/**
 	 * Add the recipes provided by the plugin.
 	 * These can be regular recipes, they will get wrapped by the provided recipe handlers.
 	 * Recipes that are already registered with minecraft's recipe managers don't need to be added here.
+	 *
+	 * @deprecated since JEI 4.3.0, use {@link #addRecipes(Collection, String)}
 	 */
-	void addRecipes(List recipes);
+	@Deprecated
+	void addRecipes(Collection recipes);
 
 	/**
 	 * Add a clickable area on a gui to jump to specific categories of recipes in JEI.
@@ -98,6 +119,15 @@ public interface IModRegistry {
 	void addDescription(ItemStack itemStack, String... descriptionKeys);
 
 	void addDescription(List<ItemStack> itemStacks, String... descriptionKeys);
+
+	/**
+	 * Adds an anvil recipe for the given inputs and output.
+	 * @param leftInput The itemStack placed on the left slot.
+	 * @param rightInputs The itemStack(s) placed on the right slot.
+	 * @param outputs The resulting itemStack(s).
+	 * @since JEI 4.2.6
+	 */
+	void addAnvilRecipe(ItemStack leftInput, List<ItemStack> rightInputs, List<ItemStack> outputs);
 
 	/**
 	 * Get the registry for setting up recipe transfer.
