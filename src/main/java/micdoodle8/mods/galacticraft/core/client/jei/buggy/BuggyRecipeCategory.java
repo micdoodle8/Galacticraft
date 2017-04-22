@@ -14,8 +14,6 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-import java.util.List;
-
 public class BuggyRecipeCategory extends BlankRecipeCategory
 {
     private static final ResourceLocation buggyGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/buggybench.png");

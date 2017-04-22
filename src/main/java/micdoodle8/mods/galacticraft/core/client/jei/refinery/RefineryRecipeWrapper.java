@@ -5,8 +5,6 @@ import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
 
 public class RefineryRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {

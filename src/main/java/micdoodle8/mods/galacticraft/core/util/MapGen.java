@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MapGen extends BiomeProvider implements Runnable
 {
+    public static boolean disabled;
     private static final float[] parabolicField = new float[25];
 
     public boolean mapNeedsCalculating = false;
@@ -74,6 +75,11 @@ public class MapGen extends BiomeProvider implements Runnable
     public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
     {
         this.dimID = GCCoreUtil.getDimensionID(world);
+        if (MapGen.disabled)
+        {
+            this.mapNeedsCalculating = false;
+            return;
+        }
         this.biomeMapSizeX = sx;
         this.biomeMapSizeZ = sz;
         this.biomeMapFactor = scale;
@@ -119,6 +125,7 @@ public class MapGen extends BiomeProvider implements Runnable
             GCLog.severe("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
             e.printStackTrace();
             this.mapNeedsCalculating = false;
+            MapGen.disabled = true;
             return;
         }
         this.genBiomes = agenlayer[0];
@@ -291,22 +298,25 @@ public class MapGen extends BiomeProvider implements Runnable
         if (this.biomeAndHeightArray == null)
             return;
         
-        try
+        if (!this.aborted.get())  //It should be error-free if it wasn't aborted 
         {
-            if (!this.biomeMapFile.exists() || (this.biomeMapFile.canWrite() && this.biomeMapFile.canRead()))
+            try
             {
-                this.flagProgress();
-                FileUtils.writeByteArrayToFile(this.biomeMapFile, this.biomeAndHeightArray);
+                if (!this.biomeMapFile.exists() || (this.biomeMapFile.canWrite() && this.biomeMapFile.canRead()))
+                {
+                    this.flagProgress();
+                    FileUtils.writeByteArrayToFile(this.biomeMapFile, this.biomeAndHeightArray);
+                }
             }
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        if (sendToClientImmediately)
-        {
-            MapUtil.sendMapPacketToAll(this.biomeMapCx << 4, this.biomeMapCz << 4, this.biomeAndHeightArray);
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
+    
+            if (sendToClientImmediately)
+            {
+                MapUtil.sendMapPacketToAll(this.biomeMapCx << 4, this.biomeMapCz << 4, this.biomeAndHeightArray);
+            }
         }
 
         this.biomeAndHeightArray = null;
@@ -338,7 +348,19 @@ public class MapGen extends BiomeProvider implements Runnable
             multifactor = 1;
         }
         int progX = this.progressX.get();
-        biomeMapOneChunk(biomeMapCx + biomeMapX, biomeMapCz + biomeMapZ, progX, progressZ, limit);
+        try
+        {
+            biomeMapOneChunk(biomeMapCx + biomeMapX, biomeMapCz + biomeMapZ, progX, progressZ, limit);
+        }
+        catch (Exception e)
+        {
+            GCLog.severe("Galacticraft background map image generator hit an error (probably a mod conflict?)");
+            GCLog.severe("--> Please report this at https://github.com/micdoodle8/Galacticraft/issues/2544 <--");
+            e.printStackTrace();
+            MapGen.disabled = true;
+            this.aborted.set(true);
+            return true;
+        }
         biomeMapZ += multifactor;
         progressZ += imagefactor;
         if (progressZ > biomeMapSizeZ - imagefactor)

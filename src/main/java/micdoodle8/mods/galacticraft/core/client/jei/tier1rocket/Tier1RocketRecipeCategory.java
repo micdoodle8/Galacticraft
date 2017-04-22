@@ -14,8 +14,6 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-import java.util.List;
-
 public class Tier1RocketRecipeCategory extends BlankRecipeCategory
 {
     private static final ResourceLocation rocketGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocketbench.png");

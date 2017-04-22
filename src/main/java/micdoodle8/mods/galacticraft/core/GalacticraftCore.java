@@ -128,6 +128,7 @@ public class GalacticraftCore
         if(Loader.isModLoaded("witchery"))
         {
             isHeightConflictingModInstalled = true;
+            GCLog.info("Galacticraft: activating Witchery compatibility.");
         }
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());

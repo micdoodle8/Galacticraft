@@ -8,9 +8,6 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CargoRocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {

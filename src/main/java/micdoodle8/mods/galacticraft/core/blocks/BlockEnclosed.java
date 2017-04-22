@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-//import appeng.api.AEApi;
-//import appeng.api.parts.IPartHelper;
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
+import appeng.api.AEApi;
+import appeng.api.parts.IPartHelper;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -207,6 +205,12 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
+    public int damageDropped(IBlockState state)
+    {
+        return state.getBlock().getMetaFromState(state);
+    }
+
+    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         int metadata = state.getBlock().getMetaFromState(state);
@@ -360,16 +364,20 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         {
             if (CompatibilityManager.isAppEngLoaded())
             {
-//            	//Emulate Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class.getName() )
-//                try
-//                {
-//                    IPartHelper apiPart = AEApi.instance().partHelper();
-//                    Class<?> clazzApiPart = Class.forName("appeng.core.api.ApiPart");
-//                    Class clazz = (Class) clazzApiPart.getDeclaredMethod("getCombinedInstance", String.class).invoke(apiPart, "appeng.tile.networking.TileCableBus");
-//                    //Needs to be: appeng.parts.layers.LayerITileStorageMonitorable_TileCableBus
-//                    return (TileEntity) clazz.newInstance();
-//                }
-//                catch (Exception e) { e.printStackTrace(); }
+            	//Emulate Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class )
+                try
+                {
+                    IPartHelper apiPart = AEApi.instance().partHelper();
+                    Class classTileCableBus = Class.forName("appeng.tile.networking.TileCableBus"); 
+                    for (Method m : apiPart.getClass().getMethods())
+                    {
+                        if ("getCombinedInstance".equals(m.getName()))
+                        {
+                            return (TileEntity) ((Class)m.invoke(apiPart, classTileCableBus)).newInstance();
+                        }
+                    }
+                }
+                catch (Exception e) { e.printStackTrace(); }
             }
         }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())

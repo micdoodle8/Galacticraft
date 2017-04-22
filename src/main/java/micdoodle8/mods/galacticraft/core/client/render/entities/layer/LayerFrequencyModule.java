@@ -91,11 +91,11 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
 
                     if (wearingHelmet)
                     {
-                        GlStateManager.translate(-1.1F, 1.2F, 0);
+                        GlStateManager.translate(-1.1F, player.isSneaking() ? 0.35F : 1.2F, 0);
                     }
                     else
                     {
-                        GlStateManager.translate(-0.9F, 0.9F, 0);
+                        GlStateManager.translate(-0.9F, player.isSneaking() ? 0.1F : 0.9F, 0);
                     }
 
                     ClientUtil.drawBakedModel(this.moduleModel);

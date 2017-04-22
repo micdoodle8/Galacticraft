@@ -2,10 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.jei.tier1rocket;
 
 import javax.annotation.Nonnull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;

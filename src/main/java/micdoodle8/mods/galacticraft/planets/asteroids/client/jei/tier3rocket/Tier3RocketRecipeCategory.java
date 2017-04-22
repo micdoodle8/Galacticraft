@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class Tier3RocketRecipeCategory extends BlankRecipeCategory
 {

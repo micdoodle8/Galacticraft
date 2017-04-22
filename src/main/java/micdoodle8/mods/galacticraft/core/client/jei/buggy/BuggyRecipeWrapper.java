@@ -9,10 +9,6 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull

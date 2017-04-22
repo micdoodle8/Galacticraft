@@ -22,7 +22,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEnt
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandlerClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.asteroids.recipe.craftguide.CraftGuideIntegration;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
@@ -49,7 +48,6 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -173,10 +171,10 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMinerBase.class, new TileEntityMinerBaseRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
 
-        if (Loader.isModLoaded("craftguide"))
-        {
-            CraftGuideIntegration.register();
-        }
+//        if (Loader.isModLoaded("craftguide"))
+//        {
+//            CraftGuideIntegration.register();
+//        }
     }
 
     public static void registerBlockRenderers()
