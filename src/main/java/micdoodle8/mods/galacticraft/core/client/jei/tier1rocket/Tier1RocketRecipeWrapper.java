@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
@@ -14,30 +15,18 @@ import net.minecraft.item.ItemStack;
 
 public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
-	@Nonnull
-	private final INasaWorkbenchRecipe recipe;
+    @Nonnull
+    private final INasaWorkbenchRecipe recipe;
 
-	public Tier1RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe) {
-		this.recipe = recipe;
-	}
-
-	@Nonnull
-	@Override
-	public List getInputs() {
-		List<ItemStack> list = new ArrayList<>();
-		list.addAll(recipe.getRecipeInput().values());
-		return list;
-	}
-
-	@Nonnull
-	@Override
-	public List<ItemStack> getOutputs() {
-		return Collections.singletonList(recipe.getRecipeOutput());
-	}
+    public Tier1RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    {
+        this.recipe = recipe;
+    }
 
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        // TODO Auto-generated method stub
+        ingredients.setInputs(ItemStack.class, Lists.newArrayList(recipe.getRecipeInput().values()));
+        ingredients.setOutput(ItemStack.class, this.recipe.getRecipeOutput());
     }
 }

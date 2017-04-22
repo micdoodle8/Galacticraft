@@ -6,10 +6,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ public class CompressorRecipes
     private static Field adventureFlag;
     private static boolean flagNotCached = true;
 
-    public static ShapedRecipes addRecipe(ItemStack output, Object... inputList)
+    public static ShapedRecipesGC addRecipe(ItemStack output, Object... inputList)
     {
         String s = "";
         int i = 0;
@@ -93,10 +91,10 @@ public class CompressorRecipes
             }
         }
 
-        ShapedRecipes shapedrecipes = new ShapedRecipes(j, k, aitemstack, output);
-        if (!adventureOnly) CompressorRecipes.recipes.add(shapedrecipes);
-        CompressorRecipes.recipesAdventure.add(shapedrecipes);
-        return shapedrecipes;
+        ShapedRecipesGC shapedRecipes = new ShapedRecipesGC(j, k, aitemstack, output);
+        if (!adventureOnly) CompressorRecipes.recipes.add(shapedRecipes);
+        CompressorRecipes.recipesAdventure.add(shapedRecipes);
+        return shapedRecipes;
     }
 
     public static void addShapelessRecipe(ItemStack par1ItemStack, Object... par2ArrayOfObj)
@@ -131,15 +129,15 @@ public class CompressorRecipes
             }
         }
 
-        IRecipe toAdd = new ShapelessOreRecipe(par1ItemStack, arraylist.toArray());
+        IRecipe toAdd = new ShapelessOreRecipeGC(par1ItemStack, arraylist.toArray());
         if (!adventureOnly) CompressorRecipes.recipes.add(toAdd);
         CompressorRecipes.recipesAdventure.add(toAdd);
     }
 
-    public static ShapedRecipes addRecipeAdventure(ItemStack output, Object... inputList)
+    public static ShapedRecipesGC addRecipeAdventure(ItemStack output, Object... inputList)
     {
-    	adventureOnly = true; 
-    	ShapedRecipes returnValue = CompressorRecipes.addRecipe(output, inputList);
+    	adventureOnly = true;
+        ShapedRecipesGC returnValue = CompressorRecipes.addRecipe(output, inputList);
     	adventureOnly = false;
     	return returnValue;
     }
@@ -200,11 +198,11 @@ public class CompressorRecipes
             {
                 IRecipe irecipe = theRecipes.get(j);
 
-                if (irecipe instanceof ShapedRecipes && CompressorRecipes.matches((ShapedRecipes) irecipe, inventory, par2World))
+                if (irecipe instanceof ShapedRecipesGC && CompressorRecipes.matches((ShapedRecipesGC) irecipe, inventory, par2World))
                 {
                     return irecipe.getRecipeOutput().copy();
                 }
-                else if (irecipe instanceof ShapelessOreRecipe && CompressorRecipes.matchesShapeless((ShapelessOreRecipe) irecipe, inventory, par2World))
+                else if (irecipe instanceof ShapelessOreRecipeGC && CompressorRecipes.matchesShapeless((ShapelessOreRecipeGC) irecipe, inventory, par2World))
                 {
                     return irecipe.getRecipeOutput().copy();
                 }
@@ -214,7 +212,7 @@ public class CompressorRecipes
         }
     }
 
-    private static boolean matches(ShapedRecipes recipe, IInventory inventory, World par2World)
+    private static boolean matches(ShapedRecipesGC recipe, IInventory inventory, World par2World)
     {
         for (int i = 0; i <= 3 - recipe.recipeWidth; ++i)
         {
@@ -235,7 +233,7 @@ public class CompressorRecipes
         return false;
     }
 
-    private static boolean checkMatch(ShapedRecipes recipe, IInventory inventory, int par2, int par3, boolean par4)
+    private static boolean checkMatch(ShapedRecipesGC recipe, IInventory inventory, int par2, int par3, boolean par4)
     {
         for (int k = 0; k < 3; ++k)
         {
@@ -288,7 +286,7 @@ public class CompressorRecipes
         return true;
     }
 
-    private static boolean matchesShapeless(ShapelessOreRecipe recipe, IInventory var1, World par2World)
+    private static boolean matchesShapeless(ShapelessOreRecipeGC recipe, IInventory var1, World par2World)
     {
         ArrayList<Object> required = new ArrayList<Object>(recipe.getInput());
 

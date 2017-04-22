@@ -54,7 +54,7 @@ public class BuggyRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -80,26 +80,6 @@ public class BuggyRecipeCategory extends BlankRecipeCategory
         itemstacks.init(18, true, 141, 7);
         itemstacks.init(19, false, 138, 100);
 
-        if (recipeWrapper instanceof BuggyRecipeWrapper)
-        {
-            BuggyRecipeWrapper buggyRecipeWrapper = (BuggyRecipeWrapper) recipeWrapper;
-            List inputs = buggyRecipeWrapper.getInputs();
-
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(19, buggyRecipeWrapper.getOutputs());
-        }
-    }
-
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
-    {
-        this.setRecipe(recipeLayout, recipeWrapper);
+        itemstacks.set(ingredients);
     }
 }

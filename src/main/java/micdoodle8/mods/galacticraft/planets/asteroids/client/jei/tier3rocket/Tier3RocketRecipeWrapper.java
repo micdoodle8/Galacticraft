@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core.client.jei.buggy;
+package micdoodle8.mods.galacticraft.planets.asteroids.client.jei.tier3rocket;
 
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
@@ -9,16 +9,12 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class Tier3RocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull
     private final INasaWorkbenchRecipe recipe;
 
-    public BuggyRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
+    public Tier3RocketRecipeWrapper(@Nonnull INasaWorkbenchRecipe recipe)
     {
         this.recipe = recipe;
     }
@@ -26,7 +22,7 @@ public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingR
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputs(ItemStack.class, Lists.newArrayList(recipe.getRecipeInput().values()));
-        ingredients.setOutput(ItemStack.class, recipe.getRecipeOutput());
+        ingredients.setInputs(ItemStack.class, Lists.newArrayList(this.recipe.getRecipeInput().values()));
+        ingredients.setOutput(ItemStack.class, this.recipe.getRecipeOutput());
     }
 }

@@ -1,4 +1,4 @@
-//package micdoodle8.mods.galacticraft.planets.mars.nei;
+//package micdoodle8.mods.galacticraft.planets.asteroids.client.nei;
 //
 //import codechicken.lib.gui.GuiDraw;
 //import codechicken.nei.api.stack.PositionedStack;
@@ -6,22 +6,22 @@
 //import codechicken.nei.util.NEIServerUtils;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+//import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMiner;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.ResourceLocation;
 //import org.lwjgl.opengl.GL11;
 //
 //import java.util.ArrayList;
 //import java.util.Map;
-//import java.util.Map.Entry;
 //import java.util.Set;
 //
-//public class CargoRocketRecipeHandler extends TemplateRecipeHandler
+//public class AstroMinerRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation cargoRocketTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_cargo.png");
+//    private static final ResourceLocation rocketGuiTexture = GuiSchematicAstroMiner.schematicTexture;
 //
 //    public String getRecipeId()
 //    {
-//        return "galacticraft.cargoRocket";
+//        return "galacticraft.astroMiner";
 //    }
 //
 //    @Override
@@ -30,17 +30,17 @@
 //        return 1;
 //    }
 //
-//    public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
+//    public Set<Map.Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
 //    {
-//        return NEIGalacticraftMarsConfig.getCargoBenchRecipes();
+//        return NEIGalacticraftAsteroidsConfig.getAstroMinerRecipes();
 //    }
 //
 //    @Override
 //    public void drawBackground(int recipe)
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GuiDraw.changeTexture(CargoRocketRecipeHandler.cargoRocketTexture);
-//        GuiDraw.drawTexturedModalRect(0, 0, 3, 4, 168, 125);
+//        GuiDraw.changeTexture(AstroMinerRecipeHandler.rocketGuiTexture);
+//        GuiDraw.drawTexturedModalRect(0, -8, 3, 32, 168, 104);
 //    }
 //
 //    @Override
@@ -131,7 +131,7 @@
 //    @Override
 //    public String getGuiTexture()
 //    {
-//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_rocket_cargo.png";
+//        return GalacticraftPlanets.TEXTURE_PREFIX + "textures/gui/schematic_astro_miner.png";
 //    }
 //
 //    @Override
