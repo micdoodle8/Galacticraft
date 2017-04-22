@@ -5,9 +5,6 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
-import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.client.particle.Particle;
@@ -26,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-public class EntityLandingBalloons extends EntityLanderBase implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel, IIgnoreShift, ICameraZoomEntity
+public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreShift, ICameraZoomEntity
 {
     private int groundHitCount;
     private float rotationPitchSpeed;
@@ -50,6 +47,13 @@ public class EntityLandingBalloons extends EntityLanderBase implements IInventor
     public double getMountedYOffset()
     {
         return super.getMountedYOffset() - 0.9;
+    }
+
+    @Override
+    public float getRotateOffset()
+    {
+        //Signal no rotate
+        return -20.0F;
     }
 
     @Override

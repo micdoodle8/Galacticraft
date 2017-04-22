@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,13 +18,15 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.*;
 
-public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnoreShift, IPacketReceiver
+public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnoreShift
 {
     private boolean lastShouldMove;
     private UUID persistantRiderUUID;
     private Boolean shouldMoveClient;
     private Boolean shouldMoveServer;
     private boolean hasReceivedPacket;
+    private ArrayList prevData;
+    private boolean networkDataChanged;
 
     public EntityCelestialFake(World var1)
     {
@@ -188,7 +189,15 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             objList.add(this.getPassengers().isEmpty() ? -1 : this.getPassengers().get(0).getEntityId());
         }
 
+        this.networkDataChanged = !objList.equals(this.prevData);
+        this.prevData = objList;
         return objList;
+    }
+
+    @Override
+    public boolean networkedDataChanged()
+    {
+        return this.networkDataChanged;
     }
 
     @Override

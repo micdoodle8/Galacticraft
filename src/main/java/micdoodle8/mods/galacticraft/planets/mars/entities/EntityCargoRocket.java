@@ -215,6 +215,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
         list.add(this.posX * 8000.0D);

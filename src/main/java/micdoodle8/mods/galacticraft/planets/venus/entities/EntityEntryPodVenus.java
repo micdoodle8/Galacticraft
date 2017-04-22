@@ -48,6 +48,13 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     }
 
     @Override
+    public float getRotateOffset()
+    {
+        //flag no rotate
+        return -20F;
+    }
+
+    @Override
     public boolean shouldSpawnParticles()
     {
         return false;

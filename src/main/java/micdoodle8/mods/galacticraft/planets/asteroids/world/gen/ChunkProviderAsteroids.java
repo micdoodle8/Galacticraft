@@ -662,7 +662,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                     }
 
                     worldObj.setBlockState(new BlockPos(px, y, pz), block.getStateFromMeta(meta), 2);
-                    int count = 7;
+                    int count = 9;
                     if (!(worldObj.getBlockState(new BlockPos(px - 1, y, pz)).getBlock() instanceof BlockAir))
                     {
                         count = 1;
@@ -677,9 +677,9 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                     }
                     else if (!(worldObj.getBlockState(new BlockPos(px - 4, y, pz)).getBlock() instanceof BlockAir))
                     {
-                        count = 6;
+                        count = 7;
                     }
-                    worldObj.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(px, y, pz), count);
+                    worldObj.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(px - (count > 1 ? 1 : 0), y, pz), count);
                 }
             }
         }
@@ -920,11 +920,12 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                             {
                                 count = 12;
                             }
-                            chunk.setBlockState(new BlockPos(x - 1, y & 15, z), GCBlocks.brightAir.getStateFromMeta(15 - count));
+                            if (count > 12) count = 12;
+                            chunk.setBlockState(new BlockPos(x - 1, y, z), GCBlocks.brightAir.getStateFromMeta(13 - count));
                             ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
                             if (extendedblockstorage != null)
                             {
-                                extendedblockstorage.setExtBlocklightValue(x - 1, y & 15, z, count);
+                                extendedblockstorage.setExtBlocklightValue(x - 1, y & 15, z, count + 2);
                             }
                         }
                     }

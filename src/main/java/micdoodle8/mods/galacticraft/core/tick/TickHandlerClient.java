@@ -465,7 +465,11 @@ public class TickHandlerClient
 
             if (player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.getRidingEntity()));
+                EntitySpaceshipBase rocket = (EntitySpaceshipBase) player.getRidingEntity();
+                if (rocket.prevRotationPitch != rocket.rotationPitch || rocket.prevRotationYaw != rocket.rotationYaw)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.getRidingEntity()));
+                }
             }
 
             if (world != null)

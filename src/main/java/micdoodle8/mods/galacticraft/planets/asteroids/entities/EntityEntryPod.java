@@ -45,6 +45,13 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
+    public float getRotateOffset()
+    {
+        //Signal no rotate
+        return -20.0F;
+    }
+    
+    @Override
     public boolean shouldSpawnParticles()
     {
         return false;

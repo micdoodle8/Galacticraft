@@ -21,7 +21,7 @@ import java.util.*;
 
 public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, ITickable
 {
-    public long ticks = 0;
+    public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
     private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
@@ -33,34 +33,30 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
         if (this.ticks == 0)
         {
             this.initiate();
-        }
 
-        //Who coded this?  A server would need to run in excess of 14 billion years to reach this value
-//        if (this.ticks >= Long.MAX_VALUE)
-//        {
-//            this.ticks = 1;
-//        }
+            if (this.isNetworkedTile())
+        {
+            if (this.fieldCacheClient == null || this.fieldCacheServer == null)
+            {
+                    this.initFieldCache();
+                }
+
+                if (this.worldObj != null && this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
+                {
+                    //Request any networked information from server on first client update (maybe client just logged on, but server networkdata didn't change recently)
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+                }
+                }
+            }
 
         this.ticks++;
 
         if (this.isNetworkedTile() && this.ticks % this.getPacketCooldown() == 0)
         {
-            if (this.fieldCacheClient == null || this.fieldCacheServer == null)
-            {
-                try
-                {
-                    this.initFieldCache();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
             if (this.worldObj.isRemote && this.fieldCacheServer.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-//                if (networkDataChanged)
+                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(packet);
                 }
@@ -68,7 +64,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             else if (!this.worldObj.isRemote && this.fieldCacheClient.size() > 0)
             {
                 PacketDynamic packet = new PacketDynamic(this);
-//                if (networkDataChanged)
+                if (networkDataChanged)
                 {
                     GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
                 }
@@ -76,7 +72,9 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
         }
     }
 
-    private void initFieldCache() throws IllegalArgumentException, IllegalAccessException
+    private void initFieldCache()
+    {
+        try
     {
         this.fieldCacheClient = new LinkedHashSet<Field>();
         this.fieldCacheServer = new LinkedHashSet<Field>();
@@ -96,6 +94,11 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                     this.fieldCacheServer.add(field);
                 }
             }
+        }
+    }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -125,15 +128,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-            try
-            {
                 this.initFieldCache();
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
 
         if (this.worldObj.isRemote)
         {
@@ -202,15 +198,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-            try
-            {
                 this.initFieldCache();
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
 
 //        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
 //        {

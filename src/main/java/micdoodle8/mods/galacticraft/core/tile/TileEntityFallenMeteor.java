@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
-public class TileEntityFallenMeteor extends TileEntityAdvanced implements IPacketReceiver
+public class TileEntityFallenMeteor extends TileEntityAdvanced
 {
     public static final int MAX_HEAT_LEVEL = 5000;
     @NetworkedField(targetSide = Side.CLIENT)

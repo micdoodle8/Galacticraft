@@ -216,8 +216,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 //        this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
 //        this.dataManager.addObject(this.currentDamage, new Integer(0));
 //        this.dataManager.addObject(this.timeSinceHit, new Integer(0));
-        this.isImmuneToFire = true;
         this.noClip = true;
+        
+        if (world != null && world.isRemote)
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
     }
 
     @Override
@@ -691,6 +695,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
         list.add(this.playerMP == null ? AISTATE_OFFLINE : this.AIstate);
         list.add(this.energyLevel);
         list.add(this.targetPitch);

@@ -44,6 +44,12 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
+    public float getRotateOffset()
+    {
+        return +0.0F;
+    }
+
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -155,7 +161,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public boolean shouldSpawnParticles()
     {
-        return this.rotationPitch != 0.0000000000001F;
+        return this.ticks > 40 && this.rotationPitch != 0.0000001F;
     }
 
     @Override
@@ -168,10 +174,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         new Vector3(this);
 
         final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
-        particleMap.put(new Vector3(this).translate(new Vector3(0, 1, 0)), new Vector3(x1, y1, z1));
+        particleMap.put(new Vector3(this.posX, this.posY + 1D + this.motionY / 2, this.posZ), new Vector3(x1, y1 + this.motionY / 2, z1));
         return particleMap;
     }
 
@@ -206,7 +209,8 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public void tickOnGround()
     {
-        this.rotationPitch = 0.0000000000001F;
+        //Signal switch off flames
+        this.rotationPitch = 0.0000001F;
     }
 
     @Override

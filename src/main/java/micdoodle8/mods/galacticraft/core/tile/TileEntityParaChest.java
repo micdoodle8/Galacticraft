@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockParaChest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -26,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.Iterator;
 import java.util.List;
 
-public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IPacketReceiver, IScaleableFuelLevel
+public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IScaleableFuelLevel
 {
     private final int tankCapacity = 5000;
     @NetworkedField(targetSide = Side.CLIENT)
