@@ -517,19 +517,19 @@ public class TickHandlerClient
                 final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
                 boolean hasChanged = false;
 
-                if (minecraft.gameSettings.keyBindLeft.isPressed())
+                if (minecraft.gameSettings.keyBindLeft.isKeyDown())
                 {
                     ship.turnYaw(-1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindRight.isPressed())
+                if (minecraft.gameSettings.keyBindRight.isKeyDown())
                 {
                     ship.turnYaw(1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindForward.isPressed())
+                if (minecraft.gameSettings.keyBindForward.isKeyDown())
                 {
                     if (ship.getLaunched())
                     {
@@ -538,7 +538,7 @@ public class TickHandlerClient
                     }
                 }
 
-                if (minecraft.gameSettings.keyBindBack.isPressed())
+                if (minecraft.gameSettings.keyBindBack.isKeyDown())
                 {
                     if (ship.getLaunched())
                     {
