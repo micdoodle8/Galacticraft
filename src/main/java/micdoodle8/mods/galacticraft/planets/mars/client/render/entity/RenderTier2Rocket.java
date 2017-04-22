@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import com.google.common.base.Function;
+
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
@@ -8,16 +9,19 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -97,5 +101,13 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
         GL11.glPopMatrix();
 
         RenderHelper.enableStandardItemLighting();
+    }
+    
+    @Override
+    public boolean shouldRender(EntityTier2Rocket rocket, ICamera camera, double camX, double camY, double camZ)
+    {
+        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox().expand(0.5D, 0, 0.5D);
+
+        return rocket.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

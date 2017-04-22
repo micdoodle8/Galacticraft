@@ -32,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -277,6 +278,42 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onUpdate()
     {
+        //Workaround for a weird bug (?) in vanilla 1.8.9 where - if client view distance is shorter
+        //than the server's chunk loading distance - chunks will unload on the client, but the
+        //entity will still be in the WorldClient.loadedEntityList.  This results in an entity which
+        //is in the world, not dead and still updating on both server and client, but not in any chunk's
+        //chunk.entityLists.  Also, it won't be reloaded into any chunk's entityLists when the chunk comes
+        //back into viewing range - not sure why, maybe because it's already in the World.loadedEntityList?
+        //Because it's now not in any chunk's entityLists, it cannot be iterated for rendering by RenderGlobal,
+        //so it's gone invisible!
+        
+        //Tracing shows that Chunk.onChunkUnload() is called on the chunk clientside when the chunk goes
+        //out of the view distance.  However, even after Chunk.onChunkUnload() - which should remove
+        //this entity from the WorldClient.loadedEntityList - this entity stays in the world loadedEntityList.
+        //That's why an onUpdate() tick is active for it, still!
+        //Weird, huh?
+        if (this.worldObj.isRemote && this.addedToChunk)
+        {
+            Chunk chunk = this.worldObj.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ);
+            if (chunk.isChunkLoaded)
+            {
+                boolean thisfound = false;
+                ClassInheritanceMultiMap<Entity> mapEntities = chunk.getEntityLists()[this.chunkCoordY];
+                for (Entity ent : mapEntities)
+                {
+                    if (ent == this)
+                    {
+                        thisfound = true;
+                        break;
+                    }
+                }
+                if (!thisfound)
+                {
+                    chunk.addEntity(this);
+                }
+            }
+        }
+        
         if (this.landing && this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
             if (this.targetVec != null)
@@ -1346,5 +1383,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
         return (ISound) this.rocketSoundUpdater;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isInRangeToRender3d(double x, double y, double z)
+    {
+        double d0 = this.posX - x;
+        double d1 = this.posY - y;
+        double d2 = this.posZ - z;
+        double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+        return d3 < 262144D;  //512 squared
     }
 }
