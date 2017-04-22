@@ -97,7 +97,10 @@ public class GalacticraftPlanets
         GalacticraftPlanets.proxy.postInit(event);
         try {
         	if (Loader.isModLoaded("MineFactoryReloaded"))
+        	{
         		FactoryRegistry.sendMessage("registerSpawnHandler", new MFRSpawnHandlerSlimeling());
+                GCLog.info("Galacticraft: activating MFR compatibility feature.");
+        	}
         } catch (Exception e)
         {
         	GCLog.severe("Error when attempting to register Slimeling auto-spawnhandler in MFR");
