@@ -144,7 +144,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             }
         }
         
-        this.readMachineSidesFromNBT(nbt);
+        this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
     @Override
@@ -156,8 +156,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
 
         super.writeToNBT(nbt);
-        NBTTagList var2 = new NBTTagList();
 
+        NBTTagList var2 = new NBTTagList();
         for (int var3 = 0; var3 < this.containingItems.length; ++var3)
         {
             if (this.containingItems[var3] != null)
@@ -168,9 +168,10 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
                 var2.appendTag(var4);
             }
         }
-
         nbt.setTag("Items", var2);
-        this.addMachineSidesToNBT(nbt);
+
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+        
         return nbt;
     }
 
