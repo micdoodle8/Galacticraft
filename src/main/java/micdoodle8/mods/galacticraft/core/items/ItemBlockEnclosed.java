@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-//import java.lang.reflect.Method;
-//
-//import appeng.api.AEApi;
-//import appeng.api.util.AEColor;
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
+import appeng.api.AEApi;
+import appeng.api.util.AEColor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlockType;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -86,11 +82,11 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                     worldIn.playSound(playerIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
                     --stack.stackSize;
 
-//                  ItemStack itemME = AEApi.instance().definitions().parts().cableGlass().stack(AEColor.Transparent, 1);
-//                  itemME.stackSize = 2; //Fool AppEng into not destroying anything in the player inventory
-//                  return AEApi.instance().partHelper().placeBus( itemME, pos, side, entityplayer, world );
-//                  //Might be better to do appeng.parts.PartPlacement.place( is, pos, side, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
-                        }
+                    ItemStack itemME = AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1);
+                    itemME.stackSize = 2; //Fool AppEng into not destroying anything in the player inventory
+                    return AEApi.instance().partHelper().placeBus( itemME, pos, side, playerIn, hand, worldIn );
+                    //Might be better to do appeng.parts.PartPlacement.place( is, pos, side, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
+                }
                 return EnumActionResult.SUCCESS;
             }
             else
