@@ -207,6 +207,12 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
+    public int damageDropped(IBlockState state)
+    {
+        return state.getBlock().getMetaFromState(state);
+    }
+
+    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
         int metadata = state.getBlock().getMetaFromState(state);
