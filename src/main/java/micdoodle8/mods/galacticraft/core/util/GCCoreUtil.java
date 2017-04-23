@@ -235,6 +235,8 @@ public class GCCoreUtil
         String line;
         String supplemented = "entity." + assetprefix.toLowerCase() + ".";
         
+        //TODO:  We could also load en_US here and have any language keys not in the other lang set to the en_US value
+        
         while((line = br.readLine()) != null)
         {
             line = line.trim();

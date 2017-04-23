@@ -630,7 +630,7 @@ public class TickHandlerClient
         String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
         if (lang != null && !lang.equals(savedLang))
         {
-            if (net.minecraft.util.text.translation.I18n.canTranslate("entity.evolved_creeper.name"))
+            if (net.minecraft.util.text.translation.I18n.canTranslate("entity.galacticraftcore.evolved_creeper.name"))
             {
                 savedLang = lang;
             }

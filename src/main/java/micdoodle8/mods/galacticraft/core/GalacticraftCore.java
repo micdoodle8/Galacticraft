@@ -405,7 +405,7 @@ public class GalacticraftCore
         this.loadLanguageCore("en_US");
         if (event.getSide() == Side.CLIENT)
         {
-            TickHandlerClient.savedLang = "en_US";
+            TickHandlerClient.savedLang = "none_";  //force an update first client tick
         }
     }
 
