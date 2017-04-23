@@ -9,11 +9,9 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,56 +55,15 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
             if (this.containingItems[1] != null)
             {
-                if (this.containingItems[1].getItem() instanceof ItemCanisterGeneric)
+                final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
+
+                if (liquid != null)
                 {
-                    if (this.containingItems[1].getItem() == GCItems.fuelCanister)
+                    boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
+
+                    if (isFuel)
                     {
-                        int originalDamage = this.containingItems[1].getItemDamage();
-                        int used = this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
-                        if (originalDamage + used == ItemCanisterGeneric.EMPTY)
-                        {
-                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
-                        }
-                        else
-                        {
-                            this.containingItems[1] = new ItemStack(GCItems.fuelCanister, 1, originalDamage + used);
-                        }
-                    }
-                }
-                else
-                {
-                    final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
-
-                    if (liquid != null)
-                    {
-                        boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
-
-                        if (isFuel)
-                        {
-                            if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
-                            {
-                                this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), true);
-
-                                if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-                                {
-                                    final int amount = this.containingItems[1].stackSize;
-                                    if (amount > 1)
-                                    {
-                                        this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
-                                    }
-                                    this.containingItems[1] = new ItemStack(Items.bucket, amount);
-                                }
-                                else
-                                {
-                                    this.containingItems[1].stackSize--;
-
-                                    if (this.containingItems[1].stackSize == 0)
-                                    {
-                                        this.containingItems[1] = null;
-                                    }
-                                }
-                            }
-                        }
+                        FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.containingItems, 1, liquid.amount);
                     }
                 }
             }
