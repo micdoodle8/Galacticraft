@@ -233,7 +233,7 @@ public class VenusModule implements IPlanetsModule
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        ResourceLocation registryName = new ResourceLocation(Constants.MOD_ID_CORE, var1);
+        ResourceLocation registryName = new ResourceLocation(Constants.MOD_ID_PLANETS, var1);
         EntityRegistry.registerModEntity(registryName, var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }
 }
