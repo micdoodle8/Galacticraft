@@ -220,7 +220,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+        if (this.getElectricInputDirection().getOpposite().equals(from))
+        {
+            return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+        }
+        return false;
     }
 
     @Override
@@ -242,7 +246,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
-        return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        if (this.getElectricInputDirection().getOpposite().equals(from))
+        {
+            return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        }
+        return null;
     }
 
     @Override
