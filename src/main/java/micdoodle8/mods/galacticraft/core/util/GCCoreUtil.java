@@ -22,6 +22,7 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -29,13 +30,34 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import javax.annotation.Nullable;
+
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 
 public class GCCoreUtil
 {
     public static int nextID = 0;
     private static boolean deobfuscated;
+    private static String lastLang = "";
+    public static boolean langDisable;
 
     static
     {
@@ -204,6 +226,79 @@ public class GCCoreUtil
             return string;
         }
         return GCCoreUtil.translate(string).toLowerCase();
+    }
+
+    @Nullable
+    public static InputStream supplementEntityKeys(InputStream inputstream, String assetprefix) throws IOException
+    {
+        ArrayList<String> langLines = new ArrayList<String>();
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputstream));
+        String line;
+        String supplemented = "entity." + assetprefix.toLowerCase() + ".";
+        
+        //TODO:  We could also load en_US here and have any language keys not in the other lang set to the en_US value
+        
+        while((line = br.readLine()) != null)
+        {
+            line = line.trim();
+            if (!line.isEmpty())
+            {
+                langLines.add(line);
+                if (line.substring(0, 7).equals("entity."))
+                {
+                    langLines.add(supplemented + line.substring(7));
+                }
+            }
+        }
+        
+        ByteArrayOutputStream outputstream = new ByteArrayOutputStream();
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputstream, Charsets.UTF_8.newEncoder()));
+        for (String outLine : langLines)
+            writer.write(outLine + "\n");
+        writer.close();
+
+        return new ByteArrayInputStream(outputstream.toByteArray());
+    }
+
+    public static void loadLanguage(String langIdentifier, String assetPrefix, File source)
+    {
+        if (!lastLang.equals(langIdentifier))
+        {
+            langDisable = false;
+        }
+        if (langDisable) return;
+        String langFile = "assets/" + assetPrefix + "/lang/" + langIdentifier + ".lang";
+        InputStream stream = null;
+        ZipFile zip = null;
+        try
+        {
+            if (source.isDirectory() && (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
+            {
+                stream = new FileInputStream(new File(source.toURI().resolve(langFile).getPath()));
+            }
+            else
+            {
+                zip = new ZipFile(source);
+                ZipEntry entry = zip.getEntry(langFile);
+                if(entry == null) throw new FileNotFoundException();
+                stream = zip.getInputStream(entry);
+            }
+            LanguageMap.inject(GCCoreUtil.supplementEntityKeys(stream, assetPrefix));
+        }
+        catch(FileNotFoundException fnf)
+        {
+            langDisable = true;
+        }
+        catch(Exception ignore) { }
+        finally
+        {
+            if (stream != null) IOUtils.closeQuietly(stream);
+            try
+            {
+                if (zip != null) zip.close();
+            }
+            catch (IOException ignore) {}
+        }
     }
 
     public static int getDimensionID(World world)

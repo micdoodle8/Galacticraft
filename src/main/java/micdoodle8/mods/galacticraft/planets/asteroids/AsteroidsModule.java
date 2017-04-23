@@ -39,11 +39,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -52,26 +50,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import org.apache.commons.io.IOUtils;
 
 public class AsteroidsModule implements IPlanetsModule
 {
     public static Planet planetAsteroids;
-    private File GCPlanetsSource;
 
     public static AsteroidsPlayerHandler playerHandler;
     public static Fluid fluidMethaneGas;
@@ -99,7 +86,6 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        GCPlanetsSource = event.getSourceFile();
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
@@ -262,52 +248,6 @@ public class AsteroidsModule implements IPlanetsModule
     public void postInit(FMLPostInitializationEvent event)
     {
         GCPlanetDimensions.ASTEROIDS = WorldUtil.getDimensionTypeById(ConfigManagerAsteroids.dimensionIDAsteroids);
-
-        loadLanguage("en_US");
-        if (event.getSide() == Side.CLIENT)
-        {
-            loadLanguageClient();
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void loadLanguageClient()
-    {
-        String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
-        if (lang != null && !lang.equals("en_US")) loadLanguage(lang);
-    }
-
-    private void loadLanguage(String langIdentifier)
-    {
-        String langFile = "assets/" + GalacticraftPlanets.ASSET_PREFIX + "/lang/" + langIdentifier + ".lang";
-        InputStream stream = null;
-        ZipFile zip = null;
-        try
-        {
-            if (GCPlanetsSource.isDirectory() && (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
-            {
-                stream = new FileInputStream(new File(GCPlanetsSource.toURI().resolve(langFile).getPath()));
-            }
-            else
-            {
-                zip = new ZipFile(GCPlanetsSource);
-                ZipEntry entry = zip.getEntry(langFile);
-                if(entry == null) throw new FileNotFoundException();
-                stream = zip.getInputStream(entry);
-            }
-            LanguageMap.inject(stream);
-        } catch(Exception e) {
-            //Fail silently if the language is not found (maybe it's not in Galacticraft)
-        }
-        finally
-        {
-            if (stream != null) IOUtils.closeQuietly(stream);
-            try
-            {
-                if (zip != null) zip.close();
-            }
-            catch (IOException e) {}
-        }
     }
 
     @Override

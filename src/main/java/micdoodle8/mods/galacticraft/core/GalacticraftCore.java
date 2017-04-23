@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -70,6 +71,7 @@ import java.util.HashMap;
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
+    private File GCCoreSource;
 
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
     public static CommonProxyCore proxy;
@@ -114,6 +116,7 @@ public class GalacticraftCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        GCCoreSource = event.getSourceFile();
         GCCapabilities.register();
 
     	this.initModInfo(event.getModMetadata());
@@ -400,6 +403,17 @@ public class GalacticraftCore
         }
 
         RecipeManagerGC.setConfigurableRecipes();
+
+        this.loadLanguageCore("en_US");
+        if (event.getSide() == Side.CLIENT)
+        {
+            TickHandlerClient.savedLang = "none_";  //force an update first client tick
+        }
+    }
+
+    public void loadLanguageCore(String lang)
+    {
+        GCCoreUtil.loadLanguage(lang, Constants.ASSET_PREFIX, this.GCCoreSource);
     }
 
     @EventHandler
