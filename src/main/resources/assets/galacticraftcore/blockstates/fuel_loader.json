@@ -1,8 +1,33 @@
 {
+    "forge_marker": 1,
+    "defaults": {
+                    "textures": {
+                    "particle": "galacticraftcore:blocks/machine",
+                    "front": "galacticraftcore:blocks/machine_fuelloader",
+                    "rear": "galacticraftcore:blocks/machine_fuelloader",
+                    "side": "galacticraftcore:blocks/machine_side",
+                    "el_in": "galacticraftcore:blocks/machine_input",
+                    "el_out": "galacticraftcore:blocks/machine_oil_input",
+                    "top": "galacticraftcore:blocks/machine",
+                    "base": "galacticraftcore:blocks/machine"  }
+    },
     "variants": {
-        "facing=north": { "model": "galacticraftcore:fuel_loader_model" },
-        "facing=east":  { "model": "galacticraftcore:fuel_loader_model", "y": 90 },
-        "facing=west":  { "model": "galacticraftcore:fuel_loader_model", "y": 270 },
-        "facing=south": { "model": "galacticraftcore:fuel_loader_model", "y": 180 }
+        "inventory": [{ "model": "galacticraftcore:fuel_loader_model" }],
+
+        "facing" : {
+           "north": { },
+           "east":  { "y": 90 },
+           "west":  { "y": 270 },
+           "south": { "y": 180 }
+        },
+        
+        "msm" : {
+            "lr": { "model": "galacticraftcore:machine_tiered_lr" },
+            "lb": { "model": "galacticraftcore:machine_tiered_lb" },
+            "rl": { "model": "galacticraftcore:machine_tiered_rl" },
+            "rb": { "model": "galacticraftcore:machine_tiered_rb" },
+            "bl": { "model": "galacticraftcore:machine_tiered_bl" },
+            "br": { "model": "galacticraftcore:machine_tiered_br" }
+        }
     }
 }

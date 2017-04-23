@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -10,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,11 +23,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public BlockFuelLoader(String assetName)
     {
@@ -113,12 +119,32 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     @Override
     protected BlockState createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockState(this, FACING, SIDES);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+
+        return IMachineSides.addPropertyForTile(state, tile, MACHINESIDES_RENDERTYPE, SIDES);
     }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+    
+    @Override
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            ((IMachineSides)tile).nextSideConfiguration(tile);
+            return true;
+        }
+        return false;
     }
 }
