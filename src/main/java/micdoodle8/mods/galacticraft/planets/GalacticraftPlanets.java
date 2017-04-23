@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
@@ -38,6 +39,7 @@ import java.util.List;
 public class GalacticraftPlanets
 {
     public static final String NAME = "Galacticraft Planets";
+    private File GCPlanetsSource;
 
     @Instance(Constants.MOD_ID_PLANETS)
     public static GalacticraftPlanets instance;
@@ -54,6 +56,7 @@ public class GalacticraftPlanets
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        GCPlanetsSource = event.getSourceFile();
         this.initModInfo(event.getModMetadata());
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -106,6 +109,13 @@ public class GalacticraftPlanets
         	GCLog.severe("Error when attempting to register Slimeling auto-spawnhandler in MFR");
         	GCLog.exception(e);
         }
+
+        this.loadLanguagePlanets("en_US");
+    }
+
+    public void loadLanguagePlanets(String lang)
+    {
+        GCCoreUtil.loadLanguage(lang, GalacticraftPlanets.ASSET_PREFIX, GCPlanetsSource);
     }
 
     @EventHandler

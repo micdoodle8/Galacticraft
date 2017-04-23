@@ -38,6 +38,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -83,6 +84,7 @@ public class TickHandlerClient
     public static boolean spaceRaceGuiScheduled = false;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
+    public static String savedLang;
 
     public static void addFluidNetwork(FluidNetwork network)
     {
@@ -342,6 +344,8 @@ public class TickHandlerClient
             }
 
             TickHandlerClient.tickCount++;
+            
+            TickHandlerClient.checkLanguageChange();
 
             if (!GalacticraftCore.proxy.isPaused())
             {
@@ -616,6 +620,30 @@ public class TickHandlerClient
                 for (GalacticraftPacketHandler handler : packetHandlers)
                 {
                     handler.tick(world);
+                }
+            }
+        }
+    }
+
+    private static void checkLanguageChange()
+    {
+        String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
+        if (lang != null && !lang.equals(savedLang))
+        {
+            if (net.minecraft.util.text.translation.I18n.canTranslate("entity.evolved_creeper.name"))
+            {
+                savedLang = lang;
+            }
+            else
+            {
+                GalacticraftCore.instance.loadLanguageCore(lang);
+                if (GCCoreUtil.langDisable)
+                {
+                    savedLang = lang;
+                }
+                else if (GalacticraftCore.isPlanetsLoaded)
+                {
+                    GalacticraftPlanets.instance.loadLanguagePlanets(lang);
                 }
             }
         }
