@@ -381,7 +381,7 @@ public class GCBlocks
         registerBlock(GCBlocks.spaceGlassTinClear, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.spaceGlassTinVanilla, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.spaceGlassTinStrong, null);  //The corresponding item is already registered
-        registerBlock(GCBlocks.crafting, ItemBlockGC.class);
+        registerBlock(GCBlocks.crafting, ItemBlockDesc.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
