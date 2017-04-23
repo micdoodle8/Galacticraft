@@ -275,7 +275,8 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         if (type == EnumBlockBasicMoon.MOON_TURF)
         {
             BlockPos above = pos.offset(EnumFacing.UP);
-            return world.getBlockState(above).getBlock().isAir(world.getBlockState(above), world, above);
+            IBlockState stateAbove = world.getBlockState(above); 
+            return stateAbove.getBlock().isAir(stateAbove, world, above);
         }
 
         return false;

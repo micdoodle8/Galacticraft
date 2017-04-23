@@ -241,6 +241,80 @@ public class FluidUtil
     }
 
     /**
+     * This tries to empty the container (at inventory[slot]) into the specified tank
+     * forcing the tank contents to Fluid: desiredLiquid even if the container had
+     * something different (useful for different types of fuel, for example). 
+     * If successful, it replaces inventory[slot] with the corresponding empty container
+     * <p>
+     * 
+     * @param tank         The tank to fill with the fluid
+     * @param desiredLiquid       The type of liquid intended for that tank
+     * @param inventory
+     * @param slot
+     * @param amountOffered  The amount in the container being offered
+     */
+    public static void loadFromContainer(FluidTank tank, Fluid desiredLiquid, ItemStack[] inventory, int slot, int amountOffered)
+    {
+        ItemStack slotItem = inventory[slot];
+
+        if (slotItem.getItem() instanceof ItemCanisterGeneric)
+        {
+            int originalDamage = slotItem.getItemDamage();
+            int used = tank.fill(new FluidStack(desiredLiquid, ItemCanisterGeneric.EMPTY - originalDamage), true);
+            if (originalDamage + used >= ItemCanisterGeneric.EMPTY)
+            {
+                inventory[slot] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
+            }
+            else
+            {
+                inventory[slot] = new ItemStack(slotItem.getItem(), 1, originalDamage + used);
+            }
+        }
+        else
+        {
+            if (tank.getFluid() == null || amountOffered <= tank.getCapacity() - tank.getFluid().amount)
+            {
+                tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
+
+                if (FluidContainerRegistry.isFilledContainer(slotItem))
+                {
+                    final int bucketCount = slotItem.stackSize;
+                    if (FluidContainerRegistry.isBucket(slotItem))
+                    {
+                        if (bucketCount > 1)
+                        {
+                            tank.fill(new FluidStack(desiredLiquid, (bucketCount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                        }
+                        inventory[slot] = new ItemStack(Items.BUCKET, bucketCount);
+                    }
+                    else
+                    {
+                        ItemStack emptyStack = FluidContainerRegistry.drainFluidContainer(slotItem); 
+                        if (bucketCount > 1)
+                        {
+                            tank.fill(new FluidStack(desiredLiquid, (bucketCount - 1) * FluidContainerRegistry.getContainerCapacity(slotItem)), true);
+                            if (emptyStack != null)
+                            {
+                                emptyStack.stackSize = bucketCount;
+                            }
+                        }
+                        inventory[slot] = emptyStack;
+                    }
+                }
+                else
+                {
+                    slotItem.stackSize--;
+
+                    if (slotItem.stackSize == 0)
+                    {
+                        inventory[slot] = null;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Tests for any type of container with some space in it
      * It can be either an empty container, or a Galacticraft canister
      * of the appropriate type, either empty or at least with some capacity remaining

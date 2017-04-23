@@ -181,13 +181,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
         if (!ignoreDrop && tile != null && pipeColor != 15)
         {
-            final float f = 0.7F;
-            final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
-            final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, pipeColor));
-            entityitem.setDefaultPickupDelay();
-            worldIn.spawnEntityInWorld(entityitem);
+            spawnItem(worldIn, pos, pipeColor);
         }
 
         super.breakBlock(worldIn, pos, state);
@@ -265,13 +259,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
 
                     if (colorBefore != (byte) dyeColor && colorBefore != 15)
                     {
-                        final float f = 0.7F;
-                        final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                        final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
-                        final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                        final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, colorBefore));
-                        entityitem.setDefaultPickupDelay();
-                        worldIn.spawnEntityInWorld(entityitem);
+                        spawnItem(worldIn, pos, colorBefore);
                     }
 
                     //					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
@@ -294,6 +282,17 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         }
 
         return false;
+    }
+
+    private void spawnItem(World worldIn, BlockPos pos, int colorBefore)
+    {
+        final float f = 0.7F;
+        final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
+        final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, colorBefore));
+        entityitem.setDefaultPickupDelay();
+        worldIn.spawnEntityInWorld(entityitem);
     }
 
     @Override

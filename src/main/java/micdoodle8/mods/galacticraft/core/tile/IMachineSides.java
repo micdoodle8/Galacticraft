@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -357,6 +359,27 @@ public interface IMachineSides extends ITileClientUpdates
         }
     }
 
+    /**
+     * Call this from a Block's getActualState() method
+     *
+     * @param state   The blockstate prior to addition of this property
+     * @param tile    The tile entity matching the block position (null will return a default value)
+     * @param renderType  The calling block's MACHINESIDES_RENDERTYPE
+     * @param key     The name given to the machine sides property in the calling block e.g. SIDES
+     * 
+     * @return   A blockstate with the property added
+     */
+    public static IBlockState addPropertyForTile(IBlockState state, TileEntity tile, IMachineSidesProperties renderType, PropertyEnum key)
+    {
+        if (tile instanceof IMachineSides)
+        {
+            IMachineSides tileSides = (IMachineSides) tile;
+            return state.withProperty(key, tileSides.buildBlockStateProperty());
+        }
+        else
+            return state.withProperty(key, renderType.getDefault());
+    }
+    
     /**
      * For testing purposes - Sneak Wrench to activate this
      */

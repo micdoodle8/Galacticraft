@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
@@ -30,6 +31,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -832,16 +834,26 @@ public class WorldUtil
                 }
 
                 removeEntityFromWorld(worldOld, player, true);
-                spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
-                if (worldNew.provider instanceof WorldProviderSpaceStation)
+
+                if (ridingRocket != null)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
+                    spawnPos = new Vector3(ridingRocket);
                 }
+                else
+                {
+                    spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
+                }
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
                 player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) worldNew);
 
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(worldNew), new Object[] {}), player);
+                }
+                player.capabilities.isFlying = false;
 
                 player.interactionManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
@@ -880,6 +892,7 @@ public class WorldUtil
                     ((IWorldTransferCallback) entity).onWorldTransferred(worldNew);
                 }
 
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, new Vector3(entity));
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
                 worldNew.updateEntityWithOptionalForce(entity, false);
@@ -909,10 +922,22 @@ public class WorldUtil
                 }
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
-                spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-                //Do not actually set player to this position, this will be done later depending on whether in a rocket or not
+                if (ridingRocket != null)
+                {
+                    spawnPos = new Vector3(ridingRocket);
+                }
+                else
+                {
+                    spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+                }
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
 
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + GCCoreUtil.getDimensionID(worldNew));
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(worldNew), new Object[] {}), player);
+                }
+                player.capabilities.isFlying = false;
             }
 
             //Cargo rocket does not needs its location setting here, it will do that itself
@@ -965,17 +990,6 @@ public class WorldUtil
                 stats.setChestSpawnVector(type.getParaChestSpawnLocation((WorldServer) entity.worldObj, player, new Random()));
                 stats.setChestSpawnCooldown(200);
             }
-        }
-
-        //If in a rocket (e.g. with launch controller) set the player to the rocket's position instead of the player's spawn position
-        if (ridingRocket != null)
-        {
-            spawnPos = new Vector3(ridingRocket);
-        }
-
-        if (spawnPos != null)
-        {
-            forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
         }
 
         if (ridingRocket != null)
@@ -1473,5 +1487,23 @@ public class WorldUtil
         GCLog.severe("There was a problem getting WorldProvider type " + id);
         GCLog.severe("(possibly this is a conflict, check Galacticraft config.)");
         return null;
+    }
+
+    public static void markAdjacentPadForUpdate(World worldIn, BlockPos pos)
+    {
+        BlockPos offsetPos;
+        for (int dX = -2; dX <= 2; dX++)
+        {
+            for (int dZ = -2; dZ <= 2; dZ++)
+            {
+                offsetPos = pos.add(dX, 0, dZ);
+                final IBlockState blockState = worldIn.getBlockState(offsetPos);
+
+                if (blockState.getBlock() == GCBlocks.landingPadFull)
+                {
+                    worldIn.notifyBlockUpdate(offsetPos, blockState, blockState, 3);
+                }
+            }
+        }
     }
 }
