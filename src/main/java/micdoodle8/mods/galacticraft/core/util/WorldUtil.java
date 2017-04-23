@@ -1072,25 +1072,24 @@ public class WorldUtil
                 }
 
                 removeEntityFromWorld(worldOld, player, true);
+                if (worldNew.provider instanceof WorldProviderSpaceStation)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                }
 
-                spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
-                if (worldNew.provider instanceof WorldProviderSpaceStation) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
+                if (ridingRocket != null)
+                {
+                    spawnPos = new Vector3(ridingRocket);
+                }
+                else
+                {
+                    spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
+                }
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
                 
-//                ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
-//                if (ConfigManagerCore.enableDebug)
-//                {
-//                    GCLog.info("DEBUG: Loading first chunk in new dimension.");
-//                }
-//                ((WorldServer) worldNew).theChunkProviderServer.loadChunk(pair.chunkXPos, pair.chunkZPos);
-//                worldNew.updateEntityWithOptionalForce(entity, false);
-//                entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-//
                 player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) worldNew);
-//                player.playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-                //worldNew.updateEntityWithOptionalForce(entity, false);
-
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
 
                 player.theItemInWorldManager.setWorld((WorldServer) worldNew);
@@ -1130,6 +1129,7 @@ public class WorldUtil
                     ((IWorldTransferCallback) entity).onWorldTransferred(worldNew);
                 }
 
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, new Vector3(entity));
                 worldNew.spawnEntityInWorld(entity);
                 entity.setWorld(worldNew);
                 worldNew.updateEntityWithOptionalForce(entity, false);
@@ -1156,8 +1156,15 @@ public class WorldUtil
                 if (worldNew.provider instanceof WorldProviderSpaceStation) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
                 worldNew.updateEntityWithOptionalForce(entity, false);
 
-                spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-                //Do not actually set player to this position, this will be done later depending on whether in a rocket or not
+                if (ridingRocket != null)
+                {
+                    spawnPos = new Vector3(ridingRocket);
+                }
+                else
+                {
+                    spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
+                }
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
 
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
             }
@@ -1214,17 +1221,6 @@ public class WorldUtil
             }
         }
 
-        //If in a rocket (e.g. with launch controller) set the player to the rocket's position instead of the player's spawn position
-        if (ridingRocket != null)
-        {
-            spawnPos = new Vector3(ridingRocket);
-        }
-
-        if (spawnPos != null)
-        {
-            forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
-        }
-        
         if (ridingRocket != null)
         {
             worldNew.spawnEntityInWorld(ridingRocket);
