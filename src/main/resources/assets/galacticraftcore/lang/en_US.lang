@@ -636,6 +636,7 @@ tile.machine2.5.name=Circuit Fabricator
 tile.machine2.6.name=Oxygen Storage Module
 tile.machine3.9.name=Painter
 tile.magnetic_table.name=Magnetic Crafting Table
+tile.magnetic_table.description=Items placed won't fall off - it holds its inventory! Can shift-click items in. Hoppers can insert and remove items, it will attempt to automatically create the last recipe crafted.
 tile.moon_stairs_brick.name=Moon Dungeon Brick Stairs
 tile.moon_stairs_stone.name=Moon Rock Stairs
 tile.ore_copper.name=Copper Ore
