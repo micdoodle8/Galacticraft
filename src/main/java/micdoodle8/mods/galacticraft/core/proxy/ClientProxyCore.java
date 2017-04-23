@@ -267,6 +267,11 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getWorldForID(int dimensionID)
     {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        {
+            return super.getWorldForID(dimensionID);
+        }
+
         World world = ClientProxyCore.mc.theWorld;
 
         if (world != null && GCCoreUtil.getDimensionID(world) == dimensionID)
