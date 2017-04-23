@@ -318,7 +318,7 @@ public class GCBlocks
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name, itemCtorArgs);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCBlocks.registerSorted(block);
         }

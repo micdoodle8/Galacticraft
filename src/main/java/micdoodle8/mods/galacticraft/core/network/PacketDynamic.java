@@ -97,7 +97,7 @@ public class PacketDynamic extends PacketBase
 
         World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             world = MinecraftServer.getServer().worldServerForDimension(this.getDimensionID());
         }

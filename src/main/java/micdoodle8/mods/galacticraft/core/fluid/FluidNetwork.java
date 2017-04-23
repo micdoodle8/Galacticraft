@@ -253,7 +253,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             }
         }
 
-        if (doTransfer && totalSend > 0 && FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (doTransfer && totalSend > 0 && GCCoreUtil.getEffectiveSide().isServer())
         {
             this.didTransfer = true;
             this.transferDelay = 2;
@@ -307,7 +307,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     public void onUpdate()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (GCCoreUtil.getEffectiveSide().isServer())
         {
             Iterator<DelayQueue> iterator = this.updateQueue.iterator();
 
@@ -427,7 +427,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     {
         Set<Pair<BlockPos, IFluidHandler>> toReturn = new HashSet<>();
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             return toReturn;
         }

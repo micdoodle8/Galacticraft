@@ -1285,7 +1285,7 @@ public class PacketSimple extends PacketBase implements Packet
             return;
         }
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             this.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
         }

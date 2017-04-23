@@ -33,7 +33,7 @@ public class GameScreenBasic implements IGameScreen
     {
         //This can be called from either server or client, so don't include
         //client-side only code on the server.
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        if (GCCoreUtil.getEffectiveSide().isClient())
         {
             renderEngine = FMLClientHandler.instance().getClient().renderEngine;
         }

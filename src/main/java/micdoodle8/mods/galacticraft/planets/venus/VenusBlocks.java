@@ -67,7 +67,7 @@ public class VenusBlocks
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCBlocks.registerSorted(block);
         }

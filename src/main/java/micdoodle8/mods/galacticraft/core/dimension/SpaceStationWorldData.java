@@ -300,7 +300,7 @@ public class SpaceStationWorldData extends WorldSavedData
         final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
         if (var0 == null)
         {
-            var0 = GalacticraftCore.proxy.getWorldForID(ConfigManagerCore.idDimensionOverworld);
+            var0 = GalacticraftCore.proxy.getWorldForID(0);
         }
         SpaceStationWorldData var3 = null;
         

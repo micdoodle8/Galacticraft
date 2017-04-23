@@ -248,7 +248,7 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             registerCoreGameScreens();
         }
@@ -393,7 +393,7 @@ public class GalacticraftCore
     {
         if (ThreadRequirementMissing.INSTANCE == null)
         {
-            ThreadRequirementMissing.beginCheck(FMLCommonHandler.instance().getEffectiveSide());
+            ThreadRequirementMissing.beginCheck(GCCoreUtil.getEffectiveSide());
         }
 
         ThreadVersionCheck.startCheck();

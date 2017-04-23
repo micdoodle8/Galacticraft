@@ -52,7 +52,7 @@ public class VenusItems
         GCCoreUtil.registerGalacticraftItem(name, item);
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
         GalacticraftPlanets.proxy.postRegisterItem(item);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCItems.registerSorted(item);
         }

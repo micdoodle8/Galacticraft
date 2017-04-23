@@ -42,7 +42,7 @@ public class GameScreenText implements IGameScreen
 
     public GameScreenText()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        if (GCCoreUtil.getEffectiveSide().isClient())
         {
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
         }

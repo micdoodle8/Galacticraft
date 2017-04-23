@@ -113,7 +113,7 @@ public class GCCoreUtil
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", "en_US", GCCoreUtil.translate("entity." + var1 + ".name"));
             LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
@@ -320,4 +320,17 @@ public class GCCoreUtil
 //            }
 //        }
 //    }
+
+    /**
+     * Custom getEffectiveSide method, covering more cases than FMLCommonHandler
+     */
+    public static Side getEffectiveSide()
+    {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER || Thread.currentThread().getName().startsWith("Netty Epoll Server IO"))
+        {
+            return Side.SERVER;
+        }
+
+        return Side.CLIENT;
+    }
 }

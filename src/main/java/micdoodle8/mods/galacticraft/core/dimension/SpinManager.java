@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
@@ -28,7 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -108,7 +106,7 @@ public class SpinManager
         this.angularVelocityRadians = angle;
         this.skyAngularVelocity = angle * 180F / 3.1415927F;
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             this.updateSkyProviderSpinRate();
         }

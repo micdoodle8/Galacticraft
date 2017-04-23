@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
 import api.player.client.ClientPlayerAPI;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -73,7 +71,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -267,7 +264,7 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getWorldForID(int dimensionID)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             return super.getWorldForID(dimensionID);
         }
@@ -300,7 +297,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         super.unregisterNetwork(fluidNetwork);
 
-        if (!FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (!GCCoreUtil.getEffectiveSide().isServer())
         {
             TickHandlerClient.removeFluidNetwork(fluidNetwork);
         }
@@ -311,7 +308,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         super.registerNetwork(fluidNetwork);
 
-        if (!FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (!GCCoreUtil.getEffectiveSide().isServer())
         {
             TickHandlerClient.addFluidNetwork(fluidNetwork);
         }

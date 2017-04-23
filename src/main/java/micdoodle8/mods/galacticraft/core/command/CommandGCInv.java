@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.command;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -205,7 +204,7 @@ public class CommandGCInv extends CommandBase
 
     private static void initialise()
     {
-        World world0 = GalacticraftCore.proxy.getWorldForID(ConfigManagerCore.idDimensionOverworld);
+        World world0 = GalacticraftCore.proxy.getWorldForID(0);
         if (world0 == null)
         {
             return;
