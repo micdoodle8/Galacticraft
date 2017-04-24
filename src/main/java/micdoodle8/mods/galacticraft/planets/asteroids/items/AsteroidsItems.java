@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -111,6 +112,10 @@ public class AsteroidsItems
         registerItem(AsteroidsItems.titaniumSword);
         
         ARMOR_TITANIUM.customCraftingMaterial = AsteroidsItems.basicItem;
+        
+        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.canisterLOX);
+        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.methaneCanister);
+        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.canisterLN2);
     }
 
     public static void registerItem(Item item)

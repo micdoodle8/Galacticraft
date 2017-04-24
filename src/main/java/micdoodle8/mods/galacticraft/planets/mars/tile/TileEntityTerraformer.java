@@ -101,19 +101,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (!this.worldObj.isRemote)
         {
-            if (this.containingItems[0] != null)
+            final FluidStack liquid = FluidUtil.getFluidContained(this.containingItems[0]);
+            if (FluidUtil.isFluidStrict(liquid, FluidRegistry.WATER.getName()))
             {
-                final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[0]);
-
-                if (liquid != null && liquid.getFluid().getName().equals(FluidRegistry.WATER.getName()))
-                {
-                    if (this.waterTank.getFluid() == null || this.waterTank.getFluid().amount + liquid.amount <= this.waterTank.getCapacity())
-                    {
-                        this.waterTank.fill(liquid, true);
-
-                        this.containingItems[0] = FluidUtil.getUsedContainer(this.containingItems[0]);
-                    }
-                }
+                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, containingItems, 0, liquid.amount);
             }
 
             this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;

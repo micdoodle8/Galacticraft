@@ -53,19 +53,10 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.loadedFuelLastTick = false;
 
-            if (this.containingItems[1] != null)
+            final FluidStack liquidContained = FluidUtil.getFluidContained(this.containingItems[1]);
+            if (FluidUtil.isFuel(liquidContained))
             {
-                final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
-
-                if (liquid != null)
-                {
-                    boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
-
-                    if (isFuel)
-                    {
-                        FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.containingItems, 1, liquid.amount);
-                    }
-                }
+                FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.containingItems, 1, liquidContained.amount);
             }
 
             if (this.ticks % 100 == 0)

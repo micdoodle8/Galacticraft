@@ -3,17 +3,22 @@ package micdoodle8.mods.galacticraft.core.util;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -67,6 +72,21 @@ public class FluidUtil
         }
 
         return false;
+    }
+    
+    public static boolean isFuel(FluidStack fluid)
+    {
+        return fluid != null && testFuel(FluidRegistry.getFluidName(fluid));
+    }
+
+    public static boolean isFluidFuzzy(FluidStack fluid, String name)
+    {
+        return fluid != null && fluid.getFluid() != null && fluid.getFluid().getName().startsWith(name);
+    }
+
+    public static boolean isFluidStrict(FluidStack fluid, String name)
+    {
+        return fluid != null && fluid.getFluid() != null && fluid.getFluid().getName().equals(name);
     }
 
     /**
@@ -483,6 +503,22 @@ public class FluidUtil
         }
     }
 
+    public static FluidStack getFluidContained(ItemStack container)
+    {
+        if (container == null)
+        {
+            return null;
+        }
+        
+        if (container.getItem() instanceof ItemCanisterGeneric)
+        {
+            ItemCanisterGeneric canister = (ItemCanisterGeneric) container.getItem(); 
+            return new FluidStack(FluidRegistry.getFluid(canister.getAllowedFluid()), ItemCanisterGeneric.EMPTY - container.getItemDamage());
+        }
+
+        return FluidContainerRegistry.getFluidForFilledItem(container);
+    }
+
     @SideOnly(Side.CLIENT)
     public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
     {
@@ -510,5 +546,153 @@ public class FluidUtil
         {
             return false;
         }
+    }
+
+    public static boolean interactWithTank(ItemStack container, EntityPlayer playerIn, TileEntityFluidTank tank, EnumFacing side)
+    {
+        if (container == null || playerIn.worldObj.isRemote)
+        {
+            return true;
+        }
+
+        ItemStack result;
+        if (container.getItem() instanceof ItemCanisterGeneric)
+        {
+            if ((result = FluidUtil.tryEmptyCanister(container, tank, side)) != null || (result = FluidUtil.tryFillCanister(container, tank, side)) != null)
+            {
+                // send inventory updates to client
+                if (playerIn.inventoryContainer != null)
+                {
+                    playerIn.inventoryContainer.detectAndSendChanges();
+                }
+            }
+            
+            return true;
+        }
+
+        //The following code deals with a bug in 1.8.9 (filling a bucket from a tank with less than 1000mB returns an empty bucket, but clears out the tank)
+        //This code may not be required in 1.10.2+
+        int slot = playerIn.inventory.currentItem;
+        if ((result = FluidUtil.tryFillBucket(container, tank, side)) != null || (result = net.minecraftforge.fluids.FluidUtil.tryEmptyBucket(container, tank, side)) != null)
+        {
+            if (!playerIn.capabilities.isCreativeMode)
+            {
+                playerIn.inventory.decrStackSize(slot, 1);
+                ItemHandlerHelper.giveItemToPlayer(playerIn, result, slot);
+            }
+            if (playerIn.inventoryContainer != null)
+            {
+                playerIn.inventoryContainer.detectAndSendChanges();
+            }
+            return true;
+        }
+        else
+        {
+            // Code for IFluidContainerItems - unchanged from Forge
+            ItemStack copy = container.copy();
+            boolean changedBucket = false;
+            if (ItemStack.areItemsEqual(container, FluidContainerRegistry.EMPTY_BUCKET) && FluidRegistry.isUniversalBucketEnabled())
+            {
+                container = new ItemStack(ForgeModContainer.getInstance().universalBucket, copy.stackSize);
+                changedBucket = true;
+            }
+
+            if (net.minecraftforge.fluids.FluidUtil.tryFillFluidContainerItem(container, tank, side, playerIn) || net.minecraftforge.fluids.FluidUtil.tryEmptyFluidContainerItem(container, tank, side, playerIn))
+            {
+                if (playerIn.capabilities.isCreativeMode)
+                {
+                    playerIn.inventory.setInventorySlotContents(slot, copy);
+                }
+                else
+                {
+                    if (changedBucket && container.stackSize != copy.stackSize)
+                    {
+                        copy.stackSize = container.stackSize;
+                        playerIn.inventory.setInventorySlotContents(slot, copy);
+                    }
+                    else
+                    {
+                        if (copy.stackSize > 1)
+                        {
+                            playerIn.inventory.setInventorySlotContents(slot, container);
+                        }
+                        else
+                        {
+                            playerIn.inventory.setInventorySlotContents(slot, null);
+                            ItemHandlerHelper.giveItemToPlayer(playerIn, container, slot);
+                        }
+                    }
+                }
+                if (playerIn.inventoryContainer != null)
+                {
+                    playerIn.inventoryContainer.detectAndSendChanges();
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The Forge original version of this is bugged!  (Drains tank even if less than 1000mB in tank)
+     */
+    private static ItemStack tryFillBucket(ItemStack bucket, TileEntityFluidTank tank, EnumFacing side)
+    {
+        if (!FluidContainerRegistry.isEmptyContainer(bucket))
+        {
+            return null;
+        }
+        FluidTankInfo[] info = tank.getTankInfo(side);
+        if (info == null || info.length == 0)
+        {
+            return null;
+        }
+        int capacity = FluidContainerRegistry.getContainerCapacity(info[0].fluid, bucket);
+        FluidStack liquid = tank.drain(side, capacity, false);
+        if (liquid != null && liquid.amount == capacity)  //Only proceed and drain the tank if it can actually fill this bucket
+        {
+            tank.drain(side, capacity, true);
+            return FluidContainerRegistry.fillFluidContainer(liquid, bucket);
+        }
+
+        return null;
+    }
+
+    /**
+     * This is how to do it properly.  Nice and simple, and high performance.
+     */
+    private static ItemStack tryFillCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side)
+    {
+        int currCapacity = canister.getItemDamage() - 1; 
+        if (currCapacity <= 0)
+        {
+            return null;
+        }
+        FluidStack liquid = tank.drain(side, currCapacity, false);
+        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, true);
+        if (transferred > 0)
+        {
+            liquid = tank.drain(side, transferred, true);
+            return canister;
+        }
+        return null;
+    }
+
+    private static ItemStack tryEmptyCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side)
+    {
+        int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
+        if (currContents <= 0)
+        {
+            return null;
+        }
+        FluidStack liquid = ((ItemFluidContainer)canister.getItem()).drain(canister, currContents, false); 
+        int transferred = tank.fill(side, liquid, true);
+        if (transferred > 0)
+        {
+            ((ItemFluidContainer)canister.getItem()).drain(canister, transferred, true);
+            return canister;
+        }
+        return null;
     }
 }
