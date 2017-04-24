@@ -62,12 +62,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
             if (!this.stacks.get(1).isEmpty())
             {
-                    final FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
+                final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(1));
 
                 if (liquid != null)
                 {
                     boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
-
                     if (isFuel)
                     {
                         FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.stacks, 1, liquid.amount);

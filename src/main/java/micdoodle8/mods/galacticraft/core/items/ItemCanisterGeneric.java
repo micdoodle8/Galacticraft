@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import java.lang.reflect.Field;
+
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -21,6 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
+	//TODO:  in 1.11.2 implement CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY
+	
     private String allowedFluid = null;
     public final static int EMPTY = Fluid.BUCKET_VOLUME + 1;
     private static boolean isTELoaded = CompatibilityManager.isTELoaded();
@@ -92,7 +96,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         {
             if (par1ItemStack.getItem() != GCItems.oilCanister)
             {
-                par1ItemStack = this.replaceEmptyCanisterItem(par1ItemStack, GCItems.oilCanister);
+                this.replaceEmptyCanisterItem(par1ItemStack, GCItems.oilCanister);
             }
             par1ItemStack.setTagCompound(null);
         }
@@ -120,7 +124,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             container.setTagCompound(null);
             if (container.getItem() != GCItems.oilCanister)
             {
-                container = this.replaceEmptyCanisterItem(container, GCItems.oilCanister);
+                this.replaceEmptyCanisterItem(container, GCItems.oilCanister);
                 return;
             }
         }
@@ -128,14 +132,14 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         container.setItemDamage(newDamage);
     }
 
-    private ItemStack replaceEmptyCanisterItem(ItemStack container, Item newItem)
+    private void replaceEmptyCanisterItem(ItemStack container, Item newItem)
     {
-        //This is a neat trick to change the item ID in an ItemStack
-        final int stackSize = container.getCount();
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setShort("id", (short) Item.getIdFromItem(newItem));
-        tag.setByte("Count", (byte) stackSize);
-        tag.setShort("Damage", (short) ItemCanisterGeneric.EMPTY);
-        return new ItemStack(tag);
+    	try
+    	{
+    		Field itemId = container.getClass().getField("item");
+    		itemId.setAccessible(true);
+    		itemId.set(container, newItem);
+    	}
+    	catch (Exception ignore) { }
     }
 }

@@ -373,7 +373,7 @@ public class FluidUtil
                 return false;
             }
 
-            return fluidsSame(net.minecraftforge.fluids.FluidUtil.getFluidContained(var4), targetFluid);
+            return fluidsSame(FluidUtil.getFluidContained(var4), targetFluid);
         }
 
         if (isEmptyContainer(var4))
@@ -496,6 +496,18 @@ public class FluidUtil
         return liquid != null && liquid.getFluid() != null && liquid.getFluid().getName().equals("water");
     }
 
+
+	public static FluidStack getFluidContained(ItemStack container)
+	{
+        if (container.getItem() instanceof ItemCanisterGeneric)
+        {
+        	ItemCanisterGeneric canister = (ItemCanisterGeneric) container.getItem(); 
+        	return new FluidStack(FluidRegistry.getFluid(canister.getAllowedFluid()), ItemCanisterGeneric.EMPTY - container.getItemDamage());
+        }
+
+        return net.minecraftforge.fluids.FluidUtil.getFluidContained(container);
+	}
+	
     /**
      * Test for any container type at all
      * Used, for example, in isItemValidForSlot() logic
