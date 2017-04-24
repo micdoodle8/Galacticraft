@@ -121,6 +121,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static boolean overworldTextureRequestSent;
     public static boolean overworldTexturesValid;
     public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
+    public static ResourceLocation playerHead = null;
     public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/saturn_rings.png");
     public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/uranus_rings.png");
     private static List<Item> itemsToRegisterJson = Lists.newArrayList();
