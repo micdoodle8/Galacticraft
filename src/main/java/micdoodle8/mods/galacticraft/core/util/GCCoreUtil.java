@@ -28,6 +28,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -409,4 +410,17 @@ public class GCCoreUtil
 //            }
 //        }
 //    }
+
+    /**
+     * Custom getEffectiveSide method, covering more cases than FMLCommonHandler
+     */
+    public static Side getEffectiveSide()
+    {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER || Thread.currentThread().getName().startsWith("Netty Epoll Server IO"))
+        {
+            return Side.SERVER;
+        }
+
+        return Side.CLIENT;
+    }
 }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
@@ -372,7 +373,7 @@ public class BlockVec3Dim implements Cloneable
 
     private World getWorldForId(int dimensionID)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
             if (theServer == null) return null;

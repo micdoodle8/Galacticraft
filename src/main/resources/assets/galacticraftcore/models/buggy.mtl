@@ -1,3 +1,6 @@
+# Blender MTL File: 'buggyWhole.blend'
+# Material Count: 5
+
 newmtl None
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
@@ -16,17 +19,10 @@ Kd 0.640000 0.640000 0.640000
 d 1.000000
 map_Kd galacticraftcore:model/buggy_wheels
 
-newmtl None.014
+newmtl None.025
 Ka 1.000000 1.000000 1.000000
 Kd 0.640000 0.640000 0.640000
 d 1.000000
-map_Kd galacticraftcore:model/buggy_wheels
-
-newmtl None.022
-Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.640000 0.640000
-d 1.000000
-map_Kd galacticraftcore:model/buggy_wheels
 
 newmtl None_storage.png
 Ka 1.000000 1.000000 1.000000

@@ -7,17 +7,13 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -28,8 +24,6 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
     public static final ResourceLocation lampTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png");
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
     private static OBJModel.OBJBakedModel lampMetal;
-//    private static OBJModel.OBJBakedModel lampBase;
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 
     @Override
     public void renderTileEntityAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f, int par9)
@@ -38,29 +32,29 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
         int side = tileEntity.getBlockMetadata();
         int metaFacing = tileEntity.facing;
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
 
         switch (side)
         {
         case 0:
             break;
         case 1:
-            GL11.glRotatef(180F, 1F, 0, 0);
+            GlStateManager.rotate(180F, 1F, 0, 0);
             if (metaFacing < 2)
             {
                 metaFacing ^= 1;
             }
             break;
         case 2:
-            GL11.glRotatef(90F, 1F, 0, 0);
+            GlStateManager.rotate(90F, 1F, 0, 0);
             metaFacing ^= 1;
             break;
         case 3:
-            GL11.glRotatef(90F, -1F, 0, 0);
+            GlStateManager.rotate(90F, -1F, 0, 0);
             break;
         case 4:
-            GL11.glRotatef(90F, 0, 0, -1F);
+            GlStateManager.rotate(90F, 0, 0, -1F);
             metaFacing -= 2;
             if (metaFacing < 0)
             {
@@ -68,7 +62,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
             }
             break;
         case 5:
-            GL11.glRotatef(90F, 0, 0, 1F);
+            GlStateManager.rotate(90F, 0, 0, 1F);
             metaFacing += 2;
             if (metaFacing > 3)
             {
@@ -77,42 +71,43 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
             break;
         }
 
-        GL11.glTranslatef(0, -0.175F, 0);
+        GlStateManager.translate(0, -0.175F, 0);
+
         switch (metaFacing)
         {
         case 0:
             break;
         case 1:
-            GL11.glRotatef(180F, 0, 1F, 0);
+            GlStateManager.rotate(180F, 0, 1F, 0);
             break;
         case 2:
-            GL11.glRotatef(90F, 0, 1F, 0);
+            GlStateManager.rotate(90F, 0, 1F, 0);
             break;
         case 3:
-            GL11.glRotatef(270F, 0, 1F, 0);
+            GlStateManager.rotate(270F, 0, 1F, 0);
             break;
         }
 
-        this.renderEngine.bindTexture(TileEntityArclampRenderer.lampTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glRotatef(45F, -1F, 0, 0);
-        GL11.glScalef(0.048F, 0.048F, 0.048F);
+        RenderHelper.disableStandardItemLighting();
+        this.bindTexture(TileEntityArclampRenderer.lampTexture);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.rotate(45F, -1F, 0, 0);
+        GlStateManager.scale(0.048F, 0.048F, 0.048F);
         ClientUtil.drawBakedModel(TileEntityArclampRenderer.lampMetal);
-       
+
         float greyLevel = tileEntity.getEnabled() ? 1.0F : 26F / 255F;
-        
         //Save the lighting state
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableLighting();
 
-        this.renderEngine.bindTexture(TileEntityArclampRenderer.lightTexture);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        this.bindTexture(TileEntityArclampRenderer.lightTexture);
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.disableTexture2D();
         final Tessellator tess = Tessellator.getInstance();
         VertexBuffer worldRenderer = tess.getBuffer();
-        GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
+        GlStateManager.color(greyLevel, greyLevel, greyLevel, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         float frameA = -3.4331F;  //These co-ordinates came originally from arclamp_light.obj model
         float frameB = -frameA;  //These co-ordinates came originally from arclamp_light.obj model
@@ -122,17 +117,16 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
         worldRenderer.pos(frameB, frameY, frameA).endVertex();
         worldRenderer.pos(frameA, frameY, frameA).endVertex();
         tess.draw();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        //? need to undo GL11.glBlendFunc()?
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableTexture2D();
+        //? need to undo GlStateManager.glBlendFunc()?
 
         //Restore the lighting state
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GlStateManager.enableLighting();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
-        
-        GL11.glPopMatrix();
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.popMatrix();
     }
-
 
     private void updateModels()
     {

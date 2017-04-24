@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockTorchWeb;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -67,7 +66,7 @@ public class VenusBlocks
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCBlocks.registerSorted(block);
         }

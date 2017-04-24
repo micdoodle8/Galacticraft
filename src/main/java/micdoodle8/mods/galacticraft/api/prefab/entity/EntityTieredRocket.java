@@ -91,7 +91,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 {
                     continue;
                 }
-                if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
+                if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier() && !planet.getUnlocalizedName().equals("planet.asteroids"))
                 {
                     toPreGen.add(planet.getDimensionID());
                 }
@@ -107,13 +107,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
                     }
                 }
-                for (int r = 1; r < 12; r++)
+                for (int r = 1; r < 12; r++)  //concentric squares with radius r
                 {
                     int xmin = cx - r;
                     int xmax = cx + r;
                     int zmin = cz - r;
                     int zmax = cz + r;
-                    for (int i = -r; i < r; i++)
+                    for (int i = -r; i < r; i++)  //stop before i == r to avoid doing corners twice
                     {
                         for (Integer dimID : toPreGen)
                         {
@@ -350,7 +350,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     this.motionY = 0.1D;
                     if (!this.getPassengers().isEmpty())
                     {
-                        WorldUtil.forceMoveEntityToPos(this.getPassengers().get(0), (WorldServer) this.worldObj, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F));
+                        WorldUtil.forceMoveEntityToPos(this.getPassengers().get(0), (WorldServer) this.worldObj, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
                         this.setWaitForPlayer(true);
                         if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                     }
@@ -370,7 +370,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
 
         //Not launch controlled
-        if (!this.getPassengers().isEmpty() && !this.worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
             if (this.getPassengers().get(0) instanceof EntityPlayerMP)
             {
@@ -380,10 +380,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
             }
+
+            //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
+            this.setDead();
         }
         
-        //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
-        this.setDead();
+        //Client side, non-launch controlled, do nothing - no reason why it can't continue flying until the GUICelestialSelection activates
     }
 
     @Override

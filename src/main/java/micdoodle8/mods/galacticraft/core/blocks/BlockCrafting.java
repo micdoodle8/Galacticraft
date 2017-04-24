@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -21,7 +23,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock
+public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock, IShiftDescription
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
@@ -120,6 +122,18 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.GENERAL;
+    }
+    
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
     }
 
     @Override

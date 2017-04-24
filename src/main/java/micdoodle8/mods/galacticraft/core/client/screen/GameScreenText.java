@@ -24,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.BufferUtils;
@@ -43,7 +42,7 @@ public class GameScreenText implements IGameScreen
 
     public GameScreenText()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        if (GCCoreUtil.getEffectiveSide().isClient())
         {
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
         }

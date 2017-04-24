@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -37,7 +36,7 @@ public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPack
         }
 
         packetMap = ImmutableMap.copyOf(map);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             TickHandlerClient.addPacketHandler(this);
         }

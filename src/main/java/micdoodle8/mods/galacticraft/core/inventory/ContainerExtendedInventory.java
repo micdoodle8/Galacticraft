@@ -105,7 +105,7 @@ public class ContainerExtendedInventory extends Container
                     }
                     else
                     {
-                        for (int j = 40; j < 50; j++)
+                        for (int j = 40; j < 51; j++)
                         {
                             if (((SlotExtendedInventory) this.inventorySlots.get(j)).isItemValid(stack))
                             {
