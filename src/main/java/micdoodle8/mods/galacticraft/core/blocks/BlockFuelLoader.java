@@ -1,15 +1,18 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,11 +24,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public BlockFuelLoader(String assetName)
     {
@@ -76,40 +82,14 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     {
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         worldIn.setBlockState(pos, getStateFromMeta(EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex()), 3);
-
-        for (int dX = -2; dX < 3; dX++)
-        {
-            for (int dZ = -2; dZ < 3; dZ++)
-            {
-                BlockPos offsetPos = new BlockPos(pos.getX() + dX, pos.getY(), pos.getZ() + dZ);
-                IBlockState offsetState = worldIn.getBlockState(offsetPos);
-
-                if (offsetState.getBlock() == GCBlocks.landingPadFull)
-                {
-                    worldIn.notifyBlockUpdate(offsetPos, offsetState, offsetState, 3);
-                }
-            }
-        }
+        WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
     {
         super.onBlockDestroyedByPlayer(worldIn, pos, state);
-
-        for (int dX = -2; dX < 3; dX++)
-        {
-            for (int dZ = -2; dZ < 3; dZ++)
-            {
-                BlockPos offsetPos = new BlockPos(pos.getX() + dX, pos.getY(), pos.getZ() + dZ);
-                IBlockState offsetState = worldIn.getBlockState(offsetPos);
-
-                if (offsetState.getBlock() == GCBlocks.landingPadFull)
-                {
-                    worldIn.notifyBlockUpdate(offsetPos, offsetState, offsetState, 3);
-                }
-            }
-        }
+        WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
     @Override
@@ -140,12 +120,32 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, SIDES);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+
+        return IMachineSides.addPropertyForTile(state, tile, MACHINESIDES_RENDERTYPE, SIDES);
     }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+    
+    @Override
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            ((IMachineSides)tile).nextSideConfiguration(tile);
+            return true;
+        }
+        return false;
     }
 }

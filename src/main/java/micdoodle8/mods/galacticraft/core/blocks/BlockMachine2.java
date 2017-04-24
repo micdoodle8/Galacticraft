@@ -158,7 +158,6 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
         }
     }
 
-
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {

@@ -20,9 +20,10 @@ public class EventHandlerVenus
     {
         if (event.side == Side.SERVER && event.phase == Phase.START)
         {
-            for (Entity e : new ArrayList<>(event.world.loadedEntityList))
+            ArrayList<Entity> list = new ArrayList<>(event.world.loadedEntityList);
+            for (Entity e : list)
             {
-                if (e.ticksExisted % 20 == 0 && e instanceof EntityLivingBase)
+                if (e.ticksExisted % 20 == 1 && e instanceof EntityLivingBase)
                 {
                     if (event.world.isMaterialInBB(e.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), VenusModule.acidMaterial))
                     {

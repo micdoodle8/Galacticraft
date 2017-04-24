@@ -9,13 +9,11 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable
+public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable, IMachineSides
 {
     private final int tankCapacity = 12000;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -64,51 +62,15 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
             if (!this.stacks.get(1).isEmpty())
             {
-                if (this.stacks.get(1).getItem() instanceof ItemCanisterGeneric)
+                    final FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
+
+                if (liquid != null)
                 {
-                    if (this.stacks.get(1).getItem() == GCItems.fuelCanister)
+                    boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
+
+                    if (isFuel)
                     {
-                        int originalDamage = this.stacks.get(1).getItemDamage();
-                        int used = this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
-                        if (originalDamage + used == ItemCanisterGeneric.EMPTY)
-                        {
-                            this.stacks.set(1, new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY));
-                        }
-                        else
-                        {
-                            this.stacks.set(1, new ItemStack(GCItems.fuelCanister, 1, originalDamage + used));
-                        }
-                    }
-                }
-                else
-                {
-                    FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
-
-                    if (liquid != null)
-                    {
-                        boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
-
-                        if (isFuel)
-                        {
-                            if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
-                            {
-                                this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), true);
-
-                                if (FluidUtil.isBucket(this.stacks.get(1)) && net.minecraftforge.fluids.FluidUtil.getFluidHandler(this.stacks.get(1)) != null)
-                                {
-                                    final int amount = this.stacks.get(1).getCount();
-                                    if (amount > 1)
-                                    {
-                                        this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * Fluid.BUCKET_VOLUME), true);
-                                    }
-                                    this.stacks.set(1, new ItemStack(Items.BUCKET, amount));
-                                }
-                                else
-                                {
-                                    this.stacks.get(1).shrink(1);
-                                }
-                            }
-                        }
+                        FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.stacks, 1, liquid.amount);
                     }
                 }
             }
@@ -164,6 +126,8 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
         }
+        
+        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -176,6 +140,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+        
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+
         return nbt;
     }
 
@@ -221,12 +188,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         return false;
     }
 
-//    @Override
-//    public boolean hasCustomName()
-//    {
-//        return true;
-//    }
-
     @Override
     public boolean hasCustomName()
     {
@@ -266,7 +227,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+        if (this.getPipeInputDirection().equals(from))
+        {
+            return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+        }
+        return false;
     }
 
     @Override
@@ -274,8 +239,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         int used = 0;
 
-//        if (from.equals(EnumFacing.getFront(this.getBlockMetadata() + 2).getOpposite()))
-        if (from.equals(this.world.getBlockState(getPos()).getValue(BlockFuelLoader.FACING)))
+        if (this.getPipeInputDirection().equals(from))
         {
             if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {
@@ -289,7 +253,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
-        return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        if (this.getPipeInputDirection().equals(from))
+        {
+            return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        }
+        return null;
     }
 
     @Override
@@ -308,12 +276,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public EnumFacing getFront()
     {
         return this.world.getBlockState(getPos()).getValue(BlockFuelLoader.FACING);
-    }
-
-    @Override
-    public EnumFacing getElectricInputDirection()
-    {
-        return getFront().rotateY();
     }
 
     @Override
@@ -346,8 +308,94 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         }
         if (type == NetworkType.FLUID)
         {
-            return direction == this.getElectricInputDirection().getOpposite();
+            return direction == this.getPipeInputDirection();
         }
         return false;
     }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
+    }
+
+    @Override
+    public EnumFacing getPipeInputDirection()
+    {
+        switch (this.getSide(MachineSide.PIPE_IN))
+        {
+        case RIGHT:
+        default:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+            return getFront().rotateY();
+        }
+    }
+
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return new MachineSide[] { MachineSide.ELECTRIC_IN, MachineSide.PIPE_IN };
+    }
+
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return new Face[] { Face.LEFT, Face.RIGHT };
+    }
+    
+    private MachineSidePack[] machineSides;
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        if (this.machineSides == null)
+        {
+            this.initialiseSides();
+        }
+
+        return this.machineSides;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+        this.machineSides = new MachineSidePack[length];
+    }
+    
+    @Override
+    public void validate()
+    {
+        super.validate();
+        this.clientValidate();
+    }
+    
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return BlockFuelLoader.MACHINESIDES_RENDERTYPE;
+    }
+    //------------------END OF IMachineSides implementation
 }

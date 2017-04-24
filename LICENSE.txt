@@ -7,13 +7,15 @@ Forge-modified Minecraft (see section 10 below) which is distributed as a
 
 compiled binary through the home page 
 
-http://www.micdoodle8.com/mods/galacticraft and whose source code is 
+http://www.micdoodle8.com/mods/galacticraft and whose source code is or
 
-currently published on Github.  Galacticraft's "source code" means the 
+has been published on Github in the micdoodle8/Galacticraft and
+
+micdoodle8/MicdoodleCore repositories. Galacticraft's "source code" means the 
 
 material, including Java code, other programming code, image, textures,
 
-models, sound files and other binary files, currently published within the 
+models, sound files and other binary files, published within the 
 
 micdoodle8/Galacticraft and micdoodle8/MicdoodleCore repositories on Github, 
 
@@ -459,17 +461,19 @@ in Galacticraft are individually deemed to be "substantial parts".
 
 (e) Distribution of the whole of Galacticraft, in unaltered compiled binary form,
 
-in modpacks, is permitted as set out further in section 37 below.  Apart from that,
+is permitted ONLY in modpacks as set out further in section 37 below.  Apart from modpacks,
 
 distribution or copying of Galacticraft or any substantial part of it or any derived
 
-work is prohibited without permission from the developers.  In particular,
+work is PROHIBITED without permission from the developers.  In particular, distribution
 
-distribution of altered, modified, converted or partial copies of Galacticraft or its
+of out-dated, altered, modified, converted or partial copies of Galacticraft or its
 
-binaries is prohibited, including ports to other versions of Minecraft or Forge
+binaries is prohibited.  Copies or ports to other versions of Minecraft or Forge either in
 
-either in Java or for other gaming platforms including mobile or console versions.
+Java or for non-Java gaming platforms including mobile or console versions are PROHIBITED
+
+without the written permission of the Galacticraft developers.
 
 (f) All permissions in this section 28 are subject to the proviso that no other person
 
@@ -481,21 +485,21 @@ ownership of the copyright in Galacticraft and rights to licence it and continue
 
 ability to publish the source code in accordance with the overriding principle.
 
-Incorporation of Galacticraft or parts of it (or any derived work) in any commercial
+(g) Incorporation of Galacticraft or parts of it (or any derived work) in any commercial
 
-project - including vanilla Minecraft itself or any modpack, installer, distribution,
+project - including vanilla Minecraft itself or any installer, distribution, mod download
 
-downloadable content or other resource which is available to paying users, subscribers
+website, downloadable content or other resource which is available to paying users,
 
-or members only, or is otherwise conditional on a purchase, or which is distributed
+subscribers or members only, or is otherwise conditional on a purchase, or which is
 
-only to viewers of an advertisement (for example through an Ad.fly link or similar)
+distributed only to viewers of an advertisement (for example through an Ad.fly link
 
-- would violate section 20(a) above.
+or similar) - would violate section 20(a) above and is PROHIBITED.
 
 28A.  The copying or distribution of Galacticraft in mod "installers",
 
-for example Skydaz, is prohibited and no licence is granted to distribute
+for example Skydaz, is PROHIBITED and no licence is granted to distribute
 
 Galacticraft or its binaries in that way.  An "installer" here means a program,
 
@@ -510,6 +514,16 @@ or FeedTheBeast launchers) is not an "installer" for these purposes and distribu
 of Galacticraft in modpacks is fully permitted in accordance with the modpack
 
 permission in section 37 below.
+
+28B.  For the avoidance of doubt, the distribution or copying of Galacticraft
+
+on mod download or re-distribution websites is PROHIBITED.  (But bona fide
+
+modpacks comprising multiple mods, distributed through CurseForge or FTB or
+
+Technic platform or similar sites, are permitted in accordance with the modpack
+
+permission in section 37 below.)
 
 29.  To the extent that Galacticraft uses parts of the code which are or have
 
@@ -631,4 +645,10 @@ compiled binary code must include, within the relevant .jar or .zip or other
 
 packaged file, a copy of this LICENSE.txt; (d) modpacks must so far as
 
-reasonably possible distribute an up-to-date version of Galacticraft.
+reasonably possible distribute an up-to-date version of Galacticraft; (e)
+
+a 'modpack' here means a compilation of Galacticraft with other mods to
+
+create a bona fide pack of multiple mods playable in the Java versions of
+
+Minecraft combined with Forge.

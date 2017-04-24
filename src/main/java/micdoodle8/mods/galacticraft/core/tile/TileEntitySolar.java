@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -96,7 +97,10 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             this.initialisedMulti = this.initialiseMultiTiles(this.getPos(), this.world);
         }
 
-        this.receiveEnergyGC(null, this.generateWatts, false);
+        if (!this.world.isRemote)
+        {
+            this.receiveEnergyGC(null, this.generateWatts, false);
+        }
 
         super.update();
 
@@ -176,12 +180,13 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         float angle = this.world.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
-
+        if (!(this.world.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
         celestialAngle %= 360;
+        boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.provider instanceof WorldProviderSpaceStation;
 
         if (this.tierGC == 1)
         {
-            if (!this.world.isDaytime() || this.world.isRaining() || this.world.isThundering())
+            if (!isDaytime || this.world.isRaining() || this.world.isThundering())
             {
                 this.targetAngle = 77.5F + 180.0F;
             }
@@ -192,17 +197,17 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         }
         else
         {
-            if (celestialAngle > 27.5F && celestialAngle < 152.5F)
+            if (!isDaytime || this.world.isRaining() || this.world.isThundering())
+            {
+                this.targetAngle = 77.5F + 180F;
+            }
+            else if (celestialAngle > 27.5F && celestialAngle < 152.5F)
             {
                 float difference = this.targetAngle - celestialAngle + 12.5F;
 
                 this.targetAngle -= difference / 20.0F;
             }
-            else if (!this.world.isDaytime() || this.world.isRaining() || this.world.isThundering())
-            {
-                this.targetAngle = 77.5F;
-            }
-            else if (celestialAngle <= 27.5F || celestialAngle > 270)
+            else if (celestialAngle <= 27.5F || celestialAngle > 270F)
             {
                 this.targetAngle = 15F;
             }
@@ -218,16 +223,17 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         if (!this.world.isRemote)
         {
-            if (this.getGenerate() > 0.0F)
+            int generated = this.getGenerate(); 
+            if (generated > 0)
             {
-                this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), TileEntitySolar.MAX_GENERATE_WATTS);
+                this.generateWatts = Math.min(Math.max(generated, 0), TileEntitySolar.MAX_GENERATE_WATTS);
             }
             else
             {
                 this.generateWatts = 0;
             }
         }
-
+        
         this.produce();
     }
 

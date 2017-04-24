@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -19,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock
+public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock, IShiftDescription
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
@@ -40,24 +42,9 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     {
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
-        if (this.isUsableWrench(playerIn, playerIn.inventory.getCurrentItem(), pos))
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
         {
-            this.damageWrench(playerIn, playerIn.inventory.getCurrentItem(), pos);
-
-            if (playerIn.isSneaking())
-            {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
-                {
-                    playerIn.swingArm(hand);
-                    return true;
-                }
-            }
-
-            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
-            {
-                playerIn.swingArm(hand);
-                return true;
-            }
+            return true;
         }
 
         if (playerIn.isSneaking())
@@ -135,6 +122,18 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.GENERAL;
+    }
+    
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(int meta)
+    {
+        return true;
     }
 
     @Override

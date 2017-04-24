@@ -44,6 +44,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -341,6 +342,12 @@ public class TickHandlerClient
                 {
                     GCItems.hideItemsJEI();
                 }
+            }
+
+            if (ClientProxyCore.playerHead == null && player != null)
+            {
+                ClientProxyCore.playerHead = AbstractClientPlayer.getLocationSkin(player.getGameProfile().getName());
+                AbstractClientPlayer.getDownloadImageSkin(ClientProxyCore.playerHead, player.getGameProfile().getName());
             }
 
             TickHandlerClient.tickCount++;

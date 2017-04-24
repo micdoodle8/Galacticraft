@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -18,7 +19,6 @@ import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
@@ -133,20 +133,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
         if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
         {
-            for (int dX = -2; dX < 3; dX++)
-            {
-                for (int dZ = -2; dZ < 3; dZ++)
-                {
-                    BlockPos pos1 = pos.add(dX, 0, dZ);
-                    final Block id = worldIn.getBlockState(pos1).getBlock();
-
-                    if (id == GCBlocks.landingPadFull)
-                    {
-                        IBlockState state1 = worldIn.getBlockState(pos1);
-                        worldIn.notifyBlockUpdate(pos1, state1, state1, 3);
-                    }
-                }
-            }
+            WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
         }
 
         if (var8 instanceof IChunkLoader && !var8.getWorld().isRemote && ConfigManagerMars.launchControllerChunkLoad && placer instanceof EntityPlayer)
@@ -233,20 +220,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     {
         if (getMetaFromState(world.getBlockState(pos)) >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
         {
-            for (int dX = -2; dX < 3; dX++)
-            {
-                for (int dZ = -2; dZ < 3; dZ++)
-                {
-                    BlockPos pos1 = pos.add(dX, 0, dZ);
-                    final Block id = world.getBlockState(pos1).getBlock();
-
-                    if (id == GCBlocks.landingPadFull)
-                    {
-                        IBlockState state1 = world.getBlockState(pos1);
-                        world.notifyBlockUpdate(pos1, state1, state1, 3);
-                    }
-                }
-            }
+            WorldUtil.markAdjacentPadForUpdate(world, pos);
         }
 
         return super.removedByPlayer(state, world, pos, player, willHarvest);

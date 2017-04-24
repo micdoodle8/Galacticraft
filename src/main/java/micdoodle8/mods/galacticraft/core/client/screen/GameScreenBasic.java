@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.opengl.GL11;
 
 public class GameScreenBasic implements IGameScreen
@@ -33,7 +32,7 @@ public class GameScreenBasic implements IGameScreen
     {
         //This can be called from either server or client, so don't include
         //client-side only code on the server.
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+        if (GCCoreUtil.getEffectiveSide().isClient())
         {
             renderEngine = FMLClientHandler.instance().getClient().renderEngine;
         }

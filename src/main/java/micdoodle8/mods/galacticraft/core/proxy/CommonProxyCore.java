@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.IPlayerServer;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerServer;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -85,7 +86,7 @@ public class CommonProxyCore
 
     public void unregisterNetwork(FluidNetwork fluidNetwork)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (GCCoreUtil.getEffectiveSide().isServer())
         {
             TickHandlerServer.removeFluidNetwork(fluidNetwork);
         }
@@ -93,7 +94,7 @@ public class CommonProxyCore
 
     public void registerNetwork(FluidNetwork fluidNetwork)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (GCCoreUtil.getEffectiveSide().isServer())
         {
             TickHandlerServer.addFluidNetwork(fluidNetwork);
         }

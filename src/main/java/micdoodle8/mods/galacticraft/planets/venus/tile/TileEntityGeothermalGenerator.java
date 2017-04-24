@@ -54,7 +54,10 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     @Override
     public void update()
     {
-        this.receiveEnergyGC(null, this.generateWatts, false);
+        if (!this.world.isRemote)
+        {
+            this.receiveEnergyGC(null, this.generateWatts, false);
+        }
 
         super.update();
 

@@ -285,6 +285,15 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public boolean isTerraformable(World world, BlockPos pos)
     {
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) world.getBlockState(pos).getValue(BASIC_TYPE_VENUS));
+
+        if (type == EnumBlockBasicVenus.ROCK_HARD || type == EnumBlockBasicVenus.ROCK_SOFT)
+        {
+            BlockPos above = pos.offset(EnumFacing.UP);
+            IBlockState stateAbove = world.getBlockState(above); 
+            return stateAbove.getBlock().isAir(stateAbove, world, above);
+        }
+
         return false;
     }
 

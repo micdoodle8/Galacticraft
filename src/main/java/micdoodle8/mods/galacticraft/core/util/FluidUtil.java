@@ -190,8 +190,8 @@ public class FluidUtil
 
             if (handler != null)
             {
-                handler.fill(liquid, true);
-                tank.drain(amountToFill, true);
+                int used = handler.fill(liquid, true);
+                tank.drain(used, true);
             }
             else
             {
@@ -244,6 +244,76 @@ public class FluidUtil
     }
 
     /**
+     * This tries to empty the container (at inventory[slot]) into the specified tank
+     * forcing the tank contents to Fluid: desiredLiquid even if the container had
+     * something different (useful for different types of fuel, for example). 
+     * If successful, it replaces inventory[slot] with the corresponding empty container
+     * <p>
+     * 
+     * @param tank         The tank to fill with the fluid
+     * @param desiredLiquid       The type of liquid intended for that tank
+     * @param stacks
+     * @param slot
+     * @param amountOffered  The amount in the container being offered
+     */
+    public static void loadFromContainer(FluidTank tank, Fluid desiredLiquid, NonNullList<ItemStack> stacks, int slot, int amountOffered)
+    {
+        ItemStack slotItem = stacks.get(1);
+
+        if (slotItem.getItem() instanceof ItemCanisterGeneric)
+        {
+            int originalDamage = slotItem.getItemDamage();
+            int used = tank.fill(new FluidStack(desiredLiquid, ItemCanisterGeneric.EMPTY - originalDamage), true);
+            if (originalDamage + used >= ItemCanisterGeneric.EMPTY)
+            {
+            	stacks.set(1, new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY));
+            }
+            else
+            {
+            	stacks.set(1, new ItemStack(slotItem.getItem(), 1, originalDamage + used));
+            }
+        }
+        else
+        {
+
+        	if (tank.getFluid() == null || amountOffered <= tank.getCapacity() - tank.getFluid().amount)
+            {
+                tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
+
+                if (FluidUtil.isFilledContainer(slotItem))
+                {
+                    final int bucketCount = slotItem.getCount();
+                    if (FluidUtil.isBucket(slotItem))
+                    {
+                        if (bucketCount > 1)
+                        {
+                            tank.fill(new FluidStack(desiredLiquid, (bucketCount - 1) * Fluid.BUCKET_VOLUME), true);
+                        }
+                        stacks.set(1, new ItemStack(Items.BUCKET, bucketCount));
+                    }
+                    else
+                    {
+                        ItemStack emptyStack = FluidUtil.getUsedContainer(slotItem);
+                        if (bucketCount > 1)
+                        {
+                            tank.fill(new FluidStack(desiredLiquid, (bucketCount - 1) * FluidUtil.getContainerCapacity(slotItem)), true);
+                            if (emptyStack != null)
+                            {
+                                emptyStack.setCount(bucketCount);
+                            }
+                        }
+                        stacks.set(1, emptyStack);
+                    }
+                }
+                else
+                {
+                    slotItem.shrink(1);
+                }
+            }
+        }
+    }
+
+	/**
      * Tests for any type of container with some space in it
      * It can be either an empty container, or a Galacticraft canister
      * of the appropriate type, either empty or at least with some capacity remaining
@@ -313,6 +383,33 @@ public class FluidUtil
 
         return fluidsSame(net.minecraftforge.fluids.FluidUtil.getFluidContained(var4), targetFluid);
     }
+
+    /**
+     * Returns the amount of fluid this container can provide in its current state
+     * (Similar to Forge's FluidUtil.getFluidContained()) 
+     * 
+     * @param container
+     * @return
+     */
+    public static int getContainerCapacity(ItemStack container)
+    {
+        if (container.getItem() instanceof ItemCanisterGeneric)
+        {
+            return container.getItemDamage() - 1;
+        }
+        if (!container.isEmpty())
+        {
+            container = container.copy();
+            container.setCount(1);
+            IFluidHandlerItem fluidHandler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+            if (fluidHandler != null)
+            {
+                FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, false);
+                return drain == null ? 0 : drain.amount;
+            }
+        }
+        return 0;
+	}
 
     /**
      * @param fs1 First FluidStack to compare

@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -95,11 +94,6 @@ public class PacketDynamic extends PacketBase
         this.type = buffer.readInt();
 
         World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
-
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
-        {
-            world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.getDimensionID());
-        }
 
         if (world == null)
         {

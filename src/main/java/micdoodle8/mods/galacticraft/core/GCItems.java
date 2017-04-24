@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-
 import mezz.jei.api.IItemBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -20,7 +19,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
@@ -302,7 +300,7 @@ public class GCItems
         GCCoreUtil.registerGalacticraftItem(name, item);
         GameRegistry.register(item.setRegistryName(name));
         GalacticraftCore.proxy.postRegisterItem(item);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCItems.registerSorted(item);
         }

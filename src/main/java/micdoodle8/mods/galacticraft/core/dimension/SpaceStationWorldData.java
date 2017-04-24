@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -301,9 +302,18 @@ public class SpaceStationWorldData extends WorldSavedData
         final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
         if (var0 == null)
         {
-            var0 = DimensionManager.getProvider(0).world;
+            var0 = GalacticraftCore.proxy.getWorldForID(0);
         }
-        SpaceStationWorldData var3 = (SpaceStationWorldData) var0.loadData(SpaceStationWorldData.class, var2);
+        SpaceStationWorldData var3 = null;
+        
+        if (var0 != null)
+        {
+            var3 = (SpaceStationWorldData) var0.loadData(SpaceStationWorldData.class, var2);
+        }
+        else
+        {
+            GCLog.severe("No world for dimension 0?  That should be unpossible!  Please report at https://github.com/micdoodle8/Galacticraft/issues/2617");
+        }
 
         if (var3 == null)
         {

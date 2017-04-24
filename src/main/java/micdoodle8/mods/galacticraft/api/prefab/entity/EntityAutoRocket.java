@@ -302,7 +302,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         if (this.world.isRemote && this.addedToChunk)
         {
             Chunk chunk = this.world.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ);
-            if (chunk.isLoaded())
+            int cx = MathHelper.floor(this.posX) >> 4;
+            int cz = MathHelper.floor(this.posZ) >> 4;
+            if (chunk.isLoaded() && this.chunkCoordX == cx && this.chunkCoordZ == cz)
             {
                 boolean thisfound = false;
                 ClassInheritanceMultiMap<Entity> mapEntities = chunk.getEntityLists()[this.chunkCoordY];

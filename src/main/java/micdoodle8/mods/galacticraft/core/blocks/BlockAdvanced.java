@@ -38,6 +38,24 @@ public abstract class BlockAdvanced extends Block
 
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+        {
+            return true;
+        }
+
+        if (playerIn.isSneaking())
+        {
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+            {
+                return true;
+            }
+        }
+
+        return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+    }
+
+    protected boolean useWrench(World worldIn, BlockPos pos, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
         /**
          * Check if the player is holding a wrench or an electric item. If so,
          * call the wrench event.
@@ -62,15 +80,7 @@ public abstract class BlockAdvanced extends Block
             }
         }
 
-        if (playerIn.isSneaking())
-        {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
-            {
-                return true;
-            }
-        }
-
-        return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+        return false;
     }
 
     /**
