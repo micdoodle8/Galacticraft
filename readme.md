@@ -1,4 +1,4 @@
-![Galacticraft](https://cloud.githubusercontent.com/assets/6842258/25335104/7af962d8-28e9-11e7-811a-a49d6cd77246.jpg)
+![Galacticraft](https://micdoodle8.com/images/galacticraftbg1.png)
 
 Galacticraft
 ============
