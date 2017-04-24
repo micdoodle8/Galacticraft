@@ -1,4 +1,4 @@
-![Galacticraft](https://micdoodle8.com/images/galacticraftbg1.png)
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/6842258/25335525/4f21552e-28eb-11e7-91bb-de5e1ef602da.jpg"></p>
 
 Galacticraft
 ============
