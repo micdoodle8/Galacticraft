@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -19,9 +20,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.ItemFluidContainer;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,8 +31,8 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     private String allowedFluid = null;
     public final static int EMPTY = Fluid.BUCKET_VOLUME + 1;
     private static boolean isTELoaded = CompatibilityManager.isTELoaded();
-    private final ItemStack containerStack = new ItemStack(this, 1, 1);
-    private final ItemStack emptyContainerStack = this.getContainerItem(this.containerStack);
+    private final ItemStack copyStack = null;
+//    private final ItemStack emptyContainerStack = this.getContainerItem(this.containerStack);
 
     public ItemCanisterGeneric(String assetName)
     {
@@ -49,7 +48,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
     {
-        return new FluidHandlerItemStack.SwapEmpty(containerStack, emptyContainerStack, this.capacity);
+        return new ItemCanisterGenericHandler(stack);
     }
 
     @Override
@@ -116,13 +115,23 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 
     public int fill(ItemStack container, FluidStack resource, boolean doFill)
     {
-        if (resource == null || resource.getFluid() == null || resource.amount == 0 || container == null || container.getItemDamage() <= 1 || !(container.getItem() instanceof ItemCanisterGeneric))
+        if (resource == null || resource.getFluid() == null || resource.amount <= 0 || container == null || container.getItemDamage() <= 1 || !(container.getItem() instanceof ItemCanisterGeneric))
         {
             return 0;
         }
         String fluidName = resource.getFluid().getName();
 
-        if (container.getItemDamage() >= ItemCanisterGeneric.EMPTY)
+        int capacityPlusOne = container.getItemDamage();
+        if (capacityPlusOne <= 1)
+        {
+        	if (capacityPlusOne < 1)
+        	{
+	            //It shouldn't be possible, but just in case, set this to a proper filled item
+        		container.setItemDamage(1);
+        	}
+        	return 0;
+        }
+        if (capacityPlusOne >= ItemCanisterGeneric.EMPTY)
         {
             //Empty canister - find a new canister to match the fluid
             for (ItemCanisterGeneric i : GCItems.canisterTypes)
@@ -134,23 +143,21 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
                         return Math.min(resource.amount, this.capacity);
                     }
 
-                    //this.replaceEmptyCanisterItem(container, i);
-                    container = new ItemStack(i, 1, 0);
+                    this.replaceEmptyCanisterItem(container, i);
                     break;
                 }
             }
-            //Set this to a clean empty item
-            container.setItemDamage(ItemCanisterGeneric.EMPTY);
+            if (capacityPlusOne > ItemCanisterGeneric.EMPTY)
+            {
+	            //It shouldn't be possible, but just in case, set this to a proper empty item
+            	capacityPlusOne = ItemCanisterGeneric.EMPTY;
+	            container.setItemDamage(capacityPlusOne);
+            }
         }
         
         if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric) container.getItem()).allowedFluid))
         {
-            //Refresh the Forge fluid contents
-            IFluidHandler handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
-            handler.fill(this.getFluid(container), true);
-
-            int added = handler.fill(resource, doFill);
-
+            int added = Math.min(resource.amount, capacityPlusOne - 1);
             if (doFill && added > 0)
             {
                 container.setItemDamage(Math.max(1, container.getItemDamage() - added));
@@ -168,11 +175,8 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             return null;
         }
 
-        //Refresh the Forge fluid contents
-        IFluidHandler handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
-        handler.fill(this.getFluid(container), true);
-
-        FluidStack used = handler.drain(maxDrain, doDrain);
+        FluidStack used = this.getFluid(container);
+        if (used != null && used.amount > maxDrain) used.amount = maxDrain;
         if (doDrain && used != null && used.amount > 0)
         {
             this.setNewDamage(container, container.getItemDamage() + used.amount);
@@ -198,10 +202,13 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     {
     	try
     	{
-    		Field itemId = container.getClass().getDeclaredField("item");  //TODO: obfuscated name required
+    		Class itemStack = container.getClass();
+    		Field itemId = itemStack.getDeclaredField("item");  //TODO: obfuscated name required or add to the at
     		itemId.setAccessible(true);
     		itemId.set(container, newItem);
-    		//TODO: refresh Forge
+    		Method forgeInit = itemStack.getDeclaredMethod("forgeInit");
+    		forgeInit.setAccessible(true);
+    		forgeInit.invoke(container);
     	}
     	catch (Exception ignore) { }
     }
@@ -209,7 +216,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     public FluidStack getFluid(ItemStack container)
     {
         String fluidName = ((ItemCanisterGeneric) container.getItem()).allowedFluid;
-        if (fluidName == null || ItemCanisterGeneric.EMPTY == container.getItemDamage())
+        if (fluidName == null || container.getItemDamage() >= ItemCanisterGeneric.EMPTY )
         {
             return null;
         }

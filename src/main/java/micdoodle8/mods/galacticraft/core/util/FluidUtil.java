@@ -632,6 +632,14 @@ public class FluidUtil
             return FluidActionResult.FAILURE;
         }
 
+        //Special code for canisters onto FluidTanks
+        //This is NOT strictly necessary, as our 1.11 code for canisters implements IFluidHandler 100% correctly
+        //
+        //But our code offers three improvements over Forge:
+        // 1: Performance :)
+        // 2: Tries to empty partial canister BEFORE filling it, that seems more natural
+        // 3: Forge's behaviour in Creative Mode with partial canisters is not a bug, but it still feels wrong
+        //
         ItemStack result;
         if (container.getItem() instanceof ItemCanisterGeneric)
         {

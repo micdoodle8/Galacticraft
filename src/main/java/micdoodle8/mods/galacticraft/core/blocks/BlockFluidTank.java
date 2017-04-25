@@ -24,6 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -171,7 +172,13 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
             return true;
         }
 
+        if (hand == EnumHand.OFF_HAND)
+        {
+        	return false;
+        }
+
         ItemStack current = playerIn.inventory.getCurrentItem();
+        int slot = playerIn.inventory.currentItem;
 
         if (!current.isEmpty())
         {
@@ -181,9 +188,15 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
             {
                 TileEntityFluidTank tank = (TileEntityFluidTank) tile;
 
-                if (FluidUtil.interactWithFluidHandler(current, tank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), playerIn).isSuccess())
+                FluidActionResult forgeResult = FluidUtil.interactWithFluidHandler(current, tank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), playerIn);
+                if (forgeResult.isSuccess())
                 {
-                    return true;
+                	playerIn.inventory.setInventorySlotContents(slot, forgeResult.result);
+            		if (playerIn.inventoryContainer != null)
+            		{
+            			playerIn.inventoryContainer.detectAndSendChanges();
+            		}
+            		return true;
                 }
 
                 return false;
