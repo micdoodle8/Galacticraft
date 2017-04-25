@@ -143,11 +143,6 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 if (!player.capabilities.isCreativeMode)
                 {
                     stack.shrink(1);
-
-                    if (stack.isEmpty())
-                    {
-                        stack = null;
-                    }
                 }
 
                 if (((IRocketType) rocket).getType().getPreFueled())

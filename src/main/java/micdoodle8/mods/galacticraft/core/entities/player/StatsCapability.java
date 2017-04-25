@@ -1178,10 +1178,6 @@ public class StatsCapability extends GCPlayerStats
             if (nbt.hasKey("LaunchpadStack"))
             {
                 this.launchpadStack = new ItemStack(nbt.getCompoundTag("LaunchpadStack"));
-                if (this.launchpadStack.getCount() == 0)
-                {
-                    this.launchpadStack = null;
-                }
             }
             else
             {

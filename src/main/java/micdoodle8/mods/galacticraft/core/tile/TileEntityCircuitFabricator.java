@@ -27,7 +27,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public static final int PROCESS_TIME_REQUIRED = 300;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
-    private ItemStack producingStack = null;
+    private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
     private NonNullList<ItemStack> stacks = NonNullList.withSize(7, ItemStack.EMPTY);

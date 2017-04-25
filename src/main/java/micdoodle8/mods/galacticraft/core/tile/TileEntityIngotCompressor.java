@@ -38,7 +38,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     public int currentItemBurnTime = 0;
     private long ticks;
 
-    private ItemStack producingStack = null;
+    private ItemStack producingStack = ItemStack.EMPTY;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();

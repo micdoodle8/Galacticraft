@@ -39,7 +39,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
-    private ItemStack producingStack = null;
+    private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
     private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
