@@ -38,30 +38,6 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
-    {
-        for (int y = 1; y <= 2; y++)
-        {
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int z = -1; z <= 1; z++)
-                {
-                    BlockPos pos1 = pos.add((y == 2 ? x : 0), y, (y == 2 ? z : 0));
-                    Block block = world.getBlockState(pos1).getBlock();
-
-                    if (block.getMaterial() != Material.air && !block.isReplaceable(world, pos1))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        EnumFacing facing = EnumFacing.getFront(side.getIndex() ^ 1);
-        return world.getBlockState(pos.add(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ())).getBlock() != GCBlocks.fakeBlock;
-    }
-
-    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         int metadata = state.getBlock().getMetaFromState(state);

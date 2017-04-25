@@ -88,44 +88,6 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
-    {
-        for (int y = 1; y <= 2; y++)
-        {
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int z = -1; z <= 1; z++)
-                {
-                    BlockPos posAt = pos.add(y == 2 ? x : 0, y, y == 2 ? z : 0);
-                    Block block = worldIn.getBlockState(posAt).getBlock();
-
-                    if (block.getMaterial() != Material.air && !block.isReplaceable(worldIn, posAt))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        for (int x = -2; x <= 2; x++)
-        {
-            for (int z = -2; z <= 2; z++)
-            {
-                BlockPos posAt = pos.add(x, 0, z);
-                Block block = worldIn.getBlockState(posAt).getBlock();
-
-                if (block == this)
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-        // return new BlockVec3(x1, y1, z1).newVecSide(side ^ 1).getBlock(world) != GCBlocks.fakeBlock; TODO
-    }
-
-    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
