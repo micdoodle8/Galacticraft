@@ -17,7 +17,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -118,8 +120,8 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         {
             return 0;
         }
-
         String fluidName = resource.getFluid().getName();
+
         if (container.getItemDamage() >= ItemCanisterGeneric.EMPTY)
         {
             //Empty canister - find a new canister to match the fluid
@@ -132,22 +134,23 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
                         return Math.min(resource.amount, this.capacity);
                     }
 
-                    this.replaceEmptyCanisterItem(container, i);
+                    //this.replaceEmptyCanisterItem(container, i);
+                    container = new ItemStack(i, 1, 0);
                     break;
                 }
             }
             //Set this to a clean empty item
             container.setItemDamage(ItemCanisterGeneric.EMPTY);
         }
-        else
-        {
-            //TODO: Refresh the Forge fluid contents (is this required in 1.11?)
-            //container.setTagCompound(null);
-        }
-
+        
         if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric) container.getItem()).allowedFluid))
         {
-            int added = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container).fill(resource, doFill);
+            //Refresh the Forge fluid contents
+            IFluidHandler handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+            handler.fill(this.getFluid(container), true);
+
+            int added = handler.fill(resource, doFill);
+
             if (doFill && added > 0)
             {
                 container.setItemDamage(Math.max(1, container.getItemDamage() - added));
@@ -165,11 +168,11 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             return null;
         }
 
-        //TODO: Refresh the Forge fluid contents - is this necessary in 1.11?
-        //container.setTagCompound(null);
-        //super.fill(container, this.getFluid(container), true);
+        //Refresh the Forge fluid contents
+        IFluidHandler handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        handler.fill(this.getFluid(container), true);
 
-        FluidStack used = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container).drain(maxDrain, doDrain);
+        FluidStack used = handler.drain(maxDrain, doDrain);
         if (doDrain && used != null && used.amount > 0)
         {
             this.setNewDamage(container, container.getItemDamage() + used.amount);
@@ -180,27 +183,43 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     protected void setNewDamage(ItemStack container, int newDamage)
     {
         newDamage = Math.min(newDamage, ItemCanisterGeneric.EMPTY);
+        container.setItemDamage(newDamage);
         if (newDamage == ItemCanisterGeneric.EMPTY)
         {
-            container.setTagCompound(null);
             if (container.getItem() != GCItems.oilCanister)
             {
                 this.replaceEmptyCanisterItem(container, GCItems.oilCanister);
                 return;
             }
         }
-
-        container.setItemDamage(newDamage);
     }
 
     private void replaceEmptyCanisterItem(ItemStack container, Item newItem)
     {
     	try
     	{
-    		Field itemId = container.getClass().getField("item");
+    		Field itemId = container.getClass().getDeclaredField("item");  //TODO: obfuscated name required
     		itemId.setAccessible(true);
     		itemId.set(container, newItem);
+    		//TODO: refresh Forge
     	}
     	catch (Exception ignore) { }
+    }
+    
+    public FluidStack getFluid(ItemStack container)
+    {
+        String fluidName = ((ItemCanisterGeneric) container.getItem()).allowedFluid;
+        if (fluidName == null || ItemCanisterGeneric.EMPTY == container.getItemDamage())
+        {
+            return null;
+        }
+
+        Fluid fluid = FluidRegistry.getFluid(fluidName);
+        if (fluid == null)
+        {
+            return null;
+        }
+
+        return new FluidStack(fluid, ItemCanisterGeneric.EMPTY - container.getItemDamage());
     }
 }

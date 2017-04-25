@@ -527,7 +527,7 @@ public class FluidUtil
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
         	ItemCanisterGeneric canister = (ItemCanisterGeneric) container.getItem(); 
-        	return new FluidStack(FluidRegistry.getFluid(canister.getAllowedFluid()), ItemCanisterGeneric.EMPTY - container.getItemDamage());
+        	return canister.getFluid(container);
         }
 
         return net.minecraftforge.fluids.FluidUtil.getFluidContained(container);
@@ -644,7 +644,7 @@ public class FluidUtil
         		}
         	}
 
-        	return new FluidActionResult(container);
+        	return new FluidActionResult(result);
         }
 
         IItemHandler playerInventory = new InvWrapper(player.inventory);
@@ -662,7 +662,7 @@ public class FluidUtil
 
     private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank)
     {
-        int currCapacity = canister.getItemDamage() - 1; 
+    	int currCapacity = canister.getItemDamage() - 1; 
         if (currCapacity <= 0)
         {
             return null;
