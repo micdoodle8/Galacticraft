@@ -9,6 +9,8 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +22,8 @@ import net.minecraft.world.World;
 
 public class BlockOxygenDetector extends BlockContainer implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
+    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    
     public BlockOxygenDetector(String assetName)
     {
         super(Material.IRON);
@@ -68,6 +72,24 @@ public class BlockOxygenDetector extends BlockContainer implements ITileEntityPr
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return getMetaFromState(blockAccess.getBlockState(pos)) == 1 ? 15 : 0;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(ACTIVE, meta > 0);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(ACTIVE) ? 1 : 0;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, ACTIVE);
     }
 
     @Override

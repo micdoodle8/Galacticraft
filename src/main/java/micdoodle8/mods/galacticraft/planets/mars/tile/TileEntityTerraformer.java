@@ -107,20 +107,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (!this.world.isRemote)
         {
-            if (!this.stacks.get(0).isEmpty())
+            final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(0));
+            if (FluidUtil.isFluidStrict(liquid, FluidRegistry.WATER.getName()))
             {
-                FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(0));
-
-                if (liquid != null && liquid.getFluid().getName().equals(FluidRegistry.WATER.getName()))
-                {
-                    if (this.waterTank.getFluid() == null || this.waterTank.getFluid().amount + liquid.amount <= this.waterTank.getCapacity())
-                    {
-                        this.waterTank.fill(liquid, true);
-
-                        ItemStack stack = FluidUtil.getUsedContainer(this.stacks.get(0));
-                        this.stacks.set(0, stack == null ? ItemStack.EMPTY : stack);
-                    }
-                }
+                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.stacks, 0, liquid.amount);
             }
 
             this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;

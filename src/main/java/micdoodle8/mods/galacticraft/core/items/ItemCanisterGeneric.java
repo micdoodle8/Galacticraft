@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
@@ -16,6 +17,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -74,15 +76,9 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         //Workaround for strange behaviour in TE Transposer
         if (isTELoaded)
         {
-            StackTraceElement[] st = Thread.currentThread().getStackTrace();
-            int imax = Math.max(st.length, 5);
-            for (int i = 1; i < imax; i++)
+            if (JavaUtil.instance.isCalledBy("thermalexpansion.block.machine.TileTransposer"))
             {
-                String ste = st[i].getClassName();
-                if (ste.equals("thermalexpansion.block.machine.TileTransposer"))
-                {
-                    return null;
-                }
+                return null;
             }
         }
 
@@ -114,6 +110,71 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     public String getAllowedFluid()
     {
         return this.allowedFluid;
+    }
+
+    public int fill(ItemStack container, FluidStack resource, boolean doFill)
+    {
+        if (resource == null || resource.getFluid() == null || resource.amount == 0 || container == null || container.getItemDamage() <= 1 || !(container.getItem() instanceof ItemCanisterGeneric))
+        {
+            return 0;
+        }
+
+        String fluidName = resource.getFluid().getName();
+        if (container.getItemDamage() >= ItemCanisterGeneric.EMPTY)
+        {
+            //Empty canister - find a new canister to match the fluid
+            for (ItemCanisterGeneric i : GCItems.canisterTypes)
+            {
+                if (fluidName.equalsIgnoreCase(i.allowedFluid))
+                {
+                    if (!doFill)
+                    {
+                        return Math.min(resource.amount, this.capacity);
+                    }
+
+                    this.replaceEmptyCanisterItem(container, i);
+                    break;
+                }
+            }
+            //Set this to a clean empty item
+            container.setItemDamage(ItemCanisterGeneric.EMPTY);
+        }
+        else
+        {
+            //TODO: Refresh the Forge fluid contents (is this required in 1.11?)
+            //container.setTagCompound(null);
+        }
+
+        if (fluidName.equalsIgnoreCase(((ItemCanisterGeneric) container.getItem()).allowedFluid))
+        {
+            int added = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container).fill(resource, doFill);
+            if (doFill && added > 0)
+            {
+                container.setItemDamage(Math.max(1, container.getItemDamage() - added));
+            }
+            return added;
+        }
+
+        return 0;
+    }
+
+    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain)
+    {
+        if (this.allowedFluid == null || container.getItemDamage() >= ItemCanisterGeneric.EMPTY)
+        {
+            return null;
+        }
+
+        //TODO: Refresh the Forge fluid contents - is this necessary in 1.11?
+        //container.setTagCompound(null);
+        //super.fill(container, this.getFluid(container), true);
+
+        FluidStack used = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container).drain(maxDrain, doDrain);
+        if (doDrain && used != null && used.amount > 0)
+        {
+            this.setNewDamage(container, container.getItemDamage() + used.amount);
+        }
+        return used;
     }
 
     protected void setNewDamage(ItemStack container, int newDamage)

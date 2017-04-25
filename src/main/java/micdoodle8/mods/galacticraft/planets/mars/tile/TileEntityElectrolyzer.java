@@ -69,20 +69,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (!this.world.isRemote)
         {
-            if (!this.stacks.get(1).isEmpty())
+            final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(1));
+            if (FluidUtil.isFluidStrict(liquid, FluidRegistry.WATER.getName()))
             {
-                FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
-
-                if (liquid != null && liquid.getFluid().getName().equals(FluidRegistry.WATER.getName()))
-                {
-                    if (this.waterTank.getFluid() == null || this.waterTank.getFluid().amount + liquid.amount <= this.waterTank.getCapacity())
-                    {
-                        this.waterTank.fill(liquid, true);
-
-                        ItemStack stack = FluidUtil.getUsedContainer(this.stacks.get(1));
-                        this.stacks.set(1, stack == null ? ItemStack.EMPTY : stack);
-                    }
-                }
+                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.stacks, 1, liquid.amount);
             }
 
             //Only drain with atmospheric valve

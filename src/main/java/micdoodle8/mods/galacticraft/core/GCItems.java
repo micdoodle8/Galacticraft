@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+
 import mezz.jei.api.IItemBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -25,6 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +86,7 @@ public class GCItems
     public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
-
+    public static LinkedList<ItemCanisterGeneric> canisterTypes = new LinkedList<ItemCanisterGeneric>();
     public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
 
     public static void initItems()
@@ -292,6 +294,9 @@ public class GCItems
         GCItems.registerItem(GCItems.flag);
         GCItems.registerItem(GCItems.parachute);
         GCItems.registerItem(GCItems.prelaunchChecklist);
+        
+        GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.fuelCanister);
+        GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.oilCanister);
     }
 
     public static void registerItem(Item item)

@@ -6,14 +6,12 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,48 +53,10 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
         if (!this.world.isRemote)
         {
-            if (!this.stacks.get(1).isEmpty())
+            final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(1));
+            if (FluidUtil.isFluidFuzzy(liquid, "oil"))
             {
-                if (this.stacks.get(1).getItem() instanceof ItemCanisterGeneric)
-                {
-                    if (this.stacks.get(1).getItem() == GCItems.oilCanister)
-                    {
-                        int originalDamage = this.stacks.get(1).getItemDamage();
-                        int used = this.oilTank.fill(new FluidStack(GCFluids.fluidOil, ItemCanisterGeneric.EMPTY - originalDamage), true);
-                        this.stacks.set(1, new ItemStack(GCItems.oilCanister, 1, originalDamage + used));
-                    }
-                }
-                else
-                {
-                    FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(this.stacks.get(1));
-
-                    if (liquid != null)
-                    {
-                        boolean isOil = FluidRegistry.getFluidName(liquid).startsWith("oil");
-
-                        if (isOil)
-                        {
-                            if (this.oilTank.getFluid() == null || this.oilTank.getFluid().amount + liquid.amount <= this.oilTank.getCapacity())
-                            {
-                                this.oilTank.fill(new FluidStack(GCFluids.fluidOil, liquid.amount), true);
-
-                                if (FluidUtil.isBucket(this.stacks.get(1)) && net.minecraftforge.fluids.FluidUtil.getFluidHandler(this.stacks.get(1)) != null)
-                                {
-                                    final int amount = this.stacks.get(1).getCount();
-                                    if (amount > 1)
-                                    {
-                                        this.oilTank.fill(new FluidStack(GCFluids.fluidOil, (amount - 1) * Fluid.BUCKET_VOLUME), true);
-                                    }
-                                    this.stacks.set(1, new ItemStack(Items.BUCKET, amount));
-                                }
-                                else
-                                {
-                                    this.stacks.get(1).shrink(1);
-                                }
-                            }
-                        }
-                    }
-                }
+                FluidUtil.loadFromContainer(this.oilTank, GCFluids.fluidOil, this.stacks, 1, liquid.amount);
             }
 
             checkFluidTankTransfer(2, this.fuelTank);

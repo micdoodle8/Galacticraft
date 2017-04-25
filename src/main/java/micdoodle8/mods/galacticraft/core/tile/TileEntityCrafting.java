@@ -326,9 +326,10 @@ public class TileEntityCrafting extends TileEntity implements IInventory, ISided
     public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction)
     {
         if (index >= SIZEINVENTORY) return false;
-        ItemStack target = this.memory.get(index);
+        boolean override = this.overriddenMemory();
+        ItemStack target = override ? this.craftMatrix.getStackInSlot(index).copy() : this.memory.get(index);
         
-        if (!target.isEmpty() && !stack.isEmpty() && sameItem(target, stack))
+		if (!target.isEmpty() && !stack.isEmpty() && sameItem(target, stack))
         {
             ItemStack is3 = this.getStackInSlot(index);
             if (is3.isEmpty()) return true;
@@ -338,7 +339,7 @@ public class TileEntityCrafting extends TileEntity implements IInventory, ISided
             for (int i = 0; i < SIZEINVENTORY; i++)
             {
                 if (i == index) continue;
-                ItemStack targetOther = this.memory.get(i);
+                ItemStack targetOther = override ? this.craftMatrix.getStackInSlot(i).copy() : this.memory.get(i);
                 if (targetOther.isEmpty()) continue;
                 //It's another memory slot matching this item 
                 if (sameItem(targetOther, stack))
@@ -372,5 +373,60 @@ public class TileEntityCrafting extends TileEntity implements IInventory, ISided
     private boolean sameItem(ItemStack target, ItemStack stack)
     {
         return target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target);
+    }
+
+    public boolean overrideMemory(ItemStack itemstack1, NonNullList<ItemStack> memory2)
+    {
+        if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()) != null)
+        {
+            //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
+            boolean fuzzyMatch = true;
+            for (int i = 0; i < 9; i++)
+            {
+               if (this.craftMatrix.getStackInSlot(i) != null && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.getMemory(i)))
+               {
+                   fuzzyMatch = false;
+                   break;
+               }
+            }
+            
+            //If it's a valid recipe and CAN'T match the memory, then override the remembered recipe
+            if (!fuzzyMatch)
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    if (matchingStacks(itemstack1, this.craftMatrix.getStackInSlot(i)))
+                    {
+                        for (int j = 0; j < 9; j++)
+                        {
+                            memory2.set(j, this.craftMatrix.getStackInSlot(j).copy());
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean overriddenMemory()
+    {
+        if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()) != null)
+        {
+            //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
+            for (int i = 0; i < 9; i++)
+            {
+               if (this.craftMatrix.getStackInSlot(i) != null && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.getMemory(i)))
+               {
+                   return true;
+               }
+            }
+        }
+        return false;
+    }
+    
+    private boolean matchingStacks(ItemStack stack, ItemStack target)
+    {
+        return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && target.isStackable() && target.getCount() < target.getMaxStackSize();
     }
 }

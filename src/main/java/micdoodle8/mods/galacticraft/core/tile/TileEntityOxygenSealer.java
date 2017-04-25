@@ -170,6 +170,11 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             TileEntityOxygenSealer.countTemp++;
 
             this.active = this.getOxygenStored() >= 1 && this.hasEnoughEnergyToRun && !this.disabled;
+            if (this.disabled != this.lastDisabled)
+            {
+                this.lastDisabled = this.disabled;
+                if (!this.disabled) this.stopSealThreadCooldown = this.threadCooldownTotal * 3 / 5;
+            }
 
             //TODO: if multithreaded, this codeblock should not run if the current threadSeal is flagged looping
             if (this.stopSealThreadCooldown > 0)
@@ -182,9 +187,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                 this.threadCooldownTotal = this.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
                 if (this.active || this.sealed)
                 {
-                TileEntityOxygenSealer.sealerCheckedThisTick = true;
-                OxygenPressureProtocol.updateSealerStatus(this);
-            }
+                    TileEntityOxygenSealer.sealerCheckedThisTick = true;
+                    OxygenPressureProtocol.updateSealerStatus(this);
+                }
             }
 
             //TODO: if multithreaded, this.threadSeal needs to be atomic
@@ -197,11 +202,14 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             	else
             	{
             		this.calculatingSealed = false;
-                this.sealed = this.active && this.threadSeal.sealedFinal.get();
+            		this.sealed = this.threadSeal.sealedFinal.get();
             	}
             }
+            else
+            {
+                this.calculatingSealed = true;  //Give an initial 'Check pending' in GUI when first placed
+            }
 
-            this.lastDisabled = this.disabled;
             this.lastSealed = this.sealed;
         }
     }

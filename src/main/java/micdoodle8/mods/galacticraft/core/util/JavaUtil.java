@@ -9,6 +9,36 @@ public class JavaUtil extends SecurityManager
         return getClassContext()[2];
     }
 
+    public boolean isCalledBy(Class<?> clazz)
+    {
+        Class<?>[] context = getClassContext();
+        
+        int imax = Math.max(context.length, 6);
+        for (int i = 2; i < imax; i++)
+        {
+            if (clazz == context[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCalledBy(String name)
+    {
+        Class<?>[] context = getClassContext();
+        
+        int imax = Math.max(context.length, 6);
+        for (int i = 2; i < imax; i++)
+        {
+            if (context[i].getName().equals(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isCalledBySpecific(Class<?> clazz)
     {
         Class<?>[] context = getClassContext();
