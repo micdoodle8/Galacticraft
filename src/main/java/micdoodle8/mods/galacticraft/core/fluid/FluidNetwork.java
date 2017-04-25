@@ -557,7 +557,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     {
                         EnumFacing facing = EnumFacing.getFront(i).getOpposite();
                         BlockPos acceptorPos = tile.getPos().offset(facing.getOpposite());
-                        EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(tile.getPos());
+                        EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(acceptorPos);
                         if (facingSet != null)
                         {
                             facingSet.add(facing);
