@@ -13,17 +13,21 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandler
+public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced implements IBufferTransmitter<FluidStack>, IFluidHandler, IFluidHandlerWrapper
 {
     private IGridNetwork network;
     public TileEntity[] adjacentConnections = null;
@@ -33,6 +37,22 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     public TileEntityFluidTransmitter(int pullAmount)
     {
         this.pullAmount = pullAmount;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+        return null;
     }
 
     @Override
@@ -113,14 +133,27 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
                 {
                     TileEntity sideTile = tiles[side.ordinal()];
 
-                    if (sideTile != null && !(sideTile instanceof IBufferTransmitter) && sideTile instanceof IFluidHandler)
-                    {
-                        IFluidHandler handler = (IFluidHandler) sideTile;
-                        FluidStack received = handler.drain(side.getOpposite(), this.pullAmount, false);
-
-                        if (received != null && received.amount != 0)
+                    if (sideTile != null && !(sideTile instanceof IBufferTransmitter))
+                    {    
+                        net.minecraftforge.fluids.capability.IFluidHandler handlerNew;
+                        if ((handlerNew = sideTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite())) != null)
                         {
-                            handler.drain(side.getOpposite(), this.fill(EnumFacing.DOWN, received, true), true);
+                            FluidStack received = handlerNew.drain(this.pullAmount, false);
+
+                            if (received != null && received.amount != 0)
+                            {
+                                handlerNew.drain(this.fill(EnumFacing.DOWN, received, true), true);
+                            }
+                        }
+                        else if (sideTile instanceof IFluidHandler)
+                        {
+                            IFluidHandler handler = (IFluidHandler) sideTile;
+                            FluidStack received = handler.drain(side.getOpposite(), this.pullAmount, false);
+
+                            if (received != null && received.amount != 0)
+                            {
+                                handler.drain(side.getOpposite(), this.fill(EnumFacing.DOWN, received, true), true);
+                            }
                         }
                     }
                 }

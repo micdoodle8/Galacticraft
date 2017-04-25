@@ -24,6 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -171,6 +172,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
         }
 
         ItemStack current = playerIn.inventory.getCurrentItem();
+        int slot = playerIn.inventory.currentItem;
 
         if (current != null)
         {
@@ -180,12 +182,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
             {
                 TileEntityFluidTank tank = (TileEntityFluidTank) tile;
 
-                if (FluidUtil.interactWithTank(current, playerIn, tank, side))
-                {
-                    return true;
-                }
-
-                return false;
+                return FluidUtil.interactWithFluidHandler(current, tank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), playerIn);
             }
         }
 

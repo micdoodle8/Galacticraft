@@ -11,20 +11,24 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
 
-public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandler
+public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandler, IFluidHandlerWrapper
 {
     public int oxygenPerTick;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -36,6 +40,22 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         this.tank = new FluidTankGC(maxOxygen, this);
         this.oxygenPerTick = oxygenPerTick;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+        return null;
     }
 
     public int getScaledOxygenLevel(int scale)

@@ -26,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,7 +43,7 @@ import java.util.*;
  */
 public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitter<FluidStack>, TileEntity>
 {
-    public Map<BlockPos, IFluidHandler> acceptors = Maps.newHashMap();
+    public Map<BlockPos, TileEntity> acceptors = Maps.newHashMap();
     public Map<BlockPos, EnumSet<EnumFacing>> acceptorDirections = Maps.newHashMap();
     public final Set<IBufferTransmitter<FluidStack>> pipes = Sets.newHashSet();
     private Set<IBufferTransmitter<FluidStack>> pipesAdded = Sets.newHashSet();
@@ -207,7 +209,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     private int emitToAcceptors(FluidStack toSend, boolean doTransfer)
     {
-        List<Pair<BlockPos, IFluidHandler>> available = new ArrayList<>();
+        List<Pair<BlockPos, TileEntity>> available = new ArrayList<>();
         available.addAll(this.getAcceptors(toSend));
 
         Collections.shuffle(available);
@@ -220,10 +222,10 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             int remainder = toSend.amount % divider;
             int each = (toSend.amount - remainder) / divider;
 
-            for (Pair<BlockPos, IFluidHandler> pair : available)
+            for (Pair<BlockPos, TileEntity> pair : available)
             {
                 int currentSend = each;
-                IFluidHandler acceptor = pair.getRight();
+                TileEntity acceptor = pair.getRight();
                 EnumSet<EnumFacing> sides = acceptorDirections.get(pair.getLeft());
 
                 if (remainder > 0)
@@ -240,7 +242,16 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     {
                         FluidStack copy = toSend.copy();
                         copy.amount = currentSend;
-                        totalSend += acceptor.fill(side, copy, doTransfer);
+
+                        net.minecraftforge.fluids.capability.IFluidHandler handler;
+                        if ((handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite())) != null)
+                        {
+                            totalSend += handler.fill(copy, doTransfer);
+                        }
+                        else if (acceptor instanceof IFluidHandler)
+                        {
+                            totalSend += ((IFluidHandler)acceptor).fill(side, copy, doTransfer);
+                        }
                     }
 
                     if (totalSend > prev)
@@ -422,9 +433,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         return Math.min(1.0F, this.buffer.amount / (float) this.getCapacity());
     }
 
-    public Set<Pair<BlockPos, IFluidHandler>> getAcceptors(FluidStack toSend)
+    public Set<Pair<BlockPos, TileEntity>> getAcceptors(FluidStack toSend)
     {
-        Set<Pair<BlockPos, IFluidHandler>> toReturn = new HashSet<>();
+        Set<Pair<BlockPos, TileEntity>> toReturn = new HashSet<>();
 
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
@@ -448,19 +459,30 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             }
             
             TileEntity tile = this.worldObj.getTileEntity(coords);
-            if (!(tile instanceof IFluidHandler))
+
+            if (tile == null)
             {
                 continue;
             }
 
-            IFluidHandler acceptor = (IFluidHandler) tile;
             Fluid fluidToSend = toSend.getFluid();
-
             for (EnumFacing side : sides)
             {
-                if (acceptor.canFill(side, fluidToSend))
+                net.minecraftforge.fluids.capability.IFluidHandler handler;
+                if ((handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)) != null)
                 {
-                    toReturn.add(Pair.of(coords, acceptor));
+                    IFluidTankProperties[] tanks = handler.getTankProperties();
+                    if (tanks != null && tanks.length > 0 && tanks[0] != null && tanks[0].canFill())
+                    {
+                        toReturn.add(Pair.of(coords, tile));
+                    }
+                }
+                else if (tile instanceof IFluidHandler)
+                {
+                    if (((IFluidHandler)tile).canFill(side, fluidToSend))
+                    {
+                        toReturn.add(Pair.of(coords, tile));
+                    }
                 }
             }
         }
@@ -553,11 +575,11 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 int i = 0;
                 for (TileEntity acceptor : transmitter.getAdjacentConnections())
                 {
-                    if (!(acceptor instanceof IBufferTransmitter) && acceptor instanceof IFluidHandler)
+                    if (acceptor != null && !(acceptor instanceof IBufferTransmitter))
                     {
                         EnumFacing facing = EnumFacing.getFront(i).getOpposite();
                         BlockPos acceptorPos = tile.getPos().offset(facing.getOpposite());
-                        EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(tile.getPos());
+                        EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(acceptorPos);
                         if (facingSet != null)
                         {
                             facingSet.add(facing);
@@ -566,7 +588,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                         {
                             facingSet = EnumSet.of(facing);
                         }
-                        this.acceptors.put(acceptorPos, (IFluidHandler) acceptor);
+                        this.acceptors.put(acceptorPos, acceptor);
                         this.acceptorDirections.put(acceptorPos, facingSet);
                     }
                     i++;

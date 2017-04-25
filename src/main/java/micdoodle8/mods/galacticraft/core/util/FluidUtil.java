@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.util;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -11,14 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -548,149 +547,80 @@ public class FluidUtil
         }
     }
 
-    public static boolean interactWithTank(ItemStack container, EntityPlayer playerIn, TileEntityFluidTank tank, EnumFacing side)
+    public static boolean interactWithFluidHandler(ItemStack container, IFluidHandler fluidHandler, EntityPlayer player)
     {
-        if (container == null || playerIn.worldObj.isRemote)
+        if (container == null || fluidHandler == null || player == null)
         {
-            return true;
+            return false;
         }
 
-        ItemStack result;
+        //Special code for canisters onto FluidTanks
+        //This is NOT strictly necessary, as our 1.11 code for canisters implements IFluidHandler 100% correctly
+        //
+        //But our code offers three improvements over Forge:
+        // 1: Performance :)
+        // 2: Tries to empty partial canister BEFORE filling it, that seems more natural
+        // 3: Forge's behaviour in Creative Mode with partial canisters is not a bug, but it still feels wrong
+        //
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
-            if ((result = FluidUtil.tryEmptyCanister(container, tank, side)) != null || (result = FluidUtil.tryFillCanister(container, tank, side)) != null)
+            if (FluidUtil.tryEmptyCanister(container, fluidHandler) != null || FluidUtil.tryFillCanister(container, fluidHandler) != null)
             {
                 // send inventory updates to client
-                if (playerIn.inventoryContainer != null)
+                if (player.inventoryContainer != null)
                 {
-                    playerIn.inventoryContainer.detectAndSendChanges();
-                }
-            }
-            
-            return true;
-        }
-
-        //The following code deals with a bug in 1.8.9 (filling a bucket from a tank with less than 1000mB returns an empty bucket, but clears out the tank)
-        //This code may not be required in 1.10.2+
-        int slot = playerIn.inventory.currentItem;
-        if ((result = FluidUtil.tryFillBucket(container, tank, side)) != null || (result = net.minecraftforge.fluids.FluidUtil.tryEmptyBucket(container, tank, side)) != null)
-        {
-            if (!playerIn.capabilities.isCreativeMode)
-            {
-                playerIn.inventory.decrStackSize(slot, 1);
-                ItemHandlerHelper.giveItemToPlayer(playerIn, result, slot);
-            }
-            if (playerIn.inventoryContainer != null)
-            {
-                playerIn.inventoryContainer.detectAndSendChanges();
-            }
-            return true;
-        }
-        else
-        {
-            // Code for IFluidContainerItems - unchanged from Forge
-            ItemStack copy = container.copy();
-            boolean changedBucket = false;
-            if (ItemStack.areItemsEqual(container, FluidContainerRegistry.EMPTY_BUCKET) && FluidRegistry.isUniversalBucketEnabled())
-            {
-                container = new ItemStack(ForgeModContainer.getInstance().universalBucket, copy.stackSize);
-                changedBucket = true;
-            }
-
-            if (net.minecraftforge.fluids.FluidUtil.tryFillFluidContainerItem(container, tank, side, playerIn) || net.minecraftforge.fluids.FluidUtil.tryEmptyFluidContainerItem(container, tank, side, playerIn))
-            {
-                if (playerIn.capabilities.isCreativeMode)
-                {
-                    playerIn.inventory.setInventorySlotContents(slot, copy);
-                }
-                else
-                {
-                    if (changedBucket && container.stackSize != copy.stackSize)
-                    {
-                        copy.stackSize = container.stackSize;
-                        playerIn.inventory.setInventorySlotContents(slot, copy);
-                    }
-                    else
-                    {
-                        if (copy.stackSize > 1)
-                        {
-                            playerIn.inventory.setInventorySlotContents(slot, container);
-                        }
-                        else
-                        {
-                            playerIn.inventory.setInventorySlotContents(slot, null);
-                            ItemHandlerHelper.giveItemToPlayer(playerIn, container, slot);
-                        }
-                    }
-                }
-                if (playerIn.inventoryContainer != null)
-                {
-                    playerIn.inventoryContainer.detectAndSendChanges();
+                    player.inventoryContainer.detectAndSendChanges();
                 }
                 return true;
             }
+
+            return false;
         }
 
-        return false;
-    }
-
-    /**
-     * The Forge original version of this is bugged!  (Drains tank even if less than 1000mB in tank)
-     */
-    private static ItemStack tryFillBucket(ItemStack bucket, TileEntityFluidTank tank, EnumFacing side)
-    {
-        if (!FluidContainerRegistry.isEmptyContainer(bucket))
+        IItemHandler playerInventory = new InvWrapper(player.inventory);
+        boolean fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
+        if (fillResult)
         {
-            return null;
+            return fillResult;
         }
-        FluidTankInfo[] info = tank.getTankInfo(side);
-        if (info == null || info.length == 0)
+        else
         {
-            return null;
+            return net.minecraftforge.fluids.FluidUtil.tryEmptyContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
         }
-        int capacity = FluidContainerRegistry.getContainerCapacity(info[0].fluid, bucket);
-        FluidStack liquid = tank.drain(side, capacity, false);
-        if (liquid != null && liquid.amount == capacity)  //Only proceed and drain the tank if it can actually fill this bucket
-        {
-            tank.drain(side, capacity, true);
-            return FluidContainerRegistry.fillFluidContainer(liquid, bucket);
-        }
-
-        return null;
-    }
+     }
 
     /**
      * This is how to do it properly.  Nice and simple, and high performance.
      */
-    private static ItemStack tryFillCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side)
+    private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank)
     {
         int currCapacity = canister.getItemDamage() - 1; 
         if (currCapacity <= 0)
         {
             return null;
         }
-        FluidStack liquid = tank.drain(side, currCapacity, false);
+        FluidStack liquid = tank.drain(currCapacity, false);
         int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, true);
         if (transferred > 0)
         {
-            liquid = tank.drain(side, transferred, true);
+            liquid = tank.drain(transferred, true);
             return canister;
         }
         return null;
     }
 
-    private static ItemStack tryEmptyCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side)
+    private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank)
     {
         int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
         if (currContents <= 0)
         {
             return null;
         }
-        FluidStack liquid = ((ItemFluidContainer)canister.getItem()).drain(canister, currContents, false); 
-        int transferred = tank.fill(side, liquid, true);
+        FluidStack liquid = ((ItemCanisterGeneric)canister.getItem()).drain(canister, currContents, false); 
+        int transferred = tank.fill(liquid, true);
         if (transferred > 0)
         {
-            ((ItemFluidContainer)canister.getItem()).drain(canister, transferred, true);
+            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, true);
             return canister;
         }
         return null;

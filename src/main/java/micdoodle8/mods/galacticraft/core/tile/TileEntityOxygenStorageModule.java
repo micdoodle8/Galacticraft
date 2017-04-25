@@ -16,13 +16,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements ISidedInventory, IFluidHandler
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements ISidedInventory
 {
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;

@@ -13,6 +13,8 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
@@ -28,12 +30,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 
-public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler
+public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IFluidHandlerWrapper
 {
     private final int tankCapacity = 4000;
 
@@ -56,6 +60,22 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
         this.setTierGC(2);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+        return null;
     }
 
     @Override
