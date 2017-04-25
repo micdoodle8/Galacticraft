@@ -124,7 +124,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        return fluidTank.getFluid() == null || fluidTank.getFluid().getFluid() == null || fluidTank.getFluid().getFluid() == fluid;
+        return fluid == null || fluidTank.getFluid() != null && fluidTank.getFluid().getFluid() == fluid;
     }
 
     @Override
@@ -266,6 +266,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         if (!worldObj.isRemote)
