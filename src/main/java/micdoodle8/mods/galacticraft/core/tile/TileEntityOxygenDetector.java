@@ -1,42 +1,55 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 
-public class TileEntityOxygenDetector extends TileEntityAdvanced
+public class TileEntityOxygenDetector extends TileEntity implements ITickable
 {
+    private int ticks = 49;
+    private AxisAlignedBB oxygenSearch;
+
     @Override
     public void update()
     {
-        super.update();
-
-        if (this.worldObj != null && !this.worldObj.isRemote && this.ticks % 50 == 0)
+        if (!this.worldObj.isRemote && ++this.ticks == 50) 
         {
-            this.blockType = this.getBlockType();
-
-            if (this.blockType != null && this.blockType instanceof BlockOxygenDetector)
+            this.ticks = 0;
+            if (this.getBlockType() instanceof BlockOxygenDetector)
             {
-                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.getPos(), OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, new AxisAlignedBB(this.getPos().getX() - 1, this.getPos().getY() - 1, this.getPos().getZ() - 1, this.getPos().getX() + 2, this.getPos().getY() + 2, this.getPos().getZ() + 2)));
+                boolean oxygenFound = false;
+                if (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.worldObj.provider).hasBreathableAtmosphere())
+                {
+                    oxygenFound = OxygenUtil.isAABBInBreathableAirBlock(this.worldObj, this.oxygenSearch, false);
+                }
+                else
+                {
+                    for (EnumFacing side : EnumFacing.values())
+                    {
+                        BlockPos offset = this.pos.offset(side, 1);
+                        IBlockState bs = this.worldObj.getBlockState(offset);
+                        if (!bs.getBlock().isSideSolid(bs, worldObj, offset, side.getOpposite()))
+                        {
+                            oxygenFound = true;
+                            break;
+                        }
+                    }
+                }
+                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.worldObj, this.getPos(), oxygenFound);
             }
         }
     }
-
+    
     @Override
-    public double getPacketRange()
+    public void validate()
     {
-        return 0;
-    }
-
-    @Override
-    public int getPacketCooldown()
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean isNetworkedTile()
-    {
-        return false;
+        super.validate();
+        this.oxygenSearch = new AxisAlignedBB(this.getPos().getX() - 0.6, this.getPos().getY() - 0.6, this.getPos().getZ() - 0.6, this.getPos().getX() + 1.6, this.getPos().getY() + 1.6, this.getPos().getZ() + 1.6);
     }
 }

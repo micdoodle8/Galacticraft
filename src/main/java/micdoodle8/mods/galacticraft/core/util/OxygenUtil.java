@@ -103,7 +103,7 @@ public class OxygenUtil
 
         if (testThermal)
         {
-            return OxygenUtil.isInOxygenAndThermalBlock(world, bb.contract(0.001D));
+            return OxygenUtil.isInOxygenAndThermalBlock(world, bb);
         }
 
         if (OxygenUtil.inOxygenBubble(world, avgX, avgY, avgZ))
@@ -111,26 +111,26 @@ public class OxygenUtil
             return true;
         }
 
-        return OxygenUtil.isInOxygenBlock(world, bb.contract(0.001D));
+        return OxygenUtil.isInOxygenBlock(world, bb);
     }
 
     public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX);
-        int j = MathHelper.floor_double(bb.maxX);
-        int k = MathHelper.floor_double(bb.minY);
-        int l = MathHelper.floor_double(bb.maxY);
-        int i1 = MathHelper.floor_double(bb.minZ);
-        int j1 = MathHelper.floor_double(bb.maxZ);
+        int xm = MathHelper.floor_double(bb.minX + 0.001D);
+        int xx = MathHelper.floor_double(bb.maxX - 0.001D);
+        int ym = MathHelper.floor_double(bb.minY + 0.001D);
+        int yy = MathHelper.floor_double(bb.maxY - 0.001D);
+        int zm = MathHelper.floor_double(bb.minZ + 0.001D);
+        int zz = MathHelper.floor_double(bb.maxZ - 0.001D);
 
         OxygenUtil.checked = new HashSet();
-        if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
+        if (world.isAreaLoaded(new BlockPos(xm, ym, zm), new BlockPos(xx, yy, zz)))
         {
-            for (int x = i; x <= j; ++x)
+            for (int x = xm; x <= xx; ++x)
             {
-                for (int y = k; y <= l; ++y)
+                for (int z = zm; z <= zz; ++z)
                 {
-                    for (int z = i1; z <= j1; ++z)
+                    for (int y = ym; y <= yy; ++y)
                     {
                         BlockPos pos = new BlockPos(x, y, z);
                         Block block = world.getBlockState(pos).getBlock();
@@ -148,12 +148,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenAndThermalBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX);
-        int j = MathHelper.floor_double(bb.maxX);
-        int k = MathHelper.floor_double(bb.minY);
-        int l = MathHelper.floor_double(bb.maxY);
-        int i1 = MathHelper.floor_double(bb.minZ);
-        int j1 = MathHelper.floor_double(bb.maxZ);
+        int i = MathHelper.floor_double(bb.minX + 0.001D);
+        int j = MathHelper.floor_double(bb.maxX - 0.001D);
+        int k = MathHelper.floor_double(bb.minY + 0.001D);
+        int l = MathHelper.floor_double(bb.maxY - 0.001D);
+        int i1 = MathHelper.floor_double(bb.minZ + 0.001D);
+        int j1 = MathHelper.floor_double(bb.maxZ - 0.001D);
 
         OxygenUtil.checked = new HashSet();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
