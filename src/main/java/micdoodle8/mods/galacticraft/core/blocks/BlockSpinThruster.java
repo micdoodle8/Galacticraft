@@ -63,13 +63,27 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return getStateFromMeta(facing.getHorizontalIndex());
+        if (facing.getAxis().isHorizontal() && this.canBlockStay(world, pos, facing))
+        {
+            return this.getDefaultState().withProperty(FACING, facing);
+        }
+        else
+        {
+            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+            {
+                if (this.canBlockStay(world, pos, enumfacing))
+                {
+                    return this.getDefaultState().withProperty(FACING, enumfacing);
+                }
+            }
+            return this.getDefaultState();
+        }
     }
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (getMetaFromState(state) == 0)
+        if (this.getMetaFromState(state) == 0)
         {
             this.onBlockAdded(worldIn, pos, state);
         }
@@ -78,7 +92,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        int metadata = getMetaFromState(state);
+        int metadata = this.getMetaFromState(state);
 
         BlockPos baseBlock;
         switch (metadata)
@@ -111,7 +125,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
     {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
 
         if (!this.canBlockStay(world, pos, enumfacing))
         {
@@ -170,7 +184,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         {
             if (((WorldProviderSpaceStation) worldIn.provider).getSpinManager().thrustersFiring || rand.nextInt(80) == 0)
             {
-                final int var6 = getMetaFromState(state) & 7;
+                final int var6 = this.getMetaFromState(state) & 7;
                 final double var7 = pos.getX() + 0.5F;
                 final double var9 = pos.getY() + 0.7F;
                 final double var11 = pos.getZ() + 0.5F;
@@ -205,7 +219,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         {
             if (this.canBlockStay(world, pos.offset(nextFacing.getOpposite()), nextFacing))
             {
-                world.setBlockState(pos, getStateFromMeta(nextFacing.getHorizontalIndex()), 2);
+                world.setBlockState(pos, this.getStateFromMeta(nextFacing.getHorizontalIndex()), 2);
                 break;
             }
 
@@ -234,7 +248,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     {
         if (!worldIn.isRemote)
         {
-            final int facing = getMetaFromState(state) & 8;
+            final int facing = this.getMetaFromState(state) & 8;
             if (worldIn.provider instanceof WorldProviderSpaceStation)
             {
                 WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) worldIn.provider;
@@ -272,7 +286,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex();
+        return state.getValue(FACING).getHorizontalIndex();
     }
 
     @Override
