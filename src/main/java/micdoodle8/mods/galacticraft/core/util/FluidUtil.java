@@ -576,6 +576,15 @@ public class FluidUtil
 
             return false;
         }
+        
+        //Also try our buckets, and any registered containers from any other mods (Forge why don't you do this?)
+        if (FluidContainerRegistry.isEmptyContainer(container))
+        {
+            FluidStack liquid = fluidHandler.drain(FluidContainerRegistry.getContainerCapacity(container), false);
+            ItemStack result = FluidContainerRegistry.fillFluidContainer(liquid, container);
+            if (result != null)
+                return true;
+        }
 
         IItemHandler playerInventory = new InvWrapper(player.inventory);
         boolean fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
