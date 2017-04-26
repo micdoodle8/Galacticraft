@@ -716,7 +716,7 @@ public class FluidUtil
             return FluidActionResult.FAILURE;
         }
 
-        //Special code for canisters onto FluidTanks
+        //-----------Special code for canisters onto FluidTanks------------
         //This is NOT strictly necessary, as our 1.11 code for canisters implements IFluidHandler 100% correctly
         //
         //But our code offers three improvements over Forge:
@@ -724,9 +724,9 @@ public class FluidUtil
         // 2: Tries to empty partial canister BEFORE filling it, that seems more natural
         // 3: Forge's behaviour in Creative Mode with partial canisters is not a bug, but it still feels wrong
         //
-        ItemStack result;
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
+            ItemStack result;
         	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler)) != null || (result = FluidUtil.tryFillCanister(container, fluidHandler)) != null)
         	{
         		// send inventory updates to client
@@ -739,34 +739,19 @@ public class FluidUtil
         	return new FluidActionResult(result);
         }
 
-        //Forge's UniversalBucket appears to be non-functional
-        //Therefore we include some straightforward bucket handling code
-        //
-        if (container.getItem() instanceof ItemBucket)
+        //Forge's UniversalBucket appears to be non-functional, currently, for FILLING modded buckets
+     	//Try to fill an empty vanilla bucket:
+        if (container.getItem() == Items.BUCKET)
         {
-        	//Try to empty a GC bucket
-            if (container.getItem() instanceof ItemBucketGC)
-            {
-            	ItemStack resultA = ((ItemBucketGC) container.getItem()).drainBucketTo(fluidHandler); 
-            	if (resultA != null)
-            	{
-            		return new FluidActionResult(resultA);
-            	}
-                return FluidActionResult.FAILURE;
-            }
-            
-        	//Try to fill an empty vanilla bucket
-            if (container.getItem() == Items.BUCKET)
-            {
-            	ItemStack resultB = ItemBucketGC.fillBucketFrom(fluidHandler); 
-            	if (resultB != null)
-            	{
-            		return new FluidActionResult(resultB);
-            	}
-                //If failure, fall through to other Forge methods
-            }
+        	ItemStack result = ItemBucketGC.fillBucketFrom(fluidHandler); 
+        	if (result != null)
+        	{
+        		return new FluidActionResult(result);
+        	}
+        	//If failure, fall through to other Forge methods
         }
         
+        //---------the rest of this is standard Forge code from interactWithFluidHandler()---------
         IItemHandler playerInventory = new InvWrapper(player.inventory);
 
         FluidActionResult fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);

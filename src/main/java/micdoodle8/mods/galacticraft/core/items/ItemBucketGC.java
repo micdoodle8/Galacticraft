@@ -177,7 +177,7 @@ public class ItemBucketGC extends ItemBucket implements ISortableItem, ICapabili
         @Override
         public FluidStack drain(int maxDrain, boolean doDrain)
         {
-            if (maxDrain != this.capacity)
+            if (maxDrain < this.capacity)
             {
                 return null;
             }
