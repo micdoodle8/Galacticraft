@@ -308,6 +308,15 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         {
             shellThickness = 1.0 - shell.thickness;
         }
+        
+        IBlockState asteroidCore = core.block.getStateFromMeta(core.meta);
+        IBlockState asteroidShell = shell.block.getStateFromMeta(shell.meta);
+        IBlockState asteroidRock0 = this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_0);
+        IBlockState asteroidRock1 = this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_1);
+        IBlockState airBlock = Blocks.air.getDefaultState();
+        IBlockState dirtBlock = this.DIRT.getStateFromMeta(this.DIRT_META);
+        IBlockState grassBlock = this.GRASS.getStateFromMeta(this.GRASS_META);
+        
         for (int x = xMax - 1; x >= xMin; x--)
         {
             int indexXY = (x - xMin) * ySize - yMin;
@@ -365,19 +374,19 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                         {
                             if (y == terrainY)
                             {
-                                primer.setBlockState(index, this.GRASS.getStateFromMeta(this.GRASS_META));
+                                primer.setBlockState(index, grassBlock);
 //                                blockArray[index] = this.GRASS;
 //                                metaArray[index] = this.GRASS_META;
                             }
                             else if (y < terrainY)
                             {
-                                primer.setBlockState(index, this.DIRT.getStateFromMeta(this.DIRT_META));
+                                primer.setBlockState(index, dirtBlock);
 //                                blockArray[index] = this.DIRT;
 //                                metaArray[index] = this.DIRT_META;
                             }
                             else
                             {
-                                primer.setBlockState(index, Blocks.air.getDefaultState());
+                                primer.setBlockState(index, airBlock);
 //                                blockArray[index] = Blocks.air;
 //                                metaArray[index] = 0;
                             }
@@ -386,26 +395,26 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
                         {
                             if (rand.nextBoolean())
                             {
-                                primer.setBlockState(index, core.block.getStateFromMeta(core.meta));
+                                primer.setBlockState(index, asteroidCore);
 //	                        	blockArray[index] = core.block;
 //	                            metaArray[index] = core.meta;
                             }
                             else
                             {
-                                primer.setBlockState(index, this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_0));
+                                primer.setBlockState(index, asteroidRock0);
 //	                        	blockArray[index] = this.ASTEROID_STONE;
 //	                            metaArray[index] = this.ASTEROID_STONE_META_0;
                             }
                         }
                         else if (shell != null && distance >= shellThickness)
                         {
-                            primer.setBlockState(index, shell.block.getStateFromMeta(shell.meta));
+                            primer.setBlockState(index, asteroidShell);
 //                            blockArray[index] = shell.block;
 //                            metaArray[index] = shell.meta;
                         }
                         else
                         {
-                            primer.setBlockState(index, this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_1));
+                            primer.setBlockState(index, asteroidRock1);
 //                            blockArray[index] = this.ASTEROID_STONE;
 //                            metaArray[index] = this.ASTEROID_STONE_META_1;
                         }
