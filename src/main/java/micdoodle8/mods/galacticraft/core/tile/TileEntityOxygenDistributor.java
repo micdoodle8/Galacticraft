@@ -251,13 +251,14 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                         for (int z = this.getPos().getZ() - bubbleR; z <= this.getPos().getZ() + bubbleR; z++)
                         {
                             BlockPos pos = new BlockPos(x, y, z);
-                            Block block = this.worldObj.getBlockState(pos).getBlock();
+                            IBlockState state = this.worldObj.getBlockState(pos); 
+                            Block block = state.getBlock();
 
                             if (block instanceof IOxygenReliantBlock)
                             {
                                 if (this.getDistanceFromServer(x, y, z) <= bubbleR2)
                                 {
-                                    ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, new BlockPos(x, y, z));
+                                    ((IOxygenReliantBlock) block).onOxygenAdded(this.worldObj, pos, state);
                                 }
                                 else
                                 {
