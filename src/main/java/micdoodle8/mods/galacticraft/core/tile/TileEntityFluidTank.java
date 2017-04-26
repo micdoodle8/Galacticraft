@@ -271,6 +271,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
         if (!this.world.isRemote)

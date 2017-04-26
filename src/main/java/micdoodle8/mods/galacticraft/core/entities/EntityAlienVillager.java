@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.items.ItemBasic;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -59,8 +61,13 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxTankLight, 1, 235), new EntityAlienVillager.PriceInfo(3, 4)),
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxygenGear, 1, 0), new EntityAlienVillager.PriceInfo(3, 4)),
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.fuelCanister, 1, 317), new EntityAlienVillager.PriceInfo(3, 4)),
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.parachute, 1, 0), new EntityAlienVillager.PriceInfo(1, 2))
-    };
+            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.parachute, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
+            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.battery, 1, 58), new EntityAlienVillager.PriceInfo(2, 4)),
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 16), new EntityAlienVillager.PriceInfo(1, 1)), //carrots = also yields a tin!
+            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_BASIC), new EntityAlienVillager.PriceInfo(3, 4)),
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 1, 3), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 6), new EntityAlienVillager.PriceInfo(1, 1)), //Compressed Tin - needed to craft a Fuel Loader
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 1, 4), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 7), new EntityAlienVillager.PriceInfo(1, 1)) //Compressed Copper - needed to craft a Fuel Loader
+            };
 
     public EntityAlienVillager(World worldIn)
     {
@@ -703,6 +710,15 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             this.field_179410_c = new ItemStack(p_i45813_3_);
             this.field_179408_d = p_i45813_4_;
         }
+
+        public ItemAndEmeraldToItem(ItemStack p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, ItemStack p_i45813_3_, EntityAlienVillager.PriceInfo p_i45813_4_)
+        {
+            this.field_179411_a = p_i45813_1_;
+            this.field_179409_b = p_i45813_2_;
+            this.field_179410_c = p_i45813_3_;
+            this.field_179408_d = p_i45813_4_;
+        }
+
 
         @Override
         public void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random)

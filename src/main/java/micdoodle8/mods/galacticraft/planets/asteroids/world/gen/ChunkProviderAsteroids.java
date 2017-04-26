@@ -302,10 +302,21 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         double shellThickness = 0;
         int terrainY = 0;
         int terrainYY = 0;
+
+        IBlockState asteroidShell = null;
         if (shell != null)
         {
+            asteroidShell = shell.block.getStateFromMeta(shell.meta);
             shellThickness = 1.0 - shell.thickness;
         }
+        
+        IBlockState asteroidCore = core.block.getStateFromMeta(core.meta);
+        IBlockState asteroidRock0 = this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_0);
+        IBlockState asteroidRock1 = this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_1);
+        IBlockState airBlock = Blocks.AIR.getDefaultState();
+        IBlockState dirtBlock = this.DIRT.getStateFromMeta(this.DIRT_META);
+        IBlockState grassBlock = this.GRASS.getStateFromMeta(this.GRASS_META);
+        
         for (int x = xMax - 1; x >= xMin; x--)
         {
             int indexXY = (x - xMin) * ySize - yMin;
@@ -363,20 +374,20 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                         {
                             if (y == terrainY)
                             {
-                                primer.setBlockState(x, y, z, this.GRASS.getStateFromMeta(this.GRASS_META));
+                                primer.setBlockState(x, y, z, grassBlock);
 //                                blockArray[index] = this.GRASS;
 //                                metaArray[index] = this.GRASS_META;
                             }
                             else if (y < terrainY)
                             {
-                                primer.setBlockState(x, y, z, this.DIRT.getStateFromMeta(this.DIRT_META));
+                                primer.setBlockState(x, y, z, dirtBlock);
 //                                blockArray[index] = this.DIRT;
 //                                metaArray[index] = this.DIRT_META;
                             }
                             else
                             {
-                                primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-//                                blockArray[index] = Blocks.AIR;
+                                primer.setBlockState(x, y, z, airBlock);
+//                                blockArray[index] = Blocks.air;
 //                                metaArray[index] = 0;
                             }
                         }
@@ -384,26 +395,26 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                         {
                             if (rand.nextBoolean())
                             {
-                                primer.setBlockState(x, y, z, core.block.getStateFromMeta(core.meta));
+                                primer.setBlockState(x, y, z, asteroidCore);
 //	                        	blockArray[index] = core.block;
 //	                            metaArray[index] = core.meta;
                             }
                             else
                             {
-                                primer.setBlockState(x, y, z, this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_0));
+                                primer.setBlockState(x, y, z, asteroidRock0);
 //	                        	blockArray[index] = this.ASTEROID_STONE;
 //	                            metaArray[index] = this.ASTEROID_STONE_META_0;
                             }
                         }
                         else if (shell != null && distance >= shellThickness)
                         {
-                            primer.setBlockState(x, y, z, shell.block.getStateFromMeta(shell.meta));
+                            primer.setBlockState(x, y, z, asteroidShell);
 //                            blockArray[index] = shell.block;
 //                            metaArray[index] = shell.meta;
                         }
                         else
                         {
-                            primer.setBlockState(x, y, z, this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_1));
+                            primer.setBlockState(x, y, z, asteroidRock1);
 //                            blockArray[index] = this.ASTEROID_STONE;
 //                            metaArray[index] = this.ASTEROID_STONE_META_1;
                         }

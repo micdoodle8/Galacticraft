@@ -100,7 +100,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         }
         else
         {
-            this.checkOxygen(worldIn, pos);
+            this.checkOxygen(worldIn, pos, state);
         }
     }
 
@@ -109,7 +109,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         if (this.checkForDrop(worldIn, pos, state))
         {
-            this.checkOxygen(worldIn, pos);
+            this.checkOxygen(worldIn, pos, state);
         }
     }
 
@@ -139,27 +139,27 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
             }
             else
             {
-                this.checkOxygen(worldIn, pos);
+                this.checkOxygen(worldIn, pos, state);
             }
         }
     }
 
-    private void checkOxygen(World world, BlockPos pos)
+    private void checkOxygen(World world, BlockPos pos, IBlockState state)
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
             if (OxygenUtil.checkTorchHasOxygen(world, pos))
             {
-                this.onOxygenAdded(world, pos);
+                this.onOxygenAdded(world, pos, state);
             }
             else
             {
-                this.onOxygenRemoved(world, pos);
+                this.onOxygenRemoved(world, pos, state);
             }
         }
         else
         {
-            EnumFacing enumfacing = (EnumFacing) world.getBlockState(pos).getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
             world.setBlockState(pos, this.fallback.getDefaultState().withProperty(FACING, enumfacing), 2);
         }
     }
@@ -195,21 +195,21 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     }
 
     @Override
-    public void onOxygenRemoved(World world, BlockPos pos)
+    public void onOxygenRemoved(World world, BlockPos pos, IBlockState state)
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            EnumFacing enumfacing = (EnumFacing) world.getBlockState(pos).getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
             world.setBlockState(pos, this.unlitVersion.getDefaultState().withProperty(FACING, enumfacing), 2);
         }
     }
 
     @Override
-    public void onOxygenAdded(World world, BlockPos pos)
+    public void onOxygenAdded(World world, BlockPos pos, IBlockState state)
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            EnumFacing enumfacing = (EnumFacing) world.getBlockState(pos).getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
             world.setBlockState(pos, this.litVersion.getDefaultState().withProperty(FACING, enumfacing), 2);
         }
     }

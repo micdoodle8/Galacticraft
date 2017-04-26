@@ -35,7 +35,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -470,27 +469,19 @@ public class OxygenUtil
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
-            if (tileEntity != null)
+            boolean connectable = false;
+            if (tileEntity instanceof IConnector)
             {
-                IFluidHandler handler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite());
+            	connectable = ignoreConnect || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID);
+            }
+            else if (tileEntity != null)
+            {
+            	connectable = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite()) != null;
+            }
 
-                if (handler != null)
-                {
-                    if (ignoreConnect || !(tileEntity instanceof IConnector) || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID))
-                    {
-                        adjacentConnections[direction.ordinal()] = tileEntity;
-                    }
-                }
-    //            else if (isMekLoaded)
-    //            {
-    //                if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
-    //                {
-    //                    if (((ITubeConnection) tileEntity).canTubeConnect(direction))
-    //                    {
-    //                        adjacentConnections[direction.ordinal()] = tileEntity;
-    //                    }
-    //                }
-    //            }
+            if (connectable)
+            {
+            	adjacentConnections[direction.ordinal()] = tileEntity;
             }
         }
 

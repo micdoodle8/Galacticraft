@@ -5,8 +5,6 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
-import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,18 +14,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements ISidedInventory, IFluidHandlerWrapper
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements ISidedInventory
 {
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;
@@ -416,22 +411,5 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 //        }
 //        return tankInfo;
         return super.getTankInfo(from);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return (T) new FluidHandlerWrapper(this, facing);
-        }
-        return super.getCapability(capability, facing);
     }
 }

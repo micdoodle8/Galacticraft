@@ -29,7 +29,7 @@ public class ItemBatteryAtomic extends ItemElectricBase implements ISortableItem
     @Override
     protected void setMaxTransfer()
     {
-        this.transferMax = 12;
+        this.transferMax = 6;
     }
 
     @Override

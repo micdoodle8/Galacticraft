@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
@@ -148,7 +149,7 @@ public class MapGenCavesMoon extends MapGenBaseMeta
 
                     if (true)
                     {
-
+                        Block testBlock = GCBlocks.blockMoon;
                         for (int localY = j2; localY < k2; localY++)
                         {
                             final double yfactor = (localY + 0.5D - par8) / d7;
@@ -169,14 +170,10 @@ public class MapGenCavesMoon extends MapGenBaseMeta
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
                                             IBlockState state = primer.getBlockState(localX, localY, localZ);
-                                            if (state.getBlock() == GCBlocks.blockMoon)
+                                            if (state.getBlock() == testBlock)
                                             {
-                                                if (state.getBlock().getMetaFromState(state) == 3 || state.getBlock().getMetaFromState(state) == 4)
-                                                {
-                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.AIR;
-                                                }
-                                                else if (state.getBlock().getMetaFromState(state) == 5)
+                                                int meta = state.getBlock().getMetaFromState(state); 
+                                                if (meta == 3 || meta == 4 || meta == 5)
                                                 {
                                                     primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
 //                                                    blockIdArray[coords] = Blocks.AIR;
