@@ -302,13 +302,15 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         double shellThickness = 0;
         int terrainY = 0;
         int terrainYY = 0;
+
+        IBlockState asteroidShell = null;
         if (shell != null)
         {
+            asteroidShell = shell.block.getStateFromMeta(shell.meta);
             shellThickness = 1.0 - shell.thickness;
         }
         
         IBlockState asteroidCore = core.block.getStateFromMeta(core.meta);
-        IBlockState asteroidShell = shell.block.getStateFromMeta(shell.meta);
         IBlockState asteroidRock0 = this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_0);
         IBlockState asteroidRock1 = this.ASTEROID_STONE.getStateFromMeta(this.ASTEROID_STONE_META_1);
         IBlockState airBlock = Blocks.AIR.getDefaultState();
