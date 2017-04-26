@@ -61,7 +61,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public TileEntityTerraformer()
     {
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 45);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
     }
 
     public int getScaledWaterLevel(int i)

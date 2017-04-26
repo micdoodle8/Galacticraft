@@ -53,7 +53,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public TileEntityMethaneSynthesizer()
     {
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 45);
         this.setTierGC(2);
     }
 
