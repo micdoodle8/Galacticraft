@@ -92,7 +92,7 @@ public class VenusModule implements IPlanetsModule
 
         if (VenusBlocks.sulphuricAcid != null)
         {
-            VenusItems.bucketSulphuricAcid = new ItemBucketGC(VenusBlocks.sulphuricAcid).setUnlocalizedName("bucket_sulphuric_acid");
+            VenusItems.bucketSulphuricAcid = new ItemBucketGC(VenusBlocks.sulphuricAcid, VenusModule.sulphuricAcid).setUnlocalizedName("bucket_sulphuric_acid");
             VenusItems.registerItem(VenusItems.bucketSulphuricAcid);
 //            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("sulphuricacid", Fluid.BUCKET_VOLUME), new ItemStack(VenusItems.bucketSulphuricAcid), new ItemStack(Items.BUCKET));
         }

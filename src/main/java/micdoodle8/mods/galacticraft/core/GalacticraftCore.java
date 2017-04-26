@@ -49,7 +49,6 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -107,10 +106,10 @@ public class GalacticraftCore
     public static ImageWriteParam writeParam;
     public static boolean enableJPEG = false;
 
-    static
-    {
-        FluidRegistry.enableUniversalBucket();
-    }
+//    static
+//    {
+//TODO        FluidRegistry.enableUniversalBucket();  - currently appears not to work
+//    }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)

@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -62,15 +61,14 @@ public class GCFluids
             GCBlocks.crudeOil = fluidOil.getBlock();
         }
 
-        if (GCBlocks.crudeOil != null && Item.REGISTRY.getObject(new ResourceLocation("buildcraftenergy:items/bucketOil")) == null)
+        if (GCBlocks.crudeOil != null && !FluidRegistry.getBucketFluids().contains(fluidOil))
         {
-            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil);
+            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, fluidOil);
             GCItems.bucketOil.setUnlocalizedName("bucket_oil");
             GCItems.registerItem(GCItems.bucketOil);
-//            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, Fluid.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.BUCKET));
+//TODO          	FluidRegistry.addBucketForFluid(fluidOil);  - only for Universal Buckets - which don't work!
+            EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
         }
-
-        EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
 
         // Fuel:
         if (!FluidRegistry.isFluidRegistered(fuelID))
@@ -97,15 +95,14 @@ public class GCFluids
             GCBlocks.fuel = fluidFuel.getBlock();
         }
 
-        if (GCBlocks.fuel != null && Item.REGISTRY.getObject(new ResourceLocation("buildcraftenergy:items/bucketFuel")) == null)
+        if (GCBlocks.fuel != null && !FluidRegistry.getBucketFluids().contains(fluidFuel))
         {
-            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel);
+            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, fluidFuel);
             GCItems.bucketFuel.setUnlocalizedName("bucket_fuel");
             GCItems.registerItem(GCItems.bucketFuel);
-//            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, Fluid.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.BUCKET));
+//TODO          	FluidRegistry.addBucketForFluid(fluidFuel);  - only for Universal Buckets - which don't work!
+            EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
         }
-
-        EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
     }
 
     private static Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
