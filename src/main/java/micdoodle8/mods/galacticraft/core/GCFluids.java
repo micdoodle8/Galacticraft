@@ -23,9 +23,6 @@ public class GCFluids
     {
         fluidOxygenGas = registerFluid("oxygen", 1, 13, 295, true, "oxygen_gas");
         fluidHydrogenGas = registerFluid("hydrogen", 1, 1, 295, true, "hydrogen_gas");
-
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-//        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
     }
 
     public static void registerOilandFuel()
@@ -63,10 +60,10 @@ public class GCFluids
 
         if (GCBlocks.crudeOil != null && !FluidRegistry.getBucketFluids().contains(fluidOil))
         {
+        	FluidRegistry.addBucketForFluid(GCFluids.fluidOil);  //Create a Universal Bucket AS WELL AS our type, this is needed to pull oil out of other mods tanks
             GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, fluidOil);
             GCItems.bucketOil.setUnlocalizedName("bucket_oil");
             GCItems.registerItem(GCItems.bucketOil);
-//TODO          	FluidRegistry.addBucketForFluid(fluidOil);  - only for Universal Buckets - which don't work!
             EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
         }
 
@@ -97,10 +94,10 @@ public class GCFluids
 
         if (GCBlocks.fuel != null && !FluidRegistry.getBucketFluids().contains(fluidFuel))
         {
+        	FluidRegistry.addBucketForFluid(GCFluids.fluidFuel);  //Create a Universal Bucket AS WELL AS our type, this is needed to pull fuel out of other mods tanks
             GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, fluidFuel);
             GCItems.bucketFuel.setUnlocalizedName("bucket_fuel");
             GCItems.registerItem(GCItems.bucketFuel);
-//TODO          	FluidRegistry.addBucketForFluid(fluidFuel);  - only for Universal Buckets - which don't work!
             EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
         }
     }

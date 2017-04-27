@@ -18,10 +18,6 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     @Nonnull
     protected ItemStack container;
 
-    /**
-     * @param container  The container itemStack, data is stored on it directly as NBT.
-     * @param capacity   The maximum capacity of this fluid tank.
-     */
     public ItemCanisterGenericHandler(@Nonnull ItemStack container)
     {
         this.container = container;
@@ -31,7 +27,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     @Override
     public ItemStack getContainer()
     {
-    	return container;
+    	return container;  //never varies
     }
 
     @Nullable
@@ -55,7 +51,11 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     @Override
     public IFluidTankProperties[] getTankProperties()
     {
-        return new FluidTankProperties[] { new FluidTankProperties(getFluid(), ItemCanisterGeneric.EMPTY - 1) };
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
+        {
+        	return new FluidTankProperties[] { new FluidTankProperties(getFluid(), ItemCanisterGeneric.EMPTY - 1) };
+        }
+        return new FluidTankProperties[0];
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
 
     public boolean canFillFluidType(FluidStack fluid)
     {
-        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid.getFluid() != null && fluid.amount > 0)
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid.getFluid() != null)
         {
         	return ((ItemCanisterGeneric)container.getItem()).getAllowedFluid().equalsIgnoreCase(fluid.getFluid().getName());
         }
@@ -122,38 +122,6 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY ? (T) this : null;
-    }
-
-    public static class Consumable extends ItemCanisterGenericHandler
-    {
-        public Consumable(ItemStack container, int capacity)
-        {
-            super(container);
-        }
-
-//        @Override
-//        protected void setContainerToEmpty()
-//        {
-//            super.setContainerToEmpty();
-//        }
-    }
-
-    /**
-     * No need to swap the container item for a different one when it's emptied, our code
-     * already does this in ItemCanisterGeneric
-     */
-    public static class SwapEmpty extends ItemCanisterGenericHandler
-    {
-        public SwapEmpty(ItemStack container, ItemStack emptyContainer, int capacity)
-        {
-            super(container);
-        }
-
-//        @Override
-//        protected void setContainerToEmpty()
-//        {
-//            super.setContainerToEmpty();
-//        }
     }
 }
 

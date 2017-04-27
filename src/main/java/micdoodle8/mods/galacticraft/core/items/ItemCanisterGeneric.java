@@ -26,13 +26,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
-	//TODO:  in 1.11.2 implement CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY
-	
-    private String allowedFluid = null;
     public final static int EMPTY = Fluid.BUCKET_VOLUME + 1;
     private static boolean isTELoaded = CompatibilityManager.isTELoaded();
-    private final ItemStack copyStack = null;
-//    private final ItemStack emptyContainerStack = this.getContainerItem(this.containerStack);
+	
+    private String allowedFluid = null;
 
     public ItemCanisterGeneric(String assetName)
     {

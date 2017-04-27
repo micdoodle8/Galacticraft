@@ -92,12 +92,11 @@ public class VenusModule implements IPlanetsModule
 
         if (VenusBlocks.sulphuricAcid != null)
         {
+        	FluidRegistry.addBucketForFluid(sulphuricAcid);  //Create a Universal Bucket AS WELL AS our type, this is needed to pull fluids out of other mods tanks
             VenusItems.bucketSulphuricAcid = new ItemBucketGC(VenusBlocks.sulphuricAcid, VenusModule.sulphuricAcid).setUnlocalizedName("bucket_sulphuric_acid");
             VenusItems.registerItem(VenusItems.bucketSulphuricAcid);
-//            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("sulphuricacid", Fluid.BUCKET_VOLUME), new ItemStack(VenusItems.bucketSulphuricAcid), new ItemStack(Items.BUCKET));
+            EventHandlerGC.bucketList.put(VenusBlocks.sulphuricAcid, VenusItems.bucketSulphuricAcid);
         }
-
-        EventHandlerGC.bucketList.put(VenusBlocks.sulphuricAcid, VenusItems.bucketSulphuricAcid);
 
         VenusBlocks.initBlocks();
         VenusItems.initItems();

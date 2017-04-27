@@ -99,12 +99,11 @@ public class MarsModule implements IPlanetsModule
 
         if (MarsBlocks.blockSludge != null)
         {
+        	FluidRegistry.addBucketForFluid(sludge);  //Create a Universal Bucket AS WELL AS our type, this is needed to pull fluids out of other mods tanks
             MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge, sludge).setUnlocalizedName("bucket_sludge");
             MarsItems.registerItem(MarsItems.bucketSludge);
-//            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", Fluid.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.BUCKET));
+            EventHandlerGC.bucketList.put(MarsBlocks.blockSludge, MarsItems.bucketSludge);
         }
-
-        EventHandlerGC.bucketList.put(MarsBlocks.blockSludge, MarsItems.bucketSludge);
 
         MarsBlocks.initBlocks();
 
