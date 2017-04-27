@@ -14,13 +14,9 @@ public class ItemCanisterGenericHandler implements IFluidHandler, ICapabilityPro
 {
     protected ItemStack container;
 
-    /**
-     * @param container  The container itemStack, data is stored on it directly as NBT.
-     * @param capacity   The maximum capacity of this fluid tank.
-     */
     public ItemCanisterGenericHandler(ItemStack container)
     {
-        this.container = container;
+        this.container = container;  //never varies
     }
 
     public FluidStack getFluid()
@@ -43,7 +39,11 @@ public class ItemCanisterGenericHandler implements IFluidHandler, ICapabilityPro
     @Override
     public IFluidTankProperties[] getTankProperties()
     {
-        return new FluidTankProperties[] { new FluidTankProperties(getFluid(), ItemCanisterGeneric.EMPTY - 1) };
+        if (container.stackSize > 0 && container.getItem() instanceof ItemCanisterGeneric)
+        {
+            return new FluidTankProperties[] { new FluidTankProperties(getFluid(), ItemCanisterGeneric.EMPTY - 1) };
+        }
+        return new FluidTankProperties[0];
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ItemCanisterGenericHandler implements IFluidHandler, ICapabilityPro
 
     public boolean canFillFluidType(FluidStack fluid)
     {
-        if (container.stackSize > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid.getFluid() != null && fluid.amount > 0)
+        if (container.stackSize > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid.getFluid() != null)
         {
         	return ((ItemCanisterGeneric)container.getItem()).getAllowedFluid().equalsIgnoreCase(fluid.getFluid().getName());
         }
@@ -109,26 +109,6 @@ public class ItemCanisterGenericHandler implements IFluidHandler, ICapabilityPro
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
-    }
-
-    public static class Consumable extends ItemCanisterGenericHandler
-    {
-        public Consumable(ItemStack container, int capacity)
-        {
-            super(container);
-        }
-    }
-
-    /**
-     * No need to swap the container item for a different one when it's emptied, our code
-     * already does this in ItemCanisterGeneric
-     */
-    public static class SwapEmpty extends ItemCanisterGenericHandler
-    {
-        public SwapEmpty(ItemStack container, ItemStack emptyContainer, int capacity)
-        {
-            super(container);
-        }
     }
 }
 

@@ -188,31 +188,50 @@ public class FluidUtil
     public static void tryFillContainer(FluidTank tank, FluidStack liquid, ItemStack[] inventory, int slot, Item canisterType)
     {
         ItemStack slotItem = inventory[slot];
-        boolean isCanister = slotItem.getItem() instanceof ItemCanisterGeneric;
-        final int amountToFill = Math.min(liquid.amount, isCanister ? slotItem.getItemDamage() - 1 : FluidContainerRegistry.BUCKET_VOLUME);
-
-        if (amountToFill <= 0 || (isCanister && slotItem.getItem() != canisterType && slotItem.getItemDamage() != ItemCanisterGeneric.EMPTY))
+        if (liquid.amount <= 0 || slotItem == null)
         {
             return;
         }
 
-        if (isCanister)
+        if (slotItem.getItem() instanceof ItemCanisterGeneric)
         {
-            inventory[slot] = new ItemStack(canisterType, 1, slotItem.getItemDamage() - amountToFill);
-            tank.drain(amountToFill, true);
+            if (slotItem.stackSize != 1 || slotItem.getItem() != canisterType && slotItem.getItemDamage() != ItemCanisterGeneric.EMPTY)
+            {
+                return;
+            }
+
+            final int used = Math.min(liquid.amount, slotItem.getItemDamage() - 1);
+            if (used > 0)
+            {
+                inventory[slot] = new ItemStack(canisterType, 1, slotItem.getItemDamage() - used);
+                tank.drain(used, true);
+            }
+            return;
         }
-        else if (amountToFill == FluidContainerRegistry.BUCKET_VOLUME)
+        else if (slotItem.stackSize == 1)
         {
             inventory[slot] = FluidContainerRegistry.fillFluidContainer(liquid, inventory[slot]);
 
-            if (inventory[slot] == null)
+            if (inventory[slot] != null)
             {
-                //Failed to fill container: restore item that was there before
-                inventory[slot] = slotItem;
+                int capacity = FluidContainerRegistry.getContainerCapacity(inventory[slot]);
+                tank.drain(capacity, true);
+                return;
             }
-            else
+
+            //Failed to fill container (most likely because it's already full): restore item that was there before
+            inventory[slot] = slotItem;
+            
+            //Try the new way to fill container items
+            IFluidHandler handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(inventory[slot]);
+            if (handler != null)
             {
-                tank.drain(amountToFill, true);
+                final int used = handler.fill(liquid, true);
+                if (used > 0)
+                {
+                    tank.drain(used, true);
+                }
+                return;
             }
         }
     }
@@ -293,28 +312,28 @@ public class FluidUtil
         {
             if (tank.getFluid() == null || amountOffered <= tank.getCapacity() - tank.getFluid().amount)
             {
-                tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
+                int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
+                final int itemCount = slotItem.stackSize;
 
                 if (FluidContainerRegistry.isFilledContainer(slotItem))
                 {
-                    final int bucketCount = slotItem.stackSize;
                     if (FluidContainerRegistry.isBucket(slotItem))
                     {
-                        if (bucketCount > 1)
+                        if (itemCount > 1)
                         {
-                            tank.fill(new FluidStack(desiredLiquid, (bucketCount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
+                            tank.fill(new FluidStack(desiredLiquid, (itemCount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
                         }
-                        inventory[slot] = new ItemStack(Items.BUCKET, bucketCount);
+                        inventory[slot] = new ItemStack(Items.BUCKET, itemCount);
                     }
                     else
                     {
                         ItemStack emptyStack = FluidContainerRegistry.drainFluidContainer(slotItem); 
-                        if (bucketCount > 1)
+                        if (itemCount > 1)
                         {
-                            tank.fill(new FluidStack(desiredLiquid, (bucketCount - 1) * FluidContainerRegistry.getContainerCapacity(slotItem)), true);
+                            tank.fill(new FluidStack(desiredLiquid, (itemCount - 1) * FluidContainerRegistry.getContainerCapacity(slotItem)), true);
                             if (emptyStack != null)
                             {
-                                emptyStack.stackSize = bucketCount;
+                                emptyStack.stackSize = itemCount;
                             }
                         }
                         inventory[slot] = emptyStack;
@@ -322,6 +341,13 @@ public class FluidUtil
                 }
                 else
                 {
+                    IFluidHandler handlerItem = net.minecraftforge.fluids.FluidUtil.getFluidHandler(slotItem);
+                    if (handlerItem != null && itemCount == 1)
+                    {
+                        handlerItem.drain(new FluidStack(desiredLiquid, used), true);
+                        return;
+                    }
+
                     slotItem.stackSize--;
 
                     if (slotItem.stackSize == 0)
