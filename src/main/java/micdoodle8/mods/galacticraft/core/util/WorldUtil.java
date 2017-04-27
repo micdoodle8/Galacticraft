@@ -1002,6 +1002,7 @@ public class WorldUtil
         }
 
         boolean dimChange = entity.worldObj != worldNew;
+        //Make sure the entity is added to the correct chunk in the OLD world so that it will be properly removed later if it needs to be unloaded from that world
         entity.worldObj.updateEntityWithOptionalForce(entity, false);
         EntityPlayerMP player = null;
         Vector3 spawnPos = null;
@@ -1085,9 +1086,7 @@ public class WorldUtil
                 {
                     spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
                 }
-                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
-                worldNew.spawnEntityInWorld(entity);
-                entity.setWorld(worldNew);
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos, true);
                 
                 player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) worldNew);
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + worldNew.provider.dimensionId);
@@ -1129,10 +1128,7 @@ public class WorldUtil
                     ((IWorldTransferCallback) entity).onWorldTransferred(worldNew);
                 }
 
-                forceMoveEntityToPos(entity, (WorldServer) worldNew, new Vector3(entity));
-                worldNew.spawnEntityInWorld(entity);
-                entity.setWorld(worldNew);
-                worldNew.updateEntityWithOptionalForce(entity, false);
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, new Vector3(entity), true);
                 
                 if (tList != null && tList.size() > 0)
                 {
@@ -1154,7 +1150,6 @@ public class WorldUtil
                 stats.usingPlanetSelectionGui = false;
 
                 if (worldNew.provider instanceof WorldProviderSpaceStation) GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, new Object[] { }), player);
-                worldNew.updateEntityWithOptionalForce(entity, false);
 
                 if (ridingRocket != null)
                 {
@@ -1164,7 +1159,7 @@ public class WorldUtil
                 {
                     spawnPos = type.getPlayerSpawnLocation((WorldServer) entity.worldObj, (EntityPlayerMP) entity);
                 }
-                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos);
+                forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos, false);
 
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + worldNew.provider.dimensionId);
             }
@@ -1255,7 +1250,15 @@ public class WorldUtil
         return entity;
     }
     
-    public static void forceMoveEntityToPos(Entity entity, WorldServer worldNew, Vector3 spawnPos)
+    /**
+     * This correctly positions an entity at spawnPos in worldNew
+     * loading and adding it to the chunk as required.
+     * 
+     * @param entity
+     * @param worldNew
+     * @param spawnPos
+     */
+    public static void forceMoveEntityToPos(Entity entity, WorldServer worldNew, Vector3 spawnPos, boolean spawnRequired)
     {
         ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
         GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
@@ -1265,6 +1268,11 @@ public class WorldUtil
             ((EntityPlayerMP) entity).playerNetServerHandler.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         }
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+        if (spawnRequired)
+        {
+            worldNew.spawnEntityInWorld(entity);
+            entity.setWorld(worldNew);
+        }
         worldNew.updateEntityWithOptionalForce(entity, true);
     }
 
