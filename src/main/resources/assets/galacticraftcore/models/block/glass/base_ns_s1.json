@@ -7,6 +7,8 @@
             "faces": {
                 "east": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
                 "west": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
                 "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] },
                 "down": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] }
             }

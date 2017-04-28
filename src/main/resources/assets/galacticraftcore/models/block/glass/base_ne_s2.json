@@ -54,7 +54,7 @@
             "to": [ 14.0, 3.0, 4.0 ], 
             "faces": {
                 "north": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 13.0, 4.0, 16.0 ] },
-                "east": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 14.0, 4.0, 17.0 ] },
+                "east": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 13.0, 4.0, 16.0 ] },
                 "up": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 0.0, 4.0, 2.0 ] },
                 "down": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 4.0, 6.0, 6.0 ] }
             }
