@@ -18,11 +18,13 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFallenMeteor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.client.model.block.ModelPanelLightBase;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
@@ -272,6 +274,7 @@ public class ClientProxyCore extends CommonProxyCore
         modelResourceLocation = new ModelResourceLocation("galacticraftcore:flag", "inventory");
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
         ModelLoader.setCustomStateMapper(GCBlocks.oxygenDetector, new StateMap.Builder().ignore(BlockOxygenDetector.ACTIVE).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.panelLighting, new StateMap.Builder().ignore(BlockPanelLighting.TYPE).build());
     }
 
     @Override
@@ -400,6 +403,8 @@ public class ClientProxyCore extends CommonProxyCore
         }
 
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
+        ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":panel_lighting", "normal");
+        event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(blockLoc));
 //
 //        for (PartialCanister container : ClientProxyCore.canisters)
 //        {
@@ -465,6 +470,7 @@ public class ClientProxyCore extends CommonProxyCore
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPanelLight.class, new TileEntityPanelLightRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
@@ -624,6 +630,11 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire_heavy");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 2, "aluminum_wire_switch");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 3, "aluminum_wire_switch_heavy");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 0, "panel_lighting_0");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 1, "panel_lighting_1");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 2, "panel_lighting_2");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 3, "panel_lighting_3");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 4, "panel_lighting_4");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");
@@ -678,6 +689,7 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("space_glass_clear", "space_glass_clear", "space_glass_tin_clear");
         addCoreVariant("space_glass_vanilla", "space_glass_vanilla", "space_glass_tin_vanilla");
         addCoreVariant("space_glass_strong", "space_glass_strong", "space_glass_tin_strong");
+        addCoreVariant("panel_lighting", "panel_lighting_0", "panel_lighting_1", "panel_lighting_2", "panel_lighting_3", "panel_lighting_4");
 
         //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
         addCoreVariant("canister", "canister", "canister_copper");

@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "lights": "galacticraftcore:blocks/panel_light_off",
+            "texture": "galacticraftcore:blocks/panel_light_off",
+            "particle": "blocks/glass"
+        },
+        "model": "galacticraftcore:panel_lighting"
+    },
+    "variants": {
+        "normal": [{  }],
+        "inventory": [{  }]
+    }
+}

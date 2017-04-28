@@ -218,5 +218,27 @@ public abstract class BlockAdvanced extends Block
     {
         return this.onUseWrench(world, pos, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
     }
+    
+    public void rotate6Ways(World world, BlockPos pos)
+    {
+        int metadata = this.getMetaFromState(world.getBlockState(pos));
+        int metaDir = ((metadata & 7) + 1) % 6;
+        //DOWN->UP->NORTH->*EAST*->*SOUTH*->WEST
+        //0->1 1->2 2->5 3->4 4->0 5->3 
+        if (metaDir == 3) //after north
+        {
+            metaDir = 5;
+        }
+        else if (metaDir == 0)
+        {
+            metaDir = 3;
+        }
+        else if (metaDir == 5)
+        {
+            metaDir = 0;
+        }
+            
+        world.setBlockState(pos, this.getStateFromMeta(metaDir), 3);
+    }
 
 }

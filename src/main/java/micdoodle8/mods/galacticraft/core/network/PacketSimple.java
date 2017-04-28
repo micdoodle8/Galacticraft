@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.ParticleSparks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
@@ -140,7 +141,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, String.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
-        C_UPDATE_STATS(Side.CLIENT, Integer.class),
+        C_UPDATE_STATS(Side.CLIENT, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class),
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
         C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT, Float.class),
@@ -706,6 +707,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             break;
         case C_UPDATE_STATS:
             stats.setBuildFlags((Integer) this.data.get(0));
+            BlockPanelLighting.updateClient(this.data);
             break;
         case C_UPDATE_TELEMETRY:
             tile = player.worldObj.getTileEntity((BlockPos) this.data.get(0));

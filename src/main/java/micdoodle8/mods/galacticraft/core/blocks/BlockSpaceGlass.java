@@ -432,11 +432,98 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         if (off.getBlock() != this) return true;
         int connThis = (isConnectedEW(blockState, worldIn, pos) ? 2 : 0) + (isConnectedNS(blockState, worldIn, pos) ? 1 : 0);
         int connOther = (isConnectedEW(off, worldIn, offPos) ? 2 : 0) + (isConnectedNS(off, worldIn, offPos) ? 1 : 0);
-        if (connThis == 0 || connOther == 0)
+        if (connThis == 0 && connOther == 0)
             return false;
+        int trueThis = identifyHorizConnections(worldIn, pos, blockState);
+        int trueOther = identifyHorizConnections(worldIn, offPos, off);
+
+        //Singles (no horizontal connections) -> does it match the plane of the one above or below?
+        if (connThis == 0 && (((trueOther & 3) == 0) && trueThis != 3 || ((trueOther & 12) == 0) && trueThis == 3))
+        {
+            return false;
+        }
+        if (connOther == 0 && (((trueThis & 3) == 0) && trueOther != 3 || ((trueThis & 12) == 0)  && trueOther == 3))
+        {
+            return false;
+        }
+
+        //Non-matching planes of connection, including all singles not already dealt with -> solid side
         if (connThis != connOther)
             return true;
+
+        //One side of connection only - and matches plane of the one above/below -> no solid side
+        if (trueThis < 3 || trueThis == 4 || trueThis == 8)
+        {
+            return false;
+        }
+        if (trueOther < 3 || trueOther == 4 || trueOther == 8)
+        {
+            return false;
+        }
+        
+        //Special cases: T junctions above/below 2-way corners, or similar -> solid side because the glass can't connect properly
+        if ((trueThis & 7) != (trueOther & 7))
+        {
+            return true;
+        }
+        if ((trueThis & 11) != (trueOther & 11))
+        {
+            return true;
+        }
+        if ((trueThis & 13) != (trueOther & 13))
+        {
+            return true;
+        }
+        if ((trueThis & 14) != (trueOther & 14))
+        {
+            return true;
+        }
+
+        //Anything still left, it's matching planes of connection and not a special case -> no solid side
         return false;
+    }
+    
+    private int identifyHorizConnections(IBlockAccess worldIn, BlockPos pos, IBlockState state)
+    {
+        IBlockState north = worldIn.getBlockState(pos.north());
+        IBlockState south = worldIn.getBlockState(pos.south());
+        IBlockState west = worldIn.getBlockState(pos.west());
+        IBlockState east = worldIn.getBlockState(pos.east());
+        
+        boolean connectN = this.canPaneConnectToBlock(north, state);
+        boolean connectS = this.canPaneConnectToBlock(south, state);
+        boolean connectW = this.canPaneConnectToBlock(west, state);
+        boolean connectE = this.canPaneConnectToBlock(east, state);
+
+        int connections = (connectN ? 1 : 0) + (connectS ? 1 : 0) + (connectW ? 1 : 0) + (connectE ? 1 : 0);
+
+        if (!connectN && !connectS && !connectW && !connectE)
+        {
+            IBlockState above = worldIn.getBlockState(pos.up());
+            IBlockState below = worldIn.getBlockState(pos.down());
+
+            if (below.getBlock() == this)
+            {
+                if (this.isConnectedEW(below, worldIn, pos.down()) || this.isPreferenceEW(below, worldIn, pos.down()))
+                {
+                    return 3;
+                }
+            }
+            else if (above.getBlock() == this)
+            {
+                if (this.isConnectedEW(above, worldIn, pos.up()) || this.isPreferenceEW(above, worldIn, pos.up()))
+                {
+                    return 3;
+                }
+            }
+
+            if (this.isPreferenceEW(state, worldIn, pos))
+            {
+                return 3;
+            }
+        }
+        
+        return (connectN ? 8 : 0) + (connectS ? 4 : 0) + (connectW ? 2 : 0) + (connectE ? 1 : 0);
     }
 
     @Override
@@ -516,7 +603,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             }
             if (connectW && !plateD && buildSolidSideUD(pos.west(), EnumFacing.DOWN, worldIn, west))
             {
-                cornerPiece+=5;
+                cornerPiece += 5;
             }
             if (connectE && !plateU && buildSolidSideUD(pos.east(), EnumFacing.UP, worldIn, east))
             {
@@ -525,7 +612,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             }
             if (connectE && !plateD && buildSolidSideUD(pos.east(), EnumFacing.DOWN, worldIn, east))
             {
-                cornerPiece+=5;
+                cornerPiece += 5;
                 if (connectW) rot = GlassRotation.W;
             }
             return getModel(state, 1, rot, plateD, plateW, plateE, plateU, cornerPiece);
@@ -535,12 +622,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         {
             if (connectN && !plateU && buildSolidSideUD(pos.north(), EnumFacing.UP, worldIn, north))
             {
-                cornerPiece++;
-                if (connectN && connectS) rot = GlassRotation.S;
+                cornerPiece+=5;
+                if (!(connectN && connectS)) rot = GlassRotation.S;
             }
             if (connectN && !plateD && buildSolidSideUD(pos.north(), EnumFacing.DOWN, worldIn, north))
             {
-                cornerPiece+=5;
+                cornerPiece++;
                 if (connectN && connectS) rot = GlassRotation.S;
             }
             if (connectS && !plateU && buildSolidSideUD(pos.south(), EnumFacing.UP, worldIn, south))

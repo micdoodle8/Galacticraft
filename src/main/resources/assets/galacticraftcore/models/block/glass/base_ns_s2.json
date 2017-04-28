@@ -8,6 +8,7 @@
                 "east": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
                 "west": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
                 "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] },
                 "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] },
                 "down": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 16.0 ] }
             }
@@ -19,6 +20,7 @@
             "faces": {
                 "east": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 2.0, 14.0, 16.0 ], "rotation": 90 },
                 "west": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 2.0, 14.0, 16.0 ], "rotation": 90 },
+                "south": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 2.0, 11.0, 3.0 ] },
                 "up": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 2.0, 11.0, 16.0 ] }
             }
         },
@@ -30,7 +32,8 @@
                 "east": { "tintindex": 0, "texture": "#1", "uv": [ 14.0, 0.0, 16.0, 14.0 ] },
                 "west": { "tintindex": 0, "texture": "#1", "uv": [ 0.0, 0.0, 2.0, 14.0 ] },
                 "south": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 14.0 ] },
-                "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 2.0, 12.0, 16.0 ] }
+                "north": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 2.0, 12.0, 16.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 4.0, 0.0, 12.0, 2.0 ] }
             }
         },
         {
@@ -40,7 +43,8 @@
             "faces": {
                 "east": { "tintindex": 0, "texture": "#1", "uv": [ 13.0, 0.0, 14.0, 13.0 ] },
                 "south": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 0.0, 11.0, 13.0 ] },
-                "west": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 0.0, 3.0, 13.0 ] }
+                "west": { "tintindex": 0, "texture": "#1", "uv": [ 2.0, 0.0, 3.0, 13.0 ] },
+                "up": { "tintindex": 0, "texture": "#1", "uv": [ 5.0, 2.0, 11.0, 3.0 ] }
             }
         }
     ]

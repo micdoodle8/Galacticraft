@@ -1,22 +1,25 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,6 +134,8 @@ public class StatsCapability extends GCPlayerStats
     public int glassColor1 = -1;
     public int glassColor2 = -1;
     public int glassColor3 = -1;
+    
+    private IBlockState[] panel_lighting = new IBlockState[BlockPanelLighting.PANELTYPES_LENGTH];
 
     @Override
     public WeakReference<EntityPlayerMP> getPlayer()
@@ -1046,6 +1051,19 @@ public class StatsCapability extends GCPlayerStats
         nbt.setInteger("GlassColor1", this.glassColor1);
         nbt.setInteger("GlassColor2", this.glassColor2);
         nbt.setInteger("GlassColor3", this.glassColor3);
+        
+        NBTTagList panelList = new NBTTagList();
+        for (int i = 0; i < BlockPanelLighting.PANELTYPES_LENGTH; ++i)
+        {
+            final NBTTagCompound stateNBT = new NBTTagCompound();
+            IBlockState bs = this.panel_lighting[i];
+            if (bs != null)
+            {
+                TileEntityPanelLight.writeBlockState(stateNBT, bs);
+            }
+            panelList.appendTag(stateNBT);
+        }
+        nbt.setTag("PanLi", panelList);
     }
 
     @Override
@@ -1197,19 +1215,29 @@ public class StatsCapability extends GCPlayerStats
                 this.astroMinerCount = nbt.getInteger("AstroMinerCount");
             }
 
-            this.sentFlags = false;
-            if (ConfigManagerCore.enableDebug)
-            {
-                GCLog.info("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
-            }
-
-            this.sentFlags = false;
             if (nbt.hasKey("GlassColor1"))
             {
                 this.glassColor1 = nbt.getInteger("GlassColor1");
                 this.glassColor2 = nbt.getInteger("GlassColor2");
                 this.glassColor3 = nbt.getInteger("GlassColor3");
             }
+
+            if (nbt.hasKey("PanLi"))
+            {
+                final NBTTagList panels = nbt.getTagList("PanLi", 10);
+                for (int i = 0; i < panels.tagCount(); ++i)
+                {
+                    if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
+                    final NBTTagCompound stateNBT = panels.getCompoundTagAt(i);
+                    IBlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
+                    this.panel_lighting[i] = (bs.getBlock() == Blocks.AIR) ? null : bs;
+                }
+            }
+
+            
+            GCLog.debug("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+
+            this.sentFlags = false;
         }
         catch (Exception e)
         {
@@ -1235,6 +1263,7 @@ public class StatsCapability extends GCPlayerStats
         this.openedSpaceRaceManager = oldData.hasOpenedSpaceRaceManager();
         this.spaceRaceInviteTeamID = oldData.getSpaceRaceInviteTeamID();
         this.buildFlags = oldData.getBuildFlags();
+        this.panel_lighting = oldData.getPanel_lighting();
         this.astroMinerCount = oldData.getAstroMinerCount();
         this.sentFlags = false;
     }
@@ -1278,5 +1307,20 @@ public class StatsCapability extends GCPlayerStats
     public int getGlassColor3()
     {
         return glassColor3;
+    }
+
+    @Override
+    public IBlockState[] getPanel_lighting()
+    {
+        return panel_lighting;
+    }
+
+    @Override
+    public Object[] getMiscNetworkedStats()
+    {
+        Object[] result = new Object[1 + BlockPanelLighting.PANELTYPES_LENGTH * 2];
+        result[0] = this.getBuildFlags();
+        BlockPanelLighting.getNetworkedData(result, this.panel_lighting);
+        return result;
     }
 }

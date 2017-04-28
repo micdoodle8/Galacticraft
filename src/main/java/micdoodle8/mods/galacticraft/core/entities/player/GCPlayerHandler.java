@@ -186,7 +186,7 @@ public class GCPlayerHandler
         {
             stats.setBuildFlags(stats.getBuildFlags() & 1536);
         }
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, GCCoreUtil.getDimensionID(player.worldObj.provider), new Object[] { stats.getBuildFlags() }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, GCCoreUtil.getDimensionID(player.worldObj), stats.getMiscNetworkedStats() ), player);
         ColorUtil.sendUpdatedColorsToPlayer(stats);
     }
 
@@ -1230,7 +1230,7 @@ public class GCPlayerHandler
             }
             if (!stats.hasSentFlags())
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { stats.getBuildFlags() }), player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_STATS, GCCoreUtil.getDimensionID(player.worldObj), stats.getMiscNetworkedStats() ), player);
                 stats.setSentFlags(true);
             }
         }
