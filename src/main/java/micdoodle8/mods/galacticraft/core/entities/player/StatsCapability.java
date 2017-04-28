@@ -1053,7 +1053,7 @@ public class StatsCapability extends GCPlayerStats
         nbt.setInteger("GlassColor3", this.glassColor3);
         
         NBTTagList panelList = new NBTTagList();
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < BlockPanelLighting.PANELTYPES_LENGTH; ++i)
         {
             final NBTTagCompound stateNBT = new NBTTagCompound();
             IBlockState bs = this.panel_lighting[i];
@@ -1227,7 +1227,7 @@ public class StatsCapability extends GCPlayerStats
                 final NBTTagList panels = nbt.getTagList("PanLi", 10);
                 for (int i = 0; i < panels.tagCount(); ++i)
                 {
-                    if (i == 4) break;
+                    if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
                     final NBTTagCompound stateNBT = panels.getCompoundTagAt(i);
                     IBlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
                     this.panel_lighting[i] = (bs.getBlock() == Blocks.air) ? null : bs;
