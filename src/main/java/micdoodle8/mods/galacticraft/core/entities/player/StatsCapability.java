@@ -135,7 +135,7 @@ public class StatsCapability extends GCPlayerStats
     public int glassColor2 = -1;
     public int glassColor3 = -1;
     
-    private IBlockState[] panel_lighting = new IBlockState[4];
+    private IBlockState[] panel_lighting = new IBlockState[BlockPanelLighting.PANELTYPES_LENGTH];
 
     @Override
     public WeakReference<EntityPlayerMP> getPlayer()
@@ -1318,7 +1318,7 @@ public class StatsCapability extends GCPlayerStats
     @Override
     public Object[] getMiscNetworkedStats()
     {
-        Object[] result = new Object[9];
+        Object[] result = new Object[1 + BlockPanelLighting.PANELTYPES_LENGTH * 2];
         result[0] = this.getBuildFlags();
         BlockPanelLighting.getNetworkedData(result, this.panel_lighting);
         return result;

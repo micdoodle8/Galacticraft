@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting.PanelType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -16,12 +17,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
 {
-    public int facing;
+    public int meta;
     private IBlockState superState;
     //TODO: colour
 
@@ -29,8 +31,9 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
     }
 
-    public void initialise(int type, EntityPlayer player, boolean isRemote, IBlockState superStateClient)
+    public void initialise(int type, EnumFacing facing, EntityPlayer player, boolean isRemote, IBlockState superStateClient)
     {
+        this.meta = facing.ordinal();
         if (isRemote)
         {
             this.superState = superStateClient;
@@ -60,7 +63,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
             IBlockState b = this.worldObj.getBlockState(this.pos);
             if (b.getBlock() instanceof BlockPanelLighting)
             {
-                return ((BlockPanelLighting)b.getBlock()).type;
+                return (PanelType) b.getValue(BlockPanelLighting.TYPE);
             }
         }
         return BlockPanelLighting.PanelType.SQUARE;
@@ -71,6 +74,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
         super.readFromNBT(nbt);
 
+        this.meta = nbt.getInteger("meta");
         NBTTagCompound tag = nbt.getCompoundTag("sust");
         if (!tag.hasNoTags())
         {
@@ -82,6 +86,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setInteger("meta", this.meta);
         if (this.superState != null)
         {
             NBTTagCompound tag = new NBTTagCompound();
@@ -154,6 +159,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
             return;
         }
 
+        sendData.add((byte)this.meta);
         if (this.superState != null)
         {
             Block block = this.superState.getBlock(); 
@@ -171,14 +177,18 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
-        if (this.worldObj.isRemote && buffer.readableBytes() > 0)
+        if (this.worldObj.isRemote)
         {
             try
             {
-                String name = ByteBufUtils.readUTF8String(buffer);
-                int meta = buffer.readByte();
-                this.superState = readBlockState(name, meta);
-                this.worldObj.markBlockForUpdate(this.getPos());
+                this.meta = buffer.readByte();
+                if (buffer.readableBytes() > 0)
+                {
+                    String name = ByteBufUtils.readUTF8String(buffer);
+                    int otherMeta = buffer.readByte();
+                    this.superState = readBlockState(name, otherMeta);
+                    this.worldObj.markBlockForUpdate(this.getPos());
+                }
             }
             catch (Exception e)
             {

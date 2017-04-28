@@ -10,13 +10,35 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class ItemBlockPanel extends ItemBlockGlassGC
+public class ItemBlockPanel extends ItemBlockDesc
 {
     public ItemBlockPanel(Block block)
     {
         super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
     
+    @Override
+    public int getMetadata(int damage)
+    {
+        return damage;
+    }
+    
+    @Override
+    public String getUnlocalizedName(ItemStack par1ItemStack)
+    {
+        String name = "";
+
+        int meta = par1ItemStack.getItemDamage(); 
+        if (meta >= BlockPanelLighting.PANELTYPES_LENGTH)
+        {
+            meta = 0;
+        }
+
+        return this.getBlock().getUnlocalizedName() + "_" + meta;
+    }
+
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
@@ -34,7 +56,7 @@ public class ItemBlockPanel extends ItemBlockGlassGC
             else
             {
                 int meta = stack.getItemDamage();
-                if (meta > 3) meta = 0;
+                if (meta >= BlockPanelLighting.PANELTYPES_LENGTH) meta = 0;
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 IBlockState[] panels = stats.getPanel_lighting();
                 panels[meta] = state;

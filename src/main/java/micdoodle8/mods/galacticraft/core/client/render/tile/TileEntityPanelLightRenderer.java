@@ -31,8 +31,8 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
     public void renderTileEntityAt(TileEntityPanelLight tileEntity, double d, double d1, double d2, float f, int par9)
     {
         this.updateModels();
-        int side = tileEntity.getBlockMetadata();
-        boolean rot = side > 7;
+        int side = tileEntity.meta;
+        int rot = side >> 3;
         side = (side & 7) ^ 1;
         BlockPanelLighting.PanelType type = tileEntity.getType();
 
@@ -54,17 +54,22 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
             break;
         case 4:
             GlStateManager.rotate(90F, 0, 0, -1F);
-            rot = !rot;
+            rot = (rot + 1) % 4;
             break;
         case 5:
             GlStateManager.rotate(90F, 0, 0, 1F);
-            rot = !rot;
+            rot = (rot + 1) % 4;
             break;
         }
         
-        if (rot)
+        if (rot > 0)
         {
-            GlStateManager.rotate(90F, 0, 1F, 0F);
+            GlStateManager.rotate(90F * rot, 0, 1F, 0F);
+        }
+
+        if (type == BlockPanelLighting.PanelType.SFDIAG)
+        {
+            GlStateManager.rotate(45F, 0, 1F, 0F);
         }
 
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
@@ -103,37 +108,67 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
             frameC = 0.36F;
             break;
         case SF:
+        case SFDIAG:
             frameA = 0.1F;
             frameB = 0.4F;
             frameC = 0.35F;
         }
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(frameA, frameY, frameB).endVertex();
-        worldRenderer.pos(frameB, frameY, frameB).endVertex();
-        worldRenderer.pos(frameB, frameY, frameC).endVertex();
-        worldRenderer.pos(frameA, frameY, frameC).endVertex();
-        tess.draw();
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(1.0F - frameA, frameY, frameC).endVertex();
-        worldRenderer.pos(1.0F - frameB, frameY, frameC).endVertex();
-        worldRenderer.pos(1.0F - frameB, frameY, frameB).endVertex();
-        worldRenderer.pos(1.0F - frameA, frameY, frameB).endVertex();
-        tess.draw();
-        frameA = 1.0F - frameA;
-        frameB = 1.0F - frameB;
-        frameC = 1.0F - frameC;
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(frameA, frameY, frameB).endVertex();
-        worldRenderer.pos(frameB, frameY, frameB).endVertex();
-        worldRenderer.pos(frameB, frameY, frameC).endVertex();
-        worldRenderer.pos(frameA, frameY, frameC).endVertex();
-        tess.draw();
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(1.0F - frameA, frameY, frameC).endVertex();
-        worldRenderer.pos(1.0F - frameB, frameY, frameC).endVertex();
-        worldRenderer.pos(1.0F - frameB, frameY, frameB).endVertex();
-        worldRenderer.pos(1.0F - frameA, frameY, frameB).endVertex();
-        tess.draw();
+        if (type != BlockPanelLighting.PanelType.SFDIAG)
+        {
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(frameA, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(frameA, frameY, frameC).endVertex();
+            tess.draw();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(1.0F - frameA, frameY, frameC).endVertex();
+            worldRenderer.pos(1.0F - frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(1.0F - frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(1.0F - frameA, frameY, frameB).endVertex();
+            tess.draw();
+            frameA = 1.0F - frameA;
+            frameB = 1.0F - frameB;
+            frameC = 1.0F - frameC;
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(frameA, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(frameA, frameY, frameC).endVertex();
+            tess.draw();
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(1.0F - frameA, frameY, frameC).endVertex();
+            worldRenderer.pos(1.0F - frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(1.0F - frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(1.0F - frameA, frameY, frameB).endVertex();
+            tess.draw();
+        }
+        else
+        {
+            frameA += 0.02F;
+            GlStateManager.translate(0.239F, 0F, -0.345F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(frameA, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(frameA, frameY, frameC).endVertex();
+            tess.draw();
+            frameA += 0.02F;
+            GlStateManager.translate(0.23F, 0F, 0.233F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(frameA, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(frameA, frameY, frameC).endVertex();
+            tess.draw();
+            GlStateManager.translate(-0.48F, 0F, 0F);
+            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+            worldRenderer.pos(frameA, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameB).endVertex();
+            worldRenderer.pos(frameB, frameY, frameC).endVertex();
+            worldRenderer.pos(frameA, frameY, frameC).endVertex();
+            tess.draw();
+        }
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableTexture2D();
         //? need to undo GlStateManager.glBlendFunc()?

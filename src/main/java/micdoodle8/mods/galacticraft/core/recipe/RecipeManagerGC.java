@@ -479,6 +479,12 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassVanilla, 5, 1), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassVanilla, 'Y', new ItemStack(GCBlocks.basicBlock, 1, 4)   });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassStrong, 5, 1), new Object[] { "YXY", "XXX", "YXY", 'X', GCBlocks.spaceGlassStrong, 'Y', new ItemStack(GCBlocks.basicBlock, 1, 4)   });
 
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 0), new Object[] { "XXX", "XYX", "XZX", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 1), new Object[] { "X X", " Y ", "XZX", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 2), new Object[] { "X X", "XYX", "XZX", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 3), new Object[] { "   ", "XYX", " Z ", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 4), new Object[] { " X ", "XY ", " Z ", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
+        
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.machineBase3, 1, BlockMachine3.PAINTER_METADATA), new Object[] { "ABC", "DEF", "GHI", 'A', new ItemStack(Items.dye, 1, 1), 'B', new ItemStack(Items.dye, 1, 13), 'C', new ItemStack(Items.dye, 1, 4), 'D', new ItemStack(Items.dye, 1, 14), 'E', "compressedSteel", 'F', new ItemStack(Items.dye, 1, 6), 'G', new ItemStack(Items.dye, 1, 11), 'H', new ItemStack(Items.dye, 1, 10), 'I', new ItemStack(Items.dye, 1, 2) });
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCBlocks.crafting, 1), new Object[] { Blocks.crafting_table, "compressedIron" }));
 
