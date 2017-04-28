@@ -161,7 +161,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public ItemStack getBatteryInSlot()
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

@@ -816,7 +816,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             return master.getStackInSlot(par1);
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -832,7 +832,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             return master.decrStackSize(par1, par2);
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -848,7 +848,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             return master.removeStackFromSlot(par1);
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

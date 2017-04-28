@@ -356,7 +356,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         if (par1 >= this.stacks.size())
         {
             ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.stacks.size(), par2);
-            if (result != null)
+            if (!result.isEmpty())
             {
                 this.updateInput();
             }
@@ -387,7 +387,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -407,7 +407,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
         else
         {
-            return null;
+        	return ItemStack.EMPTY;
         }
     }
 
@@ -477,7 +477,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
         else if (slotID >= 2)
         {
-            if (this.producingStack != null)
+            if (!this.producingStack.isEmpty())
             {
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
                 return stackInSlot != null && stackInSlot.isItemEqual(itemStack);

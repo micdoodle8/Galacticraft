@@ -113,7 +113,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.stacks, 0, liquid.amount);
             }
 
-            this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && this.getFirstBonemealStack() != null && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
+            this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && !this.getFirstBonemealStack().isEmpty() && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
         }
 
         if (!this.world.isRemote && (this.active != this.lastActive || this.ticks % 60 == 0))
@@ -126,8 +126,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 int bubbleSize = (int) Math.ceil(this.bubbleSize);
                 double bubbleSizeSq = this.bubbleSize;
                 bubbleSizeSq *= bubbleSizeSq;
-                boolean doGrass = !this.grassDisabled && this.getFirstSeedStack() != null;
-                boolean doTrees = !this.treesDisabled && this.getFirstSaplingStack() != null;
+                boolean doGrass = !this.grassDisabled && !this.getFirstSeedStack().isEmpty();
+                boolean doTrees = !this.treesDisabled && !this.getFirstSaplingStack().isEmpty();
                 for (int x = this.getPos().getX() - bubbleSize; x < this.getPos().getX() + bubbleSize; x++)
                 {
                     for (int y = this.getPos().getY() - bubbleSize; y < this.getPos().getY() + bubbleSize; y++)
@@ -313,7 +313,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         {
             stack = this.getFirstBonemealStack();
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
                 stack.shrink(1);
 
@@ -344,7 +344,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             {
                 stack = this.getFirstSeedStack();
 
-                if (stack != null)
+                if (!stack.isEmpty())
                 {
                     stack.shrink(1);
 
@@ -417,7 +417,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             return this.stacks.get(index);
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public ItemStack getFirstSaplingStack()
@@ -430,7 +430,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             return this.stacks.get(index);
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public ItemStack getFirstSeedStack()
@@ -442,7 +442,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             return this.stacks.get(index);
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

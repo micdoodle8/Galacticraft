@@ -289,7 +289,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         if (par1 >= this.stacks.size())
         {
             ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.stacks.size(), par2);
-            if (result != null)
+            if (!result.isEmpty())
             {
                 this.updateInput();
             }
@@ -320,7 +320,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -340,7 +340,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         }
         else
         {
-            return null;
+        	return ItemStack.EMPTY;
         }
     }
 
@@ -406,11 +406,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         if (slotID == 0)
         {
-            return itemStack != null && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
         else if (slotID >= 3)
         {
-            if (this.producingStack != null)
+            if (!this.producingStack.isEmpty())
             {
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
                 return stackInSlot != null && stackInSlot.isItemEqual(itemStack);

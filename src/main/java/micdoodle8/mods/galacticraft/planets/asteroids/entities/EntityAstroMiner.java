@@ -1535,7 +1535,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             return array.get(0);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private boolean tryBlockClient(BlockPos pos)

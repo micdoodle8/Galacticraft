@@ -91,7 +91,7 @@ public class CanisterRecipes extends ShapelessRecipes
         {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (itemstack1 != null)
+            if (itemstack1 != null && !itemstack1.isEmpty())
             {
                 Item testItem = itemstack1.getItem();
                 if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)
@@ -99,7 +99,7 @@ public class CanisterRecipes extends ShapelessRecipes
                     if (itemCanister != null)
                     {
                         //Two canisters
-                        return null;
+                        return ItemStack.EMPTY;
                     }
 
                     itemCanister = itemstack1;
@@ -109,7 +109,7 @@ public class CanisterRecipes extends ShapelessRecipes
                     if (!(testItem instanceof ItemOxygenTank) || itemTank != null)
                     {
                         //Something other than an oxygen tank
-                        return null;
+                        return ItemStack.EMPTY;
                     }
 
                     itemTank = itemstack1;
@@ -120,19 +120,19 @@ public class CanisterRecipes extends ShapelessRecipes
         //Need one canister + one tank
         if (itemCanister == null || itemTank == null)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         //Empty canister
         if (itemCanister.getItemDamage() >= itemCanister.getMaxDamage())
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         //Full tank
         if (itemTank.getItemDamage() <= 0)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         int oxygenAvail = itemCanister.getMaxDamage() - itemCanister.getItemDamage();

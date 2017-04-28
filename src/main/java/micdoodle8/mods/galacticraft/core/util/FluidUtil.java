@@ -663,7 +663,7 @@ public class FluidUtil
 
             if (!container.isEmpty())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             return container;
@@ -742,7 +742,7 @@ public class FluidUtil
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
             ItemStack result;
-        	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler)) != null || (result = FluidUtil.tryFillCanister(container, fluidHandler)) != null)
+        	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler)) != ItemStack.EMPTY || (result = FluidUtil.tryFillCanister(container, fluidHandler)) != ItemStack.EMPTY)
         	{
         		// send inventory updates to client
         		if (player.inventoryContainer != null)
@@ -785,7 +785,7 @@ public class FluidUtil
     	int currCapacity = canister.getItemDamage() - 1; 
         if (currCapacity <= 0)
         {
-            return null;
+        	return ItemStack.EMPTY;
         }
         FluidStack liquid = tank.drain(currCapacity, false);
         int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, true);
@@ -794,7 +794,7 @@ public class FluidUtil
             liquid = tank.drain(transferred, true);
             return canister;
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank)
@@ -802,7 +802,7 @@ public class FluidUtil
     	int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
         if (currContents <= 0)
         {
-            return null;
+        	return ItemStack.EMPTY;
         }
         FluidStack liquid = ((ItemCanisterGeneric)canister.getItem()).drain(canister, currContents, false); 
         int transferred = tank.fill(liquid, true);
@@ -811,6 +811,6 @@ public class FluidUtil
             ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, true);
             return canister;
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 }

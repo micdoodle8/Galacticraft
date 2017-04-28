@@ -215,7 +215,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     @Override
     public ItemStack getBatteryInSlot()
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private void updateConnectable()

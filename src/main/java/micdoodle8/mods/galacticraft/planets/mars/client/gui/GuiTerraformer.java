@@ -150,17 +150,17 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_water.name");
         }
 
-        if (this.terraformer.getFirstBonemealStack() == null)
+        if (this.terraformer.getFirstBonemealStack().isEmpty())
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_bonemeal.name");
         }
 
-        if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack() == null)
+        if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack().isEmpty())
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_seeds.name");
         }
 
-        if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack() == null)
+        if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack().isEmpty())
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_saplings.name");
         }

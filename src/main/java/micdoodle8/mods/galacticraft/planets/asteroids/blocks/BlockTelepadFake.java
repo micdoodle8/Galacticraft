@@ -201,7 +201,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

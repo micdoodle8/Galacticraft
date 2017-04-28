@@ -74,7 +74,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     @SideOnly(Side.CLIENT)
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

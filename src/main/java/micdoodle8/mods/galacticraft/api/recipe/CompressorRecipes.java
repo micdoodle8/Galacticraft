@@ -208,7 +208,7 @@ public class CompressorRecipes
                 }
             }
 
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
