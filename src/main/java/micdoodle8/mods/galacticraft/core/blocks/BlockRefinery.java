@@ -28,8 +28,6 @@ import java.util.Random;
 
 public class BlockRefinery extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    private final Random refineryRand = new Random();
-
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockRefinery(String assetName)

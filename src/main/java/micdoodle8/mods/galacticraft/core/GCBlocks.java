@@ -75,6 +75,10 @@ public class GCBlocks
     public static Block machineBase3;
     public static Block machineTiered;
     public static Block aluminumWire;
+    public static Block panelLighting0;
+    public static Block panelLighting1;
+    public static Block panelLighting2;
+    public static Block panelLighting3;
     public static Block glowstoneTorch;
     public static Block blockMoon;
     public static Block cheeseBlock;
@@ -144,6 +148,10 @@ public class GCBlocks
         GCBlocks.machineBase3 = new BlockMachine3("machine3");
         GCBlocks.machineTiered = new BlockMachineTiered("machine_tiered");
         GCBlocks.aluminumWire = new BlockAluminumWire("aluminum_wire");
+        GCBlocks.panelLighting0 = new BlockPanelLighting("panel_lighting_0", BlockPanelLighting.PanelType.SQUARE);
+        GCBlocks.panelLighting1 = new BlockPanelLighting("panel_lighting_1", BlockPanelLighting.PanelType.SPOTS);
+        GCBlocks.panelLighting2 = new BlockPanelLighting("panel_lighting_2", BlockPanelLighting.PanelType.LINEAR);
+        GCBlocks.panelLighting3 = new BlockPanelLighting("panel_lighting_3", BlockPanelLighting.PanelType.SF);
         GCBlocks.glowstoneTorch = new BlockGlowstoneTorch("glowstone_torch");
         GCBlocks.blockMoon = new BlockBasicMoon("basic_block_moon");
         GCBlocks.cheeseBlock = new BlockCheese("cheese");
@@ -391,6 +399,10 @@ public class GCBlocks
         registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase3, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class);
+        registerBlock(GCBlocks.panelLighting0, ItemBlockPanel.class);
+        registerBlock(GCBlocks.panelLighting1, null);
+        registerBlock(GCBlocks.panelLighting2, null);
+        registerBlock(GCBlocks.panelLighting3, null);
         registerBlock(GCBlocks.glowstoneTorch, ItemBlockDesc.class);
         registerBlock(GCBlocks.fallenMeteor, ItemBlockDesc.class);
         registerBlock(GCBlocks.blockMoon, ItemBlockMoon.class);
