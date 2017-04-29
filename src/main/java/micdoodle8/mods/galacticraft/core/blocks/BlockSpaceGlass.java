@@ -398,6 +398,25 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return this.canPaneConnectToBlock(west, state) || this.canPaneConnectToBlock(east, state);
     }
 
+    protected boolean isConnectedEWRecursive(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing dir)
+    {
+        boolean connectN = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()), state);
+        boolean connectS = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()), state);
+        boolean connectW = this.canPaneConnectToBlock(worldIn.getBlockState(pos.west()), state);
+        boolean connectE = this.canPaneConnectToBlock(worldIn.getBlockState(pos.east()), state);
+        if (connectN || connectS || connectW || connectE)
+        {
+            return (connectW || connectE) && !connectN && !connectS;
+        }
+        BlockPos next = pos.offset(dir, 1);
+        IBlockState nextState = worldIn.getBlockState(next);
+        if (nextState.getBlock() == this)
+        {
+            return this.isConnectedEWRecursive(nextState, worldIn, next, dir);
+        }
+        return dir == EnumFacing.DOWN && this.isPreferenceEW(state, worldIn, pos);
+    }
+    
     protected boolean isConnectedNS(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState north = worldIn.getBlockState(pos.north());
@@ -405,6 +424,25 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return this.canPaneConnectToBlock(north, state) || this.canPaneConnectToBlock(south, state);
     }
 
+    protected boolean isConnectedNSRecursive(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing dir)
+    {
+        boolean connectN = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()), state);
+        boolean connectS = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()), state);
+        boolean connectW = this.canPaneConnectToBlock(worldIn.getBlockState(pos.west()), state);
+        boolean connectE = this.canPaneConnectToBlock(worldIn.getBlockState(pos.east()), state);
+        if (connectN || connectS || connectW || connectE)
+        {
+            return (connectN || connectS) && !connectW && !connectE;
+        }
+        BlockPos next = pos.offset(dir, 1);
+        IBlockState nextState = worldIn.getBlockState(next);
+        if (nextState.getBlock() == this)
+        {
+            return this.isConnectedNSRecursive(nextState, worldIn, next, dir);
+        }
+        return dir == EnumFacing.DOWN && !this.isPreferenceEW(state, worldIn, pos);
+    }
+    
     protected boolean isPreferenceEW(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState north = worldIn.getBlockState(pos.north());
@@ -503,21 +541,22 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             IBlockState above = worldIn.getBlockState(pos.up());
             IBlockState below = worldIn.getBlockState(pos.down());
 
-            if (below.getBlock() == this)
+            if (below.getBlock() == this && this.isConnectedEWRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
             {
-                if (this.isConnectedEW(below, worldIn, pos.down()) || this.isPreferenceEW(below, worldIn, pos.down()))
-                {
-                    return 3;
-                }
+                return 3;
             }
-            else if (above.getBlock() == this)
+            else if (above.getBlock() == this && this.isConnectedEWRecursive(above, worldIn, pos.up(), EnumFacing.UP))
             {
-                if (this.isConnectedEW(above, worldIn, pos.up()) || this.isPreferenceEW(above, worldIn, pos.up()))
-                {
-                    return 3;
-                }
+                return 3;
             }
-
+            if (below.getBlock() == this && this.isConnectedNSRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
+            {
+                return 12;
+            }
+            else if (above.getBlock() == this && this.isConnectedNSRecursive(above, worldIn, pos.up(), EnumFacing.UP))
+            {
+                return 12;
+            }
             if (this.isPreferenceEW(state, worldIn, pos))
             {
                 return 3;
@@ -567,20 +606,25 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
         if (connections == 0)
         {
-            if (below.getBlock() == this)
+            if (below.getBlock() == this && this.isConnectedEWRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
             {
-                if (this.isConnectedEW(below, worldIn, pos.down()) || this.isPreferenceEW(below, worldIn, pos.down()))
-                    rot = GlassRotation.E;
+                rot = GlassRotation.E;
             }
-            else if (above.getBlock() == this)
+            else if (above.getBlock() == this && this.isConnectedEWRecursive(above, worldIn, pos.up(), EnumFacing.UP))
             {
-                if (this.isConnectedEW(above, worldIn, pos.up()) || this.isPreferenceEW(above, worldIn, pos.up()))
-                    rot = GlassRotation.E;
+                rot = GlassRotation.E;
+            }
+            if (below.getBlock() == this && this.isConnectedNSRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
+            {
+            }
+            else if (above.getBlock() == this && this.isConnectedNSRecursive(above, worldIn, pos.up(), EnumFacing.UP))
+            {
+            }
+            else if (this.isPreferenceEW(state, worldIn, pos))
+            {
+                rot = GlassRotation.E;
             }
 
-            if (this.isPreferenceEW(state, worldIn, pos))
-                rot = GlassRotation.E;
-                
             return getModel(state, 1, rot, plateD, plateS, plateN, plateU, 0);
         }
         
@@ -623,21 +667,45 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         {
             if (connectN && !plateU && buildSolidSideUD(pos.north(), EnumFacing.UP, worldIn, north))
             {
-                cornerPiece+=5;
-                if (!(connectN && connectS)) rot = GlassRotation.S;
+                if (!connectS)
+                {
+                    cornerPiece |= 5;
+                    if (!plateD) rot = GlassRotation.S;
+                }
+                else
+                {
+                    cornerPiece |= 1;
+                    rot = GlassRotation.S;
+                }
             }
             if (connectN && !plateD && buildSolidSideUD(pos.north(), EnumFacing.DOWN, worldIn, north))
             {
-                cornerPiece++;
-                if (connectN && connectS) rot = GlassRotation.S;
+                cornerPiece ++;
+                if (connectS) rot = GlassRotation.S;
             }
             if (connectS && !plateU && buildSolidSideUD(pos.south(), EnumFacing.UP, worldIn, south))
             {
-                cornerPiece++;
+                if (cornerPiece == 0 && !plateD)
+                {
+                    cornerPiece = 5;
+                    rot = GlassRotation.S;
+                }
+                else if ((cornerPiece & 3) < 2)
+                {
+                    cornerPiece ++;
+                }
             }
             if (connectS && !plateD && buildSolidSideUD(pos.south(), EnumFacing.DOWN, worldIn, south))
             {
-                cornerPiece+=5;
+                if ((cornerPiece & 3) < 2)
+                {
+                    cornerPiece ++;
+                }
+                else
+                {
+                    cornerPiece |= 5;
+                    //rot = GlassRotation.S;
+                }
             }
             return getModel(state, 1, rot, plateD, plateS, plateN, plateU, cornerPiece);
         }
