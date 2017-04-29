@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -200,7 +201,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     	try
     	{
     		Class itemStack = container.getClass();
-    		Field itemId = itemStack.getDeclaredField("item");  //TODO: obfuscated name required or add to the at
+    		Field itemId = itemStack.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "item" : "field_151002_e");
     		itemId.setAccessible(true);
     		itemId.set(container, newItem);
     		Method forgeInit = itemStack.getDeclaredMethod("forgeInit");
