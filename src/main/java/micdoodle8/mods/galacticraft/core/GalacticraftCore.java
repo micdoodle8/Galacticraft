@@ -527,6 +527,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityThruster.class, "GC Space Station Thruster");
         GameRegistry.registerTileEntity(TileEntityArclamp.class, "GC Arc Lamp");
         GameRegistry.registerTileEntity(TileEntityScreen.class, "GC View Screen");
+        GameRegistry.registerTileEntity(TileEntityPanelLight.class, "GC Panel Lighting");
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "GC Telemetry Unit");
         GameRegistry.registerTileEntity(TileEntityPainter.class, "GC Painter");
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");

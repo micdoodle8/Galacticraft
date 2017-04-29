@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -50,20 +51,21 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
             {
                 IInventory inventory = (IInventory) tileEntity;
 
+                Random syncRandom = GCCoreUtil.getRandom(pos);
+
                 for (int var6 = 0; var6 < inventory.getSizeInventory(); ++var6)
                 {
                     ItemStack var7 = inventory.getStackInSlot(var6);
 
                     if (var7 != null)
                     {
-                        Random random = new Random();
-                        float var8 = random.nextFloat() * 0.8F + 0.1F;
-                        float var9 = random.nextFloat() * 0.8F + 0.1F;
-                        float var10 = random.nextFloat() * 0.8F + 0.1F;
+                        float var8 = syncRandom.nextFloat() * 0.8F + 0.1F;
+                        float var9 = syncRandom.nextFloat() * 0.8F + 0.1F;
+                        float var10 = syncRandom.nextFloat() * 0.8F + 0.1F;
 
                         while (var7.getCount() > 0)
                         {
-                            int var11 = random.nextInt(21) + 10;
+                            int var11 = syncRandom.nextInt(21) + 10;
 
                             if (var11 > var7.getCount())
                             {
@@ -79,9 +81,9 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
                             }
 
                             float var13 = 0.05F;
-                            var12.motionX = (float) random.nextGaussian() * var13;
-                            var12.motionY = (float) random.nextGaussian() * var13 + 0.2F;
-                            var12.motionZ = (float) random.nextGaussian() * var13;
+                            var12.motionX = (float) syncRandom.nextGaussian() * var13;
+                            var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;
+                            var12.motionZ = (float) syncRandom.nextGaussian() * var13;
                             worldIn.spawnEntity(var12);
                         }
                     }

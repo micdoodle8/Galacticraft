@@ -45,6 +45,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -346,6 +347,16 @@ public class GCCoreUtil
                 }
             }
         }
+    }
+
+    /**
+     * Call this to obtain a seeded random which will be the SAME on
+     * client and server.  This means EntityItems won't jump position, for example.
+     */
+    public static Random getRandom(BlockPos pos)
+    {
+        long blockSeed = ((pos.getY() << 28) + pos.getX() + 30000000 << 28) + pos.getZ() + 30000000;  
+        return new Random(blockSeed);
     }
 
     /**

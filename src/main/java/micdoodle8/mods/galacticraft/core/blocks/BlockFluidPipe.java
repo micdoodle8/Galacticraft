@@ -287,9 +287,10 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
     private void spawnItem(World worldIn, BlockPos pos, int colorBefore)
     {
         final float f = 0.7F;
-        final double d0 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        final double d1 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
-        final double d2 = worldIn.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        Random syncRandom = GCCoreUtil.getRandom(pos);
+        final double d0 = syncRandom.nextFloat() * f + (1.0F - f) * 0.5D;
+        final double d1 = syncRandom.nextFloat() * f + (1.0F - f) * 0.2D + 0.6D;
+        final double d2 = syncRandom.nextFloat() * f + (1.0F - f) * 0.5D;
         final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, colorBefore));
         entityitem.setDefaultPickupDelay();
         worldIn.spawnEntity(entityitem);

@@ -65,24 +65,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = this.getMetaFromState(world.getBlockState(pos));
-        int metaDir = ((metadata & 7) + 1) % 6;
-        //DOWN->UP->NORTH->*EAST*->*SOUTH*->WEST
-        //0->1 1->2 2->5 3->4 4->0 5->3 
-        if (metaDir == 3) //after north
-        {
-            metaDir = 5;
-        }
-        else if (metaDir == 0)
-        {
-            metaDir = 3;
-        }
-        else if (metaDir == 5)
-        {
-            metaDir = 0;
-        }
-            
-        world.setBlockState(pos, this.getStateFromMeta(metaDir), 3);
+        this.rotate6Ways(world, pos);
         return true;
     }
 
@@ -98,7 +81,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
         worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(worldIn, pos, placer)), 2);
     }
 
-    private static EnumFacing getFacingFromEntity(World worldIn, BlockPos clickedBlock, EntityLivingBase entityIn)
+    public static EnumFacing getFacingFromEntity(World worldIn, BlockPos clickedBlock, EntityLivingBase entityIn)
     {
         if (MathHelper.abs((float)entityIn.posX - (float)clickedBlock.getX()) < 3.0F && MathHelper.abs((float)entityIn.posZ - (float)clickedBlock.getZ()) < 3.0F)
         {
