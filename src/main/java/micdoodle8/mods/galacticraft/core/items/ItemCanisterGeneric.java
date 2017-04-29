@@ -15,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
@@ -29,12 +28,12 @@ import java.util.List;
 public abstract class ItemCanisterGeneric extends ItemFluidContainer implements IFluidContainerItem
 {
     private String allowedFluid = null;
-    public final static int EMPTY = FluidContainerRegistry.BUCKET_VOLUME + 1;
+    public final static int EMPTY = Fluid.BUCKET_VOLUME + 1;
     private static boolean isTELoaded = CompatibilityManager.isTELoaded();
 
     public ItemCanisterGeneric(String assetName)
     {
-        super(FluidContainerRegistry.BUCKET_VOLUME);
+        super(Fluid.BUCKET_VOLUME);
         this.setMaxDamage(ItemCanisterGeneric.EMPTY);
         this.setMaxStackSize(1);
         this.setNoRepair();

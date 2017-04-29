@@ -532,7 +532,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         if (slotID == 0)
         {
-            return FluidContainerRegistry.isEmptyContainer(itemstack);
+            return FluidUtil.isEmptyContainer(itemstack);
         }
         if (slotID == 1)
         {
@@ -554,7 +554,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         switch (slotID)
         {
         case 0:
-            return FluidContainerRegistry.containsFluid(itemstack, new FluidStack(FluidRegistry.WATER, 1));
+            return FluidUtil.fluidsSame(FluidUtil.getFluidContained(itemstack), new FluidStack(FluidRegistry.WATER, 1));
         case 1:
             return ItemElectricBase.isElectricItem(itemstack.getItem());
         case 2:
