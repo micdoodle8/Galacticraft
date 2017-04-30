@@ -839,7 +839,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public int setColor(int newColor, Side side)
+    public int setColor(int newColor, EntityPlayer p, Side side)
     {
         if (newColor >= 0 && this.color != newColor)
         {
@@ -853,9 +853,9 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     public static void updateGlassColors(int color1, int color2, int color3)
     {
         int changes = 0;
-        changes += GCBlocks.spaceGlassVanilla.setColor(color1, Side.CLIENT);
-        changes += GCBlocks.spaceGlassClear.setColor(color2, Side.CLIENT);
-        changes += GCBlocks.spaceGlassStrong.setColor(color3, Side.CLIENT);
+        changes += GCBlocks.spaceGlassVanilla.setColor(color1, null, Side.CLIENT);
+        changes += GCBlocks.spaceGlassClear.setColor(color2, null, Side.CLIENT);
+        changes += GCBlocks.spaceGlassStrong.setColor(color3, null, Side.CLIENT);
         
         if (changes > 0)
             BlockSpaceGlass.updateClientRender();

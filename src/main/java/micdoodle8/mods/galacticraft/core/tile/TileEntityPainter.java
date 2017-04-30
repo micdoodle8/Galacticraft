@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -17,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
@@ -28,9 +30,12 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import ic2.api.item.IC2Items;
 import io.netty.buffer.ByteBuf;
 
 import java.util.*;
+
+import biomesoplenty.api.item.BOPItems;
 
 //import net.minecraft.item.EnumDyeColor;
 
@@ -70,8 +75,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         }
         else
         {
-            //TODO - why is item.brown_dye triggering this?  seems like some dyes are item.dyePowder and some are not????
-            System.out.println("Strange dye item: " + item.getUnlocalizedName());
+            color = tryOtherModDyes(itemStack);
         }
 
         if (color >= 0)
@@ -81,8 +85,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         }
     }
 
-
-    private void applyColorToItem(ItemStack itemStack, int color, Side side)
+    private void applyColorToItem(ItemStack itemStack, int color, Side side, EntityPlayer player)
     {
         if (itemStack == null)
         {
@@ -102,7 +105,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             int result = 0;
             if (b instanceof IPaintable)
             {
-                result = ((IPaintable) b).setColor(color, side);
+                result = ((IPaintable) b).setColor(color, player, side);
             }
             if (b instanceof BlockSpaceGlass)
             {
@@ -306,12 +309,12 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         }
     }
     
-    public void buttonPressed(int index, EntityPlayer entityPlayer, Side side)
+    public void buttonPressed(int index, EntityPlayer player, Side side)
     {
         switch (index)
         {
         case 0:  //Apply Paint
-            this.applyColorToItem(this.getStackInSlot(1), this.guiColor, side);
+            this.applyColorToItem(this.getStackInSlot(1), this.guiColor, side, player);
             break;
         case 1:  //Mix Colors
             this.takeColorFromItem(this.getStackInSlot(0));
@@ -437,7 +440,34 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             }
             catch (Exception ignore)
             {
+                ignore.printStackTrace();
             }
         }
+    }
+
+    //Any special cases go here, e.g. coloured dye or paint items added by other mods
+    private static int tryOtherModDyes(ItemStack itemStack)
+    {
+        Item item = itemStack.getItem();
+
+        if (CompatibilityManager.isIc2Loaded())
+        {
+            ItemStack ic2paintbrush = IC2Items.getItem("painter");
+            if (ic2paintbrush != null && item == ic2paintbrush.getItem())
+            {
+                return ItemDye.dyeColors[itemStack.getItemDamage()];
+            }
+        }
+
+        if (CompatibilityManager.isBOPLoaded())
+        {
+            if (item == BOPItems.black_dye) return ItemDye.dyeColors[EnumDyeColor.BLACK.getDyeDamage()];
+            if (item == BOPItems.blue_dye) return ItemDye.dyeColors[EnumDyeColor.BLUE.getDyeDamage()];
+            if (item == BOPItems.brown_dye) return ItemDye.dyeColors[EnumDyeColor.BROWN.getDyeDamage()];
+            if (item == BOPItems.green_dye) return ItemDye.dyeColors[EnumDyeColor.GREEN.getDyeDamage()];
+            if (item == BOPItems.white_dye) return ItemDye.dyeColors[EnumDyeColor.WHITE.getDyeDamage()];
+        }
+
+        return -1;
     }
 }

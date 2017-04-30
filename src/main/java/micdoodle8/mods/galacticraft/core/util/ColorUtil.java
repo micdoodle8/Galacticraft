@@ -239,6 +239,66 @@ public class ColorUtil
         return rr << 16 | gg << 8 | bb;
     }
 
+    /**
+     * Lighten to the specified intensity
+     * @param col
+     * @return
+     */
+    public static int lightenFully(int col, int intensity)
+    {
+        if (intensity == 0)
+            return 0;
+        int gg = col >> 8;
+        int rr = gg >> 8;
+        gg &= 255;
+        int bb = col & 255;
+        rr = 255 - rr;
+        gg = 255 - gg;
+        bb = 255 - bb;
+        double greyInvert = Math.min(rr, Math.min(gg, bb));
+        double delta = Math.max(rr, Math.max(gg, bb));
+        delta = (delta - greyInvert) / delta;
+        if (greyInvert >= intensity)
+        {
+            return col;
+        }
+        double factor = (intensity - greyInvert) / intensity / Math.pow(delta, 0.6);
+        rr -= 24;  //this -24 and math.pow(delta 0.6) found empirically, there's no science here!
+        gg -= 24;
+        bb -= 24;
+        rr *= factor;
+        gg *= factor;
+        bb *= factor;
+        if (rr > 255)
+        {
+            rr = 255;
+        }
+        if (gg > 255)
+        {
+            gg = 255;
+        }
+        if (bb > 255)
+        {
+            bb = 255;
+        }
+        rr = 255 - rr;
+        gg = 255 - gg;
+        bb = 255 - bb;
+        if (rr > 255)
+        {
+            rr = 255;
+        }
+        if (gg > 255)
+        {
+            gg = 255;
+        }
+        if (bb > 255)
+        {
+            bb = 255;
+        }
+        return rr << 16 | gg << 8 | bb;
+    }
+
     public static int toGreyscale(int col)
     {
         int gg = col >> 8;

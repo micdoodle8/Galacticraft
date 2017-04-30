@@ -41,8 +41,8 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         else
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            IBlockState[] panels = stats.getPanel_lighting();
-            this.superState = panels[type];
+            this.superState = stats.getPanelLightingBases()[type];
+            this.color = stats.getPanelLightingColor();
         }
         this.color = BlockPanelLighting.color; //TODO - this is a placeholder to show the system works, needs saving in stats per player like the superState
     }

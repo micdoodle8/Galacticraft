@@ -315,7 +315,12 @@ public abstract class GCPlayerStats
 
     public abstract int getGlassColor3();
 
-    public abstract IBlockState[] getPanel_lighting();
+    public abstract IBlockState[] getPanelLightingBases();
     
+    public abstract int getPanelLightingColor();
+
+    public abstract void setPanelLightingColor(int color);
+
     public abstract Object[] getMiscNetworkedStats();
+
 }
