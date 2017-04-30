@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.util.IChatComponent;
 
 /*
  * Like ISidedInventory
  * but providing defaults for the methods we never use
  */
-public interface ISidedInventoryGC extends ISidedInventory
+public interface IInventoryDefaults extends IInventory
 {
     //We don't use these because we use forge containers
     @Override
