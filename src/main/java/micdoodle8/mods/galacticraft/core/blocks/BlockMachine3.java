@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -137,11 +136,8 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     {
         if (!worldIn.isRemote)
         {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileEntityPainter && entityPlayer instanceof EntityPlayerMP)
-            {
-                ((TileEntityPainter) tile).setAllGlassColors(entityPlayer.getHeldItemMainhand(), (EntityPlayerMP) entityPlayer);
-            }
+            entityPlayer.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            return true;
         }
 
         return true;

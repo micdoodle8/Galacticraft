@@ -3,9 +3,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PropertyObject;
@@ -38,10 +41,12 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription
+public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription, IPaintable
 {
     public static final PropertyEnum TYPE = PropertyEnum.create("type", PanelType.class);
     public static final PropertyObject<IBlockState> BASE_STATE = new PropertyObject<>("held_state", IBlockState.class);
+    
+    public static int color = 0xf0f0e0;
     
     public enum PanelType implements IStringSerializable
     {
@@ -50,7 +55,7 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
         LINEAR("linear", 9),
         SF("sf", 2),
         SFDIAG("sfdiag", 2);
-        //IF ADDING TO THIS, MAKE SURE TO CHANGE DEFINITION OF PacketSimple.C_UPDATE_STATS
+        //IF ADDING TO THIS ENUM, MAKE SURE TO CHANGE DEFINITION OF PacketSimple.C_UPDATE_STATS!!!!!!
 
         private final String name;
         private final int light;
@@ -265,6 +270,7 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
             }
             superState[i] = state;
         }
+        color = (Integer) data.get(2 * PANELTYPES_LENGTH + 1);
     }
 
     public static void getNetworkedData(Object[] result, IBlockState[] panel_lighting)
@@ -280,5 +286,20 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
             result[i + i + 1] = ((ResourceLocation)Block.REGISTRY.getNameForObject(block)).toString();
             result[i + i + 2] = block.getMetaFromState(bs);
         }
+    }
+
+    @Override
+    public int setColor(int color, EntityPlayer p, Side side)
+    {
+        if (side == Side.CLIENT)
+        {
+            BlockPanelLighting.color = ColorUtil.lighten(ColorUtil.lightenFully(color, 255), 0.1F);
+        }
+        else
+        {
+            GCPlayerStats stats = GCPlayerStats.get(p);
+            stats.setPanelLightingColor(color);
+        }
+        return 1;
     }
 }

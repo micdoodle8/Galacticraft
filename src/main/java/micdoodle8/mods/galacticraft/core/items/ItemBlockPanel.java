@@ -60,7 +60,7 @@ public class ItemBlockPanel extends ItemBlockDesc
                 int meta = stack.getItemDamage();
                 if (meta >= BlockPanelLighting.PANELTYPES_LENGTH) meta = 0;
                 GCPlayerStats stats = GCPlayerStats.get(player);
-                IBlockState[] panels = stats.getPanel_lighting();
+                IBlockState[] panels = stats.getPanelLightingBases();
                 panels[meta] = state;
             }
         }

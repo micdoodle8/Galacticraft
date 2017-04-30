@@ -156,7 +156,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     protected void initArmor()
     {
         this.modelLeggings = new ModelPlayerGC(0.9F, false);
-        this.modelArmor = new ModelPlayerGC(0.25F, false);
+        this.modelArmor = new ModelPlayerGC(0.275F, false);
     }
 
     @Override

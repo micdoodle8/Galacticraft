@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
@@ -14,6 +15,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,14 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock
+public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock, IPaintable
 {
     public static final PropertyEnum MODEL = PropertyEnum.create("modeltype", GlassModel.class);
     public static final PropertyEnum ROTATION  = PropertyEnum.create("rot", GlassRotation.class);
     //public static final PropertyInteger PLACING  = PropertyInteger.create("placing", 0, 2);
     //This will define whether originally placed by the player facing NS - EW - or UD
 
-    private final GlassType type;
+    public final GlassType type;
     private final GlassFrame frame; //frameValue corresponds to the damage of the placing item
     private int color = 0xFFFFFF;
     private final Block baseBlock;
@@ -810,7 +812,8 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return 0;
     }
 
-    public int setColor(int newColor)
+    @Override
+    public int setColor(int newColor, EntityPlayer p, Side side)
     {
         if (newColor >= 0 && this.color != newColor)
         {
@@ -818,6 +821,27 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             return 1;
         }
         return 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void updateGlassColors(int color1, int color2, int color3)
+    {
+        int changes = 0;
+        changes += GCBlocks.spaceGlassVanilla.setColor(color1, null, Side.CLIENT);
+        changes += GCBlocks.spaceGlassClear.setColor(color2, null, Side.CLIENT);
+        changes += GCBlocks.spaceGlassStrong.setColor(color3, null, Side.CLIENT);
+        
+        if (changes > 0)
+            BlockSpaceGlass.updateClientRender();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void updateClientRender()
+    {
+        Minecraft.getMinecraft().renderGlobal.loadRenderers();
+        //TODO: improve performance, this is re-rendering ALL chunks on client
+        //Can we somehow limit this to chunks containing BlockSpaceGlass?
+        //or else: don't do all the chunk redrawing at once, queue them?
     }
 
     @Override

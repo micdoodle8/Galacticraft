@@ -25,7 +25,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
 {
     public int meta;
     private IBlockState superState;
-    //TODO: colour
+    public int color = 0xf0f0e0;
 
     public TileEntityPanelLight()
     {
@@ -41,9 +41,10 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         else
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            IBlockState[] panels = stats.getPanel_lighting();
-            this.superState = panels[type];
+            this.superState = stats.getPanelLightingBases()[type];
+            this.color = stats.getPanelLightingColor();
         }
+        this.color = BlockPanelLighting.color; //TODO - this is a placeholder to show the system works, needs saving in stats per player like the superState
     }
 
     
@@ -75,6 +76,10 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         super.readFromNBT(nbt);
 
         this.meta = nbt.getInteger("meta");
+        if (nbt.hasKey("col"))
+        {
+            this.color = nbt.getInteger("col");
+        }
         NBTTagCompound tag = nbt.getCompoundTag("sust");
         if (!tag.hasNoTags())
         {
@@ -87,6 +92,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
         super.writeToNBT(nbt);
         nbt.setInteger("meta", this.meta);
+        nbt.setInteger("col", this.color);
         if (this.superState != null)
         {
             NBTTagCompound tag = new NBTTagCompound();
@@ -161,6 +167,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         }
 
         sendData.add((byte)this.meta);
+        sendData.add(this.color);
         if (this.superState != null)
         {
             Block block = this.superState.getBlock(); 
@@ -183,6 +190,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
             try
             {
                 this.meta = buffer.readByte();
+                this.color = buffer.readInt();
                 if (buffer.readableBytes() > 0)
                 {
                     String name = ByteBufUtils.readUTF8String(buffer);
