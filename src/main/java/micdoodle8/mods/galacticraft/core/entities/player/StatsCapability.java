@@ -1290,7 +1290,7 @@ public class StatsCapability extends GCPlayerStats
         if (changes)
             ColorUtil.sendUpdatedColorsToPlayer(this);
     }
-
+    
     @Override
     public int getGlassColor1()
     {
