@@ -19,7 +19,7 @@ public class CommandGCAstroMiner extends CommandBase
     @Override
     public String getName()
     {
-        return null;
+        return "gcastrominer";
     }
 
     @Override
