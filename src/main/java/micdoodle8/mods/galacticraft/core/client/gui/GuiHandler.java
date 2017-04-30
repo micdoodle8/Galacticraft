@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.gui.container.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiJoinSpaceRace;
@@ -20,6 +21,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -134,6 +136,10 @@ public class GuiHandler implements IGuiHandler
             {
                 return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile, player);
             }
+            else if (tile instanceof TileEntityPainter)
+            {
+                return new ContainerPainter(player.inventory, (TileEntityPainter) tile);
+            }
         }
 
         for (ISchematicPage page : stats.getUnlockedSchematics())
@@ -185,7 +191,8 @@ public class GuiHandler implements IGuiHandler
         }
         else if (ID == GuiIdsCore.PRE_LAUNCH_CHECKLIST)
         {
-            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), player.getHeldItem(player.swingingHand).hasTagCompound() ? (NBTTagCompound) player.getHeldItem(player.swingingHand).getTagCompound().getTag("checklistData") : null);
+            ItemStack checkList = GCCoreUtil.getMatchingItemEitherHand(playerClient, GCItems.prelaunchChecklist);
+            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), checkList != null && checkList.hasTagCompound() ? (NBTTagCompound) checkList.getTagCompound().getTag("checklistData") : null);
         }
 
         TileEntity tile = world.getTileEntity(position);
@@ -271,6 +278,10 @@ public class GuiHandler implements IGuiHandler
             else if (tile instanceof TileEntityOxygenDecompressor)
             {
                 return new GuiOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
+            }
+            else if (tile instanceof TileEntityPainter)
+            {
+                return new GuiPainter(player.inventory, (TileEntityPainter) tile);
             }
         }
 

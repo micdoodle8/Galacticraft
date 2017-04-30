@@ -371,4 +371,19 @@ public class GCCoreUtil
 
         return Side.CLIENT;
     }
+    
+    public static ItemStack getMatchingItemEitherHand(EntityPlayer player, Item item)
+    {
+        ItemStack stack = player.inventory.getStackInSlot(player.inventory.currentItem);
+        if (stack != null && stack.getItem() == item)
+        {
+            return stack;
+        }
+        stack = player.inventory.offHandInventory.get(0);
+        if (stack != null && stack.getItem() == item)
+        {
+            return stack;
+        }
+        return null;
+    }
 }

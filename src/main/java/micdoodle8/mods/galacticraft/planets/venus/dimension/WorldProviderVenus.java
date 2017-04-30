@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderVenus extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
-    private double solarMultiplier = 0.36D;
+    private double solarMultiplier = -0.36D;
 
     @Override
     public Vector3 getFogColor()

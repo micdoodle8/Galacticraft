@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.fx.ParticleSparks;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
@@ -140,7 +141,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         C_UPDATE_SPACESTATION_CLIENT_ID(Side.CLIENT, String.class),
         C_UPDATE_PLANETS_LIST(Side.CLIENT, Integer[].class),
         C_UPDATE_CONFIGS(Side.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
-        C_UPDATE_STATS(Side.CLIENT, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class),
+        C_UPDATE_STATS(Side.CLIENT, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, Integer.class, Integer.class), //Note: Integer, PANELTYPES_LENGTH * <String, Integer>, Integer - see StatsCapability.getMiscNetworkedStats()
         C_ADD_NEW_SCHEMATIC(Side.CLIENT, Integer.class),
         C_UPDATE_SCHEMATIC_LIST(Side.CLIENT, Integer[].class),
         C_PLAY_SOUND_BOSS_DEATH(Side.CLIENT, Float.class),
@@ -750,7 +751,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             }
             break;
         case C_RECOLOR_ALL_GLASS:
-            ColorUtil.updateGlassColors((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
+            BlockSpaceGlass.updateGlassColors((Integer) this.data.get(0), (Integer) this.data.get(1), (Integer) this.data.get(2));
             break;
         case C_UPDATE_MACHINE_DATA:
             TileEntity tile3 = player.world.getTileEntity((BlockPos) this.data.get(0));

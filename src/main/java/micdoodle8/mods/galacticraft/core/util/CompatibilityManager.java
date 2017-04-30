@@ -24,6 +24,7 @@ public class CompatibilityManager
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
+    private static boolean modBOPLoaded;
 	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
@@ -115,6 +116,12 @@ public class CompatibilityManager
             }
         }
 
+        if (Loader.isModLoaded("BiomesOPlenty"))
+        {
+            CompatibilityManager.modBOPLoaded = true;
+            GCLog.info("Galacticraft: activating Biomes O'Plenty compatibility feature.");
+        }
+
         if (Loader.isModLoaded("AetherII"))
         {
             CompatibilityManager.modAetherIILoaded = true;
@@ -177,6 +184,11 @@ public class CompatibilityManager
     public static boolean isAppEngLoaded()
     {
         return CompatibilityManager.modAppEngLoaded;
+    }
+
+    public static boolean isBOPLoaded()
+    {
+        return CompatibilityManager.modBOPLoaded;
     }
 
     public static boolean isPneumaticCraftLoaded()

@@ -361,7 +361,10 @@ public class EnergyConfigHandler
         {
             cachedMekLoaded = true;
             cachedMekLoadedValue = Loader.isModLoaded("Mekanism");
-            GCLog.info("Galacticraft: activating Mekanism compatibility.");
+            if (cachedMekLoadedValue)
+            {
+                GCLog.info("Galacticraft: activating Mekanism compatibility.");
+            }
         }
 
         return cachedMekLoadedValue;
