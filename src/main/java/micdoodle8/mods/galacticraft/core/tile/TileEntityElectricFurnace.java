@@ -139,19 +139,19 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.stacks.get(1) == null || FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1)) == null)
+        if (this.stacks.get(1).isEmpty() || FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1)).isEmpty())
         {
             return false;
         }
 
-        if (this.stacks.get(2) != null)
+        if (!this.stacks.get(2).isEmpty())
         {
             if (!this.stacks.get(2).isItemEqual(FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1))))
             {
                 return false;
             }
 
-            if (this.stacks.get(2).getCount() + 1 > 64)
+            if (this.stacks.get(2).getCount() > 63)
             {
                 return false;
             }
