@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -75,7 +76,8 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
         RenderHelper.disableStandardItemLighting();
 
-        float greyLevel = 1.0F;  //tileEntity.getEnabled() ? 1.0F : 26F / 255F;
+        ColorUtil.setGLColor(tileEntity.color);
+        
         //Save the lighting state
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
@@ -87,7 +89,6 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
         GlStateManager.disableTexture2D();
         final Tessellator tess = Tessellator.getInstance();
         WorldRenderer worldRenderer = tess.getWorldRenderer();
-        GlStateManager.color(greyLevel, greyLevel, greyLevel, 1.0F);
         float frameY = 1.01F;
         float frameA, frameB, frameC;
         switch (type) {

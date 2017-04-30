@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import org.lwjgl.opengl.GL11;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
@@ -267,6 +266,6 @@ public class ColorUtil
         int rr = gg >> 8;
         gg &= 255;
         int bb = col & 255;
-        GL11.glColor4f(rr / 255F, gg / 255F, bb / 255F, 1.0F);
+        GlStateManager.color(rr / 255F, gg / 255F, bb / 255F, 1.0F);
     }
 }

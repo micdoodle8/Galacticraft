@@ -22,6 +22,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -150,6 +151,18 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             this.range = nbt.getInteger("rge");
             this.guiColor = nbt.getInteger("guic");
         }
+        
+        final NBTTagList tagList = nbt.getTagList("Items", 10);
+        this.containingItems = new ItemStack[this.getSizeInventory()];
+        for (int i = 0; i < tagList.tagCount(); ++i)
+        {
+            final NBTTagCompound tag = tagList.getCompoundTagAt(i);
+            final int slot = tag.getByte("Slot") & 255;
+            if (slot < this.containingItems.length)
+            {
+                this.containingItems[slot] = ItemStack.loadItemStackFromNBT(tag);
+            }
+        }
     }
 
     @Override
@@ -161,6 +174,19 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         nbt.setInteger("G3", this.glassColor[2]);
         nbt.setInteger("guic", this.guiColor);
         nbt.setInteger("rge", this.range);
+
+        final NBTTagList tagList = new NBTTagList();
+        for (int i = 0; i < this.containingItems.length; ++i)
+        {
+            if (this.containingItems[i] != null)
+            {
+                final NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("Slot", (byte) i);
+                this.containingItems[i].writeToNBT(tag);
+                tagList.appendTag(tag);
+            }
+        }
+        nbt.setTag("Items", tagList);
     }
 
     private static Set<BlockVec3> getLoadedTiles(World world)

@@ -2,9 +2,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
+import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PropertyObject;
@@ -35,10 +38,12 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription
+public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription, IPaintable
 {
     public static final PropertyEnum TYPE = PropertyEnum.create("type", PanelType.class);
     public static final PropertyObject<IBlockState> BASE_STATE = new PropertyObject<>("held_state", IBlockState.class);
+    
+    public static int color = 0xf0f0e0;
     
     public enum PanelType implements IStringSerializable
     {
@@ -278,5 +283,12 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
             result[i + i + 1] = ((ResourceLocation)Block.blockRegistry.getNameForObject(block)).toString();
             result[i + i + 2] = block.getMetaFromState(bs);
         }
+    }
+
+    @Override
+    public int setColor(int color, Side side)
+    {
+        BlockPanelLighting.color = ColorUtil.lighten(color, 0.06F);
+        return 1;
     }
 }
