@@ -57,12 +57,12 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack tool)
     {
         player.addStat(StatList.getBlockStats(this));
         player.addExhaustion(0.025F);
 
-        if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, player.getHeldItem(player.swingingHand)) > 0)
+        if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0)
         {
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
             ItemStack itemstack = this.createStackedBlock(state);
@@ -86,7 +86,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
                 return;
             }
 
-            int i1 = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getHeldItem(player.swingingHand));
+            int i1 = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
             harvesters.set(player);
             this.dropBlockAsItem(worldIn, pos, state, i1);
             harvesters.set(null);
