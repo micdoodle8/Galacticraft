@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -1395,6 +1396,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         double d1 = this.posY - y;
         double d2 = this.posZ - z;
         double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-        return d3 < 262144D;  //512 squared
+        return d3 < Constants.RENDERDISTANCE_LONG;
     }
 }

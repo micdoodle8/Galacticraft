@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
@@ -660,5 +661,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 1, 1));
         }
         return this.renderAABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_LONG;
     }
 }

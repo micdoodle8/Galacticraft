@@ -305,4 +305,11 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         }
         return this.renderAABB;
     }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return 16384;  //128 squared
+    }
 }

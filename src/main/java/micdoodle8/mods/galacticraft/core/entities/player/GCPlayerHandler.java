@@ -119,7 +119,7 @@ public class GCPlayerHandler
 //    }
 
     @SubscribeEvent
-    public void onAttachCapability(AttachCapabilitiesEvent event)
+    public void onAttachCapability(AttachCapabilitiesEvent.Entity event)
     {
         if (event.getObject() instanceof EntityPlayerMP)
         {
@@ -132,7 +132,7 @@ public class GCPlayerHandler
     }
     
     @SideOnly(Side.CLIENT)
-    private void onAttachCapabilityClient(AttachCapabilitiesEvent event)
+    private void onAttachCapabilityClient(AttachCapabilitiesEvent.Entity event)
     {
         if (event.getObject() instanceof EntityPlayerSP)
         {
