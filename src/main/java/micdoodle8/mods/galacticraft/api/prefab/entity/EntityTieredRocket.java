@@ -215,11 +215,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             this.rumble++;
         }
 
-        if (!this.getPassengers().isEmpty())
+        final double rumbleAmount = this.rumble / (double) (37 - 5 * Math.max(this.getRocketTier(), 5));
+        for (Entity passenger : this.getPassengers())
         {
-            final double rumbleAmount = this.rumble / (double) (37 - 5 * Math.max(this.getRocketTier(), 5));
-            this.getPassengers().get(0).posX += rumbleAmount;
-            this.getPassengers().get(0).posZ += rumbleAmount;
+            passenger.posX += rumbleAmount;
+            passenger.posZ += rumbleAmount;
         }
 
         if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
@@ -317,7 +317,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     	{
                     		if (!this.getPassengers().isEmpty())
                     		{
-                    			WorldUtil.transferEntityToDimension(this.getPassengers().get(0), this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
+                    		    for (Entity passenger : this.getPassengers())
+                    		    {
+                    		        if (passenger instanceof EntityPlayerMP)
+                    		        {
+                    		            WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
+                    		        }
+                    		    }
                     		}
                     		else
                     		{
@@ -348,11 +354,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     this.motionX = this.motionZ = 0.0D;
                     //Small upward motion initially, to keep clear of own flame trail from launch
                     this.motionY = 0.1D;
-                    if (!this.getPassengers().isEmpty())
+                    for (Entity passenger : this.getPassengers())
                     {
-                        WorldUtil.forceMoveEntityToPos(this.getPassengers().get(0), (WorldServer) this.worldObj, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
-                        this.setWaitForPlayer(true);
-                        if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
+                        if (passenger instanceof EntityPlayerMP)
+                        {
+                            WorldUtil.forceMoveEntityToPos(passenger, (WorldServer) this.worldObj, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
+                            this.setWaitForPlayer(true);
+                            if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
+                        }
                     }
                     this.landing = true;
                     //Do not destroy the rocket, we still need it!
@@ -372,13 +381,16 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         //Not launch controlled
         if (!this.worldObj.isRemote)
         {
-            if (this.getPassengers().get(0) instanceof EntityPlayerMP)
+            for (Entity e : this.getPassengers())
             {
-                EntityPlayerMP player = (EntityPlayerMP) this.getPassengers().get(0);
+                if (e instanceof EntityPlayerMP)
+                {
+                    EntityPlayerMP player = (EntityPlayerMP) e;
 
-                this.onTeleport(player);
-                GCPlayerStats stats = GCPlayerStats.get(player);
-                WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
+                    this.onTeleport(player);
+                    GCPlayerStats stats = GCPlayerStats.get(player);
+                    WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
+                }
             }
 
             //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
@@ -430,9 +442,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             return false;
         }
 
-        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
+        if (!this.getPassengers().isEmpty() && this.getPassengers().contains(player))
         {
-            if (!this.worldObj.isRemote && this.getPassengers().get(0) == player)
+            if (!this.worldObj.isRemote)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.worldObj.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);

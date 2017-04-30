@@ -250,6 +250,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         if (!this.getPassengers().isEmpty())

@@ -893,17 +893,22 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
         	GCPlayerStats stats = null;
         	
-        	if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
-            {
-                EntityPlayerMP player = (EntityPlayerMP) this.getPassengers().get(0);
-                stats = GCPlayerStats.get(player);
+        	if (!this.getPassengers().isEmpty())
+        	{
+        	    for (Entity player : this.getPassengers())
+        	    {
+        	        if (player instanceof EntityPlayerMP)
+        	        {
+        	            stats = GCPlayerStats.get(player);
 
-                if (!(this.worldObj.provider instanceof IOrbitDimension))
-                {
-	                stats.setCoordsTeleportedFromX(player.posX);
-	                stats.setCoordsTeleportedFromZ(player.posZ);
-                }
-            }
+        	            if (!(this.worldObj.provider instanceof IOrbitDimension))
+        	            {
+        	                stats.setCoordsTeleportedFromX(player.posX);
+        	                stats.setCoordsTeleportedFromZ(player.posZ);
+        	            }
+        	        }
+        	    }
+        	}
 
             int amountRemoved = 0;
 
