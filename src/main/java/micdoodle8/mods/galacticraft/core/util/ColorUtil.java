@@ -1,16 +1,13 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ColorUtil
 {
@@ -155,6 +152,52 @@ public class ColorUtil
         return ColorUtil.hue_to_rgb(hueresult).scale(1 / 255D);
     }
 
+    public static int addColorsRealistically(int color1, int color2)
+    {
+        Vector3 result = addColorsRealistically(toVec3(color1), toVec3(color2));
+        return fromVec3(result);
+    }
+
+    public static int addColorsBasic(int color1, int color2)
+    {
+        int g = color1 >> 8;
+        int r = g >> 8;
+        g &= 255;
+        int b = color1 & 255;
+        int gg = color2 >> 8;
+        int rr = gg >> 8;
+        gg &= 255;
+        int bb = color2 & 255;
+        
+        r = (r + rr) / 2;
+        g = (g + gg) / 2;
+        b = (b + bb) / 2;
+
+        r = r << 16;
+        g = g << 8;
+        return r | g | b;
+    }
+
+    
+    public static Vector3 toVec3(int col)
+    {
+        int gg = col >> 8;
+        int rr = gg >> 8;
+        gg &= 255;
+        int bb = col & 255;
+        return new Vector3(rr / 255F, gg / 255F, bb / 255F);
+    }
+
+    public static int fromVec3(Vector3 result)
+    {
+        int r = (int) (result.x * 255D + 0.499D);
+        int g = (int) (result.y * 255D + 0.499D);
+        int b = (int) (result.z * 255D + 0.499D);
+        r = r << 16;
+        g = g << 8;
+        return r | g | b;
+    }
+
     public static int to32BitColor(int a, int r, int g, int b)
     {
         a = a << 24;
@@ -196,6 +239,66 @@ public class ColorUtil
         return rr << 16 | gg << 8 | bb;
     }
 
+    /**
+     * Lighten to the specified intensity
+     * @param col
+     * @return
+     */
+    public static int lightenFully(int col, int intensity)
+    {
+        if (intensity == 0)
+            return 0;
+        int gg = col >> 8;
+        int rr = gg >> 8;
+        gg &= 255;
+        int bb = col & 255;
+        rr = 255 - rr;
+        gg = 255 - gg;
+        bb = 255 - bb;
+        double greyInvert = Math.min(rr, Math.min(gg, bb));
+        double delta = Math.max(rr, Math.max(gg, bb));
+        delta = (delta - greyInvert) / delta;
+        if (greyInvert >= intensity)
+        {
+            return col;
+        }
+        double factor = (intensity - greyInvert) / intensity / Math.pow(delta, 0.6);
+        rr -= 24;  //this -24 and math.pow(delta 0.6) found empirically, there's no science here!
+        gg -= 24;
+        bb -= 24;
+        rr *= factor;
+        gg *= factor;
+        bb *= factor;
+        if (rr > 255)
+        {
+            rr = 255;
+        }
+        if (gg > 255)
+        {
+            gg = 255;
+        }
+        if (bb > 255)
+        {
+            bb = 255;
+        }
+        rr = 255 - rr;
+        gg = 255 - gg;
+        bb = 255 - bb;
+        if (rr > 255)
+        {
+            rr = 255;
+        }
+        if (gg > 255)
+        {
+            gg = 255;
+        }
+        if (bb > 255)
+        {
+            bb = 255;
+        }
+        return rr << 16 | gg << 8 | bb;
+    }
+
     public static int toGreyscale(int col)
     {
         int gg = col >> 8;
@@ -217,17 +320,12 @@ public class ColorUtil
         GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[] { color1, color2, color3 }), new TargetPoint(dimID, pos.getX(), pos.getY(), pos.getZ(), range));
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void updateGlassColors(int color1, int color2, int color3)
+    public static void setGLColor(int col)
     {
-        int changes = 0;
-        changes += GCBlocks.spaceGlassVanilla.setColor(color1);
-        changes += GCBlocks.spaceGlassClear.setColor(color2);
-        changes += GCBlocks.spaceGlassStrong.setColor(color3);
-        
-        if (changes > 0)
-            Minecraft.getMinecraft().renderGlobal.loadRenderers();
-        //TODO - don't do all the chunk redrawing at once, queue them
+        int gg = col >> 8;
+        int rr = gg >> 8;
+        gg &= 255;
+        int bb = col & 255;
+        GlStateManager.color(rr / 255F, gg / 255F, bb / 255F, 1.0F);
     }
-
 }

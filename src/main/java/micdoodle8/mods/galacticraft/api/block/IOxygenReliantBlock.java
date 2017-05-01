@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.block;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
  */
 public interface IOxygenReliantBlock
 {
-    public void onOxygenRemoved(World world, BlockPos pos);
+    public void onOxygenRemoved(World world, BlockPos pos, IBlockState currentState);
 
-    public void onOxygenAdded(World world, BlockPos pos);
+    public void onOxygenAdded(World world, BlockPos pos, IBlockState currentState);
 }

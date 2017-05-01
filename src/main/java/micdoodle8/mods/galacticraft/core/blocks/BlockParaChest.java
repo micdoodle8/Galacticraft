@@ -37,7 +37,6 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class);
-    private final Random random = new Random();
 
     public BlockParaChest(String assetName)
     {
@@ -129,19 +128,21 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
 
         if (tileentitychest != null)
         {
+            Random syncRandom = GCCoreUtil.getRandom(pos);
             for (int j1 = 0; j1 < tileentitychest.getSizeInventory(); ++j1)
             {
                 ItemStack itemstack = tileentitychest.getStackInSlot(j1);
 
                 if (itemstack != null)
                 {
-                    float f = this.random.nextFloat() * 0.8F + 0.1F;
-                    float f1 = this.random.nextFloat() * 0.8F + 0.1F;
+
+                    float f = syncRandom.nextFloat() * 0.8F + 0.1F;
+                    float f1 = syncRandom.nextFloat() * 0.8F + 0.1F;
                     EntityItem entityitem;
 
-                    for (float f2 = this.random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; worldIn.spawnEntityInWorld(entityitem))
+                    for (float f2 = syncRandom.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; worldIn.spawnEntityInWorld(entityitem))
                     {
-                        int k1 = this.random.nextInt(21) + 10;
+                        int k1 = syncRandom.nextInt(21) + 10;
 
                         if (k1 > itemstack.stackSize)
                         {
@@ -151,9 +152,9 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
                         itemstack.stackSize -= k1;
                         entityitem = new EntityItem(worldIn, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
                         float f3 = 0.05F;
-                        entityitem.motionX = (float) this.random.nextGaussian() * f3;
-                        entityitem.motionY = (float) this.random.nextGaussian() * f3 + 0.2F;
-                        entityitem.motionZ = (float) this.random.nextGaussian() * f3;
+                        entityitem.motionX = (float) syncRandom.nextGaussian() * f3;
+                        entityitem.motionY = (float) syncRandom.nextGaussian() * f3 + 0.2F;
+                        entityitem.motionZ = (float) syncRandom.nextGaussian() * f3;
 
                         if (itemstack.hasTagCompound())
                         {

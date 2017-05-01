@@ -32,6 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class GCCoreUtil
 {
@@ -320,6 +321,16 @@ public class GCCoreUtil
 //            }
 //        }
 //    }
+    
+    /**
+     * Call this to obtain a seeded random which will be the SAME on
+     * client and server.  This means EntityItems won't jump position, for example.
+     */
+    public static Random getRandom(BlockPos pos)
+    {
+        long blockSeed = ((pos.getY() << 28) + pos.getX() + 30000000 << 28) + pos.getZ() + 30000000;  
+        return new Random(blockSeed);
+    }
 
     /**
      * Custom getEffectiveSide method, covering more cases than FMLCommonHandler

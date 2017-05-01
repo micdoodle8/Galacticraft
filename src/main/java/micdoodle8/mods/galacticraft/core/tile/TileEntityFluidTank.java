@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.DelayTimer;
@@ -125,7 +126,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        return fluidTank.getFluid() == null || fluidTank.getFluid().getFluid() == null || fluidTank.getFluid().getFluid() == fluid;
+        return fluid == null || fluidTank.getFluid() != null && fluidTank.getFluid().getFluid() == fluid;
     }
 
     @Override
@@ -266,6 +267,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
         if (!worldObj.isRemote)
@@ -365,5 +367,12 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
             this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 1, 1));
         }
         return this.renderAABB;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_MEDIUM;
     }
 }

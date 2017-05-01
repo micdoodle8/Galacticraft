@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -313,4 +314,13 @@ public abstract class GCPlayerStats
     public abstract int getGlassColor2();
 
     public abstract int getGlassColor3();
+
+    public abstract IBlockState[] getPanelLightingBases();
+    
+    public abstract int getPanelLightingColor();
+
+    public abstract void setPanelLightingColor(int color);
+
+    public abstract Object[] getMiscNetworkedStats();
+
 }

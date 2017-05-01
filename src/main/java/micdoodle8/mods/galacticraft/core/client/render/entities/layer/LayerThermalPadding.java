@@ -129,7 +129,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     protected void initArmor()
     {
         this.field_177189_c = new ModelPlayerGC(0.9F, false);
-        this.field_177186_d = new ModelPlayerGC(0.25F, false);
+        this.field_177186_d = new ModelPlayerGC(0.275F, false);
     }
 
     @Override

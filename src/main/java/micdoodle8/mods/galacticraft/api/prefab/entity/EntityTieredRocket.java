@@ -21,7 +21,6 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
@@ -36,7 +35,7 @@ import java.util.Iterator;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityTieredRocket extends EntityAutoRocket implements IRocketType, IDockable, IInventory, IWorldTransferCallback, ICameraZoomEntity
+public abstract class EntityTieredRocket extends EntityAutoRocket implements IRocketType, IDockable, IWorldTransferCallback, ICameraZoomEntity
 {
     public EnumRocketType rocketType;
     public float rumble;

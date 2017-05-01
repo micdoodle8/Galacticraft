@@ -213,28 +213,4 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     {
         return !this.onGround;
     }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
 }

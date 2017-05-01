@@ -8,6 +8,7 @@ container.geothermal_generator.name=Geothermal Generator
 container.launchcontroller.name=Launch Controller
 container.mars_lander.name=Landing Balloons
 container.short_range_telepad.name=Short Range Telepad
+container.slimeling_inventory.name=Slimeling Inventory
 container.tile_terraformer.name=Terraformer
 dimension.mars.name=Mars
 entity.astro_miner.name=Astro Miner

@@ -403,7 +403,7 @@ public class EventHandlerGC
         final int worldX = event.chunkX << 4;
         final int worldZ = event.chunkZ << 4;
 
-        EventHandlerGC.generateOil(event.world, event.rand, worldX + event.rand.nextInt(16), worldZ + event.rand.nextInt(16), false);
+        EventHandlerGC.generateOil(event.world, event.rand, worldX + 8, worldZ + 8, false);
     }
 
     public static boolean oilPresent(World world, Random rand, int x, int z, BlockVec3 pos)
@@ -457,14 +457,18 @@ public class EventHandlerGC
         if (flag1 || flag2)
         {
             pos.y = 17 + rand.nextInt(10) + rand.nextInt(5);
-            pos.x = x + rand.nextInt(16);
-            pos.z = z + rand.nextInt(16);
+            pos.x = x + 15 - rand.nextInt(32);  //do not change without thinking about chunk loading, see notes in generateOil()
+            pos.z = z + 15 - rand.nextInt(32);  //do not change without thinking about chunk loading, see notes in generateOil()
             return true;
         }
 
         return false;
     }
 
+    /**
+     * xx, zz are the central position of the chunk currently being populated
+     * We must not stray more than 1 chunk away from this position, that's 24 blocks
+     */
     public static void generateOil(World world, Random rand, int xx, int zz, boolean testFirst)
     {
         BlockVec3 pos = new BlockVec3();
@@ -475,6 +479,10 @@ public class EventHandlerGC
             int z = pos.z;
             int r = 3 + rand.nextInt(5);
 
+            //The method loads blocks in the range (x - r - 1) to (x + r + 1) - whatever the randoms, all these positions must be inside the +/-1 chunk range
+            //This can be minimum xx - 16 - 7 - 1, that's OK!
+            //This can be maximum xx + 15 + 7 + 1, that's also OK!
+            
             if (testFirst && checkOilPresent(world, x, cy, z, r))
             {
                 return;
@@ -482,15 +490,15 @@ public class EventHandlerGC
 
             final int r2 = r * r;
 
+            IBlockState crudeOil = GCBlocks.crudeOil.getDefaultState();
             for (int bx = -r; bx <= r; bx++)
             {
                 for (int by = -r + 2; by <= r - 2; by++)
                 {
+                    int xySquared = bx * bx + by * by * 3;
                     for (int bz = -r; bz <= r; bz++)
                     {
-                        final int d2 = bx * bx + by * by * 3 + bz * bz;
-
-                        if (d2 <= r2)
+                        if (xySquared + bz * bz <= r2)
                         {
                             if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x - 1, by + cy, bz + z)))
                             {
@@ -517,7 +525,7 @@ public class EventHandlerGC
                                 continue;
                             }
 
-                            world.setBlockState(new BlockPos(bx + x, by + cy, bz + z), GCBlocks.crudeOil.getDefaultState(), 2);
+                            world.setBlockState(new BlockPos(bx + x, by + cy, bz + z), crudeOil, 2);
                         }
                     }
                 }
@@ -533,11 +541,10 @@ public class EventHandlerGC
         {
             for (int by = -r + 2; by <= r - 2; by++)
             {
+                int xySquared = bx * bx + by * by * 3;
                 for (int bz = -r; bz <= r; bz++)
                 {
-                    final int d2 = bx * bx + by * by * 3 + bz * bz;
-
-                    if (d2 <= r2)
+                    if (xySquared + bz * bz <= r2)
                     {
                         if (EventHandlerGC.checkBlock(world, new BlockPos(bx + x - 1, by + cy, bz + z)))
                         {
