@@ -431,11 +431,6 @@ public class TickHandlerServer
 
             TickHandlerServer.tickCount++;
 
-            if (TickHandlerServer.tickCount >= Long.MAX_VALUE)
-            {
-                TickHandlerServer.tickCount = 0;
-            }
-
             EnergyNetwork.tickCount++;
         }
         else if (event.phase == Phase.END)

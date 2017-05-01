@@ -78,6 +78,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return this.getCelestialBody().atmosphere.contains(gas);
     }
 
+    public boolean hasAtmosphere()
+    {
+        return this.getCelestialBody().atmosphere.size() > 0;
+    }
+
     @Override
     public void updateWeather()
     {

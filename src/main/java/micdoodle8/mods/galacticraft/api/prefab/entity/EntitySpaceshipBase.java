@@ -30,6 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -62,6 +63,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public float shipDamage; 
     private ArrayList<BlockVec3Dim> telemetryList = new ArrayList<BlockVec3Dim>();
     private boolean addToTelemetry = false;
+    public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
     
     public EntitySpaceshipBase(World par1World)
     {
@@ -71,6 +73,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.ignoreFrustumCheck = true;
         this.renderDistanceWeight = 5.0D;
     }
+
+    public abstract int getFuelTankCapacity();
 
     public abstract int getMaxFuel();
 
@@ -199,11 +203,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void onUpdate()
     {
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 0;
-        }
-
         this.ticks++;
 
         super.onUpdate();
@@ -230,8 +229,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
         {
             this.onReachAtmosphere();
-            if (this.worldObj.isRemote)
-            	this.posY = 1 + (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200);
+//            if (this.worldObj.isRemote)
+//            	this.posY = 1 + (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200);
         }
 
         if (this.rollAmplitude > 0)
@@ -375,6 +374,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
+        if (!this.worldObj.isRemote)
+        {
+            new Exception().printStackTrace();
+        }
         this.setLaunchPhase(EnumLaunchPhase.values()[buffer.readInt()]);
         this.timeSinceLaunch = buffer.readFloat();
         this.timeUntilLaunch = buffer.readInt();
@@ -385,7 +388,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (this.worldObj.isRemote)
         {
-            new Exception().printStackTrace();
+            return;
         }
         list.add(this.launchPhase);
         list.add(this.timeSinceLaunch);
@@ -647,6 +650,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public static final Predicate<Entity> rocketSelector = new Predicate<Entity>()
     {
+        @Override
         public boolean apply(Entity e)
         {
             return e instanceof EntitySpaceshipBase && e.isEntityAlive();

@@ -1,7 +1,6 @@
 {
     "parent": "galacticraftcore:block/glass/spaceglass_ns_inventory",
     "textures": {
-           "pane": "galacticraftcore:blocks/space_glass_inventory",
            "0": "galacticraftcore:blocks/space_glass_inventory"
     },
     "display": {

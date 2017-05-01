@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -31,22 +30,8 @@ public class SlotBuggyBench extends Slot
     {
         if (this.player instanceof EntityPlayerMP)
         {
-            for (int var12 = 0; var12 < this.player.worldObj.playerEntities.size(); ++var12)
-            {
-                final EntityPlayerMP var13 = (EntityPlayerMP) this.player.worldObj.playerEntities.get(var12);
-
-                if (var13.dimension == GCCoreUtil.getDimensionID(this.player.worldObj))
-                {
-                    final double var14 = this.pos.getX() - var13.posX;
-                    final double var16 = this.pos.getY() - var13.posY;
-                    final double var18 = this.pos.getZ() - var13.posZ;
-
-                    if (var14 * var14 + var16 * var16 + var18 * var18 < 20 * 20)
-                    {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, GCCoreUtil.getDimensionID(var13.worldObj), new Object[] { this.pos }), var13);
-                    }
-                }
-            }
+            int dimID = GCCoreUtil.getDimensionID(this.player.worldObj);
+            GCCoreUtil.sendToAllAround(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, dimID, new Object[] { this.pos }), this.player.worldObj, dimID, this.pos, 20);
         }
     }
 

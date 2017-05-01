@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +22,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IPacketReceiver, ISidedInventory, IFluidHandler
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements ISidedInventory, IFluidHandler
 {
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;

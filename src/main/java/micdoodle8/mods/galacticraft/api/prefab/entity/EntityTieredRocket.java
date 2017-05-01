@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -86,7 +88,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 {
                     continue;
                 }
-                if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier())
+                if (planet.getReachable() && planet.getTierRequirement() <= this.getRocketTier() && !planet.getUnlocalizedName().equals("planet.asteroids"))
                 {
                     toPreGen.add(planet.getDimensionID());
                 }
@@ -102,13 +104,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
                     }
                 }
-                for (int r = 1; r < 12; r++)
+                for (int r = 1; r < 12; r++)  //concentric squares with radius r
                 {
                     int xmin = cx - r;
                     int xmax = cx + r;
                     int zmin = cz - r;
                     int zmax = cz + r;
-                    for (int i = -r; i < r; i++)
+                    for (int i = -r; i < r; i++)  //stop before i == r to avoid doing corners twice
                     {
                         for (Integer dimID : toPreGen)
                         {
@@ -162,11 +164,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
 
         super.onUpdate();
-
-        if (this.landing)
-        {
-            this.rotationPitch = this.rotationYaw = 0;
-        }
 
         if (!this.worldObj.isRemote)
         {
@@ -253,6 +250,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public void getNetworkedData(ArrayList<Object> list)
     {
+        if (this.worldObj.isRemote)
+        {
+            return;
+        }
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
 
@@ -340,8 +341,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 {
                 	//Same dimension controlled rocket flight
                 	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                    //Stop any lateral motion, otherwise it will update to an incorrect x,z position first tick after spawning above target
+                    this.motionX = this.motionZ = 0.0D;
+                    //Small upward motion initially, to keep clear of own flame trail from launch
+                    this.motionY = 0.1D;
                     if (this.riddenByEntity != null)
                     {
+                        WorldUtil.forceMoveEntityToPos(this.riddenByEntity, (WorldServer) this.worldObj, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
                         this.setWaitForPlayer(true);
                         if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                     }
@@ -354,13 +360,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
             	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
-            	this.setDead();
+            	this.fuelTank.drain(Integer.MAX_VALUE, true);
+            	this.posY = Math.max(255, (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) - 200);
                 return;
             }
         }
 
         //Not launch controlled
-        if (this.riddenByEntity != null && !this.worldObj.isRemote)
+        if (!this.worldObj.isRemote)
         {
             if (this.riddenByEntity instanceof EntityPlayerMP)
             {
@@ -370,10 +377,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
             }
+
+            //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
+            this.setDead();
         }
         
-        //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
-        this.setDead();
+        //Client side, non-launch controlled, do nothing - no reason why it can't continue flying until the GUICelestialSelection activates
     }
 
     @Override
@@ -497,6 +506,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         }
     }
 
+    @Override
     public float getRotateOffset()
     {
         return -1.5F;

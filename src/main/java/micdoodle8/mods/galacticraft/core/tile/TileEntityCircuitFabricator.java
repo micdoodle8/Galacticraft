@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory, IPacketReceiver
+public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory
 {
     public static final int PROCESS_TIME_REQUIRED = 300;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -75,11 +74,6 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
             {
                 this.markDirty();
             }
-        }
-
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 0;
         }
 
         this.ticks++;

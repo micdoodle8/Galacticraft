@@ -10,9 +10,9 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
+import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
@@ -35,7 +35,7 @@ import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileEntitySolar extends TileBaseUniversalElectricalSource implements IMultiBlock, IPacketReceiver, IDisableableMachine, IInventory, ISidedInventory, IConnector
+public class TileEntitySolar extends TileBaseUniversalElectricalSource implements IMultiBlock, IDisableableMachine, IInventory, ISidedInventory, IConnector
 {
     @NetworkedField(targetSide = Side.CLIENT)
     public int solarStrength = 0;
@@ -52,6 +52,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
     private boolean initialised = false;
     private boolean initialisedMulti = false;
+    private AxisAlignedBB renderAABB;
 
     public TileEntitySolar()
     {
@@ -92,7 +93,10 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             this.initialisedMulti = this.initialiseMultiTiles(this.getPos(), this.worldObj);
         }
 
-        this.receiveEnergyGC(null, this.generateWatts, false);
+        if (!this.worldObj.isRemote)
+        {
+            this.receiveEnergyGC(null, this.generateWatts, false);
+        }
 
         super.update();
 
@@ -172,12 +176,13 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         float angle = this.worldObj.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
-
+        if (!(this.worldObj.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
         celestialAngle %= 360;
+        boolean isDaytime = this.worldObj.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.worldObj.provider instanceof WorldProviderSpaceStation;
 
         if (this.tierGC == 1)
         {
-            if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
+            if (!isDaytime || this.worldObj.isRaining() || this.worldObj.isThundering())
             {
                 this.targetAngle = 77.5F + 180.0F;
             }
@@ -188,23 +193,23 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         }
         else
         {
-            if (celestialAngle > 30 && celestialAngle < 150)
+            if (!isDaytime || this.worldObj.isRaining() || this.worldObj.isThundering())
             {
-                float difference = this.targetAngle - celestialAngle;
+                this.targetAngle = 77.5F + 180F;
+            }
+            else if (celestialAngle > 27.5F && celestialAngle < 152.5F)
+            {
+                float difference = this.targetAngle - celestialAngle + 12.5F;
 
                 this.targetAngle -= difference / 20.0F;
             }
-            else if (!this.worldObj.isDaytime() || this.worldObj.isRaining() || this.worldObj.isThundering())
+            else if (celestialAngle <= 27.5F || celestialAngle > 270F)
             {
-                this.targetAngle = 77.5F + 180.0F;
+                this.targetAngle = 15F;
             }
-            else if (celestialAngle < 50)
+            else if (celestialAngle >= 152.5F)
             {
-                this.targetAngle = 50;
-            }
-            else if (celestialAngle > 150)
-            {
-                this.targetAngle = 150;
+                this.targetAngle = 140F;
             }
         }
 
@@ -214,16 +219,17 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         if (!this.worldObj.isRemote)
         {
-            if (this.getGenerate() > 0.0F)
+            int generated = this.getGenerate(); 
+            if (generated > 0)
             {
-                this.generateWatts = Math.min(Math.max(this.getGenerate(), 0), TileEntitySolar.MAX_GENERATE_WATTS);
+                this.generateWatts = Math.min(Math.max(generated, 0), TileEntitySolar.MAX_GENERATE_WATTS);
             }
             else
             {
                 this.generateWatts = 0;
             }
         }
-
+        
         this.produce();
     }
 
@@ -438,7 +444,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2); 
+        }
+        return this.renderAABB;
     }
 
     @Override

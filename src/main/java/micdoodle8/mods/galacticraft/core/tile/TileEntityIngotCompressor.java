@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -25,7 +24,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
 
-public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventory, ISidedInventory
 {
     public static final int PROCESS_TIME_REQUIRED = 200;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -108,11 +107,6 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 this.markDirty();
             }
-        }
-
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 0;
         }
 
         this.ticks++;

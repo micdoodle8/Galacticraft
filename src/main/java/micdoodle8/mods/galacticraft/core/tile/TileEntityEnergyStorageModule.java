@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.ISidedInventoryGC;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +20,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements IPacketReceiver, ISidedInventoryGC, IConnector, IMachineSides
+public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements ISidedInventoryGC, IConnector, IMachineSides
 {
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
@@ -148,7 +147,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
             }
         }
         
-        this.readMachineSidesFromNBT(par1NBTTagCompound);
+        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     /**
@@ -163,8 +162,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
 
         super.writeToNBT(par1NBTTagCompound);
-        NBTTagList var2 = new NBTTagList();
 
+        NBTTagList var2 = new NBTTagList();
         for (int var3 = 0; var3 < this.containingItems.length; ++var3)
         {
             if (this.containingItems[var3] != null)
@@ -175,9 +174,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
                 var2.appendTag(var4);
             }
         }
-
         par1NBTTagCompound.setTag("Items", var2);
-        this.addMachineSidesToNBT(par1NBTTagCompound);
+
+        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override

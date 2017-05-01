@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine3;
+import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -252,12 +253,19 @@ public class RecipeManagerGC
             aluminumIngots.addAll(addedList);
         }
 
-        final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-        inputMap.put("ingotTin", 32);
-        inputMap.put(aluminumIngots, 16);
-        inputMap.put("waferAdvanced", 1);
-        inputMap.put(Items.iron_ingot, 24);
-        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
+        final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>();
+        spaceStationRequirements.put("ingotTin", 32);
+        spaceStationRequirements.put(aluminumIngots, 16);
+        if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
+        {
+            spaceStationRequirements.put(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_ADVANCED), 1);
+        }
+        else
+        {
+            spaceStationRequirements.put("waferAdvanced", 1);
+        }
+        spaceStationRequirements.put(Items.iron_ingot, 24);
+        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(spaceStationRequirements)));
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.aluminumWire, 6), new Object[] { "WWW", "CCC", "WWW", 'W', Blocks.wool, 'C', "ingotAluminum" });
 

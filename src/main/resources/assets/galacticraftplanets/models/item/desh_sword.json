@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/steel_sword"
+        "layer0": "galacticraftplanets:items/desh_sword"
     },
     "display": {
         "thirdperson": {

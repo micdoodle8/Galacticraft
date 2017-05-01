@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -13,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.*;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
@@ -25,6 +27,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
+import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -40,6 +43,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -53,17 +57,18 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -334,9 +339,19 @@ public class TickHandlerClient
 
         if (event.phase == Phase.START)
         {
-            if (TickHandlerClient.tickCount >= Long.MAX_VALUE)
+            if (!ConnectionEvents.initialisedJEI)
             {
-                TickHandlerClient.tickCount = 0;
+                ConnectionEvents.initialisedJEI = true;
+                if (Loader.isModLoaded("JEI"))
+                {
+                    GCItems.hideItemsJEI();
+                }
+            }
+
+            if (ClientProxyCore.playerHead == null && player != null)
+            {
+                ClientProxyCore.playerHead = AbstractClientPlayer.getLocationSkin(player.getGameProfile().getName());
+                AbstractClientPlayer.getDownloadImageSkin(ClientProxyCore.playerHead, player.getGameProfile().getName());
             }
 
             TickHandlerClient.tickCount++;
@@ -463,7 +478,9 @@ public class TickHandlerClient
 
             if (player != null && player.ridingEntity != null && player.ridingEntity instanceof EntitySpaceshipBase)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.ridingEntity));
+                EntitySpaceshipBase rocket = (EntitySpaceshipBase) player.ridingEntity;
+                if (rocket.prevRotationPitch != rocket.rotationPitch || rocket.prevRotationYaw != rocket.rotationYaw)
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.ridingEntity));
             }
 
             if (world != null)
@@ -485,14 +502,7 @@ public class TickHandlerClient
                 {
                     if (world.provider.getSkyRenderer() == null)
                     {
-                        world.provider.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
-                        ((SkyProviderOrbit) world.provider.getSkyRenderer()).spinDeltaPerTick = ((WorldProviderSpaceStation) world.provider).getSpinManager().getSpinRate();
-                        GCPlayerStatsClient.get(player).setInFreefallFirstCheck(false);
-                    }
-
-                    if (world.provider.getCloudRenderer() == null)
-                    {
-                        world.provider.setCloudRenderer(new CloudRenderer());
+                        ((WorldProviderSpaceStation) world.provider).createSkyProvider();
                     }
                 }
                 else if (world.provider instanceof WorldProviderMoon)
@@ -514,19 +524,19 @@ public class TickHandlerClient
                 final EntitySpaceshipBase ship = (EntitySpaceshipBase) player.ridingEntity;
                 boolean hasChanged = false;
 
-                if (minecraft.gameSettings.keyBindLeft.isPressed())
+                if (minecraft.gameSettings.keyBindLeft.isKeyDown())
                 {
                     ship.turnYaw(-1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindRight.isPressed())
+                if (minecraft.gameSettings.keyBindRight.isKeyDown())
                 {
                     ship.turnYaw(1.0F);
                     hasChanged = true;
                 }
 
-                if (minecraft.gameSettings.keyBindForward.isPressed())
+                if (minecraft.gameSettings.keyBindForward.isKeyDown())
                 {
                     if (ship.getLaunched())
                     {
@@ -535,7 +545,7 @@ public class TickHandlerClient
                     }
                 }
 
-                if (minecraft.gameSettings.keyBindBack.isPressed())
+                if (minecraft.gameSettings.keyBindBack.isKeyDown())
                 {
                     if (ship.getLaunched())
                     {

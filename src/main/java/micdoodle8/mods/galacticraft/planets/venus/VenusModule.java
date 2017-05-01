@@ -45,7 +45,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -231,7 +230,7 @@ public class VenusModule implements IPlanetsModule
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             LanguageRegistry.instance().addStringLocalization("entity.galacticraftplanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
             LanguageRegistry.instance().addStringLocalization("entity.GalacticraftPlanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));

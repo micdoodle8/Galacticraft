@@ -9,11 +9,9 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +23,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler, ILandingPadAttachable
+public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandler, ILandingPadAttachable, IMachineSides
 {
     private final int tankCapacity = 12000;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -55,60 +53,10 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.loadedFuelLastTick = false;
 
-            if (this.containingItems[1] != null)
+            final FluidStack liquidContained = FluidUtil.getFluidContained(this.containingItems[1]);
+            if (FluidUtil.isFuel(liquidContained))
             {
-                if (this.containingItems[1].getItem() instanceof ItemCanisterGeneric)
-                {
-                    if (this.containingItems[1].getItem() == GCItems.fuelCanister)
-                    {
-                        int originalDamage = this.containingItems[1].getItemDamage();
-                        int used = this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, ItemCanisterGeneric.EMPTY - originalDamage), true);
-                        if (originalDamage + used == ItemCanisterGeneric.EMPTY)
-                        {
-                            this.containingItems[1] = new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY);
-                        }
-                        else
-                        {
-                            this.containingItems[1] = new ItemStack(GCItems.fuelCanister, 1, originalDamage + used);
-                        }
-                    }
-                }
-                else
-                {
-                    final FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(this.containingItems[1]);
-
-                    if (liquid != null)
-                    {
-                        boolean isFuel = FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
-
-                        if (isFuel)
-                        {
-                            if (this.fuelTank.getFluid() == null || this.fuelTank.getFluid().amount + liquid.amount <= this.fuelTank.getCapacity())
-                            {
-                                this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), true);
-
-                                if (FluidContainerRegistry.isBucket(this.containingItems[1]) && FluidContainerRegistry.isFilledContainer(this.containingItems[1]))
-                                {
-                                    final int amount = this.containingItems[1].stackSize;
-                                    if (amount > 1)
-                                    {
-                                        this.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, (amount - 1) * FluidContainerRegistry.BUCKET_VOLUME), true);
-                                    }
-                                    this.containingItems[1] = new ItemStack(Items.bucket, amount);
-                                }
-                                else
-                                {
-                                    this.containingItems[1].stackSize--;
-
-                                    if (this.containingItems[1].stackSize == 0)
-                                    {
-                                        this.containingItems[1] = null;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.containingItems, 1, liquidContained.amount);
             }
 
             if (this.ticks % 100 == 0)
@@ -162,6 +110,8 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
         }
+        
+        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -174,6 +124,8 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             par1NBTTagCompound.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
+        
+        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -218,12 +170,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         return false;
     }
 
-//    @Override
-//    public boolean hasCustomName()
-//    {
-//        return true;
-//    }
-
     @Override
     public boolean hasCustomName()
     {
@@ -263,7 +209,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+        if (this.getPipeInputDirection().equals(from))
+        {
+            return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+        }
+        return false;
     }
 
     @Override
@@ -271,7 +221,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         int used = 0;
 
-        if (this.getElectricInputDirection().getOpposite().equals(from))
+        if (this.getPipeInputDirection().equals(from))
         {
             if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {
@@ -285,7 +235,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
-        return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        if (this.getPipeInputDirection().equals(from))
+        {
+            return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+        }
+        return null;
     }
 
     @Override
@@ -307,12 +261,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
-    {
-        return getFront().rotateY();
-    }
-
-    @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {
         if (direction == null)
@@ -325,8 +273,94 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         }
         if (type == NetworkType.FLUID)
         {
-            return direction == this.getElectricInputDirection().getOpposite();
+            return direction == this.getPipeInputDirection();
         }
         return false;
     }
+
+    @Override
+    public EnumFacing getElectricInputDirection()
+    {
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
+    }
+
+    @Override
+    public EnumFacing getPipeInputDirection()
+    {
+        switch (this.getSide(MachineSide.PIPE_IN))
+        {
+        case RIGHT:
+        default:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+            return getFront().rotateY();
+        }
+    }
+
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return new MachineSide[] { MachineSide.ELECTRIC_IN, MachineSide.PIPE_IN };
+    }
+
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return new Face[] { Face.LEFT, Face.RIGHT };
+    }
+    
+    private MachineSidePack[] machineSides;
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        if (this.machineSides == null)
+        {
+            this.initialiseSides();
+        }
+
+        return this.machineSides;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+        this.machineSides = new MachineSidePack[length];
+    }
+    
+    @Override
+    public void validate()
+    {
+        super.validate();
+        this.clientValidate();
+    }
+    
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return BlockFuelLoader.MACHINESIDES_RENDERTYPE;
+    }
+    //------------------END OF IMachineSides implementation
 }

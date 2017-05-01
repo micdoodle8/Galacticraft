@@ -22,7 +22,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEnt
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandlerClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.asteroids.recipe.craftguide.CraftGuideIntegration;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
@@ -49,7 +48,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -174,10 +172,10 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMinerBase.class, new TileEntityMinerBaseRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
 
-        if (Loader.isModLoaded("craftguide"))
-        {
-            CraftGuideIntegration.register();
-        }
+//        if (Loader.isModLoaded("craftguide"))
+//        {
+//            CraftGuideIntegration.register();
+//        }
     }
 
     public static void registerBlockRenderers()
@@ -198,12 +196,12 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 1, "thermal_chestplate");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 2, "thermal_leggings");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.thermalPadding, 3, "thermal_boots");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 0, "item_basic_asteroids");  //reinforced_plate_t3
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 5, "item_basic_asteroids");  //reinforced_plate_t3
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 1, "engine_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 2, "rocket_fins_t2");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 3, "shard_iron");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 4, "shard_titanium");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 5, "ingot_titanium");
+        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 0, "ingot_titanium");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 6, "compressed_titanium");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 7, "thermal_cloth");
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, AsteroidsItems.basicItem, 8, "beam_core");

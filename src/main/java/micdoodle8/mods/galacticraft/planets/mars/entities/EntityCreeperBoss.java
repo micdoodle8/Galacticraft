@@ -148,11 +148,6 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     public void onLivingUpdate()
     {
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 1;
-        }
-
         this.ticks++;
 
         if (this.getHealth() <= 0)

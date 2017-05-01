@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
@@ -116,5 +119,18 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     public void setTarget(ILaserNode target)
     {
         super.setTarget(target);
+    }
+    
+    private AxisAlignedBB renderAABB;
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 2, 1));
+        }
+        return this.renderAABB;
     }
 }

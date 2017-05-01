@@ -1,11 +1,9 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.entities.ITumblable;
 import micdoodle8.mods.galacticraft.core.entities.player.FreefallHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -17,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -28,8 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -109,7 +106,7 @@ public class SpinManager
         this.angularVelocityRadians = angle;
         this.skyAngularVelocity = angle * 180F / 3.1415927F;
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             this.updateSkyProviderSpinRate();
         }
@@ -118,22 +115,14 @@ public class SpinManager
     @SideOnly(Side.CLIENT)
     private void updateSkyProviderSpinRate()
     {
-        IRenderHandler sky = this.worldProvider.getSkyRenderer();
-        if (sky instanceof SkyProviderOrbit)
-        {
-            ((SkyProviderOrbit) sky).spinDeltaPerTick = this.skyAngularVelocity;
-        }
+        this.worldProvider.setSpinDeltaPerTick(this.skyAngularVelocity);
     }
 
     public void setSpinRate(float angle, boolean firing)
     {
         this.angularVelocityRadians = angle;
         this.skyAngularVelocity = angle * 180F / 3.1415927F;
-        IRenderHandler sky = this.worldProvider.getSkyRenderer();
-        if (sky instanceof SkyProviderOrbit)
-        {
-            ((SkyProviderOrbit) sky).spinDeltaPerTick = this.skyAngularVelocity;
-        }
+        this.worldProvider.setSpinDeltaPerTick(this.skyAngularVelocity);
         this.thrustersFiring = firing;
     }
 
@@ -649,6 +638,138 @@ public class SpinManager
             angle += deltaTheta;
             e.motionX = velocity * MathHelper.cos(angle);
             e.motionZ = velocity * MathHelper.sin(angle);
+        }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public boolean updatePlayerForSpin(EntityPlayerSP p, float partial)
+    {
+        float angleDelta = partial * this.angularVelocityRadians;
+        if (this.doSpinning && angleDelta != 0F)
+        {
+            //TODO maybe need to test to make sure xx and zz are not too large (outside sight range of SS)
+            //TODO think about server + network load (loading/unloading chunks) when movement is rapid
+            //Maybe reduce chunkloading radius?
+            
+            boolean doCentrifugal = false;
+            float angle;
+            final double xx = p.posX - this.spinCentreX;
+            final double zz = p.posZ - this.spinCentreZ;
+            double arc = Math.sqrt(xx * xx + zz * zz);
+            if (xx == 0D)
+            {
+                angle = zz > 0 ? 3.1415926535F / 2 : -3.1415926535F / 2;
+            }
+            else
+            {
+                angle = (float) Math.atan(zz / xx);
+            }
+            if (xx < 0D)
+            {
+                angle += 3.1415926535F;
+            }
+            angle += angleDelta / 3F;
+            arc = arc * angleDelta;
+            double offsetX = -arc * Math.sin(angle);
+            double offsetZ = arc * Math.cos(angle);
+
+            //Check for block collisions here - if so move the player appropriately
+            //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
+            if (p.worldObj.getCollidingBoundingBoxes(p, p.getEntityBoundingBox()).size() == 0)
+            {
+                //Now check for collisions in the new direction and if there are some, try reducing the movement
+                int collisions = 0;
+                do
+                {
+                    List<AxisAlignedBB> list = p.worldObj.getCollidingBoundingBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
+                    collisions = list.size();
+                    if (collisions > 0)
+                    {
+                        if (!doCentrifugal)
+                        {
+                            p.motionX += -offsetX;
+                            p.motionZ += -offsetZ;
+                        }
+                        offsetX /= 2D;
+                        offsetZ /= 2D;
+                        if (offsetX < 0.01D && offsetX > -0.01D)
+                        {
+                            offsetX = 0D;
+                        }
+                        if (offsetZ < 0.01D && offsetZ > -0.01D)
+                        {
+                            offsetZ = 0D;
+                        }
+                        doCentrifugal = true;
+
+                    }
+                }
+                while (collisions > 0);
+
+                p.posX += offsetX;
+                p.posZ += offsetZ;
+                p.setEntityBoundingBox(p.getEntityBoundingBox().offset(offsetX, 0.0D, offsetZ));
+            }
+
+            p.rotationYaw += this.skyAngularVelocity * partial;
+            p.renderYawOffset += this.skyAngularVelocity * partial;
+            while (p.rotationYaw > 360F)
+            {
+                p.rotationYaw -= 360F;
+            }
+            while (p.rotationYaw < 0F)
+            {
+                p.rotationYaw += 360F;
+            }
+
+            return doCentrifugal;
+        }
+
+        return false;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void applyCentrifugalForce(EntityPlayerSP p)
+    {
+        int quadrant = 0;
+        double xd = p.posX - this.spinCentreX;
+        double zd = p.posZ - this.spinCentreZ;
+        double accel = Math.sqrt(xd * xd + zd * zd) * this.angularVelocityRadians * this.angularVelocityRadians * 4D;
+
+        if (xd < 0)
+        {
+            if (xd < -Math.abs(zd))
+            {
+                quadrant = 2;
+            }
+            else
+            {
+                quadrant = zd < 0 ? 3 : 1;
+            }
+        }
+        else if (xd > Math.abs(zd))
+        {
+            quadrant = 0;
+        }
+        else
+        {
+            quadrant = zd < 0 ? 3 : 1;
+        }
+
+        switch (quadrant)
+        {
+        case 0:
+            p.motionX += accel;
+            break;
+        case 1:
+            p.motionZ += accel;
+            break;
+        case 2:
+            p.motionX -= accel;
+            break;
+        case 3:
+        default:
+            p.motionZ -= accel;
         }
     }
     

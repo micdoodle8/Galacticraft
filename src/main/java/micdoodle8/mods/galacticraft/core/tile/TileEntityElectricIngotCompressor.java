@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -30,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventory, ISidedInventory, IPacketReceiver
+public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventory, ISidedInventory
 {
     public static final int PROCESS_TIME_REQUIRED_BASE = 200;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -89,11 +88,6 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 this.markDirty();
             }
-        }
-
-        if (this.ticks >= Long.MAX_VALUE)
-        {
-            this.ticks = 0;
         }
 
         this.ticks++;

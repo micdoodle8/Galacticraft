@@ -87,6 +87,9 @@ public class GuiCircuitFabricator extends GuiContainerGC
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(containerWidth + 5, containerHeight + 68, 176, 47, 18, 18);
+        this.drawTexturedModalRect(containerWidth + 5, containerHeight + 89, 194, 47, 9, 8);
+        this.drawTexturedModalRect(containerWidth + 17, containerHeight + 88, 176, 65, 56, 9);
         int scale;
 
         List<String> electricityDesc = new ArrayList<String>();

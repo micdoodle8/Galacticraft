@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -129,5 +130,10 @@ public class CircuitFabricatorRecipes
     		if (ItemStack.areItemStacksEqual(match, recipe.getValue()))
             	it.remove();
         }
+    }
+
+    public static ImmutableMap<ItemStack[], ItemStack> getRecipes()
+    {
+        return ImmutableMap.copyOf(recipes);
     }
 }

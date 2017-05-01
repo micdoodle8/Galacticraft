@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -18,7 +19,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -246,6 +246,7 @@ public class GCBlocks
                 registerBlock(torch, ItemBlockGC.class);
                 registerBlock(torchLit, ItemBlockGC.class);
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
+                GCLog.info("Galacticraft: activating Tinker's Construct compatibility.");
             }
         }
     }
@@ -316,7 +317,7 @@ public class GCBlocks
         String name = block.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftBlock(name, block);
         GameRegistry.registerBlock(block, itemClass, name, itemCtorArgs);
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCBlocks.registerSorted(block);
         }
@@ -379,7 +380,7 @@ public class GCBlocks
         registerBlock(GCBlocks.spaceGlassTinClear, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.spaceGlassTinVanilla, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.spaceGlassTinStrong, null);  //The corresponding item is already registered
-        registerBlock(GCBlocks.crafting, ItemBlockGC.class);
+        registerBlock(GCBlocks.crafting, ItemBlockDesc.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockSpaceStationBase.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);

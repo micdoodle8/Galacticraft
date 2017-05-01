@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
@@ -47,6 +48,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -73,7 +75,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -124,6 +125,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static boolean overworldTextureRequestSent;
     public static boolean overworldTexturesValid;
     public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
+    public static ResourceLocation playerHead = null;
     public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/saturn_rings.png");
     public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/uranus_rings.png");
     private static List<Item> itemsToRegisterJson = Lists.newArrayList();
@@ -250,6 +252,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         modelResourceLocation = new ModelResourceLocation("galacticraftcore:flag", "inventory");
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
+        ModelLoader.setCustomStateMapper(GCBlocks.oxygenDetector, new StateMap.Builder().ignore(BlockOxygenDetector.ACTIVE).build());
     }
 
     @Override
@@ -267,6 +270,11 @@ public class ClientProxyCore extends CommonProxyCore
     @Override
     public World getWorldForID(int dimensionID)
     {
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
+        {
+            return super.getWorldForID(dimensionID);
+        }
+
         World world = ClientProxyCore.mc.theWorld;
 
         if (world != null && GCCoreUtil.getDimensionID(world) == dimensionID)
@@ -295,7 +303,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         super.unregisterNetwork(fluidNetwork);
 
-        if (!FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (!GCCoreUtil.getEffectiveSide().isServer())
         {
             TickHandlerClient.removeFluidNetwork(fluidNetwork);
         }
@@ -306,7 +314,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         super.registerNetwork(fluidNetwork);
 
-        if (!FMLCommonHandler.instance().getEffectiveSide().isServer())
+        if (!GCCoreUtil.getEffectiveSide().isServer())
         {
             TickHandlerClient.addFluidNetwork(fluidNetwork);
         }

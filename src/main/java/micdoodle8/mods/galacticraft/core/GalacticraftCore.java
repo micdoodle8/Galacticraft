@@ -54,7 +54,6 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
@@ -64,7 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-@Mod(name = GalacticraftCore.NAME, version = Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION, useMetadata = true, modid = Constants.MOD_ID_CORE, dependencies = "required-after:Forge@[10.12.2.1147,); required-after:FML@[7.2.217.1147,); required-after:Micdoodlecore; after:IC2; after:IC2; after:MekanismAPI|gas", guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
@@ -122,6 +121,7 @@ public class GalacticraftCore
         if(Loader.isModLoaded("witchery"))
         {
             isHeightConflictingModInstalled = true;
+            GCLog.info("Galacticraft: activating Witchery compatibility.");
         }
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
@@ -247,7 +247,7 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             registerCoreGameScreens();
         }
@@ -392,7 +392,7 @@ public class GalacticraftCore
     {
         if (ThreadRequirementMissing.INSTANCE == null)
         {
-            ThreadRequirementMissing.beginCheck(FMLCommonHandler.instance().getEffectiveSide());
+            ThreadRequirementMissing.beginCheck(GCCoreUtil.getEffectiveSide());
         }
 
         ThreadVersionCheck.startCheck();

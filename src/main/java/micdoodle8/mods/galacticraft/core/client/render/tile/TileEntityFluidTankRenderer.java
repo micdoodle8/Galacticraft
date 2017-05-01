@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileEntityFluidTank>
@@ -20,7 +22,12 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
     {
         FluidTankInfo[] info = tank.getTankInfo(EnumFacing.DOWN);
 
-        if (info.length != 1 || info[0].fluid == null || info[0].fluid.getFluid() == null || (!info[0].fluid.getFluid().isGaseous() && info[0].fluid.amount == 0))
+        if (info.length != 1)
+        {
+            return;
+        }
+        FluidStack tankFluid = info[0].fluid; 
+        if (tankFluid == null || tankFluid.getFluid() == null || (!tankFluid.getFluid().isGaseous() && tankFluid.amount == 0))
         {
             return;
         }
@@ -29,7 +36,7 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
         TileEntityFluidTank tankBelow = tank.getPreviousTank(tank.getPos());
 
         this.bindTexture(TextureMap.locationBlocksTexture);
-        TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(info[0].fluid.getFluid().getStill().toString());
+        TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(tankFluid.getFluid().getStill().toString());
         final double uMin = sprite.getMinU();
         final double uMax = sprite.getMaxU();
         final double vMin = sprite.getMinV();
@@ -51,16 +58,16 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
         float levelInv = 0.0F;
         float opacity = 1.0F;
 
-        boolean compositeGaseous = info[0].fluid.getFluid().isGaseous();
+        boolean compositeGaseous = tankFluid.getFluid().isGaseous();
 
         if (compositeGaseous)
         {
-            opacity = info[0].fluid.amount / (float) info[0].capacity;
+            opacity = Math.min(tankFluid.amount / (float) info[0].capacity * 0.8F + 0.2F, 1F);
         }
         else
         {
-            level = tank.fluidTank.getFluidAmount() / 16000.0F;
-            levelInv = 1.0F - level;
+            level = tank.fluidTank.getFluidAmount() / 16400.0F;
+            levelInv = 0.988F - level;  //1.2% inset from each end of the tank, to avoid z-fighting with blocks above/below
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, opacity);

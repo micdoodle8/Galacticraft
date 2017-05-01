@@ -12,6 +12,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -111,7 +113,7 @@ public class GCCoreUtil
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             LanguageRegistry.instance().addStringLocalization("entity.galacticraftcore." + var1 + ".name", "en_US", GCCoreUtil.translate("entity." + var1 + ".name"));
             LanguageRegistry.instance().addStringLocalization("entity.GalacticraftCore." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
@@ -233,6 +235,28 @@ public class GCCoreUtil
         }
     }
 
+    public static void sendToAllAround(PacketSimple packet, World world, int dimID, BlockPos pos, double radius)
+    {
+        double x = pos.getX() + 0.5D;
+        double y = pos.getY() + 0.5D;
+        double z = pos.getZ() + 0.5D;
+        double r2 = radius * radius;
+        for (EntityPlayer playerMP : world.playerEntities)
+        {
+            if (playerMP.dimension == dimID)
+            {
+                final double dx = x - playerMP.posX;
+                final double dy = y - playerMP.posY;
+                final double dz = z - playerMP.posZ;
+
+                if (dx * dx + dy * dy + dz * dz < r2)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(packet, (EntityPlayerMP) playerMP);
+                }
+            }
+        }
+    }
+
 //    public static void sortBlock(Block block, int meta, StackSorted beforeStack)
 //    {
 //        StackSorted newStack = new StackSorted(Item.getItemFromBlock(block), meta);
@@ -296,4 +320,17 @@ public class GCCoreUtil
 //            }
 //        }
 //    }
+
+    /**
+     * Custom getEffectiveSide method, covering more cases than FMLCommonHandler
+     */
+    public static Side getEffectiveSide()
+    {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER || Thread.currentThread().getName().startsWith("Netty Epoll Server IO"))
+        {
+            return Side.SERVER;
+        }
+
+        return Side.CLIENT;
+    }
 }

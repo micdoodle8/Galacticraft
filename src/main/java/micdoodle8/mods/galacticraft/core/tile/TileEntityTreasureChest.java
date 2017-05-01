@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations;
@@ -19,11 +18,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, IPacketReceiver
+public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable
 {
     private ItemStack[] chestContents = new ItemStack[27];
     public boolean adjacentChestChecked;
@@ -31,6 +31,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public float prevLidAngle;
     public int numPlayersUsing;
     private int ticksSinceSync;
+    private AxisAlignedBB renderAABB;
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean locked = true;
@@ -518,5 +519,16 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
 
         return chest;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 2, 1));
+        }
+        return this.renderAABB;
     }
 }

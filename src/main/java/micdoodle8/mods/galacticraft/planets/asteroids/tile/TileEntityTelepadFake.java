@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
-import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,8 +11,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
-public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPacketReceiver
+public class TileEntityTelepadFake extends TileBaseElectricBlock
 {
     // The the position of the main block
     @NetworkedField(targetSide = Side.CLIENT)
@@ -149,35 +149,40 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock implements IPac
     @Override
     public boolean isNetworkedTile()
     {
-        if (this.mainBlockPosition != null)
-        {
-            return true;
-        }
-        else
-        {
-            this.resetMainBlockPosition();
-            return false;
-        }
+        return true;
     }
-
-    private void resetMainBlockPosition()
+    
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
     {
-        for (int y = -2; y < 1; y += 2)
+        if (this.mainBlockPosition == null)
         {
-            for (int x = -1; x <= 1; x++)
+            if (this.worldObj.isRemote || !this.resetMainBlockPosition())
             {
-                for (int z = -1; z <= 1; z++)
+                return;
+            }
+        }
+        super.getNetworkedData(sendData);
+    }
+    
+    private boolean resetMainBlockPosition()
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int z = -1; z <= 1; z++)
+            {
+                for (int y = -2; y < 1; y += 2)
                 {
                     final BlockPos vecToCheck = this.getPos().add(x, y, z);
                     if (this.worldObj.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
                     {
                         this.setMainBlock(vecToCheck);
-                        return;
+                        return true;
                     }
                 }
             }
         }
-
+        return false;
     }
 
     @Override
