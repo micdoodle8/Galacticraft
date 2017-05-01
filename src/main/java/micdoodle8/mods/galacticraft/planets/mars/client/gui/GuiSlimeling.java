@@ -196,6 +196,12 @@ public class GuiSlimeling extends GuiScreen
         GlStateManager.disableBlend();
         this.nameField.drawTextBox();
         GlStateManager.popMatrix();
+        ItemStack foodStack = new ItemStack(this.slimeling.getFavoriteFood());
+
+        if (foodStack != null && mouseX >= this.invX - 66 && mouseX < this.invX + this.invWidth - 68 && mouseY >= this.invY + 44 && mouseY < this.invY + this.invHeight + 42)
+        {
+            this.renderToolTip(foodStack, mouseX, mouseY);
+        }
 
         try
         {
