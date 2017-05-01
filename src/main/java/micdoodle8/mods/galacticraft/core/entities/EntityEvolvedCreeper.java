@@ -58,7 +58,6 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D);
     }
 
     @Override
