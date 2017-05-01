@@ -15,12 +15,14 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +30,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -59,11 +62,11 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         TileEntity tile = null;
 
-        if (worldIn.isRemote || playerIn == null)
+        if (playerIn == null)
         {
             return EnumActionResult.PASS;
         }
@@ -88,6 +91,14 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 
             if (tile instanceof TileEntityMinerBase)
             {
+                //Don't open GUI on client
+                if (worldIn.isRemote)
+                {
+                    //Simulate a successful action from client -> server
+                    ((NetHandlerPlayClient)FMLCommonHandler.instance().getClientPlayHandler()).sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, side, hand, hitX, hitY, hitZ));
+                    return EnumActionResult.FAIL;
+                }
+                
                 if (worldIn.provider instanceof WorldProviderSpaceStation)
                 {
                     playerIn.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
@@ -101,7 +112,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 }
 
                 //Gives a chance for any loaded Astro Miner to link itself
-                if (((TileEntityMinerBase) tile).ticks < 15L)
+                if (((TileEntityMinerBase) tile).ticks < 15)
                 {
                     return EnumActionResult.FAIL;
                 }
