@@ -79,6 +79,11 @@ public class GuiSlimelingInventory extends GuiContainer
     }
 
     @Override
+    public void drawDefaultBackground()
+    {
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
     {
         final int var5 = (this.width - this.xSize) / 2;
