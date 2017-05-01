@@ -59,7 +59,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             else
             {
                 ItemStack stack2 = stack.copy();
-                stack2.setCount(0);
+                stack2.setCount(1);
                 this.memory.set(i, stack2.copy());
             }
         }
@@ -340,13 +340,13 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
     public boolean overrideMemory(ItemStack itemstack1, NonNullList<ItemStack> memory2)
     {
-        if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()) != null)
+        if (!CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()).isEmpty())
         {
             //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
             boolean fuzzyMatch = true;
             for (int i = 0; i < 9; i++)
             {
-               if (this.craftMatrix.getStackInSlot(i) != null && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.getMemory(i)))
+               if (!this.craftMatrix.getStackInSlot(i).isEmpty() && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.getMemory(i)))
                {
                    fuzzyMatch = false;
                    break;
@@ -374,12 +374,12 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     
     public boolean overriddenMemory()
     {
-        if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()) != null)
+        if (!CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()).isEmpty())
         {
             //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
             for (int i = 0; i < 9; i++)
             {
-               if (this.craftMatrix.getStackInSlot(i) != null && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.getMemory(i)))
+               if (!this.craftMatrix.getStackInSlot(i).isEmpty() && !matchingStacks(this.craftMatrix.getStackInSlot(i), this.getMemory(i)))
                {
                    return true;
                }

@@ -308,7 +308,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
         for (i = 0; i < this.compressingCraftMatrix.getSizeInventory(); ++i)
         {
-            if (this.compressingCraftMatrix.getStackInSlot(i) != null)
+            if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty())
             {
                 NBTTagCompound tagCompound = new NBTTagCompound();
                 tagCompound.setByte("Slot", (byte) (i + this.stacks.size()));
@@ -475,7 +475,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             if (!this.producingStack.isEmpty())
             {
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
-                return stackInSlot != null && stackInSlot.isItemEqual(itemStack);
+                return !stackInSlot.isEmpty() && stackInSlot.isItemEqual(itemStack);
             }
             return TileEntityIngotCompressor.isItemCompressorInput(itemStack);
         }
@@ -500,7 +500,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                 continue;
             }
             ItemStack stack1 = this.getStackInSlot(i);
-            if (stack1 == null || stack1.isEmpty())
+            if (stack1.isEmpty())
             {
                 continue;
             }
@@ -512,7 +512,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     continue;
                 }
                 ItemStack stack2 = this.getStackInSlot(j);
-                if (stack2 == null)
+                if (stack2.isEmpty())
                 {
                     continue;
                 }

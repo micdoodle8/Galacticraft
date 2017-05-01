@@ -182,7 +182,7 @@ public class ContainerCrafting extends Container
 
     private boolean mergeToCrafting(ItemStack stack, boolean b)
     {
-        List<Slot> acceptSlots = new LinkedList();
+    	List<Slot> acceptSlots = new LinkedList();
         List<Integer> acceptQuantity = new LinkedList();
         int minQuantity = 64;
         int acceptTotal = 0;
@@ -341,7 +341,9 @@ public class ContainerCrafting extends Container
     private boolean matchesCrafting(ItemStack itemstack1)
     {
         if (this.tileEntity.overrideMemory(itemstack1, this.memory))
+        {
             return true;
+        }
 
         for (int i = 0; i < 9; i++)
         {

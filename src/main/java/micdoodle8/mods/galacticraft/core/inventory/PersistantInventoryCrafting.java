@@ -49,6 +49,10 @@ public class PersistantInventoryCrafting extends InventoryCrafting
         if (!itemstack.isEmpty())
         {
             this.markDirty();
+            if (this.eventHandler != null)
+            {
+                this.eventHandler.onCraftMatrixChanged(this);
+            }
         }
 
         return itemstack;
@@ -77,7 +81,6 @@ public class PersistantInventoryCrafting extends InventoryCrafting
         }
 
         this.markDirty();
-
         if (this.eventHandler != null)
         {
             this.eventHandler.onCraftMatrixChanged(this);

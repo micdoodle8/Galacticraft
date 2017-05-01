@@ -242,7 +242,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
         for (var3 = 0; var3 < this.compressingCraftMatrix.getSizeInventory(); ++var3)
         {
-            if (this.compressingCraftMatrix.getStackInSlot(var3) != null)
+            if (!this.compressingCraftMatrix.getStackInSlot(var3).isEmpty())
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte) (var3 + this.stacks.size()));
@@ -408,7 +408,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             if (!this.producingStack.isEmpty())
             {
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
-                return stackInSlot != null && stackInSlot.isItemEqual(itemStack);
+                return !stackInSlot.isEmpty() && stackInSlot.isItemEqual(itemStack);
             }
         	return this.isItemCompressorInput(itemStack, slotID - 3);
         }
@@ -434,7 +434,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                         {
                         	ItemStack is3 = this.getStackInSlot(id + 3);
                         	ItemStack is4 = this.getStackInSlot(i + 3);
-                        	return is3 == null || is4 != null && is3.getCount() < is4.getCount();
+                        	return is3.isEmpty() || !is4.isEmpty() && is3.getCount() < is4.getCount();
                         }
                 	}
                 	return true;
@@ -480,12 +480,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 for (int i = 3; i < 12; i++)
                 {
                 	ItemStack inMatrix = this.getStackInSlot(i); 
-                	if (inMatrix != null && inMatrix.isItemEqual(stack))
+                	if (!inMatrix.isEmpty() && inMatrix.isItemEqual(stack))
                 		slotsFilled++;
                 }
                 if (slotsFilled < match)
                 {
-                	return this.getStackInSlot(id + 3) == null;
+                	return this.getStackInSlot(id + 3).isEmpty();
                 }
                 	
                 return randnum.nextInt(match) == 0;
@@ -512,7 +512,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 continue;
             }
             ItemStack stack1 = this.getStackInSlot(i);
-            if (stack1 == null || stack1.getCount() <= 0)
+            if (stack1.isEmpty())
             {
                 continue;
             }
@@ -524,7 +524,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                     continue;
                 }
                 ItemStack stack2 = this.getStackInSlot(j);
-                if (stack2 == null)
+                if (stack2.isEmpty())
                 {
                     continue;
                 }
