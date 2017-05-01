@@ -2395,6 +2395,21 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         if (nbt.hasKey("Facing"))
         {
             this.facingAI = EnumFacing.getFront(nbt.getInteger("Facing"));
+            switch (this.facingAI)
+            {
+            case NORTH:
+                this.targetYaw = 180;
+                break;
+            case SOUTH:
+                this.targetYaw = 0;
+                break;
+            case WEST:
+                this.targetYaw = 270;
+                break;
+            case EAST:
+                this.targetYaw = 90;
+                break;
+            }
         }
         this.lastFacing = null;
         if (nbt.hasKey("WayPoints"))
