@@ -199,7 +199,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     public EntityAstroMiner(World world, NonNullList<ItemStack> cargo, int energy)
     {
         this(world);
-        Collections.copy(this.stacks, cargo);
+        this.stacks = cargo;
         this.energyLevel = energy;
     }
 
