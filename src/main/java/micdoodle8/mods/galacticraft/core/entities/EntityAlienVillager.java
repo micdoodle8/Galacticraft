@@ -680,7 +680,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                 i = this.price.getPrice(random);
             }
             
-            ItemStack tradeStack = this.sellItem;
+            ItemStack tradeStack = this.sellItem.copy();
             tradeStack.stackSize = i;
 
             recipeList.add(new MerchantRecipe(tradeStack, new ItemStack(GCItems.itemBasicMoon, 1, 2)));
@@ -722,7 +722,6 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             {
                 i = this.field_179409_b.getPrice(random);
             }
-            System.out.println("getting price in sapphires: " + i);
 
             recipeList.add(new MerchantRecipe(this.field_179411_a.copy(), new ItemStack(GCItems.itemBasicMoon, i, 2), this.field_179410_c.copy()));
         }
