@@ -865,7 +865,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         if (this.isMaster)
         {
             super.setInventorySlotContents(par1, par2ItemStack);
-            this.markDirty();
             return;
         }
         TileEntityMinerBase master = this.getMaster();

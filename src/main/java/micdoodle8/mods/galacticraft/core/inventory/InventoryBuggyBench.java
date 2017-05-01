@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -53,58 +54,39 @@ public class InventoryBuggyBench implements IInventoryDefaults
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        ItemStack stack = this.stackList.get(index);
-        if (!stack.isEmpty())
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stackList, index);
+        if (!oldstack.isEmpty())
         {
-            stack.setCount(0);
-            this.stackList.set(index, stack);
-            return stack;
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
+    	return oldstack;
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
-        ItemStack stack = this.stackList.get(index);
-        if (!stack.isEmpty())
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stackList, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
-
-            if (stack.getCount() <= count)
-            {
-                var3 = stack.copy();
-                stack.setCount(0);
-                this.stackList.set(index, stack);
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
-            else
-            {
-                var3 = stack.splitStack(count);
-
-                if (stack.getCount() == 0)
-                {
-                    this.stackList.set(index, stack);
-                }
-
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
+
+        return itemstack;
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack item)
+    public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.stackList.set(index, item);
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.stackList.set(index, stack);
+        this.markDirty();
         this.eventHandler.onCraftMatrixChanged(this);
     }
 

@@ -94,7 +94,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        return ItemStackHelper.getAndRemove(this.stacks, index);
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+        	this.markDirty();
+        }
+    	return oldstack;
     }
 
     @Override

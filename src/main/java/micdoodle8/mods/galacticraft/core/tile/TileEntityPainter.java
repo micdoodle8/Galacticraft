@@ -348,7 +348,9 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     {
         ItemStack oldstack = ItemStackHelper.getAndRemove(this.containingItems, index);
         if (!oldstack.isEmpty())
+        {
         	this.markDirty();
+        }
     	return oldstack;
     }
 

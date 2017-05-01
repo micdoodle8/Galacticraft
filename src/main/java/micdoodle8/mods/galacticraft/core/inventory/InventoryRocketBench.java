@@ -57,6 +57,7 @@ public class InventoryRocketBench implements IInventoryDefaults
         if (!itemstack.isEmpty())
         {
             this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
 
         return itemstack;
@@ -65,20 +66,25 @@ public class InventoryRocketBench implements IInventoryDefaults
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        return ItemStackHelper.getAndRemove(this.stacks, index);
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
+        }
+    	return oldstack;
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.stacks.set(index, stack);
-
         if (stack.getCount() > this.getInventoryStackLimit())
         {
             stack.setCount(this.getInventoryStackLimit());
         }
-
+        this.stacks.set(index, stack);
         this.markDirty();
+        this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override

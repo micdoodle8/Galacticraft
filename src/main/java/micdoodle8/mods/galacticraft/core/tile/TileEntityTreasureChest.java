@@ -84,7 +84,12 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        return ItemStackHelper.getAndRemove(this.stacks, index);
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+        	this.markDirty();
+        }
+    	return oldstack;
     }
 
     @Override

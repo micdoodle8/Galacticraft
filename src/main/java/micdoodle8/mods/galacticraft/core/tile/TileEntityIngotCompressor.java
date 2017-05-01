@@ -349,6 +349,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 this.updateInput();
             }
+            this.markDirty();
             return result;
         }
 
@@ -360,6 +361,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 var3 = this.stacks.get(par1);
                 this.stacks.set(par1, ItemStack.EMPTY);
+                this.markDirty();
                 return var3;
             }
             else
@@ -371,6 +373,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     this.stacks.set(par1, ItemStack.EMPTY);
                 }
 
+                this.markDirty();
                 return var3;
             }
         }
@@ -385,6 +388,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         if (par1 >= this.stacks.size())
         {
+        	this.markDirty();
             return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.stacks.size());
         }
 
@@ -392,6 +396,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         {
             ItemStack var2 = this.stacks.get(par1);
             this.stacks.set(par1, ItemStack.EMPTY);
+            this.markDirty();
             return var2;
         }
         else
@@ -417,6 +422,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                 stack.setCount(this.getInventoryStackLimit());
             }
         }
+        this.markDirty();
     }
 
     @Override

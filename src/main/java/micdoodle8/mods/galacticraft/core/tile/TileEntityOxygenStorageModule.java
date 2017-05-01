@@ -227,7 +227,12 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        return ItemStackHelper.getAndRemove(this.stacks, index);
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+        	this.markDirty();
+        }
+    	return oldstack;
     }
 
     @Override

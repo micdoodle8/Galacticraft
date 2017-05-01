@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -38,57 +39,41 @@ public class InventorySchematicCargoRocket implements IInventoryDefaults
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int par1)
+    public ItemStack removeStackFromSlot(int index)
     {
-        if (!this.stacks.get(par1).isEmpty())
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
         {
-            ItemStack var2 = this.stacks.get(par1);
-            this.stacks.set(par1, ItemStack.EMPTY);
-            return var2;
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
+    	return oldstack;
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (!this.stacks.get(par1).isEmpty())
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
-
-            if (this.stacks.get(par1).getCount() <= par2)
-            {
-                var3 = this.stacks.get(par1);
-                this.stacks.set(par1, ItemStack.EMPTY);
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
-            else
-            {
-                var3 = this.stacks.get(par1).splitStack(par2);
-
-                if (this.stacks.get(par1).isEmpty())
-                {
-                    this.stacks.set(par1, ItemStack.EMPTY);
-                }
-
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
+
+        return itemstack;
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack stack)
+    public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.stacks.set(par1, stack);
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.stacks.set(index, stack);
+        this.markDirty();
         this.eventHandler.onCraftMatrixChanged(this);
     }
 

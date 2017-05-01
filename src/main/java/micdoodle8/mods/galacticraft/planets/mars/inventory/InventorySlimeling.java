@@ -46,6 +46,7 @@ public class InventorySlimeling implements IInventoryDefaults
         {
             final ItemStack var2 = this.stacks.get(par1);
             this.stacks.set(par1, ItemStack.EMPTY);
+            this.markDirty();
             return var2;
         }
         else
@@ -88,6 +89,7 @@ public class InventorySlimeling implements IInventoryDefaults
             	this.removeInventoryBagContents();
                 var3 = this.stacks.get(par1);
                 this.stacks.set(par1, ItemStack.EMPTY);
+                this.markDirty();
                 return var3;
             }
             else
@@ -106,6 +108,7 @@ public class InventorySlimeling implements IInventoryDefaults
                     this.stacks.set(par1, ItemStack.EMPTY);
                 }
 
+                this.markDirty();
                 return var3;
             }
         }
@@ -124,6 +127,7 @@ public class InventorySlimeling implements IInventoryDefaults
         }
 
         this.stacks.set(par1, par2ItemStack);
+        this.markDirty();
     }
 
     @Override

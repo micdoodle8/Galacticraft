@@ -64,7 +64,10 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
-        return ItemStackHelper.getAndRemove(this.getContainingItems(), index);
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.getContainingItems(), index);
+        if (!oldstack.isEmpty())
+        	this.markDirty();
+    	return oldstack;
     }
 
     @Override

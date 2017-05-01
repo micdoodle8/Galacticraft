@@ -91,6 +91,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         if (par1 >= 0 && par1 < SIZEINVENTORY)
         {
             ItemStack result = this.craftMatrix.decrStackSize(par1, par2);
+            this.markDirty();
             return result;
         }
         else if (par1 == SIZEINVENTORY)
@@ -138,6 +139,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                             }
                         }
                     }
+                    this.markDirty();
                     return craftingResult;
                 }
             }
@@ -164,6 +166,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     {
         if (par1 >= 0)
         {
+            this.markDirty();
             return this.craftMatrix.removeStackFromSlot(par1);
         }
         else
@@ -178,6 +181,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         if (par1 >= 0 && par1 < SIZEINVENTORY)
         {
             this.craftMatrix.setInventorySlotContents(par1, stack);
+            this.markDirty();
         }
     }
 
