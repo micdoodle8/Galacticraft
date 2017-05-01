@@ -315,6 +315,7 @@ public class ContainerCrafting extends Container
                     transfer++;
                     modulus--;
                 }
+                if (transfer > stack.getCount()) transfer = stack.getCount();
                 stack.shrink(transfer);
                 target.grow(transfer);
                 if (target.getCount() > target.getMaxStackSize())
@@ -324,12 +325,6 @@ public class ContainerCrafting extends Container
                     target.setCount(target.getMaxStackSize());
                 }
                 slot.onSlotChanged();
-                if (stack.isEmpty())
-                {
-                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " emptied the whole stack: " + stack.getCount());
-                    target.grow(stack.getCount());
-                    stack.setCount(0);
-                }
                 if (stack.isEmpty())
                     break;
             }

@@ -61,8 +61,16 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
+        double difficulty = 0;
+        switch (this.world.getDifficulty())
+        {
+        case HARD : difficulty = 2D;
+            break;
+        case NORMAL : difficulty = 1D;
+            break;
+        }
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(ConfigManagerCore.hardMode ? 0.4F : 0.25F);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D + 0.075 * difficulty);
     }
 
     @Override

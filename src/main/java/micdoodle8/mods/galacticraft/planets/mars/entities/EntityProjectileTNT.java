@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -45,7 +44,15 @@ public class EntityProjectileTNT extends EntityFireball
         {
             if (movingObjectPosition.entityHit != null && !(movingObjectPosition.entityHit instanceof EntityCreeper))
             {
-                movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12.0F : 6.0F);
+                float difficulty = 0;
+                switch (this.world.getDifficulty())
+                {
+                case HARD : difficulty = 2F;
+                    break;
+                case NORMAL : difficulty = 1F;
+                    break;
+                }
+                movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
             }
 
             this.world.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean("mobGriefing"));

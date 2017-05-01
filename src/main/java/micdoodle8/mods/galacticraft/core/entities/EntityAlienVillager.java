@@ -18,6 +18,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -63,10 +64,13 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.fuelCanister, 1, 317), new EntityAlienVillager.PriceInfo(3, 4)),
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.parachute, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.battery, 1, 58), new EntityAlienVillager.PriceInfo(2, 4)),
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 16), new EntityAlienVillager.PriceInfo(1, 1)), //carrots = also yields a tin!
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 16)), //carrots = also yields a tin!
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_BASIC), new EntityAlienVillager.PriceInfo(3, 4)),
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 1, 3), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 6), new EntityAlienVillager.PriceInfo(1, 1)), //Compressed Tin - needed to craft a Fuel Loader
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 1, 4), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 7), new EntityAlienVillager.PriceInfo(1, 1)) //Compressed Copper - needed to craft a Fuel Loader
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.schematic, 1, 0), new EntityAlienVillager.PriceInfo(3, 5), new ItemStack(GCItems.schematic, 1, 1)), //Exchange buggy and rocket schematics
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.schematic, 1, 1), new EntityAlienVillager.PriceInfo(3, 5), new ItemStack(GCItems.schematic, 1, 0)), //Exchange buggy and rocket schematics
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 2, 3), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 6)), //Compressed Tin - needed to craft a Fuel Loader
+            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 2, 4), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 7)), //Compressed Copper - needed to craft a Fuel Loader
+            new EntityAlienVillager.EmeraldForItems(new ItemStack(Blocks.SAPLING, 1, 3), new EntityAlienVillager.PriceInfo(11, 39)) //The one thing Alien Villagers don't have and can't get is jungle trees...
             };
 
     public EntityAlienVillager(World worldIn)
@@ -668,12 +672,12 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
     public static class EmeraldForItems implements EntityAlienVillager.ITradeList
     {
-        public Item sellItem;
+        public ItemStack sellItem;
         public EntityAlienVillager.PriceInfo price;
 
-        public EmeraldForItems(Item itemIn, EntityAlienVillager.PriceInfo priceIn)
+        public EmeraldForItems(ItemStack itemStack, EntityAlienVillager.PriceInfo priceIn)
         {
-            this.sellItem = itemIn;
+            this.sellItem = itemStack;
             this.price = priceIn;
         }
 
@@ -686,8 +690,11 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             {
                 i = this.price.getPrice(random);
             }
+            
+            ItemStack tradeStack = this.sellItem;
+            tradeStack.setCount(i);
 
-            recipeList.add(new MerchantRecipe(new ItemStack(this.sellItem, i, 0), new ItemStack(GCItems.itemBasicMoon, 1, 2)));
+            recipeList.add(new MerchantRecipe(tradeStack, new ItemStack(GCItems.itemBasicMoon, 1, 2)));
         }
     }
 
@@ -701,22 +708,19 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         public ItemStack field_179411_a;
         public EntityAlienVillager.PriceInfo field_179409_b;
         public ItemStack field_179410_c;
-        public EntityAlienVillager.PriceInfo field_179408_d;
 
-        public ItemAndEmeraldToItem(Item p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, Item p_i45813_3_, EntityAlienVillager.PriceInfo p_i45813_4_)
+        public ItemAndEmeraldToItem(Item p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, Item p_i45813_3_)
         {
             this.field_179411_a = new ItemStack(p_i45813_1_);
             this.field_179409_b = p_i45813_2_;
             this.field_179410_c = new ItemStack(p_i45813_3_);
-            this.field_179408_d = p_i45813_4_;
         }
 
-        public ItemAndEmeraldToItem(ItemStack p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, ItemStack p_i45813_3_, EntityAlienVillager.PriceInfo p_i45813_4_)
+        public ItemAndEmeraldToItem(ItemStack p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, ItemStack p_i45813_3_)
         {
             this.field_179411_a = p_i45813_1_;
             this.field_179409_b = p_i45813_2_;
             this.field_179410_c = p_i45813_3_;
-            this.field_179408_d = p_i45813_4_;
         }
 
 
@@ -729,15 +733,9 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             {
                 i = this.field_179409_b.getPrice(random);
             }
+            System.out.println("getting price in sapphires: " + i);
 
-            int j = 1;
-
-            if (this.field_179408_d != null)
-            {
-                j = this.field_179408_d.getPrice(random);
-            }
-
-            recipeList.add(new MerchantRecipe(new ItemStack(this.field_179411_a.getItem(), i, this.field_179411_a.getMetadata()), new ItemStack(GCItems.itemBasicMoon, 1, 2), new ItemStack(this.field_179410_c.getItem(), j, this.field_179410_c.getMetadata())));
+            recipeList.add(new MerchantRecipe(this.field_179411_a.copy(), new ItemStack(GCItems.itemBasicMoon, i, 2), this.field_179410_c.copy()));
         }
     }
 
