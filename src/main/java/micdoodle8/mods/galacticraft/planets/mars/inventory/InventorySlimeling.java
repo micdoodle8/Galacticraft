@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
+import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IChatComponent;
 
-public class InventorySlimeling implements IInventory
+public class InventorySlimeling implements IInventoryDefaults
 {
     private ItemStack[] stackList = new ItemStack[27 + 3];
     private EntitySlimeling slimeling;
@@ -35,7 +35,7 @@ public class InventorySlimeling implements IInventory
     @Override
     public String getName()
     {
-        return "Slimeling Inventory";
+        return GCCoreUtil.translate("container.slimeling_inventory.name");
     }
 
     @Override
@@ -186,16 +186,6 @@ public class InventorySlimeling implements IInventory
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
     public boolean hasCustomName()
     {
         return true;
@@ -205,35 +195,5 @@ public class InventorySlimeling implements IInventory
     public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 }

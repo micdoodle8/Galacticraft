@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -31,7 +32,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,6 +44,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
+public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
     public static final int MINE_LENGTH = 24;
     public static final int MINE_LENGTH_AST = 12;
@@ -309,16 +310,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     @Override
     public void markDirty()
-    {
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
     {
     }
 
@@ -2506,30 +2497,6 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         nbt.setDouble("speedup", this.speedup);
         nbt.setInteger("pathBlockedCount", this.pathBlockedCount);
         nbt.setBoolean("spawnedInCreative", this.spawnedInCreative);
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
     }
 }
 
