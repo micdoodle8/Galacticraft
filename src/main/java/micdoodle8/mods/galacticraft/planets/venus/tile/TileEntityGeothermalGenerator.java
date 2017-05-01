@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
+import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -15,7 +16,6 @@ import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockGeothermalGenerato
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -23,12 +23,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
 
-public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSource implements IInventory, ISidedInventory, IConnector, IDisableableMachine
+public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSource implements IInventoryDefaults, ISidedInventory, IConnector, IDisableableMachine
 {
     public static final int MAX_GENERATE_GJ_PER_TICK = 200;
     public static final int MIN_GENERATE_GJ_PER_TICK = 30;
@@ -304,17 +303,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
+     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
@@ -336,36 +325,6 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
         return slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem());
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     public boolean hasValidSpout()

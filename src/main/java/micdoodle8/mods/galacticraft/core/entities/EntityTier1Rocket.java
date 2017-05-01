@@ -305,28 +305,4 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         return 0.0D;
     }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
 }

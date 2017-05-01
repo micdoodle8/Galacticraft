@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -21,7 +23,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventory, ISidedInventory
+public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventoryDefaults, ISidedInventory
 {
     public static enum EnumTelepadSearchResult
     {
@@ -334,39 +335,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void clear()
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
     {
-
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
-
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
+        return Constants.RENDERDISTANCE_MEDIUM;
     }
 
     @Override

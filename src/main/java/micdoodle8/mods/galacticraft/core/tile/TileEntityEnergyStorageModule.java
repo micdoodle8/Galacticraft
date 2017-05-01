@@ -231,12 +231,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
-//    @Override
-//    public boolean hasCustomName()
-//    {
-//        return true;
-//    }
-
 
     @Override
     public int[] getSlotsForFace(EnumFacing side)

@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
@@ -19,13 +20,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
 {
     public int meta;
     private IBlockState superState;
     public int color = 0xf0f0e0;
+    @SideOnly(Side.CLIENT)
+    private AxisAlignedBB renderAABB;
 
     public TileEntityPanelLight()
     {
@@ -69,7 +75,25 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         }
         return BlockPanelLighting.PanelType.SQUARE;
     }
-    
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 1, 1));
+        }
+        return this.renderAABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_LONG;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {

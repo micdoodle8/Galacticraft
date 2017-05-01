@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
@@ -620,6 +621,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.renderAABB = new AxisAlignedBB(pos, pos.add(2, 2, 2));
         }
         return this.renderAABB;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_LONG;
     }
 
     @Override

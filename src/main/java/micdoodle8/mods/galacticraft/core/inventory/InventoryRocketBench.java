@@ -2,13 +2,11 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 
-public class InventoryRocketBench implements IInventory
+public class InventoryRocketBench implements IInventoryDefaults
 {
     public NonNullList<ItemStack> stacks;
     private final int inventoryWidth;
@@ -121,54 +119,8 @@ public class InventoryRocketBench implements IInventory
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
-
-    @Override
     public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 }

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.*;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
@@ -381,5 +382,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 2, 1));
         }
         return this.renderAABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_SHORT;
     }
 }

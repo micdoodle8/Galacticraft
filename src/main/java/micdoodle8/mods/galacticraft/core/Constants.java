@@ -53,4 +53,8 @@ public class Constants
     public static final int GEAR_ID_PARACHUTE = 14;
     public static final int GEAR_ID_FREQUENCY_MODULE = 15;
     public static final int GEAR_ID_SHIELD_CONTROLLER = 16;
+    
+    public static final double RENDERDISTANCE_SHORT = 16384D; //128 squared (8 chunks range), used for small + high frequency TESR tiles like Fluid Pipes
+    public static final double RENDERDISTANCE_MEDIUM = 65536D; //256 squared (16 chunks range), used for standard block-sized TESR tiles like Fluid Tanks or Treasure Chests, also heavy render burden large tiles like the Dish and Display Screen
+    public static final double RENDERDISTANCE_LONG = 262144D; //512 squared (32 chunks max range), used for uncommon, large or extra bright TESR tiles like Oxygen Bubble Distributors, Solar Panels or Panel Lighting
 }

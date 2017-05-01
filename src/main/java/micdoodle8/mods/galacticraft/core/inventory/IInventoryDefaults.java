@@ -5,8 +5,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.ITextComponent;
 
 /*
- * Like ISidedInventory
- * but providing defaults for the methods we never use
+ * IInventory providing defaults for the eight methods
+ * which we normally don't use in tiles and entities.
+ * 
+ * (It's not necessary to use the fields system where
+ * we use a Container for the inventory.)
+ * 
+ * Override .hasCustomName() if true is required.
  */
 public interface IInventoryDefaults extends IInventory
 {
@@ -45,6 +50,11 @@ public interface IInventoryDefaults extends IInventory
 
     }
 
+    /**
+     * Override this and return true IF the inventory .getName() is
+     * ALREADY a localized name e.g. by GCCoreUtil.translate()
+     *  
+     **/
     @Override
     public default boolean hasCustomName()
     {

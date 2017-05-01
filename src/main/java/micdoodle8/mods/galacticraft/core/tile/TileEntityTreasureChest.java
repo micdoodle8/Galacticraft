@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -561,5 +562,12 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 2, 1));
         }
         return this.renderAABB;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_MEDIUM;
     }
 }
