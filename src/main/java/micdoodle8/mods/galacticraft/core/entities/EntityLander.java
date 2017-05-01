@@ -219,7 +219,13 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             {
                 if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
                 {
-                    this.riddenByEntity.mountEntity(this);
+                    EntityPlayerMP entity = (EntityPlayerMP) this.riddenByEntity;
+                    entity.mountEntity(null);
+                    entity.motionX = 0;
+                    entity.motionY = 0;
+                    entity.motionZ = 0;
+                    entity.setPosition(entity.posX, this.posY + this.getMountedYOffset(), entity.posZ);
+                    this.worldObj.updateEntityWithOptionalForce(entity, false);
                 }
 
                 this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
