@@ -31,8 +31,16 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(22.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(ConfigManagerCore.hardMode ? 0.40000001192092896D : 0.30000001192092896D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(ConfigManagerCore.hardMode ? 4.0D : 2.0D);
+        double difficulty = 0;
+        switch (this.worldObj.getDifficulty())
+        {
+        case HARD : difficulty = 2D;
+            break;
+        case NORMAL : difficulty = 1D;
+            break;
+        }
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3 + 0.05 * difficulty);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2D + difficulty);
     }
 
     @Override
