@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-public abstract class InventoryEntity extends NetworkedEntity implements IInventory
+public abstract class InventoryEntity extends NetworkedEntity implements IInventoryDefaults
 {
     public ItemStack[] containedItems = new ItemStack[0];
 
@@ -132,17 +132,5 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     public boolean isUseableByPlayer(EntityPlayer entityplayer)
     {
         return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
-
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-
     }
 }

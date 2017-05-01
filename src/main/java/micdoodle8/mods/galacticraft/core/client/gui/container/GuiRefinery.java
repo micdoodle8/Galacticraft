@@ -108,22 +108,13 @@ public class GuiRefinery extends GuiContainerGC
         String displayText = "";
         int yOffset = -18;
 
+        String missingInput = null;
         if (this.tileEntity.oilTank.getFluid() == null || this.tileEntity.oilTank.getFluidAmount() == 0)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nooil.name");
+            missingInput= EnumColor.RED + GCCoreUtil.translate("gui.status.nooil.name");
         }
-        else if (this.tileEntity.oilTank.getFluidAmount() > 0 && this.tileEntity.disabled)
-        {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
-        }
-        else if (this.tileEntity.canProcess())
-        {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.refining.name");
-        }
-        else
-        {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");
-        }
+        String activeString = this.tileEntity.canProcess() ? EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.refining.name") : null;
+        displayText = this.tileEntity.getGUIstatus(missingInput, activeString);
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
         this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.refine.name") : GCCoreUtil.translate("gui.button.stoprefine.name");

@@ -220,7 +220,15 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         {
             if (Math.abs(this.lastMotionY) > 2.0D)
             {
-                this.removePassengers();
+                for (Entity entity : this.getPassengers())
+                {
+                    entity.dismountRidingEntity();
+                    entity.motionX = 0;
+                    entity.motionY = 0;
+                    entity.motionZ = 0;
+                    entity.setPosition(entity.posX, this.posY + this.getMountedYOffset(), entity.posZ);
+                    this.worldObj.updateEntityWithOptionalForce(entity, false);
+                }
                 this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
 
                 this.setDead();
@@ -296,29 +304,5 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
     }
 }

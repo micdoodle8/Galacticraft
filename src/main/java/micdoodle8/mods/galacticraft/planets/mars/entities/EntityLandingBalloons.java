@@ -343,28 +343,4 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     {
         return this.groundHitCount < 14 || !this.onGround;
     }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
 }
