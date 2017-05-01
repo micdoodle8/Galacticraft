@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
@@ -29,6 +30,24 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     {
         super(par1World);
         this.setSize(0.6F, 1.95F);
+    }
+
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        double difficulty = 0;
+        switch (this.worldObj.getDifficulty())
+        {
+        case HARD : difficulty = 2D;
+            break;
+        case NORMAL : difficulty = 1D;
+            break;
+        }
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.96D + 0.05D * difficulty);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3D + difficulty);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16D + difficulty * 2D);
     }
 
     @Override

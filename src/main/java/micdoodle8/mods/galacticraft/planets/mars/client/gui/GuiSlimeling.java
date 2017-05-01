@@ -7,19 +7,21 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.io.IOException;
 
@@ -29,8 +31,6 @@ public class GuiSlimeling extends GuiScreen
     private final int ySize;
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimeling_panel0.png");
     private final EntitySlimeling slimeling;
-
-//    public static RenderItem drawItems = new RenderItem();
 
     public long timeBackspacePressed;
     public int cursorPulse;
@@ -193,17 +193,17 @@ public class GuiSlimeling extends GuiScreen
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0, -70.0F);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, -70.0F);
         Gui.drawRect(var5, var6, var5 + this.xSize, var6 + this.ySize - 20, 0xFF000000);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
         int yOffset = (int) Math.floor(30.0D * (1.0F - this.slimeling.getScale()));
 
-        GuiSlimeling.drawSlimelingOnGui(this, this.slimeling, this.width / 2, var6 + 62 - yOffset, 70, var5 + 51 - par1, var6 + 75 - 50 - par2);
+        GuiSlimeling.drawSlimelingOnGui(this.slimeling, this.width / 2, var6 + 62 - yOffset, 70, var5 + 51 - par1, var6 + 75 - 50 - par2);
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0, 150.0F);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, 150.0F);
         this.mc.renderEngine.bindTexture(GuiSlimeling.slimelingPanelGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
@@ -217,7 +217,7 @@ public class GuiSlimeling extends GuiScreen
         this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.mc.renderEngine.bindTexture(GuiSlimeling.slimelingPanelGui);
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.invX, this.invY, 176, 9, this.invWidth, this.invHeight);
 
         super.drawScreen(par1, par2, par3);
@@ -277,12 +277,12 @@ public class GuiSlimeling extends GuiScreen
         this.fontRendererObj.drawString(str, dX + var5 + 55, dY + var6 + 46 + 13, 0x404040);
 
         RenderHelper.enableGUIStandardItemLighting();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//        TODO GuiSlimeling.drawItems.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.enableLighting();
+        GlStateManager.enableRescaleNormal();
+        Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(this.slimeling.getFavoriteFood()), dX + var5 + 55 + this.fontRendererObj.getStringWidth(str), dY + var6 + 41 + 14);
+        GlStateManager.disableLighting();
+        GlStateManager.popMatrix();
 
         try
         {
@@ -294,39 +294,40 @@ public class GuiSlimeling extends GuiScreen
         }
     }
 
-    public static void drawSlimelingOnGui(GuiSlimeling screen, EntitySlimeling slimeling, int par1, int par2, int par3, float par4, float par5)
+    public static void drawSlimelingOnGui(EntitySlimeling slimeling, int x, int y, int scale, float mouseX, float mouseY)
     {
         GuiSlimeling.renderingOnGui = true;
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(par1, par2, 50.0F);
-        GL11.glScalef(-par3 / 2.0F, par3 / 2.0F, par3 / 2.0F);
-        GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.enableColorMaterial();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float)x, (float)y, 50.0F);
+        GlStateManager.scale(-scale / 2.0F, scale / 2.0F, scale / 2.0F);
+        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         float f2 = slimeling.renderYawOffset;
         float f3 = slimeling.rotationYaw;
         float f4 = slimeling.rotationPitch;
-        par4 += 40;
-        par5 -= 20;
-        GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
+        mouseX += 40;
+        mouseY -= 20;
+        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
-        GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-((float) Math.atan(par5 / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
-        slimeling.renderYawOffset = (float) Math.atan(par4 / 40.0F) * 20.0F;
-        slimeling.rotationYaw = (float) Math.atan(par4 / 40.0F) * 40.0F;
-        slimeling.rotationPitch = -((float) Math.atan(par5 / 40.0F)) * 20.0F;
+        GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-((float) Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
+        slimeling.renderYawOffset = (float) Math.atan(mouseX / 40.0F) * 20.0F;
+        slimeling.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
+        slimeling.rotationPitch = -((float) Math.atan(mouseY / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GL11.glTranslatef(0.0F, (float) slimeling.getYOffset(), 0.0F);
+        GlStateManager.translate(0.0F, (float) slimeling.getYOffset(), 0.0F);
         FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
         FMLClientHandler.instance().getClient().getRenderManager().doRenderEntity(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.color(1.0F, 1.0F, 1.0F);
         GuiSlimeling.renderingOnGui = false;
     }
 }
