@@ -326,13 +326,12 @@ public class ContainerCrafting extends Container
                     stack.stackSize += target.stackSize - target.getMaxStackSize();
                     target.stackSize = target.getMaxStackSize();
                 }
-                slot.onSlotChanged();
                 if (stack.stackSize < 0)
                 {
-                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " emptied the whole stack: " + stack.stackSize);
                     target.stackSize += stack.stackSize;
                     stack.stackSize = 0;
                 }
+                slot.onSlotChanged();
                 if (stack.stackSize == 0)
                     break;
             }
