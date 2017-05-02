@@ -136,7 +136,7 @@ public class GCPlayerHandler
     }
     
     @SideOnly(Side.CLIENT)
-    private void onAttachCapabilityClient(AttachCapabilitiesEvent event)
+    private void onAttachCapabilityClient(AttachCapabilitiesEvent<Entity> event)
     {
         if (event.getObject() instanceof EntityPlayerSP)
         {

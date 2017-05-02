@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
+import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 
-public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectricBlock implements IInventory
+public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectricBlock implements IInventoryDefaults
 {
     public ItemStack[] readStandardItemsFromNBT(NBTTagCompound nbt)
     {
@@ -153,40 +153,4 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
      * Must be overridden by identical code, to get the actual containingItems
      */
     abstract protected ItemStack[] getContainingItems();
-
-    @Override
-    public void openInventory(EntityPlayer player)
-    {
-
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player)
-    {
-
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
 }

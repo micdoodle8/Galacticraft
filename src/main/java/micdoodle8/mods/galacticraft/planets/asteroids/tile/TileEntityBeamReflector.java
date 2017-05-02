@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 
 public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILaserNode
@@ -132,5 +133,12 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
             this.renderAABB = new AxisAlignedBB(pos, pos.add(1, 2, 1));
         }
         return this.renderAABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_SHORT;
     }
 }
