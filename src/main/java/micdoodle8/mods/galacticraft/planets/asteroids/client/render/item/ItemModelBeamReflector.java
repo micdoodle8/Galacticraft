@@ -33,7 +33,7 @@ public class ItemModelBeamReflector extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -51,7 +51,7 @@ public class ItemModelBeamReflector extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

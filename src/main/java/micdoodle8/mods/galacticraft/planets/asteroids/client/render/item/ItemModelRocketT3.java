@@ -58,7 +58,7 @@ public class ItemModelRocketT3 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.5F, 3.2F, -3.6F);
             Matrix4f ret = new Matrix4f();

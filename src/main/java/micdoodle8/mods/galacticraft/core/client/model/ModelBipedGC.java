@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 
@@ -64,9 +65,20 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem)
+        ItemStack heldItemStack = null;
+
+        for (EnumHand hand : EnumHand.values())
         {
-            Item heldItem = player.inventory.getCurrentItem().getItem();
+            ItemStack item = player.getHeldItem(hand);
+            if (item != null && item.getItem() instanceof IHoldableItem)
+            {
+                heldItemStack = item;
+            }
+        }
+
+        if (heldItemStack != null)
+        {
+            Item heldItem = heldItemStack.getItem();
             IHoldableItem holdableItem = (IHoldableItem) heldItem;
             IHoldableItemCustom holdableItemCustom = heldItem instanceof IHoldableItemCustom ? (IHoldableItemCustom) heldItem : null;
 

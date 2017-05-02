@@ -52,7 +52,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.5F, 0.0F, -1.7F);
             Matrix4f ret = new Matrix4f();
@@ -80,7 +80,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(-0.2F, -0.0F, 1.2F);
             Matrix4f ret = new Matrix4f();

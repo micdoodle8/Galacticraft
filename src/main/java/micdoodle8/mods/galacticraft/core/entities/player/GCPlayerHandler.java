@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
+import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -39,6 +40,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -915,6 +917,8 @@ public class GCPlayerHandler
     protected void checkCurrentItem(EntityPlayerMP player)
     {
         ItemStack theCurrentItem = player.inventory.getCurrentItem();
+        ItemStack offHandItem = player.getHeldItemOffhand();
+
         if (theCurrentItem != null)
         {
             if (OxygenUtil.noAtmosphericCombustion(player.worldObj.provider))
@@ -949,6 +953,28 @@ public class GCPlayerHandler
                     {
                         player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(torchItem, theCurrentItem.stackSize, 0);
                     }
+                }
+            }
+
+            // If the player is holding a two-handed item in both hands, switch the off-hand item out, or drop if necessary
+            if (offHandItem != null)
+            {
+                if (theCurrentItem.getItem() instanceof IHoldableItem && offHandItem.getItem() instanceof IHoldableItem)
+                {
+                    int emptyStack = player.inventory.getFirstEmptyStack();
+
+                    if (emptyStack >= 0)
+                    {
+                        player.inventory.mainInventory[emptyStack] = ItemStack.copyItemStack(offHandItem);
+                        player.inventory.mainInventory[emptyStack].animationsToGo = 5;
+                        offHandItem.stackSize = 0;
+                    }
+                    else
+                    {
+                        player.dropItem(offHandItem, false);
+                    }
+
+                    player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
                 }
             }
         }
