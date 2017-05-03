@@ -225,7 +225,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyProvider", modID = "")
     public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
         return 0;
