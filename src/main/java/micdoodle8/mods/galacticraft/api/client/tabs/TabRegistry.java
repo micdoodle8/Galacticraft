@@ -17,7 +17,7 @@ public class TabRegistry
 {
 	private static ArrayList<AbstractTab> tabList = new ArrayList<AbstractTab>();
 	private static Class<?> clazzJEIConfig = null;
-    private static Class<?> clazzNEIConfig = null;
+    public static Class<?> clazzNEIConfig = null;
 	
 	static
 	{

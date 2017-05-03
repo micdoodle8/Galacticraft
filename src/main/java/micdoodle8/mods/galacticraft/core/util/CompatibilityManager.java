@@ -25,6 +25,7 @@ public class CompatibilityManager
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded;
+    private static boolean wailaLoaded;
 	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
@@ -144,6 +145,12 @@ public class CompatibilityManager
             CompatibilityManager.modPneumaticCraftLoaded = true;
             GCLog.info("Galacticraft: activating PneumaticCraft compatibility features.");
         }
+
+        if (Loader.isModLoaded("Waila"))
+        {
+            CompatibilityManager.wailaLoaded = true;
+            GCLog.info("Galacticraft: activating WAILA compatibility features.");
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -194,6 +201,11 @@ public class CompatibilityManager
     public static boolean isPneumaticCraftLoaded()
     {
         return CompatibilityManager.modPneumaticCraftLoaded;
+    }
+
+    public static boolean isWailaLoaded()
+    {
+        return CompatibilityManager.wailaLoaded;
     }
 
     public static void registerMicroBlocks()
