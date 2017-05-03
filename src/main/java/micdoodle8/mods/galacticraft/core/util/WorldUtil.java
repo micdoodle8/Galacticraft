@@ -965,6 +965,7 @@ public class WorldUtil
 
         if (ridingRocket != null)
         {
+            ridingRocket.forceSpawn = true;
             worldNew.spawnEntityInWorld(ridingRocket);
             ridingRocket.setWorld(worldNew);
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
@@ -1017,6 +1018,8 @@ public class WorldUtil
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         if (spawnRequired)
         {
+            ((WorldServer) entity.worldObj).getEntityTracker().untrackEntity(entity);
+            entity.forceSpawn = true;
             worldNew.spawnEntityInWorld(entity);
             entity.setWorld(worldNew);
         }

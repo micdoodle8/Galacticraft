@@ -87,7 +87,7 @@ public class TeleportTypeVenus implements ITeleportType
                 if (!newWorld.isRemote)
                 {
                     EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
-
+                    entryPod.forceSpawn = true;
                     newWorld.spawnEntityInWorld(entryPod);
                 }
 
