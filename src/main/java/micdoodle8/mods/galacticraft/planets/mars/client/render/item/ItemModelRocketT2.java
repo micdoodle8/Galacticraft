@@ -58,7 +58,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.5F, 4.2F, -3.6F);
             Matrix4f ret = new Matrix4f();
@@ -86,7 +86,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.0F, -3.9F, 1.5F);
             Matrix4f ret = new Matrix4f();

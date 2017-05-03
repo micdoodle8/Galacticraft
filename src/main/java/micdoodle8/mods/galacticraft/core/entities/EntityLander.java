@@ -4,6 +4,9 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
@@ -222,6 +225,10 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
                 for (Entity entity : this.getPassengers())
                 {
                     entity.dismountRidingEntity();
+                    if (entity instanceof EntityPlayerMP)
+                    {
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[] {}), (EntityPlayerMP) entity);
+                    }
                     entity.motionX = 0;
                     entity.motionY = 0;
                     entity.motionZ = 0;

@@ -40,7 +40,7 @@ public class ItemModelBuggy extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.0F, -0.4F, -0.3F);
             Matrix4f ret = new Matrix4f();
@@ -55,7 +55,7 @@ public class ItemModelBuggy extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND)
+        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.0F, -0.3F, 0.6F);
             Matrix4f ret = new Matrix4f();

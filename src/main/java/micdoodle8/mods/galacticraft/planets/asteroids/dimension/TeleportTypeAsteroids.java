@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -327,7 +328,10 @@ public class TeleportTypeAsteroids implements ITeleportType
                 {
                     EntityEntryPod entryPod = new EntityEntryPod(player);
 
+                    CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                    entryPod.forceSpawn = true;
                     newWorld.spawnEntity(entryPod);
+                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
                 }
 
                 stats.setTeleportCooldown(10);
