@@ -220,11 +220,9 @@ public class CompatibilityManager
             if (spongeLoaded)
             {   
                 spongeOverride.invoke(cps, true);
-               System.out.println("Sponge override");
             }
-        } catch (Exception e)
+        } catch (Exception ignore)
         {
-            e.printStackTrace();
         }
     }
 
@@ -236,11 +234,9 @@ public class CompatibilityManager
             if (spongeLoaded)
             {   
                 spongeOverride.invoke(cps, false);
-                System.out.println("Sponge override finished");
             }
-        } catch (Exception e)
+        } catch (Exception ignore)
         {
-            e.printStackTrace();
         }
     }
 
