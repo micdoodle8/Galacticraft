@@ -236,8 +236,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return null;
     }
 
-    @Override
-    @Annotations.RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @Annotations.RuntimeInterface(clazz = "cofh.api.energy.IEnergyProvider", modID = "")
     public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFOutput)
