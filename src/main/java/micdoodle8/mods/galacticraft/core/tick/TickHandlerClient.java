@@ -335,7 +335,7 @@ public class TickHandlerClient
             if (!ConnectionEvents.initialisedJEI)
             {
                 ConnectionEvents.initialisedJEI = true;
-                if (Loader.isModLoaded("JEI"))
+                if (Loader.isModLoaded("jei"))
                 {
                     GCItems.hideItemsJEI();
                 }

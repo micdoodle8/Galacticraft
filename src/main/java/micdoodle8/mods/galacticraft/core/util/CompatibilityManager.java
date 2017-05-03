@@ -17,24 +17,28 @@ import java.lang.reflect.Method;
 
 public class CompatibilityManager
 {
+	public final static String modidIC2 = "ic2";
+	public final static String modidMekanism = "mekanism";
+	public final static String modidBuildcraft = "buildcraft|core";
+	
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
-    private static boolean modIc2Loaded = Loader.isModLoaded("IC2");
-	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("BuildCraft|Energy");
+    private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
+	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("buildcraft|energy");
     private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
-    private static boolean modTELoaded = Loader.isModLoaded("ThermalExpansion");
-    private static boolean modMekLoaded = Loader.isModLoaded("Mekanism");
+    private static boolean modTELoaded = Loader.isModLoaded("thermalexpansion");
+    private static boolean modMekLoaded = Loader.isModLoaded(modidMekanism);
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
-    private static boolean modBOPLoaded = Loader.isModLoaded("BiomesOPlenty");
+    private static boolean modBOPLoaded = Loader.isModLoaded("biomesoplenty");
     private static boolean spongeLoaded;
     private static boolean wailaLoaded;
-    public static boolean isMFRLoaded = Loader.isModLoaded("MineFactoryReloaded");
-    public static boolean isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
+    public static boolean isMFRLoaded = Loader.isModLoaded("minefactoryreloaded");
+    public static boolean isSmartMovingLoaded = Loader.isModLoaded("smartmoving");
     public static boolean isTConstructLoaded = Loader.isModLoaded("tconstruct");
     public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
 
@@ -45,7 +49,7 @@ public class CompatibilityManager
 
     public static void checkForCompatibleMods()
     {
-        if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("GregTech_Addon") || Loader.isModLoaded("GregTech"))
+        if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("gregtech_addon"))
         {
             CompatibilityManager.modGTLoaded = true;
             try
@@ -106,7 +110,7 @@ public class CompatibilityManager
             GCLog.info("Galacticraft: activating BuildCraft Oil compatibility features.");
         }
 
-        if (Loader.isModLoaded("BuildCraft|Transport"))
+        if (Loader.isModLoaded("buildCraft|transport"))
         {
             CompatibilityManager.modBCraftTransportLoaded = true;
 
@@ -146,13 +150,13 @@ public class CompatibilityManager
             GCLog.info("Galacticraft: activating Biomes O'Plenty compatibility feature.");
         }
 
-        if (Loader.isModLoaded("AetherII"))
+        if (Loader.isModLoaded("aetherii"))
         {
             CompatibilityManager.modAetherIILoaded = true;
             GCLog.info("Galacticraft: activating AetherII compatibility feature.");
         }
 
-        if (Loader.isModLoaded("BasicComponents"))
+        if (Loader.isModLoaded("basiccomponents"))
         {
             CompatibilityManager.modBasicComponentsLoaded = true;
         }
@@ -163,13 +167,13 @@ public class CompatibilityManager
             GCLog.info("Galacticraft: activating AppliedEnergistics2 compatibility features.");
         }
 
-        if (Loader.isModLoaded("PneumaticCraft"))
+        if (Loader.isModLoaded("pneumaticcraft"))
         {
             CompatibilityManager.modPneumaticCraftLoaded = true;
             GCLog.info("Galacticraft: activating PneumaticCraft compatibility features.");
         }
 
-        if (Loader.isModLoaded("Waila"))
+        if (Loader.isModLoaded("waila"))
         {
             CompatibilityManager.wailaLoaded = true;
             GCLog.info("Galacticraft: activating WAILA compatibility features.");

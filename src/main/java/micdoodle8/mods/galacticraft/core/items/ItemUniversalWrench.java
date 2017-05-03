@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.Block;
@@ -46,13 +47,13 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
+    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
     public boolean canWrench(EntityPlayer entityPlayer, BlockPos pos)
     {
         return true;
     }
 
-    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = "BuildCraft|Core")
+    @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
     public void wrenchUsed(EntityPlayer entityPlayer, BlockPos pos)
     {
         ItemStack stack = entityPlayer.inventory.getCurrentItem();

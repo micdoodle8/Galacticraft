@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -33,7 +34,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     }
 
     //Update ticks only required if IC2 is loaded
-    @RuntimeInterface(clazz = "net.minecraft.util.ITickable", modID = "IC2", deobfName = "func_73660_a")
+    @RuntimeInterface(clazz = "net.minecraft.util.ITickable", modID = CompatibilityManager.modidIC2, deobfName = "func_73660_a")
     public void update()
     {
         if (!this.isAddedToEnergyNet)
@@ -109,7 +110,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         }
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public double getDemandedEnergy()
     {
         if (this.getNetwork() == null)
@@ -132,7 +133,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return 0D;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public double injectEnergy(EnumFacing directionFrom, double amount, double voltage)
     {
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, directionFrom);
@@ -156,13 +157,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return 0D;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public int getSinkTier()
     {
         return 3;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = CompatibilityManager.modidIC2)
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
@@ -187,7 +188,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return true;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = CompatibilityManager.modidIC2)
     public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing side)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
@@ -269,7 +270,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return MathHelper.floor(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double transferEnergyToAcceptor(EnumFacing side, double amount)
     {
         if (!this.canReceiveEnergy(side))
@@ -280,7 +281,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, true, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public boolean canReceiveEnergy(EnumFacing side)
     {
         if (this.getNetwork() == null)
@@ -304,18 +305,18 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         return true;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double getEnergy()
     {
         return 0;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public void setEnergy(double energy)
     {
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double getMaxEnergy()
     {
         if (this.getNetwork() == null)

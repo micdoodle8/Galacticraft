@@ -13,6 +13,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -346,7 +347,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         }
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public double getDemandedEnergy()
     {
         if (EnergyConfigHandler.disableIC2Input)
@@ -375,7 +376,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return 0D;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public double injectEnergy(EnumFacing direction, double amount, double voltage)
     {
         //IC2 in 1.8.9 seems to have reversed the sense of direction here, but not in acceptsEnergyFrom.  (Seriously?!)
@@ -401,13 +402,13 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return amount;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public int getSinkTier()
     {
         return 3;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = CompatibilityManager.modidIC2)
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction)
     {
         if (this.tileEntityInvalid) return false;
@@ -460,7 +461,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double transferEnergyToAcceptor(EnumFacing from, double amount)
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -476,13 +477,13 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.receiveElectricity(from, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, true) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public boolean canReceiveEnergy(EnumFacing side)
     {
         return this.getElectricalInputDirections().contains(side);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double getEnergy()
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -493,7 +494,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public void setEnergy(double energy)
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -504,7 +505,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double getMaxEnergy()
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -515,7 +516,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = CompatibilityManager.modidMekanism)
     public boolean canOutputTo(EnumFacing side)
     {
         return false;

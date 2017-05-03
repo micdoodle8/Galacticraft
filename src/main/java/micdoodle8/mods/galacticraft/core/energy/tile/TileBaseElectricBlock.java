@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
@@ -175,25 +177,25 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         return this.disabled;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
     public EnumFacing getFacing(World world, BlockPos pos)
     {
         return this.getFront();
     }
 
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
     public boolean setFacing(World world, BlockPos pos, EnumFacing newDirection, EntityPlayer player)
     {
         return false;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
     public boolean wrenchCanRemove(World world, BlockPos pos, EntityPlayer player)
     {
         return false;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
     public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();

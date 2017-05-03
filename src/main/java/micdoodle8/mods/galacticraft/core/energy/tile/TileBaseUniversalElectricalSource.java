@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -160,7 +161,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         }
     }
 
-    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = "IC2")
+    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = CompatibilityManager.modidIC2)
     public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing direction)
     {
         if (this.tileEntityInvalid) return false;
@@ -174,7 +175,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.getElectricalOutputDirections().contains(direction);
     }
 
-    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
+    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = CompatibilityManager.modidIC2)
     public double getOfferedEnergy()
     {
         if (EnergyConfigHandler.disableIC2Output)
@@ -185,7 +186,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.getProvide(null) * EnergyConfigHandler.TO_IC2_RATIO;
     }
 
-    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
+    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = CompatibilityManager.modidIC2)
     public void drawEnergy(double amount)
     {
         if (EnergyConfigHandler.disableIC2Output)
@@ -196,14 +197,14 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         this.storage.extractEnergyGC((float) amount / EnergyConfigHandler.TO_IC2_RATIO, false);
     }
 
-    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = "IC2")
+    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySource", modID = CompatibilityManager.modidIC2)
     public int getSourceTier()
     {
         return this.tierGC + 1;
     }
 
     @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = CompatibilityManager.modidMekanism)
     public boolean canOutputTo(EnumFacing side)
     {
         return this.getElectricalOutputDirections().contains(side);

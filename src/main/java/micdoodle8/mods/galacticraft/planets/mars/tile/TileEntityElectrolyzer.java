@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -426,19 +427,19 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return getBlockType().getMetaFromState(this.world.getBlockState(getPos()));
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
         return 0;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public int receiveGas(EnumFacing side, GasStack stack)
     {
         return 0;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
     {
         if (from == this.getHydrogenOutputDirection() && this.liquidTank2.getFluid() != null)
@@ -456,19 +457,19 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return null;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(EnumFacing from, int amount)
     {
         return this.drawGas(from, amount, true);
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public boolean canReceiveGas(EnumFacing side, Gas type)
     {
         return false;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public boolean canDrawGas(EnumFacing from, Gas type)
     {
         if (from == this.getHydrogenOutputDirection())
@@ -482,7 +483,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         return false;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
     public boolean canTubeConnect(EnumFacing from)
     {
         if (from == this.getHydrogenOutputDirection())

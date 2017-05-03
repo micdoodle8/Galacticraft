@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -37,6 +38,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper
@@ -517,7 +519,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         return null;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
         if (!stack.getGas().getName().equals("hydrogen"))
@@ -533,38 +535,38 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         return used;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public int receiveGas(EnumFacing side, GasStack stack)
     {
         return this.receiveGas(side, stack, true);
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
     {
         return null;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(EnumFacing side, int amount)
     {
         return null;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public boolean canReceiveGas(EnumFacing side, Gas type)
     {
         //System.out.println("Testing receipt of gas "+type.getName());
         return type.getName().equals("hydrogen") && side.equals(this.getHydrogenInputDirection());
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public boolean canDrawGas(EnumFacing side, Gas type)
     {
         return false;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
     public boolean canTubeConnect(EnumFacing side)
     {
         return side.equals(this.getHydrogenInputDirection());

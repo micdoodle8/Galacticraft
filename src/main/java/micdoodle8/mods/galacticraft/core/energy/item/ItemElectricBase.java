@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.items.ItemBatteryInfinite;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -248,31 +249,31 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     // The following seven methods are for Mekanism compatibility
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = CompatibilityManager.modidMekanism)
     public double getEnergy(ItemStack itemStack)
     {
         return this.getElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = CompatibilityManager.modidMekanism)
     public void setEnergy(ItemStack itemStack, double amount)
     {
         this.setElectricity(itemStack, (float) amount * EnergyConfigHandler.MEKANISM_RATIO);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = CompatibilityManager.modidMekanism)
     public double getMaxEnergy(ItemStack itemStack)
     {
         return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = CompatibilityManager.modidMekanism)
     public double getMaxTransfer(ItemStack itemStack)
     {
         return this.transferMax * EnergyConfigHandler.TO_MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = CompatibilityManager.modidMekanism)
     public boolean canReceive(ItemStack itemStack)
     {
         return (itemStack != null && !(itemStack.getItem() instanceof ItemBatteryInfinite));
@@ -285,31 +286,31 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     // All the following methods are for IC2 compatibility
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = CompatibilityManager.modidIC2)
     public IElectricItemManager getManager(ItemStack itemstack)
     {
         return (IElectricItemManager) ItemElectricBase.itemManagerIC2;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = CompatibilityManager.modidIC2)
     public boolean canProvideEnergy(ItemStack itemStack)
     {
         return true;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = CompatibilityManager.modidIC2)
     public int getTier(ItemStack itemStack)
     {
         return 1;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = CompatibilityManager.modidIC2)
     public double getMaxCharge(ItemStack itemStack)
     {
         return this.getMaxElectricityStored(itemStack) / EnergyConfigHandler.IC2_RATIO;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = CompatibilityManager.modidIC2)
     public double getTransferLimit(ItemStack itemStack)
     {
         return this.transferMax * EnergyConfigHandler.TO_IC2_RATIO;
