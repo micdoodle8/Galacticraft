@@ -42,6 +42,7 @@ import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
@@ -84,7 +85,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -150,7 +150,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         OBJLoader.INSTANCE.addDomain(Constants.ASSET_PREFIX);
 
-        if (Loader.isModLoaded("PlayerAPI"))
+        if (CompatibilityManager.PlayerAPILoaded)
         {
             ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
         }
@@ -189,7 +189,7 @@ public class ClientProxyCore extends CommonProxyCore
 
         MinecraftForge.EVENT_BUS.register(new TabRegistry());
 
-        if (!Loader.isModLoaded("RenderPlayerAPI"))
+        if (!CompatibilityManager.RenderPlayerAPILoaded)
         {
             try
             {

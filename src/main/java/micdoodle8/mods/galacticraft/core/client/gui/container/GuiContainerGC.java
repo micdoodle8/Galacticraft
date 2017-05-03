@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public abstract class GuiContainerGC extends GuiContainer
                     List list = itemStack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
                     int size = list.size();
 
-                    if (Loader.isModLoaded("Waila"))
+                    if (CompatibilityManager.isWailaLoaded())
                     {
                         size++;
                     }

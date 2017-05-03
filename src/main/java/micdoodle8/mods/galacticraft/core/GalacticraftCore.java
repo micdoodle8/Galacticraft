@@ -56,6 +56,7 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
@@ -117,15 +118,9 @@ public class GalacticraftCore
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
     	GCCoreUtil.nextID = 0;
     	
-        if(Loader.isModLoaded("SmartMoving"))
+        if (CompatibilityManager.isSmartMovingLoaded || CompatibilityManager.isWitcheryLoaded)
         {
             isHeightConflictingModInstalled = true;
-        }
-        
-        if(Loader.isModLoaded("witchery"))
-        {
-            isHeightConflictingModInstalled = true;
-            GCLog.info("Galacticraft: activating Witchery compatibility.");
         }
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
@@ -145,7 +140,7 @@ public class GalacticraftCore
 
         GCFluids.registerOilandFuel();
 
-        if (Loader.isModLoaded("PlayerAPI"))
+        if (CompatibilityManager.PlayerAPILoaded)
         {
             ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
         }
