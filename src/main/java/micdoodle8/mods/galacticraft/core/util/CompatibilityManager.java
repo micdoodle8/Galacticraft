@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -25,9 +27,11 @@ public class CompatibilityManager
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded;
+    private static boolean spongeLoaded;
 	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
+    private static Method spongeOverride = null;
 
     public static void checkForCompatibleMods()
     {
@@ -144,6 +148,14 @@ public class CompatibilityManager
             CompatibilityManager.modPneumaticCraftLoaded = true;
             GCLog.info("Galacticraft: activating PneumaticCraft compatibility features.");
         }
+
+        if (Loader.isModLoaded("sponge"))
+        {
+            try {
+                spongeOverride = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer").getMethod("setForceChunkRequests", boolean.class);
+                spongeLoaded = true;
+            } catch (Exception e) { e.printStackTrace(); }
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -194,6 +206,42 @@ public class CompatibilityManager
     public static boolean isPneumaticCraftLoaded()
     {
         return CompatibilityManager.modPneumaticCraftLoaded;
+    }
+
+    public static void spongeOverrideStart(WorldServer w)
+    {
+    }
+
+    public static void forceLoadChunks(WorldServer w)
+    {
+        ChunkProviderServer cps = w.getChunkProvider();
+        try
+        {
+            if (spongeLoaded)
+            {   
+                spongeOverride.invoke(cps, true);
+               System.out.println("Sponge override");
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void forceLoadChunksEnd(WorldServer w)
+    {
+        ChunkProviderServer cps = w.getChunkProvider();
+        try
+        {
+            if (spongeLoaded)
+            {   
+                spongeOverride.invoke(cps, false);
+                System.out.println("Sponge override finished");
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static void registerMicroBlocks()

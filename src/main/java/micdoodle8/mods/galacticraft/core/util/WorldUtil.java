@@ -989,9 +989,12 @@ public class WorldUtil
 
         if (ridingRocket != null)
         {
+            CompatibilityManager.forceLoadChunks((WorldServer) worldNew);
+            ridingRocket.forceSpawn = true;
             worldNew.spawnEntityInWorld(ridingRocket);
             ridingRocket.setWorld(worldNew);
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
+            CompatibilityManager.forceLoadChunksEnd((WorldServer) worldNew);
             entity.startRiding(ridingRocket);
             GCLog.debug("Entering rocket at : " + entity.posX + "," + entity.posZ + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
         }
@@ -1032,6 +1035,7 @@ public class WorldUtil
      */
     public static void forceMoveEntityToPos(Entity entity, WorldServer worldNew, Vector3 spawnPos, boolean spawnRequired)
     {
+        CompatibilityManager.forceLoadChunks(worldNew);
         ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
         GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
         worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
@@ -1042,10 +1046,13 @@ public class WorldUtil
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         if (spawnRequired)
         {
+            ((WorldServer) entity.worldObj).getEntityTracker().untrackEntity(entity);
+            entity.forceSpawn = true;
             worldNew.spawnEntityInWorld(entity);
             entity.setWorld(worldNew);
         }
         worldNew.updateEntityWithOptionalForce(entity, true);
+        CompatibilityManager.forceLoadChunksEnd(worldNew);
     }
 
     public static WorldServer getStartWorld(WorldServer worldOld)

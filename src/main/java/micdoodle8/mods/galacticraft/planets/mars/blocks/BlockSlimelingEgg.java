@@ -94,7 +94,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.down()).getBlock() == MarsBlocks.marsBlock && worldIn.getBlockState(pos.down()).getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE;
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
     }
 
 //    @Override

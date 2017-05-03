@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.entity.Entity;
@@ -88,7 +89,10 @@ public class TeleportTypeMars implements ITeleportType
 
                 if (!newWorld.isRemote)
                 {
+                    CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                    lander.forceSpawn = true;
                     newWorld.spawnEntityInWorld(lander);
+                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
                 }
 
                 stats.setTeleportCooldown(10);

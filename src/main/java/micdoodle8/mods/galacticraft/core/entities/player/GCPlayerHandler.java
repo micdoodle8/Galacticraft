@@ -1206,6 +1206,7 @@ public class GCPlayerHandler
                 worldOld.updateAllPlayersSleepingFlag();
                 worldOld.loadedEntityList.remove(player);
                 worldOld.onEntityRemoved(player);
+                worldOld.getEntityTracker().untrackEntity(player);
                 if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
                 {
                     Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
