@@ -281,12 +281,12 @@ public class MapUtil
         	outputFile = new File(baseFolder, "Overworld" + sizeX + ".bin");
         	if (sizeX == 1536)
         	{
-        		MapGen newGen = new MapGen(world, sizeX, sizeZ, cx, cz, 1 << scale, outputFile);
-            	if (newGen.calculatingMap)
-            	{
-            		slowMap = newGen;
-            		calculatingMap.set(true);
-            	}
+//        		MapGen newGen = new MapGen(world, sizeX, sizeZ, cx, cz, 1 << scale, outputFile);
+//            	if (newGen.calculatingMap)
+//            	{
+//            		slowMap = newGen;
+//            		calculatingMap.set(true);
+//            	}
             	return false;
         	}
         }
