@@ -281,8 +281,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.getElectricalOutputDirections().contains(side);
     }
     
-    @Override
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyProvider", modID = "")
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFOutput)
