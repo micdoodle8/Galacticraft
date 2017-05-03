@@ -122,43 +122,43 @@ public class RecipeManagerMars
         input.put(16, new ItemStack(GCItems.rocketEngine, 1, 1));
         input.put(17, new ItemStack(GCItems.partFins));
         input.put(18, new ItemStack(GCItems.partFins));
-        input.put(19, null);
-        input.put(20, null);
-        input.put(21, null);
+        input.put(19, ItemStack.EMPTY);
+        input.put(20, ItemStack.EMPTY);
+        input.put(21, ItemStack.EMPTY);
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 0), input);
 
         HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, null);
-        input2.put(21, null);
+        input2.put(20, ItemStack.EMPTY);
+        input2.put(21, ItemStack.EMPTY);
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 1), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
+        input2.put(19, ItemStack.EMPTY);
         input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, null);
+        input2.put(21, ItemStack.EMPTY);
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 1), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
-        input2.put(20, null);
+        input2.put(19, ItemStack.EMPTY);
+        input2.put(20, ItemStack.EMPTY);
         input2.put(21, new ItemStack(Blocks.CHEST));
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 1), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, new ItemStack(Blocks.CHEST));
         input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, null);
+        input2.put(21, ItemStack.EMPTY);
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 2), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, null);
+        input2.put(20, ItemStack.EMPTY);
         input2.put(21, new ItemStack(Blocks.CHEST));
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 2), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
+        input2.put(19, ItemStack.EMPTY);
         input2.put(20, new ItemStack(Blocks.CHEST));
         input2.put(21, new ItemStack(Blocks.CHEST));
         MarsUtil.addRocketBenchT2Recipe(new ItemStack(MarsItems.rocketMars, 1, 2), input2);
@@ -188,36 +188,36 @@ public class RecipeManagerMars
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(14, new ItemStack(Blocks.CHEST));
-        input2.put(15, null);
-        input2.put(16, null);
+        input2.put(15, ItemStack.EMPTY);
+        input2.put(16, ItemStack.EMPTY);
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 11), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(14, null);
+        input2.put(14, ItemStack.EMPTY);
         input2.put(15, new ItemStack(Blocks.CHEST));
-        input2.put(16, null);
+        input2.put(16, ItemStack.EMPTY);
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 11), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(14, null);
-        input2.put(15, null);
+        input2.put(14, ItemStack.EMPTY);
+        input2.put(15, ItemStack.EMPTY);
         input2.put(16, new ItemStack(Blocks.CHEST));
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 11), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(14, new ItemStack(Blocks.CHEST));
         input2.put(15, new ItemStack(Blocks.CHEST));
-        input2.put(16, null);
+        input2.put(16, ItemStack.EMPTY);
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 12), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(14, new ItemStack(Blocks.CHEST));
-        input2.put(15, null);
+        input2.put(15, ItemStack.EMPTY);
         input2.put(16, new ItemStack(Blocks.CHEST));
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 12), input2);
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(14, null);
+        input2.put(14, ItemStack.EMPTY);
         input2.put(15, new ItemStack(Blocks.CHEST));
         input2.put(16, new ItemStack(Blocks.CHEST));
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 12), input2);
