@@ -30,7 +30,7 @@ public class SchematicRocketT1 extends SchematicPage
     @Override
     public ItemStack getRequiredItem()
     {
-        return null;
+        return null;  //This null is OK, it's used only as a flag by the calling code in SchematicRegistry
     }
 
     @SideOnly(Side.CLIENT)

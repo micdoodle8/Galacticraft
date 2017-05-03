@@ -73,7 +73,7 @@ public class ItemBucketGC extends ItemBucket implements ISortableItem, ICapabili
         	fluidHandler.fill(fs, true);
         	return new ItemStack(Items.BUCKET);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
     
     @Override

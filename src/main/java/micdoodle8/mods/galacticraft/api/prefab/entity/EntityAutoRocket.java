@@ -1185,7 +1185,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.stacks == null)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         return this.stacks.get(index);

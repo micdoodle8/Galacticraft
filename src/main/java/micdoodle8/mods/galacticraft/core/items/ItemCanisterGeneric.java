@@ -77,7 +77,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         {
             if (JavaUtil.instance.isCalledBy("thermalexpansion.block.machine.TileTransposer"))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
         }
 

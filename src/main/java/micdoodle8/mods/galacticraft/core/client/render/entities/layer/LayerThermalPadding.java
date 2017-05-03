@@ -88,7 +88,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
             }
         }
 
-        return null;
+        return null;   //This null is OK, it's used only as flag by calling code in this same class
     }
 
     @Override

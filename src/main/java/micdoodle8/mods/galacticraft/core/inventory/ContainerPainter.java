@@ -61,7 +61,7 @@ public class ContainerPainter extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index)
     {
-        ItemStack stackOrig = null;
+        ItemStack stackOrig = ItemStack.EMPTY;
         Slot slot = (Slot) this.inventorySlots.get(index);
         final int b = this.inventorySlots.size();
 
@@ -74,7 +74,7 @@ public class ContainerPainter extends Container
             {
                 if (!this.mergeItemStack(stack, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack, stackOrig);
             }
@@ -85,25 +85,25 @@ public class ContainerPainter extends Container
                 {
                     if (!this.mergeOneItem(stack, 1, 2, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (index < b - 9)
                 {
                     if (!this.mergeItemStack(stack, b - 9, b, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(stack, b - 36, b - 9, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
             if (stack.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
@@ -112,7 +112,7 @@ public class ContainerPainter extends Container
 
             if (stack.getCount() == stackOrig.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(par1EntityPlayer, stack);
@@ -134,7 +134,7 @@ public class ContainerPainter extends Container
                 slot = (Slot) this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null)
+                if (slotStack.isEmpty())
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
                     stackOneItem.setCount(1);

@@ -587,7 +587,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             ItemStack itemstack1 = this.villagerInventory.addItem(itemstack);
 
-            if (itemstack1 == null)
+            if (itemstack1.isEmpty())
             {
                 itemEntity.setDead();
             }
