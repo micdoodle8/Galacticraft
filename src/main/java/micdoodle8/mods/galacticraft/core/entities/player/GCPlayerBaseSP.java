@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.entity.MoverType;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.Loader;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 
 public class GCPlayerBaseSP extends ClientPlayerBase
 {
@@ -90,7 +90,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     {
         super.afterMoveEntityWithHeading(paramFloat1, paramFloat2);
 
-        if (Loader.isModLoaded("SmartMoving") && !this.player.capabilities.isFlying)
+        if (CompatibilityManager.isSmartMovingLoaded && !this.player.capabilities.isFlying)
         {
             this.player.motionY += 0.080000000000000002D;
             this.player.motionY -= TransformerHooks.getGravityForEntity(this.player);

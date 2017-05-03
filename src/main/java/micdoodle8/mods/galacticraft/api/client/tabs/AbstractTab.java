@@ -28,7 +28,7 @@ public abstract class AbstractTab extends GuiButton
 	public void drawButton(Minecraft mc, int mouseX, int mouseY)
 	{
 		int newPotionOffset = TabRegistry.getPotionOffsetNEI();
-		if (newPotionOffset < this.potionOffsetLast)
+		if (newPotionOffset != this.potionOffsetLast)
 		{
 	    	this.xPosition += newPotionOffset - this.potionOffsetLast;
 	    	this.potionOffsetLast = newPotionOffset;

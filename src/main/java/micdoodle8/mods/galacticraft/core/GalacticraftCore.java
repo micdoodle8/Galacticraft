@@ -123,15 +123,9 @@ public class GalacticraftCore
     	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
     	GCCoreUtil.nextID = 0;
     	
-        if(Loader.isModLoaded("SmartMoving"))
+        if (CompatibilityManager.isSmartMovingLoaded || CompatibilityManager.isWitcheryLoaded)
         {
             isHeightConflictingModInstalled = true;
-        }
-        
-        if(Loader.isModLoaded("witchery"))
-        {
-            isHeightConflictingModInstalled = true;
-            GCLog.info("Galacticraft: activating Witchery compatibility.");
         }
     	
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
@@ -151,7 +145,7 @@ public class GalacticraftCore
 
         GCFluids.registerOilandFuel();
 
-        if (Loader.isModLoaded("PlayerAPI"))
+        if (CompatibilityManager.PlayerAPILoaded)
         {
             ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
         }
