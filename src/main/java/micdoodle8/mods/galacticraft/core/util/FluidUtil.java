@@ -112,7 +112,7 @@ public class FluidUtil
             }
 
             //If the tank already contains something, fill it with more of the same
-			if (liquidInTank.amount < tank.getCapacity())
+            if (liquidInTank.amount < tank.getCapacity())
             {
                 return tank.fill(new FluidStack(liquidInTank, liquid.amount), doFill);
             }
@@ -313,11 +313,11 @@ public class FluidUtil
         {
             if (tank.getFluid() == null || amountOffered <= tank.getCapacity() - tank.getFluid().amount)
             {
-                int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
-                final int itemCount = slotItem.stackSize;
-
                 if (FluidContainerRegistry.isFilledContainer(slotItem))
                 {
+                    int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
+                    final int itemCount = slotItem.stackSize;
+
                     if (FluidContainerRegistry.isBucket(slotItem))
                     {
                         if (itemCount > 1)
@@ -343,9 +343,15 @@ public class FluidUtil
                 else
                 {
                     IFluidHandler handlerItem = net.minecraftforge.fluids.FluidUtil.getFluidHandler(slotItem);
+                    final int itemCount = slotItem.stackSize;
                     if (handlerItem != null && itemCount == 1)
                     {
-                        handlerItem.drain(new FluidStack(desiredLiquid, used), true);
+                        int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), false);
+                        FluidStack given = handlerItem.drain(used, true); 
+                        if (given != null)
+                        {
+                            tank.fill(new FluidStack(desiredLiquid, given.amount), false);
+                        }
                         return;
                     }
 
