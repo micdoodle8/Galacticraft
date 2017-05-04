@@ -32,8 +32,8 @@ public class ThreadFindSeal
     private BlockVec3 head;
     private boolean sealed;
     private List<TileEntityOxygenSealer> sealers;
-    private intBucket[] buckets = new intBucket[256];
-    private int checkedSize = 0;
+    private static intBucket[] buckets;
+    private static int checkedSize;
     private int checkCount;
     private HashMap<BlockVec3, TileEntityOxygenSealer> sealersAround;
     private List<BlockVec3> currentLayer;
@@ -48,6 +48,12 @@ public class ThreadFindSeal
     private List<BlockVec3> torchesToUpdate;
     private boolean foundAmbientThermal;
     public List<BlockVec3> leakTrace;
+    
+    static 
+    {
+        buckets = new intBucket[256];
+        checkedInit();
+    }
 
     public ThreadFindSeal(TileEntityOxygenSealer sealer)
     {
@@ -57,12 +63,17 @@ public class ThreadFindSeal
     @SuppressWarnings("unchecked")
     public ThreadFindSeal(World world, BlockPos head, int checkCount, List<TileEntityOxygenSealer> sealers)
     {
+        if (ThreadFindSeal.anylooping.getAndSet(true))
+        {
+            return;
+        }
         this.world = world;
         this.head = new BlockVec3(head);
         this.checkCount = checkCount;
         this.sealers = sealers;
         this.foundAmbientThermal = false;
-        this.checkedInit();
+        checkedClear();
+        checkedSize = 0;
         this.torchesToUpdate = new LinkedList<BlockVec3>();
 
         this.sealersAround = TileEntityOxygenSealer.getSealersAround(world, head, 1024 * 1024);
@@ -102,6 +113,7 @@ public class ThreadFindSeal
             //Run this in the main thread
             this.check();
         }
+        ThreadFindSeal.anylooping.set(false);
     }
 
     //Multi-threaded version of the code for sealer updates (not for edge checks).
@@ -110,7 +122,6 @@ public class ThreadFindSeal
         public ThreadedFindSeal()
         {
             super("GC Sealer Roomfinder Thread");
-            ThreadFindSeal.anylooping.set(true);
 
             if (this.isAlive())
             {
@@ -193,8 +204,8 @@ public class ThreadFindSeal
         }
         else
         {
-            int checkedSave = this.checkedSize;
-            this.checkedClear();
+            int checkedSave = checkedSize;
+            checkedClear();
             this.breatheableToReplace = new LinkedList<BlockVec3>();
             this.breatheableToReplaceBright = new LinkedList<BlockVec3>();
             this.fireToReplace = new LinkedList<BlockVec3>();
@@ -237,7 +248,7 @@ public class ThreadFindSeal
                         {
                             foundAmbientThermal = true;
                         }
-                        this.checkedClear();
+                        checkedClear();
                         this.checkedAdd(newhead);
                         this.currentLayer.clear();
                         this.airToReplace.clear();
@@ -276,7 +287,7 @@ public class ThreadFindSeal
                             this.head = newhead.clone();
                             otherSealer.threadSeal = this;
                             otherSealer.stopSealThreadCooldown = 75 + TileEntityOxygenSealer.countEntities;
-                            checkedSave += this.checkedSize;
+                            checkedSave += checkedSize;
                             break;
                         }
                         else
@@ -284,7 +295,7 @@ public class ThreadFindSeal
                             sealersDone.addAll(this.sealers);
                         }
 
-                        checkedSave += this.checkedSize;
+                        checkedSave += checkedSize;
                     }
                 }
 
@@ -301,7 +312,7 @@ public class ThreadFindSeal
                     this.makeSealGood(foundAmbientThermal);
                 }
             }
-            this.checkedSize = checkedSave;
+            checkedSize = checkedSave;
 
             if (!this.sealed)
             {
@@ -360,7 +371,7 @@ public class ThreadFindSeal
             float looping = (time2 - time1) / 1000000.0F;
             float replacing = (time3 - time2) / 1000000.0F; 
             GCLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
-            GCLog.info("   Sealed: " + this.sealed + "  ~  " + this.sealers.size() + " sealers  ~  " + (this.checkedSize - 1) + " blocks");
+            GCLog.info("   Sealed: " + this.sealed + "  ~  " + this.sealers.size() + " sealers  ~  " + (checkedSize - 1) + " blocks");
             GCLog.info("   Total Time taken: " + String.format("%.2f", total) + "ms  ~  " + String.format("%.2f", looping) + " + " + String.format("%.2f", replacing) + "");
         }
     }
@@ -972,19 +983,19 @@ public class ThreadFindSeal
         return null;
     }
 
-    private void checkedInit()
+    private static void checkedInit()
     {
         for (int i = 0; i < 256; i++)
         {
-            this.buckets[i] = new intBucket();
+            buckets[i] = new intBucket();
         }
     }
 
-    private void checkedClear()
+    private static void checkedClear()
     {
         for (int i = 0; i < 256; i++)
         {
-            this.buckets[i].clear();
+            buckets[i].clear();
         }
         checkedSize = 0;
     }
@@ -1222,7 +1233,7 @@ public class ThreadFindSeal
         return true;
     }
 
-    public class intBucket
+    public static class intBucket
     {
         private int maxSize = 64;  //default size
         private int size = 0;

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.block.state.IBlockState;
@@ -9,10 +10,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class GCPlayerStats
 {
@@ -82,6 +82,8 @@ public abstract class GCPlayerStats
     public abstract int getAstroMinerCount();
 
     public abstract void setAstroMinerCount(int astroMinerCount);
+
+    public abstract List<BlockVec3> getActiveAstroMinerChunks();
 
     public abstract boolean isUsingParachute();
 
@@ -259,13 +261,13 @@ public abstract class GCPlayerStats
 
     public abstract void setJustLanded(boolean justLanded);
 
-    public abstract ArrayList<ISchematicPage> getUnlockedSchematics();
+    public abstract List<ISchematicPage> getUnlockedSchematics();
 
-    public abstract void setUnlockedSchematics(ArrayList<ISchematicPage> unlockedSchematics);
+    public abstract void setUnlockedSchematics(List<ISchematicPage> unlockedSchematics);
 
-    public abstract ArrayList<ISchematicPage> getLastUnlockedSchematics();
+    public abstract List<ISchematicPage> getLastUnlockedSchematics();
 
-    public abstract void setLastUnlockedSchematics(ArrayList<ISchematicPage> lastUnlockedSchematics);
+    public abstract void setLastUnlockedSchematics(List<ISchematicPage> lastUnlockedSchematics);
 
     public abstract int getCryogenicChamberCooldown();
 

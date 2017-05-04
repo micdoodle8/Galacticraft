@@ -4,8 +4,10 @@ import com.google.common.collect.Maps;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
@@ -13,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -20,10 +23,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class StatsCapability extends GCPlayerStats
 {
@@ -47,6 +53,7 @@ public class StatsCapability extends GCPlayerStats
     public Item rocketItem;
     public ItemStack launchpadStack;
     public int astroMinerCount = 0;
+    private List<BlockVec3> activeAstroMinerChunks = new LinkedList<>();
 
     public boolean usingParachute;
 
@@ -115,8 +122,8 @@ public class StatsCapability extends GCPlayerStats
     public boolean inLander;
     public boolean justLanded;
 
-    public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
-    public ArrayList<ISchematicPage> lastUnlockedSchematics = new ArrayList<ISchematicPage>();
+    public List<ISchematicPage> unlockedSchematics = new LinkedList<>();
+    public List<ISchematicPage> lastUnlockedSchematics = new LinkedList<>();
 
     public int cryogenicChamberCooldown;
 
@@ -304,6 +311,12 @@ public class StatsCapability extends GCPlayerStats
     public void setAstroMinerCount(int astroMinerCount)
     {
         this.astroMinerCount = astroMinerCount;
+    }
+
+    @Override
+    public List<BlockVec3> getActiveAstroMinerChunks()
+    {
+        return this.activeAstroMinerChunks;
     }
 
     @Override
@@ -835,25 +848,25 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
-    public ArrayList<ISchematicPage> getUnlockedSchematics()
+    public List<ISchematicPage> getUnlockedSchematics()
     {
         return unlockedSchematics;
     }
 
     @Override
-    public void setUnlockedSchematics(ArrayList<ISchematicPage> unlockedSchematics)
+    public void setUnlockedSchematics(List<ISchematicPage> unlockedSchematics)
     {
         this.unlockedSchematics = unlockedSchematics;
     }
 
     @Override
-    public ArrayList<ISchematicPage> getLastUnlockedSchematics()
+    public List<ISchematicPage> getLastUnlockedSchematics()
     {
         return lastUnlockedSchematics;
     }
 
     @Override
-    public void setLastUnlockedSchematics(ArrayList<ISchematicPage> lastUnlockedSchematics)
+    public void setLastUnlockedSchematics(List<ISchematicPage> lastUnlockedSchematics)
     {
         this.lastUnlockedSchematics = lastUnlockedSchematics;
     }
@@ -1049,6 +1062,16 @@ public class StatsCapability extends GCPlayerStats
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         nbt.setInteger("AstroMinerCount", this.astroMinerCount);
+        NBTTagList astroList = new NBTTagList();
+        for (BlockVec3 data : this.activeAstroMinerChunks)
+        {
+            if (data != null)
+            {
+                astroList.appendTag(data.writeToNBT(new NBTTagCompound()));
+            }
+        }
+        nbt.setTag("AstroData", astroList);
+        
         nbt.setInteger("GlassColor1", this.glassColor1);
         nbt.setInteger("GlassColor2", this.glassColor2);
         nbt.setInteger("GlassColor3", this.glassColor3);
@@ -1217,6 +1240,21 @@ public class StatsCapability extends GCPlayerStats
             {
                 this.astroMinerCount = nbt.getInteger("AstroMinerCount");
             }
+            if (nbt.hasKey("AstroData"))
+            {
+                this.activeAstroMinerChunks.clear();
+                NBTTagList astroList = nbt.getTagList("AstroData", 10);
+                for (int i = 0; i < astroList.tagCount(); ++i)
+                {
+                    final NBTTagCompound nbttagcompound = astroList.getCompoundTagAt(i);
+                    BlockVec3 data = BlockVec3.readFromNBT(nbttagcompound);
+                    this.activeAstroMinerChunks.add(data);
+                }
+                if (GalacticraftCore.isPlanetsLoaded)
+                {
+                    AsteroidsTickHandlerServer.loadAstroChunkList(this.activeAstroMinerChunks);
+                }
+            }
 
             if (nbt.hasKey("GlassColor1"))
             {
@@ -1277,6 +1315,7 @@ public class StatsCapability extends GCPlayerStats
         this.panelLightingBases = oldData.getPanelLightingBases();
         this.panelLightingColor = oldData.getPanelLightingColor();
         this.astroMinerCount = oldData.getAstroMinerCount();
+        this.activeAstroMinerChunks = oldData.getActiveAstroMinerChunks();
         this.sentFlags = false;
     }
 
