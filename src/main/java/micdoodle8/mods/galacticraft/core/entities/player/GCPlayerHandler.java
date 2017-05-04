@@ -100,7 +100,7 @@ public class GCPlayerHandler
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event)
     {
-        if (event.wasDeath)
+        if (event.wasDeath)  //TODO: why only on death?  we could copy the stats capability on all cloning events
         {
             GCPlayerStats oldStats = GCPlayerStats.get(event.original);
             GCPlayerStats newStats = GCPlayerStats.get(event.entityPlayer);
