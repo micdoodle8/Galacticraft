@@ -4,6 +4,9 @@ import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
+import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -24,33 +27,39 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TileEntityArclamp extends TileEntity implements ITickable, ITileClientUpdates
+//ITileClientUpdates for changing in facing;  IPacketReceiver for initial transfer of NBT Data (airToRestore)
+public class TileEntityArclamp extends TileEntity implements ITickable, ITileClientUpdates, IPacketReceiver
 {
     private static final int LIGHTRANGE = 14;
     private int ticks = 0;
     private int sideRear = 0;
     public int facing = 0;
     private HashSet<BlockVec3> airToRestore = new HashSet();
-    private intBucket[] buckets;
+    private static intBucket[] buckets;
+    private static AtomicBoolean usingBuckets = new AtomicBoolean();
     private boolean isActive = false;
     private AxisAlignedBB thisAABB;
     private AxisAlignedBB renderAABB;
     private Vec3d thisPos;
     private int facingSide = 0;
+
+    static
+    {
+        buckets = new intBucket[256];
+        checkedInit();
+    }
     
     @Override
     public void update()
     {
-        if (this.world.isRemote)
-        {
-            return;
-        }
-
         boolean initialLight = false;
 //        if (this.updateClientFlag)
 //        {
@@ -129,7 +138,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                 this.lightArea();
             }
 
-            if (this.world.rand.nextInt(10) == 0)
+            if (!this.world.isRemote && this.world.rand.nextInt(10) == 0)
             {
                 List<Entity> moblist = this.world.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.MOB_SELECTOR);
 
@@ -152,7 +161,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                             continue;
                         }
                         
-                        Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 16, 7, this.thisPos);
+                        Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 28, 11, this.thisPos);
                         if (vecNewTarget == null)
                         {
                             continue;
@@ -169,8 +178,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                             }
                             if (vecOldTarget == null || distanceCurrent > vecOldTarget.squareDistanceTo(thisVec3))
                             {
-                                nav.tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 0.3D);
-                                nav.setSpeed(1.33D);
+                                nav.tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 1.3D);
                             }
                         }
                     }
@@ -204,37 +212,34 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         if (this.world.isRemote)
         {
             this.clientValidate();
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
         else
         {
             this.isActive = true;
-            if (this.buckets == null)
-            {
-                this.buckets = new intBucket[256];
-                this.checkedInit();
-            }
         }
     }
 
     @Override
     public void invalidate()
     {
-        if (!this.world.isRemote)
-        {
-            this.revertAir();
-        }
+        this.revertAir();
         this.isActive = false;
         super.invalidate();
     }
 
     public void lightArea()
     {
+        if (usingBuckets.getAndSet(true))
+        {
+            return;
+        }
         Block air = Blocks.AIR;
         Block breatheableAirID = GCBlocks.breatheableAir;
         IBlockState brightAir = GCBlocks.brightAir.getDefaultState();
         IBlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
         boolean dirty = false;
-        this.checkedClear();
+        checkedClear();
         HashSet airToRevert = new HashSet();
         airToRevert.addAll(airToRestore);
         LinkedList airNew = new LinkedList();
@@ -425,6 +430,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             }
             this.airToRestore.remove(vec);
         }
+        usingBuckets.set(false);
     }
 
     @Override
@@ -481,12 +487,13 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         this.thisAABB = null;
         this.revertAir();
         this.markDirty();
+        this.ticks = 91;
     }
 
     private void brightenAir(World world, BlockVec3 vec, IBlockState brighterAir)
     {
 //        brighterAir = Blocks.lever.getDefaultState();
-        world.setBlockState(vec.toBlockPos(), brighterAir, 2);
+        world.setBlockState(vec.toBlockPos(), brighterAir, 4);
         this.airToRestore.add(vec);
     }
     
@@ -499,11 +506,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             IBlockState b = vec.getBlockState(this.world);
             if (b.getBlock() == brightAir)
             {
-                this.world.setBlockState(vec.toBlockPos(), Blocks.AIR.getDefaultState(), 2);
+                this.world.setBlockState(vec.toBlockPos(), Blocks.AIR.getDefaultState(), 4);
             }
             else if (b.getBlock() == brightBreatheableAir)
             {
-                this.world.setBlockState(vec.toBlockPos(), GCBlocks.breatheableAir.getDefaultState(), 2);
+                this.world.setBlockState(vec.toBlockPos(), GCBlocks.breatheableAir.getDefaultState(), 4);
                 //No block update - not necessary for changing air to air, also must not trigger a sealer edge check
             }
         }
@@ -578,23 +585,23 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         return bucket.contains(y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
     }
 
-    private void checkedInit()
+    private static void checkedInit()
     {
         for (int i = 0; i < 256; i++)
         {
-            this.buckets[i] = new intBucket();
+            buckets[i] = new intBucket();
         }
     }
 
-    private void checkedClear()
+    private static void checkedClear()
     {
         for (int i = 0; i < 256; i++)
         {
-            this.buckets[i].clear();
+            buckets[i].clear();
         }
     }
 
-    public class intBucket
+    public static class intBucket
     {
         private int maxSize = 24;  //default size
         private int size = 0;
@@ -652,6 +659,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     public void updateClient(List<Object> data)
     {
         this.facing = (Integer) data.get(1);
+        this.revertAir();
+        this.thisAABB = null;
+        this.ticks = 86;
     }
 
     @Override
@@ -670,5 +680,26 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;
+    }
+
+    @Override
+    public void getNetworkedData(ArrayList<Object> sendData)
+    {
+        for (BlockVec3 vec : this.airToRestore)
+        {
+            sendData.add(vec);
+        }
+    }
+
+    @Override
+    public void decodePacketdata(ByteBuf buffer)
+    {
+        while (buffer.readableBytes() >= 12)
+        {
+            int x = buffer.readInt();
+            int y = buffer.readInt();
+            int z = buffer.readInt();
+            this.airToRestore.add(new BlockVec3(x, y, z));
+        }
     }
 }

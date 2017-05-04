@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -56,8 +55,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
         }
         else
         {
-            EntityAstroMiner miner = this.tile.linkedMiner;
-            if (miner == null || miner.isDead || this.tile.linkCountDown == 0 || miner.AIstate < EntityAstroMiner.AISTATE_TRAVELLING || miner.AIstate == EntityAstroMiner.AISTATE_DOCKING)
+            if (this.tile.linkedMinerDataAIState < EntityAstroMiner.AISTATE_TRAVELLING || this.tile.linkedMinerDataAIState == EntityAstroMiner.AISTATE_DOCKING)
             {
                 this.recallButton.enabled = false;
             }
@@ -124,19 +122,19 @@ public class GuiAstroMinerDock extends GuiContainerGC
         this.fontRendererObj.drawString(this.getStatus(), 177, 141, 4210752);
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394x: " + getDeltaString((MathHelper.floor(this.tile.linkedMiner.posX) - this.tile.getPos().getX() - 1)), 186, 152, 2536735);
+            this.fontRendererObj.drawString("\u0394x: " + getDeltaString(this.tile.linkedMinerDataDX), 186, 152, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394y: " + getDeltaString((MathHelper.floor(this.tile.linkedMiner.posY) - this.tile.getPos().getY())), 186, 162, 2536735);
+            this.fontRendererObj.drawString("\u0394y: " + getDeltaString(this.tile.linkedMinerDataDY), 186, 162, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394z: " + getDeltaString((MathHelper.floor(this.tile.linkedMiner.posZ) - this.tile.getPos().getZ() - 1)), 186, 172, 2536735);
+            this.fontRendererObj.drawString("\u0394z: " + getDeltaString(this.tile.linkedMinerDataDZ), 186, 172, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.miner.mined") + ": " + this.tile.linkedMiner.mineCount, 177, 183, 2536735);
+            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.miner.mined") + ": " + this.tile.linkedMinerDataCount, 177, 183, 2536735);
         }
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 7, this.ySize - 92, 4210752);
     }
@@ -144,22 +142,12 @@ public class GuiAstroMinerDock extends GuiContainerGC
     private String getStatus()
     {
         this.extraLines = false;
-        if (this.tile.linkedMinerID == null)
+        switch (this.tile.linkedMinerDataAIState)
         {
+        case -3:  //no linked miner
             return "";
-        }
-        EntityAstroMiner miner = this.tile.linkedMiner;
-        if (miner == null || miner.isDead)
-        {
-            return "";
-        }
-        if (this.tile.linkCountDown == 0)
-        {
+        case -2:
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.out_of_range");
-        }
-
-        switch (miner.AIstate)
-        {
         case EntityAstroMiner.AISTATE_OFFLINE:
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.offline");
         case EntityAstroMiner.AISTATE_STUCK:

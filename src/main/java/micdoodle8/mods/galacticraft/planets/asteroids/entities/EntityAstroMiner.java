@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.sounds.SoundUpdaterMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
@@ -139,6 +140,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     public int timeSinceHit;
     private boolean flagLink = false;
     private boolean flagCheckPlayer = false;
+    private boolean toAddToServer = AsteroidsTickHandlerServer.loadingSavedChunks.get();
 
     //To do:
     //   break the entity drops it as an item
@@ -172,6 +174,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     protected ITickable soundUpdater;
     private boolean soundToStop = false;
     private boolean spawnedInCreative = false;
+    private int serverIndex;
 
     static
     {
@@ -199,6 +202,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     public EntityAstroMiner(World world, NonNullList<ItemStack> cargo, int energy)
     {
         this(world);
+        this.toAddToServer = true;
         this.stacks = cargo;
         this.energyLevel = energy;
     }
@@ -449,40 +453,49 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             return;
         }
 
+        if (this.toAddToServer)
+        {
+            this.toAddToServer = false;
+            this.serverIndex = AsteroidsTickHandlerServer.monitorMiner(this);
+        }
+
         //SERVER CODE
         if (this.ticksExisted % 10 == 0 || this.flagLink)
         {
             this.flagLink = false;
             this.checkPlayer();
-            TileEntity tileEntity = posBase.getTileEntity(this.world);
-            if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase) tileEntity).isMaster && !tileEntity.isInvalid())
+            if (posBase.blockExists(this.world))
             {
-                //Create link with base on loading the EntityAstroMiner
-                UUID linker = ((TileEntityMinerBase) tileEntity).getLinkedMiner();
-                if (!this.getUniqueID().equals(linker))
+                TileEntity tileEntity = posBase.getTileEntity(this.world);
+                if (tileEntity instanceof TileEntityMinerBase && ((TileEntityMinerBase) tileEntity).isMaster && !tileEntity.isInvalid())
                 {
-                    if (linker == null)
+                    //Create link with base on loading the EntityAstroMiner
+                    UUID linker = ((TileEntityMinerBase) tileEntity).getLinkedMiner();
+                    if (!this.getUniqueID().equals(linker))
+                    {
+                        if (linker == null)
+                        {
+                            ((TileEntityMinerBase) tileEntity).linkMiner(this);
+                        }
+                        else
+                        {
+                            this.freeze(FAIL_ANOTHERWASLINKED);
+                            return;
+                        }
+                    }
+                    else if (((TileEntityMinerBase) tileEntity).linkedMiner != this)
                     {
                         ((TileEntityMinerBase) tileEntity).linkMiner(this);
                     }
-                    else
-                    {
-                        this.freeze(FAIL_ANOTHERWASLINKED);
-                        return;
+                }
+                else
+                {
+					if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
+					{
+	                    this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
+	                    this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
+	                    //Continue mining even though base was destroyed - maybe it will be replaced
                     }
-                }
-                else if (((TileEntityMinerBase) tileEntity).linkedMiner != this)
-                {
-                    ((TileEntityMinerBase) tileEntity).linkMiner(this);
-                }
-            }
-            else
-            {
-                if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
-                {
-                    this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
-                    this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
-                    //Continue mining even though base was destroyed - maybe it will be replaced
                 }
             }
         }
@@ -495,13 +508,16 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             //Go into dormant state if player is offline
             //but do not actually set the dormant state on the server, so can resume immediately if player comes online
-            this.motionX = 0;
-            this.motionY = 0;
-            this.motionZ = 0;
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.world));
+            if (this.motionX != 0 || this.motionY != 0 || this.motionZ != 0)
+            {
+                this.motionX = 0;
+                this.motionY = 0;
+                this.motionZ = 0;
+                GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.world));
+            }
             return;
         }
-
+        
         if (this.lastFacing != this.facingAI)
         {
             this.lastFacing = this.facingAI;
@@ -518,7 +534,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         this.prevPosZ = this.posZ;
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
-
+        
         if (this.AIstate > AISTATE_ATBASE)
         {
             if (this.energyLevel <= 0)
@@ -604,6 +620,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         this.posY += this.motionY;
         this.posZ += this.motionZ;
         setEntityBoundingBox(getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
+
 /*        if (this.dataManager.get(this.timeSinceHit) > 0)
         {
             this.dataManager.set(this.timeSinceHit, Integer.valueOf(this.dataManager.get(this.timeSinceHit) - 1));
@@ -1988,7 +2005,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         miner.posBase = base;
 
         //Increase motion speed when moving in empty space between asteroids
-        miner.speedup = (world.provider instanceof WorldProviderAsteroids) ? SPEEDUP * 1.6D : SPEEDUP;
+        miner.speedup = (world.provider instanceof WorldProviderAsteroids) ? SPEEDUP * 2.2D : SPEEDUP;
 
         //Clear blocks, and test to see if its movement area in front of the base is blocked
         if (miner.prepareMove(12, 0))
@@ -2190,14 +2207,18 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     public void setDead()
     {
-        if (!this.world.isRemote && this.playerMP != null && !this.spawnedInCreative)
+        if (!this.world.isRemote && this.playerMP != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(this.playerMP);
-            int astroCount = stats.getAstroMinerCount();
-            if (astroCount > 0)
+            if (!this.spawnedInCreative)
             {
-                stats.setAstroMinerCount(stats.getAstroMinerCount() - 1);
+                int astroCount = stats.getAstroMinerCount();
+                if (astroCount > 0)
+                {
+                    stats.setAstroMinerCount(stats.getAstroMinerCount() - 1);
+                }
             }
+            AsteroidsTickHandlerServer.removeChunkData(stats, this);
         }
 
         super.setDead();
@@ -2335,7 +2356,22 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     {
         this.stacks = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(nbt, this.stacks);
+        int itemCount = 0;
+        for (ItemStack stack : this.stacks)
+        {
+        	itemCount += stack.getCount();
+        }
+        this.mineCount = itemCount;
 
+        if (nbt.hasKey("sindex"))
+        {
+            this.serverIndex = nbt.getInteger("sindex");
+        }
+        else
+        {
+            this.serverIndex = -1;
+        }
+        
         if (nbt.hasKey("Energy"))
         {
             this.energyLevel = nbt.getInteger("Energy");
@@ -2415,7 +2451,6 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         }
         else
         {
-            System.out.println("[Galacticraft] Please break and replace any AstroMiner placed in the world prior to build 3.0.11.317.");
             this.playerUUID = null;
         }
         if (nbt.hasKey("speedup"))
@@ -2440,6 +2475,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         nbt.setTag("Items", var2);
+        nbt.setInteger("sindex", this.serverIndex);
         nbt.setInteger("Energy", this.energyLevel);
         if (this.posBase != null)
         {

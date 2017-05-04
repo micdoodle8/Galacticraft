@@ -121,7 +121,7 @@ public class FluidUtil
             }
 
             //If the tank already contains something, fill it with more of the same
-			if (liquidInTank.amount < tank.getCapacity())
+            if (liquidInTank.amount < tank.getCapacity())
             {
                 return tank.fill(new FluidStack(liquidInTank, liquid.amount), doFill);
             }
@@ -339,14 +339,13 @@ public class FluidUtil
         {
         	if (tank.getFluid() == null || amountOffered <= tank.getCapacity() - tank.getFluid().amount)
             {
-        		int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
-
         		//Now deal with the resulting container
                 if (FluidUtil.isFilledContainer(slotItem))
                 {
                     final int itemCount = slotItem.getCount();
                     if (FluidUtil.isBucket(slotItem))
                     {
+                		int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
                         if (itemCount > 1)
                         {
                             tank.fill(new FluidStack(desiredLiquid, (itemCount - 1) * Fluid.BUCKET_VOLUME), true);
@@ -359,8 +358,13 @@ public class FluidUtil
                         IFluidHandlerItem handlerItem = net.minecraftforge.fluids.FluidUtil.getFluidHandler(slotItem);
                         if (handlerItem != null)
                         {
-                            handlerItem.drain(new FluidStack(desiredLiquid, used), true);
-                            stacks.set(slot, handlerItem.getContainer());
+                            int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), false);
+                            FluidStack given = handlerItem.drain(used, true); 
+                            if (given != null)
+                            {
+                                tank.fill(new FluidStack(desiredLiquid, given.amount), false);
+                                stacks.set(slot, handlerItem.getContainer());
+                            }
                             return;
                         }
                         //Fallback basic treatment
@@ -369,12 +373,6 @@ public class FluidUtil
                         stacks.set(slot, emptyStack);
                         return;
                     }
-                }
-                
-                //Fallback if we have no idea what item this is but our tank was filled
-                if (used > 0)
-                {
-                	slotItem.shrink(1);
                 }
             }
         }

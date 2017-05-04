@@ -88,4 +88,15 @@ public class BlockBreathableAir extends BlockAir
     {
         return (state.getValue(THERMAL) ? 1 : 0);
     }
+    
+    @Override
+    public int getLightOpacity(IBlockState state)
+    {
+        return 0;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos vec, IBlockState state)
+    {
+    }
 }

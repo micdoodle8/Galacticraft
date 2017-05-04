@@ -343,7 +343,7 @@ public class EventHandlerGC
             return;
         }
 
-        if (entityLiving.ticksExisted % 100 == 0)
+        if (entityLiving.ticksExisted % ConfigManagerCore.suffocationCooldown == 0)
         {
             if (entityLiving.world.provider instanceof IGalacticraftWorldProvider)
             {
@@ -364,7 +364,7 @@ public class EventHandlerGC
                             return;
                         }
 
-                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
+                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, Math.max(ConfigManagerCore.suffocationDamage / 2, 1));
 
                         GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
