@@ -250,29 +250,29 @@ public class CompatibilityManager
 
     public static void forceLoadChunks(WorldServer w)
     {
-        ChunkProviderServer cps = w.getChunkProvider();
-        try
-        {
-            if (spongeLoaded)
-            {   
+        if (spongeLoaded)
+        {   
+            ChunkProviderServer cps = w.getChunkProvider();
+            try
+            {
                 spongeOverride.invoke(cps, true);
+            } catch (Exception ignore)
+            {
             }
-        } catch (Exception ignore)
-        {
         }
     }
 
     public static void forceLoadChunksEnd(WorldServer w)
     {
-        ChunkProviderServer cps = w.getChunkProvider();
-        try
-        {
-            if (spongeLoaded)
-            {   
+        if (spongeLoaded)
+        {   
+            ChunkProviderServer cps = w.getChunkProvider();
+            try
+            {
                 spongeOverride.invoke(cps, false);
+            } catch (Exception ignore)
+            {
             }
-        } catch (Exception ignore)
-        {
         }
     }
 
