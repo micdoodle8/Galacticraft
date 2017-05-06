@@ -31,6 +31,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -660,24 +661,33 @@ public class RecipeManagerGC
             ItemStack copperDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "copper");
             ItemStack tinDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "tin");
             ItemStack ironDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "iron");
-            ic2.api.recipe.IRecipeInput oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(GCBlocks.blockMoon, 1, 0));
-            ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
-            oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(GCBlocks.blockMoon, 1, 1));
-            ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
+            copperDustItemStack.stackSize = 2;
+            tinDustItemStack.stackSize = 2;
+            ironDustItemStack.stackSize = 2;
+            
+            Object macerator = Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null);
+            Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, Boolean.TYPE, ItemStack[].class);
+            Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
+            
+            Object oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCBlocks.blockMoon, 1, 0));
+            addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { copperDustItemStack.copy() });
+            
+            oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCBlocks.blockMoon, 1, 1));
+            addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { tinDustItemStack.copy() });
             if (GalacticraftCore.isPlanetsLoaded)
             {
-                oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_COPPER.getMeta()));
-                ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
-                oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_TIN.getMeta()));
-                ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
-                oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_IRON.getMeta()));
-                ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(ironDustItemStack.getItem(), 2, ironDustItemStack.getItemDamage()) });
-                oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(AsteroidBlocks.blockBasic, 1, BlockBasicAsteroids.EnumBlockBasic.ORE_IRON.getMeta()));
-                ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(ironDustItemStack.getItem(), 2, ironDustItemStack.getItemDamage()) });
-                oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(VenusBlocks.venusBlock, 1, BlockBasicVenus.EnumBlockBasicVenus.ORE_COPPER.getMeta()));
-                ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2, copperDustItemStack.getItemDamage()) });
-                oreInput = new ic2.api.recipe.RecipeInputItemStack(new ItemStack(VenusBlocks.venusBlock, 1, BlockBasicVenus.EnumBlockBasicVenus.ORE_TIN.getMeta()));
-                ic2.api.recipe.Recipes.macerator.addRecipe(oreInput, null, false, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(), 2, tinDustItemStack.getItemDamage()) });
+                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_COPPER.getMeta()));
+                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { copperDustItemStack.copy() });
+                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_TIN.getMeta()));
+                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { tinDustItemStack.copy() });
+                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_IRON.getMeta()));
+                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { ironDustItemStack.copy() });
+                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(AsteroidBlocks.blockBasic, 1, BlockBasicAsteroids.EnumBlockBasic.ORE_IRON.getMeta()));
+                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { ironDustItemStack.copy() });
+                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(VenusBlocks.venusBlock, 1, BlockBasicVenus.EnumBlockBasicVenus.ORE_COPPER.getMeta()));
+                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { copperDustItemStack.copy() });
+                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(VenusBlocks.venusBlock, 1, BlockBasicVenus.EnumBlockBasicVenus.ORE_TIN.getMeta()));
+                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { tinDustItemStack.copy() });
             }
         }
         catch (Throwable e)
