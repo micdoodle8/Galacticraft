@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -192,7 +193,10 @@ public class AsteroidsTickHandlerServer
                 if (p != null && p.world != null)
                 {
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
-                    ((WorldServer)p.world).getChunkProvider().loadChunk(data.x, data.z);
+                    WorldServer w = (WorldServer)p.world;
+                    CompatibilityManager.forceLoadChunks(w);
+                    w.getChunkProvider().loadChunk(data.x, data.z);
+                    CompatibilityManager.forceLoadChunksEnd(w);
                 }
             }
             AsteroidsTickHandlerServer.loadingSavedChunks.set(false);
