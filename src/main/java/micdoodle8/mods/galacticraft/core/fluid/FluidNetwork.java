@@ -244,7 +244,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                         copy.amount = currentSend;
 
                         net.minecraftforge.fluids.capability.IFluidHandler handler;
-                        if ((handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite())) != null)
+                        if ((handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side)) != null)
                         {
                             totalSend += handler.fill(copy, doTransfer);
                         }
