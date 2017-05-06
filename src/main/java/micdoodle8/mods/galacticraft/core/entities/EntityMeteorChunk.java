@@ -257,11 +257,11 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
                     if (this.shootingEntity == null)
                     {
-                        damagesource = new EntityDamageSourceIndirect("meteorChunk", this, this).setProjectile();
+                        damagesource = new EntityDamageSourceIndirect("meteor_chunk", this, this).setProjectile();
                     }
                     else
                     {
-                        damagesource = new EntityDamageSourceIndirect("meteorChunk", this, this.shootingEntity).setProjectile();
+                        damagesource = new EntityDamageSourceIndirect("meteor_chunk", this, this.shootingEntity).setProjectile();
                     }
 
                     if (this.isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
