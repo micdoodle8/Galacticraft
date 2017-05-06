@@ -18,20 +18,13 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockBasicAsteroids;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -655,45 +648,6 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:iron,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:glass,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:tin,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-
-        try
-        {
-            ItemStack copperDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "copper");
-            ItemStack tinDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "tin");
-            ItemStack ironDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "iron");
-            copperDustItemStack.stackSize = 2;
-            tinDustItemStack.stackSize = 2;
-            ironDustItemStack.stackSize = 2;
-            
-            Object macerator = Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null);
-            Method addRecipe = Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe", Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, Boolean.TYPE, ItemStack[].class);
-            Class<?> clazz2 = Class.forName("ic2.api.recipe.RecipeInputItemStack");
-            
-            Object oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCBlocks.blockMoon, 1, 0));
-            addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { copperDustItemStack.copy() });
-            
-            oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(GCBlocks.blockMoon, 1, 1));
-            addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { tinDustItemStack.copy() });
-            if (GalacticraftCore.isPlanetsLoaded)
-            {
-                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_COPPER.getMeta()));
-                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { copperDustItemStack.copy() });
-                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_TIN.getMeta()));
-                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { tinDustItemStack.copy() });
-                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(MarsBlocks.marsBlock, 1, BlockBasicMars.EnumBlockBasic.ORE_IRON.getMeta()));
-                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { ironDustItemStack.copy() });
-                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(AsteroidBlocks.blockBasic, 1, BlockBasicAsteroids.EnumBlockBasic.ORE_IRON.getMeta()));
-                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { ironDustItemStack.copy() });
-                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(VenusBlocks.venusBlock, 1, BlockBasicVenus.EnumBlockBasicVenus.ORE_COPPER.getMeta()));
-                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { copperDustItemStack.copy() });
-                oreInput = clazz2.getConstructor(ItemStack.class).newInstance(new ItemStack(VenusBlocks.venusBlock, 1, BlockBasicVenus.EnumBlockBasicVenus.ORE_TIN.getMeta()));
-                addRecipe.invoke(macerator, oreInput, null, false, new ItemStack[] { tinDustItemStack.copy() });
-            }
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
     }
 
     private static void addAppEngRecipes()
