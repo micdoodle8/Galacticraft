@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.jei;
 
 import mezz.jei.api.*;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeMaker;
@@ -17,7 +18,6 @@ import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeMaker
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeMaker;
-
 import javax.annotation.Nonnull;
 
 @JEIPlugin
@@ -43,5 +43,7 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList());
         registry.addRecipes(CompressorRecipes.getRecipeList());
         registry.addRecipes(RefineryRecipeMaker.getRecipesList());
+        
+        GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
     }
 }

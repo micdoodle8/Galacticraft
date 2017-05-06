@@ -3,9 +3,13 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -14,7 +18,10 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,11 +32,14 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
@@ -437,5 +447,48 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         }
 
         return state.withProperty(RENDER_TYPE, renderType);
+    }
+    
+    public static void onPlacement(World worldIn, BlockPos pos,EntityLivingBase placer, Block callingBlock)
+    {
+        final TileEntity tile = worldIn.getTileEntity(pos);
+
+        if (tile instanceof IMultiBlock)
+        {
+            boolean validSpot = true;
+            List<BlockPos> toCheck = new LinkedList<>();
+            ((IMultiBlock) tile).getPositions(pos, toCheck);
+            for (BlockPos toTest : toCheck)
+            {
+                IBlockState blockAt = worldIn.getBlockState(toTest);
+                if (!blockAt.getBlock().isReplaceable(worldIn, toTest))
+                {
+                    validSpot = false;
+                    break;
+                }
+            }
+
+            if (!validSpot)
+            {
+                worldIn.setBlockToAir(pos);
+
+                if (!worldIn.isRemote && placer instanceof EntityPlayerMP)
+                {
+                    EntityPlayerMP player = (EntityPlayerMP) placer;
+                    player.addChatMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                    if (!player.capabilities.isCreativeMode)
+                    {
+                        final ItemStack nasaWorkbench = new ItemStack(callingBlock, 1, 0);
+                        final EntityItem entityitem = player.dropItem(nasaWorkbench, false);
+                        entityitem.setPickupDelay(0);
+                        entityitem.setOwner(player.getName());
+                    }
+                }
+
+                return;
+            }
+            
+            ((IMultiBlock) tile).onCreate(worldIn, pos);
+        }
     }
 }

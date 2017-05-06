@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,6 +48,17 @@ public class RenderPlayerGC extends RenderPlayer
     public RenderPlayerGC(boolean smallArms)
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
+        int toRemove = -1;
+        for (int i = 0; i < this.layerRenderers.size(); i++)
+        {
+            LayerRenderer layer = this.layerRenderers.get(i); 
+            if (layer instanceof LayerHeldItem)
+            {
+                toRemove = i;
+                break;
+            }
+        }
+        if (toRemove >= 0) this.layerRenderers.set(toRemove, new LayerHeldItemGC(this));
         this.mainModel = new ModelPlayerGC(0.0F, smallArms);
         this.addLayer(new LayerOxygenTanks(this));
         this.addLayer(new LayerOxygenGear(this));

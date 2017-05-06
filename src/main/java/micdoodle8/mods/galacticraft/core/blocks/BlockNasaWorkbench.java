@@ -98,13 +98,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final TileEntity tile = worldIn.getTileEntity(pos);
-
-        if (tile instanceof IMultiBlock)
-        {
-            ((IMultiBlock) tile).onCreate(worldIn, pos);
-        }
-
+        BlockMulti.onPlacement(worldIn, pos, placer, this);
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
