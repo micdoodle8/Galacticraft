@@ -363,7 +363,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
-        if (this.getOxygenInputDirections().contains(from))
+        if (this.getOxygenInputDirections().contains(from) && resource != null)
         {
             if (!doFill)
             {
@@ -379,7 +379,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        return drain(from, resource.amount, doDrain);
+        return resource == null ? null : drain(from, resource.amount, doDrain);
     }
 
     @Override
@@ -396,13 +396,13 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return this.getOxygenInputDirections().contains(from) && fluid.getName().equals("oxygen");
+        return this.getOxygenInputDirections().contains(from) && (fluid == null || fluid.getName().equals("oxygen"));
     }
 
     @Override
     public boolean canDrain(EnumFacing from, Fluid fluid)
     {
-        return this.getOxygenOutputDirections().contains(from) && fluid.getName().equals("oxygen");
+        return this.getOxygenOutputDirections().contains(from) && (fluid == null || fluid.getName().equals("oxygen"));
     }
 
     @Override
