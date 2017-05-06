@@ -468,7 +468,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (from == this.getHydrogenInputDirection())
         {
-            return fluid != null && "hydrogen".equals(fluid.getName());
+            return fluid == null || "hydrogen".equals(fluid.getName());
         }
 
         return false;

@@ -230,7 +230,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         int used = 0;
 
-        if (this.getPipeInputDirection().equals(from))
+        if (this.getPipeInputDirection().equals(from) && resource != null)
         {
             if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {

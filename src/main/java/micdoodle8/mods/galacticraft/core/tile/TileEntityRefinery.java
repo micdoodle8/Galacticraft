@@ -298,7 +298,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        if (from == getFuelPipe())
+        if (from == getFuelPipe() && resource != null)
         {
             return this.fuelTank.drain(resource.amount, doDrain);
         }
@@ -333,7 +333,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         int used = 0;
 
-        if (from == getOilPipe())
+        if (from == getOilPipe() && resource != null)
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
