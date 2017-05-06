@@ -93,6 +93,7 @@ public class GuiCelestialSelection extends GuiScreen
     protected boolean mouseDragging = false;
     protected int lastMovePosX = -1;
     protected int lastMovePosY = -1;
+    protected boolean errorLogged = false;
 
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
@@ -1077,7 +1078,19 @@ public class GuiCelestialSelection extends GuiScreen
 
         this.drawSelectionCursor(fb, worldMatrix);
 
-        this.drawButtons(mousePosX, mousePosY);
+        try {
+            this.drawButtons(mousePosX, mousePosY);
+        } catch (Exception e)
+        {
+            if (!this.errorLogged)
+            {
+                this.errorLogged = true;
+                GCLog.severe("Problem identifying planet or dimension in an add on for Galacticraft!");
+                GCLog.severe("(The problem is likely caused by a dimension ID conflict.  Check configs for dimension clashes.  You can also try disabling Mars space station in configs.)");
+                e.printStackTrace();
+            }
+        }
+        
         this.drawBorder();
         GL11.glPopMatrix();
 

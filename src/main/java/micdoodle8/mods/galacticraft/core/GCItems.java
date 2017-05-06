@@ -170,20 +170,8 @@ public class GCItems
      * until it services an FMLLoadCompleteEvent.
      * (Seriously?!)
      */
-    public static void hideItemsJEI()
+    public static void hideItemsJEI(IItemBlacklist jeiHidden)
     {
-        IItemBlacklist jeiHidden = null;
-        
-        try {
-            //Internal.getHelpers().getItemBlacklist()
-            Object helpers = Class.forName("mezz.jei.Internal").getMethod("getHelpers").invoke(null);
-            Object IIB = Class.forName("mezz.jei.JeiHelpers").getMethod("getItemBlacklist").invoke(helpers);
-            if (IIB instanceof IItemBlacklist)
-            {
-                jeiHidden = (IItemBlacklist)IIB;
-            }
-        } catch (Exception e) { e.printStackTrace(); }
-
         if (jeiHidden != null)
         {
             for (Item item : GCItems.hiddenItems)

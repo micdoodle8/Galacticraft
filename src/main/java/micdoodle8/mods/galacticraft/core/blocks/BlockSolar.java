@@ -146,12 +146,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
 
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
 
-        TileEntity tile = worldIn.getTileEntity(pos);
-
-        if (tile instanceof TileEntitySolar)
-        {
-            ((TileEntitySolar) tile).onCreate(worldIn, pos);
-        }
+        BlockMulti.onPlacement(worldIn, pos, placer, this);
     }
 
     @Override

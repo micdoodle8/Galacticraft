@@ -53,6 +53,7 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -406,6 +407,10 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
+        if (event.getEmptyBucket() == null || !(event.getEmptyBucket().getItem() instanceof ItemBucket))
+        {
+            return;
+        }
         RayTraceResult pos = event.getTarget();
         if (pos == null)
         {

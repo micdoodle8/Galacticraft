@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFabricatorRecipeCategory;
@@ -22,7 +23,6 @@ import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeMaker
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeWrapper;
-
 import javax.annotation.Nonnull;
 
 @JEIPlugin
@@ -50,5 +50,7 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList(), RecipeCategories.CIRCUIT_FABRICATOR_ID);
         registry.addRecipes(CompressorRecipes.getRecipeList(), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipes(RefineryRecipeMaker.getRecipesList(), RecipeCategories.REFINERY_ID);
+        
+        GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
     }
 }
