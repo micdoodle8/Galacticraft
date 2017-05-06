@@ -393,7 +393,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         if (from == this.getFront().rotateY())
         {
             //Can fill with water
-            return fluid != null && fluid.getName().equals(FluidRegistry.WATER.getName());
+            return fluid == null || fluid.getName().equals(FluidRegistry.WATER.getName());
         }
 
         return false;

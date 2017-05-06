@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.wrappers;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -21,8 +22,18 @@ public class FluidHandlerWrapper implements IFluidHandler
     @Override
     public IFluidTankProperties[] getTankProperties()
     {
-        return wrapper.getTankInfo(side) != null ? FluidTankProperties.convert(wrapper.getTankInfo(side))
-                : new IFluidTankProperties[]{};
+        FluidTankInfo[] infos = wrapper.getTankInfo(side); 
+        if (infos != null)
+        {
+            FluidTankProperties[] properties = new FluidTankProperties[infos.length];
+            for (int i = 0; i < infos.length; i++)
+            {
+                FluidTankInfo info = infos[i];
+                properties[i] = new FluidTankProperties(info.fluid, info.capacity, this.wrapper.canFill(side, null), this.wrapper.canDrain(side, null));
+            }
+            return properties;
+        }
+        return new IFluidTankProperties[]{};
     }
 
     @Override

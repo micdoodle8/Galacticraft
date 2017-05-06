@@ -735,7 +735,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         if (from.equals(this.getGasInputDirection()))
         {
             //Can fill with gases
-            return fluid != null && this.getIdFromName(fluid.getName()) > -1;
+            return fluid == null || this.getIdFromName(fluid.getName()) > -1;
         }
 
         return false;
