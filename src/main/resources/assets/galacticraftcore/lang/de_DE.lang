@@ -232,6 +232,7 @@ death.attack.spaceshipExplosionB=%1$s starb bei einem Raketenunglück!
 death.attack.spaceshipCrash=Die Rakete von %1$s hat sich selbst in den Boden gerammt. Ups.
 death.attack.oxygenSuffocation=%1$s ist der Sauerstoff ausgegangen!
 death.attack.thermal=%1$s hat vergessen, dass Temperaturen nicht überall gleich sind.
+death.attack.meteorChunk=%1$s wurde von Meteortrümmern getroffen!
 
 # GALAXIES
 galaxy.blockyway.name=The Blocky Way
@@ -414,6 +415,8 @@ gui.rocket.inv.name=Inventar / Treibstoff
 gui.rocket.warning.nogyroscope=Mysteriöse Kräfte sind im Spiel, die Gyroskope spielen verrückt!
 gui.rocket.warning.noparachute=Ich habe keinen Fallschirm! Wenn ich noch einmal Starten drücke, gibt es kein Zurück!
 gui.rocket.warning.nofuel=Ich brauche erst einmal etwas Raketentreibstoff!
+gui.rocket.warning.fuelinsufficient=Nicht genug Treibstoff für einen sicheren Start unter automatischer Kontrolle!
+gui.rocket.warning.launchcontroller=Start abgebrochen. Start-Controller überprüfen!
 gui.chest.warning.wrongkey=Ich brauche wohl einen Dungeonschlüssel der Stufe %s, um das zu entsperren!
 gui.bedFail.message=Ich brauche eine kryogene Kammer, wenn ich im Weltraum schlafen möchte!
 gui.frequencymodule.warning0=Ich brauche wohl ein
@@ -665,6 +668,7 @@ gc.configgui.biomeIDBase=Basis-Biom-ID
 gc.configgui.staticLoadedDimensions=Statisch geladene Dimensionen
 gc.configgui.rocketDisableOverworldReturn=Rakete - Rückkehr auf die Oberwelt deaktivieren
 gc.configgui.rocketDisabledDimensions=Rakete - Deaktivierte Dimensionen
+gc.configgui.planetWorldBorders=Maximale x,z-Koordinaten für Mondlandung
 gc.configgui.forceOverworldRespawn=Oberwelt-Respawn erzwingen
 gc.configgui.idSchematicRocketT1=Rakete (Stufe 1) - Schematic-ID
 gc.configgui.idSchematicMoonBuggy=Mondrover - Schematic-ID
@@ -715,5 +719,6 @@ gc.configgui.keyOverrideFuelLevel=Taste setzen: Raketentreibstoff-GUI
 gc.configgui.keyOverrideToggleAdvGoggles=Taste setzen: Erweiterte Brillen
 gc.configgui.meteorSpawnMod=Meteor-Spawn-Modifikator
 gc.configgui.meteorBlockDamage=Meteor-Schaden aktivieren
+gc.configgui.disableUpdateCheck=Überprüfen auf Updates deaktivieren
 
 gc.configgui.title=Galacticraft Core-Konfiguration
