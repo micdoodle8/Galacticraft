@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -86,7 +87,13 @@ public class CompatibilityManager
                 Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
                 if (clazz != null)
                 {
-                    BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborChange", Block.class);
+                    try {
+                        BlockEnclosed.onBlockNeighbourChangeIC2a = clazz.getMethod("onNeighborChange", Block.class);
+                    }
+                    catch (NoSuchMethodException e)
+                    {
+                        BlockEnclosed.onBlockNeighbourChangeIC2b = clazz.getMethod("onNeighborChange", Block.class, BlockPos.class);
+                    }
                 }
                 GCLog.info("Galacticraft: activating IndustrialCraft2 compatibility features.");
             }
