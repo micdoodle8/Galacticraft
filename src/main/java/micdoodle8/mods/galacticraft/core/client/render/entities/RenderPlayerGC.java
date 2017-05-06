@@ -20,8 +20,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 import org.lwjgl.opengl.GL11;
 
-import java.util.Iterator;
-
 /**
  * This renders the thermal armor (unless RenderPlayerAPI is installed).
  * The thermal armor render is done after the corresponding body part of the player is drawn.
@@ -48,40 +46,26 @@ public class RenderPlayerGC extends RenderPlayer
     public RenderPlayerGC(boolean smallArms)
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
-        int toRemove = -1;
+
+        // The following code removes the vanilla armor and item layer renderers and replaces them with the Galacticraft ones
+        int itemLayerIndex = -1;
+        int armorLayerIndex = -1;
         for (int i = 0; i < this.layerRenderers.size(); i++)
         {
             LayerRenderer layer = this.layerRenderers.get(i); 
             if (layer instanceof LayerHeldItem)
             {
-                toRemove = i;
-                break;
+                itemLayerIndex = i;
             }
-        }
-        if (toRemove >= 0) this.layerRenderers.set(toRemove, new LayerHeldItemGC(this));
-        this.mainModel = new ModelPlayerGC(0.0F, smallArms);
-        this.addLayer(new LayerOxygenTanks(this));
-        this.addLayer(new LayerOxygenGear(this));
-        this.addLayer(new LayerOxygenMask(this));
-        this.addLayer(new LayerOxygenParachute(this));
-        this.addLayer(new LayerFrequencyModule(this));
-
-        // The following code removes the vanilla armor layer renderer and replaces it with the Galacticraft one
-        boolean removedVanilla = false;
-        Iterator<LayerRenderer<AbstractClientPlayer>> iterator = this.layerRenderers.iterator();
-        while (iterator.hasNext())
-        {
-            LayerRenderer<AbstractClientPlayer> renderer = iterator.next();
-            if (renderer.getClass().equals(LayerBipedArmor.class))
+            if (layer instanceof LayerBipedArmor)
             {
-                iterator.remove();
-                removedVanilla = true;
+                armorLayerIndex = i;
             }
         }
-
-        if (removedVanilla)
+        if (itemLayerIndex >= 0) this.layerRenderers.set(itemLayerIndex, new LayerHeldItemGC(this));
+        if (armorLayerIndex >= 0)
         {
-            LayerBipedArmor playerArmor = new LayerBipedArmor(this)
+            LayerRenderer playerArmor = new LayerBipedArmor(this)
             {
                 @Override
                 protected void initArmor()
@@ -90,8 +74,15 @@ public class RenderPlayerGC extends RenderPlayer
                     this.field_177186_d = new ModelBipedGC(1.0F);
                 }
             };
-            this.addLayer(playerArmor);
+            this.layerRenderers.set(armorLayerIndex, playerArmor);
         }
+
+        this.mainModel = new ModelPlayerGC(0.0F, smallArms);
+        this.addLayer(new LayerOxygenTanks(this));
+        this.addLayer(new LayerOxygenGear(this));
+        this.addLayer(new LayerOxygenMask(this));
+        this.addLayer(new LayerOxygenParachute(this));
+        this.addLayer(new LayerFrequencyModule(this));
 
         if (GalacticraftCore.isPlanetsLoaded)
         {
