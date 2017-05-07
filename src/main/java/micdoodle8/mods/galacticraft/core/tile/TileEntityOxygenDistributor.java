@@ -47,9 +47,8 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
         if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this));
     }
 
