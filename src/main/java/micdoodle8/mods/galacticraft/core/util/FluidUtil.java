@@ -350,7 +350,7 @@ public class FluidUtil
                         FluidStack given = handlerItem.drain(used, true); 
                         if (given != null)
                         {
-                            tank.fill(new FluidStack(desiredLiquid, given.amount), false);
+                            tank.fill(new FluidStack(desiredLiquid, given.amount), true);
                         }
                         return;
                     }
