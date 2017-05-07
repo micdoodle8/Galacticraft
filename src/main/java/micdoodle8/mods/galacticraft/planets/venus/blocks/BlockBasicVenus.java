@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -75,6 +76,11 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         public String getName()
         {
             return this.name;
+        }
+
+        public ItemStack getItemStack()
+        {
+            return new ItemStack(VenusBlocks.venusBlock, 1, this.meta);
         }
     }
 
