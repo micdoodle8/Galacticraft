@@ -1,10 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.client.model.ModelBipedGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -12,6 +18,7 @@ import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -95,27 +102,88 @@ public class RenderPlayerGC extends RenderPlayer
     }
 
     @Override
-    protected void rotateCorpse(AbstractClientPlayer par1AbstractClientPlayer, float par2, float par3, float par4)
+    protected void preRenderCallback(AbstractClientPlayer entitylivingbaseIn, float partialTickTime)
     {
-        if (par1AbstractClientPlayer.isEntityAlive() && par1AbstractClientPlayer.isPlayerSleeping())
+        super.preRenderCallback(entitylivingbaseIn, partialTickTime);
+
+        if (entitylivingbaseIn.isEntityAlive() && entitylivingbaseIn.isPlayerSleeping())
         {
-            RotatePlayerEvent event = new RotatePlayerEvent(par1AbstractClientPlayer);
+            RotatePlayerEvent event = new RotatePlayerEvent(entitylivingbaseIn);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (!event.vanillaOverride)
             {
-                super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+                super.preRenderCallback(entitylivingbaseIn, partialTickTime);
             }
             else if (event.shouldRotate == null || event.shouldRotate)
             {
-                GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+                entitylivingbaseIn.rotationYawHead = 0;
+                entitylivingbaseIn.prevRotationYawHead = 0;
+                GL11.glTranslatef(0.0F, 0.8F, 0.0F);
+            }
+        }
+    }
+
+    @Override
+    protected void rotateCorpse(AbstractClientPlayer abstractClientPlayer, float par2, float par3, float par4)
+    {
+        if (abstractClientPlayer.isEntityAlive() && abstractClientPlayer.isPlayerSleeping())
+        {
+            RotatePlayerEvent event = new RotatePlayerEvent(abstractClientPlayer);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            if (!event.vanillaOverride)
+            {
+                super.rotateCorpse(abstractClientPlayer, par2, par3, par4);
+            }
+            else if (event.shouldRotate == null || event.shouldRotate)
+            {
+                float rotation = 0.0F;
+
+                if (abstractClientPlayer.playerLocation != null)
+                {
+                    IBlockState bed = abstractClientPlayer.worldObj.getBlockState(abstractClientPlayer.playerLocation);
+
+                    if (bed.getBlock().isBed(abstractClientPlayer.worldObj, abstractClientPlayer.playerLocation, abstractClientPlayer))
+                    {
+                        if (bed.getBlock() == GCBlocks.fakeBlock && bed.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
+                        {
+                            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(abstractClientPlayer.playerLocation);
+                            if (tile instanceof TileEntityMulti)
+                            {
+                                bed = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                            }
+                        }
+
+                        if (bed.getBlock() == MarsBlocks.machine && bed.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+                        {
+                            switch (bed.getValue(BlockMachineMars.FACING))
+                            {
+                            case NORTH:
+                                rotation = 0.0F;
+                                break;
+                            case EAST:
+                                rotation = 270.0F;
+                                break;
+                            case SOUTH:
+                                rotation = 180.0F;
+                                break;
+                            case WEST:
+                                rotation = 90.0F;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
             }
         }
         else
         {
             if (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
             {
-                final EntityPlayer player = (EntityPlayer) par1AbstractClientPlayer;
+                final EntityPlayer player = (EntityPlayer) abstractClientPlayer;
 
                 if (player.ridingEntity instanceof ICameraZoomEntity)
                 {
@@ -132,7 +200,7 @@ public class RenderPlayerGC extends RenderPlayer
                     }
                 }
             }
-            super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
+            super.rotateCorpse(abstractClientPlayer, par2, par3, par4);
         }
     }
 

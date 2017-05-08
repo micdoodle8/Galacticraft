@@ -40,6 +40,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -93,11 +94,6 @@ public class EventHandlerMars
             if (!event.flag1 && event.flag2 && event.flag3)
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
-
-                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
-                {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(event.entityPlayer.worldObj), new Object[] {}));
-                }
             }
             else if (!event.flag1 && !event.flag2 && event.flag3)
             {
@@ -180,38 +176,34 @@ public class EventHandlerMars
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
-                entity.rotationPitch = 0;
+                entity.rotationPitch = 75;
 
                 switch (tile.getBlockMetadata() & 3)
                 {
                 case 0:
                     GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(-0.4F, -0.5F, 4.1F);
-                    GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 320;
+                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 case 1:
                     GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0, -0.5F, 4.1F);
-                    GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 45;
+                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 case 2:
                     GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0, -0.5F, 4.1F);
                     GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 45;
                     break;
                 case 3:
                     GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -0.5F, 4.1F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 335;
+                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 }
+
+                GL11.glRotatef(-50 + FMLClientHandler.instance().getClientPlayerEntity().sleepTimer, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.8F, 0.0F);
             }
         }
     }

@@ -6,10 +6,12 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 
@@ -147,6 +150,25 @@ public class ModelBipedGC extends ModelBiped
             copyModelAngles(biped.bipedLeftArm, ((ModelPlayer) biped).bipedLeftArmwear);
             copyModelAngles(biped.bipedRightArm, ((ModelPlayer) biped).bipedRightArmwear);
             copyModelAngles(biped.bipedBody, ((ModelPlayer) biped).bipedBodyWear);
+        }
+
+        if (player.isPlayerSleeping() && GalacticraftCore.isPlanetsLoaded)
+        {
+            RenderPlayerGC.RotatePlayerEvent event = new RenderPlayerGC.RotatePlayerEvent((AbstractClientPlayer) player);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            if (event.vanillaOverride && (event.shouldRotate == null || event.shouldRotate))
+            {
+                biped.bipedHead.rotateAngleX = (float) (20.0F - Math.sin(player.ticksExisted / 10.0F) / 7.0F);
+                biped.bipedHead.rotateAngleY = 0.0F;
+                biped.bipedHead.rotateAngleZ = 0.0F;
+                biped.bipedLeftArm.rotateAngleX = 0.0F;
+                biped.bipedLeftArm.rotateAngleY = 0.0F;
+                biped.bipedLeftArm.rotateAngleZ = 0.0F;
+                biped.bipedRightArm.rotateAngleX = 0.0F;
+                biped.bipedRightArm.rotateAngleY = 0.0F;
+                biped.bipedRightArm.rotateAngleZ = 0.0F;
+            }
         }
     }
 
